@@ -198,24 +198,6 @@ $arr = array(
   'simple' => 'string',
 );
 
-// ::hasArrayValueForPath()
-$t->diag('::hasArrayValueForPath()');
-
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'foobar'), true, '::hasArrayValueForPath() returns true if the path exists');
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'barfoo'), false, '::hasArrayValueForPath() returns false if the path does not exist');
-
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'foo[bar][baz]'), true, '::hasArrayValueForPath() works with deep paths');
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'foo[bar][bar]'), false, '::hasArrayValueForPath() works with deep paths');
-
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'foo[]'), true, '::hasArrayValueForPath() accepts a [] at the end to check for an array');
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'foobar[]'), false, '::hasArrayValueForPath() accepts a [] at the end to check for an array');
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'barfoo[]'), false, '::hasArrayValueForPath() accepts a [] at the end to check for an array');
-
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'bar[1]'), true, '::hasArrayValueForPath() can take an array indexed by integer');
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'bar[2]'), false, '::hasArrayValueForPath() can take an array indexed by integer');
-
-$t->is(sfToolkit::hasArrayValueForPath($arr, 'foo[bar][baz][booze]'), false, '::hasArrayValueForPath() is not fooled by php mistaking strings and array');
-
 // ::getArrayValueForPath()
 $t->diag('::getArrayValueForPath()');
 
@@ -237,40 +219,6 @@ $t->is(sfToolkit::getArrayValueForPath($arr, 'bar[2]'), null, '::getArrayValueFo
 $t->is(sfToolkit::getArrayValueForPath($arr, 'bar[2]', 'foo'), 'foo', '::getArrayValueForPath() can take an array indexed by integer');
 
 $t->is(sfToolkit::getArrayValueForPath($arr, 'foo[bar][baz][booze]'), null, '::getArrayValueForPath() is not fooled by php mistaking strings and array');
-$t->is(sfToolkit::getArrayValueForPathByRef($arr, 'foo[bar][baz][booze]'), null, '::getArrayValueForPathByRef() is not fooled by php mistaking strings and array');
-
-// ::removeArrayValueForPath()
-$t->diag('::removeArrayValueForPath()');
-$t->is(sfToolkit::removeArrayValueForPath($arr, 'foobar'), 'foo', '::removeArrayValueForPath() returns the removed value');
-$t->is($arr, array(
-  'foo' => array(
-    'bar' => array(
-      'baz' => 'foo bar',
-    ),
-  ),
-  'bar' => array(
-    'foo',
-    'bar',
-  ),
-  'simple' => 'string',
-), '::removeArrayValueForPath() removes a key');
-$t->is(sfToolkit::removeArrayValueForPath($arr, 'barfoo'), null, '::removeArrayValueForPath() returns null if the key does not exist');
-$t->is(sfToolkit::removeArrayValueForPath($arr, 'barfoo', 'bar'), 'bar', '::removeArrayValueForPath() takes the default value as a third argument');
-$t->is(sfToolkit::removeArrayValueForPath($arr, 'foo[bar][baz][booze]'), null, '::removeArrayValueForPath() is not fooled by php mistaking strings and array');
-$t->is(sfToolkit::removeArrayValueForPath($arr, 'foo[simple][bad]'), null, '::removeArrayValueForPath() is not fooled by php mistaking strings and array');
-
-$t->is(sfToolkit::removeArrayValueForPath($arr, 'foo[bar][baz]'), 'foo bar', '::removeArrayValueForPath() works with deep paths');
-$t->is($arr, array(
-  'foo' => array(
-    'bar' => array(
-    ),
-  ),
-  'bar' => array(
-    'foo',
-    'bar',
-  ),
-  'simple' => 'string',
-), '::removeArrayValueForPath() works with deep paths');
 
 // ::addIncludePath()
 $t->diag('::addIncludePath()');
