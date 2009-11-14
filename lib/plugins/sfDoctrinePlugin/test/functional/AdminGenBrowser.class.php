@@ -42,7 +42,7 @@ class AdminGenBrowser extends sfTestBrowser
   {
     $this->
       get('/my_articles')->
-      isStatusCode('200')
+      with('response')->isStatusCode('200')
     ;
   }
 
@@ -196,10 +196,10 @@ class AdminGenBrowser extends sfTestBrowser
     foreach ($this->_modules as $module)
     {
       $this->info('Removing admin gen module "' . $module . '"');
-      $fs->sh('rm -rf ' . sfConfig::get('sf_app_module_dir') . '/' . $module);
+      $fs->execute('rm -rf ' . sfConfig::get('sf_app_module_dir') . '/' . $module);
     }
-    $fs->sh('rm -rf ' . sfConfig::get('sf_test_dir') . '/functional/backend');
-    $fs->sh('rm -rf ' . sfConfig::get('sf_data_dir') . '/*.sqlite');
+    $fs->execute('rm -rf ' . sfConfig::get('sf_test_dir') . '/functional/backend');
+    $fs->execute('rm -rf ' . sfConfig::get('sf_data_dir') . '/*.sqlite');
   }
 
   public function __destruct()
