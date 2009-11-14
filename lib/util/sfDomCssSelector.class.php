@@ -21,9 +21,11 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfDomCssSelector
+class sfDomCssSelector implements Countable, Iterator
 {
   public $nodes = array();
+
+  private $count;
 
   public function __construct($nodes)
   {
@@ -75,20 +77,7 @@ class sfDomCssSelector
     return $nodes ? new sfDomCssSelector($nodes) : new sfDomCssSelector(array());
   }
 
-  /* DEPRECATED */
-  public function getTexts($selector)
-  {
-    $texts = array();
-    foreach ($this->getElements($selector) as $element)
-    {
-      $texts[] = $element->nodeValue;
-    }
-
-    return $texts;
-  }
-
-  /* DEPRECATED */
-  public function getElements($selector)
+  protected function getElements($selector)
   {
     $nodes = array();
     foreach ($this->nodes as $node)
@@ -569,5 +558,69 @@ class sfDomCssSelector
         return $cur;
       }
     }
+  }
+
+  /**
+   * Reset the array to the beginning (as required for the Iterator interface).
+   */
+  public function rewind()
+  {
+    reset($this->nodes);
+
+    $this->count = count($this->nodes);
+  }
+
+  /**
+   * Get the key associated with the current value (as required by the Iterator interface).
+   *
+   * @return string The key
+   */
+  public function key()
+  {
+    return key($this->nodes);
+  }
+
+  /**
+   * Escapes and return the current value (as required by the Iterator interface).
+   *
+   * @return mixed The escaped value
+   */
+  public function current()
+  {
+    return current($this->nodes);
+  }
+
+  /**
+   * Moves to the next element (as required by the Iterator interface).
+   */
+  public function next()
+  {
+    next($this->nodes);
+
+    $this->count --;
+  }
+
+  /**
+   * Returns true if the current element is valid (as required by the Iterator interface).
+   *
+   * The current element will not be valid if {@link next()} has fallen off the
+   * end of the array or if there are no elements in the array and {@link
+   * rewind()} was called.
+   *
+   * @return bool The validity of the current element; true if it is valid
+   */
+  public function valid()
+  {
+    return $this->count > 0;
+  }
+
+  /**
+   * Returns the number of matching nodes (implements Countable).
+   *
+   * @param integer The number of matching nodes
+   */
+  public function count()
+  {
+    return count($this->nodes);
   }
 }
