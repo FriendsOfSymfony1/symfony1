@@ -29,8 +29,8 @@ foreach ($tests as $url => $check)
 {
   $b->
     get($url)->
-    isStatusCode('200')->
     with('response')->begin()->
+      isStatusCode('200')->
       matches($check)->
     end()
   ;
