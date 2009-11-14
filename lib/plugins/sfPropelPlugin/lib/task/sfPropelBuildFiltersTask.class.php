@@ -30,6 +30,7 @@ class sfPropelBuildFiltersTask extends sfPropelBaseTask
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('filter-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfPropelFormFilterGenerator'),
     ));
 
     $this->namespace = 'propel';
@@ -62,9 +63,9 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $this->logSection('propel', 'generating filter form classes');
-    
+
     $generatorManager = new sfGeneratorManager($this->configuration);
-    $generatorManager->generate('sfPropelFormFilterGenerator', array(
+    $generatorManager->generate($options['generator-class'], array(
       'connection'      => $options['connection'],
       'model_dir_name'  => $options['model-dir-name'],
       'filter_dir_name' => $options['filter-dir-name'],

@@ -30,6 +30,7 @@ class sfPropelBuildFormsTask extends sfPropelBaseTask
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('form-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The form dir name', 'form'),
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfPropelFormGenerator'),
     ));
 
     $this->namespace = 'propel';
@@ -62,9 +63,9 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $this->logSection('propel', 'generating form classes');
-    
+
     $generatorManager = new sfGeneratorManager($this->configuration);
-    $generatorManager->generate('sfPropelFormGenerator', array(
+    $generatorManager->generate($options['generator-class'], array(
       'connection'     => $options['connection'],
       'model_dir_name' => $options['model-dir-name'],
       'form_dir_name'  => $options['form-dir-name'],

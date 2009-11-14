@@ -30,6 +30,7 @@ class sfDoctrineBuildFormsTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('form-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The form dir name', 'form'),
+      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfDoctrineFormGenerator'),
     ));
 
     $this->namespace = 'doctrine';
@@ -57,7 +58,7 @@ EOF;
     $this->logSection('doctrine', 'generating form classes');
     $databaseManager = new sfDatabaseManager($this->configuration);
     $generatorManager = new sfGeneratorManager($this->configuration);
-    $generatorManager->generate('sfDoctrineFormGenerator', array(
+    $generatorManager->generate($options['generator-class'], array(
       'model_dir_name' => $options['model-dir-name'],
       'form_dir_name'  => $options['form-dir-name'],
     ));

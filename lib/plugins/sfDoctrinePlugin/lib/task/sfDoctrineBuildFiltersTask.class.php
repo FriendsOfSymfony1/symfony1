@@ -30,6 +30,7 @@ class sfDoctrineBuildFiltersTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('filter-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
+      new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfDoctrineFormFilterGenerator'),
     ));
 
     $this->namespace = 'doctrine';
@@ -57,7 +58,7 @@ EOF;
     $this->logSection('doctrine', 'generating filter form classes');
     $databaseManager = new sfDatabaseManager($this->configuration);
     $generatorManager = new sfGeneratorManager($this->configuration);
-    $generatorManager->generate('sfDoctrineFormFilterGenerator', array(
+    $generatorManager->generate($options['generator-class'], array(
       'model_dir_name'  => $options['model-dir-name'],
       'filter_dir_name' => $options['filter-dir-name'],
     ));
