@@ -78,10 +78,7 @@ class sfPatternRouting extends sfRouting
   {
     if ($this->options['load_configuration'] && $config = $this->getConfigFilename())
     {
-      foreach (include($config) as $name => $route)
-      {
-        $this->routes[$name] = $route;
-      }
+      include($config);
     }
 
     parent::loadConfiguration();
