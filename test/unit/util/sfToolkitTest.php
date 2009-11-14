@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(112);
+$t = new lime_test(93);
 
 // ::stringToArray()
 $t->diag('::stringToArray()');
