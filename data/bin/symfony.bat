@@ -19,9 +19,9 @@ goto init
 
 if "%PHP_COMMAND%" == "" goto no_phpcommand
 
-IF EXIST ".\symfony" (
-  %PHP_COMMAND% ".\symfony" %*
-) ELSE (
+if "%SCRIPT_DIR%" == "" (
+  %PHP_COMMAND% "symfony" %*
+) else (
   %PHP_COMMAND% "%SCRIPT_DIR%\symfony" %*
 )
 goto cleanup
