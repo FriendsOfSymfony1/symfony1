@@ -20,43 +20,63 @@ $b = new sfTestBrowser();
 // default main page (without cache)
 $b->
   get('/')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'default')->
-  isRequestParameter('action', 'index')->
-  checkResponseElement('body', '/congratulations/i')
+  with('request')->begin()->
+    isParameter('module', 'default')->
+    isParameter('action', 'index')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    checkElement('body', '/congratulations/i')->
+  end()
 ;
 
 // default main page (with cache)
 $b->
   get('/')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'default')->
-  isRequestParameter('action', 'index')->
-  checkResponseElement('body', '/congratulations/i')
+  with('request')->begin()->
+    isParameter('module', 'default')->
+    isParameter('action', 'index')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    checkElement('body', '/congratulations/i')->
+  end()
 ;
 
 // 404
 $b->
   get('/nonexistant')->
-  isStatusCode(404)->
-  isForwardedTo('default', 'error404')->
-  checkResponseElement('body', '!/congratulations/i')->
-  checkResponseElement('link[href="/sf/sf_default/css/screen.css"]')
+  with('request')->begin()->
+    isForwardedTo('default', 'error404')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(404)->
+    checkElement('body', '!/congratulations/i')->
+    checkElement('link[href="/sf/sf_default/css/screen.css"]')->
+  end()
 ;
 
 $b->
   get('/nonexistant/')->
-  isStatusCode(404)->
-  isForwardedTo('default', 'error404')->
-  checkResponseElement('body', '!/congratulations/i')->
-  checkResponseElement('link[href="/sf/sf_default/css/screen.css"]')
+  with('request')->begin()->
+    isForwardedTo('default', 'error404')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(404)->
+    checkElement('body', '!/congratulations/i')->
+    checkElement('link[href="/sf/sf_default/css/screen.css"]')->
+  end()
 ;
 
 // unexistant action
 $b->
   get('/default/nonexistantaction')->
-  isStatusCode(404)->
-  isForwardedTo('default', 'error404')->
-  checkResponseElement('body', '!/congratulations/i')->
-  checkResponseElement('link[href="/sf/sf_default/css/screen.css"]')
+  with('request')->begin()->
+    isForwardedTo('default', 'error404')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(404)->
+    checkElement('body', '!/congratulations/i')->
+    checkElement('link[href="/sf/sf_default/css/screen.css"]')->
+  end()
 ;

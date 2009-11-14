@@ -18,10 +18,14 @@ $b = new sfTestBrowser();
 
 $b->
   get('/autoload/myAutoload')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'autoload')->
-  isRequestParameter('action', 'myAutoload')->
-  checkResponseElement('body div', 'foo')
+  with('request')->begin()->
+    isParameter('module', 'autoload')->
+    isParameter('action', 'myAutoload')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    checkElement('body div', 'foo')->
+  end()
 ;
 
 $t = $b->test();

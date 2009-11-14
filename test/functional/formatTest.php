@@ -18,77 +18,105 @@ $b = new sfTestBrowser();
 
 $b->
   get('/format_test.js')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'index')->
-  isRequestFormat('js')->
-  isResponseHeader('content-type', 'application/javascript')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'index')->
+    isFormat('js')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'application/javascript')->
+    matches('!/<body>/')->
+    matches('/Some js headers/')->
+    matches('/This is a js file/')->
+  end()
 ;
-$b->test()->unlike($b->getResponse()->getContent(), '/<body>/', 'response content is ok');
-$b->test()->like($b->getResponse()->getContent(), '/Some js headers/', 'response content is ok');
-$b->test()->like($b->getResponse()->getContent(), '/This is a js file/', 'response content is ok');
 
 $b->
   get('/format_test.css')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'index')->
-  isRequestFormat('css')->
-  isResponseHeader('content-type', 'text/css; charset=utf-8')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'index')->
+    isFormat('css')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'text/css; charset=utf-8')->
+    matches('/This is a css file/')->
+  end()
 ;
-$b->test()->is($b->getResponse()->getContent(), 'This is a css file', 'response content is ok');
 
 $b->
   get('/format_test')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'index')->
-  isRequestFormat('html')->
-  isResponseHeader('content-type', 'text/html; charset=utf-8')->
-  checkResponseElement('body #content', 'This is an HTML file')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'index')->
+    isFormat('html')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'text/html; charset=utf-8')->
+    checkElement('body #content', 'This is an HTML file')->
+  end()
 ;
 
 $b->
   get('/format_test.xml')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'index')->
-  isRequestFormat('xml')->
-  isResponseHeader('content-type', 'text/xml; charset=utf-8')->
-  checkResponseElement('sentences sentence:first', 'This is a XML file')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'index')->
+    isFormat('xml')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'text/xml; charset=utf-8')->
+    checkElement('sentences sentence:first', 'This is a XML file')->
+  end()
 ;
 
 $b->
   get('/format_test.foo')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'index')->
-  isRequestFormat('foo')->
-  isResponseHeader('content-type', 'text/html; charset=utf-8')->
-  isResponseHeader('x-foo', 'true')->
-  checkResponseElement('body #content', 'This is an HTML file')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'index')->
+    isFormat('foo')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'text/html; charset=utf-8')->
+    isHeader('x-foo', 'true')->
+    checkElement('body #content', 'This is an HTML file')->
+  end()
 ;
 
 $b->
   get('/format/js')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'js')->
-  isRequestFormat('js')->
-  isResponseHeader('content-type', 'application/javascript')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'js')->
+    isFormat('js')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'application/javascript')->
+    matches('/A js file/')->
+  end()
 ;
-$b->test()->is($b->getResponse()->getContent(), 'A js file', 'response content is ok');
 
 $b->
   setHttpHeader('User-Agent', 'Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3')->
   get('/format/forTheIPhone')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'format')->
-  isRequestParameter('action', 'forTheIPhone')->
-  isRequestFormat('iphone')->
-  isResponseHeader('content-type', 'text/html; charset=utf-8')->
-  checkResponseElement('#content', 'This is an HTML file for the iPhone')->
-  checkResponseElement('link[href*="iphone.css"]')
+  with('request')->begin()->
+    isParameter('module', 'format')->
+    isParameter('action', 'forTheIPhone')->
+    isFormat('iphone')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    isHeader('content-type', 'text/html; charset=utf-8')->
+    checkElement('#content', 'This is an HTML file for the iPhone')->
+    checkElement('link[href*="iphone.css"]')->
+  end()
 ;
 
 $b->

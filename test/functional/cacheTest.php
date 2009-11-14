@@ -27,64 +27,72 @@ class myTestBrowser extends sfTestBrowser
   {
     return $this->
       get('/cache/multi'.(null !== $parameter ? '/param/'.$parameter : ''))->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'multi')->
-      isCached(false)->
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'multi')->
+      end()->
 
-      // partials
-      checkResponseElement('#partial .partial')->
+      with('response')->begin()->
+        isStatusCode(200)->
 
-      // contextual partials
-      checkResponseElement('#contextualPartial .contextualPartial')->
-      checkResponseElement('#contextualCacheablePartial .contextualCacheablePartial__'.$parameter)->
-      checkResponseElement('#contextualCacheablePartialVarParam .contextualCacheablePartial_varParam_'.$parameter)->
+        // partials
+        checkElement('#partial .partial')->
 
-      // components
-      checkResponseElement('#component .component__componentParam_'.$parameter)->
-      checkResponseElement('#componentVarParam .component_varParam_componentParam_'.$parameter)->
+        // contextual partials
+        checkElement('#contextualPartial .contextualPartial')->
+        checkElement('#contextualCacheablePartial .contextualCacheablePartial__'.$parameter)->
+        checkElement('#contextualCacheablePartialVarParam .contextualCacheablePartial_varParam_'.$parameter)->
 
-      // contextual components
-      checkResponseElement('#contextualComponent .contextualComponent__componentParam_'.$parameter)->
-      checkResponseElement('#contextualComponentVarParam .contextualComponent_varParam_componentParam_'.$parameter)->
-      checkResponseElement('#contextualCacheableComponent .contextualCacheableComponent__componentParam_'.$parameter)->
-      checkResponseElement('#contextualCacheableComponentVarParam .contextualCacheableComponent_varParam_componentParam_'.$parameter)->
+        // components
+        checkElement('#component .component__componentParam_'.$parameter)->
+        checkElement('#componentVarParam .component_varParam_componentParam_'.$parameter)->
 
-      // partial cache
-      isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(serialize(array())), false)->
-      isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        // contextual components
+        checkElement('#contextualComponent .contextualComponent__componentParam_'.$parameter)->
+        checkElement('#contextualComponentVarParam .contextualComponent_varParam_componentParam_'.$parameter)->
+        checkElement('#contextualCacheableComponent .contextualCacheableComponent__componentParam_'.$parameter)->
+        checkElement('#contextualCacheableComponentVarParam .contextualCacheableComponent_varParam_componentParam_'.$parameter)->
+      end()->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+      with('view_cache')->begin()->
+        isCached(false)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        // partial cache
+        isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
 
-      // contextual partial cache
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(serialize(array())), false)->
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        // contextual partial cache
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
 
-      // component cache
-      isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(serialize(array())), false)->
-      isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        // component cache
+        isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
 
-      // contextual component cache
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(serialize(array())), false)->
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
 
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)
+        // contextual component cache
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+      end()
     ;
   }
 
@@ -95,38 +103,56 @@ class myTestBrowser extends sfTestBrowser
     // default page is in cache (without layout)
     $b->
       get('/')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'default')->
-      isRequestParameter('action', 'index')->
-      checkResponseElement('body', '/congratulations/i')->
-      isCached(true)
+      with('request')->begin()->
+        isParameter('module', 'default')->
+        isParameter('action', 'index')->
+      end()->
+
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('body', '/congratulations/i')->
+      end()->
+
+      with('view_cache')->isCached(true)
     ;
 
     $b->
       get('/nocache')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'nocache')->
-      isRequestParameter('action', 'index')->
-      checkResponseElement('body', '/nocache/i')->
-      isCached(false)
+      with('request')->begin()->
+        isParameter('module', 'nocache')->
+        isParameter('action', 'index')->
+      end()->
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('body', '/nocache/i')->
+      end()->
+      with('view_cache')->isCached(false)
     ;
 
     $b->
       get('/cache/page')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'page')->
-      checkResponseElement('body', '/page in cache/')->
-      isCached(true, true)
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'page')->
+      end()->
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('body', '/page in cache/')->
+      end()->
+      with('view_cache')->isCached(true, true)
     ;
 
     $b->
       get('/cache/forward')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'forward')->
-      checkResponseElement('body', '/page in cache/')->
-      isCached(true)
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'forward')->
+      end()->
+      with('response')->begin()->
+        isStatusCode(200)->
+        checkElement('body', '/page in cache/')->
+      end()->
+      with('view_cache')->isCached(true)
     ;
 
     // remove all cache
@@ -138,10 +164,12 @@ class myTestBrowser extends sfTestBrowser
       getMultiAction('requestParam')->
 
       // component already in cache and not contextual, so request parameter is not there
-      checkResponseElement('#cacheableComponent .cacheableComponent__componentParam_')->
-      checkResponseElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_')->
-      checkResponseElement('#cacheablePartial .cacheablePartial__')->
-      checkResponseElement('#cacheablePartialVarParam .cacheablePartial_varParam_')
+      with('response')->begin()->
+        checkElement('#cacheableComponent .cacheableComponent__componentParam_')->
+        checkElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_')->
+        checkElement('#cacheablePartial .cacheablePartial__')->
+        checkElement('#cacheablePartialVarParam .cacheablePartial_varParam_')->
+      end()
     ;
 
     // remove all cache
@@ -150,57 +178,70 @@ class myTestBrowser extends sfTestBrowser
     $b->
       getMultiAction('requestParam')->
 
-      checkResponseElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
-      checkResponseElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_requestParam')->
-      checkResponseElement('#cacheablePartial .cacheablePartial__requestParam')->
-      checkResponseElement('#cacheablePartialVarParam .cacheablePartial_varParam_requestParam')->
+      with('response')->begin()->
+        checkElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
+        checkElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_requestParam')->
+        checkElement('#cacheablePartial .cacheablePartial__requestParam')->
+        checkElement('#cacheablePartialVarParam .cacheablePartial_varParam_requestParam')->
+      end()->
 
       getMultiAction()->
 
-      checkResponseElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
-      checkResponseElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_requestParam')->
-      checkResponseElement('#cacheablePartial .cacheablePartial__requestParam')->
-      checkResponseElement('#cacheablePartialVarParam .cacheablePartial_varParam_requestParam')->
+      with('response')->begin()->
+        checkElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
+        checkElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_requestParam')->
+        checkElement('#cacheablePartial .cacheablePartial__requestParam')->
+        checkElement('#cacheablePartialVarParam .cacheablePartial_varParam_requestParam')->
+      end()->
 
       getMultiAction('anotherRequestParam')->
 
-      checkResponseElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
-      checkResponseElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_requestParam')->
-      checkResponseElement('#cacheablePartial .cacheablePartial__requestParam')->
-      checkResponseElement('#cacheablePartialVarParam .cacheablePartial_varParam_requestParam')
+      with('response')->begin()->
+        checkElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
+        checkElement('#cacheableComponentVarParam .cacheableComponent_varParam_componentParam_requestParam')->
+        checkElement('#cacheablePartial .cacheablePartial__requestParam')->
+        checkElement('#cacheablePartialVarParam .cacheablePartial_varParam_requestParam')->
+      end()
     ;
 
     // check contextual cache with another action
     $b->
       get('/cache/multiBis')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'multiBis')->
-      isCached(false)->
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'multiBis')->
+      end()->
 
-      // partials
-      checkResponseElement('#cacheablePartial .cacheablePartial__requestParam')->
+      with('response')->begin()->
+        isStatusCode(200)->
 
-      // contextual partials
-      checkResponseElement('#contextualCacheablePartial .contextualCacheablePartial__')->
+        // partials
+        checkElement('#cacheablePartial .cacheablePartial__requestParam')->
 
-      // components
-      checkResponseElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
+        // contextual partials
+        checkElement('#contextualCacheablePartial .contextualCacheablePartial__')->
 
-      // contextual components
-      checkResponseElement('#contextualCacheableComponent .contextualCacheableComponent__componentParam_')->
+        // components
+        checkElement('#cacheableComponent .cacheableComponent__componentParam_requestParam')->
 
-      // partial cache
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
+        // contextual components
+        checkElement('#contextualCacheableComponent .contextualCacheableComponent__componentParam_')->
+      end()->
 
-      // contextual partial cache
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+      with('view_cache')->begin()->
+        isCached(false)->
+        // partial cache
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
 
-      // component cache
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+        // contextual partial cache
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
 
-      // contextual component cache
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)
+        // component cache
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+
+        // contextual component cache
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+      end()
     ;
 
     // remove all cache
@@ -209,22 +250,27 @@ class myTestBrowser extends sfTestBrowser
     // check user supplied cache key for partials and components
     $b->
       get('/cache/specificCacheKey')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'specificCacheKey')->
-      isCached(false)->
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'specificCacheKey')->
+      end()->
 
-      // partial cache
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key=cacheablePartial', true)->
+      with('response')->isStatusCode(200)->
+      with('view_cache')->begin(200)->
+        isCached(false)->
 
-      // contextual partial cache
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key=contextualCacheableComponent', true)->
+        // partial cache
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key=cacheablePartial', true)->
 
-      // component cache
-      isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key=cacheableComponent', true)->
+        // contextual partial cache
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key=contextualCacheableComponent', true)->
 
-      // contextual component cache
-      isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key=contextualCacheableComponent', true)
+        // component cache
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key=cacheableComponent', true)->
+
+        // contextual component cache
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key=contextualCacheableComponent', true)->
+      end()
     ;
 
     // check cache content for actions
@@ -234,10 +280,12 @@ class myTestBrowser extends sfTestBrowser
 
     $b->
       get('/cache/action')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'action')->
-      isCached(true)
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'action')->
+      end()->
+      with('response')->isStatusCode(200)->
+      with('view_cache')->isCached(true)
     ;
 
     $b->test()->is(sfConfig::get('ACTION_EXECUTED', false), true, 'action is executed when not in cache');
@@ -250,10 +298,12 @@ class myTestBrowser extends sfTestBrowser
 
     $b->
       get('/cache/action')->
-      isStatusCode(200)->
-      isRequestParameter('module', 'cache')->
-      isRequestParameter('action', 'action')->
-      isCached(true)
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'action')->
+      end()->
+      with('response')->isStatusCode(200)->
+      with('view_cache')->isCached(true)
     ;
 
     $b->test()->is(sfConfig::get('ACTION_EXECUTED', false), false, 'action is not executed when in cache');
@@ -276,28 +326,28 @@ $image = file_get_contents(dirname(__FILE__).'/fixtures/apps/cache/modules/cache
 sfConfig::set('sf_web_debug', true);
 $b->
   get('/cache/imageWithLayoutCacheWithLayout')->
-  isCached(true, true)->
+  with('view_cache')->isCached(true, true)->
   checkResponseContent($image, 'image (with layout/page cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageWithLayoutCacheWithLayout')->
-  isCached(true, true)->
+  with('view_cache')->isCached(true, true)->
   checkResponseContent($image, 'image (with layout/page cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageWithLayoutCacheNoLayout')->
-  isCached(true)->
+  with('view_cache')->isCached(true)->
   checkResponseContent($image, 'image (with layout/action cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageWithLayoutCacheNoLayout')->
-  isCached(true)->
+  with('view_cache')->isCached(true)->
   checkResponseContent($image, 'image (with layout/action cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageNoLayoutCacheWithLayout')->
-  isCached(true, true)->
+  with('view_cache')->isCached(true, true)->
   checkResponseContent($image, 'image (no layout/page cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageNoLayoutCacheWithLayout')->
-  isCached(true, true)->
+  with('view_cache')->isCached(true, true)->
   checkResponseContent($image, 'image (no layout/page cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageNoLayoutCacheNoLayout')->
-  isCached(true)->
+  with('view_cache')->isCached(true)->
   checkResponseContent($image, 'image (no layout/action cache) in cache is not decorated when web_debug is on')->
   get('/cache/imageNoLayoutCacheNoLayout')->
-  isCached(true)->
+  with('view_cache')->isCached(true)->
   checkResponseContent($image, 'image (no layout/action cache) in cache is not decorated when web_debug is on')
 ;
 sfConfig::set('sf_web_debug', false);
@@ -306,98 +356,120 @@ sfConfig::set('sf_web_debug', false);
 sfToolkit::clearDirectory(sfConfig::get('sf_app_cache_dir'));
 $b->
   get('/cache/multiBis')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'cache')->
-  isRequestParameter('action', 'multiBis')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'multiBis')->
+  end()->
 
-  // the first time (no cache)
-  checkResponseElement('link[href*="/main_css"]')->
-  checkResponseElement('script[src*="/main_js"]')->
-  checkResponseElement('link[href*="/partial_css"]')->
-  checkResponseElement('script[src*="/partial_js"]')->
-  checkResponseElement('link[href*="/another_partial_css"]')->
-  checkResponseElement('script[src*="/another_partial_js"]')->
-  checkResponseElement('link[href*="/component_css"]')->
-  checkResponseElement('script[src*="/component_js"]')->
+  with('response')->begin()->
+    isStatusCode(200)->
 
-  checkResponseElement('#partial_slot_content', 'Partial')->
-  checkResponseElement('#another_partial_slot_content', 'Another Partial')->
-  checkResponseElement('#component_slot_content', 'Component')->
+    // the first time (no cache)
+    checkElement('link[href*="/main_css"]')->
+    checkElement('script[src*="/main_js"]')->
+    checkElement('link[href*="/partial_css"]')->
+    checkElement('script[src*="/partial_js"]')->
+    checkElement('link[href*="/another_partial_css"]')->
+    checkElement('script[src*="/another_partial_js"]')->
+    checkElement('link[href*="/component_css"]')->
+    checkElement('script[src*="/component_js"]')->
+
+    checkElement('#partial_slot_content', 'Partial')->
+    checkElement('#another_partial_slot_content', 'Another Partial')->
+    checkElement('#component_slot_content', 'Component')->
+  end()->
 
   get('/cache/multiBis')->
+  with('response')->begin()->
 
-  // when in cache
-  checkResponseElement('link[href*="/main_css"]')->
-  checkResponseElement('script[src*="/main_js"]')->
-  checkResponseElement('link[href*="/partial_css"]')->
-  checkResponseElement('script[src*="/partial_js"]')->
-  checkResponseElement('link[href*="/another_partial_css"]')->
-  checkResponseElement('script[src*="/another_partial_js"]')->
-  checkResponseElement('link[href*="/component_css"]')->
-  checkResponseElement('script[src*="/component_js"]')->
+    // when in cache
+    checkElement('link[href*="/main_css"]')->
+    checkElement('script[src*="/main_js"]')->
+    checkElement('link[href*="/partial_css"]')->
+    checkElement('script[src*="/partial_js"]')->
+    checkElement('link[href*="/another_partial_css"]')->
+    checkElement('script[src*="/another_partial_js"]')->
+    checkElement('link[href*="/component_css"]')->
+    checkElement('script[src*="/component_js"]')->
 
-  checkResponseElement('#partial_slot_content', 'Partial')->
-  checkResponseElement('#another_partial_slot_content', 'Another Partial')->
-  checkResponseElement('#component_slot_content', 'Component')
+    checkElement('#partial_slot_content', 'Partial')->
+    checkElement('#another_partial_slot_content', 'Another Partial')->
+    checkElement('#component_slot_content', 'Component')->
+  end()
 ;
 
 $b->
   get('/cache/partial')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'cache')->
-  isRequestParameter('action', 'partial')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'partial')->
+  end()->
 
-  // only partial specific css and js are included
-  checkResponseElement('link[href*="/main_css"]', false)->
-  checkResponseElement('script[src*="/main_js"]', false)->
-  checkResponseElement('link[href*="/partial_css"]')->
-  checkResponseElement('script[src*="/partial_js"]')->
-  checkResponseElement('link[href*="/another_partial_css"]')->
-  checkResponseElement('script[src*="/another_partial_js"]')->
-  checkResponseElement('link[href*="/component_css"]', false)->
-  checkResponseElement('script[src*="/component_js"]', false)->
+  with('response')->begin()->
+    isStatusCode(200)->
 
-  checkResponseElement('#partial_slot_content', 'Partial')->
-  checkResponseElement('#another_partial_slot_content', 'Another Partial')->
-  checkResponseElement('#component_slot_content', '')->
+    // only partial specific css and js are included
+    checkElement('link[href*="/main_css"]', false)->
+    checkElement('script[src*="/main_js"]', false)->
+    checkElement('link[href*="/partial_css"]')->
+    checkElement('script[src*="/partial_js"]')->
+    checkElement('link[href*="/another_partial_css"]')->
+    checkElement('script[src*="/another_partial_js"]')->
+    checkElement('link[href*="/component_css"]', false)->
+    checkElement('script[src*="/component_js"]', false)->
+
+    checkElement('#partial_slot_content', 'Partial')->
+    checkElement('#another_partial_slot_content', 'Another Partial')->
+    checkElement('#component_slot_content', '')->
+  end()->
 
   get('/cache/anotherPartial')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'cache')->
-  isRequestParameter('action', 'anotherPartial')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'anotherPartial')->
+  end()->
 
-  // only partial specific css and js are included
-  checkResponseElement('link[href*="/main_css"]', false)->
-  checkResponseElement('script[src*="/main_js"]', false)->
-  checkResponseElement('link[href*="/partial_css"]', false)->
-  checkResponseElement('script[src*="/partial_js"]', false)->
-  checkResponseElement('link[href*="/another_partial_css"]')->
-  checkResponseElement('script[src*="/another_partial_js"]')->
-  checkResponseElement('link[href*="/component_css"]', false)->
-  checkResponseElement('script[src*="/component_js"]', false)->
+  with('response')->begin()->
+    isStatusCode(200)->
 
-  checkResponseElement('#partial_slot_content', '')->
-  checkResponseElement('#another_partial_slot_content', 'Another Partial')->
-  checkResponseElement('#component_slot_content', '')->
+    // only partial specific css and js are included
+    checkElement('link[href*="/main_css"]', false)->
+    checkElement('script[src*="/main_js"]', false)->
+    checkElement('link[href*="/partial_css"]', false)->
+    checkElement('script[src*="/partial_js"]', false)->
+    checkElement('link[href*="/another_partial_css"]')->
+    checkElement('script[src*="/another_partial_js"]')->
+    checkElement('link[href*="/component_css"]', false)->
+    checkElement('script[src*="/component_js"]', false)->
+
+    checkElement('#partial_slot_content', '')->
+    checkElement('#another_partial_slot_content', 'Another Partial')->
+    checkElement('#component_slot_content', '')->
+  end()->
 
   get('/cache/component')->
-  isStatusCode(200)->
-  isRequestParameter('module', 'cache')->
-  isRequestParameter('action', 'component')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'component')->
+  end()->
 
-  // only partial specific css and js are included
-  checkResponseElement('link[href*="/main_css"]', false)->
-  checkResponseElement('script[src*="/main_js"]', false)->
-  checkResponseElement('link[href*="/partial_css"]', false)->
-  checkResponseElement('script[src*="/partial_js"]', false)->
-  checkResponseElement('link[href*="/another_partial_css"]', false)->
-  checkResponseElement('script[src*="/another_partial_js"]', false)->
-  checkResponseElement('link[href*="/component_css"]')->
-  checkResponseElement('script[src*="/component_js"]')->
+  with('response')->begin()->
+    isStatusCode(200)->
 
-  checkResponseElement('#partial_slot_content', '')->
-  checkResponseElement('#another_partial_slot_content', '')->
-  checkResponseElement('#component_slot_content', 'Component')
+    // only partial specific css and js are included
+    checkElement('link[href*="/main_css"]', false)->
+    checkElement('script[src*="/main_js"]', false)->
+    checkElement('link[href*="/partial_css"]', false)->
+    checkElement('script[src*="/partial_js"]', false)->
+    checkElement('link[href*="/another_partial_css"]', false)->
+    checkElement('script[src*="/another_partial_js"]', false)->
+    checkElement('link[href*="/component_css"]')->
+    checkElement('script[src*="/component_js"]')->
+
+    checkElement('#partial_slot_content', '')->
+    checkElement('#another_partial_slot_content', '')->
+    checkElement('#component_slot_content', 'Component')->
+  end()
 ;
 
 // test with sfFileCache class (default)
@@ -410,4 +482,3 @@ if (extension_loaded('SQLite') || extension_loaded('pdo_SQLite'))
   sfConfig::set('sf_factory_view_cache_parameters', array('database' => sfConfig::get('sf_template_cache_dir').DIRECTORY_SEPARATOR.'cache.db'));
   $b->launch();
 }
-
