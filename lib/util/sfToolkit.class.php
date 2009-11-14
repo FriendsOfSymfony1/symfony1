@@ -438,6 +438,59 @@ class sfToolkit
   }
 
   /**
+   * Returns an array value for a path.
+   *
+   * @param array  $values   The values to search
+   * @param string $name     The token name
+   * @param array  $default  Default if not found
+   *
+   * @return array
+   */
+  public static function getArrayValueForPath($values, $name, $default = null)
+  {
+    if (false === $offset = strpos($name, '['))
+    {
+      return isset($values[$name]) ? $values[$name] : $default;
+    }
+
+    if (!isset($values[substr($name, 0, $offset)]))
+    {
+      return $default;
+    }
+
+    $array = $values[substr($name, 0, $offset)];
+
+    while (false !== $pos = strpos($name, '[', $offset))
+    {
+      $end = strpos($name, ']', $pos);
+      if ($end == $pos + 1)
+      {
+        // reached a []
+        if (!is_array($array))
+        {
+          return $default;
+        }
+        break;
+      }
+      else if (!isset($array[substr($name, $pos + 1, $end - $pos - 1)]))
+      {
+        return $default;
+      }
+      else if (is_array($array))
+      {
+        $array = $array[substr($name, $pos + 1, $end - $pos - 1)];
+        $offset = $end;
+      }
+      else
+      {
+        return $default;
+      }
+    }
+
+    return $array;
+  }
+
+  /**
    * Get path to php cli.
    *
    * @throws sfException If no php cli found
@@ -512,10 +565,10 @@ class sfToolkit
 
   /**
    * Adds a path to the PHP include_path setting.
-   * 
+   *
    * @param   mixed  $path     Single string path or an array of paths
    * @param   string $position Either 'front' or 'back'
-   * 
+   *
    * @return  string The old include path
    */
   static public function addIncludePath($path, $position = 'front')
