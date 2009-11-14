@@ -34,8 +34,6 @@ class sfValidatorI18nChoiceCountry extends sfValidatorChoice
   {
     parent::configure($options, $messages);
 
-    // culture is deprecated
-    $this->addOption('culture');
     $this->addOption('countries');
 
     // populate choices with all countries

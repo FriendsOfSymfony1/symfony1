@@ -34,8 +34,6 @@ class sfValidatorI18nChoiceLanguage extends sfValidatorChoice
   {
     parent::configure($options, $messages);
 
-    // culture is deprecated
-    $this->addOption('culture');
     $this->addOption('languages');
 
     // populate choices with all languages
