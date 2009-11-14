@@ -12,7 +12,7 @@ require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 require_once($_test_dir.'/unit/sfContextMock.class.php');
 require_once($_test_dir.'/unit/sfNoRouting.class.php');
 
-$t = new lime_test(19);
+$t = new lime_test(21);
 
 class myWebResponse extends sfWebResponse
 {
@@ -174,6 +174,36 @@ $controller->redirect('module/action?id=1#photos');
 $response = $context->getResponse();
 $t->like($response->getContent(), '~http\://localhost/index.php/\?module=module&amp;action=action&amp;id=1#photos~', '->redirect() adds a refresh meta in the content');
 $t->like($response->getHttpHeader('Location'), '~http\://localhost/index.php/\?module=module&action=action&id=1#photos~', '->redirect() adds a Location HTTP header');
+
+// Test null url argument for ->redirect()
+try
+{
+  $controller->redirect(null);
+  $t->fail('->redirect() throw an InvalidArgumentException when the url argument is null');
+}
+catch (InvalidArgumentException $iae)
+{
+  $t->pass('->redirect() throw an InvalidArgumentException when the url argument is null');
+}
+catch(Exception $e)
+{
+  $t->fail('->redirect() throw an InvalidArgumentException when the url argument is null. '.get_class($e).' was received');
+}
+
+// Test empty string url argument for ->redirect()
+try
+{
+  $controller->redirect('');
+  $t->fail('->redirect() throw an InvalidArgumentException when the url argument is an empty string');
+}
+catch (InvalidArgumentException $iae)
+{
+  $t->pass('->redirect() throw an InvalidArgumentException when the url argument is an empty string');
+}
+catch(Exception $e)
+{
+  $t->fail('->redirect() throw an InvalidArgumentException when the url argument is an empty string. '.get_class($e).' was received');
+}
 
 // ->genUrl()
 $t->diag('->genUrl()');

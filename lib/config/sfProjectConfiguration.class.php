@@ -442,32 +442,29 @@ class sfProjectConfiguration
    */
   public function getPluginPaths()
   {
-    if (null !== $this->cache['getPluginPaths'])
+    if (!isset($this->cache['getPluginPaths']))
     {
-      return $this->cache['getPluginPaths'];
-    }
-
-    if (array_key_exists('', $this->pluginPaths))
-    {
-      return $this->pluginPaths[''];
-    }
-
-    $pluginPaths = $this->getAllPluginPaths();
-
-    $this->pluginPaths[''] = array();
-    foreach ($this->getPlugins() as $plugin)
-    {
-      if (isset($pluginPaths[$plugin]))
+      if (!isset($this->pluginPaths['']))
       {
-        $this->pluginPaths[''][] = $pluginPaths[$plugin];
-      }
-      else
-      {
-        throw new InvalidArgumentException(sprintf('The plugin "%s" does not exist.', $plugin));
-      }
-    }
+        $pluginPaths = $this->getAllPluginPaths();
 
-    return $this->pluginPaths[''];
+        $this->pluginPaths[''] = array();
+        foreach ($this->getPlugins() as $plugin)
+        {
+          if (isset($pluginPaths[$plugin]))
+          {
+            $this->pluginPaths[''][] = $pluginPaths[$plugin];
+          }
+          else
+          {
+            throw new InvalidArgumentException(sprintf('The plugin "%s" does not exist.', $plugin));
+          }
+        }
+      }
+
+      $this->cache['getPluginPaths'] = $this->pluginPaths[''];
+    }
+    return $this->cache['getPluginPaths'];
   }
 
   /**

@@ -1,5 +1,5 @@
 <?php $form = $this->getFormObject() ?>
-<h1><?php echo sfInflector::humanize($this->getModuleName()) ?> List</h1>
+<h1><?php echo sfInflector::humanize($this->getPluralName()) ?> List</h1>
 
 <table>
   <thead>

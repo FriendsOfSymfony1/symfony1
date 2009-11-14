@@ -12,6 +12,8 @@ class CrudBrowser extends sfTestBrowser
 {
   protected
     $urlPrefix = 'article',
+    $singularName = 'Article',
+    $pluralName = 'Articles',
     $projectDir = '';
 
   public function setup($options)
@@ -22,6 +24,8 @@ class CrudBrowser extends sfTestBrowser
     chdir($this->projectDir);
     $task = new sfPropelGenerateModuleTask(new sfEventDispatcher(), new sfFormatter());
     $options[] = 'env=test';
+    $options[] = 'singular='.$this->singularName;
+    $options[] = 'plural='.$this->pluralName;
     $options[] = '--non-verbose-templates';
     $task->run(array('crud', 'article', 'Article'), $options);
 
@@ -53,7 +57,7 @@ class CrudBrowser extends sfTestBrowser
       with('response')->begin()->
         isStatusCode(200)->
 
-        checkElement('h1', ucfirst($this->urlPrefix).' List')->
+        checkElement('h1', $this->pluralName.' List')->
 
         checkElement('table thead tr th:nth(0)', 'Id')->
         checkElement('table thead tr th:nth(1)', 'Title')->
@@ -91,7 +95,7 @@ class CrudBrowser extends sfTestBrowser
       end()->
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('h1', 'New '.ucfirst($this->urlPrefix))->
+        checkElement('h1', 'New '.$this->singularName)->
         checkElement(sprintf('a[href*="/%s"]', $this->urlPrefix), 'Back to list')->
         checkElement(sprintf('a[href*="/%s/"]', $this->urlPrefix), false)->
       end()->
@@ -150,7 +154,7 @@ class CrudBrowser extends sfTestBrowser
       end()->
       with('response')->begin()->
         isStatusCode(200)->
-        checkElement('h1', 'Edit '.ucfirst($this->urlPrefix))->
+        checkElement('h1', 'Edit '.$this->singularName)->
         checkElement(sprintf('a[href*="/%s"]', $this->urlPrefix), 'Back to list')->
         checkElement(sprintf('a[href*="/%s/3"]', $this->urlPrefix), 'Delete')->
         checkElement(sprintf('a[href*="/%s/3"][onclick*="confirm"]', $this->urlPrefix))->

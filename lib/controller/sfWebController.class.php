@@ -171,9 +171,13 @@ abstract class sfWebController extends sfController
    * @param int    $delay      A delay in seconds before redirecting. This is only needed on
    *                           browsers that do not support HTTP headers
    * @param int    $statusCode The status code
+   * @throws InvalidArgumentException If the url argument is null or an empty string
    */
   public function redirect($url, $delay = 0, $statusCode = 302)
   {
+    if(null === $url || strlen(trim($url)) == 0){
+      throw new InvalidArgumentException('url parameter cannot be empty');
+    }
     $url = $this->genUrl($url, true);
 
     if (sfConfig::get('sf_logging_enabled'))

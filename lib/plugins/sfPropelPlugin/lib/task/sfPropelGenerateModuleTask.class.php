@@ -95,6 +95,10 @@ EOF;
 
     $method = $options['generate-in-cache'] ? 'executeInit' : 'executeGenerate';
 
+    // for backwarads compatibility symfony uses the model name as singular and plural form if none specified (#5640)
+    $options['singular']  = $options['singular'] ? $options['singular'] : $arguments['model'];
+    $options['plural']  = $options['plural'] ? $options['plural'] : $arguments['model'].'s';
+
     $this->$method($arguments, $options);
   }
 

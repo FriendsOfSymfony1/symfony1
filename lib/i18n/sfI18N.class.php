@@ -293,7 +293,7 @@ class sfI18N
     $dateFormat = $dateFormatInfo->getShortDatePattern();
 
     // We construct the regexp based on date format
-    $dateRegexp = preg_replace('/[dmy]+/i', '(\d+)', $dateFormat);
+    $dateRegexp = preg_replace('/[dmy]+/i', '(\d+)', preg_quote($dateFormat));
 
     // We parse date format to see where things are (m, d, y)
     $a = array(
@@ -338,12 +338,13 @@ class sfI18N
     $timeFormat = $timeFormatInfo->getShortTimePattern();
 
     // We construct the regexp based on time format
-    $timeRegexp = preg_replace(array('/[^hm:]+/i', '/[hm]+/i'), array('', '(\d+)'), $timeFormat);
+    $timeRegexp = preg_replace(array('/[hm]+/i', '/a/'), array('(\d+)', '(\w+)'), preg_quote($timeFormat));
 
     // We parse time format to see where things are (h, m)
     $a = array(
       'h' => strpos($timeFormat, 'H') !== false ? strpos($timeFormat, 'H') : strpos($timeFormat, 'h'),
-      'm' => strpos($timeFormat, 'm')
+      'm' => strpos($timeFormat, 'm'),
+      'a' => strpos($timeFormat, 'a')
     );
     $tmp = array_flip($a);
     ksort($tmp);
@@ -355,8 +356,27 @@ class sfI18N
     // We find all elements
     if (preg_match("~$timeRegexp~", $time, $matches))
     {
+      // repect am/pm setting if present
+      if (isset($timePositions['a']))
+      {
+        if (strcasecmp($matches[$timePositions['a']], $timeFormatInfo->getAMDesignator()) == 0)
+        {
+          $hour = $matches[$timePositions['h']];
+        } else if (strcasecmp($matches[$timePositions['a']], $timeFormatInfo->getPMDesignator()) == 0)
+        {
+          $hour = $matches[$timePositions['h']] + 12;
+        } else {
+          // am/pm marker is invalid
+          // return null; would be the preferred solution but this might break a lot of code
+          $hour = $matches[$timePositions['h']];
+        }
+      }
+      else
+      {
+        $hour = $matches[$timePositions['h']];
+      }
       // We get matching timestamp
-      return array($matches[$timePositions['h']], $matches[$timePositions['m']]);
+      return array($hour, $matches[$timePositions['m']]);
     }
     else
     {

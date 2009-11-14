@@ -337,26 +337,26 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
    */
   public function getControllerDirs($moduleName)
   {
-    if (null !== $this->cache['getControllerDirs'][$moduleName])
+    if (!isset($this->cache['getControllerDirs'][$moduleName]))
     {
-      return $this->cache['getControllerDirs'][$moduleName];
-    }
+      $dirs = array();
 
-    $dirs = array();
+      $dirs[sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/actions'] = false;             // application
 
-    $dirs[sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/actions'] = false;             // application
-
-    foreach ($this->getPluginPaths() as $path)
-    {
-      if (is_dir($dir = $path.'/modules/'.$moduleName.'/actions'))
+      foreach ($this->getPluginPaths() as $path)
       {
-        $dirs[$dir] = true;                                                                   // plugins
+        if (is_dir($dir = $path.'/modules/'.$moduleName.'/actions'))
+        {
+          $dirs[$dir] = true;                                                                   // plugins
+        }
       }
+
+      $dirs[sfConfig::get('sf_symfony_lib_dir').'/controller/'.$moduleName.'/actions'] = true;  // core modules
+
+      $this->cache['getControllerDirs'][$moduleName] = $dirs;
     }
 
-    $dirs[sfConfig::get('sf_symfony_lib_dir').'/controller/'.$moduleName.'/actions'] = true;  // core modules
-
-    return $dirs;
+    return $this->cache['getControllerDirs'][$moduleName];
   }
 
   /**
@@ -436,20 +436,20 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
    */
   public function getTemplateDir($moduleName, $templateFile)
   {
-    if (null !== $this->cache['getTemplateDir'][$moduleName][$templateFile])
+    if (!isset($this->cache['getTemplateDir'][$moduleName][$templateFile]))
     {
-      return $this->cache['getTemplateDir'][$moduleName][$templateFile];
-    }
-
-    foreach ($this->getTemplateDirs($moduleName) as $dir)
-    {
-      if (is_readable($dir.'/'.$templateFile))
+      $this->cache['getTemplateDir'][$moduleName][$templateFile] = null;
+      foreach ($this->getTemplateDirs($moduleName) as $dir)
       {
-        return $dir;
+        if (is_readable($dir.'/'.$templateFile))
+        {
+          $this->cache['getTemplateDir'][$moduleName][$templateFile] = $dir;
+          break;
+        }
       }
     }
 
-    return null;
+    return $this->cache['getTemplateDir'][$moduleName][$templateFile];
   }
 
   /**

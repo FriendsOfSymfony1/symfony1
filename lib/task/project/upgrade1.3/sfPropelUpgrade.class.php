@@ -65,7 +65,7 @@ class sfPropelUpgrade extends sfUpgrade
     if (file_exists($file = sfConfig::get('sf_config_dir').'/propel.ini'))
     {
       // use phing to parse propel.ini
-      Phing::startup();
+      sfPhing::startup();
       $this->properties = new Properties();
       $this->properties->load(new PhingFile($file));
 
