@@ -1,0 +1,22 @@
+methods:
+  post:
+    - fake
+    - id
+    - "article[title]"
+    - "article[body]"
+
+fillin:
+  enabled:  true
+
+names:
+  fake:
+    required: true
+
+  id:
+    required: true
+
+  "article[title]":
+    required: true
+
+  "article[body]":
+    required: true
