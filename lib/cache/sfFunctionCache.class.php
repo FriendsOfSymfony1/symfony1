@@ -25,15 +25,8 @@ class sfFunctionCache
    *
    * @param sfCache $cache An sfCache object instance
    */
-  public function __construct($cache)
+  public function __construct(sfCache $cache)
   {
-    if (!is_object($cache))
-    {
-      $this->cache = new sfFileCache($cache);
-
-      throw new sfException('DEPRECATED: You must now pass a sfCache object when initializing a sfFunctionCache object. Be warned that the call() method signature has also changed.');
-    }
-
     $this->cache = $cache;
   }
 
