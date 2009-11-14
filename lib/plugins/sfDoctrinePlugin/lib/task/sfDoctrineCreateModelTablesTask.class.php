@@ -31,7 +31,6 @@ class sfDoctrineCreateModelTables extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array();
     $this->namespace = 'doctrine';
     $this->name = 'create-model-tables';
     $this->briefDescription = 'Drop and recreate tables for specified models.';

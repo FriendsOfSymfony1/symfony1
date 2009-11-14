@@ -39,7 +39,6 @@ class sfDoctrineMigrateTask extends sfDoctrineBaseTask
       new sfCommandOption('dry-run', null, sfCommandOption::PARAMETER_NONE, 'Do not persist migrations'),
     ));
 
-    $this->aliases = array('doctrine-migrate');
     $this->namespace = 'doctrine';
     $this->name = 'migrate';
     $this->briefDescription = 'Migrates database to current/specified version';

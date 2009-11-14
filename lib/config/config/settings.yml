@@ -29,12 +29,6 @@ default:
     # Routing settings
     no_script_name:         false       # Enable the front controller name in generated URLs
 
-    # Validation settings, used for error generation by the Validation helper
-    validation_error_prefix:    ' &darr;&nbsp;'
-    validation_error_suffix:    ' &nbsp;&darr;'
-    validation_error_class:     form_error
-    validation_error_id_prefix: error_for_
-
     # Cache settings
     cache:                  false       # Enable the template cache
     etag:                   true        # Enable etag handling
@@ -46,13 +40,11 @@ default:
     file_link_format:       ~         # Format to use to make file paths clickable (include placeholders %f and %l for file and line number)
 
     # Assets paths
-    rich_text_js_dir:       js/tiny_mce
     admin_web_dir:          /sf/sf_admin
     web_debug_web_dir:      /sf/sf_web_debug
-    calendar_web_dir:       /sf/calendar
 
     # Helpers included in all templates by default
-    standard_helpers:       [Partial, Cache, Form]
+    standard_helpers:       [Partial, Cache]
 
     # Activated modules from plugins or from the symfony core
     enabled_modules:        [default]

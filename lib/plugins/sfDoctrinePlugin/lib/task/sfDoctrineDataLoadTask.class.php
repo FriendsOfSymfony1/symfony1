@@ -37,7 +37,6 @@ class sfDoctrineDataLoadTask extends sfDoctrineBaseTask
       new sfCommandOption('append', null, sfCommandOption::PARAMETER_NONE, 'Don\'t delete current data in the database'),
     ));
 
-    $this->aliases = array('doctrine-load-data');
     $this->namespace = 'doctrine';
     $this->name = 'data-load';
     $this->briefDescription = 'Loads YAML fixture data';

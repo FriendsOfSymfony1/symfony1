@@ -25,7 +25,6 @@ class sfPropelSchemaToXmlTask extends sfPropelBaseTask
    */
   protected function configure()
   {
-    $this->aliases = array('propel-convert-yml-schema');
     $this->namespace = 'propel';
     $this->name = 'schema-to-xml';
     $this->briefDescription = 'Creates schema.xml from schema.yml';

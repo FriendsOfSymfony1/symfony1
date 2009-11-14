@@ -35,7 +35,6 @@ class sfPropelBuildAllTask extends sfPropelBaseTask
       new sfCommandOption('phing-arg', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY, 'Arbitrary phing argument'),
     ));
 
-    $this->aliases = array('propel-build-all');
     $this->namespace = 'propel';
     $this->name = 'build-all';
     $this->briefDescription = 'Generates Propel model and form classes, SQL and initializes the database';

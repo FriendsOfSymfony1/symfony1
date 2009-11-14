@@ -15,7 +15,7 @@ require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/UrlHelper.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/AssetHelper.php');
 
-$t = new lime_test(69);
+$t = new lime_test(68);
 
 class myRequest
 {
@@ -67,8 +67,6 @@ $context->request->relativeUrlRoot = '';
 $t->is(_compute_public_path('foo.css?foo=bar', 'css', 'css'), '/css/foo.css?foo=bar', '_compute_public_path() takes into account query strings');
 $t->is(_compute_public_path('foo?foo=bar', 'css', 'css'), '/css/foo.css?foo=bar', '_compute_public_path() takes into account query strings');
 
-$compatMode = sfConfig::get('sf_compat_10');
-sfConfig::set('sf_compat_10', false);
 // image_tag()
 $t->diag('image_tag()');
 $t->is(image_tag(''), '', 'image_tag() returns nothing when called without arguments');
@@ -83,10 +81,6 @@ $t->is(image_tag('test', array('absolute' => true)), '<img src="http://localhost
 $t->is(image_tag('test', array('class' => 'bar')), '<img class="bar" src="/images/test.png" />', 'image_tag() takes whatever option you want');
 $t->is(image_tag('test', array('alt_title' => 'Foo')), '<img src="/images/test.png" alt="Foo" title="Foo" />', 'image_tag() takes an array of options as its second argument to create alt and title');
 $t->is(image_tag('test', array('alt_title' => 'Foo', 'title' => 'Bar')), '<img title="Bar" src="/images/test.png" alt="Foo" />', 'image_tag() takes an array of options as its second argument to create alt and title');
-sfConfig::set('sf_compat_10', true);
-$t->is(image_tag('test'), '<img src="/images/test.png" alt="Test" />', 'image_tag() creates alt attribute from filename if sf_compat_10 is on');
-
-sfConfig::set('sf_compat_10', $compatMode);
 
 // stylesheet_tag()
 $t->diag('stylesheet_tag()');

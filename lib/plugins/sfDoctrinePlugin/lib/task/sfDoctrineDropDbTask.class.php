@@ -33,7 +33,6 @@ class sfDoctrineDropDbTask extends sfDoctrineBaseTask
       new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database')
     ));
 
-    $this->aliases = array('doctrine-drop-db');
     $this->namespace = 'doctrine';
     $this->name = 'drop-db';
     $this->briefDescription = 'Drops database for current model';

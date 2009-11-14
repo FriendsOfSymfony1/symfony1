@@ -29,7 +29,6 @@ class sfPropelBuildModelTask extends sfPropelBaseTask
       new sfCommandOption('phing-arg', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY, 'Arbitrary phing argument'),
     ));
 
-    $this->aliases = array('propel-build-model');
     $this->namespace = 'propel';
     $this->name = 'build-model';
     $this->briefDescription = 'Creates classes for the current model';

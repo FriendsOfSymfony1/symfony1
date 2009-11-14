@@ -691,14 +691,6 @@ class sfToolkit
   }
 
   /**
-   * DEPRECATED. Use sys_get_temp_dir() directly (available since PHP 5.2.1).
-   */
-  public static function getTmpDir()
-  {
-    return sys_get_temp_dir();
-  }
-
-  /**
    * Converts strings to UTF-8 via iconv. NB, the result may not by UTF-8 if the conversion failed.
    *
    * This file comes from Prado (BSD License)

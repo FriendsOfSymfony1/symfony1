@@ -44,7 +44,6 @@ class sfPropelGenerateModuleTask extends sfPropelBaseTask
       new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
     ));
 
-    $this->aliases = array('propel-generate-crud', 'propel:generate-crud');
     $this->namespace = 'propel';
     $this->name = 'generate-module';
     $this->briefDescription = 'Generates a Propel module';

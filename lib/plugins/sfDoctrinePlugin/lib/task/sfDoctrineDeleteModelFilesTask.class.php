@@ -30,7 +30,6 @@ class sfDoctrineDeleteModelFilesTask extends sfDoctrineBaseTask
       new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Do not ask for confirmation'),
     ));
 
-    $this->aliases = array();
     $this->namespace = 'doctrine';
     $this->name = 'delete-model-files';
     $this->briefDescription = 'Delete all the related auto generated files for a given model name.';

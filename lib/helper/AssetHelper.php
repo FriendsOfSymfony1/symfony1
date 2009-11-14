@@ -363,15 +363,6 @@ function image_tag($source, $options = array())
     unset($options['alt_title']);
   }
 
-  if (!isset($options['alt']) && sfConfig::get('sf_compat_10'))
-  {
-    $path_pos = strrpos($source, '/');
-    $dot_pos = strrpos($source, '.');
-    $begin = $path_pos ? $path_pos + 1 : 0;
-    $nb_str = ($dot_pos ? $dot_pos : strlen($source)) - $begin;
-    $options['alt'] = ucfirst(substr($source, $begin, $nb_str));
-  }
-
   if (isset($options['size']))
   {
     list($options['width'], $options['height']) = explode('x', $options['size'], 2);

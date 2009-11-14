@@ -46,7 +46,6 @@ class sfGenerateAppTask extends sfGeneratorBaseTask
       new sfCommandOption('csrf-secret', null, sfCommandOption::PARAMETER_REQUIRED, 'Secret to use for CSRF protection', true),
     ));
 
-    $this->aliases = array('init-app');
     $this->namespace = 'generate';
     $this->name = 'app';
 

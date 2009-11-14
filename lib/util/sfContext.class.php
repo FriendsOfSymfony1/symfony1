@@ -304,13 +304,6 @@ class sfContext implements ArrayAccess
     return null;
   }
 
-  public function retrieveObjects($class, $peerMethod)
-  {
-    $retrievingClass = 'sf'.ucfirst(sfConfig::get('sf_orm', 'propel')).'DataRetriever';
-
-    return call_user_func(array($retrievingClass, 'retrieveObjects'), $class, $peerMethod);
-  }
-
   /**
    * Retrieve the database manager.
    *

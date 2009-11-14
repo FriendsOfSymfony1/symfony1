@@ -208,12 +208,6 @@ abstract class sfController
     // include module configuration
     require($this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/module.yml'));
 
-    // check if this module is internal
-    if ($this->getActionStack()->getSize() == 1 && sfConfig::get('mod_'.strtolower($moduleName).'_is_internal') && !sfConfig::get('sf_test'))
-    {
-      throw new sfConfigurationException(sprintf('Action "%s" from module "%s" cannot be called directly.', $actionName, $moduleName));
-    }
-
     // module enabled?
     if (sfConfig::get('mod_'.strtolower($moduleName).'_enabled'))
     {
@@ -371,29 +365,6 @@ abstract class sfController
     }
 
     return new $class($this->context, $moduleName, $actionName, $viewName);
-  }
-
-  /**
-   * [DEPRECATED] Sends and email.
-   *
-   * This methods calls a module/action with the sfMailView class.
-   *
-   * @param  string  $module  A module name
-   * @param  string  $action  An action name
-   *
-   * @return string The generated mail content
-   *
-   * @see sfMailView, getPresentationFor(), sfController
-   * @deprecated 1.1
-   */
-  public function sendEmail($module, $action)
-  {
-    if (sfConfig::get('sf_logging_enabled'))
-    {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array('sendEmail method is deprecated', 'priority' => sfLogger::ERR)));
-    }
-
-    return $this->getPresentationFor($module, $action, 'sfMail');
   }
 
   /**

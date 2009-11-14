@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(54);
+$t = new lime_test(50);
 
 // ->clear()
 $t->diag('->clear()');
@@ -213,12 +213,3 @@ $t->is($parameters, $ph->getAll(), '->add() adds a reference of an array of para
 // ->serialize() ->unserialize()
 $t->diag('->serialize() ->unserialize()');
 $t->ok($ph == unserialize(serialize($ph)), 'sfNamespacedParameterHolder implements the Serializable interface');
-
-// Array path as a key
-$t->diag('Array path as a key');
-$ph = new sfNamespacedParameterHolder();
-$ph->add(array('foo' => array('bar' => 'foo')));
-$t->is($ph->has('foo[bar]'), true, '->has() can takes a multi-array key');
-$t->is($ph->get('foo[bar]'), 'foo', '->has() can takes a multi-array key');
-$t->is($ph->remove('foo[bar]'), 'foo', '->remove() can takes a multi-array key');
-$t->is($ph->getAll(), array('foo' => array()), '->remove() can takes a multi-array key');

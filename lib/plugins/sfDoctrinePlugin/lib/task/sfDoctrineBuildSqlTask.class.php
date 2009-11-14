@@ -32,7 +32,6 @@ class sfDoctrineBuildSqlTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-build-sql');
     $this->namespace = 'doctrine';
     $this->name = 'build-sql';
     $this->briefDescription = 'Creates SQL for the current model';

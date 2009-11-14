@@ -646,14 +646,6 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
   }
 
   /**
-   * @deprecated
-   */
-  public function loadPluginConfig()
-  {
-    $this->initializePlugins();
-  }
-
-  /**
    * Returns the application name.
    *
    * @return string The application name

@@ -37,7 +37,6 @@ class sfProjectDeployTask extends sfBaseTask
       new sfCommandOption('rsync-options', null, sfCommandOption::PARAMETER_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress'),
     ));
 
-    $this->aliases = array('sync');
     $this->namespace = 'project';
     $this->name = 'deploy';
     $this->briefDescription = 'Deploys a project to another server';

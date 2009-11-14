@@ -25,7 +25,6 @@ class sfPluginListTask extends sfPluginBaseTask
    */
   protected function configure()
   {
-    $this->aliases = array('plugin-list');
     $this->namespace = 'plugin';
     $this->name = 'list';
 

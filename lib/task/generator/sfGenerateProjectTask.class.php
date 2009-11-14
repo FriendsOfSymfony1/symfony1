@@ -45,7 +45,6 @@ class sfGenerateProjectTask extends sfGeneratorBaseTask
       new sfCommandOption('installer', null, sfCommandOption::PARAMETER_REQUIRED, 'An installer script to execute', null),
     ));
 
-    $this->aliases = array('init-project');
     $this->namespace = 'generate';
     $this->name = 'project';
 

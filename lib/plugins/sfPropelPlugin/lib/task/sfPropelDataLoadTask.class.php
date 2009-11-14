@@ -36,7 +36,6 @@ class sfPropelDataLoadTask extends sfPropelBaseTask
       new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'propel'),
     ));
 
-    $this->aliases = array('propel-load-data');
     $this->namespace = 'propel';
     $this->name = 'data-load';
     $this->briefDescription = 'Loads YAML fixture data';

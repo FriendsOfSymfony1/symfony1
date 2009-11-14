@@ -32,7 +32,6 @@ class sfDoctrineBuildModelTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-build-model');
     $this->namespace = 'doctrine';
     $this->name = 'build-model';
     $this->briefDescription = 'Creates classes for the current model';

@@ -32,7 +32,6 @@ class sfDoctrineGenerateMigrationsDiffTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array();
     $this->namespace = 'doctrine';
     $this->name = 'generate-migrations-diff';
     $this->briefDescription = 'Generate migration classes by producing a diff between your old and new schema.';

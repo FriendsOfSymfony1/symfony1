@@ -37,7 +37,6 @@ class sfPluginInstallTask extends sfPluginBaseTask
       new sfCommandOption('force-license', null, sfCommandOption::PARAMETER_NONE, 'Whether to force installation even if the license is not MIT like'),
     ));
 
-    $this->aliases = array('plugin-install');
     $this->namespace = 'plugin';
     $this->name = 'install';
 

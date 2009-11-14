@@ -135,21 +135,6 @@ abstract class sfComponent
   }
 
   /**
-   * Displays a message as a short message in the sfWebDebug toolbar.
-   *
-   * @param string $message The message text
-   *
-   * @see sfWebDebug
-   */
-  public function debugMessage($message)
-  {
-    if (sfConfig::get('sf_web_debug') && sfConfig::get('sf_logging_enabled'))
-    {
-      $this->dispatcher->notify(new sfEvent(null, 'application.log', array('This function is deprecated in favor of the logMessage function.', 'priority' => sfLogger::ERR)));
-    }
-  }
-
-  /**
    * Returns the value of a request parameter.
    *
    * This is a proxy method equivalent to:

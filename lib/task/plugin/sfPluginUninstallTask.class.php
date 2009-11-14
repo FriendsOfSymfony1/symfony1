@@ -34,7 +34,6 @@ class sfPluginUninstallTask extends sfPluginBaseTask
       new sfCommandOption('install_deps', 'd', sfCommandOption::PARAMETER_NONE, 'Whether to force installation of dependencies', null),
     ));
 
-    $this->aliases = array('plugin-uninstall');
     $this->namespace = 'plugin';
     $this->name = 'uninstall';
 

@@ -32,7 +32,6 @@ class sfDoctrineGenerateMigrationsDbTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-generate-migrations-db', 'doctrine-gen-migrations-from-db');
     $this->namespace = 'doctrine';
     $this->name = 'generate-migrations-db';
     $this->briefDescription = 'Generate migration classes from existing database connections';

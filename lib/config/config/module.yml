@@ -1,4 +1,3 @@
 default:
   enabled:          true
   view_class:       sfPHP
-  is_internal:      false

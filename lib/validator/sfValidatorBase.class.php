@@ -292,30 +292,6 @@ abstract class sfValidatorBase
   }
 
   /**
-   * Sets the default invalid message.
-   *
-   * DEPRECATED. Use setDefaultMessage instead.
-   *
-   * @param string $message
-   */
-  static public function setInvalidMessage($message)
-  {
-    self::setDefaultMessage('invalid', $message);
-  }
-
-  /**
-   * Sets the default required message.
-   *
-   * DEPRECATED. Use setDefaultMessage instead.
-   *
-   * @param string $message
-   */
-  static public function setRequiredMessage($message)
-  {
-    self::setDefaultMessage('required', $message);
-  }
-
-  /**
    * Cleans the input value.
    *
    * This method is also responsible for trimming the input value

@@ -33,7 +33,6 @@ class sfPluginPublishAssetsTask extends sfPluginBaseTask
       new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
     ));
 
-    $this->aliases = array();
     $this->namespace = 'plugin';
     $this->name = 'publish-assets';
 

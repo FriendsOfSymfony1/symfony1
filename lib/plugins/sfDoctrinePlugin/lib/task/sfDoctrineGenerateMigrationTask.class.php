@@ -37,7 +37,6 @@ class sfDoctrineGenerateMigrationTask extends sfDoctrineBaseTask
       new sfCommandOption('editor-cmd', null, sfCommandOption::PARAMETER_REQUIRED, 'Open script with this command upon creation'),
     ));
 
-    $this->aliases = array('doctrine-generate-migration');
     $this->namespace = 'doctrine';
     $this->name = 'generate-migration';
     $this->briefDescription = 'Generate migration class';

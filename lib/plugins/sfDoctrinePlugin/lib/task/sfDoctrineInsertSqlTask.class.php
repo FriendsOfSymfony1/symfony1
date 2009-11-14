@@ -32,7 +32,6 @@ class sfDoctrineInsertSqlTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-insert-sql');
     $this->namespace = 'doctrine';
     $this->name = 'insert-sql';
     $this->briefDescription = 'Inserts SQL for current model';

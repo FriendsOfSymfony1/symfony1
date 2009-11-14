@@ -56,7 +56,7 @@ class sfParameterHolder implements Serializable
     }
     else
     {
-      $value = sfToolkit::getArrayValueForPath($this->parameters, $name, $default);
+      $value = $default;
     }
 
     return $value;
@@ -91,16 +91,7 @@ class sfParameterHolder implements Serializable
    */
   public function has($name)
   {
-    if (array_key_exists($name, $this->parameters))
-    {
-      return true;
-    }
-    else
-    {
-      return sfToolkit::hasArrayValueForPath($this->parameters, $name);
-    }
-
-    return false;
+    return array_key_exists($name, $this->parameters);
   }
 
   /**
@@ -119,10 +110,6 @@ class sfParameterHolder implements Serializable
     {
       $retval = $this->parameters[$name];
       unset($this->parameters[$name]);
-    }
-    else
-    {
-      $retval = sfToolkit::removeArrayValueForPath($this->parameters, $name, $default);
     }
 
     return $retval;

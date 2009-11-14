@@ -32,7 +32,6 @@ class sfDoctrineGenerateMigrationsModelsTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-generate-migrations-models', 'doctrine-gen-migrations-from-models');
     $this->namespace = 'doctrine';
     $this->name = 'generate-migrations-models';
     $this->briefDescription = 'Generate migration classes from an existing set of models';

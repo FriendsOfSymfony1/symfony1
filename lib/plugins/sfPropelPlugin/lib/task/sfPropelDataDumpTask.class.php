@@ -36,7 +36,6 @@ class sfPropelDataDumpTask extends sfPropelBaseTask
       new sfCommandOption('classes', null, sfCommandOption::PARAMETER_REQUIRED, 'The class names to dump (separated by a colon)', null),
     ));
 
-    $this->aliases = array('propel-dump-data');
     $this->namespace = 'propel';
     $this->name = 'data-dump';
     $this->briefDescription = 'Dumps data to the fixtures directory';

@@ -361,20 +361,6 @@ class sfTesterResponse extends sfTester
   }
 
   /**
-   * Tests whether or not a given string is in the response.
-   *
-   * @param string Text to check
-   *
-   * @return sfTestFunctionalBase|sfTester
-   */
-  public function contains($text)
-  {
-    $this->tester->like($this->response->getContent(), '/'.preg_quote($text, '/').'/', sprintf('response contains "%s"', substr($text, 0, 40)));
-
-    return $this->getObjectToReturn();
-  }
-
-  /**
    * Tests the response content against a regex.
    *
    * @param string Regex

@@ -32,7 +32,7 @@ class sfCacheClearTask extends sfBaseTask
       new sfCommandOption('type', null, sfCommandOption::PARAMETER_OPTIONAL, 'The type', 'all'),
     ));
 
-    $this->aliases = array('cc', 'clear-cache');
+    $this->aliases = array('cc');
     $this->namespace = 'cache';
     $this->name = 'clear';
     $this->briefDescription = 'Clears the cache';

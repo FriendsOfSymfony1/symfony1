@@ -30,7 +30,6 @@ class sfGenerateModuleTask extends sfGeneratorBaseTask
       new sfCommandArgument('module', sfCommandArgument::REQUIRED, 'The module name'),
     ));
 
-    $this->aliases = array('init-module');
     $this->namespace = 'generate';
     $this->name = 'module';
 

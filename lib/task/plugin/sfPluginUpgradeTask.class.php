@@ -35,7 +35,6 @@ class sfPluginUpgradeTask extends sfPluginBaseTask
       new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
     ));
 
-    $this->aliases = array('plugin-upgrade');
     $this->namespace = 'plugin';
     $this->name = 'upgrade';
 

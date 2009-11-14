@@ -28,7 +28,6 @@ class sfProjectEnableTask extends sfBaseTask
       new sfCommandArgument('app', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The application name'),
     ));
 
-    $this->aliases = array('enable');
     $this->namespace = 'project';
     $this->name = 'enable';
     $this->briefDescription = 'Enables an application in a given environment';

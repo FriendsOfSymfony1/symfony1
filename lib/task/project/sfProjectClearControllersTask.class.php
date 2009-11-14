@@ -23,7 +23,6 @@ class sfProjectClearControllersTask extends sfBaseTask
    */
   protected function configure()
   {
-    $this->aliases = array('clear-controllers');
     $this->namespace = 'project';
     $this->name = 'clear-controllers';
     $this->briefDescription = 'Clears all non production environment controllers';

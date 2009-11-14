@@ -36,7 +36,6 @@ class sfDoctrineDataDumpTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-dump-data');
     $this->namespace = 'doctrine';
     $this->name = 'data-dump';
     $this->briefDescription = 'Dumps data to the fixtures directory';

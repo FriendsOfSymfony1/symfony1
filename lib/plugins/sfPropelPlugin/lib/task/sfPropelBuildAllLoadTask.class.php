@@ -37,7 +37,6 @@ class sfPropelBuildAllLoadTask extends sfPropelBaseTask
       new sfCommandOption('dir', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY, 'The directories to look for fixtures'),
     ));
 
-    $this->aliases = array('propel-build-all-load');
     $this->namespace = 'propel';
     $this->name = 'build-all-load';
     $this->briefDescription = 'Generates Propel model and form classes, SQL, initializes the database, and loads data';

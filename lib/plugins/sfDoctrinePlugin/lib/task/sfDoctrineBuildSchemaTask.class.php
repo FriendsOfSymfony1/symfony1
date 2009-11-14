@@ -32,7 +32,6 @@ class sfDoctrineBuildSchemaTask extends sfDoctrineBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
-    $this->aliases = array('doctrine-build-schema');
     $this->namespace = 'doctrine';
     $this->name = 'build-schema';
     $this->briefDescription = 'Creates a schema from an existing database';

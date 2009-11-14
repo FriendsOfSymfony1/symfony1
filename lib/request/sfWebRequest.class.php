@@ -365,21 +365,6 @@ class sfWebRequest extends sfRequest
   }
 
   /**
-   * Returns request method.
-   *
-   * @return string
-   */
-  public function getMethodName()
-  {
-    if ($this->options['logging'])
-    {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array('The "sfWebRequest::getMethodName()" method is deprecated, please use "getMethod()" instead.', 'priority' => sfLogger::WARNING)));
-    }
-
-    return $this->getMethod();
-  }
-
-  /**
    * Returns the preferred culture for the current request.
    *
    * @param  array  $cultures  An array of ordered cultures available

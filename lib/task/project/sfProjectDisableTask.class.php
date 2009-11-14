@@ -28,7 +28,6 @@ class sfProjectDisableTask extends sfBaseTask
       new sfCommandArgument('app', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The application name'),
     ));
 
-    $this->aliases = array('disable');
     $this->namespace = 'project';
     $this->name = 'disable';
     $this->briefDescription = 'Disables an application in a given environment';

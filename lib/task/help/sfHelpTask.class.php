@@ -31,8 +31,6 @@ class sfHelpTask extends sfCommandApplicationTask
       new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
     ));
 
-    $this->aliases = array('h');
-
     $this->briefDescription = 'Displays help for a task';
 
     $this->detailedDescription = <<<EOF

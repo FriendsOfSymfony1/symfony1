@@ -23,7 +23,6 @@ class sfLogClearTask extends sfBaseTask
    */
   protected function configure()
   {
-    $this->aliases = array('log-purge');
     $this->namespace = 'log';
     $this->name = 'clear';
     $this->briefDescription = 'Clears log files';

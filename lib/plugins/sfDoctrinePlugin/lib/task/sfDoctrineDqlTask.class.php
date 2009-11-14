@@ -38,7 +38,6 @@ class sfDoctrineDqlTask extends sfDoctrineBaseTask
       new sfCommandOption('table', null, sfCommandOption::PARAMETER_NONE, 'Return results in table format'),
     ));
 
-    $this->aliases = array('doctrine-dql');
     $this->namespace = 'doctrine';
     $this->name = 'dql';
     $this->briefDescription = 'Execute a DQL query and view the results';
