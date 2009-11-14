@@ -64,35 +64,4 @@ class sfTestFunctional extends sfTestFunctionalBase
 
     return $this;
   }
-
-  /**
-   * Tests if the given uri is cached.
-   *
-   * @deprecated since 1.2
-   *
-   * @param  boolean $boolean      Flag for checking the cache
-   * @param  boolean $with_layout  If have or not layout
-   *
-   * @return sfTestFunctional The current sfTestFunctional instance
-   */
-  public function isCached($boolean, $with_layout = false)
-  {
-    return $this->with('view_cache')->isCached($boolean, $with_layout);
-  }
-
-  /**
-   * Tests if the given uri is cached.
-   *
-   * @deprecated since 1.2
-   *
-   * @param  string  $uri          Uniform resource identifier
-   * @param  boolean $boolean      Flag for checking the cache
-   * @param  boolean $with_layout  If have or not layout
-   *
-   * @return sfTestFunctional The current sfTestFunctional instance
-   */
-  public function isUriCached($uri, $boolean, $with_layout = false)
-  {
-    return $this->with('view_cache')->isUriCached($uri, $boolean, $with_layout);
-  }
 }
