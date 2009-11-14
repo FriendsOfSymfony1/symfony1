@@ -65,7 +65,7 @@ class sf_test_project
   }
 }
 
-$plan = 38;
+$plan = 39;
 $t = new lime_test($plan);
 
 if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite'))
@@ -112,17 +112,21 @@ $t->ok(file_exists($c->tmp_dir.DS.'data'.DS.'sql'.DS.'lib.model.schema.sql'), '"
 $content = $c->execute_command('propel:build-model');
 $t->ok(file_exists($c->tmp_dir.DS.'lib'.DS.'model'.DS.'Article.php'), '"propel:build-model" creates model classes under "lib/model" directory');
 
+copy(dirname(__FILE__).'/fixtures/propel/Category.php', $c->tmp_dir.DS.'lib'.DS.'model'.DS.'Category.php');
+
 $content = $c->execute_command('propel:build-form');
 $t->ok(file_exists($c->tmp_dir.DS.'lib'.DS.'form'.DS.DS.'BaseFormPropel.class.php'), '"propel:build-form" creates form classes under "lib/form" directory');
 
 $c->execute_command('propel:insert-sql --no-confirmation');
 $t->ok(file_exists($c->tmp_dir.DS.'data'.DS.'database.sqlite'), '"propel:insert-sql" creates tables in the database');
 
+$c->execute_command('propel:build-all --no-confirmation');
+
 $content = $c->execute_command('propel:generate-module --generate-in-cache frontend articleInitCrud Article');
 $t->ok(file_exists($c->tmp_dir.DS.'apps'.DS.'frontend'.DS.'modules'.DS.'articleInitCrud'.DS.'config'.DS.'generator.yml'), '"propel:generate-module" initializes a CRUD module');
 
-$content = $c->execute_command('propel:init-admin frontend articleInitAdmin Article');
-$t->ok(file_exists($c->tmp_dir.DS.'apps'.DS.'frontend'.DS.'modules'.DS.'articleInitAdmin'.DS.'config'.DS.'generator.yml'), '"propel:init-admin" initializes an admin generator module');
+$content = $c->execute_command('propel:generate-admin frontend Article --module=articleInitAdmin');
+$t->ok(file_exists($c->tmp_dir.DS.'apps'.DS.'frontend'.DS.'modules'.DS.'articleInitAdmin'.DS.'config'.DS.'generator.yml'), '"propel:generate-admin" initializes an admin generator module');
 
 // test:*
 $content = $c->execute_command('test:functional frontend articleInitCrudActions');
