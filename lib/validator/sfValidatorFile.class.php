@@ -253,7 +253,8 @@ class sfValidatorFile extends sfValidatorBase
   protected function guessFromFileBinary($file)
   {
     ob_start();
-    passthru(sprintf('file -bi %s 2>/dev/null', escapeshellarg($file)), $return);
+    //need to use --mime instead of -i. see #6641
+    passthru(sprintf('file -b --mime %s 2>/dev/null', escapeshellarg($file)), $return);
     if ($return > 0)
     {
       ob_end_clean();
