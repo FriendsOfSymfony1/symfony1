@@ -30,28 +30,27 @@ abstract class sfWebController extends sfController
    */
   public function genUrl($parameters = array(), $absolute = false)
   {
-    // absolute URL or symfony URL?
-    if (is_string($parameters) && preg_match('#^[a-z][a-z0-9\+.\-]*\://#i', $parameters))
-    {
-      return $parameters;
-    }
-
-    // relative URL?
-    if (is_string($parameters) && 0 === strpos($parameters, '/'))
-    {
-      return $parameters;
-    }
-
-    if (is_string($parameters) && $parameters == '#')
-    {
-      return $parameters;
-    }
-
     $route = '';
     $fragment = '';
 
     if (is_string($parameters))
     {
+      // absolute URL or symfony URL?
+      if (preg_match('#^[a-z][a-z0-9\+.\-]*\://#i', $parameters))
+      {
+        return $parameters;
+      }
+      // relative URL?
+      if (0 === strpos($parameters, '/'))
+      {
+        return $parameters;
+      }
+
+      if (is_string($parameters) && $parameters == '#')
+      {
+        return $parameters;
+      }
+  
       // strip fragment
       if (false !== ($pos = strpos($parameters, '#')))
       {
@@ -175,9 +174,10 @@ abstract class sfWebController extends sfController
    */
   public function redirect($url, $delay = 0, $statusCode = 302)
   {
-    if(null === $url || strlen(trim($url)) == 0){
-      throw new InvalidArgumentException('url parameter cannot be empty');
-    }
+    if(empty($url))
+    {
+      throw new InvalidArgumentException('url parameter cannot be empty'); 
+    } 
     $url = $this->genUrl($url, true);
 
     if (sfConfig::get('sf_logging_enabled'))
