@@ -55,13 +55,13 @@ class AdminGenBrowser extends sfTestBrowser
     $this->
       get('/articles/new')->
         with('response')->begin()->
-          contains('En')->
-          contains('Fr')->
-          contains('Title')->
-          contains('Body')->
-          contains('Slug')->
-          contains('Jonathan H. Wage')->
-          contains('Fabien POTENCIER')->
+          matches('/En/')->
+          matches('/Fr/')->
+          matches('/Title/')->
+          matches('/Body/')->
+          matches('/Slug/')->
+          matches('/Jonathan H. Wage/')->
+          matches('/Fabien POTENCIER/')->
         end()->
         with('request')->begin()->
           isParameter('module', 'articles')->
@@ -99,9 +99,9 @@ class AdminGenBrowser extends sfTestBrowser
     $this->
       get('/users/new')->
         with('response')->begin()->
-          contains('Profile')->
-          contains('First name')->
-          contains('Last name')->
+          matches('/Profile/')->
+          matches('/First name/')->
+          matches('/Last name/')->
         end()
     ;
 

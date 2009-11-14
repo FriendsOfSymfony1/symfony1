@@ -13,15 +13,15 @@ $fixtures = 'fixtures';
 require_once(dirname(__FILE__).'/../bootstrap/functional.php');
 
 $tests = array(
-  '/doctrine/route/test1' => 'Article',
-  '/doctrine/route/test2' => 'Article',
-  '/doctrine/route/test3' => 'Doctrine_Collection',
-  '/doctrine/route/test4' => 'Doctrine_Collection',
-  '/doctrine/route/test5/1/some_fake_value' => 'Article',
-  '/doctrine/route/test6/english-title/some_fake_value' => 'Article',
-  '/doctrine/route/test7/some_fake_value' => 'Doctrine_Collection',
-  '/doctrine/route/test9/1/english-title/English+Title/test' => 'Article',
-  '/doctrine/route/test10/1/test' => 'Doctrine_Collection',
+  '/doctrine/route/test1' => '/Article/',
+  '/doctrine/route/test2' => '/Article/',
+  '/doctrine/route/test3' => '/Doctrine_Collection/',
+  '/doctrine/route/test4' => '/Doctrine_Collection/',
+  '/doctrine/route/test5/1/some_fake_value' => '/Article/',
+  '/doctrine/route/test6/english-title/some_fake_value' => '/Article/',
+  '/doctrine/route/test7/some_fake_value' => '/Doctrine_Collection/',
+  '/doctrine/route/test9/1/english-title/English+Title/test' => '/Article/',
+  '/doctrine/route/test10/1/test' => '/Doctrine_Collection/',
 );
 
 $b = new sfTestBrowser();
@@ -31,7 +31,7 @@ foreach ($tests as $url => $check)
     get($url)->
     isStatusCode('200')->
     with('response')->begin()->
-      contains($check)->
+      matches($check)->
     end()
   ;
 }
