@@ -84,77 +84,77 @@ $c = new sfDomCssSelector($dom);
 $t->diag('->getTexts()');
 
 $t->diag('basic selectors');
-$t->is($c->getTexts('h1'), array('Test page'), '->getTexts() takes a CSS selector as its first argument');
-$t->is($c->getTexts('h2'), array('Title 1', 'Title 2'), '->getTexts() returns an array of matching texts');
-$t->is($c->getTexts('#footer'), array('footer'), '->getTexts() supports searching html elements by id');
-$t->is($c->getTexts('div#footer'), array('footer'), '->getTexts() supports searching html elements by id for a tag name');
-$t->is($c->getTexts('*[class="myfoo"]'), array('myfoo', 'myfoo bis'), '->getTexts() can take a * to match every elements');
+$t->is($c->matchAll('h1')->getValues(), array('Test page'), '->getTexts() takes a CSS selector as its first argument');
+$t->is($c->matchAll('h2')->getValues(), array('Title 1', 'Title 2'), '->getTexts() returns an array of matching texts');
+$t->is($c->matchAll('#footer')->getValues(), array('footer'), '->getTexts() supports searching html elements by id');
+$t->is($c->matchAll('div#footer')->getValues(), array('footer'), '->getTexts() supports searching html elements by id for a tag name');
+$t->is($c->matchAll('*[class="myfoo"]')->getValues(), array('myfoo', 'myfoo bis'), '->getTexts() can take a * to match every elements');
 
-$t->is($c->getTexts('.header'), array('header'), '->getTexts() supports searching html elements by class name');
-$t->is($c->getTexts('p.header'), array('header'), '->getTexts() supports searching html elements by class name for a tag name');
-$t->is($c->getTexts('div.header'), array(), '->getTexts() supports searching html elements by class name for a tag name');
-$t->is($c->getTexts('*.header'), array('header'), '->getTexts() supports searching html elements by class name');
+$t->is($c->matchAll('.header')->getValues(), array('header'), '->getTexts() supports searching html elements by class name');
+$t->is($c->matchAll('p.header')->getValues(), array('header'), '->getTexts() supports searching html elements by class name for a tag name');
+$t->is($c->matchAll('div.header')->getValues(), array(), '->getTexts() supports searching html elements by class name for a tag name');
+$t->is($c->matchAll('*.header')->getValues(), array('header'), '->getTexts() supports searching html elements by class name');
 
-$t->is($c->getTexts('.foo'), array('multi-classes'), '->getTexts() supports searching html elements by class name for multi-class elements');
-$t->is($c->getTexts('.bar'), array('multi-classes'), '->getTexts() supports searching html elements by class name for multi-class elements');
-$t->is($c->getTexts('.foobar'), array('multi-classes'), '->getTexts() supports searching html elements by class name for multi-class elements');
+$t->is($c->matchAll('.foo')->getValues(), array('multi-classes'), '->getTexts() supports searching html elements by class name for multi-class elements');
+$t->is($c->matchAll('.bar')->getValues(), array('multi-classes'), '->getTexts() supports searching html elements by class name for multi-class elements');
+$t->is($c->matchAll('.foobar')->getValues(), array('multi-classes'), '->getTexts() supports searching html elements by class name for multi-class elements');
 
-$t->is($c->getTexts('ul#mylist ul li'), array('element 3', 'element 4'), '->getTexts() supports searching html elements by several selectors');
+$t->is($c->matchAll('ul#mylist ul li')->getValues(), array('element 3', 'element 4'), '->getTexts() supports searching html elements by several selectors');
 
-$t->is($c->getTexts('#nonexistant'), array(), '->getTexts() returns an empty array if the id does not exist');
+$t->is($c->matchAll('#nonexistant')->getValues(), array(), '->getTexts() returns an empty array if the id does not exist');
 
 $t->diag('attribute selectors');
-$t->is($c->getTexts('ul#list li a[href]'), array('link'), '->getTexts() supports checking attribute existence');
-$t->is($c->getTexts('ul#list li a[class~="foo1"]'), array('link'), '->getTexts() supports checking attribute word matching');
-$t->is($c->getTexts('ul#list li a[class~="bar1"]'), array('link'), '->getTexts() supports checking attribute word matching');
-$t->is($c->getTexts('ul#list li a[class~="foobar1"]'), array('link'), '->getTexts() supports checking attribute word matching');
-$t->is($c->getTexts('ul#list li a[class^="foo1"]'), array('link'), '->getTexts() supports checking attribute starting with');
-$t->is($c->getTexts('ul#list li a[class$="foobar1"]'), array('link'), '->getTexts() supports checking attribute ending with');
-$t->is($c->getTexts('ul#list li a[class*="oba"]'), array('link'), '->getTexts() supports checking attribute with *');
-$t->is($c->getTexts('ul#list li a[href="http://www.google.com/"]'), array('link'), '->getTexts() supports checking attribute word matching');
-$t->is($c->getTexts('ul#anotherlist li a[class|="bar1"]'), array('another link'), '->getTexts() supports checking attribute starting with value followed by optional hyphen');
+$t->is($c->matchAll('ul#list li a[href]')->getValues(), array('link'), '->getTexts() supports checking attribute existence');
+$t->is($c->matchAll('ul#list li a[class~="foo1"]')->getValues(), array('link'), '->getTexts() supports checking attribute word matching');
+$t->is($c->matchAll('ul#list li a[class~="bar1"]')->getValues(), array('link'), '->getTexts() supports checking attribute word matching');
+$t->is($c->matchAll('ul#list li a[class~="foobar1"]')->getValues(), array('link'), '->getTexts() supports checking attribute word matching');
+$t->is($c->matchAll('ul#list li a[class^="foo1"]')->getValues(), array('link'), '->getTexts() supports checking attribute starting with');
+$t->is($c->matchAll('ul#list li a[class$="foobar1"]')->getValues(), array('link'), '->getTexts() supports checking attribute ending with');
+$t->is($c->matchAll('ul#list li a[class*="oba"]')->getValues(), array('link'), '->getTexts() supports checking attribute with *');
+$t->is($c->matchAll('ul#list li a[href="http://www.google.com/"]')->getValues(), array('link'), '->getTexts() supports checking attribute word matching');
+$t->is($c->matchAll('ul#anotherlist li a[class|="bar1"]')->getValues(), array('another link'), '->getTexts() supports checking attribute starting with value followed by optional hyphen');
 
-$t->is($c->getTexts('ul#list li a[class*="oba"][class*="ba"]'), array('link'), '->getTexts() supports chaining attribute selectors');
-$t->is($c->getTexts('p[class="myfoo"][id="mybar"]'), array('myfoo bis'), '->getTexts() supports chaining attribute selectors');
+$t->is($c->matchAll('ul#list li a[class*="oba"][class*="ba"]')->getValues(), array('link'), '->getTexts() supports chaining attribute selectors');
+$t->is($c->matchAll('p[class="myfoo"][id="mybar"]')->getValues(), array('myfoo bis'), '->getTexts() supports chaining attribute selectors');
 
-$t->is($c->getTexts('p[onclick*="a . and a #"]'), array('works great'), '->getTexts() support . # and spaces in attribute selectors');
+$t->is($c->matchAll('p[onclick*="a . and a #"]')->getValues(), array('works great'), '->getTexts() support . # and spaces in attribute selectors');
 
 $t->diag('combinators');
-$t->is($c->getTexts('body  h1'), array('Test page'), '->getTexts() takes a CSS selectors separated by one or more spaces');
-$t->is($c->getTexts('div#combinators > ul  >   li'), array('test 1', 'test 2'), '->getTexts() support > combinator');
-$t->is($c->getTexts('div#combinators>ul>li'), array('test 1', 'test 2'), '->getTexts() support > combinator with optional surrounding spaces');
-$t->is($c->getTexts('div#combinators li  +   li'), array('test 2', 'test 4'), '->getTexts() support + combinator');
-$t->is($c->getTexts('div#combinators li+li'), array('test 2', 'test 4'), '->getTexts() support + combinator with optional surrounding spaces');
+$t->is($c->matchAll('body  h1')->getValues(), array('Test page'), '->getTexts() takes a CSS selectors separated by one or more spaces');
+$t->is($c->matchAll('div#combinators > ul  >   li')->getValues(), array('test 1', 'test 2'), '->getTexts() support > combinator');
+$t->is($c->matchAll('div#combinators>ul>li')->getValues(), array('test 1', 'test 2'), '->getTexts() support > combinator with optional surrounding spaces');
+$t->is($c->matchAll('div#combinators li  +   li')->getValues(), array('test 2', 'test 4'), '->getTexts() support + combinator');
+$t->is($c->matchAll('div#combinators li+li')->getValues(), array('test 2', 'test 4'), '->getTexts() support + combinator with optional surrounding spaces');
 
-$t->is($c->getTexts('h1, h2'), array('Test page', 'Title 1', 'Title 2'), '->getTexts() takes a multiple CSS selectors separated by a ,');
-$t->is($c->getTexts('h1,h2'), array('Test page', 'Title 1', 'Title 2'), '->getTexts() takes a multiple CSS selectors separated by a ,');
-$t->is($c->getTexts('h1  ,   h2'), array('Test page', 'Title 1', 'Title 2'), '->getTexts() takes a multiple CSS selectors separated by a ,');
-$t->is($c->getTexts('h1, h1,h1'), array('Test page'), '->getTexts() returns nodes only once for multiple selectors');
-$t->is($c->getTexts('h1,h2,h1'), array('Test page', 'Title 1', 'Title 2'), '->getTexts() returns nodes only once for multiple selectors');
+$t->is($c->matchAll('h1, h2')->getValues(), array('Test page', 'Title 1', 'Title 2'), '->getTexts() takes a multiple CSS selectors separated by a ,');
+$t->is($c->matchAll('h1,h2')->getValues(), array('Test page', 'Title 1', 'Title 2'), '->getTexts() takes a multiple CSS selectors separated by a ,');
+$t->is($c->matchAll('h1  ,   h2')->getValues(), array('Test page', 'Title 1', 'Title 2'), '->getTexts() takes a multiple CSS selectors separated by a ,');
+$t->is($c->matchAll('h1, h1,h1')->getValues(), array('Test page'), '->getTexts() returns nodes only once for multiple selectors');
+$t->is($c->matchAll('h1,h2,h1')->getValues(), array('Test page', 'Title 1', 'Title 2'), '->getTexts() returns nodes only once for multiple selectors');
 
-$t->is($c->getTexts('p[onclick*="a . and a #"], div#combinators > ul li + li'), array('works great', 'test 2', 'test 4'), '->getTexts() mega example!');
+$t->is($c->matchAll('p[onclick*="a . and a #"], div#combinators > ul li + li')->getValues(), array('works great', 'test 2', 'test 4'), '->getTexts() mega example!');
 
-$t->is($c->getTexts('.myfoo:contains("bis")'), array('myfoo bis'), '->getTexts() :contains()');
-$t->is($c->getTexts('.myfoo:eq(1)'), array('myfoo bis'), '->getTexts() :eq()');
-$t->is($c->getTexts('.myfoo:last'), array('myfoo bis'), '->getTexts() :last');
-$t->is($c->getTexts('.myfoo:first'), array('myfoo'), '->getTexts() :first');
-$t->is($c->getTexts('h2:first'), array('Title 1'), '->getTexts() :first');
-$t->is($c->getTexts('p.myfoo:first'), array('myfoo'), '->getTexts() :first');
-$t->is($c->getTexts('p:lt(2)'), array('header', 'multi-classes'), '->getTexts() :lt');
-$t->is($c->getTexts('p:gt(2)'), array('myfoo bis', 'works great', 'First paragraph', 'Second paragraph', 'Third paragraph'), '->getTexts() :gt');
-$t->is($c->getTexts('p:odd'), array('multi-classes', 'myfoo bis', 'First paragraph', 'Third paragraph'), '->getTexts() :odd');
-$t->is($c->getTexts('p:even'), array('header', 'myfoo', 'works great', 'Second paragraph'), '->getTexts() :even');
-$t->is($c->getTexts('#simplelist li:first-child'), array('First', 'First'), '->getTexts() :first-child');
-$t->is($c->getTexts('#simplelist li:nth-child(1)'), array('First', 'First'), '->getTexts() :nth-child');
-$t->is($c->getTexts('#simplelist li:nth-child(2)'), array('Second with a link', 'Second'), '->getTexts() :nth-child');
-$t->is($c->getTexts('#simplelist li:nth-child(3)'), array('Third with another link'), '->getTexts() :nth-child');
-$t->is($c->getTexts('#simplelist li:last-child'), array('Second with a link', 'Third with another link'), '->getTexts() :last-child');
+$t->is($c->matchAll('.myfoo:contains("bis")')->getValues(), array('myfoo bis'), '->getTexts() :contains()');
+$t->is($c->matchAll('.myfoo:eq(1)')->getValues(), array('myfoo bis'), '->getTexts() :eq()');
+$t->is($c->matchAll('.myfoo:last')->getValues(), array('myfoo bis'), '->getTexts() :last');
+$t->is($c->matchAll('.myfoo:first')->getValues(), array('myfoo'), '->getTexts() :first');
+$t->is($c->matchAll('h2:first')->getValues(), array('Title 1'), '->getTexts() :first');
+$t->is($c->matchAll('p.myfoo:first')->getValues(), array('myfoo'), '->getTexts() :first');
+$t->is($c->matchAll('p:lt(2)')->getValues(), array('header', 'multi-classes'), '->getTexts() :lt');
+$t->is($c->matchAll('p:gt(2)')->getValues(), array('myfoo bis', 'works great', 'First paragraph', 'Second paragraph', 'Third paragraph'), '->getTexts() :gt');
+$t->is($c->matchAll('p:odd')->getValues(), array('multi-classes', 'myfoo bis', 'First paragraph', 'Third paragraph'), '->getTexts() :odd');
+$t->is($c->matchAll('p:even')->getValues(), array('header', 'myfoo', 'works great', 'Second paragraph'), '->getTexts() :even');
+$t->is($c->matchAll('#simplelist li:first-child')->getValues(), array('First', 'First'), '->getTexts() :first-child');
+$t->is($c->matchAll('#simplelist li:nth-child(1)')->getValues(), array('First', 'First'), '->getTexts() :nth-child');
+$t->is($c->matchAll('#simplelist li:nth-child(2)')->getValues(), array('Second with a link', 'Second'), '->getTexts() :nth-child');
+$t->is($c->matchAll('#simplelist li:nth-child(3)')->getValues(), array('Third with another link'), '->getTexts() :nth-child');
+$t->is($c->matchAll('#simplelist li:last-child')->getValues(), array('Second with a link', 'Third with another link'), '->getTexts() :last-child');
 
 $t->diag('combinations of pseudo-selectors');
-$t->is($c->getTexts('.myfoo:contains("myfoo"):contains("bis")'), array('myfoo bis'), '->getTexts() :contains():contains()');
-$t->is($c->getTexts('.myfoo:contains("myfoo"):last'), array('myfoo bis'), '->getTexts() :contains():last');
-$t->is($c->getTexts('.myfoo:last:contains("foobarbaz")'), array(), '->getTexts() :last:contains()');
-$t->is($c->getTexts('.myfoo:contains("myfoo"):contains(\'bis\'):contains(foo)'), array('myfoo bis'), '->getTexts() :contains() supports different quote styles');
+$t->is($c->matchAll('.myfoo:contains("myfoo"):contains("bis")')->getValues(), array('myfoo bis'), '->getTexts() :contains():contains()');
+$t->is($c->matchAll('.myfoo:contains("myfoo"):last')->getValues(), array('myfoo bis'), '->getTexts() :contains():last');
+$t->is($c->matchAll('.myfoo:last:contains("foobarbaz")')->getValues(), array(), '->getTexts() :last:contains()');
+$t->is($c->matchAll('.myfoo:contains("myfoo"):contains(\'bis\'):contains(foo)')->getValues(), array('myfoo bis'), '->getTexts() :contains() supports different quote styles');
 
 // ->matchAll()
 $t->diag('->matchAll()');
@@ -172,8 +172,8 @@ $t->is($c->matchAll('p.myfoo')->getValues(), array('myfoo', 'myfoo bis'), '->get
 $t->diag('->getValue()');
 $t->is($c->matchAll('h1')->getValue(), 'Test page', '->getValue() returns the first node value');
 
-$t->is($c->getTexts('#adjacent_bug > p'), array('First paragraph', 'Second paragraph', 'Third paragraph'), '->getTexts() suppports the + combinator');
-$t->is($c->getTexts('#adjacent_bug > p > a'), array('paragraph'), '->getTexts() suppports the + combinator');
-$t->is($c->getTexts('#adjacent_bug p + p'), array('Second paragraph', 'Third paragraph'), '->getTexts() suppports the + combinator');
-$t->is($c->getTexts('#adjacent_bug > p + p'), array('Second paragraph', 'Third paragraph'), '->getTexts() suppports the + combinator');
-$t->is($c->getTexts('#adjacent_bug > p + p > a'), array('paragraph'), '->getTexts() suppports the + combinator');
+$t->is($c->matchAll('#adjacent_bug > p')->getValues(), array('First paragraph', 'Second paragraph', 'Third paragraph'), '->getTexts() suppports the + combinator');
+$t->is($c->matchAll('#adjacent_bug > p > a')->getValues(), array('paragraph'), '->getTexts() suppports the + combinator');
+$t->is($c->matchAll('#adjacent_bug p + p')->getValues(), array('Second paragraph', 'Third paragraph'), '->getTexts() suppports the + combinator');
+$t->is($c->matchAll('#adjacent_bug > p + p')->getValues(), array('Second paragraph', 'Third paragraph'), '->getTexts() suppports the + combinator');
+$t->is($c->matchAll('#adjacent_bug > p + p > a')->getValues(), array('paragraph'), '->getTexts() suppports the + combinator');
