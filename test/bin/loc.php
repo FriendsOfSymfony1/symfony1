@@ -26,8 +26,6 @@ foreach ($files as $file)
 // symfony tests LOC
 $total_tests_loc = 0;
 $files = sfFinder::type('file')->name('*Test.php')->in(array(
-  $root_dir.'/lib/plugins/sfCompat10Plugin/test/unit',
-  $root_dir.'/lib/plugins/sfCompat10Plugin/test/functional',
   $root_dir.'/lib/plugins/sfPropelPlugin/test/unit',
   $root_dir.'/lib/plugins/sfPropelPlugin/test/functional',
   $root_dir.'/lib/plugins/sfDoctrinePlugin/test/unit',
