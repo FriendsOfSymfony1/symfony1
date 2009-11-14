@@ -112,7 +112,7 @@ abstract class sfView
     $this->context    = $context;
     $this->dispatcher = $context->getEventDispatcher();
 
-    sfOutputEscaper::markClassesAsSafe(array('sfForm', 'sfModelGeneratorHelper'));
+    sfOutputEscaper::markClassesAsSafe(array('sfForm', 'sfFormField', 'sfFormFieldSchema', 'sfModelGeneratorHelper'));
 
     $this->attributeHolder = $this->initializeAttributeHolder();
 
