@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(65);
+$t = new lime_test(69);
 
 $html = <<<EOF
 <html>
@@ -177,3 +177,25 @@ $t->is($c->matchAll('#adjacent_bug > p > a')->getValues(), array('paragraph'), '
 $t->is($c->matchAll('#adjacent_bug p + p')->getValues(), array('Second paragraph', 'Third paragraph'), '->matchAll() suppports the + combinator');
 $t->is($c->matchAll('#adjacent_bug > p + p')->getValues(), array('Second paragraph', 'Third paragraph'), '->matchAll() suppports the + combinator');
 $t->is($c->matchAll('#adjacent_bug > p + p > a')->getValues(), array('paragraph'), '->matchAll() suppports the + combinator');
+
+// Iterator interface
+$t->diag('Iterator interface');
+foreach ($c->matchAll('h2') as $key => $value)
+{
+  switch ($key)
+  {
+    case 0:
+      $t->is($value->nodeValue, 'Title 1', 'The object is an iterator');
+      break;
+    case 1:
+      $t->is($value->nodeValue, 'Title 2', 'The object is an iterator');
+      break;
+    default:
+      $t->fail('The object is an iterator');
+  }
+}
+
+// Countable interface
+$t->diag('Countable interface');
+$t->is(count($c->matchAll('h1')), 1, 'sfDomCssSelector implements Countable');
+$t->is(count($c->matchAll('h2')), 2, 'sfDomCssSelector implements Countable');
