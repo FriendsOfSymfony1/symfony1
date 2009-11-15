@@ -42,7 +42,6 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
       {
         $route->setDefaultOptions($options);
         $data[] = sprintf('$this->routes[\'%s\'] = unserialize(\'%s\');', $name, serialize($route));
-        $date[] = sprintf('$this->routes[\'%s\']->setDefaultParameters($this->defaultParameters);', $name);
       }
     }
 
