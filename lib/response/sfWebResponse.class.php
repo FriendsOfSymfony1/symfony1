@@ -335,6 +335,13 @@ class sfWebResponse extends sfResponse
     $status = $this->options['http_protocol'].' '.$this->statusCode.' '.$this->statusText;
     header($status);
 
+    if (substr(php_sapi_name(), 0, 3) == 'cgi')
+    {
+      // fastcgi servers cannot send this status information because it was sent by them already due to the HTT/1.0 line
+      // so we can safely unset them. see ticket #3191
+      unset($this->headers['Status']);
+    }
+
     if ($this->options['logging'])
     {
       $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send status "%s"', $status))));
