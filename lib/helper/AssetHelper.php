@@ -403,6 +403,14 @@ function _compute_public_path($source, $dir, $ext, $absolute = false)
     $source = $sf_relative_url_root.$source;
   }
 
+  $file = sfConfig::get('sf_web_dir').$source;
+  if (sfConfig::get('sf_asset_timestamp') && is_readable($file))
+  {
+    $stat = stat($file);
+    $query_string .= $query_string ? '&' : '?';
+    $query_string .= $stat['mtime'];
+  }
+
   if ($absolute)
   {
     $source = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$source;
