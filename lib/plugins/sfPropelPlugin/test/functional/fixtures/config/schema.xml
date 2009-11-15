@@ -86,6 +86,9 @@
     </foreign-key>
     <column name="culture" type="varchar" size="7" required="true" primaryKey="true" isCulture="true" />
     <column name="title" type="varchar" />
+    <unique>
+     <unique-column name="title" />
+    </unique>
   </table>
 
   <table name="attachment">

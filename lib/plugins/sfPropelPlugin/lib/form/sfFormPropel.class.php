@@ -80,7 +80,11 @@ abstract class sfFormPropel extends sfFormObject
       $method = sprintf('getCurrent%s', $this->getI18nModelName($culture));
       $i18nObject = $this->getObject()->$method($culture);
       $i18n = new $class($i18nObject);
-      unset($i18n['id'], $i18n['culture']);
+      
+      if ($i18nObject->isNew())
+      {
+        unset($i18n['id'], $i18n['culture']);
+      }
 
       $this->embedForm($culture, $i18n, $decorator);
     }

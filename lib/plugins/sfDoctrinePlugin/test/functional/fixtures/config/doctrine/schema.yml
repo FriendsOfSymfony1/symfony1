@@ -11,7 +11,9 @@ Article:
   columns:
     author_id: integer
     is_on_homepage: boolean
-    title: string(255)
+    title:
+      type: string(255)
+      unique: true
     body: string(255)
     test_column: string(255)
   relations:

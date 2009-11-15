@@ -81,7 +81,11 @@ abstract class sfFormDoctrine extends sfFormObject
     {
       $i18nObject = $this->getObject()->Translation[$culture];
       $i18n = new $class($i18nObject);
-      unset($i18n['id'], $i18n['lang']);
+
+      if (false === $i18nObject->exists())
+      {
+        unset($i18n['id'], $i18n['lang']);
+      }
 
       $this->embedForm($culture, $i18n, $decorator);
     }

@@ -70,7 +70,12 @@ $b->
     isParameter('module', 'i18n')->
     isParameter('action', 'movie')->
   end()->
-  with('response')->isStatusCode(200)->
+  with('response')->begin()->
+    isStatusCode(200)->
+    checkElement('#movie_fr_id', false)->
+    checkElement('#movie_fr_culture', false)->
+  end()->
+  
   click('submit', array('movie' => array('director' => 'Robert Aldrich', 'en' => array('title' => 'The Dirty Dozen'), 'fr' => array('title' => 'Les Douze Salopards'))))->
   with('response')->begin()->
     isRedirected()->
@@ -80,8 +85,8 @@ $b->
     checkElement('input[value="Robert Aldrich"]')->
     checkElement('input[value="The Dirty Dozen"]')->
     checkElement('input[value="Les Douze Salopards"]')->
-    checkElement('#movie_fr_id', false)->
-    checkElement('#movie_fr_culture', false)->
+    checkElement('#movie_fr_id', true)->
+    checkElement('#movie_fr_culture', true)->
   end()->
 
   with('propel')->begin()->
@@ -102,8 +107,6 @@ $b->
     checkElement('input[value="Robert Aldrich (1)"]')->
     checkElement('input[value="The Dirty Dozen (1)"]')->
     checkElement('input[value="Les Douze Salopards (1)"]')->
-    checkElement('#movie_fr_id', false)->
-    checkElement('#movie_fr_culture', false)->
   end()->
 
   with('propel')->begin()->
@@ -113,5 +116,35 @@ $b->
     check('MovieI18N', array('id' => 2), 2)->
     check('MovieI18N', array('culture' => 'fr', 'id' => 2, 'title' => 'Les Douze Salopards (1)'))->
     check('MovieI18N', array('culture' => 'en', 'id' => 2, 'title' => 'The Dirty Dozen (1)'))->
+  end()->
+
+  // Bug #7486
+  click('submit')->
+  
+  with('form')->begin()->
+    hasErrors(false)->
+  end()->
+
+  get('/i18n/movie')->
+  click('submit', array('movie' => array('director' => 'Robert Aldrich', 'en' => array('title' => 'The Dirty Dozen (1)'), 'fr' => array('title' => 'Les Douze Salopards (1)'))))->
+
+  with('form')->begin()->
+    hasErrors(2)->
+  end()->
+
+  click('submit', array('movie' => array('director' => 'Robert Aldrich', 'en' => array('title' => 'The Dirty Dozen'), 'fr' => array('title' => 'Les Douze Salopards'))))->
+
+  with('form')->begin()->
+    hasErrors(false)->
+  end()->
+
+  isRedirected()->
+  
+  followRedirect()->
+  with('response')->begin()->
+    checkElement('input[value="Robert Aldrich"]')->
+    checkElement('input[value="The Dirty Dozen"]')->
+    checkElement('input[value="Les Douze Salopards"]')->
   end()
+  // END: Bug #7486
 ;
