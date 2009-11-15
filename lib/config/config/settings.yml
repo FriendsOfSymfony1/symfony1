@@ -17,7 +17,7 @@ default:
     use_database:           true        # Enable database manager. Set to false if you don't use a database.
     i18n:                   false       # Enable interface translation. Set to false if your application should not be translated.
     compressed:             false       # Enable PHP response compression. Set to true to compress the outgoing HTML via the PHP handler.
-    check_lock:             false       # Enable the application lock system triggered by the clear-cache and disable tasks. Set to true to have all requests to disabled applications redirected to the $sf_symfony_lib_dir/exception/data/unavailable.php page.
+    check_lock:             false       # Enable the application lock system triggered by the clear-cache and disable tasks. Set to true to have all requests to disabled applications redirected to the sfConfig::get('sf_symfony_lib_dir')/exception/data/unavailable.php page.
 
     # Form security secret (CSRF protection)
     csrf_secret:            false     # Unique secret to enable CSRF protection or false to disable
