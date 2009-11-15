@@ -37,7 +37,7 @@ class sfPartialView extends sfPHPView
 
     if (sfConfig::get('sf_cache'))
     {
-      $this->checkCache = sfConfig::get('sf_lazy_cache_key') ? $this->viewCache->isActionCacheable($moduleName, $actionName) : true;
+      $this->checkCache = $this->viewCache->isActionCacheable($moduleName, $actionName);
     }
 
     return $ret;

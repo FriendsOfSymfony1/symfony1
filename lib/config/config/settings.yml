@@ -32,7 +32,6 @@ default:
     # Cache settings
     cache:                  false       # Enable the template cache
     etag:                   true        # Enable etag handling
-    lazy_cache_key:         false       # Delays creation of a cache key until after checking whether an action or partial is cacheable (defaults to false for backward compatibility)
 
     # Logging and debugging settings
     web_debug:              false       # Enable the web debug toolbar
