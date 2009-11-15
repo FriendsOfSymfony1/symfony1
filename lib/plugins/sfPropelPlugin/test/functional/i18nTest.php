@@ -137,10 +137,10 @@ $b->
   with('form')->begin()->
     hasErrors(false)->
   end()->
-
-  isRedirected()->
-  
-  followRedirect()->
+  with('response')->begin()->
+    isRedirected()->
+    followRedirect()->
+  end()->
   with('response')->begin()->
     checkElement('input[value="Robert Aldrich"]')->
     checkElement('input[value="The Dirty Dozen"]')->
