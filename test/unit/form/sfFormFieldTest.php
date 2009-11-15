@@ -24,6 +24,7 @@ $schema = new sfWidgetFormSchema(array(
   'author' => $authorSchema,
 ));
 $schema->setNameFormat('article[%s]');
+$titleWidget->setParent($schema);
 
 // errors
 $authorErrorSchema = new sfValidatorErrorSchema(new sfValidatorString());

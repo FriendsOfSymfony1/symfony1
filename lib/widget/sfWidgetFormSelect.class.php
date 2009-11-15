@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -16,7 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelect extends sfWidgetForm
+class sfWidgetFormSelect extends sfWidgetFormChoiceBase
 {
   /**
    * Constructor.
@@ -29,11 +29,12 @@ class sfWidgetFormSelect extends sfWidgetForm
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
    *
-   * @see sfWidgetForm
+   * @see sfWidgetFormChoiceBase
    */
   protected function configure($options = array(), $attributes = array())
   {
-    $this->addRequiredOption('choices');
+    parent::configure($options, $attributes);
+
     $this->addOption('multiple', false);
   }
 
@@ -59,11 +60,7 @@ class sfWidgetFormSelect extends sfWidgetForm
       }
     }
 
-    $choices = $this->getOption('choices');
-    if ($choices instanceof sfCallable)
-    {
-      $choices = $choices->call();
-    }
+    $choices = $this->getChoices();
 
     return $this->renderContentTag('select', "\n".implode("\n", $this->getOptionsForSelect($value, $choices))."\n", array_merge(array('name' => $name), $attributes));
   }
@@ -88,7 +85,7 @@ class sfWidgetFormSelect extends sfWidgetForm
 
     $value = array_map('strval', array_values($value));
     $value_set = array_flip($value);
-    
+
     $options = array();
     foreach ($choices as $key => $option)
     {
@@ -111,19 +108,5 @@ class sfWidgetFormSelect extends sfWidgetForm
     $this->attributes = $mainAttributes;
 
     return $options;
-  }
-
-  public function __clone()
-  {
-    if ($this->getOption('choices') instanceof sfCallable)
-    {
-      $callable = $this->getOption('choices')->getCallable();
-      $class = __CLASS__;
-      if (is_array($callable) && $callable[0] instanceof $class)
-      {
-        $callable[0] = $this;
-        $this->setOption('choices', new sfCallable($callable));
-      }
-    }
   }
 }

@@ -10,7 +10,17 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(11);
+class FormFormatterStub extends sfWidgetFormSchemaFormatter
+{
+  public function __construct() {}
+
+  public function translate($subject, $parameters = array())
+  {
+    return sprintf('translation[%s]', $subject);
+  }
+}
+
+$t = new lime_test(12);
 
 $dom = new DomDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
@@ -88,6 +98,20 @@ $w = new sfWidgetFormSelectCheckbox(array('choices' => new sfCallable('choice_ca
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('input[type="checkbox"]')->getNodes()), 3, '->render() accepts a sfCallable as a choices option');
+
+// choices are translated
+$t->diag('choices are translated');
+
+$ws = new sfWidgetFormSchema();
+$ws->addFormFormatter('stub', new FormFormatterStub());
+$ws->setFormFormatterName('stub');
+$w = new sfWidgetFormSelectCheckbox(array('choices' => array('foo' => 'bar', 'foobar' => 'foo'), 'separator' => ''));
+$w->setParent($ws);
+$output = '<ul class="checkbox_list">'.
+'<li><input name="foo[]" type="checkbox" value="foo" id="foo_foo" />&nbsp;<label for="foo_foo">translation[bar]</label></li>'.
+'<li><input name="foo[]" type="checkbox" value="foobar" id="foo_foobar" />&nbsp;<label for="foo_foobar">translation[foo]</label></li>'.
+'</ul>';
+$t->is($w->render('foo'), $output, '->render() translates the options');
 
 // __clone()
 $t->diag('__clone()');

@@ -106,9 +106,9 @@ class sfCoreAutoload
 
   /**
    * Returns the filename of the supplied class.
-   * 
+   *
    * @param  string $class The class name (case insensitive)
-   * 
+   *
    * @return string|null An absolute path or null
    */
   public function getClassPath($class)
@@ -486,6 +486,8 @@ class sfCoreAutoload
     'sfwidget' => 'widget/sfWidget.class.php',
     'sfwidgetform' => 'widget/sfWidgetForm.class.php',
     'sfwidgetformchoice' => 'widget/sfWidgetFormChoice.class.php',
+    'sfwidgetformchoicebase' => 'widget/sfWidgetFormChoiceBase.class.php',
+    'sfwidgetformchoicemany' => 'widget/sfWidgetFormChoiceMany.class.php',
     'sfwidgetformdate' => 'widget/sfWidgetFormDate.class.php',
     'sfwidgetformdaterange' => 'widget/sfWidgetFormDateRange.class.php',
     'sfwidgetformdatetime' => 'widget/sfWidgetFormDateTime.class.php',

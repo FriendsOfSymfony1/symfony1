@@ -18,6 +18,9 @@
  */
 abstract class sfWidgetForm extends sfWidget
 {
+  protected
+    $parent   = null;
+
   /**
    * Constructor.
    *
@@ -246,7 +249,7 @@ abstract class sfWidgetForm extends sfWidget
 
     return $name;
   }
-  
+
   /**
    * Generates a two chars range
    *
@@ -257,10 +260,86 @@ abstract class sfWidgetForm extends sfWidget
   static protected function generateTwoCharsRange($start, $stop)
   {
     $results = array();
-    for ($i = $start; $i <= $stop; $i++) 
+    for ($i = $start; $i <= $stop; $i++)
     {
       $results[$i] = sprintf('%02d', $i);
     }
     return $results;
+  }
+
+  /**
+   * Sets the parent widget schema.
+   *
+   * @param  sfWidgetFormSchema $widgetSchema
+   *
+   * @return sfWidgetForm The current widget instance
+   */
+  public function setParent(sfWidgetFormSchema $widgetSchema = null)
+  {
+    $this->parent = $widgetSchema;
+
+    return $this;
+  }
+
+  /**
+   * Returns the parent widget schema.
+   *
+   * If no schema has been set with setWidgetSchema(), NULL is returned.
+   *
+   * @return sfWidgetFormSchema
+   */
+  public function getParent()
+  {
+    return $this->parent;
+  }
+
+  /**
+   * Translates the given text.
+   *
+   * @see                       sfWidgetFormSchemaFormatter::translate()
+   * @param  string $text       The text with optional placeholders
+   * @param  array $parameters  The values to replace the placeholders
+   *
+   * @return string             The translated text
+   */
+  protected function translate($text, array $parameters = array())
+  {
+    if (!is_null($this->parent))
+    {
+      return $this->parent->getFormFormatter()->translate($text, $parameters);
+    }
+    else
+    {
+      return $text;
+    }
+  }
+
+  /**
+   * Translates all values of the given array.
+   *
+   * @see                       sfWidgetFormSchemaFormatter::translate()
+   *
+   * @param  array $texts       The texts with optional placeholders
+   * @param  array $parameters  The values to replace the placeholders
+   *
+   * @return array              The translated texts
+   */
+  protected function translateAll(array $texts, array $parameters = array())
+  {
+    if (!is_null($this->parent))
+    {
+      $result = array();
+
+      foreach ($texts as $key => $text)
+      {
+        $result[$key] = $this->parent->getFormFormatter()->translate($text, $parameters);
+      }
+
+      return $result;
+    }
+    else
+    {
+      return $texts;
+    }
   }
 }

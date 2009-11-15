@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(28);
+$t = new lime_test(30);
 
 class MyWidgetForm extends sfWidgetForm
 {
@@ -51,6 +51,13 @@ $w = new MyWidgetForm(array('default' => 'foo'));
 $t->is($w->getDefault(), 'foo', '->getDefault() returns the default value');
 $w->setDefault('bar');
 $t->is($w->getDefault(), 'bar', '->setDefault() changes the default value for the widget');
+
+// ->getParent() ->setParent()
+$t->diag('->getParent() ->setParent()');
+$w = new MyWidgetForm();
+$t->is($w->getParent(), null, '->getParent() returns null if no widget schema has been defined');
+$w->setParent($ws = new sfWidgetFormSchema());
+$t->is($w->getParent(), $ws, '->setParent() associates a widget schema to the widget');
 
 // ->getIdFormat() ->setIdFormat()
 $t->diag('->getIdFormat() ->setIdFormat()');

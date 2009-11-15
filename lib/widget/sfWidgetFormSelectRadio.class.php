@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -16,7 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelectRadio extends sfWidgetForm
+class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
 {
   /**
    * Constructor.
@@ -33,12 +33,12 @@ class sfWidgetFormSelectRadio extends sfWidgetForm
    *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
-   *   
-   * @see sfWidgetForm
+   *
+   * @see sfWidgetFormChoiceBase
    */
   protected function configure($options = array(), $attributes = array())
   {
-    $this->addRequiredOption('choices');
+    parent::configure($options, $attributes);
 
     $this->addOption('class', 'radio_list');
     $this->addOption('label_separator', '&nbsp;');
@@ -64,11 +64,7 @@ class sfWidgetFormSelectRadio extends sfWidgetForm
       $name .= '[]';
     }
 
-    $choices = $this->getOption('choices');
-    if ($choices instanceof sfCallable)
-    {
-      $choices = $choices->call();
-    }
+    $choices = $this->getChoices();
 
     // with groups?
     if (count($choices) && is_array(next($choices)))
@@ -122,19 +118,5 @@ class sfWidgetFormSelectRadio extends sfWidgetForm
     }
 
     return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
-  }
-
-  public function __clone()
-  {
-    if ($this->getOption('choices') instanceof sfCallable)
-    {
-      $callable = $this->getOption('choices')->getCallable();
-      $class = __CLASS__;
-      if (is_array($callable) && $callable[0] instanceof $class)
-      {
-        $callable[0] = $this;
-        $this->setOption('choices', new sfCallable($callable));
-      }
-    }
   }
 }

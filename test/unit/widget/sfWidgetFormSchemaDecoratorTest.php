@@ -37,8 +37,9 @@ $t->is($w->render(null), fix_linebreaks($output), '->render() decorates the widg
 // implements ArrayAccess
 $t->diag('implements ArrayAccess');
 $w['w2'] = $w2;
-$t->is($w->getFields(), array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
-$t->is($ws->getFields(), array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
+$w1->setParent($ws); $w2->setParent($ws);
+$t->ok($w->getFields() == array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
+$t->ok($ws->getFields() == array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
 
 try
 {

@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(90);
+$t = new lime_test(94);
 
 $w1 = new sfWidgetFormInputText(array(), array('class' => 'foo1'));
 $w2 = new sfWidgetFormInputText();
@@ -20,7 +20,8 @@ $t->diag('__construct()');
 $w = new sfWidgetFormSchema();
 $t->is($w->getFields(), array(), '__construct() can take no argument');
 $w = new sfWidgetFormSchema(array('w1' => $w1, 'w2' => $w2));
-$t->is($w->getFields(), array('w1' => $w1, 'w2' => $w2), '__construct() can take an array of named sfWidget objects');
+$w1->setParent($w); $w2->setParent($w);
+$t->ok($w->getFields() == array('w1' => $w1, 'w2' => $w2), '__construct() can take an array of named sfWidget objects');
 try
 {
   $w = new sfWidgetFormSchema('string');
@@ -44,7 +45,10 @@ $t->diag('implements ArrayAccess');
 $w = new sfWidgetFormSchema();
 $w['w1'] = $w1;
 $w['w2'] = $w2;
-$t->is($w->getFields(), array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$w1->setParent($w); $w2->setParent($w);
+$t->ok($w->getFields() == array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->is($w1->getParent(), $w, 'The widget schema is associated with the fields');
+$t->is($w2->getParent(), $w, 'The widget schema is associated with the fields');
 
 try
 {
@@ -61,6 +65,7 @@ $t->is(isset($w['w1']), true, 'sfWidgetFormSchema implements the ArrayAccess int
 $t->is(isset($w['w2']), false, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
 
 $w = new sfWidgetFormSchema(array('w1' => $w1));
+$w1->setParent($w); $w2->setParent($w);
 $t->ok($w['w1'] == $w1, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
 $t->is($w['w2'], null, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
 
@@ -399,6 +404,7 @@ $t->is(str_replace("\n", '', preg_replace('/^ +/m', '', $w->render(null))), str_
 // __clone()
 $t->diag('__clone()');
 $w = new sfWidgetFormSchema(array('w1' => $w1, 'w2' => $w2));
+$w1->setParent($w); $w2->setParent($w);
 $format1 = new sfWidgetFormSchemaFormatterList($w);
 $format1->setTranslationCatalogue('english');
 $w->addFormFormatter('testFormatter', $format1);
@@ -409,6 +415,9 @@ $t->is(array_keys($f1), array_keys($f), '__clone() clones embedded widgets');
 foreach ($f1 as $name => $widget)
 {
   $t->ok($widget !== $f[$name], '__clone() clones embedded widgets');
+  $t->ok($widget->getParent() === $w1, 'The parents hafe been changed');
+  // avoid recursive dependencies at comparing
+  $widget->setParent(null); $f[$name]->setParent(null);
   $t->ok($widget == $f[$name], '__clone() clones embedded widgets');
 }
 $format1->setTranslationCatalogue('french');
