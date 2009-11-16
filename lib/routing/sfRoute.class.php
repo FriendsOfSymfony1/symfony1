@@ -99,7 +99,11 @@ class sfRoute implements Serializable
     }
 
     // check the static prefix uf the URL first. Only use the more expensive preg_match when it matches
-    if (0 !== strpos($url, $this->staticPrefix) || !preg_match($this->regex, $url, $matches))
+    if ('' !== $this->staticPrefix  && 0 !== strpos($url, $this->staticPrefix))
+    {
+      return false;
+    }
+    if (!preg_match($this->regex, $url, $matches))
     {
       return false;
     }
@@ -486,14 +490,12 @@ class sfRoute implements Serializable
       switch ($token[0])
       {
         case 'separator':
-          // separator is static
-          $this->staticPrefix .= $token[2];
           break;
         case 'text':
           if ($token[2] !== '*')
           {
             // non-star text is static
-            $this->staticPrefix .= $token[2];
+            $this->staticPrefix .= $token[1].$token[2];
             break;
           }
         default:
@@ -561,7 +563,7 @@ class sfRoute implements Serializable
     }
     
     // check for suffix
-    if ($this->suffix && !$afterASeparator)
+    if ($this->suffix)
     {
       // treat as a separator
       $this->tokens[] = array('separator', $currentSeparator, $this->suffix);
