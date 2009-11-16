@@ -24,6 +24,7 @@ class sfPatternRouting extends sfRouting
     $currentRouteName   = null,
     $currentInternalUri = array(),
     $routes             = array(),
+    $defaultParamsDirty = false,
     $cacheData          = array(),
     $cacheChanged       = false;
 
@@ -82,6 +83,40 @@ class sfPatternRouting extends sfRouting
     }
 
     parent::loadConfiguration();
+  }
+
+  /**
+   * Added for better performance. We need to ensure that changed default parameters
+   * are set, but resetting them everytime wastes many cpu cycles
+   */
+  protected function ensureDefaultParametersAreSet()
+  {
+    if ($this->defaultParamsDirty)
+    {
+      foreach ($this->routes as $route)
+      {
+        $route->setDefaultParameters($this->defaultParameters);
+      }
+      $this->defaultParamsDirty = false;
+    }
+  }
+
+  /**
+   * @see sfRouting
+   */
+  public function setDefaultParameter($key, $value)
+  {
+    parent::setDefaultParameter($key, $value);
+    $this->defaultParamsDirty = true;
+  }
+
+  /**
+   * @see sfRouting
+   */
+  public function setDefaultParameters($parameters)
+  {
+    parent::setDefaultParameters($parameters);
+    $this->defaultParamsDirty = true;
   }
 
   protected function getConfigFileName()
@@ -277,10 +312,7 @@ class sfPatternRouting extends sfRouting
       {
         throw new sfConfigurationException(sprintf('The route "%s" does not exist.', $name));
       }
-
-      $route = $this->routes[$name];
-
-      $route->setDefaultParameters($this->defaultParameters);
+      $route = $this->routes[$name];      $this->ensureDefaultParametersAreSet();
     }
     else
     {
@@ -333,7 +365,7 @@ class sfPatternRouting extends sfRouting
 
     $route = $this->routes[$info['name']];
 
-    $route->setDefaultParameters($this->defaultParameters);
+    $this->ensureDefaultParametersAreSet();
 
     $route->bind($this->options['context'], $info['parameters']);
     $info['parameters']['_sf_route'] = $route;
@@ -435,10 +467,9 @@ class sfPatternRouting extends sfRouting
 
   protected function getRouteThatMatchesUrl($url)
   {
+    $this->ensureDefaultParametersAreSet();
     foreach ($this->routes as $name => $route)
     {
-      $route->setDefaultParameters($this->defaultParameters);
-
       if (false === $parameters = $route->matchesUrl($url, $this->options['context']))
       {
         continue;
@@ -452,10 +483,9 @@ class sfPatternRouting extends sfRouting
 
   protected function getRouteThatMatchesParameters($parameters)
   {
-    foreach ($this->routes as $name => $route)
+    $this->ensureDefaultParametersAreSet();
+    foreach ($this->routes as $route)
     {
-      $route->setDefaultParameters($this->defaultParameters);
-
       if ($route->matchesParameters($parameters, $this->options['context']))
       {
         return $route;
