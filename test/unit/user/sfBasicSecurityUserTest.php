@@ -32,11 +32,11 @@ $user = new sfBasicSecurityUser($dispatcher, $storage);
 $t->diag('->initialize()');
 $t->todo('->initialize() times out the user if no request made for a long time');
 
-// ->listCredentials()
-$t->diag('->listCredentials()');
+// ->getCredentials()
+$t->diag('->getCredentials()');
 $user->clearCredentials();
 $user->addCredential('user');
-$t->is($user->listCredentials(), array('user'), '->listCredentials() returns user credentials as an array');
+$t->is($user->getCredentials(), array('user'), '->getCredentials() returns user credentials as an array');
 
 // ->setAuthenticated() ->isAuthenticated()
 $t->diag('->setAuthenticated() ->isAuthenticated()');

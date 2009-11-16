@@ -42,9 +42,11 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
   }
 
   /**
-   * returns an array containing the credentials
+   * Returns the current user's credentials.
+   * 
+   * @return array
    */
-  public function listCredentials()
+  public function getCredentials()
   {
     return $this->credentials;
   }
