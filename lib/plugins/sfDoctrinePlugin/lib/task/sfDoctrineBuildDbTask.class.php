@@ -50,9 +50,20 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $this->logSection('doctrine', 'creating databases');
-
     $databaseManager = new sfDatabaseManager($this->configuration);
-    $this->callDoctrineCli('create-db');
+    $databases = $this->getDoctrineDatabases($databaseManager, count($arguments['database']) ? $arguments['database'] : null);
+
+    foreach ($databases as $name => $database)
+    {
+      $this->logSection('doctrine', sprintf('Creating "%s" environment "%s" database', $this->configuration->getEnvironment(), $name));
+      try
+      {
+        $database->getDoctrineConnection()->createDatabase();
+      }
+      catch (Exception $e)
+      {
+        $this->logSection('doctrine', $e->getMessage(), null, 'ERROR');
+      }
+    }
   }
 }

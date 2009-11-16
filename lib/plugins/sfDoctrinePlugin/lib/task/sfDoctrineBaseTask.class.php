@@ -65,6 +65,50 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
   }
 
   /**
+   * Returns Doctrine databases from the supplied database manager.
+   *
+   * @param sfDatabaseManager $databaseManager
+   * @param array|null        $names An array of names or NULL for all databases
+   *
+   * @return array An associative array of {@link sfDoctrineDatabase} objects and their names
+   * 
+   * @throws InvalidArgumentException If a requested database is not a Doctrine database
+   */
+  protected function getDoctrineDatabases(sfDatabaseManager $databaseManager, array $names = null)
+  {
+    $databases = array();
+
+    if (null === $names)
+    {
+      foreach ($databaseManager->getNames() as $name)
+      {
+        $database = $databaseManager->getDatabase($name);
+
+        if ($database instanceof sfDoctrineDatabase)
+        {
+          $databases[$name] = $database;
+        }
+      }
+    }
+    else
+    {
+      foreach ($names as $name)
+      {
+        $database = $databaseManager->getDatabase($name);
+
+        if (!$database instanceof sfDoctrineDatabase)
+        {
+          throw new InvalidArgumentException(sprintf('The database "%s" is not a Doctrine database.', $name));
+        }
+
+        $databases[$name] = $database;
+      }
+    }
+
+    return $databases;
+  }
+
+  /**
    * Merges all project and plugin schema files into one.
    *
    * Schema files are merged similar to how other configuration files are in

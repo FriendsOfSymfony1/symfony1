@@ -27,6 +27,10 @@ class sfDoctrineDropDbTask extends sfDoctrineBaseTask
    */
   protected function configure()
   {
+    $this->addArguments(array(
+      new sfCommandArgument('database', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'A specific database'),
+    ));
+
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
@@ -38,11 +42,19 @@ class sfDoctrineDropDbTask extends sfDoctrineBaseTask
     $this->briefDescription = 'Drops database for current model';
 
     $this->detailedDescription = <<<EOF
-The [doctrine:drop-db|INFO] task drops the database:
+The [doctrine:drop-db|INFO] task drops one or more databases based on
+configuration in [config/databases.yml|COMMENT]:
 
   [./symfony doctrine:drop-db|INFO]
 
-The task read connection information in [config/databases.yml|COMMENT]:
+You will be prompted for confirmation before any databases are dropped unless
+you provide the [--no-confirmation|COMMENT] option:
+
+  [./symfony doctrine:drop-db --no-confirmation|INFO]
+
+You can specify what databases to drop by providing their names:
+
+  [./symfony doctrine:drop-db slave1 slave2|INFO]
 EOF;
   }
 
@@ -52,17 +64,16 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $databaseManager = new sfDatabaseManager($this->configuration);
+    $databases = $this->getDoctrineDatabases($databaseManager, count($arguments['database']) ? $arguments['database'] : null);
 
-    $manager = Doctrine_Manager::getInstance();
-    $connectionNames = array();
-    foreach ($manager as $conn)
-    {
-      $connectionNames[] = $conn->getName();
-    }
     if (
       !$options['no-confirmation']
       &&
-      !$this->askConfirmation(array('This command will remove all data in your database connections named: '.implode(', ', $connectionNames), 'Are you sure you want to proceed? (y/N)'), 'QUESTION_LARGE', false)
+      !$this->askConfirmation(array_merge(
+        array(sprintf('This command will remove all data in the following "%s" connection(s):', $this->configuration->getEnvironment()), ''),
+        array_map(create_function('$v', 'return \' - \'.$v;'), array_keys($databases)),
+        array('', 'Are you sure you want to proceed? (y/N)')
+      ), 'QUESTION_LARGE', false)
     )
     {
       $this->logSection('doctrine', 'task aborted');
@@ -70,8 +81,17 @@ EOF;
       return 1;
     }
 
-    $this->logSection('doctrine', 'dropping databases');
-
-    $this->callDoctrineCli('drop-db', array('force' => true));
+    foreach ($databases as $name => $database)
+    {
+      $this->logSection('doctrine', sprintf('Dropping "%s" database', $name));
+      try
+      {
+        $database->getDoctrineConnection()->dropDatabase();
+      }
+      catch (Exception $e)
+      {
+        $this->logSection('doctrine', $e->getMessage(), null, 'ERROR');
+      }
+    }
   }
 }
