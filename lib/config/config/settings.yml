@@ -32,7 +32,6 @@ default:
     # Cache settings
     cache:                  false       # Enable the template cache
     etag:                   true        # Enable etag handling
-    asset_timestamp:        false       # Enable to append asset timestamp
 
     # Logging and debugging settings
     web_debug:              false       # Enable the web debug toolbar
