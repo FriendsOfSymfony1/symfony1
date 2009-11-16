@@ -49,7 +49,20 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
       $choices = $choices->call();
     }
 
-    return $this->translateAll($choices);
+    $results = array();
+    foreach ($choices as $key => $choice)
+    {
+      if (is_array($choice))
+      {
+        $results[$this->translate($key)] = $this->translateAll($choice);
+      }
+      else
+      {
+        $results[$key] = $this->translate($choice);
+      }
+    }
+
+    return $results;
   }
 
   /**
