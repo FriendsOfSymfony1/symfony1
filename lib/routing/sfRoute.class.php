@@ -28,6 +28,7 @@ class sfRoute implements Serializable
     $compiled          = false,
     $options           = array(),
     $pattern           = null,
+    $staticPrefix      = null,
     $regex             = null,
     $variables         = array(),
     $defaults          = array(),
@@ -97,7 +98,8 @@ class sfRoute implements Serializable
       $this->compile();
     }
 
-    if (!preg_match($this->regex, $url, $matches))
+    // check the static prefix uf the URL first. Only use the more expensive preg_match when it matches
+    if (0 !== strpos($url, $this->staticPrefix) || !preg_match($this->regex, $url, $matches))
     {
       return false;
     }
@@ -450,7 +452,7 @@ class sfRoute implements Serializable
       $separator = 'separator' == $lastToken[0] ? $lastToken[2] : '';
     }
 
-    $this->regex = "#^\n".implode("\n", $this->segments)."\n".preg_quote($separator, '#')."$#x";
+    $this->regex = "#^".implode("", $this->segments)."".preg_quote($separator, '#')."$#x";
   }
 
   /**
@@ -476,6 +478,28 @@ class sfRoute implements Serializable
     {
       $this->segments[$i] = (0 == $i ? '/?' : '').str_repeat(' ', $i - $this->firstOptional).'(?:'.$this->segments[$i];
       $this->segments[] = str_repeat(' ', $max - $i - 1).')?';
+    }
+
+    $this->staticPrefix = '';
+    foreach ($this->tokens as $token)
+    {
+      switch ($token[0])
+      {
+        case 'separator':
+          // separator is static
+          $this->staticPrefix .= $token[2];
+          break;
+        case 'text':
+          if ($token[2] !== '*')
+          {
+            // non-star text is static
+            $this->staticPrefix .= $token[2];
+            break;
+          }
+        default:
+          // everything else indicates variable parts. break switch and for loop
+          break 2;
+      }
     }
   }
 
@@ -788,12 +812,12 @@ class sfRoute implements Serializable
     // always serialize compiled routes
     $this->compile();
     // sfPatternRouting will always re-set defaultParameters, so no need to serialize them
-    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix));
+    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix));
   }
 
   public function unserialize($data)
   {
-    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix) = unserialize($data);
+    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix) = unserialize($data);
     $this->compiled = true;
   }
 }
