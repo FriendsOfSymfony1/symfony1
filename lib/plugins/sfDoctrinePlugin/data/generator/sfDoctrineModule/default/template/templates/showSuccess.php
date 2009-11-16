@@ -3,7 +3,7 @@
 <?php foreach ($this->getColumns() as $column): ?>
     <tr>
       <th><?php echo sfInflector::humanize(sfInflector::underscore($column->getPhpName())) ?>:</th>
-      <td>[?= $<?php echo $this->getSingularName() ?>->get<?php echo $column->getPhpName() ?>() ?]</td>
+      <td>[?php echo $<?php echo $this->getSingularName() ?>->get<?php echo sfInflector::camelize($column->getPhpName()) ?>() ?]</td>
     </tr>
 <?php endforeach; ?>
   </tbody>
