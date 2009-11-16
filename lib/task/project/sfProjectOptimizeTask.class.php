@@ -25,7 +25,7 @@ class sfProjectOptimizeTask extends sfBaseTask
   {
     $this->addArguments(array(
       new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-      new sfCommandArgument('environment', sfCommandArgument::OPTIONAL, 'The environment name', 'prod'),
+      new sfCommandArgument('env', sfCommandArgument::OPTIONAL, 'The environment name', 'prod'),
     ));
 
     $this->namespace = 'project';
@@ -35,7 +35,7 @@ class sfProjectOptimizeTask extends sfBaseTask
     $this->detailedDescription = <<<EOF
 The [project:optimize|INFO] optimizes a project for better performance:
 
-  [./symfony project:optimizes frontend prod|INFO]
+  [./symfony project:optimize frontend prod|INFO]
 
 This task should only be used on a production server. Don't forget to re-run
 the task each time the project changes.
@@ -57,6 +57,9 @@ EOF;
       $this->getFilesystem()->remove($target);
     }
 
+    // recreate configuration without the cache
+    $this->setConfiguration($this->createConfiguration($this->configuration->getApplication(), $this->configuration->getEnvironment()));
+
     // initialize the context
     sfContext::createInstance($this->configuration);
 
@@ -68,10 +71,10 @@ EOF;
 
     $templates = $this->findTemplates($modules);
 
-    // getTemplateDir() optimization
     $data['getTemplateDir'] = $this->optimizeGetTemplateDir($modules, $templates);
     $data['getControllerDirs'] = $this->optimizeGetControllerDirs($modules);
     $data['getPluginPaths'] = $this->configuration->getPluginPaths();
+    $data['loadHelpers'] = $this->optimizeLoadHelpers($modules);
 
     if (!file_exists($directory = dirname($target)))
     {
@@ -101,9 +104,48 @@ EOF;
       $data[$module] = array();
       foreach ($templates[$module] as $template)
       {
-        if (null !== ($dir = $this->configuration->getTemplateDir($module, $template)))
+        if (null !== $dir = $this->configuration->getTemplateDir($module, $template))
         {
           $data[$module][$template] = $dir;
+        }
+      }
+    }
+
+    return $data;
+  }
+
+  protected function optimizeLoadHelpers($modules)
+  {
+    $data = array();
+
+    $finder = sfFinder::type('file')->name('*Helper.php');
+
+    // module helpers
+    foreach ($modules as $module)
+    {
+      $helpers = array();
+
+      $dirs = $this->configuration->getHelperDirs($module);
+      foreach ($finder->in($dirs[0]) as $file)
+      {
+        $helpers[basename($file, 'Helper.php')] = $file;
+      }
+
+      if (count($helpers))
+      {
+        $data[$module] = $helpers;
+      }
+    }
+
+    // all other helpers
+    foreach ($this->configuration->getHelperDirs() as $dir)
+    {
+      foreach ($finder->in($dir) as $file)
+      {
+        $helper = basename($file, 'Helper.php');
+        if (!isset($data[''][$helper]))
+        {
+          $data[''][$helper] = $file;
         }
       }
     }

@@ -270,7 +270,7 @@ abstract class sfWidgetForm extends sfWidget
   /**
    * Sets the parent widget schema.
    *
-   * @param  sfWidgetFormSchema $widgetSchema
+   * @param  sfWidgetFormSchema|null $widgetSchema
    *
    * @return sfWidgetForm The current widget instance
    */
@@ -286,7 +286,7 @@ abstract class sfWidgetForm extends sfWidget
    *
    * If no schema has been set with setWidgetSchema(), NULL is returned.
    *
-   * @return sfWidgetFormSchema
+   * @return sfWidgetFormSchema|null
    */
   public function getParent()
   {
@@ -296,37 +296,42 @@ abstract class sfWidgetForm extends sfWidget
   /**
    * Translates the given text.
    *
-   * @see                       sfWidgetFormSchemaFormatter::translate()
    * @param  string $text       The text with optional placeholders
    * @param  array $parameters  The values to replace the placeholders
    *
    * @return string             The translated text
+   *
+   * @see sfWidgetFormSchemaFormatter::translate()
    */
   protected function translate($text, array $parameters = array())
   {
-    if (!is_null($this->parent))
+    if (null === $this->parent)
     {
-      return $this->parent->getFormFormatter()->translate($text, $parameters);
+      return $text;
     }
     else
     {
-      return $text;
+      return $this->parent->getFormFormatter()->translate($text, $parameters);
     }
   }
 
   /**
    * Translates all values of the given array.
    *
-   * @see                       sfWidgetFormSchemaFormatter::translate()
-   *
    * @param  array $texts       The texts with optional placeholders
    * @param  array $parameters  The values to replace the placeholders
    *
    * @return array              The translated texts
+   * 
+   * @see sfWidgetFormSchemaFormatter::translate()
    */
   protected function translateAll(array $texts, array $parameters = array())
   {
-    if (!is_null($this->parent))
+    if (null === $this->parent)
+    {
+      return $texts;
+    }
+    else
     {
       $result = array();
 
@@ -336,10 +341,6 @@ abstract class sfWidgetForm extends sfWidget
       }
 
       return $result;
-    }
-    else
-    {
-      return $texts;
     }
   }
 }

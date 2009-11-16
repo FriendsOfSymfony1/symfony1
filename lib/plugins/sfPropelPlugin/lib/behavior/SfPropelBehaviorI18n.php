@@ -173,7 +173,8 @@ public function getCurrent{$refPhpName}(\$culture = null)
 
   if (!isset(\$this->current_i18n[\$culture]))
   {
-    if (\$object = {$this->getI18nTable()->getPhpName()}Peer::retrieveByPK(\$this->getPrimaryKey(), \$culture))
+    \$object = \$this->isNew() ? null : {$this->getI18nTable()->getPhpName()}Peer::retrieveByPK(\$this->getPrimaryKey(), \$culture);
+    if (\$object)
     {
       \$this->set{$refPhpName}ForCulture(\$object, \$culture);
     }

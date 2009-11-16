@@ -113,7 +113,7 @@ class Base<?php echo $this->table->getClassname() ?>Form extends BaseFormPropel
       return;
     }
 
-    if (is_null($con))
+    if (null === $con)
     {
       $con = $this->getConnection();
     }

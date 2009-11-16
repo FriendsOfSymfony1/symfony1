@@ -487,7 +487,6 @@ class sfCoreAutoload
     'sfwidgetform' => 'widget/sfWidgetForm.class.php',
     'sfwidgetformchoice' => 'widget/sfWidgetFormChoice.class.php',
     'sfwidgetformchoicebase' => 'widget/sfWidgetFormChoiceBase.class.php',
-    'sfwidgetformchoicemany' => 'widget/sfWidgetFormChoiceMany.class.php',
     'sfwidgetformdate' => 'widget/sfWidgetFormDate.class.php',
     'sfwidgetformdaterange' => 'widget/sfWidgetFormDateRange.class.php',
     'sfwidgetformdatetime' => 'widget/sfWidgetFormDateTime.class.php',

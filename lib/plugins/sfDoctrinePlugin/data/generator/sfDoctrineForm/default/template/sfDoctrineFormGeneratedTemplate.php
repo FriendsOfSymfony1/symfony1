@@ -97,7 +97,7 @@ class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormCl
       return;
     }
 
-    if (is_null($con))
+    if (null === $con)
     {
       $con = $this->getConnection();
     }

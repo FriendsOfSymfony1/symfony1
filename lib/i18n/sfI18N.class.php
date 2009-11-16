@@ -362,10 +362,13 @@ class sfI18N
         if (strcasecmp($matches[$timePositions['a']], $timeFormatInfo->getAMDesignator()) == 0)
         {
           $hour = $matches[$timePositions['h']];
-        } else if (strcasecmp($matches[$timePositions['a']], $timeFormatInfo->getPMDesignator()) == 0)
+        }
+        else if (strcasecmp($matches[$timePositions['a']], $timeFormatInfo->getPMDesignator()) == 0)
         {
           $hour = $matches[$timePositions['h']] + 12;
-        } else {
+        }
+        else
+        {
           // am/pm marker is invalid
           // return null; would be the preferred solution but this might break a lot of code
           $hour = $matches[$timePositions['h']];
@@ -375,6 +378,7 @@ class sfI18N
       {
         $hour = $matches[$timePositions['h']];
       }
+
       // We get matching timestamp
       return array($hour, $matches[$timePositions['m']]);
     }

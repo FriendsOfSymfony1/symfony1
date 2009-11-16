@@ -23,7 +23,7 @@
   protected function buildCriteria()
   {
 <?php if ($this->configuration->hasFilterForm()): ?>
-    if (is_null($this->filters))
+    if (null === $this->filters)
     {
       $this->filters = $this->configuration->getFilterForm($this->getFilters());
     }

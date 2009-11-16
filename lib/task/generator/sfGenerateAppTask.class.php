@@ -23,22 +23,10 @@ class sfGenerateAppTask extends sfGeneratorBaseTask
   /**
    * @see sfTask
    */
-  protected function doRun(sfCommandManager $commandManager, $options)
-  {
-    $this->process($commandManager, $options);
-
-    $this->checkProjectExists();
-
-    return $this->execute($commandManager->getArgumentValues(), $commandManager->getOptionValues());
-  }
-
-  /**
-   * @see sfTask
-   */
   protected function configure()
   {
     $this->addArguments(array(
-      new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
+      new sfCommandArgument('app', sfCommandArgument::REQUIRED, 'The application name'),
     ));
 
     $this->addOptions(array(
@@ -92,7 +80,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $app = $arguments['application'];
+    $app = $arguments['app'];
 
     // Validate the application name
     if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $app))
