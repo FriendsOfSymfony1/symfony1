@@ -561,7 +561,7 @@ class sfRoute implements Serializable
     }
     
     // check for suffix
-    if ($this->suffix)
+    if ($this->suffix && !$afterASeparator)
     {
       // treat as a separator
       $this->tokens[] = array('separator', $currentSeparator, $this->suffix);
@@ -798,7 +798,7 @@ class sfRoute implements Serializable
     else if (preg_match('#\.(?:'.$this->options['variable_prefix_regex'].$this->options['variable_regex'].'|'.$this->options['variable_content_regex'].')$#i', $this->pattern))
     {
       // specific suffix for this route
-      // a . with a variable after or some cars without any separators
+      // a . with a variable after or some chars without any separators
       $this->suffix = '';
     }
     else
