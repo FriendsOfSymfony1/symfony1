@@ -35,6 +35,6 @@ $t->ok(@file_get_contents($autoload->getClassPath('sfpropel'), FILE_USE_INCLUDE_
 
 $t->ok(class_exists('BaseExtendMe'), 'plugin lib directory added to autoload');
 $r = new ReflectionClass('ExtendMe');
-$t->like($r->getFilename(), '~fixtures/lib/ExtendMe~', 'plugin class can be replaced by project');
+$t->like(str_replace(DIRECTORY_SEPARATOR, '/', $r->getFilename()), '~fixtures/lib/ExtendMe~', 'plugin class can be replaced by project');
 $t->ok(class_exists('NotInLib'), 'plugin autoload sets class paths');
 $t->ok(!class_exists('ExcludedFromAutoload'), 'plugin autoload excludes directories');
