@@ -121,6 +121,30 @@
         <source>The item was deleted successfully.</source>
         <target>Das Objekt wurde erfolgreich gelöscht.</target>
       </trans-unit>
+      <trans-unit>
+        <source>is empty</source>
+        <target>ist leer</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes or no</source>
+        <target>Ja oder Nein</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes</source>
+        <target>Ja</target>
+      </trans-unit>
+      <trans-unit>
+        <source>no</source>
+        <target>Nein</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date% to %to_date%]]></source>
+        <target><![CDATA[von %from_date% bis %to_date%]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
+        <target><![CDATA[von %from_date%<br />bis %to_date%]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

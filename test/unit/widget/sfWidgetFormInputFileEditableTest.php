@@ -10,7 +10,17 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(6);
+class FormFormatterStub extends sfWidgetFormSchemaFormatter
+{
+  public function __construct() {}
+
+  public function translate($subject, $parameters = array())
+  {
+    return sprintf('translation[%s]', $subject);
+  }
+}
+
+$t = new lime_test(7);
 
 // ->render()
 $t->diag('->render()');
@@ -44,6 +54,16 @@ $w = new sfWidgetFormInputFileEditable(array(
   'delete_label' => 'delete',
 ));
 $t->is($w->render('foo'), '-foo-<br /><input type="file" name="foo" id="foo" /><br /><input type="checkbox" name="foo_delete" id="foo_delete" /> <label for="foo_delete">delete</label>', '->render() renders the widget as HTML');
+
+$t->diag('delete label translation');
+$ws = new sfWidgetFormSchema();
+$ws->addFormFormatter('stub', new FormFormatterStub());
+$ws->setFormFormatterName('stub');
+$w = new sfWidgetFormInputFileEditable(array(
+  'file_src' => '-foo-',
+));
+$w->setParent($ws);
+$t->is($w->render('foo'), '-foo-<br /><input type="file" name="foo" id="foo" /><br /><input type="checkbox" name="foo_delete" id="foo_delete" /> <label for="foo_delete">translation[remove the current file]</label>', '->render() renders the widget as HTML');
 
 $t->diag('is_image option');
 $w = new sfWidgetFormInputFileEditable(array(
