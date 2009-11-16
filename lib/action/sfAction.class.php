@@ -375,25 +375,38 @@ abstract class sfAction extends sfComponent
   }
 
   /**
+   * Returns a value from security.yml.
+   *
+   * @param string $name    The name of the value to pull from security.yml
+   * @param mixed  $default The default value to return if none is found in security.yml
+   *
+   * @return mixed
+   */
+  public function getSecurityValue($name, $default = null)
+  {
+    $actionName = strtolower($this->getActionName());
+
+    if (isset($this->security[$actionName][$name]))
+    {
+      return $this->security[$actionName][$name];
+    }
+
+    if (isset($this->security['all'][$name]))
+    {
+      return $this->security['all'][$name];
+    }
+
+    return $default;
+  }
+
+  /**
    * Indicates that this action requires security.
    *
    * @return bool true, if this action requires security, otherwise false.
    */
   public function isSecure()
   {
-    $actionName = strtolower($this->getActionName());
-
-    if (isset($this->security[$actionName]['is_secure']))
-    {
-      return $this->security[$actionName]['is_secure'];
-    }
-
-    if (isset($this->security['all']['is_secure']))
-    {
-      return $this->security['all']['is_secure'];
-    }
-
-    return false;
+    return $this->getSecurityValue('is_secure', false);
   }
 
   /**
@@ -403,22 +416,7 @@ abstract class sfAction extends sfComponent
    */
   public function getCredential()
   {
-    $actionName = strtolower($this->getActionName());
-
-    if (isset($this->security[$actionName]['credentials']))
-    {
-      $credentials = $this->security[$actionName]['credentials'];
-    }
-    else if (isset($this->security['all']['credentials']))
-    {
-      $credentials = $this->security['all']['credentials'];
-    }
-    else
-    {
-      $credentials = null;
-    }
-
-    return $credentials;
+    return $this->getSecurityValue('credentials');
   }
 
   /**
