@@ -1,1 +1,67 @@
---/--/09: Version 1.4.0 RC1
+11/16/09: Version 1.4.0 RC1
+---------------------------
+
+ * [24071] added script to help with formatting Subversion log for CHANGELOG
+ * [24069] cleaned up template paths shown in WDT view panel
+ * [24068] added check for generate*Filename method on form object to handle naming uploading files (closes #7350)
+ * [24063] cleaned up generator templates (closes #7600)
+ * [24062] fixed issue with autoloading not correctly sorted in windows (fixes #7226)
+ * [24061] removed unneeded calls to setDefaultParameters by checking for a dirty flag.
+ * [24060] added database arguments to doctrine create and drop database tasks (closes #7351)
+ * [24056] reverted r23117 (refs #7363, closes #7456)
+ * [24051] made all generated base classes abstract (closes #7301)
+ * [24048] switched lime to new version 1.0.8
+ * [24045] renamed listCredentials() as getCredentials(), removed the former in 1.4 (closes #7443)
+ * [24043] added generic accessor for security.yml values
+ * [24037] deprecated loading of helpers from the include path
+ * [24036] fixed a bug with the / route that was made visible by r24026 (fixes #7597)
+ * [24033] removed unnecessary call to sfConfig
+ * [24032] moved project:optimize cache from project to application configuration
+ * [24027] changed components dependencies to use the 1.0 branch
+ * [24021] added short circuit checking for a static route prefix. Improves performance with many routes by up to 25%
+ * [24020] added loadHelpers to project:optimize (closes #4556)
+ * [24018] fixed command.* events not firing from generate:app task
+ * [24015] Static texts in native widgets are translated by default (fixes #7590, patch by FabienP)
+ * [24013] updated functional test bootstrap so fixture cache is always cleared before the context is created
+ * [24012] Options within optgroups are translated correctly, optgroup labels are translated as well (fixes #7591)
+ * [24008] ported r23909 to Propel 1.4 I18N behavior
+ * [24007] removed unnecessary calls to sfConfig, cleaned up shortening of paths used in exception messages
+ * [23995] reduced size of serialized sfRoute slightly due to the fact that defaultParameters will be always reset and compiled will be always true
+ * [23994] Moved get/setParent() from sfWidgetFormSchema to sfWidgetForm. The choices of all select/choice widgets are now translated by default (fixes #5886)
+ * [23993] removed obsolete setDefaultParameter code in routing
+ * [23984] not setting status header for servers in cgi-sapi mode (fixes #3191)
+ * [23977] fixed image saving for Doctrine
+ * [23968] fixed i18n functional test not using deprectated redirect checking
+ * [23967] corrected problem with validation when i18n is used. i18n should not be taken into account when the object is new (fixes #7486, patch by Dejan.Spasic)
+ * [23954] updated phpdoc to reflect the actual possibilities for redirect parameters (refs #6082)
+ * [23953] made empty redirect check faster and type tolerant (fixes #6082)
+ * [23951] fixed file validator on certain mac os configurations (closes #6641)
+ * [23950] fixed doctrine modules when dealing with multiple primary keys (closes #7571)
+ * [23948] improved searching for symfony script file on windows (closes #6914)
+ * [23930] fixed defaults for singular and plural name for generate crud tasks in case none are specified (refs #5640)
+ * [23927] added a new option to change the generator class for forms and filters (closes #5014, patch from joostdj)
+ * [23925] fixed sfMemcacheCache delete() operation (closes #6220)
+ * [23924] fixed defaults for singular and plural name for generate crud tasks in case none are specified (refs #5640)
+ * [23923] changed the routing handler cache file so that it consumes less memory
+ * [23919] made crud generator respect singular and plural name (fixes #5640, patch by Dejan.Spasic)
+ * [23917] Added sfFormField and sfFormFieldSchema to the safe classes in sfView. Widgets are always expected to be escaped by the developers! (fixes #7560, patch by nicolas)
+ * [23915] added unit test for sfSessionStorage (closes #7585, patch by Rubino)
+ * [23911] improved sfApplicationConfiguration getXYZDir caching when not using the project optimize task, by lazy caching (fixes #6413)
+ * [23910] changed CLI tests to use the new admin generator instead of the old one
+ * [23909] updated SfObjectBuilder so that Propel objects do not query the I18N table when they are new (fixes #7513, patch by joostdj)
+ * [23907] improved sfApplicationConfiguration getXYZDir caching when not using the project optimize task, by lazy caching (fixes #6413)
+ * [23901] The last exception is reset on every new page call in functional tests (fixes #6342, patch by Stefan.Koopmanschap)
+ * [23900] Default fields are created for %%variables%% in the title of the edit, list and new action, if possible. Closes #7578
+ * [23897] updated sfProtoculous javascript externals
+ * [23896] switched phing external to 2.3.3 tag instead of its revision in the trunk
+ * [23892] added Countable and Iterator interface to DOM CSS selector
+ * [23888] reporting error on empty url for sfWebController#redirect (fixes #6082, patch by ThijsFeryn )
+ * [23887] fixed Phing autoloading in upgrade task (fixes #7577, patch by Stefan.Koopmanschap)
+ * [23882] sfI18N now correctly rejects invalid dates when using a culture that has the dot as separator, and correctly respects am/pm markers (fixes #7582)
+ * [23852] fixed assumption in propel upgrade (closes #7577)
+ * [23849] removed reference to removed file (closes #7563)
+ * [23822] fixed loading of application-less plugin autoloader when multiple plugins are enabled
+ * [23810] set svn:eol-style property to native and svn:keywords property to Id on all .php files
+ * [23799] removed need for runtime insertion of lowercase module name into *_module_config.yml.php files. The module name is already inserted correctly by the sfDefineEnvironmentConfigHandler. This improves especially performance for projects with some more entries in module/config/module.yml (fixes #2105)
+ * [23763] added some configuration to the project:send-emails task (number of messages and time limit)
+ * [23762] updated Swift Mailer to the latest 4.1 version
