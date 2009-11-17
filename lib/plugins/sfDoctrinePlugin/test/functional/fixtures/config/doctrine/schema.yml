@@ -185,3 +185,7 @@ DefaultValueTest:
       type: string(255)
       notnull: true
       default: ''
+
+Attachment:
+  columns:
+    file_path: string(255)

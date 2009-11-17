@@ -12,9 +12,9 @@ class AttachmentForm extends BaseAttachmentForm
   public function configure()
   {
     $this->widgetSchema['file'] = new sfWidgetFormInputFile();
-
-    $fileValidator = new sfValidatorFile(array('path' => sfConfig::get('sf_cache_dir')));
-    $fileValidator->setOption('mime_type_guessers', array());
-    $this->validatorSchema['file'] = $fileValidator;
+    $this->validatorSchema['file'] = new sfValidatorFile(array(
+      'path' => sfConfig::get('sf_cache_dir'),
+      'mime_type_guessers' => array(),
+    ));
   }
 }

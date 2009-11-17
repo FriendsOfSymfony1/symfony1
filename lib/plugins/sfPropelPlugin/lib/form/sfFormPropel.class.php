@@ -295,6 +295,10 @@ abstract class sfFormPropel extends sfFormObject
     {
       return $file->save($filename);
     }
+    else if (method_exists($this, $method))
+    {
+      return $file->save($this->$method($file));
+    }
     else if (method_exists($this->getObject(), $method))
     {
       return $file->save($this->getObject()->$method($file));
