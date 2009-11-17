@@ -129,6 +129,30 @@
         <source>A problem occurs when deleting the selected items.</source>
         <target>Κάποιο πρόβλημα σημειώθηκε κατά την διαγραφή των επιλεγμένων αντικειμένων.</target>
       </trans-unit>
+	  <trans-unit>
+        <source>is empty</source>
+        <target>είναι κενό</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes or no</source>
+        <target>ναι ή όχι</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes</source>
+        <target>ναι</target>
+      </trans-unit>
+      <trans-unit>
+        <source>no</source>
+        <target>όχι</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date% to %to_date%]]></source>
+        <target><![CDATA[από %from_date% εώς %to_date%]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
+        <target><![CDATA[από %from_date%<br />εώς %to_date%]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
