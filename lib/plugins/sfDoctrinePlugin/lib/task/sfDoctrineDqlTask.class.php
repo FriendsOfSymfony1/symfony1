@@ -29,6 +29,7 @@ class sfDoctrineDqlTask extends sfDoctrineBaseTask
   {
     $this->addArguments(array(
       new sfCommandArgument('dql_query', sfCommandArgument::REQUIRED, 'The DQL query to execute', null),
+      new sfCommandArgument('parameter', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Query parameter'),
     ));
 
     $this->addOptions(array(
@@ -43,13 +44,18 @@ class sfDoctrineDqlTask extends sfDoctrineBaseTask
     $this->briefDescription = 'Execute a DQL query and view the results';
 
     $this->detailedDescription = <<<EOF
-The [doctrine:data-dql|INFO] task executes a DQL query and display the formatted results:
+The [doctrine:dql|INFO] task executes a DQL query and displays the formatted
+results:
 
-  [./symfony doctrine:dql "FROM User u"|INFO]
+  [./symfony doctrine:dql "FROM User"|INFO]
 
-You can show the SQL that would be executed by using the [--dir|COMMENT] option:
+You can show the SQL that would be executed by using the [--show-sql|COMMENT] option:
 
-  [./symfony doctrine:dql --show-sql "FROM User u"|INFO]
+  [./symfony doctrine:dql --show-sql "FROM User"|INFO]
+
+Provide query parameters as additional arguments:
+
+  [./symfony doctrine:dql "FROM User WHERE email LIKE ?" "%symfony-project.com"|INFO]
 EOF;
   }
 
@@ -66,77 +72,89 @@ EOF;
       ->parseDqlQuery($dql);
 
     $this->logSection('doctrine', 'executing dql query');
-
-    echo sprintf('DQL: %s', $dql) . "\n";
+    $this->log(sprintf('DQL: %s', $dql));
 
     if ($options['show-sql'])
     {
-      echo sprintf('SQL: %s', $q->getSqlQuery()) . "\n";
+      $this->log(sprintf('SQL: %s', $q->getSqlQuery($arguments['parameter'])));
     }
 
-    $count = $q->count();
+    $count = $q->count($arguments['parameter']);
 
     if ($count)
     {
       if (!$options['table'])
       {
-        $results = $q->fetchArray();
+        $results = $q->fetchArray($arguments['parameter']);
 
-        echo sprintf('found %s results', $count) . "\n";
-        $yaml = sfYaml::dump($results, 4);
-        $lines = explode("\n", $yaml);
-        foreach ($lines as $line)
-        {
-          echo $line."\n";
-        }
+        $this->log(array(
+          sprintf('found %s results', number_format($count)),
+          sfYaml::dump($results, 4),
+        ));
       }
       else
       {
-        $results = $q->execute(array(), Doctrine_Core::HYDRATE_SCALAR);
+        $results = $q->execute($arguments['parameter'], Doctrine_Core::HYDRATE_SCALAR);
 
-        $headers  = array();
+        $headers = array();
+
         // calculate lengths
-        foreach($results as $result)
+        foreach ($results as $result)
         {
-          foreach( $result as $field => $value )
+          foreach ($result as $field => $value)
           {
             if (!isset($headers[$field]))
             {
               $headers[$field] = 0;
             }
+
             $headers[$field] = max($headers[$field], strlen($value));
           }
         }
 
-        // print headers
-        $hdr  = "|";
-        $div  = "+";
-        foreach($headers as $field => &$length)
+        // print header
+        $hdr = '|';
+        $div = '+';
+
+        foreach ($headers as $field => & $length)
         {
           if ($length < strlen($field))
           {
             $length = strlen($field);
           }
-          $hdr .= " ".str_pad($field, $length)." |";
-          $div .= str_pad("", $length + 2, "-")."+";
+
+          $hdr .= ' '.str_pad($field, $length).' |';
+          $div .= str_repeat('-', $length + 2).'+';
         }
-        echo $div."\n";
-        echo $hdr."\n";
-        echo $div."\n";
+
+        $this->log(array($div, $hdr, $div));
 
         // print results
-        foreach($results as $result)
+        foreach ($results as $result)
         {
-          echo '|';
-          foreach( $result as $field => $value )
+          $line = '|';
+          foreach ($result as $field => $value)
           {
-            echo ' '.str_pad($value,$headers[$field]).' |';
+            $line .= ' '.str_pad($value, $headers[$field]).' |';
           }
-          echo "\n";
+          $this->log($line);
         }
-        echo $div . "\n";
-        echo sprintf('(%s results)', $count) . "\n";
-        echo "\n";
+
+        $this->log($div);
+
+        // find profiler
+        if ($profiler = $q->getConnection()->getListener()->get('symfony_profiler'))
+        {
+          $events = $profiler->getQueryExecutionEvents();
+          $event = array_pop($events);
+          $this->log(sprintf('%s results (%s sec)', number_format($count), number_format($event->getElapsedSecs(), 2)));
+        }
+        else
+        {
+          $this->log(sprintf('%s results', number_format($count)));
+        }
+
+        $this->log('');
       }
     }
     else
