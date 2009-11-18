@@ -214,7 +214,7 @@ abstract class sfWidgetForm extends sfWidget
   /**
    * Returns a formatted id based on the field name and optionally on the field value.
    *
-   * This function determines the proper form field id name based on the parameters. If a form field has an
+   * This method determines the proper form field id name based on the parameters. If a form field has an
    * array value as a name we need to convert them to proper and unique ids like so:
    *
    * <samp>
@@ -223,6 +223,11 @@ abstract class sfWidgetForm extends sfWidget
    *  name[bob] => name_bob
    *  name[item][total] => name_item_total
    * </samp>
+   *
+   * This method also changes all invalid characters to an underscore (_):
+   *
+   * Ids must begin with a letter ([A-Za-z]) and may be followed by any number of letters, digits
+   * ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").
    *
    * @param  string $name   The field name
    * @param  string $value  The field value
@@ -244,8 +249,11 @@ abstract class sfWidgetForm extends sfWidget
 
     if (false !== strpos($this->getOption('id_format'), '%s'))
     {
-      return sprintf($this->getOption('id_format'), $name);
+      $name = sprintf($this->getOption('id_format'), $name);
     }
+
+    // remove illegal characters
+    $name = preg_replace(array('/^[^A-Za-z]+/', '/[^A-Za-z0-9\:_\.\-]/'), array('', '_'), $name);
 
     return $name;
   }
