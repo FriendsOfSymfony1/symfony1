@@ -150,7 +150,7 @@ public function get{$column->getPhpName()}(\$culture = null)
  */
 public function set{$column->getPhpName()}(\$value, \$culture = null)
 {
-  \$this->getCurrent{$refPhpName}(\$culture)->set{\$column->getPhpName()}(\$value);
+  \$this->getCurrent{$refPhpName}(\$culture)->set{$column->getPhpName()}(\$value);
   return \$this;
 }
 
