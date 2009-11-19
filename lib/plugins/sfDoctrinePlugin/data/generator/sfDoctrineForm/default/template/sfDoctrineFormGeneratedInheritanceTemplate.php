@@ -10,7 +10,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  */
-class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
+abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
 {
   protected function setupInheritance()
   {

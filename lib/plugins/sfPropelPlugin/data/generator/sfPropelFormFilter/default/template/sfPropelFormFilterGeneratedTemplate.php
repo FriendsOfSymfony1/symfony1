@@ -8,7 +8,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  */
-class Base<?php echo $this->table->getClassname() ?>FormFilter extends BaseFormFilterPropel
+abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {

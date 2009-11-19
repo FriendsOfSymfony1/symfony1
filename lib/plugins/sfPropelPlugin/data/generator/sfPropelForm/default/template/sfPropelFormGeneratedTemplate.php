@@ -10,7 +10,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  */
-class Base<?php echo $this->table->getClassname() ?>Form extends BaseFormPropel
+abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFormPropel
 {
   public function setup()
   {
