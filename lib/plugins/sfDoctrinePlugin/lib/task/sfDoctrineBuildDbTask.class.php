@@ -27,21 +27,29 @@ class sfDoctrineBuildDbTask extends sfDoctrineBaseTask
    */
   protected function configure()
   {
+    $this->addArguments(array(
+      new sfCommandArgument('database', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'A specific database'),
+    ));
+
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
+    $this->aliases = array('doctrine:create-db');
     $this->namespace = 'doctrine';
     $this->name = 'build-db';
     $this->briefDescription = 'Creates database for current model';
 
     $this->detailedDescription = <<<EOF
-The [doctrine:build-db|INFO] task creates the database:
+The [doctrine:build-db|INFO] task creates one or more databases based on
+configuration in [config/databases.yml|COMMENT]:
 
   [./symfony doctrine:build-db|INFO]
 
-The task read connection information in [config/doctrine/databases.yml|COMMENT]:
+You can specify what databases to create by providing their names:
+
+  [./symfony doctrine:build-db slave1 slave2|INFO]
 EOF;
   }
 
