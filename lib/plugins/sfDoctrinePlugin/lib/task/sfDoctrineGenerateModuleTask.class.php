@@ -44,6 +44,7 @@ class sfDoctrineGenerateModuleTask extends sfDoctrineBaseTask
       new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
     ));
 
+    $this->aliases = array('doctrine-generate-crud', 'doctrine:generate-crud');
     $this->namespace = 'doctrine';
     $this->name = 'generate-module';
     $this->briefDescription = 'Generates a Doctrine module';
@@ -117,6 +118,7 @@ EOF;
       'plural'                => $options['plural'],
       'route_prefix'          => $options['route-prefix'],
       'with_doctrine_route'   => $options['with-doctrine-route'],
+      'actions_base_class'    => $options['actions-base-class'],
     ));
 
     $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$arguments['module'];
