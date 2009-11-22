@@ -131,7 +131,7 @@ class sfTesterForm extends sfTester
     }
     else
     {
-      $error = $this->form[$field]->getError();
+      $error = $this->getFormField($field)->getError();
     }
 
     if (false === $value)
@@ -225,5 +225,32 @@ class sfTesterForm extends sfTester
     }
 
     return $parameters;
+  }
+
+  /**
+   * @param string $path
+   * @return sfFormField
+   */
+
+  public function getFormField($path)
+  {
+    if (false !== $pos = strpos($path, '['))
+    {
+      $field = $this->form[substr($path, 0, $pos)];
+    }
+    else
+    {
+      return $this->form[$path];
+    }
+
+    if (preg_match_all('/\[(?P<part>[^]]+)\]/', $path, $matches))
+    {
+      foreach($matches['part'] as $part)
+      {
+        $field = $field[$part];
+      }
+    }
+
+    return $field;
   }
 }
