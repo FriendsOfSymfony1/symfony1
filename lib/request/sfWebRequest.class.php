@@ -618,7 +618,7 @@ class sfWebRequest extends sfRequest
   /**
    * Returns the array that contains all request information ($_SERVER or $_ENV).
    *
-   * This information is stored in the [sf_path_info_array] constant.
+   * This information is stored in the path_info_array option.
    *
    * @return  array Path information
    */

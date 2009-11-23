@@ -165,7 +165,6 @@ abstract class sfController
    * @throws sfForwardException        If an error occurs while forwarding the request
    * @throws sfError404Exception       If the action not exist
    * @throws sfInitializationException If the action could not be initialized
-   * @throws sfSecurityException       If the action requires security but the user implementation is not of type sfSecurityUser
    */
   public function forward($moduleName, $actionName)
   {
