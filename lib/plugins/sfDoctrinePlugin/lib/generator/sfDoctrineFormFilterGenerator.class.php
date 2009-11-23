@@ -343,7 +343,12 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     foreach ($models as $key => $model)
     {
       $table = Doctrine_Core::getTable($model);
-      $symfonyOptions = $table->getOption('symfony');
+      $symfonyOptions = (array) $table->getOption('symfony');
+
+      if ($table->isGenerator())
+      {
+        $symfonyOptions = array_merge((array) $table->getParentGenerator()->getOption('table')->getOption('symfony'), $symfonyOptions);
+      }
 
       if (isset($symfonyOptions['filter']) && !$symfonyOptions['filter'])
       {

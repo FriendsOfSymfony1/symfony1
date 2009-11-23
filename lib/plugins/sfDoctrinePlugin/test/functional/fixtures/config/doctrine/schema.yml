@@ -179,6 +179,17 @@ FormGeneratorTest2:
   columns:
     name: string(255)
 
+FormGeneratorTest3:
+  options:
+    symfony:
+      form: false
+      filter: false
+  actAs:
+    I18n:
+      fields: [name]
+  columns:
+    name: string(255)  
+
 DefaultValueTest:
   columns:
     name:
