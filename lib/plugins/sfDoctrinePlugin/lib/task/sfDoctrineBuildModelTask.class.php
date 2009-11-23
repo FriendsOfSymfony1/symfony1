@@ -61,7 +61,7 @@ EOF;
     $config = $this->getCliConfig();
     $builderOptions = $this->configuration->getPluginConfiguration('sfDoctrinePlugin')->getModelBuilderOptions();
 
-    $finder = sfFinder::type('file')->maxdepth(0)->name('*'.$builderOptions['suffix']);
+    $finder = sfFinder::type('file')->name('*'.$builderOptions['suffix']);
     $before = $finder->in($config['models_path']);
 
     $schema = $this->prepareSchemaFile($config['yaml_schema_path']);
@@ -115,7 +115,7 @@ EOF;
       "{\n\n}"         => "{\n}\n",
     ));
 
-    $finder = sfFinder::type('file')->maxdepth(0)->name('*Table'.$builderOptions['suffix']);
+    $finder = sfFinder::type('file')->name('*Table'.$builderOptions['suffix']);
     foreach (array_diff($finder->in($config['models_path']), $before) as $file)
     {
       $contents = file_get_contents($file);
