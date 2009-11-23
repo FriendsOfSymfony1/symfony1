@@ -28,7 +28,6 @@ class sfTestAllTask extends sfTestBaseTask
       new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
     ));
 
-    $this->aliases = array('test-all');
     $this->namespace = 'test';
     $this->name = 'all';
     $this->briefDescription = 'Launches all tests';

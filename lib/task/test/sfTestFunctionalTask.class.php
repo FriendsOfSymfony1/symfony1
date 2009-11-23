@@ -32,7 +32,6 @@ class sfTestFunctionalTask extends sfTestBaseTask
       new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
     ));
 
-    $this->aliases = array('test-functional');
     $this->namespace = 'test';
     $this->name = 'functional';
     $this->briefDescription = 'Launches functional tests';

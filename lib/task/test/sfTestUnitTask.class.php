@@ -31,7 +31,6 @@ class sfTestUnitTask extends sfTestBaseTask
       new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
     ));
 
-    $this->aliases = array('test-unit');
     $this->namespace = 'test';
     $this->name = 'unit';
     $this->briefDescription = 'Launches unit tests';
