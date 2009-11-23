@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(51);
+$t = new lime_test(65);
 
 // ->matchesUrl()
 $t->diag('->matchesUrl()');
@@ -235,3 +235,39 @@ class MyRoute extends sfRoute
 $route = new MyRoute('/=foo');
 $t->is($route->matchesUrl('/foo/bar'), array('foo' => 'bar'), '->tokenizeBufferBefore() allows to add a custom token');
 $t->is($route->generate(array('foo' => 'bar')), '/foo/bar', '->compileForLabel() adds logic to generate a route for a custom token');
+
+class CompileCheckRoute extends sfRoute
+{
+  public function isCompiled()
+  {
+    return $this->compiled;
+  }
+}
+
+// state checking
+$t->diag('state checking');
+$route = new CompileCheckRoute('/foo');
+$t->is($route->isCompiled(), false, '__construct() creates an uncompiled instanceof sfRoute');
+$t->is($route->isBound(), false, '->isBound() returns false before binding');
+$route->bind(null, array('foo' => 'bar'));
+$t->is($route->isBound(), true, '->isBound() returns true after binding');
+$t->is($route->getParameters(), array('foo' => 'bar'), '->getParameters() compiles the route and returns parameters');
+$t->is($route->isCompiled(), true, '->getParameters() compiles the route and returns parameters');
+
+$route = new CompileCheckRoute('/foo');
+$t->is($route->getPattern(), '/foo', '->getPattern() compiles the route and returns the pattern');
+$t->is($route->isCompiled(), true, '->getPattern() compiles the route and returns pattern');
+
+$route = new CompileCheckRoute('/foo', array('default' => 'bar'));
+$t->is($route->getDefaults(), array('default' => 'bar'), '->getDefaults() compiles the route and returns the defaults');
+$t->is($route->isCompiled(), true, '->getDefaults() compiles the route and returns defaults');
+
+$route = new CompileCheckRoute('/foo', array(), array('requirements' => 'bar'));
+$t->is($route->getRequirements(), array('requirements' => 'bar'), '->getRequirements() compiles the route and returns the requirements');
+$t->is($route->isCompiled(), true, '->getRequirements() compiles the route and returns requirements');
+
+$route = new CompileCheckRoute('/foo', array(), array(), array('options' => 'bar'));
+$options = $route->getOptions();
+$t->is($options['options'], 'bar', '->getOptions() compiles the route and returns the compiled options');
+$t->is(count($options) > 1, true, '->getOptions() compiles the route and returns many compiled options');
+$t->is($route->isCompiled(), true, '->getOptions() compiles the route and returns compiled options');
