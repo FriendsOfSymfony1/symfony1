@@ -1,3 +1,32 @@
+11/23/09: Version 1.4.0 RC2
+---------------------------
+
+ * [24295] removed deprecated `sfDoctrinePlugin_doctrine_lib_path` setting - use `sf_doctrine_dir` instead
+ * [24294] Fixing issue with generators not respecting options of the parent who generated it (fixes #7639)
+ * [24293] added missing API for getting Parameters of an sfRoute instance (closes #7632)
+ * [24292] reverted the removal of the common filter when upgrading due to backward compatibility concerns. filter is still omitted for new projects (closes #7678)
+ * [24288] fixed defaulting to first app when running a task with a project configuration already set (closes #7633, refs #5835)
+ * [24281] added back the common filter to ease upgrading existing website (the default is still the same though) (refs #7657)
+ * [24279] added missing PHPDoc (closes #7672)
+ * [24278] added getOptions method to sfForm (closes #7613)
+ * [24277] made exception messages more helpful (closes #7627)
+ * [24275] added references to the reference guide in generated configuration files
+ * [24271] updated token replacement in doctrine-generated model classes to disallow recursion into directories
+ * [24270] updated token replacement in doctrine-generated model classes to allow recursion into plugin and base directories
+ * [24265] fixed doc comments (closes #7664, #7666)
+ * [24217] fixed embedded forms in functional tests (closes #7653)
+ * [24215] fixed missing actions_base_class for Doctrine Generator (closes #7655, refs #5995)
+ * [24150] enhanced doctrine:dql task to accept query parameters and render how long a query took
+ * [24148] fixed forcing of colors in test:coverage task
+ * [24137] fixed invalid id attributes generation in sfWidgetForm (closes #6980, based on a patch from Leon.van.der.Ree)
+ * [24134] reverted yaml style (closes #7624)
+ * [24132] fixed sfWidgetFormInputFileEditable (closes #7621)
+ * [24130] fixed typo in propel I18N behavior
+ * [24094] updated czech admin generator translation (fixes #7610, thanks to Pavel.Campr)
+ * [24093] updated greek admin generator translation (fixes #7608, thanks to Zapantis Antreas)
+ * [24092] updated polish admin generator translation (fixes #7608, thanks to m)
+ * [24091] updated italian admin generator translation (fixes #7606, thanks to alexodus71)
+
 11/16/09: Version 1.4.0 RC1
 ---------------------------
 
