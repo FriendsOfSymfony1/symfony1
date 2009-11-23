@@ -74,9 +74,9 @@ class sfRoute implements Serializable
   }
 
   /**
-   * Returns true if the form is bound to input values.
+   * Returns true if the route is bound to context and parameters.
    *
-   * @return Boolean true if the form is bound to input values, false otherwise
+   * @return Boolean true if theroute is bound to context and parameters, false otherwise
    */
   public function isBound()
   {
@@ -311,6 +311,21 @@ class sfRoute implements Serializable
     }
 
     return $url;
+  }
+
+  /**
+   * Returns the route parameters.
+   *
+   * @return array The route parameters
+   */
+  public function getParameters()
+  {
+    if (!$this->compiled)
+    {
+      $this->compile();
+    }
+
+    return $this->parameters;
   }
 
   /**
