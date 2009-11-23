@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(154);
+$t = new lime_test(155);
 
 class FormTest extends sfForm
 {
@@ -105,12 +105,13 @@ $t->ok(!$f->isCSRFProtected(), '__construct() can disable the CSRF protection by
 $f = new FormTest();
 $t->ok($f->isCSRFProtected(), '__construct() uses CSRF protection if null is passed as the second argument and it\'s enabled globally');
 
-// ->getOption() ->setOption()
+// ->getOption() ->setOption() ->getOptions()
 $t->diag('->getOption() ->setOption()');
 $f = new FormTest(array(), array('foo' => 'bar'));
 $t->is($f->getOption('foo'), 'bar', '__construct takes an option array as its second argument');
 $f->setOption('bar', 'foo');
 $t->is($f->getOption('bar'), 'foo', '->setOption() changes the value of an option');
+$t->is_deeply($f->getOptions(), array('foo' => 'bar', 'bar' => 'foo'), '->getOptions() returns all options');
 
 sfForm::disableCSRFProtection();
 

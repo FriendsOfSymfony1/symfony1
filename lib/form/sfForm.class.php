@@ -734,6 +734,16 @@ class sfForm implements ArrayAccess, Iterator, Countable
   }
 
   /**
+   * Returns the current form's options.
+   *
+   * @return array The current form's options
+   */
+  public function getOptions()
+  {
+    return $this->options;
+  }
+
+  /**
    * Sets an option value.
    *
    * @param string $name  The option name
