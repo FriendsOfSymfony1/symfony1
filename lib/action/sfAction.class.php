@@ -499,6 +499,11 @@ abstract class sfAction extends sfComponent
     sfConfig::set('mod_'.strtolower($this->getModuleName()).'_view_class', $class);
   }
 
+  /**
+   * Returns the current route for this request
+   *
+   * @return sfRoute The route for the request
+   */
   public function getRoute()
   {
     return $this->getRequest()->getAttribute('sf_route');
