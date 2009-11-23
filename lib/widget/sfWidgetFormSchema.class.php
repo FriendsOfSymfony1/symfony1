@@ -755,10 +755,18 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   public function setPositions(array $positions)
   {
     $positions = array_values($positions);
-    if (array_diff($positions, array_keys($this->fields)) || array_diff(array_keys($this->fields), $positions))
+    $current = array_keys($this->fields);
+
+    if ($diff = array_diff($positions, $current))
     {
-      throw new InvalidArgumentException('Positions must contains all field names.');
+      throw new InvalidArgumentException('Widget schema does not include the following field(s): '.implode(', ', $diff));
     }
+
+    if ($diff = array_diff($current, $positions))
+    {
+      throw new InvalidArgumentException('Positions array must include all fields. Missing: '.implode(', ', $diff));
+    }
+
     foreach ($positions as &$position)
     {
       $position = (string) $position;
