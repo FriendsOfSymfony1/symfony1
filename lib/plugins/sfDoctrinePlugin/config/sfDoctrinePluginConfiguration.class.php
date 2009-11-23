@@ -37,20 +37,7 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
       $this->dispatcher->connect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
     }
 
-    if (!sfConfig::has('sf_doctrine_dir'))
-    {
-      // for BC
-      if (sfConfig::has('sfDoctrinePlugin_doctrine_lib_path'))
-      {
-        sfConfig::set('sf_doctrine_dir', realpath(dirname(sfConfig::get('sfDoctrinePlugin_doctrine_lib_path'))));
-      }
-      else
-      {
-        sfConfig::set('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine'));
-      }
-    }
-
-    require_once sfConfig::get('sf_doctrine_dir').'/Doctrine.php';
+    require_once sfConfig::get('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine')).'/Doctrine.php';
     spl_autoload_register(array('Doctrine', 'autoload'));
 
     $manager = Doctrine_Manager::getInstance();
