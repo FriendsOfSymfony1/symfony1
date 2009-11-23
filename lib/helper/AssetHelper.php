@@ -492,6 +492,7 @@ function include_title()
 function get_javascripts()
 {
   $response = sfContext::getInstance()->getResponse();
+  sfConfig::set('symfony.asset.javascripts_included', true);
 
   $html = '';
   foreach ($response->getJavascripts() as $file => $options)
@@ -524,6 +525,7 @@ function include_javascripts()
 function get_stylesheets()
 {
   $response = sfContext::getInstance()->getResponse();
+  sfConfig::set('symfony.asset.stylesheets_included', true);
 
   $html = '';
   foreach ($response->getStylesheets() as $file => $options)
