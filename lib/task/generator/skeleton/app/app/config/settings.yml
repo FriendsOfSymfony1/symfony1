@@ -1,3 +1,6 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/04-Settings
+
 prod:
   .settings:
     no_script_name:         ##NO_SCRIPT_NAME##
