@@ -32,11 +32,18 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    */
   public function construct()
   {
-    self::initializeI18n();
-
     if ($this->getTable()->hasRelation('Translation'))
     {
-      $this->unshiftFilter(new sfDoctrineRecordI18nFilter());
+      self::initializeI18n();
+
+      // only add filter to each table once
+      if (!$this->getTable()->getOption('has_symfony_i18n_filter'))
+      {
+        $this->getTable()
+          ->unshiftFilter(new sfDoctrineRecordI18nFilter())
+          ->setOption('has_symfony_i18n_filter', true)
+        ;
+      }
     }
   }
 
@@ -76,6 +83,8 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    */
   static public function setDefaultCulture($culture)
   {
+    self::initializeI18n();
+
     self::$_defaultCulture = $culture;
   }
 
