@@ -19,18 +19,21 @@
  */
 class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 {
+  /**
+   * @see Doctrine_Table::unshiftFilter()
+   */
   public function init()
   {
   }
 
   /**
-   * Implementation of filterSet() to call set on Translation relationship to allow
-   * access to I18n properties from the main object.
+   * Calls set on Translation relationship.
+   *
+   * Allows manipulation of I18n properties from the main object.
    *
    * @param Doctrine_Record $record
-   * @param string $name Name of the property
-   * @param string $value Value of the property
-   * @return void
+   * @param string          $name   Name of the property
+   * @param string          $value  Value of the property
    */
   public function filterSet(Doctrine_Record $record, $name, $value)
   {
@@ -38,13 +41,12 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
   }
 
   /**
-   * Implementation of filterGet() to call get on Translation relationship to allow
-   * access to I18n properties from the main object.
+   * Call get on Translation relationship.
+   *
+   * Allow access to I18n properties from the main object.
    *
    * @param Doctrine_Record $record
-   * @param string $name Name of the property
-   * @param string $value Value of the property
-   * @return void
+   * @param string          $name   Name of the property
    */
   public function filterGet(Doctrine_Record $record, $name)
   {
@@ -52,7 +54,9 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
     if (isset($record['Translation'][$culture]))
     {
       return $record['Translation'][$culture][$name];
-    } else {
+    }
+    else
+    {
       $defaultCulture = sfConfig::get('sf_default_culture');
       return $record['Translation'][$defaultCulture][$name];
     }
