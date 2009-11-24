@@ -61,9 +61,11 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $databases = $this->getDoctrineDatabases($databaseManager, count($arguments['database']) ? $arguments['database'] : null);
 
+    $environment = $this->configuration instanceof sfApplicationConfiguration ? $this->configuration->getEnvironment() : 'all';
+
     foreach ($databases as $name => $database)
     {
-      $this->logSection('doctrine', sprintf('Creating "%s" environment "%s" database', $this->configuration->getEnvironment(), $name));
+      $this->logSection('doctrine', sprintf('Creating "%s" environment "%s" database', $environment, $name));
       try
       {
         $database->getDoctrineConnection()->createDatabase();

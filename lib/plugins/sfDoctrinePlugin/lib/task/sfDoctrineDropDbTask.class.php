@@ -66,11 +66,13 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $databases = $this->getDoctrineDatabases($databaseManager, count($arguments['database']) ? $arguments['database'] : null);
 
+    $environment = $this->configuration instanceof sfApplicationConfiguration ? $this->configuration->getEnvironment() : 'all';
+
     if (
       !$options['no-confirmation']
       &&
       !$this->askConfirmation(array_merge(
-        array(sprintf('This command will remove all data in the following "%s" connection(s):', $this->configuration->getEnvironment()), ''),
+        array(sprintf('This command will remove all data in the following "%s" connection(s):', $environment), ''),
         array_map(create_function('$v', 'return \' - \'.$v;'), array_keys($databases)),
         array('', 'Are you sure you want to proceed? (y/N)')
       ), 'QUESTION_LARGE', false)

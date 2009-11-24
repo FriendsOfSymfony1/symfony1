@@ -196,7 +196,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
    */
   protected function getFirstApplication()
   {
-    if (count($dirs = sfFinder::type('dir')->ignore_version_control()->maxdepth(0)->follow_link()->relative()->in(sfConfig::get('sf_apps_dir'))))
+    if (count($dirs = sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in(sfConfig::get('sf_apps_dir'))))
     {
       return $dirs[0];
     }
