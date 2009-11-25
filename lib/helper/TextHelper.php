@@ -33,6 +33,7 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
   $mbstring = extension_loaded('mbstring');
   if($mbstring)
   {
+   $old_encoding = mb_internal_encoding();
    @mb_internal_encoding(mb_detect_encoding($text));
   }
   $strlen = ($mbstring) ? 'mb_strlen' : 'strlen';
@@ -45,13 +46,15 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
     {
       $truncate_text = preg_replace('/\s+?(\S+)?$/', '', $truncate_text);
     }
+    $text = $truncate_text.$truncate_string;
+  }
 
-    return $truncate_text.$truncate_string;
-  }
-  else
+  if($mbstring)
   {
-    return $text;
+   @mb_internal_encoding($old_encoding);
   }
+
+  return $text;
 }
 
 /**
@@ -113,6 +116,7 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
   $mbstring = extension_loaded('mbstring');
   if($mbstring)
   {
+    $old_encoding = mb_internal_encoding();
     @mb_internal_encoding(mb_detect_encoding($text));
   }
   $strlen = ($mbstring) ? 'mb_strlen' : 'strlen';
@@ -121,6 +125,7 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
   $substr = ($mbstring) ? 'mb_substr' : 'substr';
 
   $found_pos = $strpos($strtolower($text), $strtolower($phrase));
+  $return_string = '';
   if ($found_pos !== false)
   {
     $start_pos = max($found_pos - $radius, 0);
@@ -142,8 +147,14 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
       }
     }
 
-    return $prefix.$excerpt.$postfix;
+    $return_string = $prefix.$excerpt.$postfix;
   }
+
+  if($mbstring)
+  {
+   @mb_internal_encoding($old_encoding);
+  }
+  return $return_string;
 }
 
 /**

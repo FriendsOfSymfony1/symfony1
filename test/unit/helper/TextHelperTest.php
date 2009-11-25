@@ -13,7 +13,7 @@ require_once(dirname(__FILE__).'/../../../test/bootstrap/unit.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TextHelper.php');
 
-$t = new lime_test(50);
+$t = new lime_test(51);
 
 // truncate_text()
 $t->diag('truncate_text()');
@@ -41,11 +41,13 @@ $t->is(truncate_text($text, 15, '...', true), $truncated_true, 'text_truncate() 
 
 if(extension_loaded('mbstring'))
 {
-  $t->is(truncate_text('P?�li? ?lu?ou?k? k?? �p?l ?�belsk� �dy!', 11), 'P?�li? ?...', 'text_truncate() handles unicode characters using mbstring if available');
+  $oldEncoding = mb_internal_encoding();
+  $t->is(truncate_text('のビヘイビアにパラメーターを渡すことで特定のモデルでのフォーム生成を無効にできます', 11), 'のビヘイビアにパ...', 'text_truncate() handles unicode characters using mbstring if available');
+  $t->is(mb_internal_encoding(), $oldEncoding, 'text_truncate() sets back the internal encoding in case it changes it');
 }
 else
 {
-  $t->skip('mbstring extension is not enabled');
+  $t->skip('mbstring extension is not enabled', 2);
 }
 
 // highlight_text()
