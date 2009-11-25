@@ -389,7 +389,7 @@ class sfPropelDatabaseSchema
             $xml .= "    <behavior name=\"$behavior_name\">\n";
             foreach ($parameters as $param_name => $param_value)
             {
-              $xml .= "      <parameter name=\"$param_name\" value=\"$param_value\" />\n";
+              $xml .= "      <parameter name=\"$param_name\" value=\"{$this->fixXMLBoolean($param_value)}\" />\n";
             }
             $xml .= "    </behavior>\n";
           }

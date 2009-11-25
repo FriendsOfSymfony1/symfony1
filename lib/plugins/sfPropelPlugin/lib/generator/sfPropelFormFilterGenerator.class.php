@@ -78,7 +78,7 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
     foreach ($this->dbMap->getTables() as $tableName => $table)
     {
       $behaviors = $table->getBehaviors();
-      if (isset($behaviors['symfony']['filter']) && false === $behaviors['symfony']['filter'])
+      if (isset($behaviors['symfony']['filter']) && 'false' === $behaviors['symfony']['filter'])
       {
         continue;
       }
