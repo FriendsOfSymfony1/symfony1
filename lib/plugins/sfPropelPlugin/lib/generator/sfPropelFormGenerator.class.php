@@ -81,7 +81,7 @@ class sfPropelFormGenerator extends sfGenerator
     foreach ($this->dbMap->getTables() as $tableName => $table)
     {
       $behaviors = $table->getBehaviors();
-      if (isset($behaviors['symfony']['form']) && 'false' == $behaviors['symfony']['form'])
+      if (isset($behaviors['symfony']['form']) && false === $behaviors['symfony']['form'])
       {
         continue;
       }
