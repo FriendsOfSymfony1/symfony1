@@ -4,11 +4,6 @@ prod:
     param:
       level:   err
       loggers: ~
-cli:
-  controller:
-    class: sfConsoleController
-  request:
-    class: sfConsoleRequest
 
 test:
   response:

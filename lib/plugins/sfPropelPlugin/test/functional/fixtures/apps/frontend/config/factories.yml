@@ -5,14 +5,6 @@ prod:
       level:   err
       loggers: ~
 
-cli:
-  controller:
-    class: sfConsoleController
-  request:
-    class: sfConsoleRequest
-  response:
-    class: sfConsoleResponse
-
 test:
   response:
     class: sfWebResponse
