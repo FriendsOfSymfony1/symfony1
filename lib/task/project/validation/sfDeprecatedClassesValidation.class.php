@@ -1,0 +1,86 @@
+<?php
+
+/*
+ * This file is part of the symfony package.
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * Finds deprecated classes usage.
+ *
+ * @package    symfony
+ * @subpackage task
+ * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @version    SVN: $Id: sfAssetsUpgrade.class.php 24395 2009-11-25 19:02:18Z Kris.Wallsmith $
+ */
+class sfDeprecatedClassesValidation extends sfValidation
+{
+  public function getHeader()
+  {
+    return 'Checking usage of deprecated classes';
+  }
+
+  public function getExplanation()
+  {
+    return array(
+          '',
+          '  The files above use deprecated classes',
+          '  that have been removed in symfony 1.4.',
+          '',
+          '  You can find a list of all deprecated classes under the',
+          '  "Classes" section of the DEPRECATED tutorial:',
+          '',
+          '  http://www.symfony-project.org/tutorial/1_4/en/deprecated',
+          '',
+    );
+  }
+
+  public function validate()
+  {
+    $classes = array(
+      'sfDoctrineLogger', 'sfNoRouting', 'sfPathInfoRouting', 'sfRichTextEditor',
+      'sfRichTextEditorFCK', 'sfRichTextEditorTinyMCE', 'sfCrudGenerator', 'sfAdminGenerator',
+      'sfPropelCrudGenerator', 'sfPropelAdminGenerator', 'sfPropelUniqueValidator', 'sfDoctrineUniqueValidator',
+      'sfLoader', 'sfConsoleRequest', 'sfConsoleResponse', 'sfConsoleController',
+      'sfDoctrineDataRetriever', 'sfPropelDataRetriever',
+      'sfWidgetFormI18nSelectLanguage', 'sfWidgetFormI18nSelectCurrency', 'sfWidgetFormI18nSelectCountry',
+      'sfWidgetFormChoiceMany', 'sfWidgetFormPropelChoiceMany', 'sfWidgetFormDoctrineChoiceMany',
+      'sfValidatorChoiceMany', 'sfValidatorPropelChoiceMany', 'sfValidatorPropelDoctrineMany',
+      'SfExtensionObjectBuilder', 'SfExtensionPeerBuilder', 'SfMultiExtendObjectBuilder',
+      'SfNestedSetBuilder', 'SfNestedSetPeerBuilder', 'SfObjectBuilder', 'SfPeerBuilder',
+
+      // classes from sfCompat10Plugin
+      'sfEzComponentsBridge', 'sfZendFrameworkBridge', 'sfProcessCache', 'sfValidatorConfigHandler',
+      'sfActionException', 'sfValidatorException', 'sfFillInFormFilter', 'sfValidationExecutionFilter',
+      'sfRequestCompat10', 'sfFillInForm', 'sfCallbackValidator', 'sfCompareValidator', 'sfDateValidator',
+      'sfEmailValidator', 'sfFileValidator', 'sfNumberValidator', 'sfRegexValidator', 'sfStringValidator',
+      'sfUrlValidator', 'sfValidator\(', 'sfValidatorManager', 'sfMailView', 'sfMail\(',
+    );
+
+    $found = array();
+    $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in(sfConfig::get('sf_root_dir'));
+    foreach ($files as $file)
+    {
+      $content = file_get_contents($file);
+
+      $matches = array();
+      foreach ($classes as $class)
+      {
+        if (false !== stripos($content, $class))
+        {
+          $matches[] = $class;
+        }
+      }
+
+      if ($matches)
+      {
+        $found[$file] = implode(', ', $matches);
+      }
+    }
+
+    return $found;
+  }
+}
