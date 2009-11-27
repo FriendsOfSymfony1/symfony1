@@ -44,7 +44,12 @@ class sfParameterHolderValidation extends sfValidation
   public function validate()
   {
     $found = array();
-    $files = sfFinder::type('file')->name('*.class.php')->prune('vendor')->in(sfConfig::get('sf_root_dir'));
+    $files = sfFinder::type('file')->name('*.class.php')->prune('vendor')->in(array(
+      sfConfig::get('sf_apps_dir'),
+      sfConfig::get('sf_lib_dir'),
+      sfConfig::get('sf_test_dir'),
+      sfConfig::get('sf_plugins_dir'),
+    ));
     foreach ($files as $file)
     {
       $content = file_get_contents($file);

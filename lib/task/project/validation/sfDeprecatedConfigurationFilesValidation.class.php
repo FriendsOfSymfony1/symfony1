@@ -28,7 +28,8 @@ class sfDeprecatedConfigurationFilesValidation extends sfValidation
     return array(
           '',
           '  The project uses deprecated configuration files',
-          '  that have been removed in symfony 1.4.',
+          '  that have been removed in symfony 1.4 (mailer.yml, validate/*.yml)',
+          '  or for which the format changed (generator.yml)',
           '',
     );
   }
@@ -44,10 +45,28 @@ class sfDeprecatedConfigurationFilesValidation extends sfValidation
     }
 
     // modules/*/validate/*.yml
-    $files = sfFinder::type('file')->name('*.yml')->in(glob(sfConfig::get('sf_apps_dir').'/*/modules/*/validate'));
+    $files = sfFinder::type('file')->name('*.yml')->in(array_merge(
+      glob(sfConfig::get('sf_apps_dir').'/*/modules/*/validate'),
+      glob(sfConfig::get('sf_plugins_dir').'/*/modules/*/validate')
+    ));
     foreach ($files as $file)
     {
       $found[$file] = true;
+    }
+
+    // old generator.yml
+    $files = sfFinder::type('file')->name('generator.yml')->in(array(
+      sfConfig::get('sf_apps_dir'),
+      sfConfig::get('sf_plugins_dir'),
+    ));
+    foreach ($files as $file)
+    {
+      $content = file_get_contents($file);
+
+      if (false !== strpos($content, 'sfPropelAdminGenerator'))
+      {
+        $found[$file] = true;
+      }
     }
 
     return $found;

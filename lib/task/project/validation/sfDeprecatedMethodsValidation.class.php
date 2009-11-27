@@ -52,7 +52,12 @@ class sfDeprecatedMethodsValidation extends sfValidation
         'sfContext\:\:retrieveObjects',
         '\-\>getXDebugStack',
         '\-\>checkSymfonyVersion',
-      ), sfConfig::get('sf_root_dir')),
+      ), array(
+        sfConfig::get('sf_apps_dir'),
+        sfConfig::get('sf_lib_dir'),
+        sfConfig::get('sf_test_dir'),
+        sfConfig::get('sf_plugins_dir'),
+      )),
 
       $this->doValidate(array(
         'contains', 'responseContains', 'isRequestParameter', 'isResponseHeader',
