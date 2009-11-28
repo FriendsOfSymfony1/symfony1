@@ -61,13 +61,13 @@ class sfDoctrineRoute extends sfObjectRoute
 
   protected function getObjectsForParameters($parameters)
   {
-    $this->options['model'] = Doctrine_Core::getTable($this->options['model']);
+    $tableModel = Doctrine_Core::getTable($this->options['model']);
 
     $variables = array();
     $values = array();
     foreach($this->getRealVariables() as $variable)
     {
-      if($this->options['model']->hasColumn($this->options['model']->getColumnName($variable)))
+      if($tableModel->hasColumn($tableModel->getColumnName($variable)))
       {
         $variables[] = $variable;
         $values[$variable] = $parameters[$variable];
@@ -78,10 +78,10 @@ class sfDoctrineRoute extends sfObjectRoute
     {
       if (null === $this->query)
       {
-        $q = $this->options['model']->createQuery('a');
+        $q = $tableModel->createQuery('a');
         foreach ($values as $variable => $value)
         {
-          $fieldName = $this->options['model']->getFieldName($variable);
+          $fieldName = $tableModel->getFieldName($variable);
           $q->andWhere('a.'. $fieldName . ' = ?', $parameters[$variable]);
         }
       }
@@ -92,7 +92,7 @@ class sfDoctrineRoute extends sfObjectRoute
       if (isset($this->options['method_for_query']))
       {
         $method = $this->options['method_for_query'];
-        $results = $this->options['model']->$method($q);
+        $results = $tableModel->$method($q);
       }
       else
       {
@@ -102,7 +102,7 @@ class sfDoctrineRoute extends sfObjectRoute
     else
     {
       $method = $this->options['method'];
-      $results = $this->options['model']->$method($this->filterParameters($parameters));
+      $results = $tableModel->$method($this->filterParameters($parameters));
     }
 
     // If query returned a Doctrine_Record instance instead of a 
@@ -125,10 +125,7 @@ class sfDoctrineRoute extends sfObjectRoute
       return parent::doConvertObjectToArray($object);
     }
 
-    $className = $this->options['model'];
-
     $parameters = array();
-
     foreach ($this->getRealVariables() as $variable)
     {
       try {
