@@ -200,12 +200,11 @@ class sfViewCacheManager
 
       foreach ($varyHeaders as $header)
       {
-        $value = $request->getHttpHeader($header);
-        $value = preg_replace('/[^a-z0-9\*]/i', '_', $value);
-        $value = preg_replace('/_+/', '_', $value);
-
-        $vary .= $value.'|';
+        $vary .= $header . '_' . $request->getHttpHeader($header) . '_';
       }
+
+      $vary = preg_replace('/[^a-z0-9]/i', '_', $vary);
+      $vary = preg_replace('/_+/', '_', $vary);
     }
 
     return $vary;
@@ -398,6 +397,10 @@ class sfViewCacheManager
 
   /**
    * Returns true if the current content is cacheable.
+   *
+   * Possible break in backward compatibility: If the sf_lazy_cache_key
+   * setting is turned on in settings.yml, this method is not used when
+   * initially checking a partial's cacheability.
    *
    * @see sfPartialView, isActionCacheable()
    *
