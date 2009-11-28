@@ -60,7 +60,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
       )),
 
       $this->doValidate(array(
-        'contains', 'responseContains', 'isRequestParameter', 'isResponseHeader',
+        '\-\>contains\(', 'responseContains', 'isRequestParameter', 'isResponseHeader',
         'isUserCulture', 'isRequestFormat', 'checkResponseElement', '\-\>sh\(',
       ), sfConfig::get('sf_test_dir')),
 
