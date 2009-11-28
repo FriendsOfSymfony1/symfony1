@@ -258,6 +258,7 @@ static public function doSelectWithI18n(Criteria \$criteria, \$culture = null, \
   \$startcol = ({$this->getTable()->getPhpName()}Peer::NUM_COLUMNS - {$this->getTable()->getPhpName()}Peer::NUM_LAZY_LOAD_COLUMNS);
   {$this->getI18nTable()->getPhpName()}Peer::addSelectColumns(\$criteria);
   \$criteria->addJoin({$this->getLocalColumn()->getConstantName()}, {$this->getForeignColumn()->getConstantName()}, \$join_behavior);
+  \$criteria->add({$this->getCultureColumn($this->getI18nTable())->getConstantName()}, \$culture);
 {$mixerHook}
   \$stmt = BasePeer::doSelect(\$criteria, \$con);
 	\$results = array();
