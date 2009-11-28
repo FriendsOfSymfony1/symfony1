@@ -51,6 +51,8 @@ class sfDeprecatedClassesValidation extends sfValidation
       'sfValidatorChoiceMany', 'sfValidatorPropelChoiceMany', 'sfValidatorPropelDoctrineMany',
       'SfExtensionObjectBuilder', 'SfExtensionPeerBuilder', 'SfMultiExtendObjectBuilder',
       'SfNestedSetBuilder', 'SfNestedSetPeerBuilder', 'SfObjectBuilder', 'SfPeerBuilder',
+      'sfWidgetFormPropelSelect', 'sfWidgetFormPropelSelectMany',
+      'sfWidgetFormDoctrineSelect', 'sfWidgetFormDoctrineSelectMany',
 
       // classes from sfCompat10Plugin
       'sfEzComponentsBridge', 'sfZendFrameworkBridge', 'sfProcessCache', 'sfValidatorConfigHandler',
