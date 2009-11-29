@@ -576,18 +576,12 @@ abstract class sfPager implements Iterator, Countable
   }
 
   /**
-   * Returns the number of results on the current page.
+   * Returns the total number of results.
    *
    * @see Countable
    */
   public function count()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
-
-    return count($this->results);
+    return count($this->nbResults);
   }
 }
