@@ -141,6 +141,30 @@
         <source>A problem occurs when deleting the selected items.</source>
         <target>Se ha producido un error al borrar los elementos seleccionados.</target>
       </trans-unit>
+      <trans-unit>
+        <source>is empty</source>
+        <target>vacío</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes or no</source>
+        <target>si o no</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes</source>
+        <target>si</target>
+      </trans-unit>
+      <trans-unit>
+        <source>no</source>
+        <target>no</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date% to %to_date%]]></source>
+        <target><![CDATA[de %from_date% a %to_date%]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
+        <target><![CDATA[de %from_date%<br />a %to_date%]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
