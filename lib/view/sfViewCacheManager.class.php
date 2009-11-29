@@ -196,15 +196,13 @@ class sfViewCacheManager
 
       sort($varyHeaders);
       $request = $this->context->getRequest();
-      $vary = '';
+      $varys = array();
 
       foreach ($varyHeaders as $header)
       {
-        $vary .= $header . '_' . $request->getHttpHeader($header) . '_';
+        $varys[] = $header . '-' . preg_replace('/\W+/', '_', $request->getHttpHeader($header));
       }
-
-      $vary = preg_replace('/[^a-z0-9]/i', '_', $vary);
-      $vary = preg_replace('/_+/', '_', $vary);
+      $vary = implode($varys, '-');
     }
 
     return $vary;

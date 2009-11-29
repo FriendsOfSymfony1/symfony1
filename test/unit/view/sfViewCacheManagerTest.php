@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 require_once($_test_dir.'/unit/sfContextMock.class.php');
 
-$t = new lime_test(36);
+$t = new lime_test(37);
 
 class myViewCacheManager extends sfViewCacheManager
 {
@@ -34,6 +34,11 @@ class myRequest
   public function getScriptName()
   {
     return 'index.php';
+  }
+
+  public function getHttpHeader($headerName)
+  {
+    return '/foo#|#/bar/';
   }
 }
 
@@ -161,6 +166,9 @@ $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_ke
 
 $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_key=value', null, null, 'baz'), '/localhost/all/baz/foo/bar/value', '->generateCacheKey() can take a prefix for contextual partials as fourth parameter');
 
+$m = get_cache_manager($context);
+$m->addCache('module', 'action', array('vary' => array('myheader', 'secondheader')));
+$t->is($m->generateCacheKey('module/action'), '/localhost/myheader-_foo_bar_-secondheader-_foo_bar_/module/action', '->generateCacheKey() creates a directory friendly vary cache key');
 
 // ->generateNamespace()
 $t->diag('->generateNamespace()');
