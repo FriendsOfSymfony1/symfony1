@@ -33,6 +33,7 @@ $browser
 
   ->with('response')->begin()
     ->checkElement('#pagerResults li', 10)
-    ->checkElement('#pagerCount:contains(10)')
+    
+    ->checkElement('#pagerCount:contains(20)')
   ->end()
 ;

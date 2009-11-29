@@ -582,6 +582,6 @@ abstract class sfPager implements Iterator, Countable
    */
   public function count()
   {
-    return count($this->nbResults);
+    return $this->getNbResults();
   }
 }

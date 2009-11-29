@@ -29,7 +29,7 @@ $t->diag('Countable interface');
 
 $pager = new sfDoctrinePager('Article', 10);
 $pager->init();
-$t->is(count($pager), count($pager->getResults()), '"Countable" interface returns the number of objects in the current pager');
+$t->is(count($pager), $pager->getNbResults(), '"Countable" interface returns the total number of objects');
 
 // Iterator interface
 $t->diag('Iterator interface');
