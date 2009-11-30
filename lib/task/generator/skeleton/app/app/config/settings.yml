@@ -31,8 +31,5 @@ all:
     escaping_strategy:      ##ESCAPING_STRATEGY##
     escaping_method:        ESC_SPECIALCHARS
 
-    # Cache settings
-    lazy_cache_key:         true
-
     # Enable the database manager
     use_database:           ##USE_DATABASE##
