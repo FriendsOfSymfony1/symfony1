@@ -187,7 +187,9 @@ class sfDoctrineColumn implements ArrayAccess
   {
     foreach ($this->table->getRelations() as $relation)
     {
-      if (strtolower($relation['local']) == strtolower($this->name))
+      $local = (array) $relation['local'];
+      $local = array_map('strtolower', $local);
+      if (in_array(strtolower($this->name), $local))
       {
         return $relation[$key];
       }
@@ -245,7 +247,9 @@ class sfDoctrineColumn implements ArrayAccess
 
     foreach ($this->table->getRelations() as $relation)
     {
-      if (strtolower($relation['local']) == strtolower($this->name))
+      $local = (array) $relation['local'];
+      $local = array_map('strtolower', $local);
+      if (in_array(strtolower($this->name), $local))
       {
         $this->foreignClassName = $relation['class'];
         return true;
