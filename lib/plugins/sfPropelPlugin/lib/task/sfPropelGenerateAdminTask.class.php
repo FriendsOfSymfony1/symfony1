@@ -215,7 +215,8 @@ EOF
    */
   protected function getPrimaryKey($model)
   {
-    $map = call_user_func(array(constant($model.'::PEER'), 'getTableMap'));
+    $peer = constant($model.'::PEER');
+    $map = call_user_func(array($peer, 'getTableMap'));
 
     if (!$pks = $map->getPrimaryKeys())
     {
@@ -224,6 +225,6 @@ EOF
 
     $column = array_shift($pks);
 
-    return $column->getName();
+    return call_user_func(array($peer, 'translateFieldName'), $column->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_FIELDNAME);
   }
 }
