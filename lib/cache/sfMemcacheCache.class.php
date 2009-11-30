@@ -258,7 +258,10 @@ class sfMemcacheCache extends sfCache
     }
     else
     {
-      $keys[] = $this->getOption('prefix').$key;
+      if (!in_array($this->getOption('prefix').$key, $keys))
+      {
+        $keys[] = $this->getOption('prefix').$key;
+      }
     }
 
     $this->memcache->set($this->getOption('prefix').'_metadata', $keys, 0);
