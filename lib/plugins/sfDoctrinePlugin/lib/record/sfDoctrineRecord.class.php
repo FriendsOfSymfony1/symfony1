@@ -165,6 +165,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    */
   public function __call($method, $arguments)
   {
+    $failed = false;
     try {
       if (in_array($verb = substr($method, 0, 3), array('set', 'get')))
       {
@@ -210,10 +211,24 @@ abstract class sfDoctrineRecord extends Doctrine_Record
           array_merge(array($entityName), $arguments)
         );
       } else {
-        return parent::__call($method, $arguments);
+        $failed = true;
       }
-    } catch(Exception $e) {
-      return parent::__call($method, $arguments);
+    } catch (Exception $e) {
+      $failed = true;
+    }
+    if ($failed)
+    {
+      try
+      {
+        return parent::__call($method, $arguments);
+      } catch (Doctrine_Record_UnknownPropertyException $e2) {}
+
+      if ($e)
+      {
+        throw $e;
+      } else if ($e2) {
+        throw $e2;
+      }
     }
   }
 
