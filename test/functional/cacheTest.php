@@ -472,6 +472,24 @@ $b->
   end()
 ;
 
+$b->get('/')
+  ->with('view_cache')->isUriCached('cache/list', false)
+  ->get('/cache/list')
+  ->with('view_cache')->isUriCached('cache/list', true)
+
+  // include GET parameters
+  ->with('view_cache')->isUriCached('cache/list?page=10', false)
+  ->get('/cache/list?page=10')
+  ->with('response')->checkElement('#page', '10')
+  ->with('view_cache')->isUriCached('cache/list?page=10', true)
+
+  // include different GET parameters
+  ->with('view_cache')->isUriCached('cache/list?page=20', false)
+  ->get('/cache/list?page=20')
+  ->with('response')->checkElement('#page', '20')
+  ->with('view_cache')->isUriCached('cache/list?page=20', true)
+;
+
 // test with sfFileCache class (default)
 $b->launch();
 

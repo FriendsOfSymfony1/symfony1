@@ -50,7 +50,7 @@ class sfTesterViewCache extends sfTester
    */
   public function isCached($boolean, $with_layout = false)
   {
-    return $this->isUriCached($this->routing->getCurrentInternalUri(), $boolean, $with_layout);
+    return $this->isUriCached($this->viewCacheManager->getCurrentCacheKey(), $boolean, $with_layout);
   }
 
   /**
@@ -74,7 +74,7 @@ class sfTesterViewCache extends sfTester
       return $this->getObjectToReturn();
     }
 
-    if ($uri == $this->routing->getCurrentInternalUri())
+    if ($uri == $this->viewCacheManager->getCurrentCacheKey())
     {
       $main = true;
       $type = $with_layout ? 'page' : 'action';

@@ -155,7 +155,7 @@ class sfPHPView extends sfView
     if (sfConfig::get('sf_cache'))
     {
       $viewCache = $this->context->getViewCacheManager();
-      $uri = $this->context->getRouting()->getCurrentInternalUri();
+      $uri = $viewCache->getCurrentCacheKey();
 
       if (null !== $uri)
       {

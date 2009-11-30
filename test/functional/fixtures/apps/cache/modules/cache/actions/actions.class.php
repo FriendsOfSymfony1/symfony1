@@ -18,6 +18,11 @@ class cacheActions extends sfActions
   {
   }
 
+  public function executeList($request)
+  {
+    $this->page = $request->getParameter('page', 1);
+  }
+
   public function executeForward()
   {
     $this->forward('cache', 'page');

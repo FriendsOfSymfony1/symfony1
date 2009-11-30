@@ -11,7 +11,26 @@
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 require_once($_test_dir.'/unit/sfContextMock.class.php');
 
-$t = new lime_test(37);
+$t = new lime_test(39);
+
+function get_cache_manager($context)
+{
+  myCache::clear();
+  $m = new myViewCacheManager($context, new myCache());
+
+  return $m;
+}
+
+function get_cache_config($contextual = false)
+{
+  return array(
+    'withLayout'     => false,
+    'lifeTime'       => 86400,
+    'clientLifeTime' => 86400,
+    'contextual'     => $contextual,
+    'vary'           => array(),
+  );
+}
 
 class myViewCacheManager extends sfViewCacheManager
 {
@@ -26,6 +45,8 @@ class myController extends sfWebController
 
 class myRequest
 {
+  public $getParameters = array('page' => 5, 'sort' => 'asc');
+
   public function getHost()
   {
     return 'localhost';
@@ -39,6 +60,11 @@ class myRequest
   public function getHttpHeader($headerName)
   {
     return '/foo#|#/bar/';
+  }
+
+  public function getGetParameters()
+  {
+    return $this->getParameters;
   }
 }
 
@@ -105,9 +131,11 @@ class myCache extends sfCache
 
 class myRouting extends sfPatternRouting
 {
+  public $currentInternalUri = 'currentModule/currentAction?currentKey=currentValue';
+
   public function getCurrentInternalUri($with_route_name = false)
   {
-    return 'currentModule/currentAction?currentKey=currentValue';
+    return $this->currentInternalUri;
   }
 }
 
@@ -254,26 +282,6 @@ $t->is($m->has('module/action?key1=value1'), false, '->remove() accepts wildcard
 $t->is($m->has('module/action?key1=value2'), false, '->remove() accepts wildcards in URIs and then removes all keys matching the pattern');
 $t->is($m->has('module/action?key2=value1'), true, '->remove() accepts wildcards in URIs and lets keys not matching the pattern unchanged');
 
-function get_cache_manager($context)
-{
-  myCache::clear();
-  $m = new myViewCacheManager($context, new myCache());
-
-  return $m;
-}
-
-function get_cache_config($contextual = false)
-{
-  return array(
-    'withLayout'     => false,
-    'lifeTime'       => 86400,
-    'clientLifeTime' => 86400,
-    'contextual'     => $contextual,
-    'vary'           => array(),
-  );
-}
-
-// ->initialize()
 $t->diag('Cache key generation options');
 $m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_vary_headers' => false));
 $t->is($m->generateCacheKey('mymodule/myaction'), '/localhost/mymodule/myaction', '->generateCacheKey() uses "cache_key_use_vary_headers" option to know if vary headers changes cache key.');
@@ -284,3 +292,9 @@ $t->is($m->generateCacheKey('mymodule/myaction'), '/all/mymodule/myaction', '->g
 $m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_host_name' => false, 'cache_key_use_vary_headers' => false));
 $t->is($m->generateCacheKey('mymodule/myaction'), '/mymodule/myaction', '->generateCacheKey() allows the use of both "cache_key_use_host_name" and "cache_key_use_vary_headers" options.');
 
+// ->getCurrentCacheKey()
+$t->diag('->getCurrentCacheKey()');
+$m = get_cache_manager($context);
+$t->is($m->getCurrentCacheKey(), 'currentModule/currentAction?currentKey=currentValue&page=5&sort=asc', '->getCurrentCacheKey() appends GET parameters to an existing query string');
+$context->getRouting()->currentInternalUri = 'currentModule/currentAction';
+$t->is($m->getCurrentCacheKey(), 'currentModule/currentAction?page=5&sort=asc', '->getCurrentCacheKey() adds a query string of GET parameters if none is there');

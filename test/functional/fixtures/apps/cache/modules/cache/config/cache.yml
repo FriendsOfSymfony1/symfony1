@@ -53,3 +53,6 @@ imageNoLayoutCacheWithLayout:
 
 imageNoLayoutCacheNoLayout:
   with_layout: false
+
+list:
+  enabled: true

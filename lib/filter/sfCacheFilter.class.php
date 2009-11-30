@@ -70,7 +70,7 @@ class sfCacheFilter extends sfFilter
 
   public function executeBeforeExecution()
   {
-    $uri = $this->routing->getCurrentInternalUri();
+    $uri = $this->cacheManager->getCurrentCacheKey();
 
     if (null === $uri)
     {
@@ -105,7 +105,7 @@ class sfCacheFilter extends sfFilter
       return;
     }
 
-    $uri = $this->routing->getCurrentInternalUri();
+    $uri = $this->cacheManager->getCurrentCacheKey();
 
     // save page in cache
     if (isset($this->cache[$uri]) && false === $this->cache[$uri])

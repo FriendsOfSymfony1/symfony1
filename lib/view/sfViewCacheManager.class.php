@@ -947,6 +947,27 @@ class sfViewCacheManager
   }
 
   /**
+   * Returns the current request's cache key.
+   *
+   * This cache key is calculated based on the routing factory's current URI
+   * and any GET parameters from the current request factory.
+   *
+   * @return string The cache key for the current request
+   */
+  public function getCurrentCacheKey()
+  {
+    $cacheKey = $this->routing->getCurrentInternalUri();
+
+    if ($getParameters = $this->request->getGetParameters())
+    {
+      $cacheKey .= false === strpos($cacheKey, '?') ? '?' : '&';
+      $cacheKey .= http_build_query($getParameters, null, '&');
+    }
+
+    return $cacheKey;
+  }
+
+  /**
    * Listens to the 'view.cache.filter_content' event to decorate a chunk of HTML with cache information.
    *
    * @param sfEvent $event   A sfEvent instance
