@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(32);
+$t = new lime_test(33);
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
@@ -46,6 +46,14 @@ $t->diag('->__()');
 sfConfig::set('sf_charset', 'UTF-8');
 $i18n = new sfI18N($configuration, $cache, array('culture' => 'fr'));
 $t->is($i18n->__('an english sentence'), 'une phrase en français', '->__() translates a string');
+class EnglishSentence
+{
+  public function __toString()
+  {
+    return 'an english sentence';
+  }
+}
+$t->is($i18n->__(new EnglishSentence()), 'une phrase en français', '->__() translates an object with __toString()');
 $args = array('%timestamp%' => $timestamp = time());
 $t->is($i18n->__('Current timestamp is %timestamp%', $args), strtr('Le timestamp courant est %timestamp%', $args), '->__() takes an array of arguments as its second argument');
 $t->is($i18n->__('an english sentence', array(), 'messages_bis'), 'une phrase en français (bis)', '->__() takes a catalogue as its third argument');

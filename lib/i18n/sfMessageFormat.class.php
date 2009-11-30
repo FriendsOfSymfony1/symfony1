@@ -158,6 +158,8 @@ class sfMessageFormat
    */
   public function format($string, $args = array(), $catalogue = null, $charset = null)
   {
+    // make sure that objects with __toString() are converted to strings
+    $string = (string) $string;
     if (empty($charset))
     {
       $charset = $this->getCharset();
