@@ -96,9 +96,9 @@ abstract class sfFormDoctrine extends sfFormObject
    *
    *     [php]
    *     $userForm = new UserForm($user);
-   *     $userForm->embedRelation('Groups');
+   *     $userForm->embedRelation('Groups AS groups');
    *
-   * @param  string $relationName  The name of the relation
+   * @param  string $relationName  The name of the relation and an optional alias
    * @param  string $formClass     The name of the form class to use
    * @param  array  $formArguments Arguments to pass to the constructor (related object will be shifted onto the front)
    *
@@ -106,25 +106,38 @@ abstract class sfFormDoctrine extends sfFormObject
    */
   public function embedRelation($relationName, $formClass = null, $formArgs = array())
   {
-    $relation = $this->getObject()->getTable()->getRelation($relationName);
-
-    if ($relation->getType() !== Doctrine_Relation::MANY)
+    if (false !== $pos = stripos($relationName, ' as '))
     {
-      throw new InvalidArgumentException('You can only embed a relationship that is a collection.');
+      $fieldName = substr($relationName, $pos + 4);
+      $relationName = substr($relationName, 0, $pos);
     }
+    else
+    {
+      $fieldName = $relationName;
+    }
+
+    $relation = $this->getObject()->getTable()->getRelation($relationName);
 
     $r = new ReflectionClass(null === $formClass ? $relation->getClass().'Form' : $formClass);
 
-    $subForm = new sfForm();
-    foreach ($this->getObject()->$relationName as $index => $childObject)
+    if (Doctrine_Relation::ONE == $relation->getType())
     {
-      $form = $r->newInstanceArgs(array_merge(array($childObject), $formArgs));
-
-      $subForm->embedForm($index, $form);
-      $subForm->getWidgetSchema()->setLabel($index, (string) $childObject);
+      $this->embedForm($fieldName, $r->newInstanceArgs(array_merge(array($this->getObject()->$relationName), $formArgs)));
     }
+    else
+    {
+      $subForm = new sfForm();
 
-    $this->embedForm($relationName, $subForm);
+      foreach ($this->getObject()->$relationName as $index => $childObject)
+      {
+        $form = $r->newInstanceArgs(array_merge(array($childObject), $formArgs));
+
+        $subForm->embedForm($index, $form);
+        $subForm->getWidgetSchema()->setLabel($index, (string) $childObject);
+      }
+
+      $this->embedForm($fieldName, $subForm);
+    }
   }
 
   /**
