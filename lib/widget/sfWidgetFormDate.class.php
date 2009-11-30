@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -82,18 +82,50 @@ class sfWidgetFormDate extends sfWidgetForm
     $date = array();
     $emptyValues = $this->getOption('empty_values');
 
-    // days
-    $widget = new sfWidgetFormSelect(array('choices' => $this->getOption('can_be_empty') ? array('' => $emptyValues['day']) + $this->getOption('days') : $this->getOption('days')), array_merge($this->attributes, $attributes));
-    $date['%day%'] = $widget->render($name.'[day]', $value['day']);
+    $date['%day%'] = $this->renderDayWidget($name.'[day]', $value['day'], array('choices' => $this->getOption('can_be_empty') ? array('' => $emptyValues['day']) + $this->getOption('days') : $this->getOption('days')), array_merge($this->attributes, $attributes));
+    $date['%month%'] = $this->renderMonthWidget($name.'[month]', $value['month'], array('choices' => $this->getOption('can_be_empty') ? array('' => $emptyValues['month']) + $this->getOption('months') : $this->getOption('months')), array_merge($this->attributes, $attributes));
+    $date['%year%'] = $this->renderYearWidget($name.'[year]', $value['year'], array('choices' => $this->getOption('can_be_empty') ? array('' => $emptyValues['year']) + $this->getOption('years') : $this->getOption('years')), array_merge($this->attributes, $attributes));
 
-    // months
-    $widget = new sfWidgetFormSelect(array('choices' => $this->getOption('can_be_empty') ? array('' => $emptyValues['month']) + $this->getOption('months') : $this->getOption('months')), array_merge($this->attributes, $attributes));
-    $date['%month%'] = $widget->render($name.'[month]', $value['month']);
-
-    // years
-    $widget = new sfWidgetFormSelect(array('choices' => $this->getOption('can_be_empty') ? array('' => $emptyValues['year']) + $this->getOption('years') : $this->getOption('years')), array_merge($this->attributes, $attributes));
-    $date['%year%'] = $widget->render($name.'[year]', $value['year']);
 
     return strtr($this->getOption('format'), $date);
+  }
+
+  /**
+   * @param string $name
+   * @param string $value
+   * @param array $options
+   * @param array $attributes
+   * @return string rendered widget
+   */
+  protected function renderDayWidget($name, $value, $options, $attributes)
+  {
+    $widget = new sfWidgetFormSelect($options, $attributes);
+    return $widget->render($name, $value);
+  }
+
+  /**
+   * @param string $name
+   * @param string $value
+   * @param array $options
+   * @param array $attributes
+   * @return string rendered widget
+   */
+  protected function renderMonthWidget($name, $value, $options, $attributes)
+  {
+    $widget = new sfWidgetFormSelect($options, $attributes);
+    return $widget->render($name, $value);
+  }
+
+  /**
+   * @param string $name
+   * @param string $value
+   * @param array $options
+   * @param array $attributes
+   * @return string rendered widget
+   */
+  protected function renderYearWidget($name, $value, $options, $attributes)
+  {
+    $widget = new sfWidgetFormSelect($options, $attributes);
+    return $widget->render($name, $value);
   }
 }
