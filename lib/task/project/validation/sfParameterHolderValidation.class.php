@@ -54,7 +54,7 @@ class sfParameterHolderValidation extends sfValidation
     {
       $content = file_get_contents($file);
 
-      if (preg_match('#(get|has|remove)(Request)*Parameter\([^\)]*?\[[^\),]#', $content))
+      if (preg_match('#(get|has|remove)(Request)*Parameter\(\s*[\'"][^\),]*?\[[^\),]#', $content))
       {
         $found[$file] = true;
       }
