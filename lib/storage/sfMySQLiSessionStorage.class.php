@@ -67,4 +67,14 @@ class sfMySQLiSessionStorage extends sfMySQLSessionStorage
   {
     return $result->fetch_row();
   }
+
+  /**
+   * Returns the text of the error message from previous database operation
+   *
+   * @return string The error text from the last database function
+   */
+  protected function db_error()
+  {
+    return mysqli_error($this->db);
+  }
 }
