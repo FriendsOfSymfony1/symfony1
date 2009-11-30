@@ -267,7 +267,7 @@ class sfWebResponse extends sfResponse
    * @param  string $name     HTTP header name
    * @param  string $default  Default value returned if named HTTP header is not found
    *
-   * @return array
+   * @return string
    */
   public function getHttpHeader($name, $default = null)
   {
