@@ -199,6 +199,21 @@ public function set{$refPhpName}ForCulture({$this->getI18nTable()->getPhpName()}
 
 EOF;
 
+    if (!$this->hasPrimaryString($this->getTable()) && $this->hasPrimaryString($this->getI18nTable()))
+    {
+      $script .= <<<EOF
+
+/**
+ * @see {$this->getI18nTable()->getPhpName()}
+ */
+public function __toString()
+{
+  return (string) \$this->getCurrent{$refPhpName}();
+}
+
+EOF;
+    }
+
     return $script;
   }
 
@@ -350,5 +365,25 @@ EOF;
   {
     $columns = $this->getI18nTable()->getBehavior('symfony_i18n_translation')->getForeignKey()->getLocalColumns();
     return $this->getI18nTable()->getColumn($columns[0]);
+  }
+
+  /**
+   * Checks whether the supplied table has a primary string defined.
+   *
+   * @param  Table $table
+   *
+   * @return boolean
+   */
+  protected function hasPrimaryString(Table $table)
+  {
+    foreach ($table->getColumns() as $column)
+    {
+      if ($column->isPrimaryString())
+      {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

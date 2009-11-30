@@ -40,4 +40,9 @@ class i18nActions extends sfActions
       }
     }
   }
+
+  public function executeProducts()
+  {
+    $this->products = ProductPeer::doSelect(new Criteria());
+  }
 }

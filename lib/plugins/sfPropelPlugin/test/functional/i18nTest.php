@@ -27,6 +27,7 @@ $b->
   end()->
   with('response')->begin()->
     isStatusCode(200)->
+    checkElement('#movies .toString:first', '')->
     checkElement('#movies .default:first', '')->
     checkElement('#movies .it:first', 'La Vita è bella')->
     checkElement('#movies .fr:first', 'La Vie est belle')->
@@ -42,6 +43,7 @@ $b->
   end()->
   with('response')->begin()->
     isStatusCode(200)->
+    checkElement('#movies .toString:first', 'La Vie est belle')->
     checkElement('#movies .default:first', 'La Vie est belle')->
     checkElement('#movies .it:first', 'La Vita è bella')->
     checkElement('#movies .fr:first', 'La Vie est belle')->
@@ -57,6 +59,7 @@ $b->
   end()->
   with('response')->begin()->
     isStatusCode(200)->
+    checkElement('#movies .toString:first', 'La Vie est belle')->
     checkElement('#movies .default:first', 'La Vie est belle')->
     checkElement('#movies .it:first', 'La Vita è bella')->
     checkElement('#movies .fr:first', 'La Vie est belle')->
@@ -147,4 +150,10 @@ $b->
     checkElement('input[value="Les Douze Salopards"]')->
   end()
   // END: Bug #7486
+;
+
+$b->getAndCheck('i18n', 'products')
+  ->with('response')->begin()
+    ->checkElement('ul#products li.toString', 'PRIMARY STRING')
+  ->end()
 ;

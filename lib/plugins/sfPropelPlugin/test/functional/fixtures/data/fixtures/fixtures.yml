@@ -49,3 +49,14 @@ MovieI18n:
     id:      la_vita_e_bella
     culture: fr
     title:   La Vie est belle
+
+Product:
+  product1:
+    price: 5.00
+    a_primary_string: PRIMARY STRING
+
+ProductI18n:
+  product1_en:
+    id: product1
+    culture: en
+    name: PRIMARY STRING I18N

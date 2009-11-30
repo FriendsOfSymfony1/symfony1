@@ -63,12 +63,13 @@
   <table name="product" phpName="Product" isI18N="true" i18nTable="product_i18n">
     <column autoIncrement="false" name="id" type="integer" required="true" primaryKey="true" autoincrement="true"/>
     <column primaryKey="false" required="false" autoIncrement="false" name="price" type="float"/>
+    <column name="a_primary_string" type="varchar" size="64" primaryString="true"/>
   </table>
 
   <table name="product_i18n" phpName="ProductI18n">
     <column autoIncrement="false" name="id" type="integer" required="true" primaryKey="true"/>
     <column autoIncrement="false" name="culture" isCulture="true" type="varchar" size="7" required="true" primaryKey="true"/>
-    <column primaryKey="false" required="false" autoIncrement="false" name="name" type="varchar" size="50"/>
+    <column primaryKey="false" required="false" autoIncrement="false" name="name" type="varchar" size="50" primaryString="true"/>
     <foreign-key onDelete="none" onUpdate="none" foreignTable="product" refPhpName="Translation">
       <reference local="id" foreign="id"/>
     </foreign-key>
@@ -85,7 +86,7 @@
       <reference local="id" foreign="id"/>
     </foreign-key>
     <column name="culture" type="varchar" size="7" required="true" primaryKey="true" isCulture="true" />
-    <column name="title" type="varchar" />
+    <column name="title" type="varchar" primaryString="true" />
     <unique>
      <unique-column name="title" />
     </unique>
