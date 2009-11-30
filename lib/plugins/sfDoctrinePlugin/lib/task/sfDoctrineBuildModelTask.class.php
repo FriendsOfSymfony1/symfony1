@@ -107,7 +107,7 @@ EOF;
 
     // cleanup stub classes
     $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
-    $this->getFilesystem()->replaceTokens(array_diff($finder->in($config['models_path']), $before), '', '', array(
+    $this->getFilesystem()->replaceTokens(array_diff(sfFinder::type('file')->in($config['models_path']), $before), '', '', array(
       '##PACKAGE##'    => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
       '##SUBPACKAGE##' => 'model',
       '##NAME##'       => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
