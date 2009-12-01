@@ -225,10 +225,10 @@ abstract class sfDoctrineRecord extends Doctrine_Record
         return parent::__call($method, $arguments);
       } catch (Doctrine_Record_UnknownPropertyException $e2) {}
 
-      if ($e)
+      if (isset($e) && $e)
       {
         throw $e;
-      } else if ($e2) {
+      } else if (isset($e2) && $e2) {
         throw $e2;
       }
     }
