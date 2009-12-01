@@ -52,6 +52,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
         'sfContext\:\:retrieveObjects',
         '\-\>getXDebugStack',
         '\-\>checkSymfonyVersion',
+        '\-\>sh\(',
       ), array(
         sfConfig::get('sf_apps_dir'),
         sfConfig::get('sf_lib_dir'),
@@ -61,7 +62,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
 
       $this->doValidate(array(
         '\-\>contains\(', 'responseContains', 'isRequestParameter', 'isResponseHeader',
-        'isUserCulture', 'isRequestFormat', 'checkResponseElement', '\-\>sh\(',
+        'isUserCulture', 'isRequestFormat', 'checkResponseElement',
       ), sfConfig::get('sf_test_dir')),
 
       $this->doValidate(array(
