@@ -59,7 +59,7 @@ class sfDeprecatedClassesValidation extends sfValidation
       'sfActionException', 'sfValidatorException', 'sfFillInFormFilter', 'sfValidationExecutionFilter',
       'sfRequestCompat10', 'sfFillInForm', 'sfCallbackValidator', 'sfCompareValidator', 'sfDateValidator',
       'sfEmailValidator', 'sfFileValidator', 'sfNumberValidator', 'sfRegexValidator', 'sfStringValidator',
-      'sfUrlValidator', 'sfValidator\(', 'sfValidatorManager', 'sfMailView', 'sfMail\(',
+      'sfUrlValidator', 'sfValidator(', 'sfValidatorManager', 'sfMailView', 'sfMail(',
     );
 
     $found = array();
