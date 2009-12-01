@@ -188,7 +188,9 @@ abstract class sfDoctrineRecord extends Doctrine_Record
         }
         else
         {
-          $underScored = $table->getFieldName(sfInflector::underscore($name));
+          $underScored = sfInflector::underscore($name);
+          $underScored = preg_replace('/[0-9]/', "_$0", $underScored);
+          $underScored = $table->getFieldName($underScored);
           if ($table->hasField($underScored) || $table->hasRelation($underScored))
           {
             $entityName = $underScored;

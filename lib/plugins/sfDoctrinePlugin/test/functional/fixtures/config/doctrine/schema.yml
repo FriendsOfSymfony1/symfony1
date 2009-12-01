@@ -200,3 +200,13 @@ DefaultValueTest:
 Attachment:
   columns:
     file_path: string(255)
+
+ModelWithNumberInColumn:
+  options:
+    symfony:
+      form: false
+      filter: false
+  columns:
+    column_1: string(255)
+    column2: string(255)
+    column__3: string(255)
