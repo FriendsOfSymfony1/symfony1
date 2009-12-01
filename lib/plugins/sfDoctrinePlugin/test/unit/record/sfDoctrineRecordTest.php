@@ -68,9 +68,9 @@ $t->is($article->getTitle(), 'testing this out', 'Making sure getTitle() is stil
 
 try {
   $test = new ModelWithNumberInColumn();
-  $test->getColumn1();
-  $test->getColumn2();
-  $test->getColumn_3();
+  $test->getColumn_1();
+  $test->getColumn_2();
+  $test->getColumn__3();
   $t->pass('Make sure __call() handles fields with *_(n) in the field name');
 } catch (Exception $e) {
   $t->fail('__call() failed in sfDoctrineRecord');
