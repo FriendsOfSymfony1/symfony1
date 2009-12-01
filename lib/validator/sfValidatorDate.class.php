@@ -64,12 +64,6 @@ class sfValidatorDate extends sfValidatorBase
    */
   protected function doClean($value)
   {
-    // convert array to date string
-    if (is_array($value))
-    {
-      $value = $this->convertDateArrayToString($value);
-    }
-
     // check date format
     if ($regex = $this->getOption('date_format'))
     {
@@ -80,7 +74,13 @@ class sfValidatorDate extends sfValidatorBase
 
       $value = $match;
     }
-    
+
+    // convert array to date string
+    if (is_array($value))
+    {
+      $value = $this->convertDateArrayToString($value);
+    }
+
     // convert timestamp to date number format
     if (ctype_digit($value))
     {
