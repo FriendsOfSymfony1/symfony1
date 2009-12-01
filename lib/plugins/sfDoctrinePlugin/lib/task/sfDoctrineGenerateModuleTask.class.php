@@ -95,10 +95,6 @@ EOF;
 
     $method = $options['generate-in-cache'] ? 'executeInit' : 'executeGenerate';
 
-    // for backwarads compatibility symfony uses the model name as singular and plural form if none specified (#5640)
-    $options['singular']  = $options['singular'] ? $options['singular'] : $arguments['model'];
-    $options['plural']  = $options['plural'] ? $options['plural'] : $arguments['model'].'s';
-
     $this->$method($arguments, $options);
   }
 
@@ -113,8 +109,8 @@ EOF;
       'theme'                 => $options['theme'],
       'non_verbose_templates' => $options['non-verbose-templates'],
       'with_show'             => $options['with-show'],
-      'singular'              => $options['singular'],
-      'plural'                => $options['plural'],
+      'singular'              => $options['singular'] ? $options['singular'] : sfInflector::underscore($arguments['model']),
+      'plural'                => $options['plural'] ? $options['plural'] : sfInflector::underscore($arguments['model'].'s'),
       'route_prefix'          => $options['route-prefix'],
       'with_doctrine_route'   => $options['with-doctrine-route'],
       'actions_base_class'    => $options['actions-base-class'],
