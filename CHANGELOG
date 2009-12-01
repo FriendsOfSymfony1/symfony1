@@ -1,3 +1,45 @@
+12/01/09: Version 1.4.0
+-----------------------
+
+ * [24637] fixed inconsistent case in doctrine crud (closes #7698, refs #5640)
+ * [24634] Catching Doctrine validation exceptions so you don't get internal server errors in admin generator if you use Doctrine validation
+ * [24632] Fixes issue with magic setters/getters for a field with a underscore and number at the end (closes #6860)
+ * [24628] updated date validator to ignore date_format option if tainted value is an array (closes #7753, #7702)
+ * [24625] updated doctrine:dql task to render NULL for null values when in table mode (closes #7680)
+ * [24624] fixed warning with sfValidatorDate.class when a non string option was passed to it (fixes #7753, #7702)
+ * [24622] allowed `__()` and `sfI18N->__()` and `sfMessageFormat->format()` to take an object with a `__toString()` method. Test case for 1.2,1.3 and 1.4 (fixes #7559, #6763, refs #2161)
+ * [24621] fixed column name used when generating propel route collections (refs #5572, #6773)
+ * [24620] fixed module option being ignored in *:generate-admin task (closes #5572, #6773)
+ * [24619] fixed incorrect array access of lastModified header which only was an array pre 1.0. This was effectively preventing 304 Not Modified response from working correctly. Fixed phpdoc referring to array as return type of getHttpHeader() (fixes #6633, #7539)
+ * [24618] Removing sfDoctrineRecordListener class which is not used (closes #7265)
+ * [24617] Fixes issue with base model classes not having tokens replaced from properties.ini (closes #7656)
+ * [24615] updated page and action caching to consider GET parameters (closes #4708)
+ * [24607] no longer adding duplicate entries in sfMemcacheCache.class metadata cache when key is already existing (fixes #7602)
+ * [24606] Fixing sfDoctrineRecord::__call() so proper exception is thrown (closes #7212)
+ * [24605] refactored sfWidgetFormDate.class to allow easier extension and tests, as well as being easier to read (closes #7699)
+ * [24604] Fix issue where local is an array (closes #6820)
+ * [24598] Fixes issue with attributes in databases.yml (closes #6884)
+ * [24597] fixed casting of propel i18n objects to string (closes #7709)
+ * [24593] removed old lazy_cache_key setting from generator (closes #7720)
+ * [24591] added requirements to DELETE action of sfObjectRouteCollection.class.php (fixes #7634)
+ * [24590] fixed obtaining error from mysqli session storage (fixes #7737)
+ * [24537] decoupled relation name from form field name when calling embedRelation(), allowed embedding of type "one" relations
+ * [24532] updated spanish and basque translation of admin generator (fixes #7735 thanks Javier.Eguiluz)
+ * [24531] fixed sfPager::count() implementation (it is more useful to return the total number of items, closes #7651)
+ * [24524] fixed regression when cleaning a date string that includes a timezone in new `DateTime` implementation, added appropriate regression test to 1.2
+ * [24514] improved vary cache generation. added unit test (refs #7605)
+ * [24513] fixed vary cache key again (fixes #7605)
+ * [24511] correctly closing output buffering in case of exceptions while requiring a file in sfPHPView (fixes #7596)
+ * [24498] fixed getObjectsForParameters() failing on second invocation on sfDoctrineRoute.class.php (fixes #7716)
+ * [24496] added missing where condition on culture to SfPropelBehaviorI18n (fixes #7713)
+ * [24470] added a project:validate task that validates the project against the deprecated stuff
+ * [24396] reset the mb_internal_encoding in case it was changed in text helpers. added basic unit test for that (fixes #7641)
+ * [24395] updated upgrade task to specify a class for the common filter since it's no longer specified in the core (closes #7156, #7536)
+ * [24390] removed call to deprecated sh() method
+ * [24341] fixed fatal error in doctrine build/drop db tasks when no application exists (closes #7686, refs #7633)
+ * [24339] optimized unshift of i18n filter to doctrine tables. big performance boost if you're working with many doctrine i18n records from the same table (closes #7392)
+ * [24331] updated log:rotate to explicitly sort files by name and use filesystem methods when possible (closes #7683)
+
 11/23/09: Version 1.4.0 RC2
 ---------------------------
 
