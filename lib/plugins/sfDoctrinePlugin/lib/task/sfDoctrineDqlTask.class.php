@@ -108,7 +108,7 @@ EOF;
               $headers[$field] = 0;
             }
 
-            $headers[$field] = max($headers[$field], strlen($value));
+            $headers[$field] = max($headers[$field], strlen($this->renderValue($value)));
           }
         }
 
@@ -135,7 +135,7 @@ EOF;
           $line = '|';
           foreach ($result as $field => $value)
           {
-            $line .= ' '.str_pad($value, $headers[$field]).' |';
+            $line .= ' '.str_pad($this->renderValue($value), $headers[$field]).' |';
           }
           $this->log($line);
         }
@@ -161,5 +161,17 @@ EOF;
     {
       $this->logSection('doctrine', 'no results found');
     }
+  }
+
+  /**
+   * Renders the supplied value.
+   *
+   * @param string|null $value
+   *
+   * @return string
+   */
+  protected function renderValue($value)
+  {
+    return null === $value ? 'NULL' : $value;
   }
 }
