@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(51);
+$t = new lime_test(52);
 
 $v = new sfValidatorDate();
 
@@ -88,6 +88,7 @@ catch (sfValidatorError $e)
 $t->diag('validate regex');
 $v->setOption('date_format', '~(?P<day>\d{2})/(?P<month>\d{2})/(?P<year>\d{4})~');
 $t->is($v->clean('18/10/2005'), '2005-10-18', '->clean() accepts a regular expression to match dates');
+$t->is($v->clean(array('year' => '2005', 'month' => '10', 'day' => '18')), '2005-10-18', '->clean() accepts a regular expression when cleaning an array');
 
 try
 {
