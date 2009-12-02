@@ -61,8 +61,8 @@ EOF;
     $config = $this->getCliConfig();
     $builderOptions = $this->configuration->getPluginConfiguration('sfDoctrinePlugin')->getModelBuilderOptions();
 
-    $finder = sfFinder::type('file')->prune('base')->name('*'.$builderOptions['suffix']);
-    $before = $finder->in($config['models_path']);
+    $stubFinder = sfFinder::type('file')->prune('base')->name('*'.$builderOptions['suffix']);
+    $before = $stubFinder->in($config['models_path']);
 
     $schema = $this->prepareSchemaFile($config['yaml_schema_path']);
 
@@ -105,18 +105,27 @@ EOF;
       }
     }
 
-    // cleanup stub classes
     $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
-    $this->getFilesystem()->replaceTokens(array_diff(sfFinder::type('file')->in($config['models_path']), $before), '', '', array(
+    $tokens = array(
       '##PACKAGE##'    => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
       '##SUBPACKAGE##' => 'model',
       '##NAME##'       => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
       ' <##EMAIL##>'   => '',
       "{\n\n}"         => "{\n}\n",
-    ));
+    );
 
-    $finder = sfFinder::type('file')->prune('base')->name('*Table'.$builderOptions['suffix']);
-    foreach (array_diff($finder->in($config['models_path']), $before) as $file)
+    // cleanup new stub classes
+    $after = $stubFinder->in($config['models_path']);
+    $this->getFilesystem()->replaceTokens(array_diff($after, $before), '', '', $tokens);
+
+    // cleanup base classes
+    $baseFinder = sfFinder::type('file')->name('Base*'.$builderOptions['suffix']);
+    $baseDirFinder = sfFinder::type('dir')->name('base');
+    $this->getFilesystem()->replaceTokens($baseFinder->in($baseDirFinder->in($config['models_path'])), '', '', $tokens);
+
+    // cleanup new table classes
+    $tableFinder = sfFinder::type('file')->prune('base')->name('*Table'.$builderOptions['suffix']);
+    foreach (array_diff($tableFinder->in($config['models_path']), $before) as $file)
     {
       $contents = file_get_contents($file);
       file_put_contents($file, sfToolkit::stripComments($contents));
