@@ -31,7 +31,6 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
   protected
     $formFormatters = array(),
-    $options        = array(),
     $fields         = array(),
     $positions      = array(),
     $helps          = array();
