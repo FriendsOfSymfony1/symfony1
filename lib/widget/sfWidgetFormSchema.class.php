@@ -248,7 +248,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    * If you are using the form framework with symfony, do not use a reserved word in the
    * name format.  If you do, symfony may act in an unexpected manner.
    *
-   * For symfony 1.1 and 1.2, the following words are reserved and must NOT be used as
+   * For symfony 1.1+, the following words are reserved and must NOT be used as
    * the name format:
    *
    *  * module    (example: module[%s])
