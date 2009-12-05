@@ -131,7 +131,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
   protected function prepareSchemaFile($yamlSchemaPath)
   {
     $models = array();
-    $finder = sfFinder::type('file')->name('*.yml')->sort_by_name();
+    $finder = sfFinder::type('file')->name('*.yml')->sort_by_name()->follow_link();
 
     // plugin models
     foreach ($this->configuration->getPlugins() as $name)
