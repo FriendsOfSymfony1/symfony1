@@ -41,6 +41,10 @@
         <source>go</source>
         <target>ok</target>
       </trans-unit>
+      <trans-unit>
+        <source>Back to list</source>
+        <target>Powrót do listy</target>
+      </trans-unit>
 
       <!-- Filters -->
       <trans-unit>
