@@ -34,4 +34,25 @@ class attachmentActions extends sfActions
 
     return sfView::INPUT;
   }
+
+  public function executeEditable(sfWebRequest $request)
+  {
+    $attachment = Doctrine_Core::getTable('Attachment')->find($request['id']);
+    $this->forward404Unless($attachment, 'Attachment not found');
+
+    $this->form = new AttachmentForm($attachment);
+    if (
+      $request->isMethod('post')
+      &&
+      $this->form->bindAndSave(
+        $request->getParameter($this->form->getName()),
+        $request->getFiles($this->form->getName())
+      )
+    )
+    {
+      return sfView::SUCCESS;
+    }
+
+    return sfView::INPUT;
+  }
 }

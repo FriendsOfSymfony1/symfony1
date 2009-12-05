@@ -309,9 +309,10 @@ abstract class sfFormDoctrine extends sfFormObject
       throw new LogicException(sprintf('You cannot remove the current file for field "%s" as the field is not a file.', $field));
     }
 
-    if (($directory = $this->validatorSchema[$field]->getOption('path')) && is_file($directory.$this->getObject()->$field))
+    $directory = $this->validatorSchema[$field]->getOption('path');
+    if ($directory && is_file($file = $directory.'/'.$this->getObject()->$field))
     {
-      unlink($directory.$this->getObject()->$field);
+      unlink($file);
     }
   }
 
