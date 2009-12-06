@@ -237,3 +237,27 @@ $b->
   get('/browser/templateCustom')->
   with('response')->checkElement('#test', 'template')
 ;
+
+$b
+  ->getAndCheck('browser', 'redirect1', null, 302)
+
+  ->followRedirect()
+
+  ->with('request')->begin()
+    ->isParameter('module', 'browser')
+    ->isParameter('action', 'redirectTarget1')
+  ->end()
+
+  ->with('response')->isStatusCode(200)
+
+  ->getAndCheck('browser', 'redirect2', null, 302)
+
+  ->followRedirect()
+
+  ->with('request')->begin()
+    ->isParameter('module', 'browser')
+    ->isParameter('action', 'redirectTarget2')
+  ->end()
+
+  ->with('response')->isStatusCode(200)
+;

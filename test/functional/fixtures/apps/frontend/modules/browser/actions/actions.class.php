@@ -40,4 +40,23 @@ class browserActions extends sfActions
       $this->setTemplate('templateCustomCustom');
     }
   }
+
+  public function executeRedirect1()
+  {
+    $this->redirect('browser/redirectTarget1');
+  }
+
+  public function executeRedirectTarget1()
+  {
+  }
+
+  public function executeRedirect2()
+  {
+    $this->redirect('browser/redirectTarget2');
+  }
+
+  public function executeRedirectTarget2()
+  {
+    return $this->renderText('ok');
+  }
 }
