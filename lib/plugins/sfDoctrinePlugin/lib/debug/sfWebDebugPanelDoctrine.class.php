@@ -126,7 +126,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
       $backtrace = null;
       foreach ($logs as $i => $log)
       {
-        if (!$log['debug_backtrace'])
+        if (!isset($log['debug_backtrace']) || !count($log['debug_backtrace']))
         {
           // backtrace disabled
           break;
