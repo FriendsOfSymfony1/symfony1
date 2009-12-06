@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(12);
+$t = new lime_test(15);
 
 $source = <<<EOF
 <?php
@@ -196,17 +196,49 @@ class Foo
 }
 EOF;
 
-$m = new sfClassManipulator($source);
+$sourceCRLF = str_replace('
+', "\r\n", $source);
+$sourceFilteredCRLF = str_replace('
+', "\r\n", $sourceFiltered);
+$sourceLF = str_replace('
+', "\n", $source);
+$sourceFilteredLF = str_replace('
+', "\n", $sourceFiltered);
+
+// CRLF
+$t->diag('CRLF');
+
+$m = new sfClassManipulator($sourceCRLF);
+$f->lines = array();
 $m->filterMethod('foo', array($f, 'filter1'));
-$t->is(fix_linebreaks($m->getCode()), fix_linebreaks($source), '->filterMethod() does not change the code if the filter does nothing');
+$t->is($m->getCode(), $sourceCRLF, '->filterMethod() does not change the code if the filter does nothing');
 $t->is_deeply($f->lines, array(
-  '  function foo()'.PHP_EOL,
-  '  {'.PHP_EOL,
-  '    if (true)'.PHP_EOL,
-  '    {'.PHP_EOL,
-  '      return;'.PHP_EOL,
-  '    }'.PHP_EOL,
-  '  }',
+  "  function foo()\r\n",
+  "  {\r\n",
+  "    if (true)\r\n",
+  "    {\r\n",
+  "      return;\r\n",
+  "    }\r\n",
+  "  }",
 ), '->filterMethod() filters each line of the method');
 $m->filterMethod('foo', array($f, 'filter2'));
-$t->is($m->getCode(), $sourceFiltered, '->filterMethod() modifies the method');
+$t->is($m->getCode(), $sourceFilteredCRLF, '->filterMethod() modifies the method');
+
+// LF
+$t->diag('LF');
+
+$m = new sfClassManipulator($sourceLF);
+$f->lines = array();
+$m->filterMethod('foo', array($f, 'filter1'));
+$t->is($m->getCode(), $sourceLF, '->filterMethod() does not change the code if the filter does nothing');
+$t->is_deeply($f->lines, array(
+  "  function foo()\n",
+  "  {\n",
+  "    if (true)\n",
+  "    {\n",
+  "      return;\n",
+  "    }\n",
+  "  }",
+), '->filterMethod() filters each line of the method');
+$m->filterMethod('foo', array($f, 'filter2'));
+$t->is($m->getCode(), $sourceFilteredLF, '->filterMethod() modifies the method');

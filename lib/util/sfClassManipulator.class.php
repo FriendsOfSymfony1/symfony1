@@ -173,6 +173,9 @@ class sfClassManipulator
     $parens = 0;
     $break = false;
 
+    // detect EOL style
+    $eol = false === strpos($this->code, "\r\n") ? "\n" : "\r\n";
+
     $tokens = token_get_all($this->code);
     for ($i = 0; $i < count($tokens); $i++)
     {
@@ -211,24 +214,24 @@ class sfClassManipulator
       }
 
       // detect EOL and filter
-      if ($break || false !== strpos($line, PHP_EOL))
+      if ($break || false !== strpos($line, $eol))
       {
-        $lines = explode(PHP_EOL, $line);
+        $lines = explode($eol, $line);
 
         if ($break)
         {
           $line = '';
-          $eol = '';
+          $nextEol = '';
         }
         else
         {
           $line = array_pop($lines);
-          $eol = PHP_EOL;
+          $nextEol = $eol;
         }
 
         foreach ($lines as $l)
         {
-          $code .= 1 != $insideSetup ? $l.$eol : call_user_func($callable, $l.$eol);
+          $code .= 1 != $insideSetup ? $l.$nextEol : call_user_func($callable, $l.$nextEol);
         }
       }
 
