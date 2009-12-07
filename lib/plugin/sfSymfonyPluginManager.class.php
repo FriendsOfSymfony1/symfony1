@@ -56,8 +56,7 @@ class sfSymfonyPluginManager extends sfPluginManager
 
     // register callbacks to manage web content
     $this->dispatcher->connect('plugin.post_install',  array($this, 'listenToPluginPostInstall'));
-    $this->dispatcher->connect('plugin.pre_uninstall', array($this, 'listenToPluginPostUninstall'));
-    $this->dispatcher->connect('plugin.post_uninstall', array($this, 'listenToPluginPostUnintall'));
+    $this->dispatcher->connect('plugin.post_uninstall', array($this, 'listenToPluginPostUninstall'));
   }
 
   /**
@@ -172,10 +171,7 @@ class sfSymfonyPluginManager extends sfPluginManager
   public function listenToPluginPostUninstall($event)
   {
     $this->uninstallWebContent($event['plugin']);
-  }
 
-  public function listenToPluginPostUnintall(sfEvent $event)
-  {
     $this->disablePlugin($event['plugin'], $this->environment->getOption('config_dir'));
   }
 
@@ -189,8 +185,8 @@ class sfSymfonyPluginManager extends sfPluginManager
     $symfony->setChannel('pear.symfony-project.com');
     $symfony->setConfig($this->environment->getConfig());
     $symfony->setPackageType('php');
-    $symfony->setAPIVersion('1.1.0');
-    $symfony->setAPIStability('stable');
+    $symfony->setAPIVersion(preg_replace('/\d+(\-\w+)?$/', '0', SYMFONY_VERSION));
+    $symfony->setAPIStability(false === strpos(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
     $symfony->setReleaseVersion(preg_replace('/\-\w+$/', '', SYMFONY_VERSION));
     $symfony->setReleaseStability(false === strpos(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
     $symfony->setDate(date('Y-m-d'));
@@ -202,7 +198,7 @@ class sfSymfonyPluginManager extends sfPluginManager
     $symfony->addMaintainer('lead', 'fabpot', 'Fabien Potencier', 'fabien.potencier@symfony-project.com');
     $symfony->setNotes('-');
     $symfony->setPearinstallerDep('1.4.3');
-    $symfony->setPhpDep('5.1.0');
+    $symfony->setPhpDep('5.2.4');
 
     $this->environment->getRegistry()->deletePackage('symfony', 'pear.symfony-project.com');
     if (!$this->environment->getRegistry()->addPackage2($symfony))
