@@ -98,7 +98,10 @@ EOF;
     {
       require_once dirname(__FILE__).'/sfLimeHarness.class.php';
 
-      $h = new sfLimeHarness(array('force_colors' => $options['color'], 'verbose' => $options['trace']));
+      $h = new sfLimeHarness(array(
+        'force_colors' => isset($options['color']) && $options['color'],
+        'verbose'      => isset($options['trace']) && $options['trace'],
+      ));
       $h->addPlugins(array_map(array($this->configuration, 'getPluginConfiguration'), $this->configuration->getPlugins()));
       $h->base_dir = sfConfig::get('sf_test_dir').'/functional/'.$app;
 

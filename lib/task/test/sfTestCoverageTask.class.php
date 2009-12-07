@@ -57,7 +57,7 @@ EOF;
   {
     require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
 
-    $coverage = $this->getCoverage($this->getTestHarness(array('force_colors' => $options['color'])), $options['detailed']);
+    $coverage = $this->getCoverage($this->getTestHarness(array('force_colors' => isset($options['color']) && $options['color'])), $options['detailed']);
 
     $testFiles = $this->getFiles(sfConfig::get('sf_root_dir').'/'.$arguments['test_name']);
     $max = count($testFiles);
