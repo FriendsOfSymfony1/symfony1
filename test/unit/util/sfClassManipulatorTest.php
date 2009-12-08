@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(15);
+$t = new lime_test(18);
 
 $source = <<<EOF
 <?php
@@ -242,3 +242,30 @@ $t->is_deeply($f->lines, array(
 ), '->filterMethod() filters each line of the method');
 $m->filterMethod('foo', array($f, 'filter2'));
 $t->is($m->getCode(), $sourceFilteredLF, '->filterMethod() modifies the method');
+
+// no EOL
+$t->diag('no EOL');
+
+$sourceFlat = '<?php class Foo { function foo() { if (true) { return; } } function baz() { if (true) { return; } } }';
+$m = new sfClassManipulator($sourceFlat);
+$f->lines = array();
+$m->filterMethod('foo', array($f, 'filter1'));
+$t->is_deeply($f->lines, array('function foo() { if (true) { return; } }'), '->filterMethod() works when there are no line breaks');
+$t->is($m->getCode(), $sourceFlat, '->filterMethod() works when there are no line breaks');
+
+// mixed EOL
+$t->diag('mixed EOL');
+
+$sourceMixed = "<?php\r\n\nclass Foo\r\n{\n  function foo()\r\n  {\n    if (true)\r\n    {\n      return;\r\n    }\n  }\r\n\n  function baz()\r\n  {\n    if (true)\r\n    {\n      return;\r\n    }\n  }\r\n}";
+$m = new sfClassManipulator($sourceMixed);
+$f->lines = array();
+$m->filterMethod('foo', array($f, 'filter1'));
+$t->is_deeply($f->lines, array(
+  "  function foo()\r\n",
+  "  {\n",
+  "    if (true)\r\n",
+  "    {\n",
+  "      return;\r\n",
+  "    }\n",
+  "  }",
+), '->filterMethod() filters each line of a mixed EOL-style method');
