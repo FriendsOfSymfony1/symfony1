@@ -1,3 +1,25 @@
+12/08/09: Version 1.4.1
+-----------------------
+
+ * [25063] updated class manipulator to work with mixed eol styles and no eol (closes #7694)
+ * [25051] fixed typos in plugin manager
+ * [25036] fixed php notices when test:* tasks are run outside of a command applications
+ * [24993] updated checking for logged trace to be a bit more responsible (closes #7817)
+ * [24992] added test coverage for testing browser redirects (refs #7823)
+ * [24986] patched class manipulator to work with source that uses an eol other than PHP_EOL (closes #7694)
+ * [24976] added translation for "Back To List" for German and Polish (fixes #7819)
+ * [24972] added files not included in r24970
+ * [24971] fixed sfFormDoctrine::removeFile fails to remove files (closes #7771)
+ * [24970] fixed inclusion of linked doctrine schema files (closes #7774, thanks esycat)
+ * [24962] using var export on serialisation to prevent invalid php code (fixes #7802)
+ * [24944] removed duplicate declaration of options member variable (fixes #7809)
+ * [24942] updated japanese translation of the admin generator (closes #7814 patch by river.bright)
+ * [24849] fixed typo (closes #7778)
+ * [24745] fixed replacing of tokens in doctrine stub and base model classes (closes #7656)
+ * [24705] optimized project:validate task
+ * [24703] Reverting r24632 (closes #6860)
+ * [24701] Fixing strict standards notice
+
 12/01/09: Version 1.4.0
 -----------------------
 
