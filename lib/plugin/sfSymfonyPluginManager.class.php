@@ -132,7 +132,7 @@ class sfSymfonyPluginManager extends sfPluginManager
    * @param string $plugin The name of the plugin
    * @param string $configDir The config directory
    */
-  static protected function disablePlugin($plugin, $configDir)
+  static public function disablePlugin($plugin, $configDir)
   {
     if (!$configDir)
     {
