@@ -44,7 +44,7 @@ class sfParameterHolderValidation extends sfValidation
   public function validate()
   {
     $found = array();
-    $files = sfFinder::type('file')->name('*.class.php')->prune('vendor')->in(array(
+    $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in(array(
       sfConfig::get('sf_apps_dir'),
       sfConfig::get('sf_lib_dir'),
       sfConfig::get('sf_test_dir'),
@@ -54,7 +54,7 @@ class sfParameterHolderValidation extends sfValidation
     {
       $content = sfToolkit::stripComments(file_get_contents($file));
 
-      if (preg_match('#(get|has|remove)(Request)*Parameter\(\s*[\'"][^\),]*?\[[^\),]#', $content))
+      if (preg_match('#\b(get|has|remove)(Request)*Parameter\(\s*[\'"][^\),]*?\[[^\),]#', $content))
       {
         $found[$file] = true;
       }

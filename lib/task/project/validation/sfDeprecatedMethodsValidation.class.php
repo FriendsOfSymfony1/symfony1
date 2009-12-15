@@ -50,9 +50,9 @@ class sfDeprecatedMethodsValidation extends sfValidation
         'sfValidatorBase::setRequiredMessage',
         'debug_message',
         'sfContext::retrieveObjects',
-        '->getXDebugStack',
-        '->checkSymfonyVersion',
-        '->sh(',
+        'getXDebugStack',
+        'checkSymfonyVersion',
+        'sh',
       ), array(
         sfConfig::get('sf_apps_dir'),
         sfConfig::get('sf_lib_dir'),
@@ -61,7 +61,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
       )),
 
       $this->doValidate(array(
-        '\-\>contains\(', 'responseContains', 'isRequestParameter', 'isResponseHeader',
+        'contains', 'responseContains', 'isRequestParameter', 'isResponseHeader',
         'isUserCulture', 'isRequestFormat', 'checkResponseElement',
       ), sfConfig::get('sf_test_dir')),
 
@@ -84,7 +84,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
       $matches = array();
       foreach ($methods as $method)
       {
-        if (false !== stripos($content, $method))
+        if (preg_match('#\b'.preg_quote($method, '#').'\b#', $content))
         {
           $matches[] = $method;
         }
