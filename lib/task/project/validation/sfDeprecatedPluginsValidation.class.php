@@ -41,7 +41,7 @@ class sfDeprecatedPluginsValidation extends sfValidation
     $files = sfFinder::type('file')->name('*Configuration.class.php')->in($this->getProjectConfigDirectories());
     foreach ($files as $file)
     {
-      $content = file_get_contents($file);
+      $content = sfToolkit::stripComments(file_get_contents($file));
 
       $matches = array();
       if (false !== strpos($content, 'sfCompat10Plugin'))

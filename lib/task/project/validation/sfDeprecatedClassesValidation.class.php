@@ -71,7 +71,7 @@ class sfDeprecatedClassesValidation extends sfValidation
     ));
     foreach ($files as $file)
     {
-      $content = file_get_contents($file);
+      $content = sfToolkit::stripComments(file_get_contents($file));
 
       $matches = array();
       foreach ($classes as $class)

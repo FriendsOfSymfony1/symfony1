@@ -52,7 +52,7 @@ class sfParameterHolderValidation extends sfValidation
     ));
     foreach ($files as $file)
     {
-      $content = file_get_contents($file);
+      $content = sfToolkit::stripComments(file_get_contents($file));
 
       if (preg_match('#(get|has|remove)(Request)*Parameter\(\s*[\'"][^\),]*?\[[^\),]#', $content))
       {

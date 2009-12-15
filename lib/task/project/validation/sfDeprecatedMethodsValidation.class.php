@@ -79,7 +79,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
     $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in($dir);
     foreach ($files as $file)
     {
-      $content = file_get_contents($file);
+      $content = sfToolkit::stripComments(file_get_contents($file));
 
       $matches = array();
       foreach ($methods as $method)
