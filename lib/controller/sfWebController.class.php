@@ -47,7 +47,7 @@ abstract class sfWebController extends sfController
         return $parameters;
       }
 
-      if (is_string($parameters) && $parameters == '#')
+      if ($parameters == '#')
       {
         return $parameters;
       }
