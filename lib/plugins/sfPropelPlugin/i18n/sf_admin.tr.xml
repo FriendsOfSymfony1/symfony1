@@ -33,6 +33,18 @@
         <source>Cancel</source>
         <target>Vazgeç</target>
       </trans-unit>
+      <trans-unit>
+        <source>Choose an action</source>
+        <target>Bir Eylem Seç</target>
+      </trans-unit>
+      <trans-unit>
+        <source>go</source>
+        <target>devam</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Back to list</source>
+        <target>Listeye geri dön</target>
+      </trans-unit>
 
       <!-- Filters -->
       <trans-unit>
@@ -64,6 +76,10 @@
       <trans-unit>
         <source>desc</source>
         <target>azalan</target>
+      </trans-unit>
+      <trans-unit>
+        <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
+        <target>[0] kayıt yok|[1] 1 sonuç|(1,+Inf] %1% sonuçlar</target>
       </trans-unit>
 
       <!-- Pagination -->
@@ -115,21 +131,44 @@
       </trans-unit>
       <trans-unit>
         <source>You must select an action to execute on the selected items.</source>
-        <target>Seçilmiş kayıtlar üzerinde çalıştırılmak üzere bir eylem seçmelisiniz.</target>
+        <target>Seçilen kayıtlar üzerinde çalıştırılmak üzere bir eylem seçmelisiniz.</target>
       </trans-unit>
       <trans-unit>
         <source>A problem occurs when deleting the selected items as some items do not exist anymore.</source>
-        <target>Seçilmiş kayıtlar silinirken bir sorun oluştu, bazı kayıtlar artık bulunmuyor.</target>
+        <target>Seçilen kayıtlar silinirken bir sorun oluştu, bazı kayıtlar artık bulunmuyor.</target>
       </trans-unit>
       <trans-unit>
         <source>The selected items have been deleted successfully.</source>
-        <target>Seçilmiş kayıtlar başarıyla silindi.</target>
+        <target>Seçilen kayıtlar başarıyla silindi.</target>
       </trans-unit>
       <trans-unit>
         <source>A problem occurs when deleting the selected items.</source>
-        <target>Seçilmiş kayıtlar silinirken bir sorun oluştu.</target>
+        <target>Seçilen kayıtlar silinirken bir sorun oluştu.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>is empty</source>
+        <target>boş mu?</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes or no</source>
+        <target>evet ya da hayır</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes</source>
+        <target>evet</target>
+      </trans-unit>
+      <trans-unit>
+        <source>no</source>
+        <target>hayır</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date% to %to_date%]]></source>
+        <target><![CDATA[%from_date% ile %to_date% arası]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
+        <target><![CDATA[%from_date% ile<br />%to_date% arası]]></target>
       </trans-unit>
     </body>
   </file>
 </xliff>
-
