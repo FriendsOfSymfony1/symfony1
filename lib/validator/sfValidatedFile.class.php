@@ -33,6 +33,7 @@ class sfValidatedFile
    * @param string $type          The file content type
    * @param string $tempName      The absolute temporary path to the file
    * @param int    $size          The file size (in bytes)
+   * @param string $path          The path to save the file (optional).
    */
   public function __construct($originalName, $type, $tempName, $size, $path = null)
   {
