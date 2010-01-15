@@ -171,13 +171,6 @@ class sfNumberFormat
   {
     $string = (string) $string;
 
-    $decimalDigits = $this->formatInfo->DecimalDigits;
-    // if not decimal digits, assume 0 decimal points.
-    if (is_int($decimalDigits) && $decimalDigits > 0)
-    {
-      $string = (string) intval(round(floatval($string), $decimalDigits));
-    }
-
     $dp = strpos($string, '.');
 
     if (is_int($dp))

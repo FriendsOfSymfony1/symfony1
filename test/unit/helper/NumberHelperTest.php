@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/NumberHelper.php');
 
-$t = new lime_test(7);
+$t = new lime_test(10);
 
 // format_number()
 $t->diag('format_number()');
@@ -26,3 +26,7 @@ $t->is(format_currency(1200000.1, 'USD', 'en'), '$1,200,000.10', 'format_currenc
 $t->is(format_currency(1200000.10, 'USD', 'en'), '$1,200,000.10', 'format_currency() takes a number as its first argument');
 $t->is(format_currency(1200000.101, 'USD', 'en'), '$1,200,000.10', 'format_currency() takes a number as its first argument');
 $t->is(format_currency('1200000', 'USD', 'en'), '$1,200,000.00', 'format_currency() takes a number as its first argument');
+
+$t->is(format_currency('11.50999', 'USD', 'en'), '$11.50', 'format_currency() takes a number as its first argument');
+$t->is(format_currency('11.50999', 'EUR', 'fr'), '11,50 €', 'format_currency() takes a number as its first argument');
+$t->is(format_currency('11.9999464', 'EUR', 'fr'), '11,99 €', 'format_currency() takes a number as its first argument');
