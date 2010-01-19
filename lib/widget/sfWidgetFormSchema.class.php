@@ -753,8 +753,8 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    */
   public function setPositions(array $positions)
   {
-    $positions = array_values($positions);
-    $current = array_keys($this->fields);
+    $positions = array_unique(array_values($positions));
+    $current   = array_keys($this->fields);
 
     if ($diff = array_diff($positions, $current))
     {

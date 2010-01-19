@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(94);
+$t = new lime_test(95);
 
 $w1 = new sfWidgetFormInputText(array(), array('class' => 'foo1'));
 $w2 = new sfWidgetFormInputText();
@@ -238,6 +238,12 @@ $w['w1'] = $w1;
 $w['w2'] = $w2;
 $w['w1'] = $w1;
 $t->is($w->getPositions(), array('w1', 'w2'), '->setPositions() changes all field positions');
+
+$w = new sfWidgetFormSchema();
+$w['w1'] = $w1;
+$w['w2'] = $w2;
+$w->setPositions(array('w1', 'w2', 'w1'));
+$t->is($w->getPositions(), array('w1', 'w2'), '->setPositions() does not repeat the fields');
 
 try
 {
