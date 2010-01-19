@@ -185,7 +185,7 @@ class sfDomCssSelector implements Countable, Iterator
             {
               $attrName = $match[1];
               $attrOperator = $match[2];
-              $attrValue = $match[4];
+              $attrValue = $match[4] ? $match[4] : $match[5];
 
               switch ($attrOperator)
               {

@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(69);
+$t = new lime_test(70);
 
 $html = <<<EOF
 <html>
@@ -89,6 +89,7 @@ $t->is($c->matchAll('h2')->getValues(), array('Title 1', 'Title 2'), '->matchAll
 $t->is($c->matchAll('#footer')->getValues(), array('footer'), '->matchAll() supports searching html elements by id');
 $t->is($c->matchAll('div#footer')->getValues(), array('footer'), '->matchAll() supports searching html elements by id for a tag name');
 $t->is($c->matchAll('*[class="myfoo"]')->getValues(), array('myfoo', 'myfoo bis'), '->matchAll() can take a * to match every elements');
+$t->is($c->matchAll('*[class=myfoo]')->getValues(), array('myfoo', 'myfoo bis'), '->matchAll() can take a * to match every elements');
 
 $t->is($c->matchAll('.header')->getValues(), array('header'), '->matchAll() supports searching html elements by class name');
 $t->is($c->matchAll('p.header')->getValues(), array('header'), '->matchAll() supports searching html elements by class name for a tag name');
