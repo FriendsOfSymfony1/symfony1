@@ -82,7 +82,7 @@ class sfValidatorDate extends sfValidatorBase
     }
 
     // convert timestamp to date number format
-    if (ctype_digit($value))
+    if (is_numeric($value))
     {
       $cleanTime = (integer) $value;
       $clean     = date('YmdHis', $cleanTime);
@@ -106,7 +106,7 @@ class sfValidatorDate extends sfValidatorBase
     if ($max = $this->getOption('max'))
     {
       // convert timestamp to date number format
-      if (ctype_digit($max))
+      if (is_numeric($max))
       {
         $maxError = date($this->getOption('date_format_range_error'), $max);
         $max      = date('YmdHis', $max);
@@ -129,7 +129,7 @@ class sfValidatorDate extends sfValidatorBase
     if ($min = $this->getOption('min'))
     {
       // convert timestamp to date number
-      if (ctype_digit($min))
+      if (is_numeric($min))
       {
         $minError = date($this->getOption('date_format_range_error'), $min);
         $min      = date('YmdHis', $min);
