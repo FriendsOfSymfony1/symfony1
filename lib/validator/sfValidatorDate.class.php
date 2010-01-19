@@ -108,8 +108,8 @@ class sfValidatorDate extends sfValidatorBase
       // convert timestamp to date number format
       if (ctype_digit($max))
       {
-        $max      = date('YmdHis', $max);
         $maxError = date($this->getOption('date_format_range_error'), $max);
+        $max      = date('YmdHis', $max);
       }
       // convert string to date number
       else
@@ -131,8 +131,8 @@ class sfValidatorDate extends sfValidatorBase
       // convert timestamp to date number
       if (ctype_digit($min))
       {
-        $min      = date('YmdHis', $min);
         $minError = date($this->getOption('date_format_range_error'), $min);
+        $min      = date('YmdHis', $min);
       }
       // convert string to date number
       else
