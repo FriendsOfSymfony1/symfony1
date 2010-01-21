@@ -96,7 +96,7 @@ class sfVarLogger extends sfLogger
     $priorities = array();
     foreach ($this->logs as $log)
     {
-      if (!in_array($log['priority'], $types))
+      if (!in_array($log['priority'], $priorities))
       {
         $priorities[] = $log['priority'];
       }
