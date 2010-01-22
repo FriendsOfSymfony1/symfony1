@@ -183,7 +183,21 @@ class sfTesterResponse extends sfTester
       if (true === $checkDTD)
       {
         $cache = sfConfig::get('sf_cache_dir').'/sf_tester_response/w3';
-        $local = 'file://'.str_replace(DIRECTORY_SEPARATOR, '/', $cache);
+        if ($cache[1] == ':')
+        {
+          // On Windows systems the path will be like c:\symfony\cache\xml.dtd
+          // I did not manage to get DOMDocument loading a file protocol url including the drive letter
+          // file://c:\symfony\cache\xml.dtd or file://c:/symfony/cache/xml.dtd
+          // The first one simply doesnt work, the second one is treated as remote call.
+          // However the following works. Unfortunatly this means we can only access the current disk
+          // file:///symfony/cache/xml.dtd
+          // Note that all work for file_get_contents so the bug is most likely in DOMDocument.
+          $local = 'file://'.substr(str_replace(DIRECTORY_SEPARATOR, '/', $cache), 2);
+        }
+        else
+        {
+          $local = 'file://'.$cache;
+        }
 
         if (!file_exists($cache.'/TR/xhtml11/DTD/xhtml11.dtd'))
         {
