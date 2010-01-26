@@ -384,8 +384,8 @@ $url = '/plainurl';
 $t->is($r->parse($url), $params, '->parse() works with segment_separators which are not in url');
 $t->is($r->generate('', $params), $url, '->generate() works with segment_separators which are not in url');
 $params = array('module' => 'default', 'action' => 'index', 'nonsegmented' => 'foo/bar/baz');
-$t->is($r->parse('/foo/bar/baz'), $params, '->parse() works without segment_separators');
-$t->is($r->generate('', $params), '/foo%2Fbar%2Fbaz', '->generate() works without segment_separators');
+$t->is($r->parse('/foo/bar/baz'), $params, '->parse() works with segment_separators which are not in url');
+$t->is($r->generate('', $params), '/foo%2Fbar%2Fbaz', '->generate() works with segment_separators which are not in url');
 
 $r = new sfPatternRoutingTest(new sfEventDispatcher(), null, array_merge($options, array('variable_prefixes' => array(':', '$'))));
 
