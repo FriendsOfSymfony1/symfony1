@@ -556,9 +556,9 @@ class sfRoute implements Serializable
         $buffer = substr($buffer, strlen($match[1]));
         $afterASeparator = false;
       }
-      else if (!$afterASeparator && preg_match('#^'.$this->options['segment_separators_regex'].'#', $buffer, $match))
+      else if (!$afterASeparator && preg_match('#^/|^'.$this->options['segment_separators_regex'].'#', $buffer, $match))
       {
-        // a separator
+        // beginning of URL (^/) or a separator
         $this->tokens[] = array('separator', $currentSeparator, $match[0], null);
 
         $currentSeparator = $match[0];
@@ -686,16 +686,27 @@ class sfRoute implements Serializable
       'extra_parameters_as_query_string' => true,
     ), $this->getDefaultOptions(), $this->options);
 
-    // compute some regexes
-    $this->options['variable_prefix_regex']    = '(?:'.implode('|', array_map(create_function('$a', 'return preg_quote($a, \'#\');'), $this->options['variable_prefixes'])).')';
-    $this->options['segment_separators_regex'] = '(?:'.implode('|', array_map(create_function('$a', 'return preg_quote($a, \'#\');'), $this->options['segment_separators'])).')';
+    $preg_quote_hash = create_function('$a', 'return preg_quote($a, \'#\');');
 
-    // as of PHP 5.3.0, preg_quote automatically quotes dashes "-" (see http://bugs.php.net/bug.php?id=47229)
-    $this->options['variable_content_regex'] = '[^'.implode('', array_map(
-      version_compare(PHP_VERSION, '5.3.0RC4', '>=') ?
-        create_function('$a', 'return preg_quote($a, \'#\');') :
-        create_function('$a', 'return str_replace(\'-\', \'\-\', preg_quote($a, \'#\'));')
-      , $this->options['segment_separators'])).']+';
+    // compute some regexes
+    $this->options['variable_prefix_regex'] = '(?:'.implode('|', array_map($preg_quote_hash, $this->options['variable_prefixes'])).')';
+
+    if (count($this->options['segment_separators']))
+    {
+      $this->options['segment_separators_regex'] = '(?:'.implode('|', array_map($preg_quote_hash, $this->options['segment_separators'])).')';
+
+      // as of PHP 5.3.0, preg_quote automatically quotes dashes "-" (see http://bugs.php.net/bug.php?id=47229)
+      $preg_quote_hash_53 = create_function('$a', 'return str_replace(\'-\', \'\-\', preg_quote($a, \'#\'));');
+      $this->options['variable_content_regex'] = '[^'.implode('',
+          array_map(version_compare(PHP_VERSION, '5.3.0RC4', '>=') ? $preg_quote_hash : $preg_quote_hash_53, $this->options['segment_separators'])
+        ).']+';
+    }
+    else
+    {
+      // use simplified regexes for case where no separators are used
+      $this->options['segment_separators_regex'] = '()';
+      $this->options['variable_content_regex']   = '.+';
+    }
   }
 
   protected function parseStarParameter($star)

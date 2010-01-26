@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(137);
+$t = new lime_test(145);
 
 class sfPatternRoutingTest extends sfPatternRouting
 {
@@ -42,7 +42,7 @@ class sfPatternRoutingTest extends sfPatternRouting
 
 class sfAlwaysAbsoluteRoute extends sfRoute
 {
-  public function generate($params = array(), $context = array(), $absolute = false)
+  public function generate($params, $context = array(), $absolute = false)
   {
     $url = parent::generate($params, $context, $absolute);
 
@@ -325,7 +325,6 @@ $t->is($r->generate('', $params), $url, '->generate() creates URL for route when
 // separators
 $t->diag('separators');
 $r = new sfPatternRoutingTest(new sfEventDispatcher(), null, array_merge($options, array('segment_separators' => array('/', ';', ':', '|', '.', '-', '+'))));
-$r->clearRoutes();
 $r->connect('test',  new sfRoute('/:module/:action;:foo::baz+static+:toto|:hip-:zozo.:format', array()));
 $r->connect('test0', new sfRoute('/:module/:action0', array()));
 $r->connect('test1', new sfRoute('/:module;:action1', array()));
@@ -366,6 +365,27 @@ $params = array('module' => 'default', 'action' => 'index', 'action' => 'foobar'
 $url = '/default/foobar;bar:baz+static+titi|hop-zaza.xml';
 $t->is($r->parse($url), $params, '->parse() recognizes parameters separated by mixed separators');
 $t->is($r->generate('', $params), $url, '->generate() creates routes with mixed separators');
+
+// see ticket #8114
+$r = new sfPatternRoutingTest(new sfEventDispatcher(), null, array_merge($options, array('segment_separators' => array())));
+$r->connect('nosegment', new sfRoute('/:nonsegmented', array()));
+$params = array('module' => 'default', 'action' => 'index', 'nonsegmented' => 'plainurl');
+$url = '/plainurl';
+$t->is($r->parse($url), $params, '->parse() works without segment_separators');
+$t->is($r->generate('', $params), $url, '->generate() works without segment_separators');
+$params = array('module' => 'default', 'action' => 'index', 'nonsegmented' => 'foo/bar/baz');
+$t->is($r->parse('/foo/bar/baz'), $params, '->parse() works without segment_separators');
+$t->is($r->generate('', $params), '/foo%2Fbar%2Fbaz', '->generate() works without segment_separators');
+
+$r = new sfPatternRoutingTest(new sfEventDispatcher(), null, array_merge($options, array('segment_separators' => array('~'))));
+$r->connect('nosegment', new sfRoute('/:nonsegmented', array()));
+$params = array('module' => 'default', 'action' => 'index', 'nonsegmented' => 'plainurl');
+$url = '/plainurl';
+$t->is($r->parse($url), $params, '->parse() works with segment_separators which are not in url');
+$t->is($r->generate('', $params), $url, '->generate() works with segment_separators which are not in url');
+$params = array('module' => 'default', 'action' => 'index', 'nonsegmented' => 'foo/bar/baz');
+$t->is($r->parse('/foo/bar/baz'), $params, '->parse() works without segment_separators');
+$t->is($r->generate('', $params), '/foo%2Fbar%2Fbaz', '->generate() works without segment_separators');
 
 $r = new sfPatternRoutingTest(new sfEventDispatcher(), null, array_merge($options, array('variable_prefixes' => array(':', '$'))));
 
