@@ -134,9 +134,11 @@ EOF;
     // execute a custom installer
     if ($options['installer'] && $this->commandApplication)
     {
-      $this->reloadTasks();
-
-      include $options['installer'];
+      if ($this->canRunInstaller($options['installer']))
+      {
+        $this->reloadTasks();
+        include $options['installer'];
+      }
     }
 
     // fix permission for common directories
@@ -146,5 +148,22 @@ EOF;
     $fixPerms->run();
 
     $this->replaceTokens();
+  }
+
+  protected function canRunInstaller($installer)
+  {
+    if (preg_match('#^(https?|ftps?)://#', $installer))
+    {
+      if (ini_get('allow_url_fopen') === false)
+      {
+        $this->logSection('generate', sprintf('Cannot run remote installer "%s" because "allow_url_fopen" is off', $installer));
+      }
+      if (ini_get('allow_url_include') === false)
+      {
+        $this->logSection('generate', sprintf('Cannot run remote installer "%s" because "allow_url_include" is off', $installer));
+      }
+      return ini_get('allow_url_fopen') && ini_get('allow_url_include');
+    }
+    return true;
   }
 }
