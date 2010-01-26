@@ -21,6 +21,7 @@ class sfProjectConfiguration
   protected
     $rootDir               = null,
     $symfonyLibDir         = null,
+    $dispatcher            = null,
     $plugins               = array(),
     $pluginPaths           = array(),
     $overriddenPluginPaths = array(),
