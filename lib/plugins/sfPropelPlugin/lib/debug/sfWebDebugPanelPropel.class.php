@@ -120,11 +120,11 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
       $backtrace = isset($log['debug_backtrace']) && count($log['debug_backtrace']) ? '&nbsp;'.$this->getToggleableDebugStack($log['debug_backtrace']) : '';
 
       $html[] = sprintf('
-        <li class="%s">
+        <li%s>
           <p class="sfWebDebugDatabaseQuery">%s</p>
           <div class="sfWebDebugDatabaseLogInfo">%s%s</div>
         </li>',
-        $slowQuery ? 'sfWebDebugWarning' : '',
+        $slowQuery ? ' class="sfWebDebugWarning"' : '',
         $query,
         implode(', ', $details),
         $backtrace

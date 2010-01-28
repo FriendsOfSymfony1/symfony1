@@ -185,8 +185,8 @@ class sfWebDebug
         if (($content = $panel->getPanelContent()) || $panel->getTitleUrl())
         {
           $id = sprintf('sfWebDebug%sDetails', $name);
-          $titles[] = sprintf('<li class="%s"><a title="%s" href="%s"%s>%s</a></li>',
-            $panel->getStatus() ? 'sfWebDebug'.ucfirst($this->getPriority($panel->getStatus())) : '',
+          $titles[] = sprintf('<li%s><a title="%s" href="%s"%s>%s</a></li>',
+            $panel->getStatus() ? ' class="sfWebDebug'.ucfirst($this->getPriority($panel->getStatus())).'"' : '',
             $panel->getPanelTitle(),
             $panel->getTitleUrl() ? $panel->getTitleUrl() : '#',
             $panel->getTitleUrl() ? '' : ' onclick="sfWebDebugShowDetailsFor(\''.$id.'\'); return false;"',

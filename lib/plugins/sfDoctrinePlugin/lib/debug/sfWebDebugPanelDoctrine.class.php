@@ -142,11 +142,11 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
       }
 
       $html[] = sprintf('
-        <li class="%s">
+        <li%s>
           <p class="sfWebDebugDatabaseQuery">%s</p>
           <div class="sfWebDebugDatabaseLogInfo">%ss, "%s" connection%s</div>
         </li>',
-        $event->slowQuery ? 'sfWebDebugWarning' : '',
+        $event->slowQuery ? ' class="sfWebDebugWarning"' : '',
         $query,
         number_format($event->getElapsedSecs(), 2),
         $conn->getName(),
