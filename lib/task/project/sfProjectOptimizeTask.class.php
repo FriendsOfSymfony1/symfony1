@@ -49,7 +49,7 @@ EOF;
   {
     $data = array();
     $modules = $this->findModules();
-    $target = sfConfig::get('sf_cache_dir').'/'.$arguments['application'].'/'.$arguments['environment'].'/config/configuration.php';
+    $target = sfConfig::get('sf_cache_dir').'/'.$arguments['application'].'/'.$arguments['env'].'/config/configuration.php';
 
     // remove existing optimization file
     if (file_exists($target))
