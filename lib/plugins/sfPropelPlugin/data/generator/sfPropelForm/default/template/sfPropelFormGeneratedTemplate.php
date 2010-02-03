@@ -8,7 +8,6 @@
  * @package    ##PROJECT_NAME##
  * @subpackage form
  * @author     ##AUTHOR_NAME##
- * @version    SVN: $Id$
  */
 abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFormPropel
 {
