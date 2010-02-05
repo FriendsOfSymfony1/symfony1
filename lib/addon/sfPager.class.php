@@ -493,6 +493,15 @@ abstract class sfPager implements Iterator, Countable
     $this->parameterHolder->set($name, $value);
   }
 
+  protected function initResultsIfRequired()
+  {
+    if (null === $this->results)
+    {
+      $this->results = $this->getResults();
+      $this->resultsCounter = count($this->results);
+    }
+  }
+
   /**
    * Returns the current result.
    *
@@ -500,11 +509,7 @@ abstract class sfPager implements Iterator, Countable
    */
   public function current()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
+    $this->initResultsIfRequired();
 
     return current($this->results);
   }
@@ -516,11 +521,7 @@ abstract class sfPager implements Iterator, Countable
    */
   public function key()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
+    $this->initResultsIfRequired();
 
     return key($this->results);
   }
@@ -532,11 +533,7 @@ abstract class sfPager implements Iterator, Countable
    */
   public function next()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
+    $this->initResultsIfRequired();
 
     --$this->resultsCounter;
 
@@ -550,11 +547,9 @@ abstract class sfPager implements Iterator, Countable
    */
   public function rewind()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
+    $this->initResultsIfRequired();
+
+    $this->resultsCounter = count($this->results);
 
     return reset($this->results);
   }
@@ -566,11 +561,7 @@ abstract class sfPager implements Iterator, Countable
    */
   public function valid()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
+    $this->initResultsIfRequired();
 
     return $this->resultsCounter > 0;
   }
