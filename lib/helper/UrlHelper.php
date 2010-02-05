@@ -110,7 +110,7 @@ function url_for()
 {
   // for BC with 1.1
   $arguments = func_get_args();
-  if (is_array($arguments[0]) || '@' == substr($arguments[0], 0, 1) || false !== strpos($arguments[0], '/'))
+  if (is_array($arguments[0]) || is_array($arguments[1]) || '@' == substr($arguments[0], 0, 1) || false !== strpos($arguments[0], '/'))
   {
     return call_user_func_array('url_for1', $arguments);
   }
