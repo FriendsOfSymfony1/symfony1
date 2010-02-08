@@ -28,7 +28,7 @@ class sfGenerateTaskTask extends sfBaseTask
 
     $this->addOptions(array(
       new sfCommandOption('dir', null, sfCommandOption::PARAMETER_REQUIRED, 'The directory to create the task in', 'lib/task'),
-      new sfCommandOption('use-database', null, sfCommandOption::PARAMETER_REQUIRED, 'Whether the task needs model initialization to access database', 'doctrine'),
+      new sfCommandOption('use-database', null, sfCommandOption::PARAMETER_REQUIRED, 'Whether the task needs model initialization to access database', sfConfig::get('sf_orm')),
       new sfCommandOption('brief-description', null, sfCommandOption::PARAMETER_REQUIRED, 'A brief task description (appears in task list)'),
     ));
 
@@ -93,7 +93,7 @@ Call it with:
 HED;
 
     $useDatabase = sfToolkit::literalize($options['use-database']);
-    $defaultConnection = is_string($useDatabase) ? $useDatabase : 'doctrine';
+    $defaultConnection = is_string($useDatabase) ? $useDatabase : sfConfig::get('sf_orm');
 
     if ($useDatabase)
     {
@@ -128,7 +128,7 @@ EOF;
   {
     // initialize the database connection
     \$databaseManager = new sfDatabaseManager(\$this->configuration);
-    \$connection = \$databaseManager->getDatabase(\$options['connection'] ? \$options['connection'] : null)->getConnection();
+    \$connection = \$databaseManager->getDatabase(\$options['connection'])->getConnection();
 
     // add your code here
   }
