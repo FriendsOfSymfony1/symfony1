@@ -107,7 +107,7 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
 
       $inputs[$id] = array(
         'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
-        'label' => $this->renderContentTag('label', $option, array('for' => $id)),
+        'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
       );
     }
 

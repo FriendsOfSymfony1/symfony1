@@ -20,7 +20,7 @@ class FormFormatterStub extends sfWidgetFormSchemaFormatter
   }
 }
 
-$t = new lime_test(11);
+$t = new lime_test(12);
 
 $dom = new DomDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
@@ -105,6 +105,12 @@ $output = '<ul class="radio_list">'.
 '<li><input name="foo" type="radio" value="foobar" id="foo_foobar" />&nbsp;<label for="foo_foobar">translation[foo]</label></li>'.
 '</ul>';
 $t->is($w->render('foo'), $output, '->render() translates the options');
+
+// choices as escaped
+$t->diag('choices are escaped');
+
+$w = new sfWidgetFormSelectRadio(array('choices' => array('<b>Hello world</b>')));
+$t->is($w->render('foo'), '<ul class="radio_list"><li><input name="foo" type="radio" value="0" id="foo_0" />&nbsp;<label for="foo_0">&lt;b&gt;Hello world&lt;/b&gt;</label></li></ul>', '->render() escapes the choices');
 
 // __clone()
 $t->diag('__clone()');
