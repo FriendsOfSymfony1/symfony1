@@ -53,6 +53,15 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
    */
   protected function doClean($value)
   {
+    if ($query = $this->getOption('query'))
+    {
+      $query = clone $query;
+    }
+    else
+    {
+      $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
+    }
+
     if ($this->getOption('multiple'))
     {
       if (!is_array($value))
@@ -77,10 +86,6 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
         throw new sfValidatorError($this, 'max', array('count' => $count, 'max' => $this->getOption('max')));
       }
 
-      if (!$query = $this->getOption('query'))
-      {
-        $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
-      }
       $query->andWhereIn(sprintf('%s.%s', $query->getRootAlias(), $this->getColumn()), $value);
 
       if ($query->count() != count($value))
@@ -90,10 +95,6 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
     }
     else
     {
-      if (!$query = $this->getOption('query'))
-      {
-        $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
-      }
       $query->andWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $this->getColumn()), $value);
 
       if (!$query->count())
