@@ -331,8 +331,9 @@ class sfDoctrineFormGenerator extends sfGenerator
   /**
    * Returns a PHP string representing options to pass to a widget for a given column.
    *
-   * @param  sfDoctrineColumn $column
-   * @return string    The options to pass to the widget as a PHP string
+   * @param sfDoctrineColumn $column
+   * 
+   * @return string The options to pass to the widget as a PHP string
    */
   public function getWidgetOptionsForColumn($column)
   {
@@ -342,16 +343,9 @@ class sfDoctrineFormGenerator extends sfGenerator
     {
       $options[] = sprintf('\'model\' => $this->getRelatedModelName(\'%s\'), \'add_empty\' => %s', $column->getRelationKey('alias'), $column->isNotNull() ? 'false' : 'true');
     }
-    else
+    else if ('enum' == $column->getDoctrineType() && is_subclass_of($this->getWidgetClassForColumn($column), 'sfWidgetFormChoiceBase'))
     {
-      switch ($column->getDoctrineType())
-      {
-        case 'enum':
-          $values = $column->getDefinitionKey('values');
-          $values = array_combine($values, $values);
-          $options[] = "'choices' => " . str_replace("\n", '', $this->arrayExport($values));
-          break;
-      }
+      $options[] = '\'choices\' => '.$this->arrayExport(array_combine($column['values'], $column['values']));
     }
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
@@ -456,8 +450,7 @@ class sfDoctrineFormGenerator extends sfGenerator
           }
           break;
         case 'enum':
-          $values = array_combine($column['values'], $column['values']);
-          $options[] = "'choices' => " . str_replace("\n", '', $this->arrayExport($values));
+          $options[] = '\'choices\' => '.$this->arrayExport($column['values']);
           break;
       }
     }

@@ -12,7 +12,7 @@ $app = 'backend';
 $fixtures = 'fixtures';
 require_once(dirname(__FILE__).'/../bootstrap/functional.php');
 
-$t = new lime_test(40);
+$t = new lime_test(41);
 
 $t->diag("Test that these models don't generate forms or filters classes");
 $noFormsOrFilters = array('UserGroup', 'UserPermission', 'GroupPermission');
@@ -82,3 +82,15 @@ $t->is($test->getValidator('author_id')->getOption('model'), 'BlogAuthor');
 $test = new BlogArticleFormFilter();
 $t->is($test->getWidget('author_id')->getOption('model'), 'BlogAuthor');
 $t->is($test->getValidator('author_id')->getOption('model'), 'BlogAuthor');
+
+$t->diag('Check enum primary keys');
+try
+{
+  $test = new ResourceTypeForm();
+  $t->pass('enum primary key widgets work');
+}
+catch (InvalidArgumentException $e)
+{
+  $t->fail('enum primary key widgets work');
+  $t->diag('    '.$e->getMessage());
+}

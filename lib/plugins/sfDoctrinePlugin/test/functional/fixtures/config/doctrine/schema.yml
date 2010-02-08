@@ -210,3 +210,11 @@ ModelWithNumberInColumn:
     column_1: string(255)
     column2: string(255)
     column__3: string(255)
+
+ResourceType:
+  columns:
+    id:
+      type: enum
+      values: [type1, type2, type3]
+      primary: true
+    name: string(255)
