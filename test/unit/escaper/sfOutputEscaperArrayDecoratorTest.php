@@ -24,7 +24,7 @@ class sfException extends Exception
 
 sfConfig::set('sf_charset', 'UTF-8');
 
-$t = new lime_test(10);
+$t = new lime_test(11);
 
 $a = array('<strong>escaped!</strong>', 1, null, array(2, '<strong>escaped!</strong>'));
 $escaped = sfOutputEscaper::escape('esc_entities', $a);
@@ -83,3 +83,9 @@ foreach ($escaped as $key => $value)
       $t->fail('The escaped object behaves like an array');
   }
 }
+
+// ->valid()
+$t->diag('->valid()');
+
+$escaped = sfOutputEscaper::escape('esc_entities', array(1, 2, 3));
+$t->is($escaped->valid(), true, '->valid() returns true if called before iteration');

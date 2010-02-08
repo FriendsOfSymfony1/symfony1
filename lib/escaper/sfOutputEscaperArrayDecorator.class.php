@@ -27,6 +27,18 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
   private $count;
 
   /**
+   * Constructor.
+   *
+   * @see sfOutputEscaper
+   */
+  public function __construct($escapingMethod, $value)
+  {
+    parent::__construct($escapingMethod, $value);
+
+    $this->count = count($this->value);
+  }
+
+  /**
    * Reset the array to the beginning (as required for the Iterator interface).
    */
   public function rewind()
@@ -66,7 +78,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
   {
     next($this->value);
 
-    $this->count --;
+    $this->count--;
   }
 
   /**
