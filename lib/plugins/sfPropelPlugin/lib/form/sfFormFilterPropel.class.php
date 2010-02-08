@@ -213,7 +213,7 @@ abstract class sfFormFilterPropel extends sfFormFilter
       $criterion->addOr($criteria->getNewCriterion($colname, null, Criteria::ISNULL));
       $criteria->add($criterion);
     }
-    else if (is_array($values) && isset($values['text']) && '' != $values['text'])
+    else if (is_array($values) && isset($values['text']) && '' !== $values['text'])
     {
       $criteria->add($colname, $values['text']);
     }

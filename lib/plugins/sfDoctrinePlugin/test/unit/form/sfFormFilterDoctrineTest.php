@@ -3,7 +3,7 @@
 $app = 'frontend';
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
-$t = new lime_test(10);
+$t = new lime_test(12);
 
 class TestFormFilter extends ArticleFormFilter
 {
@@ -15,12 +15,14 @@ class TestFormFilter extends ArticleFormFilter
       'name'        => new sfWidgetFormInputText(),
       'nomethod_bc' => new sfWidgetFormInputText(),
       'nomethod'    => new sfWidgetFormInputText(),
+      'author_id'   => new sfWidgetFormInputText(),
     ));
 
     $this->setValidators(array(
       'name'        => new sfValidatorPass(),
       'nomethod_bc' => new sfValidatorPass(),
       'nomethod'    => new sfValidatorPass(),
+      'author_id'   => new sfValidatorPass(),
     ));
   }
 
@@ -34,6 +36,7 @@ class TestFormFilter extends ArticleFormFilter
     return array_merge(parent::getFields(), array(
       'body'        => 'Invalid',
       'nomethod_bc' => 'Text',
+      'author_id'   => 'Number',
     ));
   }
 }
@@ -95,6 +98,13 @@ $filter = new TestFormFilter();
 $filter->bind(array('name' => 'Kris Wallsmith'));
 $filter->getQuery();
 $t->is_deeply($filter->processedFields, array('name'), '->getQuery() processes fields not specified in getFields()');
+
+// pass 0 to number filter
+$filter = new TestFormFilter();
+$filter->bind(array('author_id' => array('text' => 0)));
+$query = $filter->getQuery();
+$t->is(trim($query->getDql()), 'FROM Article r WHERE r.author_id = ?', '->getQuery() filters by a 0 number');
+$t->is($query->getFlattenedParams(), array(0), '->getQuery() filters by a 0 number');
 
 $t->diag('->setTableMethod()');
 

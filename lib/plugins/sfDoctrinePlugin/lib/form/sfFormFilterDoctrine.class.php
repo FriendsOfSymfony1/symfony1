@@ -243,7 +243,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
     {
       $query->addWhere(sprintf('%s.%s IS NULL', $query->getRootAlias(), $fieldName));
     }
-    else if (is_array($values) && isset($values['text']) && '' != $values['text'])
+    else if (is_array($values) && isset($values['text']) && '' !== $values['text'])
     {
       $query->addWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $fieldName), $values['text']);
     }
