@@ -177,7 +177,7 @@ function link_to()
   }
 }
 
-function url_for_form(sfForm $form, $routePrefix)
+function url_for_form(sfFormObject $form, $routePrefix)
 {
   $format = '%s/%s';
   if ('@' == $routePrefix[0])
