@@ -42,7 +42,7 @@ class sfPropelPager extends sfPager
    */
   public function init()
   {
-    $this->results = null;
+    $this->resetIterator();
 
     $hasMaxRecordLimit = ($this->getMaxRecordLimit() !== false);
     $maxRecordLimit = $this->getMaxRecordLimit();

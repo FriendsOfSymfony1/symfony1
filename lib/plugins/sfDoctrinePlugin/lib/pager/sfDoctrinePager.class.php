@@ -93,7 +93,7 @@ class sfDoctrinePager extends sfPager implements Serializable
    */
   public function init()
   {
-    $this->results = null;
+    $this->resetIterator();
 
     $countQuery = $this->getCountQuery();
     $count = $countQuery->count();
@@ -184,5 +184,18 @@ class sfDoctrinePager extends sfPager implements Serializable
   public function getResults($hydrationMode = null)
   {
     return $this->getQuery()->execute(array(), $hydrationMode);
+  }
+
+  /**
+   * @see sfPager
+   */
+  protected function initializeIterator()
+  {
+    parent::initializeIterator();
+
+    if ($this->results instanceof Doctrine_Collection)
+    {
+      $this->results = $this->results->getData();
+    }
   }
 }

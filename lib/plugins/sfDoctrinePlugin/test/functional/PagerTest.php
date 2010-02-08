@@ -11,7 +11,7 @@
 $app = 'frontend';
 require_once(dirname(__FILE__).'/../bootstrap/functional.php');
 
-$t = new lime_test(13);
+$t = new lime_test(23);
 
 $total = 50;
 for ($i = 0; $i < $total; $i++)
@@ -62,10 +62,19 @@ $pager->init();
 
 $t->is($pager->getQuery()->getSqlQuery(), 'SELECT a.id AS a__id, a.name AS a__name, a.type AS a__type FROM author a WHERE (a.id < 9999999 AND a.id > 0) LIMIT 25');
 
-
 $pager = new sfDoctrinePager('Author', $numPerPage);
 $pager->setQuery(Doctrine_Query::create()->from('Author a')->where('a.id < 9999999'));
 $pager->setPage(1);
 $pager->init();
 
 $t->is($pager->getQuery()->getSqlQuery(), 'SELECT a.id AS a__id, a.name AS a__name, a.type AS a__type FROM author a WHERE (a.id < 9999999) LIMIT 25');
+
+// pager interface
+$t->diag('iterator interface');
+
+$pager = new sfDoctrinePager('Author', 10);
+$pager->init();
+foreach ($pager as $author)
+{
+  $t->isa_ok($author, 'Author');
+}

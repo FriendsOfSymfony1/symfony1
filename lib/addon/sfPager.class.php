@@ -31,6 +31,8 @@ abstract class sfPager implements Iterator, Countable
     $currentMaxLink  = 1,
     $parameterHolder = null,
     $maxRecordLimit  = false,
+
+    // used by iterator interface
     $results         = null,
     $resultsCounter  = 0;
 
@@ -493,13 +495,32 @@ abstract class sfPager implements Iterator, Countable
     $this->parameterHolder->set($name, $value);
   }
 
-  protected function initResultsIfRequired()
+  /**
+   * Returns true if the properties used for iteration have been initialized.
+   *
+   * @return boolean
+   */
+  protected function isIteratorInitialized()
   {
-    if (null === $this->results)
-    {
-      $this->results = $this->getResults();
-      $this->resultsCounter = count($this->results);
-    }
+    return null !== $this->results;
+  }
+
+  /**
+   * Loads data into properties used for iteration.
+   */
+  protected function initializeIterator()
+  {
+    $this->results = $this->getResults();
+    $this->resultsCounter = count($this->results);
+  }
+
+  /**
+   * Empties properties used for iteration.
+   */
+  protected function resetIterator()
+  {
+    $this->results = null;
+    $this->resultsCounter = 0;
   }
 
   /**
@@ -509,7 +530,10 @@ abstract class sfPager implements Iterator, Countable
    */
   public function current()
   {
-    $this->initResultsIfRequired();
+    if (!$this->isIteratorInitialized())
+    {
+      $this->initializeIterator();
+    }
 
     return current($this->results);
   }
@@ -521,7 +545,10 @@ abstract class sfPager implements Iterator, Countable
    */
   public function key()
   {
-    $this->initResultsIfRequired();
+    if (!$this->isIteratorInitialized())
+    {
+      $this->initializeIterator();
+    }
 
     return key($this->results);
   }
@@ -533,7 +560,10 @@ abstract class sfPager implements Iterator, Countable
    */
   public function next()
   {
-    $this->initResultsIfRequired();
+    if (!$this->isIteratorInitialized())
+    {
+      $this->initializeIterator();
+    }
 
     --$this->resultsCounter;
 
@@ -547,7 +577,10 @@ abstract class sfPager implements Iterator, Countable
    */
   public function rewind()
   {
-    $this->initResultsIfRequired();
+    if (!$this->isIteratorInitialized())
+    {
+      $this->initializeIterator();
+    }
 
     $this->resultsCounter = count($this->results);
 
@@ -561,7 +594,10 @@ abstract class sfPager implements Iterator, Countable
    */
   public function valid()
   {
-    $this->initResultsIfRequired();
+    if (!$this->isIteratorInitialized())
+    {
+      $this->initializeIterator();
+    }
 
     return $this->resultsCounter > 0;
   }
