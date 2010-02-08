@@ -3,7 +3,24 @@
 $app = 'frontend';
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
-$t = new lime_test(10);
+$t = new lime_test(11);
+
+// ->__construct()
+$t->diag('->__construct()');
+
+class DefaultValuesForm extends ArticleForm
+{
+  public function configure()
+  {
+    $this->widgetSchema[1] = new sfWidgetFormInputText();
+    $this->validatorSchema[1] = new sfValidatorPass();
+    $this->setDefault(1, '==DEFAULT_VALUE==');
+  }
+}
+
+$form = new DefaultValuesForm();
+$defaults = $form->getDefaults();
+$t->is($defaults[1], '==DEFAULT_VALUE==', '->__construct() allows ->configure() to set defaults on numeric fields');
 
 // ->embedRelation()
 $t->diag('->embedRelation()');

@@ -191,11 +191,11 @@ abstract class sfFormPropel extends sfFormObject
     // update defaults for the main object
     if ($this->isNew())
     {
-      $this->setDefaults(array_merge($this->getObject()->toArray(BasePeer::TYPE_FIELDNAME), $this->getDefaults()));
+      $this->setDefaults($this->getObject()->toArray(BasePeer::TYPE_FIELDNAME) + $this->getDefaults());
     }
     else
     {
-      $this->setDefaults(array_merge($this->getDefaults(), $this->getObject()->toArray(BasePeer::TYPE_FIELDNAME)));
+      $this->setDefaults($this->getDefaults() + $this->getObject()->toArray(BasePeer::TYPE_FIELDNAME));
     }
   }
 
