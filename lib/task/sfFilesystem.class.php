@@ -198,7 +198,7 @@ class sfFilesystem
    */
   public function symlink($originDir, $targetDir, $copyOnWindows = false)
   {
-    if (!function_exists('symlink') && $copyOnWindows)
+    if ('\\' == DIRECTORY_SEPARATOR && $copyOnWindows)
     {
       $finder = sfFinder::type('any');
       $this->mirror($originDir, $targetDir, $finder);
@@ -234,10 +234,11 @@ class sfFilesystem
    */
   public function relativeSymlink($originDir, $targetDir, $copyOnWindows = false)
   {
-    if (function_exists('symlink') || !$copyOnWindows)
+    if ('\\' != DIRECTORY_SEPARATOR || !$copyOnWindows)
     {
       $originDir = $this->calculateRelativeDir($targetDir, $originDir);
     }
+
     $this->symlink($originDir, $targetDir, $copyOnWindows);
   }
 
