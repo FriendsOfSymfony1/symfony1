@@ -138,7 +138,7 @@ function get_component($moduleName, $componentName, $vars = array())
 
   $class = sfConfig::get('mod_'.strtolower($moduleName).'_partial_view_class', 'sf').'PartialView';
   $view = new $class($context, $moduleName, $actionName, '');
-  $view->setPartialVars($vars);
+  $view->setPartialVars(true === sfConfig::get('sf_escaping_strategy') ? sfOutputEscaper::unescape($vars) : $vars);
 
   if ($retval = $view->getCache())
   {
@@ -213,7 +213,7 @@ function get_partial($templateName, $vars = array())
 
   $class = sfConfig::get('mod_'.strtolower($moduleName).'_partial_view_class', 'sf').'PartialView';
   $view = new $class($context, $moduleName, $actionName, '');
-  $view->setPartialVars($vars);
+  $view->setPartialVars(true === sfConfig::get('sf_escaping_strategy') ? sfOutputEscaper::unescape($vars) : $vars);
 
   return $view->render();
 }

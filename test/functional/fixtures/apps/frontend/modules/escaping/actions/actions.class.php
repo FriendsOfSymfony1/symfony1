@@ -19,11 +19,11 @@ class escapingActions extends sfActions
 
   public function executeOn()
   {
-    sfConfig::set('sf_escaping_strategy', 'on');
+    sfConfig::set('sf_escaping_strategy', true);
   }
 
   public function executeOff()
   {
-    sfConfig::set('sf_escaping_strategy', 'off');
+    sfConfig::set('sf_escaping_strategy', false);
   }
 }
