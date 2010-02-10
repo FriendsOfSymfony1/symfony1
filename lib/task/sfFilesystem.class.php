@@ -182,7 +182,7 @@ class sfFilesystem
     // we check that target does not exist
     if (is_readable($target))
     {
-      throw new sfException(sprintf('Cannot rename because the target "%" already exist.', $target));
+      throw new sfException(sprintf('Cannot rename because the target "%s" already exist.', $target));
     }
 
     $this->logSection('rename', $origin.' > '.$target);
