@@ -92,7 +92,7 @@ class sfTesterRequest extends sfTester
     {
       if ($exists)
       {
-        $this->tester->fail(sprintf('cookie "%s" exist.', $name));
+        $this->tester->fail(sprintf('cookie "%s" exists.', $name));
       }
       else
       {

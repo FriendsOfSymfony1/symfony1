@@ -108,7 +108,7 @@ abstract class sfTestFunctionalBase
   {
     if (null === $this->blockTester)
     {
-      throw new LogicException(sprintf('There is not current tester block to end.'));
+      throw new LogicException(sprintf('There is no current tester block to end.'));
     }
 
     $this->blockTester = null;
