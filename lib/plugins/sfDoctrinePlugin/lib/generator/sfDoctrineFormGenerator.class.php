@@ -429,7 +429,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     }
     else if ($column->isPrimaryKey())
     {
-      $options[] = sprintf('\'model\' => $this->getModelName(), \'column\' => \'%s\'', $column->getName());
+      $options[] = sprintf('\'model\' => $this->getModelName(), \'column\' => \'%s\'', $column->getFieldName());
     }
     else
     {
@@ -566,7 +566,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     {
       if ($column->getDefinitionKey('unique'))
       {
-        $uniqueColumns[] = array($column->getName());
+        $uniqueColumns[] = array($column->getFieldName());
       }
     }
 

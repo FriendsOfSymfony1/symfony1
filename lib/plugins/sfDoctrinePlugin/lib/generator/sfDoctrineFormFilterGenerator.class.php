@@ -253,7 +253,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     }
     else if ($column->isPrimaryKey())
     {
-      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $this->table->getOption('name'), $this->table->getFieldName($columnName));
+      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $this->table->getOption('name'), $column->getFieldName());
     }
     else
     {
