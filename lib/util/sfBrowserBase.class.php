@@ -805,6 +805,11 @@ abstract class sfBrowserBase
     $xpath = $this->getResponseDomXpath();
     foreach ($xpath->query('descendant::input | descendant::textarea | descendant::select', $item) as $element)
     {
+      if ($element->hasAttribute('disabled'))
+      {
+        continue;
+      }
+
       $elementName = $element->getAttribute('name');
       $nodeName    = $element->nodeName;
       $value       = null;

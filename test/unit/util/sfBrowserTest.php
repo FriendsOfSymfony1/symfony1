@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(70);
+$t = new lime_test(71);
 
 // ->click()
 $t->diag('->click()');
@@ -56,6 +56,7 @@ $html = <<<EOF
     <form action="/myform" method="post">
       <input type="text" name="text_default_value" value="default" />
       <input type="text" name="text" value="" />
+      <input type="text" name="i_am_disabled" value="i_am_disabled" disabled="disabled" />
       <textarea name="textarea">content</textarea>
       <select name="select">
         <option value="first">first</option>
@@ -223,6 +224,7 @@ $t->is($parameters['select_multiple'], array('first', 'selected', 'last'), '->cl
 $t->is($parameters['article']['title'], 'mytitle', '->click() can override array fields');
 $t->is($parameters['article']['category'], array(1, 2, 3), '->click() can override array fields');
 $t->is($parameters['article']['or']['much']['longer'], 'long', '->click() recognizes array names');
+$t->is(isset($parameters['i_am_disabled']), false, '->click() ignores disabled fields');
 
 list($method, $uri, $parameters) = $b->click('#clickable-link');
 $t->is($method, 'get', '->click() accepts a CSS selector');
