@@ -3,12 +3,12 @@
 $app = 'frontend';
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
-$t = new lime_test(11);
+$t = new lime_test(13);
 
 // ->__construct()
 $t->diag('->__construct()');
 
-class DefaultValuesForm extends ArticleForm
+class NumericFieldForm extends ArticleForm
 {
   public function configure()
   {
@@ -18,9 +18,28 @@ class DefaultValuesForm extends ArticleForm
   }
 }
 
-$form = new DefaultValuesForm();
+$form = new NumericFieldForm();
 $defaults = $form->getDefaults();
 $t->is($defaults[1], '==DEFAULT_VALUE==', '->__construct() allows ->configure() to set defaults on numeric fields');
+
+class DefaultValuesForm extends AuthorForm
+{
+  public function configure()
+  {
+    $this->setDefault('name', 'John Doe');
+  }
+}
+
+$author = new Author();
+$form = new DefaultValuesForm($author);
+$t->is($form->getDefault('name'), 'John Doe', '->__construct() uses form defaults for new objects');
+
+$author = new Author();
+$author->name = 'Jacques Doe';
+$author->save();
+$form = new DefaultValuesForm($author);
+$t->is($form->getDefault('name'), 'Jacques Doe', '->__construct() uses object value as a default for existing objects');
+$author->delete();
 
 // ->embedRelation()
 $t->diag('->embedRelation()');
