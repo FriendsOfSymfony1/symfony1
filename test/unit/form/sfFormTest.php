@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(155);
+$t = new lime_test(157);
 
 class FormTest extends sfForm
 {
@@ -79,6 +79,14 @@ class TestForm3 extends FormTest
   public function configure()
   {
     $this->disableLocalCSRFProtection();
+  }
+}
+
+class TestForm4 extends FormTest
+{
+  public function configure()
+  {
+    $this->enableLocalCSRFProtection($this->getOption('csrf_secret'));
   }
 }
 
@@ -175,9 +183,15 @@ sfForm::enableCSRFProtection();
 $t->ok(!$f->isCSRFProtected(),'->disableLocalCSRFProtection() disabled CSRF protection for the current form, even if the global CSRF protection is enabled');
 $f = new TestForm3(array(), array(), 'foo');
 $t->ok(!$f->isCSRFProtected(),'->disableLocalCSRFProtection() disabled CSRF protection for the current form, even a CSRF secret is provided in the constructor');
+sfForm::disableCSRFProtection();
+$f = new TestForm4();
+$t->ok($f->isCSRFProtected(), '->enableLocalCSRFProtection() enables CSRF protection when passed null and global CSRF is disabled');
+$f = new TestForm4(array(), array('csrf_secret' => '**localsecret**'));
+$t->ok($f->isCSRFProtected(), '->enableLocalCSRFProtection() enables CSRF protection when passed a string global CSRF is disabled');
 
 // ::getCSRFFieldName() ::setCSRFFieldName()
 $t->diag('::getCSRFFieldName() ::setCSRFFieldName()');
+sfForm::enableCSRFProtection();
 sfForm::setCSRFFieldName('_token_');
 $f = new FormTest();
 $v = $f->getValidatorSchema();
