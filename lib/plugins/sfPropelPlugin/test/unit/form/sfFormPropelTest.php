@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of the symfony package.
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 $app = 'frontend';
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 include $configuration->getSymfonyLibDir().'/vendor/lime/lime.php';

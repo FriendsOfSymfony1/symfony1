@@ -42,7 +42,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
    *
    *  * model:              The model class (required)
    *  * column:             The unique column name in Propel field name format (required)
-   *                        If the uniquess is for several columns, you can pass an array of field names
+   *                        If the uniqueness is for several columns, you can pass an array of field names
    *  * field               Field name used by the form, other than the column name
    *  * primary_key:        The primary key column name in Propel field name format (optional, will be introspected if not provided)
    *                        You can also pass an array if the table has several primary keys
@@ -77,6 +77,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
     {
       $this->setOption('column', array($this->getOption('column')));
     }
+    $columns = $this->getOption('column');
 
     if (!is_array($field = $this->getOption('field')))
     {
@@ -85,12 +86,12 @@ class sfValidatorPropelUnique extends sfValidatorSchema
     $fields = $this->getOption('field');
 
     $criteria = new Criteria();
-    foreach ($this->getOption('column') as $i => $column)
+    foreach ($columns as $i => $column)
     {
       $name = isset($fields[$i]) ? $fields[$i] : $column;
       if (!array_key_exists($name, $values))
       {
-        // one of the column has be removed from the form
+        // one of the columns has be removed from the form
         return $values;
       }
 
@@ -114,9 +115,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
       throw $error;
     }
 
-    $columns = $this->getOption('column');
-
-    throw new sfValidatorErrorSchema($this, array($columns[0] => $error));
+    throw new sfValidatorErrorSchema($this, array(isset($fields[0]) ? $fields[0] : $columns[0] => $error));
   }
 
   /**
