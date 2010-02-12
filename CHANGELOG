@@ -1,3 +1,46 @@
+02/12/10: Version 1.4.2
+-----------------------
+
+ * [27954] fixed enabling of local csrf protection when disabled globally (closes #8228)
+ * [27942] fixed output of doctrine:insert-sql task (closes #8008)
+ * [27940] fixed field name used when propel unique validator throws a non-global error (closes #8108)
+ * [27842] fixed typo, fixed consistent use of field rather than column name in doctrine form generators (closes #8254)
+ * [27836] fixed submission of disable form fields by browser (closes #8178)
+ * [27755] fixed double escaping of partial vars (closes #7825, refs #1638)
+ * [27753] fixed helper signature (closes #8170)
+ * [27752] fixed initialization of output escaper array iterator (closes #8202)
+ * [27751] fixed symlink logic on vista+ with php 5.3 (closes #8237)
+ * [27750] updated generated stub task to guess a default connection name based on ORM (closes #8209)
+ * [27749] updated doctrine and propel forms to allow setting of defaults on numeric fields from within configure (closes #8238)
+ * [27748] fixed form filtering by 0 on a number column (closes #8175)
+ * [27747] fixed doctrine pager iteration (closes #7758, refs #8021)
+ * [27742] fixed generation of enum pk form widgets (closes #7959)
+ * [27738] fixed XSS hole in select checkbox and radio widgets (closes #8176)
+ * [27736] fixed sfValidatorDoctrineChoice in cloned forms (embedForEach) doesn't function correctly (closes #8198)
+ * [27616] passed the changeStack option in ->get() and ->post() calls of sfBrowserBase to the delegated ->call() (fixes #4271)
+ * [27612] added basic test for sfPager->rewind() and fixed bug not leading to ->reset() not working correctly. (fixes #8021)
+ * [27597] fixed minor incompatibility of new link_to() behaviour with 1.0 behaviour (fixes #7933, #8231)
+ * [27511] fixed typo preventing sfProjectOptimizeTask to work correctly (closes #7885)
+ * [27479] Removed svn version line from propel generated files showing them as modified even without changes each regeneration (backported r27472)
+ * [27284] fixed empty class attributes in WDT markup (closes #8196)
+ * [27211] added check and logging for non executable remote installer files in sfGenerateProjectTask (closes #7921)
+ * [27183] fixed behavior when using either no separators or non slash separators for sfPatternRouting (fixes #8114)
+ * [27061] partially fixed sfTester#isValid() on Windows systems (closes #7812)
+ * [26989] fixed typo in getting Priorities from sfVarLogger (fixes #7938)
+ * [26957] updated web debug javascript to work when the dom includes an svg element
+ * [26872] fixed sfDomCssSelector requires quotes for matching attribute values when they should be optional (closes #8120)
+ * [26871] fixed sfValidateDate for negative timestamps (closes #8134)
+ * [26870] fixed sfWidgetFormSchema::setPositions() which accepts duplication positions (closes #7992)
+ * [26867] turned off xdebug_logging by default as it can make the dev env very very slow (closes #8085)
+ * [26866] fixed sfValidatorDate errors (closes #8118)
+ * [26865] updated Propel to 1.4.1 (closes #8131)
+ * [26681] fixed format_currency is rounding bad (closes #6788)
+ * [25459] added the module name when including a partial in the admin generator
+ * [25458] updated Turkish translations of the admin generator (closes #7928, patch by metoikos)
+ * [25411] changed project:validate task to generate less false positive (closes #7852)
+ * [25406] removed duplicate is_string check in sfWebController (closes #7918)
+ * [25218] Fixing issue with disablePlugin() static method being called publicly while being defined protected
+
 12/08/09: Version 1.4.1
 -----------------------
 
