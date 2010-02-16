@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(6);
+$t = new lime_test(7);
 
 $dom = new DomDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
@@ -37,6 +37,10 @@ $dom->loadHTML($w->render('currency', 'EUR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#currency option[value="EUR"]')->getValue(), 'euro', '->render() renders all currencies as option tags');
 $t->is(count($css->matchAll('#currency option[value="EUR"][selected="selected"]')->getNodes()), 1, '->render() renders all currencies as option tags');
+
+// Test for ICU Upgrade
+// should be 0. Test will break after ICU Update, which is fine. change count to 0
+$t->is(count($css->matchAll('#currency option[value="XXX"]')), 1, '->render() does not output ICU dummy data');
 
 // add_empty
 $t->diag('add_empty');
