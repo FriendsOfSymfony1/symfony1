@@ -28,6 +28,71 @@ class AdminGenBrowser extends sfTestBrowser
     }
   }
 
+  protected function _testValidSort()
+  {
+    $this->info('Test valid sort parameter');
+
+    $this->get('/users?sort=username');
+
+    $matches = 0;
+    foreach ($this->_getQueryExecutionEvents() as $event)
+    {
+      if (false !== strpos($event->getQuery(), 'ORDER BY u.username asc'))
+      {
+        ++$matches;
+      }
+    }
+
+    $this->test()->is($matches, 1);
+  }
+
+  protected function _testInvalidSort()
+  {
+    $this->info('Test invalid sort parameter');
+
+    $this->get('/users?sort=INVALID');
+
+    // there should be no queries that match "INVALID"
+    foreach ($this->_getQueryExecutionEvents() as $event)
+    {
+      $this->test()->unlike($event->getQuery(), '/INVALID/');
+    }
+  }
+
+  protected function _testValidSortType()
+  {
+    $this->info('Test valid sort_type parameter');
+
+    foreach (array('asc', 'desc', 'ASC', 'DESC') as $sortType)
+    {
+      $this->get('/users?sort=username&sort_type='.$sortType);
+
+      $matches = 0;
+      foreach ($this->_getQueryExecutionEvents() as $event)
+      {
+        if (false !== strpos($event->getQuery(), 'ORDER BY u.username '.$sortType))
+        {
+          ++$matches;
+        }
+      }
+
+      $this->test()->is($matches, 1);
+    }
+  }
+
+  protected function _testInvalidSortType()
+  {
+    $this->info('Test invalid sort_type parameter');
+
+    $this->get('/users?sort=username&sort_type=INVALID');
+
+    // there should be no queries that match "INVALID"
+    foreach ($this->_getQueryExecutionEvents() as $event)
+    {
+      $this->test()->unlike($event->getQuery(), '/INVALID/');
+    }
+  }
+
   protected function _testSanityCheck()
   {
     $this->info('Admin Generator Sanity Checks');
@@ -200,6 +265,28 @@ class AdminGenBrowser extends sfTestBrowser
     }
     $fs->execute('rm -rf ' . sfConfig::get('sf_test_dir') . '/functional/backend');
     $fs->execute('rm -rf ' . sfConfig::get('sf_data_dir') . '/*.sqlite');
+  }
+
+  protected function _getQueryExecutionEvents()
+  {
+    $events = array();
+
+    $databaseManager = $this->browser->getContext()->getDatabaseManager();
+    foreach ($databaseManager->getNames() as $name)
+    {
+      $database = $databaseManager->getDatabase($name);
+      if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler())
+      {
+        foreach ($profiler->getQueryExecutionEvents() as $event)
+        {
+          $events[$event->getSequence()] = $event;
+        }
+      }
+    }
+
+    ksort($events);
+
+    return array_values($events);
   }
 
   public function __destruct()
