@@ -1,3 +1,8 @@
+02/25/10: Version 1.4.3
+-----------------------
+
+ * [28260] fixed sql injection vulnerability in doctrine admin generator
+
 02/12/10: Version 1.4.2
 -----------------------
 
