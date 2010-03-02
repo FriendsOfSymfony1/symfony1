@@ -83,6 +83,7 @@ check(function_exists('token_get_all'), 'The token_get_all() function is availab
 check(function_exists('mb_strlen'), 'The mb_strlen() function is available', 'Install mb_strlen() function', false);
 check(function_exists('iconv'), 'The iconv() function is available', 'Install iconv() function', false);
 check(function_exists('utf8_decode'), 'The utf8_decode() is available', 'Install utf8_decode() function', false);
+check(function_exists('posix_isatty'), 'The posix_isatty() is available', 'Enable the php_posix extension (used to colorized the CLI output)', false);
 
 $accelerator = 
   (function_exists('apc_store') && ini_get('apc.enabled'))
