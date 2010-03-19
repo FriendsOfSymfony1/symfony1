@@ -94,4 +94,10 @@ class cacheActions extends sfActions
     $this->image = file_get_contents(dirname(__FILE__).'/../data/ok48.png');
     $this->setTemplate('image');
   }
+
+  public function executeLastModifiedResponse()
+  {
+    $this->getResponse()->setHttpHeader('Last-Modified', $this->getResponse()->getDate(sfConfig::get('LAST_MODIFIED')));
+    $this->setTemplate('action');
+  }
 }

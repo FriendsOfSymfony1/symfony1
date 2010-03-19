@@ -56,3 +56,7 @@ imageNoLayoutCacheNoLayout:
 
 list:
   enabled: true
+
+lastModifiedResponse:
+  enabled:     true
+  with_layout: true

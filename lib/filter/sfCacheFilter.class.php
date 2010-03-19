@@ -86,6 +86,9 @@ class sfCacheFilter extends sfFilter
 
       if ($inCache)
       {
+        // update the local response reference with the one pulled from the cache
+        $this->response = $this->context->getResponse();
+
         // page is in cache, so no need to run execution filter
         return false;
       }
@@ -206,7 +209,7 @@ class sfCacheFilter extends sfFilter
 
     // conditional GET support
     // never in debug mode
-    if ($this->response->hasHttpHeader('Last-Modified') && !sfConfig::get('sf_debug'))
+    if ($this->response->hasHttpHeader('Last-Modified') && (!sfConfig::get('sf_debug') || sfConfig::get('sf_test')))
     {
       $lastModified = $this->response->getHttpHeader('Last-Modified');
       if ($this->request->getHttpHeader('IF_MODIFIED_SINCE') == $lastModified)
