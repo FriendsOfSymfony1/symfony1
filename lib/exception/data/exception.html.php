@@ -23,7 +23,7 @@
   #message { padding: 10px; margin-bottom: 10px; background-color: #eee; -moz-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px; }
   a.file_link { text-decoration: none; }
   a.file_link:hover { text-decoration: underline; }
-  .code { overflow: auto; }
+  .code, #sf_settings, #sf_request, #sf_response, #sf_user, #sf_globals { overflow: auto; }
   </style>
   <script type="text/javascript">
   function toggle(id)
