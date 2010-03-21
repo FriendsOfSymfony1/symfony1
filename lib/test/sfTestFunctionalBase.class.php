@@ -225,7 +225,7 @@ abstract class sfTestFunctionalBase
    *
    * @param  string $uri          URI to be invoked
    * @param  string $method       HTTP method used
-   * @param  array  $parameters   Additional paramaters
+   * @param  array  $parameters   Additional parameters
    * @param  bool   $changeStack  If set to false ActionStack is not changed
    *
    * @return sfTestFunctionalBase The current sfTestFunctionalBase instance

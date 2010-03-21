@@ -246,7 +246,7 @@ abstract class sfRequest implements ArrayAccess
   }
 
   /**
-   * Retrieves a paramater for the current request.
+   * Retrieves a parameter for the current request.
    *
    * @param string $name     Parameter name
    * @param string $default  Parameter default value
@@ -262,7 +262,7 @@ abstract class sfRequest implements ArrayAccess
    *
    * @param  string $name  Parameter name
    *
-   * @return bool true, if the paramater exists otherwise false
+   * @return bool true, if the parameter exists otherwise false
    */
   public function hasParameter($name)
   {

@@ -288,7 +288,7 @@ abstract class sfView
   /**
    * Indicates whether or not a parameter exist for the current view.
    *
-   * @param  string $name  Name of the paramater
+   * @param  string $name  Name of the parameter
    *
    * @return bool true, if the parameter exists otherwise false
    */

@@ -251,7 +251,7 @@ class sfPatternRouting extends sfRouting
    * Adds a new route at the end of the current list of routes.
    *
    * A route string is a string with 2 special constructions:
-   * - :string: :string denotes a named paramater (available later as $request->getParameter('string'))
+   * - :string: :string denotes a named parameter (available later as $request->getParameter('string'))
    * - *: * match an indefinite number of parameters in a route
    *
    * Here is a very common rule in a symfony project:
