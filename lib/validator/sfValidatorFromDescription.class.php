@@ -351,8 +351,8 @@ class sfValidatorFDTokenOperator
   {
     return sprintf('new %s(array(%s, %s), %s)',
       $this->class,
-      in_array(get_class($tokenLeft), array('sfValidatorFDToken', 'sfValidatorFDTokenFilter')) ? $tokenLeft->asPhp() : $tokenLeft,
-      in_array(get_class($tokenRight), array('sfValidatorFDToken', 'sfValidatorFDTokenFilter')) ? $tokenRight->asPhp() : $tokenRight,
+      is_object($tokenLeft) && in_array(get_class($tokenLeft), array('sfValidatorFDToken', 'sfValidatorFDTokenFilter')) ? $tokenLeft->asPhp() : $tokenLeft,
+      is_object($tokenRight) && in_array(get_class($tokenRight), array('sfValidatorFDToken', 'sfValidatorFDTokenFilter')) ? $tokenRight->asPhp() : $tokenRight,
       implode(', ', array_map(create_function('$a', 'return var_export($a, true);'), $this->arguments))
     );
   }
