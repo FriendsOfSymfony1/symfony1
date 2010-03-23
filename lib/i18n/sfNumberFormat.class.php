@@ -141,10 +141,6 @@ class sfNumberFormat
     {
       $suffix = $this->formatInfo->NegativePattern;
     }
-    else
-    {
-      $suffix = array('', '');
-    }
 
     // append and prepend suffix
     $result = $suffix[0].$result.$suffix[1];
