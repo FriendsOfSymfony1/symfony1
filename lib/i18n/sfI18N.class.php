@@ -61,7 +61,7 @@ class sfI18N
 
     if (isset($options['culture']))
     {
-      $this->culture = $options['culture'];
+      $this->setCulture($options['culture']);
       unset($options['culture']);
     }
 

@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(33);
+$t = new lime_test(34);
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
@@ -33,6 +33,20 @@ $t->diag('->initialize()');
 $i18n = new sfI18N($configuration, $cache);
 $dispatcher->notify(new sfEvent(null, 'user.change_culture', array('culture' => 'fr')));
 $t->is($i18n->getCulture(), 'fr', '->initialize() connects to the user.change_culture event');
+
+// passing a "culture" option to initialize() should set PHP locale
+if (class_exists('Locale') && ($en = Locale::lookup(array('en-US'), 'en-US', true)) && ($fr = Locale::lookup(array('fr-FR'), 'fr-FR', true)))
+{
+  $i18n = new sfI18N($configuration, $cache, array('culture' => $fr));
+  $frLocale = localeconv();
+  $i18n = new sfI18N($configuration, $cache, array('culture' => $en));
+  $enLocale = localeconv();
+  $t->isnt(serialize($frLocale), serialize($enLocale), '->initialize() sets the PHP locale when a "culture" option is provided');
+}
+else
+{
+  $t->skip('Locale class or English and French locales are not installed');
+}
 
 // ->getCulture() ->setCulture()
 $t->diag('->getCulture() ->setCulture()');
