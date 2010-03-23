@@ -927,7 +927,7 @@ abstract class sfBrowserBase
       {
         $var = &$var[$tmp];
       }
-      if ($var)
+      if ($var && '[]' === substr($name, -2))
       {
         if (!is_array($var))
         {

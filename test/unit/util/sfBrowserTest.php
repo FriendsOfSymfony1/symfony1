@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(71);
+$t = new lime_test(73);
 
 // ->click()
 $t->diag('->click()');
@@ -114,6 +114,16 @@ $html = <<<EOF
       <div><span>
         <button id="submit5">Click</button>
         <input type="image" src="myimage.png" alt="image submit" name="submit_image" value="image" />
+      </span></div>
+    </form>
+
+    <form action="/myform6" method="post">
+      <div><span>
+        <input type="text" name="foo[bar]" value="foo" />
+        <input type="text" name="foo[bar]" value="bar" />
+        <input type="text" name="bar" value="foo" />
+        <input type="text" name="bar" value="bar" />
+        <input type="submit" name="submit" value="submit6" />
       </span></div>
     </form>
 
@@ -329,3 +339,9 @@ $files = $b->getFiles();
 
 $t->is($files['myfile']['error'], UPLOAD_ERR_OK, 'existent file exists (UPLOAD_ERR_OK)');
 $t->is($files['myfile']['name'], basename($existentFilename), 'name key ok');
+
+// bug #7816
+$t->diag('bug #7816');
+list($method, $uri, $parameters) = $b->click('submit6');
+$t->is($parameters['bar'], 'bar', '->click() overrides input elements defined several times');
+$t->is($parameters['foo']['bar'], 'bar', '->click() overrides input elements defined several times');
