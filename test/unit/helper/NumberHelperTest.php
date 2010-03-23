@@ -27,6 +27,11 @@ $t->is(format_currency(1200000.10, 'USD', 'en'), '$1,200,000.10', 'format_curren
 $t->is(format_currency(1200000.101, 'USD', 'en'), '$1,200,000.10', 'format_currency() takes a number as its first argument');
 $t->is(format_currency('1200000', 'USD', 'en'), '$1,200,000.00', 'format_currency() takes a number as its first argument');
 
+$t->is(format_currency(-1200000, 'USD', 'en'), '($1,200,000.00)', 'format_currency() takes a number as its first argument');
+$t->is(format_currency(-1200000, 'USD', 'en_GB'), '-$1,200,000.00', 'format_currency() takes a number as its first argument');
+//$t->is(format_currency(1200000, 'USD', 'de'), '1.200.000,00 $', 'format_currency() takes a number as its first argument');
+//$t->is(format_currency(-1200000, 'USD', 'de'), '-1.200.000,00 $', 'format_currency() takes a number as its first argument');
+
 $t->is(format_currency('11.50999', 'USD', 'en'), '$11.50', 'format_currency() takes a number as its first argument');
 $t->is(format_currency('11.50999', 'EUR', 'fr'), '11,50 €', 'format_currency() takes a number as its first argument');
 $t->is(format_currency('11.9999464', 'EUR', 'fr'), '11,99 €', 'format_currency() takes a number as its first argument');

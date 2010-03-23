@@ -277,23 +277,28 @@ class sfNumberFormatInfo
     $groupSize2 = false;
     $decimalPoints = is_int($decimalPos) ? -1 : false;
 
-    $info['negPref'] = $this->data['NumberElements'][6];
-    $info['negPost'] = '';
-
     $info['negative'] = $negative;
     $info['positive'] = $pattern;
-
-    // find the negative prefix and postfix
-    if ($negative)
-    {
-      $prefixPostfix = $this->getPrePostfix($negative);
-      $info['negPref'] = $prefixPostfix[0];
-      $info['negPost'] = $prefixPostfix[1];
-    }
 
     $posfix = $this->getPrePostfix($pattern);
     $info['posPref'] = $posfix[0];
     $info['posPost'] = $posfix[1];
+
+    if ($negative)
+    {
+      // find the negative prefix and postfix
+      $prefixPostfix = $this->getPrePostfix($negative);
+      $info['negPref'] = $prefixPostfix[0];
+      $info['negPost'] = $prefixPostfix[1];
+    }
+    else
+    {
+      // use the positive prefix and postfix and add the NegativeSign
+      // http://www.unicode.org/reports/tr35/tr35-15.html#Number_Format_Patterns
+      // If there is no explicit negative subpattern, the negative subpattern is the localized minus sign prefixed to the positive subpattern.
+      $info['negPref'] = $this->getNegativeSign().$info['posPref'];
+      $info['negPost'] = $info['posPost'];
+    }
 
     if (is_int($groupPos1))
     {
