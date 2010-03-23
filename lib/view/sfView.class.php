@@ -364,12 +364,6 @@ abstract class sfView
         throw new sfRenderException(sprintf('The template "%s" does not exist or is unreadable in "%s".', $this->template, $this->directory));
       }
     }
-
-    // check to see if this is a decorator template
-    if ($this->decorator && !is_readable($this->decoratorDirectory.'/'.$this->decoratorTemplate))
-    {
-      throw new sfRenderException(sprintf('The decorator template "%s" does not exist or is unreadable in "%s".', $this->decoratorTemplate, $this->decoratorDirectory));
-    }
   }
 
   /**
