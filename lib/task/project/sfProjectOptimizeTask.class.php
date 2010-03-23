@@ -171,9 +171,17 @@ EOF;
     $dirs = array(sfConfig::get('sf_app_module_dir'));
 
     // plugins
-    foreach ($this->configuration->getPluginPaths() as $path)
+    foreach ($this->configuration->getPluginSubPaths(DIRECTORY_SEPARATOR.'modules') as $path)
     {
-      $dirs[] = $path.'/modules';
+      // parse out the plugin name
+      if (preg_match("#plugins".DIRECTORY_SEPARATOR."([^".DIRECTORY_SEPARATOR."]+)".DIRECTORY_SEPARATOR."modules#", $path, $matches))
+      {
+        // plugin module enabled?
+        if (in_array($matches[1], sfConfig::get('sf_enabled_modules')))
+        {
+          $dirs[] = $path;
+        }
+      }
     }
 
     // core modules
