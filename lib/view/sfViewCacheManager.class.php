@@ -703,6 +703,7 @@ class sfViewCacheManager
     {
       $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Generate cache key')));
     }
+    ksort($parameters);
 
     return md5(serialize($parameters));
   }
