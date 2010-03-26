@@ -134,7 +134,11 @@ EOF
       , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey).$content;
 
       $this->logSection('file+', $routing);
-      file_put_contents($routing, $content);
+
+      if (false === file_put_contents($routing, $content))
+      {
+        throw new sfCommandException(sprintf('Unable to write to file, %s.', $routing));
+      }
     }
 
     $arguments['route'] = $this->getRouteFromName($name);
