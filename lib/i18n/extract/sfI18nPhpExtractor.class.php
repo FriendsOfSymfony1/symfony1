@@ -75,6 +75,7 @@ class sfI18nPhpExtractor implements sfI18nExtractorInterface
             if ($buffer)
             {
               $strings[] = $buffer;
+              $buffer = '';
             }
             $i18n_function = 0;
             break;
