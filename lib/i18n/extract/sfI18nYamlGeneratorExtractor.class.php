@@ -31,22 +31,20 @@ class sfI18nYamlGeneratorExtractor extends sfI18nYamlExtractor
 
     $config = sfYaml::load($content);
 
-    if (!isset($config['generator']['param']))
+    if (!isset($config['generator']['param']['config']))
     {
       return array();
     }
 
-    $params = $config['generator']['param'];
+    $params = $config['generator']['param']['config'];
 
     // titles
-    if (isset($params['list']['title']))
+    foreach (array('list', 'edit', 'new') as $section)
     {
-      $this->strings[] = $params['list']['title'];
-    }
-
-    if (isset($params['edit']['title']))
-    {
-      $this->strings[] = $params['edit']['title'];
+      if (isset($params[$section]['title']))
+      {
+        $this->strings[] = $params[$section]['title'];
+      }
     }
 
     // names and help messages
@@ -65,20 +63,26 @@ class sfI18nYamlGeneratorExtractor extends sfI18nYamlExtractor
       $this->getFromFields($params['edit']['fields']);
     }
 
-    // edit categories
-    if (isset($params['edit']['display']) && !isset($params['edit']['display'][0]))
+    if (isset($params['new']['fields']))
     {
-      foreach (array_keys($params['edit']['display']) as $string)
-      {
-        if ('NONE' == $string)
-        {
-          continue;
-        }
-
-        $this->strings[] = $string;
-      }
+      $this->getFromFields($params['new']['fields']);
     }
 
+    // form categories
+    foreach (array('edit', 'new') as $section)
+    {
+      if (isset($params[$section]['display']) && !isset($params[$section]['display'][0]))
+      {
+        foreach (array_keys($params[$section]['display']) as $string)
+        {
+          if ('NONE' != $string)
+          {
+            $this->strings[] = $string;
+          }
+        }
+      }
+    }
+  
     return $this->strings;
   }
 
@@ -89,6 +93,11 @@ class sfI18nYamlGeneratorExtractor extends sfI18nYamlExtractor
       if (isset($options['name']))
       {
         $this->strings[] = $options['name'];
+      }
+
+      if (isset($options['label']))
+      {
+        $this->strings[] = $options['label'];
       }
 
       if (isset($options['help']))
