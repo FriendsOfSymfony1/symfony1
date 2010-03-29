@@ -69,7 +69,7 @@ abstract class sfCache
    * @param string $key     The cache key
    * @param mixed  $default The default value is the key does not exist or not valid anymore
    *
-   * @return mixed The data of the cache
+   * @return string The data of the cache
    */
   abstract public function get($key, $default = null);
 
@@ -86,7 +86,7 @@ abstract class sfCache
    * Saves some data in the cache.
    *
    * @param string $key      The cache key
-   * @param mixed  $data     The data to put in cache
+   * @param string $data     The data to put in cache
    * @param int    $lifetime The lifetime
    *
    * @return Boolean true if no problem
