@@ -59,6 +59,8 @@ EOF;
       $this->getFilesystem()->mkdirs($config['migrations_path']);
     }
 
+    spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
+
     $this->callDoctrineCli('generate-migrations-diff', array(
       'yaml_schema_path' => $this->prepareSchemaFile($config['yaml_schema_path']),
     ));
