@@ -222,7 +222,10 @@ class sfMailer extends Swift_Mailer
   {
     $this->address = $address;
 
-    $this->redirectingPlugin->setRecipient($address);
+    if (sfMailer::SINGLE_ADDRESS == $this->strategy)
+    {
+      $this->redirectingPlugin->setRecipient($address);
+    }
   }
 
   /**
