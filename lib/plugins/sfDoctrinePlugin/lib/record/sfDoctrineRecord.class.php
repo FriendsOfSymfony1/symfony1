@@ -241,7 +241,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
   public function getDateTimeObject($dateFieldName)
   {
     $type = $this->getTable()->getTypeOf($dateFieldName);
-    if ($type == 'date' || $type == 'timestamp')
+    if ($type == 'date' || $type == 'timestamp' || $type == 'datetime')
     {
       return new DateTime($this->get($dateFieldName));
     }
@@ -261,7 +261,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
   public function setDateTimeObject($dateFieldName, DateTime $dateTimeObject)
   {
     $type = $this->getTable()->getTypeOf($dateFieldName);
-    if ($type == 'date' || $type == 'timestamp')
+    if ($type == 'date' || $type == 'timestamp' || $type == 'datetime')
     {
       return $this->set($dateFieldName, $dateTimeObject->format('Y-m-d H:i:s'));
     }
