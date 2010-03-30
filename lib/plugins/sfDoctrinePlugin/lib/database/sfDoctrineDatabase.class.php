@@ -159,7 +159,10 @@ class sfDoctrineDatabase extends sfDatabase
     if ($this->connection !== null)
     {
       $this->connection = null;
-      $this->_doctrineConnection = null;
+    }
+    if ($this->_doctrineConnection !== null) 
+    { 
+      $this->_doctrineConnection->getManager()->closeConnection($this->_doctrineConnection); 
     }
   }
 }
