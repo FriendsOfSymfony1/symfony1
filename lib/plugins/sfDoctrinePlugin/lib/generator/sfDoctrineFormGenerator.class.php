@@ -573,6 +573,8 @@ class sfDoctrineFormGenerator extends sfGenerator
     $indexes = $this->table->getOption('indexes');
     foreach ($indexes as $name => $index)
     {
+      $index['fields'] = (array) $index['fields'];
+
       if (isset($index['type']) && $index['type'] == 'unique')
       {
         $tmp = $index['fields'];
