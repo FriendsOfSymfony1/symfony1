@@ -101,10 +101,12 @@ abstract class sfFormDoctrine extends sfFormObject
    * @param  string $relationName  The name of the relation and an optional alias
    * @param  string $formClass     The name of the form class to use
    * @param  array  $formArguments Arguments to pass to the constructor (related object will be shifted onto the front)
+   * @param string  $innerDecorator A HTML decorator for each embedded form
+   * @param string  $decorator      A HTML decorator for the main embedded form
    *
    * @throws InvalidArgumentException If the relationship is not a collection
    */
-  public function embedRelation($relationName, $formClass = null, $formArgs = array())
+  public function embedRelation($relationName, $formClass = null, $formArgs = array(), $innerDecorator = null, $decorator = null)
   {
     if (false !== $pos = stripos($relationName, ' as '))
     {
@@ -122,7 +124,7 @@ abstract class sfFormDoctrine extends sfFormObject
 
     if (Doctrine_Relation::ONE == $relation->getType())
     {
-      $this->embedForm($fieldName, $r->newInstanceArgs(array_merge(array($this->getObject()->$relationName), $formArgs)));
+      $this->embedForm($fieldName, $r->newInstanceArgs(array_merge(array($this->getObject()->$relationName), $formArgs)), $decorator);
     }
     else
     {
@@ -132,11 +134,11 @@ abstract class sfFormDoctrine extends sfFormObject
       {
         $form = $r->newInstanceArgs(array_merge(array($childObject), $formArgs));
 
-        $subForm->embedForm($index, $form);
+        $subForm->embedForm($index, $form, $innerDecorator);
         $subForm->getWidgetSchema()->setLabel($index, (string) $childObject);
       }
 
-      $this->embedForm($fieldName, $subForm);
+      $this->embedForm($fieldName, $subForm, $decorator);
     }
   }
 
