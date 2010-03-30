@@ -52,6 +52,16 @@ class ArticleTable extends Doctrine_Table
     return $this->createQuery()->select('title, body');
   }
 
+  public function addOnHomepage(Doctrine_Query $q = null)
+  {
+    if (is_null($q))
+    {
+      $q = $this->createQuery('a');
+    }
+    $alias = $q->getRootAlias();
+    return $q->addWhere($alias.'.is_on_homepage = 1');
+  }
+
   public function filterSuppliedQuery($query)
   {
     $query->select('title, body');

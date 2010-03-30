@@ -4,7 +4,7 @@ $app = 'frontend';
 $fixtures = 'fixtures/pager.yml';
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
-$t = new lime_test(4);
+$t = new lime_test(6);
 
 // ->getResults()
 $t->diag('->getResults()');
@@ -47,3 +47,16 @@ foreach ($pager as $object)
   $iterated++;
 }
 $t->is($iterated, $normal, '"Iterator" interface loops over objects in the current pager');
+
+// ->setTableMethod()
+$t->diag('->setTableMethod()');
+$pager = new sfDoctrinePager('Article', 10);
+$pager->setTableMethod('addOnHomepage');
+$pager->init();
+$t->is($pager->getNbResults(), count(Doctrine::getTable('Article')->findByIsOnHomepage('1')), '->setTableMethod() update the query');
+
+// Serialization test for defect #7987
+$t->diag('Serialization');
+$pager = unserialize(serialize($pager));
+$pager->init();
+$t->is($pager->getNbResults(), count(Doctrine::getTable('Article')->findByIsOnHomepage('1')), 'serialization preserves TableMethod functionality');
