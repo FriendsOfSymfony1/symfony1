@@ -178,9 +178,11 @@ abstract class sfWebController extends sfController
     if (empty($url))
     {
       throw new InvalidArgumentException('Cannot redirect to an empty URL.'); 
-    } 
+    }
 
     $url = $this->genUrl($url, true);
+    // see #8083
+    $url = str_replace('&amp;', '&', $url);
 
     if (sfConfig::get('sf_logging_enabled'))
     {
