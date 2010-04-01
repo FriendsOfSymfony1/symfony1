@@ -28,8 +28,10 @@ class SfPropelBehaviorSymfonyBehaviors extends SfPropelBehaviorBase
     return <<<EOF
 foreach (sfMixer::getCallables('Base{$this->getTable()->getPhpName()}:delete:pre') as \$callable)
 {
-  if (\$ret = call_user_func(\$callable, \$this, \$con))
+  if (call_user_func(\$callable, \$this, \$con))
   {
+    \$con->commit();
+
     return;
   }
 }
@@ -65,6 +67,8 @@ foreach (sfMixer::getCallables('Base{$this->getTable()->getPhpName()}:save:pre')
 {
   if (is_integer(\$affectedRows = call_user_func(\$callable, \$this, \$con)))
   {
+    \$con->commit();
+
     return \$affectedRows;
   }
 }
