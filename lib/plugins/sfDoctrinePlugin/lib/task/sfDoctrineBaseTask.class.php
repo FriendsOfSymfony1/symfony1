@@ -144,7 +144,10 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
 
         foreach ($pluginModels as $model => $definition)
         {
-          // merge globals
+          // canonicalize this definition
+          $definition = $this->canonicalizeModelDefinition($model, $definition);
+
+          // merge in the globals
           $definition = array_merge($globals, $definition);
 
           // merge this model into the schema
@@ -172,7 +175,13 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
 
       foreach ($projectModels as $model => $definition)
       {
+        // canonicalize this definition
+        $definition = $this->canonicalizeModelDefinition($model, $definition);
+
+        // merge in the globals
         $definition = array_merge($globals, $definition);
+
+        // merge this model into the schema
         $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
       }
     }
@@ -209,5 +218,56 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
     }
 
     return $globals;
+  }
+
+  /**
+   * Canonicalizes a model definition in preparation for merging.
+   * 
+   * @param string $model      The model name
+   * @param array  $definition The model definition
+   * 
+   * @return array The canonicalized model definition
+   */
+  protected function canonicalizeModelDefinition($model, $definition)
+  {
+    // expand short "type" syntax
+    if (isset($definition['columns']))
+    {
+      foreach ($definition['columns'] as $key => $value)
+      {
+        if (!is_array($value))
+        {
+          $definition['columns'][$key] = array('type' => $value);
+          $value = $definition['columns'][$key];
+        }
+
+        // expand short type(length, scale) syntax
+        if (isset($value['type']) && preg_match('/ *(\w+) *\( *(\d+)(?: *, *(\d+))? *\)/', $value['type'], $match))
+        {
+          $definition['columns'][$key]['type'] = $match[1];
+          $definition['columns'][$key]['length'] = $match[2];
+
+          if (isset($match[3]))
+          {
+            $definition['columns'][$key]['scale'] = $match[3];
+          }
+        }
+      }
+    }
+
+    // expand short "actAs" syntax
+    if (isset($definition['actAs']))
+    {
+      foreach ($definition['actAs'] as $key => $value)
+      {
+        if (is_numeric($key))
+        {
+          $definition['actAs'][$value] = array();
+          unset($definition['actAs'][$key]);
+        }
+      }
+    }
+
+    return $definition;
   }
 }

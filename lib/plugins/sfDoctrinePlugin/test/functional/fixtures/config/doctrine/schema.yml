@@ -218,3 +218,15 @@ ResourceType:
       values: [type1, type2, type3]
       primary: true
     name: string(255)
+
+# tests merge from plugin schema
+Setting:
+  actAs:
+    Timestampable:
+      updated:
+        disabled: true
+  columns:
+    name:
+      notnull: true
+    weight:
+      scale: 4
