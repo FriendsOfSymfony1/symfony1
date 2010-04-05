@@ -268,6 +268,19 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
       }
     }
 
+    // expand short "listeners" syntax
+    if (isset($definition['listeners']))
+    {
+      foreach ($definition['listeners'] as $key => $value)
+      {
+        if (is_numeric($key))
+        {
+          $definition['listeners'][$value] = array();
+          unset($definition['listeners'][$key]);
+        }
+      }
+    }
+
     return $definition;
   }
 }
