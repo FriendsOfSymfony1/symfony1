@@ -16,6 +16,7 @@ Article:
       unique: true
     body: string(255)
     test_column: string(255)
+    views: integer
   relations:
     Author:
       foreignAlias: Articles
