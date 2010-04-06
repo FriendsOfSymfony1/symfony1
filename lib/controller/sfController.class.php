@@ -99,6 +99,9 @@ abstract class sfController
         throw new sfConfigurationException(sprintf('The module "%s" is not enabled.', $moduleName));
       }
 
+      // check for a module generator config file
+      $this->context->getConfigCache()->import('modules/'.$moduleName.'/config/generator.yml', false, true);
+
       // one action per file or one file for all actions
       $classFile   = strtolower($extension);
       $classSuffix = ucfirst(strtolower($extension));
