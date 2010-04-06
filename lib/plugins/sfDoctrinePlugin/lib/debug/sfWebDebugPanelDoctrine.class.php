@@ -76,14 +76,17 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
     $databaseManager = sfContext::getInstance()->getDatabaseManager();
 
     $events = array();
-    foreach ($databaseManager->getNames() as $name)
+    if ($databaseManager)
     {
-      $database = $databaseManager->getDatabase($name);
-      if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler())
+      foreach ($databaseManager->getNames() as $name)
       {
-        foreach ($profiler->getQueryExecutionEvents() as $event)
+        $database = $databaseManager->getDatabase($name);
+        if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler())
         {
-          $events[$event->getSequence()] = $event;
+          foreach ($profiler->getQueryExecutionEvents() as $event)
+          {
+            $events[$event->getSequence()] = $event;
+          }
         }
       }
     }
