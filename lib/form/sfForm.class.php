@@ -494,7 +494,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $form = clone $form;
     unset($form[self::$CSRFFieldName]);
 
-    $this->defaults = array_merge($this->defaults, $form->getDefaults());
+    $this->defaults = $form->getDefaults() + $this->defaults;
 
     foreach ($form->getWidgetSchema()->getPositions() as $field)
     {
@@ -506,8 +506,8 @@ class sfForm implements ArrayAccess, Iterator, Countable
       $this->validatorSchema[$field] = $validator;
     }
 
-    $this->getWidgetSchema()->setLabels(array_merge($this->getWidgetSchema()->getLabels(), $form->getWidgetSchema()->getLabels()));
-    $this->getWidgetSchema()->setHelps(array_merge($this->getWidgetSchema()->getHelps(), $form->getWidgetSchema()->getHelps()));
+    $this->getWidgetSchema()->setLabels($form->getWidgetSchema()->getLabels() + $this->getWidgetSchema()->getLabels());
+    $this->getWidgetSchema()->setHelps($form->getWidgetSchema()->getHelps() + $this->getWidgetSchema()->getHelps());
 
     $this->mergePreValidator($form->getValidatorSchema()->getPreValidator());
     $this->mergePostValidator($form->getValidatorSchema()->getPostValidator());

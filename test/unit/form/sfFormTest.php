@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(159);
+$t = new lime_test(162);
 
 class FormTest extends sfForm
 {
@@ -87,6 +87,23 @@ class TestForm4 extends FormTest
   public function configure()
   {
     $this->enableLocalCSRFProtection($this->getOption('csrf_secret'));
+  }
+}
+
+class NumericFieldsForm extends sfForm
+{
+  public function configure()
+  {
+    $this->setWidgets(array(
+      '5' => new sfWidgetFormInputText(),
+    ));
+
+    $this->setValidators(array(
+      '5' => new sfValidatorString(),
+    ));
+
+    $this->widgetSchema->setLabels(array('5' => 'label'.$this->getOption('salt')));
+    $this->widgetSchema->setHelps(array('5' => 'help'.$this->getOption('salt')));
   }
 }
 
@@ -911,6 +928,14 @@ $f2->mergeForm($f1);
 
 $t->is_deeply(array_keys($f2->getWidgetSchema()->getFields()), array('c', 'd', 'b', 'a'), 'mergeForm() merges fields in the correct order');
 
+$f1 = new NumericFieldsForm(array('5' => 'default1'), array('salt' => '1'));
+$f2 = new NumericFieldsForm(array('5' => 'default2'), array('salt' => '2'));
+$f1->mergeForm($f2);
+
+$t->is_deeply($f1->getDefaults(), array('5' => 'default2'), '->mergeForm() merges numeric defaults');
+$t->is_deeply($f1->getWidgetSchema()->getLabels(), array('5' => 'label2'), '->mergeForm() merges numeric labels');
+$t->is_deeply($f1->getWidgetSchema()->getHelps(), array('5' => 'help2'), '->mergeForm() merges numeric helps');
+
 // ->getJavaScripts() ->getStylesheets()
 $t->diag('->getJavaScripts() ->getStylesheets()');
 
@@ -947,20 +972,6 @@ $t->is($f->getStylesheets(), array('/path/to/a/foo.css' => 'all', '/path/to/a/ba
 
 // ->getFormFieldSchema()
 $t->diag('->getFormFieldSchema()');
-
-class NumericFieldsForm extends sfForm
-{
-  public function configure()
-  {
-    $this->setWidgets(array(
-      '5' => new sfWidgetFormInputText(),
-    ));
-
-    $this->setValidators(array(
-      '5' => new sfValidatorString(),
-    ));
-  }
-}
 
 $f = new NumericFieldsForm(array('5' => 'default'));
 $t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'default'), '->getFormFieldSchema() includes default numeric fields');
