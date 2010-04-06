@@ -1143,7 +1143,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   {
     if (null === $this->formFieldSchema)
     {
-      $values = $this->isBound ? $this->taintedValues : array_merge($this->widgetSchema->getDefaults(), $this->defaults);
+      $values = $this->isBound ? $this->taintedValues : $this->defaults + $this->widgetSchema->getDefaults();
 
       $this->formFieldSchema = new sfFormFieldSchema($this->widgetSchema, null, null, $values, $this->errorSchema);
     }

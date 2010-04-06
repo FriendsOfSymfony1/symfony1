@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(157);
+$t = new lime_test(159);
 
 class FormTest extends sfForm
 {
@@ -944,3 +944,25 @@ $f->setWidgets(array(
 ));
 $t->is($f->getJavaScripts(), array('/path/to/a/foo.js', '/path/to/a/bar.js'), '->getJavaScripts() returns the stylesheets of all widgets');
 $t->is($f->getStylesheets(), array('/path/to/a/foo.css' => 'all', '/path/to/a/bar.css' => 'all'), '->getStylesheets() returns the JavaScripts of all widgets');
+
+// ->getFormFieldSchema()
+$t->diag('->getFormFieldSchema()');
+
+class NumericFieldsForm extends sfForm
+{
+  public function configure()
+  {
+    $this->setWidgets(array(
+      '5' => new sfWidgetFormInputText(),
+    ));
+
+    $this->setValidators(array(
+      '5' => new sfValidatorString(),
+    ));
+  }
+}
+
+$f = new NumericFieldsForm(array('5' => 'default'));
+$t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'default'), '->getFormFieldSchema() includes default numeric fields');
+$f->bind(array('5' => 'bound'));
+$t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'bound'), '->getFormFieldSchema() includes bound numeric fields');
