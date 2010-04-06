@@ -1,3 +1,47 @@
+04/06/10: Version 1.4.4
+-----------------------
+
+ * [29001] fixed sfPropelBaseTask should add propel include path by using sf_propel_runtime_path (thanks agallou, closes #8402)
+ * [29000] fixed sfController::actionExists does not work if module is generated with admin-generator (closes #8427)
+ * [28999] fixed fatal error in WDT when use_database is false but doctrine plugin is enabled
+ * [28996] fixed merge of numeric field defaults, labels and helps in mergeForm
+ * [28994] fixed merging of values from form to field schema (closes #8415)
+ * [28992] updated doctrine form filter to check for NULL or an empty string on text and number fields for parity with the propel form filter (closes #7635)
+ * [28988] fixed upgrade of yaml booleans followed by inline comments (closes #8342)
+ * [28974] fixed merging of short syntax model definitions (refs #8449)
+ * [28962] fixed a warning on lighttpd (closes #8417)
+ * [28961] fixed sfWebController "redirect" method redirects a wrong place when there are more than two GET parameters (closes #8083)
+ * [28958] fixed problem with return values for preDelete behavior for SfPropelBehaviorSymfonyBehaviors (closes #7872)
+ * [28903] Adding missing arguments to embedRelation() (closes #8222)
+ * [28902] Fixing issue with properly shutting down sfDoctrineDatabase and closing the Doctrine connection (closes #7081)
+ * [28900] Fixing issue with form generator and string indexes instead of array (closes #8024)
+ * [28898] Adding datetime to getDateTimeObject() and setDateTimeObject() (fixes #8116)
+ * [28897] Fixing serialization issue with pager (fixes #7987)
+ * [28871] Fixing issue with migrations diff autoloading (fixes #7272)
+ * [28849] moved form_tag from FormHelper to UrlHelper to be consisten with symfony 1.4 (there is no consequence as the UrlHelper is always loaded, closes #7910)
+ * [28848] fixed i18n:extract for generator.yml files (closes #8027, patch from alcaeus)
+ * [28843] fixed i18n extractor keeps acumulating texts when more than 1 Heredoc string is used (closes #8166 - patch from gonrial)
+ * [28840] fixed sfMailer::setDeliveryAddress() (closes #8306)
+ * [28809] Throw exception when routing file cannot be written in doctrine:generate-admin task (fixes #8356)
+ * [28785] fixed sort the parameters in order to compute the cache key the same way when parameters are submited in different order (closes #8457)
+ * [28725] fixed invalid number formatting occurring with currency formats where no explicit negative format was defined (e.g for en_GB) (fixes #8433)
+ * [28715] fixed sfProjectOptimizeTask should optimize only enabled modules (closes #8405)
+ * [28714] fixed caching of 404 pages (closes #8339)
+ * [28713] fixed layout.php is required even if you use decorate_with() to use another layout (closes #8441)
+ * [28712] tweaked the check_configuration.php errors to be more explicit about what to do next (closes #8369)
+ * [28703] fixed setting of culture in sfI18N constructor (closes #8444)
+ * [28702] fixed browser to match more closely the behavior of a real browser (closes #7816)
+ * [28642] added Persian Translation of admin generator (closes #8358)
+ * [28640] fixed overflow for settings in the dev exception page (closes #8430)
+ * [28633] fixed call to custom accessor (closes #8080)
+ * [28632] fixed call to doCount (closes #7196)
+ * [28625] fixed broken reference to response in the cache filter when a page cache is found
+ * [28366] fixed sfGeneratorConfigHandler.class.php doesn't work with Windows path (closes #8301)
+ * [28365] added a way to change the default max forward in the controller for edge cases (#8302)
+ * [28353] fixed escaping of Doctrine query parameters in WDT
+ * [28348] added a check for the php_posix extension as some distrib disable it (closes #8312)
+ * [28347] removed cookies from Response objects serialization as it does not make any sense and can cause weird behaviors
+
 02/25/10: Version 1.4.3
 -----------------------
 
