@@ -32,7 +32,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     if (!self::$done)
     {
       sfToolkit::addIncludePath(array(
-        realpath(dirname(__FILE__).'/../vendor'),
+        sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor')),
         dirname(__FILE__),
       ));
 
