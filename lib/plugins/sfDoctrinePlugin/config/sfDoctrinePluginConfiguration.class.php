@@ -56,11 +56,14 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
     }
 
     $this->dispatcher->notify(new sfEvent($manager, 'doctrine.configure'));
+
+    // make sure the culture is intercepted
+    $this->dispatcher->connect('user.change_culture', array('sfDoctrineRecord', 'listenToChangeCultureEvent'));
   }
 
   /**
    * Returns options for the Doctrine schema builder.
-   * 
+   *
    * @return array
    */
   public function getModelBuilderOptions()
@@ -85,7 +88,7 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
 
   /**
    * Returns a configuration array for the Doctrine CLI.
-   * 
+   *
    * @return array
    */
   public function getCliConfig()
