@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -185,7 +185,7 @@ class sfDomCssSelector implements Countable, Iterator
             {
               $attrName = $match[1];
               $attrOperator = $match[2];
-              $attrValue = $match[4] ? $match[4] : $match[5];
+              $attrValue = $match[4] === '' ? $match[5] : $match[4];
 
               switch ($attrOperator)
               {
