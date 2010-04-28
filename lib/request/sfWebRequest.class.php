@@ -600,15 +600,18 @@ class sfWebRequest extends sfRequest
       // Cut off any q-value that might come after a semi-colon
       if ($pos = strpos($value, ';'))
       {
-        $q     = (float) trim(substr($value, $pos + 3));
-        $value = trim(substr($value, 0, $pos));
+        $q     = (float) trim(substr($value, strpos($value, '=') + 1));
+        $value = substr($value, 0, $pos);
       }
       else
       {
         $q = 1;
       }
 
-      $values[$value] = $q;
+      if (0 < $q)
+      {
+        $values[trim($value)] = $q;
+      }
     }
 
     arsort($values);

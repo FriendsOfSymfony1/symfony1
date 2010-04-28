@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(55);
+$t = new lime_test(57);
 
 class myRequest extends sfWebRequest
 {
@@ -82,6 +82,8 @@ $t->is($request->splitHttpAcceptHeader(''), array(), '->splitHttpAcceptHeader() 
 $t->is($request->splitHttpAcceptHeader('a,b,c'), array('c', 'b', 'a'), '->splitHttpAcceptHeader() returns an array of values');
 $t->is($request->splitHttpAcceptHeader('a,b;q=0.7,c;q=0.3'), array('a', 'b', 'c'), '->splitHttpAcceptHeader() strips the q value');
 $t->is($request->splitHttpAcceptHeader('a;q=0.1,b,c;q=0.3'), array('b', 'c', 'a'), '->splitHttpAcceptHeader() sorts values by the q value');
+$t->is($request->splitHttpAcceptHeader('a; q=0.1, b, c; q=0.3'), array('b', 'c', 'a'), '->splitHttpAcceptHeader() trims whitespaces');
+$t->is($request->splitHttpAcceptHeader('a; q=0, b'), array('b'), '->splitHttpAcceptHeader() removes values when q = 0 (as per the RFC)');
 
 // ->getRequestFormat() ->setRequestFormat()
 $t->diag('->getRequestFormat() ->setRequestFormat()');
