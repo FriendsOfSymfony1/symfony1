@@ -33,6 +33,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
   protected function configure($options = array(), $attributes = array())
   {
     $this->addRequiredOption('choices');
+    $this->addOption('translate_choices', true);
   }
 
   /**
@@ -47,6 +48,11 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
     if ($choices instanceof sfCallable)
     {
       $choices = $choices->call();
+    }
+
+    if (!$this->getOption('translate_choices'))
+    {
+      return $choices;
     }
 
     $results = array();
