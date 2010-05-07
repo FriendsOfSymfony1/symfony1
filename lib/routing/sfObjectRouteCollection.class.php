@@ -45,7 +45,7 @@ class sfObjectRouteCollection extends sfRouteCollection
       'model_methods'        => array(),
       'requirements'         => array(),
       'with_wildcard_routes' => false,
-      'default_params'   => array('sf_format' => 'html'),
+      'default_params'   => array(),
     ), $this->options);
     
     $this->options['requirements'] = array_merge(array($this->options['column'] => 'id' == $this->options['column'] ? '\d+' : null), $this->options['requirements']);
@@ -97,7 +97,7 @@ class sfObjectRouteCollection extends sfRouteCollection
       // wildcard object actions
       $this->routes[$this->getRoute('object')] = new $this->routeClass(
         sprintf('%s/:%s/:action.:sf_format', $this->options['prefix_path'], $this->options['column']),
-        array_merge($this->options['default_params'], array('module' => $this->options['module'])),
+        array_merge(array('module' => $this->options['module'], 'sf_format' => 'html'), $this->options['default_params']),
         array_merge($this->options['requirements'], array('sf_method' => 'get')),
         array('model' => $this->options['model'], 'type' => 'object', 'method' => $this->options['model_methods']['object'])
       );
@@ -105,7 +105,7 @@ class sfObjectRouteCollection extends sfRouteCollection
       // wildcard collection actions
       $this->routes[$this->getRoute('collection')] = new $this->routeClass(
         sprintf('%s/:action/action.:sf_format', $this->options['prefix_path']),
-        array_merge($this->options['default_params'], array('module' => $this->options['module'])),
+        array_merge(array('module' => $this->options['module'], 'sf_format' => 'html'), $this->options['default_params']),
         array_merge($this->options['requirements'], array('sf_method' => 'post')),
         array('model' => $this->options['model'], 'type' => 'list', 'method' => $this->options['model_methods']['list'])
       );
@@ -116,7 +116,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/%s.:sf_format', $this->options['prefix_path'], $action),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $action)),
+      array_merge(array('module' => $this->options['module'], 'action' => $action, 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => $methods)),
       array('model' => $this->options['model'], 'type' => 'list', 'method' => $this->options['model_methods']['list'])
     );
@@ -126,7 +126,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/:%s/%s.:sf_format', $this->options['prefix_path'], $this->options['column'], $action),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $action)),
+      array_merge(array('module' => $this->options['module'], 'action' => $action, 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => $methods)),
       array('model' => $this->options['model'], 'type' => 'object', 'method' => $this->options['model_methods']['object'])
     );
@@ -136,7 +136,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s.:sf_format', $this->options['prefix_path']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('list'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('list'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
       array('model' => $this->options['model'], 'type' => 'list', 'method' => $this->options['model_methods']['list'])
     );
@@ -146,7 +146,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/%s.:sf_format', $this->options['prefix_path'], $this->options['segment_names']['new']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('new'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('new'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
       array('model' => $this->options['model'], 'type' => 'object')
     );
@@ -156,7 +156,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s.:sf_format', $this->options['prefix_path']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('create'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('create'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'post')),
       array('model' => $this->options['model'], 'type' => 'object')
     );
@@ -166,7 +166,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/:%s.:sf_format', $this->options['prefix_path'], $this->options['column']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('show'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('show'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
       array('model' => $this->options['model'], 'type' => 'object', 'method' => $this->options['model_methods']['object'])
     );
@@ -176,7 +176,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/:%s/%s.:sf_format', $this->options['prefix_path'], $this->options['column'], $this->options['segment_names']['edit']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('edit'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('edit'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
       array('model' => $this->options['model'], 'type' => 'object', 'method' => $this->options['model_methods']['object'])
     );
@@ -186,7 +186,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/:%s.:sf_format', $this->options['prefix_path'], $this->options['column']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('update'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('update'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'put')),
       array('model' => $this->options['model'], 'type' => 'object', 'method' => $this->options['model_methods']['object'])
     );
@@ -196,7 +196,7 @@ class sfObjectRouteCollection extends sfRouteCollection
   {
     return new $this->routeClass(
       sprintf('%s/:%s.:sf_format', $this->options['prefix_path'], $this->options['column']),
-      array_merge($this->options['default_params'], array('module' => $this->options['module'], 'action' => $this->getActionMethod('delete'))),
+      array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('delete'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'delete')),
       array('model' => $this->options['model'], 'type' => 'object', 'method' => $this->options['model_methods']['object'])
     );
