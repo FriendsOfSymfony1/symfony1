@@ -312,7 +312,8 @@ class sfPatternRouting extends sfRouting
       {
         throw new sfConfigurationException(sprintf('The route "%s" does not exist.', $name));
       }
-      $route = $this->routes[$name];      $this->ensureDefaultParametersAreSet();
+      $route = $this->routes[$name];
+      $this->ensureDefaultParametersAreSet();
     }
     else
     {
