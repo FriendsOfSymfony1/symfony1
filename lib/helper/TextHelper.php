@@ -213,7 +213,7 @@ function auto_link_text($text, $link = 'all', $href_options = array(), $truncate
  */
 function strip_links_text($text)
 {
-  return preg_replace('/<a.*>(.*)<\/a>/m', '\\1', $text);
+  return preg_replace('/<a[^>]*>(.*?)<\/a>/s', '\\1', $text);
 }
 
 if (!defined('SF_AUTO_LINK_RE'))

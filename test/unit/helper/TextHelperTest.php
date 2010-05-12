@@ -13,7 +13,7 @@ require_once(dirname(__FILE__).'/../../../test/bootstrap/unit.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TextHelper.php');
 
-$t = new lime_test(51);
+$t = new lime_test(52);
 
 // truncate_text()
 $t->diag('truncate_text()');
@@ -108,6 +108,7 @@ $t->is(simple_format_text("1\n2\n3"), "<p>1\n<br />2\n<br />3</p>", 'text_simple
 // text_strip_links()
 $t->diag('text_strip_links()');
 $t->is(strip_links_text("<a href='almost'>on my mind</a>"), "on my mind", 'text_strip_links() strips all links in input');
+$t->is(strip_links_text('<a href="first.html">first</a> and <a href="second.html">second</a>'), "first and second", 'text_strip_links() strips all links in input');
 
 // auto_link_text()
 $t->diag('auto_link_text()');
