@@ -45,7 +45,7 @@ The task launches all tests found in [test/unit|COMMENT].
 If some tests fail, you can use the [--trace|COMMENT] option to have more
 information about the failures:
 
-    [./symfony test:unit -t|INFO]
+  [./symfony test:unit -t|INFO]
 
 You can launch unit tests for a specific name:
 

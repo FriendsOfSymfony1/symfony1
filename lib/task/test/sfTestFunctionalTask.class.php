@@ -47,7 +47,7 @@ The task launches all tests found in [test/functional/%application%|COMMENT].
 If some tests fail, you can use the [--trace|COMMENT] option to have more
 information about the failures:
 
-    [./symfony test:functional frontend -t|INFO]
+  [./symfony test:functional frontend -t|INFO]
 
 You can launch all functional tests for a specific controller by
 giving a controller name:
