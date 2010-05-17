@@ -133,12 +133,12 @@ class sfMemcacheCache extends sfCache
   public function remove($key)
   {
     // delete metadata
-    $this->memcache->delete($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key);
+    $this->memcache->delete($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key, 0);
     if ($this->getOption('storeCacheInfo', false))
     {
       $this->setCacheInfo($key, true);
     }
-    return $this->memcache->delete($this->getOption('prefix').$key);
+    return $this->memcache->delete($this->getOption('prefix').$key, 0);
   }
 
   /**
