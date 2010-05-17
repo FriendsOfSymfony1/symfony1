@@ -9,7 +9,7 @@
  */
 
 /**
- * sfObjectRouteCollection represents a collection of routes.
+ * sfRouteCollection represents a collection of routes.
  *
  * @package    symfony
  * @subpackage routing
