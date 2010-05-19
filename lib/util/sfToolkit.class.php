@@ -100,7 +100,10 @@ class sfToolkit
    */
   public static function clearGlob($pattern)
   {
-    $files = glob($pattern);
+    if (false === $files = glob($pattern))
+    {
+      return;
+    }
 
     // order is important when removing directories
     sort($files);
