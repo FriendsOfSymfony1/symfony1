@@ -328,7 +328,7 @@ class sfI18N
    *
    * @return array   An array with the hour and minute
    */
-  public function getTimeForCulture($time, $culture)
+  public function getTimeForCulture($time, $culture = null)
   {
     if (!$time) return 0;
 
@@ -341,23 +341,29 @@ class sfI18N
     $timeRegexp = preg_replace(array('/[hm]+/i', '/a/'), array('(\d+)', '(\w+)'), preg_quote($timeFormat));
 
     // We parse time format to see where things are (h, m)
-    $a = array(
+    $timePositions = array(
       'h' => strpos($timeFormat, 'H') !== false ? strpos($timeFormat, 'H') : strpos($timeFormat, 'h'),
       'm' => strpos($timeFormat, 'm'),
       'a' => strpos($timeFormat, 'a')
     );
-    $tmp = array_flip($a);
-    ksort($tmp);
+    asort($timePositions);
     $i = 0;
-    $c = array();
-    foreach ($tmp as $value) $c[++$i] = $value;
-    $timePositions = array_flip($c);
+
+    // normalize positions to 0, 1, ...
+    // positions that don't exist in the pattern remain false
+    foreach ($timePositions as $key => $value)
+    {
+      if ($value !== false)
+      {
+        $timePositions[$key] = ++$i;
+      }
+    }
 
     // We find all elements
     if (preg_match("~$timeRegexp~", $time, $matches))
     {
       // repect am/pm setting if present
-      if (isset($timePositions['a']))
+      if ($timePositions['a'] !== false)
       {
         if (strcasecmp($matches[$timePositions['a']], $timeFormatInfo->getAMDesignator()) == 0)
         {
