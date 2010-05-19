@@ -385,6 +385,11 @@ class sfViewCacheManager
   {
     list($route_name, $params) = $this->controller->convertUrlStringToParameters($internalUri);
 
+    if (!isset($params['module']))
+    {
+        return $defaultValue;
+    }
+
     $this->registerConfiguration($params['module']);
 
     $value = $defaultValue;

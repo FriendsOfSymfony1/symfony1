@@ -52,8 +52,10 @@ class sfNamespacedParameterHolder extends sfParameterHolder
   {
     if ($move)
     {
-      $values = $this->removeNamespace();
-      $this->addByRef($values, $namespace);
+      if (null !== $values = $this->removeNamespace())
+      {
+          $this->addByRef($values, $namespace);
+      }
     }
 
     $this->default_namespace = $namespace;
