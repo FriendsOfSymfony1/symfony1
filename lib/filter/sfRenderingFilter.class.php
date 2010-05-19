@@ -46,6 +46,9 @@ class sfRenderingFilter extends sfFilter
     }
 
     // send headers + content
-    $response->send();
+    if (sfView::RENDER_VAR != $this->context->getController()->getRenderMode())
+    {
+        $response->send();
+    }
   }
 }
