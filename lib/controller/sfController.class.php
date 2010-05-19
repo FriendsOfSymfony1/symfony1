@@ -401,7 +401,7 @@ abstract class sfController
 
     try
     {
-      // forward to the mail action
+      // forward to the action
       $this->forward($module, $action);
     }
     catch (Exception $e)
@@ -421,7 +421,7 @@ abstract class sfController
     // grab the action entry from this forward
     $actionEntry = $actionStack->getEntry($index);
 
-    // get raw email content
+    // get raw content
     $presentation =& $actionEntry->getPresentation();
 
     // put render mode back

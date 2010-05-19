@@ -123,7 +123,7 @@ class sfExecutionFilter extends sfFilter
    *
    *   - sfView::NONE: Nothing happens.
    *   - sfView::RENDER_CLIENT: View data populates the response content.
-   *   - sfView::RENDER_DATA: View data populates the data presentation variable.
+   *   - sfView::RENDER_VAR: View data populates the data presentation variable.
    *
    * @param string $moduleName     The module name
    * @param string $actionName     The action name
