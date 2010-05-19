@@ -45,18 +45,13 @@ function __($text, $args = array(), $catalogue = 'messages')
 
 function format_number_choice($text, $args = array(), $number, $catalogue = 'messages')
 {
-  $translated = __($text, $args, $catalogue);
-
   $choice = new sfChoiceFormat();
-
-  $retval = $choice->format($translated, $number);
-
-  if ($retval === false)
+  if (false === $retval = $choice->format($text, $number))
   {
     throw new sfException(sprintf('Unable to parse your choice "%s".', $translated));
   }
 
-  return $retval;
+  return __($retval, $args, $catalogue);
 }
 
 function format_country($country_iso, $culture = null)
