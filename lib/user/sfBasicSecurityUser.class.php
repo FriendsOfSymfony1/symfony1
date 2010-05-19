@@ -37,7 +37,6 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
    */
   public function clearCredentials()
   {
-    $this->credentials = null;
     $this->credentials = array();
   }
 
@@ -133,6 +132,11 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
    */
   public function hasCredential($credentials, $useAnd = true)
   {
+    if (null === $this->credentials)
+    {
+      return false;
+    }
+
     if (!is_array($credentials))
     {
       return in_array($credentials, $this->credentials);
