@@ -10,7 +10,7 @@
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id$
  */
-abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend() . "\n" ?>
+abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->getFormClassToExtend().PHP_EOL ?>
 {
   public function setup()
   {
