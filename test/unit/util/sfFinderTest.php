@@ -20,7 +20,7 @@ class my_lime_test extends lime_test
     return $this->is($a, $b, $message);
   }
 }
-$t = new my_lime_test(38);
+$t = new my_lime_test(39);
 
 require_once($_test_dir.'/../lib/util/sfFinder.class.php');
 
@@ -220,3 +220,10 @@ $t->is($finder->prune('dir2'), $finder, '->prune() implements the fluent interfa
 
 $finder = sfFinder::type('any')->relative()->prune('dir2');
 $t->arrays_are_equal($finder->in($fixtureDir), $anyWithoutDir2, '->prune() ignore all files/directories under the given directory');
+
+// ->in() permissions
+$t->diag('->in() permissions');
+chmod($fixtureDir.'_permissions/secret', 0000);
+$finder = sfFinder::type('file')->relative();
+$t->arrays_are_equal($finder->in($fixtureDir.'_permissions'), array(), '->in() ignores directories it cannot read');
+chmod($fixtureDir.'_permissions/secret', 0755);

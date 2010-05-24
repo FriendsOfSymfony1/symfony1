@@ -413,7 +413,7 @@ class sfFinder
     $files = array();
     $temp_files = array();
     $temp_folders = array();
-    if (is_dir($dir))
+    if (is_dir($dir) && is_readable($dir))
     {
       $current_dir = opendir($dir);
       while (false !== $entryname = readdir($current_dir))
