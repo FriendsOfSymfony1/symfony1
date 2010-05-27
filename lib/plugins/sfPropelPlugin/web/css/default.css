@@ -139,7 +139,7 @@
   margin-right: 10px;
 }
 
-#sf_admin_container ul li a
+#sf_admin_container ul.sf_admin_actions li a
 {
   padding-left: 20px;
   background: url(../images/default.png) no-repeat 0 0;
