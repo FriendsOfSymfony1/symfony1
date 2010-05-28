@@ -383,22 +383,19 @@ abstract class sfModelGeneratorConfiguration
         foreach ($names as $name)
         {
           list($name, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($name);
-          if (isset($form[$name]))
+          if (!isset($this->configuration[$context]['fields'][$name]))
           {
-            if (!isset($this->configuration[$context]['fields'][$name]))
-            {
-              $this->configuration[$context]['fields'][$name] = new sfModelGeneratorConfigurationField($name, array_merge(
-                isset($config['default'][$name]) ? $config['default'][$name] : array(),
-                isset($config['form'][$name]) ? $config['form'][$name] : array(),
-                isset($config[$context][$name]) ? $config[$context][$name] : array(),
-                array('is_real' => false, 'type' => 'Text', 'flag' => $flag)
-              ));
-            }
-
-            $field = $this->configuration[$context]['fields'][$name];
-            $field->setFlag($flag);
-            $fields[$fieldset][$name] = $field;
+            $this->configuration[$context]['fields'][$name] = new sfModelGeneratorConfigurationField($name, array_merge(
+              isset($config['default'][$name]) ? $config['default'][$name] : array(),
+              isset($config['form'][$name]) ? $config['form'][$name] : array(),
+              isset($config[$context][$name]) ? $config[$context][$name] : array(),
+              array('is_real' => false, 'type' => 'Text', 'flag' => $flag)
+            ));
           }
+
+          $field = $this->configuration[$context]['fields'][$name];
+          $field->setFlag($flag);
+          $fields[$fieldset][$name] = $field;
         }
       }
 
