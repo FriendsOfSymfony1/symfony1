@@ -139,49 +139,44 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    */
   public function __call($method, $arguments)
   {
-    // Try to use parent Doctrine_Record::__call() first of all
-  	try
-  	{
-      return parent::__call($method, $arguments);
-  	}
-  	catch (Doctrine_Record_UnknownPropertyException $de) {}
-
-  	// Try to make some Symfony-specific assumptions
-    try
-    {
+    $failed = false;
+    try {
       if (in_array($verb = substr($method, 0, 3), array('set', 'get')))
       {
-        $table = $this->getTable();
-
         $name = substr($method, 3);
 
+        $table = $this->getTable();
         if ($table->hasRelation($name))
         {
           $entityName = $name;
         }
         else if ($table->hasField($fieldName = $table->getFieldName($name)))
         {
-          $fieldNameLowered = strtolower($fieldName);
-          $entityName = ($table->hasField($fieldNameLowered)) ? $fieldNameLowered : $fieldName;
+          $entityNameLower = strtolower($fieldName);
+          if ($table->hasField($entityNameLower))
+          {
+            $entityName = $entityNameLower;
+          } else {
+            $entityName = $fieldName;
+          }
         }
         else
         {
-          $fieldNameUnderscored = $table->getFieldName(sfInflector::underscore($name));
-          $nameLowered = strtolower($name);
-
-          if ($table->hasField($fieldNameUnderscored) || $table->hasRelation($fieldNameUnderscored))
+          $underScored = $table->getFieldName(sfInflector::underscore($name));
+          if ($table->hasField($underScored) || $table->hasRelation($underScored))
           {
-            $entityName = $fieldNameUnderscored;
-          }
-          else if ($table->hasField($nameLowered) || $table->hasRelation($nameLowered))
-          {
-            $entityName = $nameLowered;
-          }
-          else
-          {
-            $fieldNameCamelized = $table->getFieldName(sfInflector::camelize($name));
-            $fieldNameCamelized = strtolower($fieldNameCamelized[0]) . substr($fieldNameCamelized, 1, strlen($fieldNameCamelized));
-            $entityName = ($table->hasField($fieldNameCamelized) || $table->hasRelation($fieldNameCamelized)) ? $fieldNameCamelized : $fieldNameUnderscored;
+            $entityName = $underScored;
+          } else if ($table->hasField(strtolower($name)) || $table->hasRelation(strtolower($name))) {
+            $entityName = strtolower($name);
+          } else {
+            $camelCase = $table->getFieldName(sfInflector::camelize($name));
+            $camelCase = strtolower($camelCase[0]).substr($camelCase, 1, strlen($camelCase));
+            if ($table->hasField($camelCase) || $table->hasRelation($camelCase))
+            {
+              $entityName = $camelCase;
+            } else {
+              $entityName = $underScored;
+            }
           }
         }
 
@@ -189,19 +184,26 @@ abstract class sfDoctrineRecord extends Doctrine_Record
           array($this, $verb),
           array_merge(array($entityName), $arguments)
         );
+      } else {
+        $failed = true;
       }
-    } catch (Exception $se) {}
+    } catch (Exception $e) {
+      $failed = true;
+    }
+    if ($failed)
+    {
+      try
+      {
+        return parent::__call($method, $arguments);
+      } catch (Doctrine_Record_UnknownPropertyException $e2) {}
 
-    // Re-throw exception, if any
-    if (isset($se) && $se)
-    {
-      throw $se;
+      if (isset($e) && $e)
+      {
+        throw $e;
+      } else if (isset($e2) && $e2) {
+        throw $e2;
+      }
     }
-    else if (isset($de) && $de)
-    {
-      throw $de;
-    }
-    
   }
 
   /**
