@@ -405,9 +405,13 @@ class sfDoctrineFormGenerator extends sfGenerator
         $validatorSubclass = 'Pass';
     }
 
-    if ($column->isPrimaryKey() || $column->isForeignKey())
+    if ($column->isForeignKey())
     {
       $validatorSubclass = 'DoctrineChoice';
+    }
+    else if ($column->isPrimaryKey())
+    {
+      $validatorSubclass = 'Choice';
     }
 
     return sprintf('sfValidator%s', $validatorSubclass);
@@ -429,7 +433,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     }
     else if ($column->isPrimaryKey())
     {
-      $options[] = sprintf('\'model\' => $this->getModelName(), \'column\' => \'%s\'', $column->getFieldName());
+      $options[] = sprintf('\'choices\' => array($this->getObject()->get(\'%s\')), \'empty_value\' => $this->getObject()->get(\'%1$s\')', $column->getFieldName());
     }
     else
     {
