@@ -45,19 +45,44 @@ EOF;
   protected function execute($arguments = array(), $options = array())
   {
     $config = $this->getCliConfig();
+    $changed = false;
 
-    if ($modelsToRemove = array_diff($this->getFileModels($config['models_path']), $this->getYamlModels($config['yaml_schema_path'])))
+    $deleteModelFiles = new sfDoctrineDeleteModelFilesTask($this->dispatcher, $this->formatter);
+    $deleteModelFiles->setCommandApplication($this->commandApplication);
+    $deleteModelFiles->setConfiguration($this->configuration);
+
+    $yamlSchema = $this->getYamlSchema($config['yaml_schema_path']);
+
+    // remove any models present in the filesystem but not in the yaml schema
+    if ($modelsToRemove = array_diff($this->getFileModels($config['models_path']), array_keys($yamlSchema)))
     {
-      $deleteModelFiles = new sfDoctrineDeleteModelFilesTask($this->dispatcher, $this->formatter);
-      $deleteModelFiles->setCommandApplication($this->commandApplication);
-      $deleteModelFiles->setConfiguration($this->configuration);
       $deleteModelFiles->run($modelsToRemove, array('no-confirmation' => $options['no-confirmation']));
+      $changed = true;
+    }
 
+    // remove form classes whose generation is disabled
+    foreach ($yamlSchema as $model => $definition)
+    {
+      if (isset($definition['options']['symfony']['form']) && !$definition['options']['symfony']['form'] && class_exists($model.'Form'))
+      {
+        $deleteModelFiles->run(array($model), array('suffix' => array('Form'), 'no-confirmation' => $options['no-confirmation']));
+        $changed = true;
+      }
+
+      if (isset($definition['options']['symfony']['filter']) && !$definition['options']['symfony']['filter'] && class_exists($model.'FormFilter'))
+      {
+        $deleteModelFiles->run(array($model), array('suffix' => array('FormFilter'), 'no-confirmation' => $options['no-confirmation']));
+        $changed = true;
+      }
+    }
+
+    if ($changed)
+    {
       $this->reloadAutoload();
     }
     else
     {
-      $this->logSection('doctrine', 'Could not find any models that need to be removed');
+      $this->logSection('doctrine', 'Could not find any files that need to be removed');
     }
   }
 
@@ -68,8 +93,17 @@ EOF;
    */
   protected function getYamlModels($yamlSchemaPath)
   {
-    $schema = (array) sfYaml::load($this->prepareSchemaFile($yamlSchemaPath));
-    return array_keys($schema);
+    return array_keys($this->getYamlSchema($yamlSchemaPath));
+  }
+
+  /**
+   * Returns the schema as defined in YAML.
+   * 
+   * @return array
+   */
+  protected function getYamlSchema($yamlSchemaPath)
+  {
+    return (array) sfYaml::load($this->prepareSchemaFile($yamlSchemaPath));
   }
 
   /**
