@@ -334,13 +334,13 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Returns the array name under which user data can retrieved.
    *
-   * If the user data is not stored under an array, it returns null.
+   * If the user data is not stored under an array, it returns false.
    *
-   * @return string The name
+   * @return string|boolean The name or false if the name format is not an array format
    */
   public function getName()
   {
-    if ('%s' == $nameFormat = $this->widgetSchema->getNameFormat())
+    if ('[%s]' != substr($nameFormat = $this->widgetSchema->getNameFormat(), -4))
     {
       return false;
     }
