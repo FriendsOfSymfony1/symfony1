@@ -73,7 +73,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     $choices = array();
     if (false !== $this->getOption('add_empty'))
     {
-      $choices[''] = true === $this->getOption('add_empty') ? '' : $this->getOption('add_empty');
+      $choices[''] = true === $this->getOption('add_empty') ? '' : $this->translate($this->getOption('add_empty'));
     }
 
     $class = constant($this->getOption('model').'::PEER');
