@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(54);
+$t = new lime_test(64);
 
 $dom = new DomDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
@@ -130,3 +130,23 @@ $w->setAttribute('date', array('disabled' => 'disabled'));
 $w->setAttribute('time', array('disabled' => 'disabled'));
 $dom->loadHTML($w->render('foo', '2005-10-15 12:30:35'));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 5, '->render() takes the attributes into account for all the five embedded widgets');
+
+// id_format
+$t->diag('id_format');
+$w = new sfWidgetFormDateTime();
+$w->setIdFormat('id_%s');
+$dom->loadHTML($w->render('foo'));
+$t->is(count($css->matchAll('#id_foo_month')), 1, '->render() month considers id_format');
+$t->is(count($css->matchAll('#id_foo_day')), 1, '->render() day considers id_format');
+$t->is(count($css->matchAll('#id_foo_year')), 1, '->render() year considers id_format');
+$t->is(count($css->matchAll('#id_foo_hour')), 1, '->render() hour considers id_format');
+$t->is(count($css->matchAll('#id_foo_minute')), 1, '->render() minute considers id_format');
+
+$w->setOption('date', array('id_format' => 'override_%s'));
+$w->setOption('time', array('id_format' => 'override_%s'));
+$dom->loadHTML($w->render('foo'));
+$t->is(count($css->matchAll('#override_foo_month')), 1, '->render() month does not override subwidget id_format');
+$t->is(count($css->matchAll('#override_foo_day')), 1, '->render() day does not override subwidget id_format');
+$t->is(count($css->matchAll('#override_foo_year')), 1, '->render() year does not override subwidget id_format');
+$t->is(count($css->matchAll('#override_foo_hour')), 1, '->render() hour does not override subwidget id_format');
+$t->is(count($css->matchAll('#override_foo_minute')), 1, '->render() minute does not override subwidget id_format');

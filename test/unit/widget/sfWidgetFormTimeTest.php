@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(40);
+$t = new lime_test(43);
 
 $w = new sfWidgetFormTime(array('with_seconds' => true));
 
@@ -141,3 +141,12 @@ $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 3, '->r
 $w->setAttribute('disabled', 'disabled');
 $dom->loadHTML($w->render('foo', '12:30:35'));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 3, '->render() takes the attributes into account for all the three embedded widgets');
+
+// id_format
+$t->diag('id_format');
+$w->setOption('with_seconds', true);
+$w->setIdFormat('id_%s');
+$dom->loadHTML($w->render('foo'));
+$t->is(count($css->matchAll('#id_foo_hour')), 1, '->render() uses id_format for hour');
+$t->is(count($css->matchAll('#id_foo_minute')), 1, '->render() uses id_format for minute');
+$t->is(count($css->matchAll('#id_foo_second')), 1, '->render() uses id_format for second');

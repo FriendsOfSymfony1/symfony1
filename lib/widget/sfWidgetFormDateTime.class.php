@@ -112,6 +112,9 @@ class sfWidgetFormDateTime extends sfWidgetForm
       throw new InvalidArgumentException(sprintf('You must pass an array for the %s option.', $type));
     }
 
+    // add id_format if it's not there already
+    $options += array('id_format' => $this->getOption('id_format'));
+
     return $options;
   }
 

@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(40);
+$t = new lime_test(43);
 
 $w = new sfWidgetFormDate();
 
@@ -132,3 +132,11 @@ $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 3, '->r
 $w->setAttribute('disabled', 'disabled');
 $dom->loadHTML($w->render('foo', '2005-10-15'));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 3, '->render() takes the attributes into account for all the three embedded widgets');
+
+// id_format
+$t->diag('id_format');
+$w->setIdFormat('id_%s');
+$dom->loadHTML($w->render('foo'));
+$t->is(count($css->matchAll('#id_foo_day')), 1, '->render() uses the id_format');
+$t->is(count($css->matchAll('#id_foo_month')), 1, '->render() uses the id_format');
+$t->is(count($css->matchAll('#id_foo_year')), 1, '->render() uses the id_format');
