@@ -1,3 +1,34 @@
+05/31/10: Version 1.4.5
+-----------------------
+
+ * [29678] made sfForm::getName() more strict (closes #8318)
+ * [29677] updated doctrine:clean task to delete form classes when generation has been disabled (closes #7777)
+ * [29675] added translation of custom add_empty strings in Doctrine and Propel choice widgets (closes #8571)
+ * [29674] updated date and time widgets so id_format is respected (closes #8446)
+ * [29661] changed generation of (non-foreign key) primary key form fields so validation will fail if the primary key is changed (closes #8639, refs #8704)
+ * [29643] Fixing issue with i18n forms when primary key and i18n field are not the defaults (fixes #8650)
+ * [29641] Making css style in default admin gen css to be more specific (fixes #7750)
+ * [29608] fixed directory permissions issue in sfFinder (closes #8684)
+ * [29570] fixed doctrine form filter m2m query logic
+ * [29553] fixed inconsistent EOL in Doctrine forms (closes #8075)
+ * [29531] updated lime to 1.0.9
+ * [29528] fixed warning in sfBasicSecurityUser when hasCredentials is called before credentials are set (closes #8512)
+ * [29527] fixed notices in sfViewCacheManager::isCacheable() (closes #8527)
+ * [29526] fixed incorrect http status when lockfile present (closes #8536)
+ * [29524] fixed sfWebResponse::sendHttpHeaders() call from sfController::forward() in sfController::getPresentationFor() prevents later call to sendHttpHeaders() within main controller (closes #8568)
+ * [29520] fixed warnings issued by the invalid array_flip() usage in sfI18N (refs #8522)
+ * [29519] marked response as private when using the sfCacheSessionStorage class (closes #8535)
+ * [29490] fixed deprecated delete in sfMemcacheCache (closes #8663)
+ * [29417] fixed strip_links_text() from TextHelpers is defective and does not handle multiple links (closes #8589)
+ * [29416] added admin generator i18n support for traditional chinese (closes #8633)
+ * [29415] fixed sfProjectOptimizeTask on Windows (closes #8640)
+ * [29390] Fixing default_params: { sf_format: xml } for route collections
+ * [29309] fixed: Choices are not always automatically translated. Added option "translate_choices" that defaults to true (closes #7714)
+ * [29285] fixed incorrect splitting of Accept-* headers (closes #8591)
+ * [29218] updated Propel to 1.4.2
+ * [29158] fixed sfDomCssSelector when selecting by attributes evaluating to false (closes #8120)
+ * [29156] Fixed setting of Doctrine's default culture before records are initialized
+
 04/06/10: Version 1.4.4
 -----------------------
 
