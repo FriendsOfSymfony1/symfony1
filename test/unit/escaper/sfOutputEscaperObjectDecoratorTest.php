@@ -24,7 +24,7 @@ class sfException extends Exception
 
 sfConfig::set('sf_charset', 'UTF-8');
 
-$t = new lime_test(5);
+$t = new lime_test(6);
 
 class OutputEscaperTest
 {
@@ -56,6 +56,17 @@ $t->is($array[2], '&lt;strong&gt;escaped!&lt;/strong&gt;', 'The escaped object b
 $t->diag('__toString()');
 
 $t->is($escaped->__toString(), '&lt;strong&gt;escaped!&lt;/strong&gt;', 'The escaped object behaves like the real object');
+
+if (class_exists('SimpleXMLElement'))
+{
+  $element = new SimpleXMLElement('<foo>bar</foo>');
+  $escaped = sfOutputEscaper::escape('esc_entities', $element);
+  $t->is((string) $escaped, (string) $element, '->__toString() is compatible with SimpleXMLElement');
+}
+else
+{
+  $t->skip('->__toString() is compatible with SimpleXMLElement');
+}
 
 class Foo
 {

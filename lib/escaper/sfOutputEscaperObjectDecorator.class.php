@@ -95,7 +95,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
    */
   public function __toString()
   {
-    return $this->escape($this->escapingMethod, $this->value->__toString());
+    return $this->escape($this->escapingMethod, (string) $this->value);
   }
 
   /**
