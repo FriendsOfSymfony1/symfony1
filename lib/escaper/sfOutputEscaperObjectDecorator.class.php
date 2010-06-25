@@ -99,6 +99,16 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
   }
 
   /**
+   * Asks the wrapped object whether a property is set.
+   *
+   * @return boolean
+   */
+  public function __isset($key)
+  {
+    return isset($this->value->$key);
+  }
+
+  /**
    * Returns the size of the object if it implements Countable (is required by the Countable interface).
    *
    * It returns 1 if other cases (which is the default PHP behavior in such a case).

@@ -24,7 +24,7 @@ class sfException extends Exception
 
 sfConfig::set('sf_charset', 'UTF-8');
 
-$t = new lime_test(6);
+$t = new lime_test(8);
 
 class OutputEscaperTest
 {
@@ -86,3 +86,13 @@ $foo = sfOutputEscaper::escape('esc_entities', new Foo());
 $fooc = sfOutputEscaper::escape('esc_entities', new FooCountable());
 $t->is(count($foo), 1, '->count() returns 1 if the embedded object does not implement the Countable interface');
 $t->is(count($fooc), 2, '->count() returns the count() for the embedded object');
+
+// ->__isset()
+$t->diag('->__isset()');
+
+$raw = new stdClass();
+$raw->foo = 'bar';
+$esc = sfOutputEscaper::escape('esc_entities', $raw);
+$t->ok(isset($esc->foo), '->__isset() asks the wrapped object whether a property is set');
+unset($raw->foo);
+$t->ok(!isset($esc->foo), '->__isset() asks the wrapped object whether a property is set');
