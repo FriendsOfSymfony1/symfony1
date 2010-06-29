@@ -1,3 +1,12 @@
+06/29/10: Version 1.4.6
+-----------------------
+
+ * [30031] added prevention of injected directory traversal in view cache (closes #8805)
+ * [30008] fixed usage of shell_exec when the function is disabled (closes #8758)
+ * [29990] added `sfOutputEscaperObjectDecorator::__isset()` (closes #8793)
+ * [29818] fixed escaping of simple xml in PHP 5.2 (closes #8756)
+ * [29716] Fixing default.css styling (fixes #7750)
+
 05/31/10: Version 1.4.5
 -----------------------
 
