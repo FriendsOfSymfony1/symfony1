@@ -11,7 +11,7 @@
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 require_once($_test_dir.'/unit/sfContextMock.class.php');
 
-$t = new lime_test(39);
+$t = new lime_test(41);
 
 function get_cache_manager($context)
 {
@@ -291,6 +291,10 @@ $t->is($m->generateCacheKey('mymodule/myaction'), '/all/mymodule/myaction', '->g
 
 $m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_host_name' => false, 'cache_key_use_vary_headers' => false));
 $t->is($m->generateCacheKey('mymodule/myaction'), '/mymodule/myaction', '->generateCacheKey() allows the use of both "cache_key_use_host_name" and "cache_key_use_vary_headers" options.');
+
+$m = new myViewCacheManager($context, new myCache());
+$t->is($m->generateCacheKey('mymodule/myaction?foo=../_bar'), '/localhost/all/mymodule/myaction/foo/_../__bar', '->generateCacheKey() prevents directory traversal');
+$t->is($m->generateCacheKey('mymodule/myaction?foo=..\\_bar'), '/localhost/all/mymodule/myaction/foo/_..\\__bar', '->generateCacheKey() prevents directory traversal');
 
 // ->getCurrentCacheKey()
 $t->diag('->getCurrentCacheKey()');
