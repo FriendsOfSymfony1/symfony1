@@ -38,7 +38,7 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
     }
 
     require_once sfConfig::get('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine')).'/Doctrine.php';
-    spl_autoload_register(array('Doctrine', 'autoload'));
+    spl_autoload_register(array('Doctrine_Core', 'autoload'));
 
     $manager = Doctrine_Manager::getInstance();
     $manager->setAttribute(Doctrine::ATTR_EXPORT, Doctrine::EXPORT_ALL);
