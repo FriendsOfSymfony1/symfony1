@@ -187,7 +187,7 @@ class AdminGenBrowser extends sfTestBrowser
 
     $this->click('Save', $userInfo);
 
-    $user = Doctrine::getTable('User')->findOneByUsername($userInfo['user']['username']);
+    $user = Doctrine_Core::getTable('User')->findOneByUsername($userInfo['user']['username']);
     $userInfo['user']['Profile']['user_id'] = $user->id;
 
     $this->
@@ -218,7 +218,7 @@ class AdminGenBrowser extends sfTestBrowser
   protected function _runAdminGenModuleSanityCheck($model, $module)
   {
     $this->info('Running admin gen sanity check for module "' . $module . '"');
-    $record = Doctrine::getTable($model)
+    $record = Doctrine_Core::getTable($model)
       ->createQuery('a')
       ->fetchOne();
 

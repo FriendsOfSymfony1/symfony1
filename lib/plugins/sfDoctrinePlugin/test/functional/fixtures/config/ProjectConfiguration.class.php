@@ -39,7 +39,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 
   public function configureDoctrine(Doctrine_Manager $manager)
   {
-    $manager->setAttribute(Doctrine::ATTR_VALIDATE, true);
+    $manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, true);
 
     $options = array('baseClassName' => 'myDoctrineRecord');
     sfConfig::set('doctrine_model_builder_options', $options);
@@ -51,6 +51,6 @@ class ProjectConfiguration extends sfProjectConfiguration
 
   public function configureDoctrineConnectionDoctrine2(Doctrine_Connection $connection)
   {
-    $connection->setAttribute(Doctrine::ATTR_VALIDATE, false);
+    $connection->setAttribute(Doctrine_Core::ATTR_VALIDATE, false);
   }
 }

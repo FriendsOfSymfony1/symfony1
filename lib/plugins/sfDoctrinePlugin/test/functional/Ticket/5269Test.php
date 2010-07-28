@@ -30,7 +30,7 @@ $user->save();
 $user->free();
 unset($user);
 
-$user = Doctrine::getTable('User')->findOneByUsername('nullvaluetest');
+$user = Doctrine_Core::getTable('User')->findOneByUsername('nullvaluetest');
 $userForm = new TestUserForm($user);
 $userForm->bind(array('id' => $user->id, 'username' => 'nullvaluetest', 'password' => 'changeme2'));
 if ($userForm->isValid())
@@ -41,5 +41,5 @@ if ($userForm->isValid())
 $user->free();
 unset($user);
 
-$user = Doctrine::getTable('User')->findOneByUsername('nullvaluetest');
+$user = Doctrine_Core::getTable('User')->findOneByUsername('nullvaluetest');
 $t->is($user->toArray(), array('id' => 1, 'username' => 'nullvaluetest', 'password' => 'b0660f0b8b989971524762330aea5449', 'test' => 'test'));

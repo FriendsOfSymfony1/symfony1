@@ -53,10 +53,10 @@ $t->diag('->setTableMethod()');
 $pager = new sfDoctrinePager('Article', 10);
 $pager->setTableMethod('addOnHomepage');
 $pager->init();
-$t->is($pager->getNbResults(), count(Doctrine::getTable('Article')->findByIsOnHomepage('1')), '->setTableMethod() update the query');
+$t->is($pager->getNbResults(), count(Doctrine_Core::getTable('Article')->findByIsOnHomepage('1')), '->setTableMethod() update the query');
 
 // Serialization test for defect #7987
 $t->diag('Serialization');
 $pager = unserialize(serialize($pager));
 $pager->init();
-$t->is($pager->getNbResults(), count(Doctrine::getTable('Article')->findByIsOnHomepage('1')), 'serialization preserves TableMethod functionality');
+$t->is($pager->getNbResults(), count(Doctrine_Core::getTable('Article')->findByIsOnHomepage('1')), 'serialization preserves TableMethod functionality');

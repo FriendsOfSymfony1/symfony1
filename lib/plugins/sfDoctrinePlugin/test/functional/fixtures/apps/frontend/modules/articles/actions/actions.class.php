@@ -17,7 +17,7 @@ class articlesActions extends sfActions
 
   public function executeRedirectToShow()
   {
-    $this->redirect('article', Doctrine::getTable('Article')->createQuery()->fetchOne());
+    $this->redirect('article', Doctrine_Core::getTable('Article')->createQuery()->fetchOne());
   }
 
   public function executeShow()
@@ -65,7 +65,7 @@ class articlesActions extends sfActions
   
   private function getArticleTable()
   {
-    return Doctrine::getTable('Article');
+    return Doctrine_Core::getTable('Article');
   }
   
   private function getArticleById($id)

@@ -43,13 +43,13 @@ class TestRelation extends sfDoctrineRecord
   }
 }
 
-$column = new sfDoctrineColumn('name', Doctrine::getTable('Test'));
+$column = new sfDoctrineColumn('name', Doctrine_Core::getTable('Test'));
 $t->is($column->getName(), 'name');
 $t->is($column->getFieldName(), 'name');
 $t->is($column->getPhpName(), 'name');
 $t->is($column->isNotNull(), true);
 
-$column = new sfDoctrineColumn('test', Doctrine::getTable('Test'));
+$column = new sfDoctrineColumn('test', Doctrine_Core::getTable('Test'));
 $t->is($column->getName(), 'test');
 $t->is($column->getFieldName(), 'TEST');
 $t->is($column->getPhpName(), 'TEST');
@@ -63,17 +63,17 @@ $t->is($column->getDefinitionKey('type'), 'string');
 $t->is($column->isNotNull(), false);
 
 // Is not null and has definition key
-$column = new sfDoctrineColumn('email', Doctrine::getTable('Test'));
+$column = new sfDoctrineColumn('email', Doctrine_Core::getTable('Test'));
 $t->is($column->isNotNull(), true);
 $t->is($column->hasDefinitionKey('email'), true);
 $t->is($column->getDefinitionKey('email'), true);
 
 // Is primary key
-$column = new sfDoctrineColumn('id', Doctrine::getTable('Test'));
+$column = new sfDoctrineColumn('id', Doctrine_Core::getTable('Test'));
 $t->is($column->isPrimaryKey(), true);
 
 // Relation/foreign key functions
-$column = new sfDoctrineColumn('test_id', Doctrine::getTable('TestRelation'));
+$column = new sfDoctrineColumn('test_id', Doctrine_Core::getTable('TestRelation'));
 $t->is($column->isForeignKey(), true);
 $t->is($column->getForeignClassName(), 'Test');
 $t->is($column->getForeignTable()->getOption('name'), 'Test');

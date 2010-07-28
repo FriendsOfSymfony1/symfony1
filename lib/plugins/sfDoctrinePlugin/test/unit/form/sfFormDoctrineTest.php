@@ -48,7 +48,7 @@ class myArticleForm extends ArticleForm
 {
 }
 
-$table = Doctrine::getTable('Author');
+$table = Doctrine_Core::getTable('Author');
 $form = new AuthorForm($table->create(array(
   'Articles' => array(
     array('title' => 'Article 1'),
@@ -88,7 +88,7 @@ $form = new AuthorForm($table->create(array(
 $form->embedRelation('Articles AS author_articles');
 $t->is(isset($form['author_articles']), true, '->embedRelation() embeds using an alias with a case insensitive separator');
 
-$form = new ArticleForm(Doctrine::getTable('Article')->create(array(
+$form = new ArticleForm(Doctrine_Core::getTable('Article')->create(array(
   'Author' => array('name' => 'John Doe'),
 )));
 $form->embedRelation('Author');

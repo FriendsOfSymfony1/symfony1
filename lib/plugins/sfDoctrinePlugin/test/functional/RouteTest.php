@@ -36,7 +36,7 @@ foreach ($tests as $url => $check)
   ;
 }
 
-$article = Doctrine::getTable('Article')->find(1);
+$article = Doctrine_Core::getTable('Article')->find(1);
 
 $routes = array(
   'doctrine_route_test5' => array(

@@ -49,7 +49,7 @@ $pager->setTableMethod('testTableMethod');
 $pager->setPage(1);
 $pager->init();
 
-$results = $pager->getResults(Doctrine::HYDRATE_ARRAY);
+$results = $pager->getResults(Doctrine_Core::HYDRATE_ARRAY);
 
 $t->is(gettype($results), 'array');
 $t->is(count($results), $numPerPage);
