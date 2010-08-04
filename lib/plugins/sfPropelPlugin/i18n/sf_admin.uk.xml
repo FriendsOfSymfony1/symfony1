@@ -31,7 +31,19 @@
       </trans-unit>
       <trans-unit>
         <source>Cancel</source>
-        <target>Відмінити</target>
+        <target>Скасувати</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Choose an action</source>
+        <target>Виберіть дію</target>
+      </trans-unit>
+      <trans-unit>
+        <source>go</source>
+        <target>Виконати</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Back to list</source>
+        <target>Повернутися до списку</target>
       </trans-unit>
 
       <!-- Filters -->
@@ -65,6 +77,10 @@
         <source>desc</source>
         <target>(Я-А)</target>
       </trans-unit>
+      <trans-unit>
+        <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
+        <target>[0] результат відсутній|[1] 1 результат|(1,+Inf] %1% результати(ів)</target>
+      </trans-unit>
 
       <!-- Pagination -->
       <trans-unit>
@@ -87,19 +103,19 @@
       <!-- Form -->
       <trans-unit>
         <source>The item was created successfully.</source>
-        <target>Запис створено успішно.</target>
+        <target>Запис успішно створено.</target>
       </trans-unit>
       <trans-unit>
         <source>The item was updated successfully.</source>
-        <target>Запис змінено успішно.</target>
+        <target>Запис успішно оновлено.</target>
       </trans-unit>
       <trans-unit>
         <source>The item was created successfully. You can add another one below.</source>
-        <target>Запис створено успішно. Можете додати наступний.</target>
+        <target>Запис успішно створено. Можете додати ще один.</target>
       </trans-unit>
       <trans-unit>
         <source>The item was updated successfully. You can add another one below.</source>
-        <target>Запис змінено успішно. Можете додати наступний.</target>
+        <target>Запис успішно змінено. Можете додати ще один.</target>
       </trans-unit>
       <trans-unit>
         <source>The item has not been saved due to some errors.</source>
@@ -107,7 +123,7 @@
       </trans-unit>
       <trans-unit>
         <source>The item was deleted successfully.</source>
-        <target>Запис знищено успішно.</target>
+        <target>Запис успішно знищено.</target>
       </trans-unit>
       <trans-unit>
         <source>You must at least select one item.</source>
@@ -123,11 +139,35 @@
       </trans-unit>
       <trans-unit>
         <source>The selected items have been deleted successfully.</source>
-        <target>Позначені записи знищено успішно.</target>
+        <target>Позначені записи успішно знищено.</target>
       </trans-unit>
       <trans-unit>
         <source>A problem occurs when deleting the selected items.</source>
         <target>При видаленні позначених записів виникла помилка.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>is empty</source>
+        <target>пусте значення</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes or no</source>
+        <target>так чи ні</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes</source>
+        <target>так</target>
+      </trans-unit>
+      <trans-unit>
+        <source>no</source>
+        <target>ні</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date% to %to_date%]]></source>
+        <target><![CDATA[від %from_date% до %to_date%]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
+        <target><![CDATA[від %from_date%<br />до %to_date%]]></target>
       </trans-unit>
     </body>
   </file>

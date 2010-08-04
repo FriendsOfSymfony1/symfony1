@@ -39,7 +39,11 @@
       </trans-unit>
       <trans-unit>
         <source>go</source>
-        <target>ок</target>
+        <target>Выполнить</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Back to list</source>
+        <target>Вернуться к списку</target>
       </trans-unit>
 
       <!-- Filters -->
@@ -123,7 +127,7 @@
       </trans-unit>
       <trans-unit>
         <source>You must at least select one item.</source>
-        <target>Вы должны выделить как-минимум один объект.</target>
+        <target>Вы должны выделить как минимум один объект.</target>
       </trans-unit>
       <trans-unit>
         <source>You must select an action to execute on the selected items.</source>
@@ -140,6 +144,30 @@
       <trans-unit>
         <source>A problem occurs when deleting the selected items.</source>
         <target>Возникла проблемма при удалении выделенных объектов.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>is empty</source>
+        <target>пустое значение</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes or no</source>
+        <target>да или нет</target>
+      </trans-unit>
+      <trans-unit>
+        <source>yes</source>
+        <target>да</target>
+      </trans-unit>
+      <trans-unit>
+        <source>no</source>
+        <target>нет</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date% to %to_date%]]></source>
+        <target><![CDATA[от %from_date% до %to_date%]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
+        <target><![CDATA[от %from_date%<br />до %to_date%]]></target>
       </trans-unit>
     </body>
   </file>
