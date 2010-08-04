@@ -49,7 +49,7 @@ class sfFinder
    * Finder will descend at most $level levels of directories below the starting point.
    *
    * @param  int $level
-   * @return object current sfFinder object
+   * @return sfFinder current sfFinder object
    */
   public function maxdepth($level)
   {
@@ -64,7 +64,7 @@ class sfFinder
    * Finder will start applying tests at level $level.
    *
    * @param  int $level
-   * @return object current sfFinder object
+   * @return sfFinder current sfFinder object
    */
   public function mindepth($level)
   {
@@ -82,7 +82,7 @@ class sfFinder
    * Sets the type of elements to returns.
    *
    * @param  string $name  directory or file or any (for both file and directory)
-   * @return object new sfFinder object
+   * @return sfFinder new sfFinder object
    */
   public static function type($name)
   {
