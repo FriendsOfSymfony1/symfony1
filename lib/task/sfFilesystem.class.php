@@ -331,7 +331,7 @@ class sfFilesystem
         }
       }
 
-      sleep(0.1);
+      usleep(100000);
     }
 
     fclose($pipes[1]);
