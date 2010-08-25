@@ -56,6 +56,8 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
   }
 
   /**
+   * Renders the widget.
+   *
    * @param  string $name        The element name
    * @param  string $value       The this widget is checked if value is not null
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes

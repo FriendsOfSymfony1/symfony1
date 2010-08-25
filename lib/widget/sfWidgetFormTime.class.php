@@ -51,6 +51,8 @@ class sfWidgetFormTime extends sfWidgetForm
   }
 
   /**
+   * Renders the widget.
+   *
    * @param  string $name        The element name
    * @param  string $value       The time displayed in this widget
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes

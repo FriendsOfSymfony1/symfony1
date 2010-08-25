@@ -19,6 +19,8 @@
 class sfWidgetFormInputText extends sfWidgetFormInput
 {
   /**
+   * Configures the current widget.
+   *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
    *

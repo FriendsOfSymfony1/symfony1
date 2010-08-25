@@ -19,6 +19,8 @@
 class sfWidgetFormTextarea extends sfWidgetForm
 {
   /**
+   * Configures the current widget.
+   *
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
    *
@@ -31,6 +33,8 @@ class sfWidgetFormTextarea extends sfWidgetForm
   }
 
   /**
+   * Renders the widget.
+   *
    * @param  string $name        The element name
    * @param  string $value       The value displayed in this widget
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes

@@ -39,6 +39,8 @@ class sfWidgetFormSelect extends sfWidgetFormChoiceBase
   }
 
   /**
+   * Renders the widget.
+   *
    * @param  string $name        The element name
    * @param  string $value       The value selected in this widget
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes

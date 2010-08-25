@@ -40,6 +40,8 @@ class sfWidgetFormInputPassword extends sfWidgetFormInput
   }
 
   /**
+   * Renders the widget.
+   *
    * @param  string $name        The element name
    * @param  string $value       The password stored in this widget, will be masked by the browser.
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes
