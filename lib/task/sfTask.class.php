@@ -356,7 +356,8 @@ abstract class sfTask
 
   protected function doRun(sfCommandManager $commandManager, $options)
   {
-    $this->dispatcher->filter(new sfEvent($this, 'command.filter_options', array('command_manager' => $commandManager)), $options);
+    $event = $this->dispatcher->filter(new sfEvent($this, 'command.filter_options', array('command_manager' => $commandManager)), $options);
+    $options = $event->getReturnValue();
 
     $this->process($commandManager, $options);
 
