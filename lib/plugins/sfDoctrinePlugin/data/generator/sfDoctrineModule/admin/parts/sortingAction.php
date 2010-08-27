@@ -37,5 +37,5 @@
 
   protected function isValidSortColumn($column)
   {
-    return Doctrine::getTable('<?php echo $this->getModelClass() ?>')->hasColumn($column);
+    return Doctrine_Core::getTable('<?php echo $this->getModelClass() ?>')->hasColumn($column);
   }
