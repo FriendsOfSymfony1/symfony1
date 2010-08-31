@@ -82,7 +82,7 @@ class sfWebDebugLogger extends sfVarLogger
       return false;
     }
 
-    $message = sprintf(' %%s at %s on line %s (%s)', $errfile, $errline, $errstr);
+    $message = sprintf(' %%s at %s on line %s (%s)', $errfile, $errline, str_replace('%', '%%', $errstr));
     switch ($errno)
     {
       case E_STRICT:
