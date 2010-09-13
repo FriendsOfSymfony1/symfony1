@@ -123,14 +123,6 @@ EOF;
     $baseDirFinder = sfFinder::type('dir')->name('base');
     $this->getFilesystem()->replaceTokens($baseFinder->in($baseDirFinder->in($config['models_path'])), '', '', $tokens);
 
-    // cleanup new table classes
-    $tableFinder = sfFinder::type('file')->prune('base')->name('*Table'.$builderOptions['suffix']);
-    foreach (array_diff($tableFinder->in($config['models_path']), $before) as $file)
-    {
-      $contents = file_get_contents($file);
-      file_put_contents($file, sfToolkit::stripComments($contents));
-    }
-
     $this->reloadAutoload();
   }
 }
