@@ -14,9 +14,31 @@ $t = new lime_test(65);
 
 class myRequest extends sfWebRequest
 {
+  static protected $initialPathArrayKeys;
+
   public $languages = null;
   public $charsets = null;
   public $acceptableContentTypes = null;
+
+  public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
+  {
+    parent::initialize($dispatcher, $parameters, $attributes, $options);
+
+    if (null === self::$initialPathArrayKeys)
+    {
+      self::$initialPathArrayKeys = array_keys($this->getPathInfoArray());
+    }
+
+    $this->resetPathInfoArray();
+  }
+
+  public function resetPathInfoArray()
+  {
+    foreach (array_diff(array_keys($this->getPathInfoArray()), self::$initialPathArrayKeys) as $key)
+    {
+      unset($this->pathInfoArray[$key]);
+    }
+  }
 }
 
 $dispatcher = new sfEventDispatcher();
@@ -37,6 +59,7 @@ $t->is($request->getLanguages(), array('en_US', 'en', 'fr'), '->getLanguages() r
 
 // ->getPreferredCulture()
 $t->diag('->getPreferredCulture()');
+
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
 $t->is($request->getPreferredCulture(array('fr', 'en')), 'fr', '->getPreferredCulture() returns the first given culture if the client do not send an ACCEPT_LANGUAGE header');
@@ -97,6 +120,7 @@ $t->is($request->getRequestFormat(), 'css', '->setRequestFormat() sets the reque
 
 // ->getFormat() ->setFormat()
 $t->diag('->getFormat() ->setFormat()');
+
 $request->setFormat('js', 'application/x-javascript');
 $t->is($request->getFormat('application/x-javascript'), 'js', '->getFormat() returns the format for the given mime type');
 $request->setFormat('js', array('application/x-javascript', 'text/js'));
@@ -105,6 +129,7 @@ $t->is($request->getFormat('foo/bar'), null, '->getFormat() returns null if the 
 
 // ->getMimeType()
 $t->diag('->getMimeType()');
+
 $t->is($request->getMimeType('js'), 'application/x-javascript', '->getMimeType() returns the first mime type for the given format');
 $t->is($request->getMimeType('foo'), null, '->getMimeType() returns null if the format does not exist');
 
@@ -119,7 +144,7 @@ $_SERVER['HTTPS'] = 'on';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTPS" environment variable');
 $_SERVER['HTTPS'] = '1';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTPS" environment variable');
-unset($_SERVER['HTTPS']);
+$request->resetPathInfoArray();
 
 $_SERVER['HTTP_SSL_HTTPS'] = 'ON';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_SSL_HTTPS" environment variable');
@@ -127,14 +152,15 @@ $_SERVER['HTTP_SSL_HTTPS'] = 'on';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_SSL_HTTPS" environment variable');
 $_SERVER['HTTP_SSL_HTTPS'] = '1';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_SSL_HTTPS" environment variable');
-unset($_SERVER['HTTP_SSL_HTTPS']);
+$request->resetPathInfoArray();
 
 $_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_X_FORWARDED_PROTO" environment variable');
-unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+$request->resetPathInfoArray();
 
 // ->getUriPrefix()
 $t->diag('->getUriPrefix()');
+
 $_SERVER['SERVER_PORT'] = '80';
 $_SERVER['HTTP_HOST'] = 'symfony-project.org:80';
 $t->is($request->getUriPrefix(), 'http://symfony-project.org', '->getUriPrefix() returns no port for standard http port');
@@ -154,17 +180,20 @@ $t->is($request->getUriPrefix(), 'https://symfony-project.org:8043', '->getUriPr
 
 // ->getRemoteAddress()
 $t->diag('->getRemoteAddress()');
+
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 $t->is($request->getRemoteAddress(), '127.0.0.1', '->getRemoteAddress() returns the remote address');
 
 // ->getForwardedFor()
 $t->diag('->getForwardedFor()');
+
 $t->is($request->getForwardedFor(), null, '->getForwardedFor() returns null if the request was not forwarded.');
 $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
 $t->is_deeply($request->getForwardedFor(), array('10.0.0.1', '10.0.0.2'), '->getForwardedFor() returns the value from HTTP_X_FORWARDED_FOR');
 
 // ->getMethod()
-$t->diag('methods');
+$t->diag('->getMethod()');
+
 $_SERVER['REQUEST_METHOD'] = 'POST';
 $_POST['sf_method'] = 'PUT';
 $request = new myRequest($dispatcher);
@@ -181,55 +210,58 @@ $request = new myRequest($dispatcher);
 $t->is($request->getMethod(), 'POST', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
 
 // ->getScriptName()
-$t->diag('getScriptName');
-$_SERVER['SCRIPT_NAME']      = '/frontend_test.php';
-$_SERVER['ORIG_SCRIPT_NAME'] = '/frontend_test2.php';
+$t->diag('->getScriptName()');
+
 $request = new myRequest($dispatcher);
+$_SERVER['SCRIPT_NAME'] = '/frontend_test.php';
+$_SERVER['ORIG_SCRIPT_NAME'] = '/frontend_test2.php';
 $t->is($request->getScriptName(), '/frontend_test.php', '->getScriptName() returns the script name');
 
-unset($_SERVER['SCRIPT_NAME']);
 $request = new myRequest($dispatcher);
+unset($_SERVER['SCRIPT_NAME']);
+$_SERVER['ORIG_SCRIPT_NAME'] = '/frontend_test2.php';
 $t->is($request->getScriptName(), '/frontend_test2.php', '->getScriptName() returns the script name if SCRIPT_NAME not set it use ORIG_SCRIPT_NAME');
 
-unset($_SERVER['ORIG_SCRIPT_NAME']);
 $request = new myRequest($dispatcher);
+unset($_SERVER['SCRIPT_NAME']);
 $t->is($request->getScriptName(), '', '->getScriptName() returns the script name if SCRIPT_NAME and ORIG_SCRIPT_NAME not set it return empty');
 
 // ->getPathInfo()
-$t->diag('getPathInfo');
+$t->diag('->getPathInfo()');
+
 $request = new myRequest($dispatcher);
 $options = $request->getOptions();
 $t->is($options['path_info_key'], 'PATH_INFO', 'check if default path_info_key is PATH_INFO');
 
+$request = new myRequest($dispatcher);
 $_SERVER['PATH_INFO'] = '/test/klaus';
 $_SERVER['REQUEST_URI'] = '/test/klaus2';
-$request = new myRequest($dispatcher);
 $t->is($request->getPathInfo(), '/test/klaus', '->getPathInfo() returns the url path value');
 
-$_SERVER['SPECIAL'] = '/special';
 $request = new myRequest($dispatcher, array(), array(), array('path_info_key' => 'SPECIAL'));
+$_SERVER['SPECIAL'] = '/special';
 $t->is($request->getPathInfo(), '/special', '->getPathInfo() returns the url path value use path_info_key');
-unset($_SERVER['SPECIAL']);
+$request->resetPathInfoArray();
 
-unset($_SERVER['PATH_INFO']);
+$request->resetPathInfoArray();
+$request = new myRequest($dispatcher);
 $_SERVER['SCRIPT_NAME'] = '/frontend_test.php';
 $_SERVER['REQUEST_URI'] = '/frontend_test.php/test/klaus2';
 $_SERVER['QUERY_STRING'] = '';
-$request = new myRequest($dispatcher);
 $t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI');
 
+$request = new myRequest($dispatcher);
 $_SERVER['QUERY_STRING'] = 'test';
 $_SERVER['REQUEST_URI']  = '/frontend_test.php/test/klaus2?test';
-$request = new myRequest($dispatcher);
 $t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI without query');
-unset($_SERVER['QUERY_STRING']);
 
-unset($_SERVER['REQUEST_URI']);
+$request->resetPathInfoArray();
 $request = new myRequest($dispatcher);
 $t->is($request->getPathInfo(), '/', '->getPathInfo() returns the url path value if it not exists use default /');
 
 // ->addRequestParameters() ->getRequestParameters() ->fixParameters()
 $t->diag('getPathInfo');
+
 $request = new myRequest($dispatcher);
 $t->is($request->getRequestParameters(), array(), '->getRequestParameters() returns the request parameters default array');
 
@@ -281,10 +313,11 @@ catch (sfValidatorErrorSchema $error)
 
 // ->getContentType()
 $t->diag('->getContentType()');
+
+$request = new myRequest($dispatcher);
 $_SERVER['CONTENT_TYPE'] = 'text/html';
-$request = new myRequest($dispatcher);
 $t->is($request->getContentType(), 'text/html', '->getContentType() returns the content type');
-$_SERVER['CONTENT_TYPE'] = 'text/html; charset=UTF-8';
 $request = new myRequest($dispatcher);
+$_SERVER['CONTENT_TYPE'] = 'text/html; charset=UTF-8';
 $t->is($request->getContentType(), 'text/html', '->getContentType() strips the charset information by default');
 $t->is($request->getContentType(false), 'text/html; charset=UTF-8', '->getContentType() does not strip the charset information by defaultif you pass false as the first argument');
