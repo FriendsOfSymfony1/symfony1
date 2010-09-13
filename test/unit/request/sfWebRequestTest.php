@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(65);
+$t = new lime_test(71);
 
 class myRequest extends sfWebRequest
 {
@@ -30,6 +30,11 @@ class myRequest extends sfWebRequest
     }
 
     $this->resetPathInfoArray();
+  }
+
+  public function setOption($key, $value)
+  {
+    $this->options[$key] = $value;
   }
 
   public function resetPathInfoArray()
@@ -161,6 +166,7 @@ $request->resetPathInfoArray();
 // ->getUriPrefix()
 $t->diag('->getUriPrefix()');
 
+$request->resetPathInfoArray();
 $_SERVER['SERVER_PORT'] = '80';
 $_SERVER['HTTP_HOST'] = 'symfony-project.org:80';
 $t->is($request->getUriPrefix(), 'http://symfony-project.org', '->getUriPrefix() returns no port for standard http port');
@@ -169,6 +175,7 @@ $t->is($request->getUriPrefix(), 'http://symfony-project.org', '->getUriPrefix()
 $_SERVER['HTTP_HOST'] = 'symfony-project.org:8088';
 $t->is($request->getUriPrefix(), 'http://symfony-project.org:8088', '->getUriPrefix() works for nonstandard http ports');
 
+$request->resetPathInfoArray();
 $_SERVER['HTTPS'] = 'on';
 $_SERVER['SERVER_PORT'] = '443';
 $_SERVER['HTTP_HOST'] = 'symfony-project.org:443';
@@ -177,6 +184,45 @@ $_SERVER['HTTP_HOST'] = 'symfony-project.org';
 $t->is($request->getUriPrefix(), 'https://symfony-project.org', '->getUriPrefix() works fine with no port in HTTP_HOST');
 $_SERVER['HTTP_HOST'] = 'symfony-project.org:8043';
 $t->is($request->getUriPrefix(), 'https://symfony-project.org:8043', '->getUriPrefix() works for nonstandard https ports');
+
+$request->resetPathInfoArray();
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$_SERVER['SERVER_PORT'] = '8080';
+$t->is($request->getUriPrefix(), 'http://symfony-project.org:8080', '->getUriPrefix() uses the "SERVER_PORT" environment variable');
+
+$request->resetPathInfoArray();
+$_SERVER['HTTPS'] = 'on';
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$_SERVER['SERVER_PORT'] = '8043';
+$t->is($request->getUriPrefix(), 'https://symfony-project.org:8043', '->getUriPrefix() uses the "SERVER_PORT" environment variable');
+
+$request->resetPathInfoArray();
+$request->setOption('http_port', '8080');
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$t->is($request->getUriPrefix(), 'http://symfony-project.org:8080', '->getUriPrefix() uses the configured port');
+$request->setOption('http_port', null);
+
+$request->resetPathInfoArray();
+$request->setOption('https_port', '8043');
+$_SERVER['HTTPS'] = 'on';
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$t->is($request->getUriPrefix(), 'https://symfony-project.org:8043', '->getUriPrefix() uses the configured port');
+$request->setOption('https_port', null);
+
+$request->resetPathInfoArray();
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$_SERVER['SERVER_PORT'] = '80';
+$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+$t->is($request->getUriPrefix(), 'https://symfony-project.org', '->getUriPrefix() works on secure requests forwarded as non-secure requests');
+
+$request->resetPathInfoArray();
+$request->setOption('https_port', '8043');
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$_SERVER['SERVER_PORT'] = '80';
+$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+$t->is($request->getUriPrefix(), 'https://symfony-project.org:8043', '->getUriPrefix() uses the configured port on secure requests forwarded as non-secure requests');
+
+$request->resetPathInfoArray();
 
 // ->getRemoteAddress()
 $t->diag('->getRemoteAddress()');
