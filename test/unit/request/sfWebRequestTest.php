@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(57);
+$t = new lime_test(65);
 
 class myRequest extends sfWebRequest
 {
@@ -107,6 +107,31 @@ $t->is($request->getFormat('foo/bar'), null, '->getFormat() returns null if the 
 $t->diag('->getMimeType()');
 $t->is($request->getMimeType('js'), 'application/x-javascript', '->getMimeType() returns the first mime type for the given format');
 $t->is($request->getMimeType('foo'), null, '->getMimeType() returns null if the format does not exist');
+
+// ->isSecure()
+$t->diag('->isSecure()');
+
+$t->is($request->isSecure(), false, '->isSecure() returns false if request is not secure');
+
+$_SERVER['HTTPS'] = 'ON';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTPS" environment variable');
+$_SERVER['HTTPS'] = 'on';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTPS" environment variable');
+$_SERVER['HTTPS'] = '1';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTPS" environment variable');
+unset($_SERVER['HTTPS']);
+
+$_SERVER['HTTP_SSL_HTTPS'] = 'ON';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_SSL_HTTPS" environment variable');
+$_SERVER['HTTP_SSL_HTTPS'] = 'on';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_SSL_HTTPS" environment variable');
+$_SERVER['HTTP_SSL_HTTPS'] = '1';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_SSL_HTTPS" environment variable');
+unset($_SERVER['HTTP_SSL_HTTPS']);
+
+$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+$t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_X_FORWARDED_PROTO" environment variable');
+unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
 
 // ->getUriPrefix()
 $t->diag('->getUriPrefix()');
