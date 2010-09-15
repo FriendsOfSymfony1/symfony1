@@ -203,7 +203,12 @@ abstract class sfController
     $this->getActionStack()->addEntry($moduleName, $actionName, $actionInstance);
 
     // include module configuration
+    $viewClass = sfConfig::get('mod_'.strtolower($moduleName).'_view_class', false);
     require($this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/module.yml'));
+    if (false !== $viewClass)
+    {
+      sfConfig::set('mod_'.strtolower($moduleName).'_view_class', $viewClass);
+    }
 
     // module enabled?
     if (sfConfig::get('mod_'.strtolower($moduleName).'_enabled'))

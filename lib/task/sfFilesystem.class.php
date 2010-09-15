@@ -302,7 +302,7 @@ class sfFilesystem
 
     $output = '';
     $err = '';
-    while (!feof($pipes[1]))
+    while (!feof($pipes[1]) || !feof($pipes[2]))
     {
       foreach ($pipes as $key => $pipe)
       {
