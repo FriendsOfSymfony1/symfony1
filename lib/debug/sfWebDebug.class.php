@@ -154,14 +154,20 @@ class sfWebDebug
    */
   public function injectToolbar($content)
   {
-    $content = str_ireplace('</head>', '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style></head>', $content);
+    if (false !== $pos = stripos($content, '</head>'))
+    {
+      $styles = '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style>';
+      $content = substr($content, 0, $pos).$styles.substr($content, $pos);
+    }
 
     $debug = $this->asHtml();
-    $count = 0;
-    $content = str_ireplace('</body>', '<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.'</body>', $content, $count);
-    if (!$count)
+    if (false === $pos = strripos($content, '</body>'))
     {
       $content .= $debug;
+    }
+    else
+    {
+      $content = substr($content, 0, $pos).$debug.substr($content, $pos);
     }
 
     return $content;
