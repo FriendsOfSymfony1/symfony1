@@ -167,7 +167,7 @@ class sfWebDebug
     }
     else
     {
-      $content = substr($content, 0, $pos).$debug.substr($content, $pos);
+      $content = substr($content, 0, $pos).'<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.substr($content, $pos);
     }
 
     return $content;
