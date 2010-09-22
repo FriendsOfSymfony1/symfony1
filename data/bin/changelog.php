@@ -21,12 +21,14 @@ require_once dirname(__FILE__).'/../../lib/task/sfFilesystem.class.php';
 
 if (!isset($argv[1]))
 {
-  throw new Exception('You must provide a revision range (-r123:456)');
+  echo "You must provide a revision range (-r123:456)\n";
+  exit(1);
 }
 
 if (!isset($argv[2]))
 {
-  throw new Exception('You must provide a repository path (/branches/1.3)');
+  echo "You must provide a repository path (/branches/1.4)\n";
+  exit(1);
 }
 
 $filesystem = new sfFilesystem();
