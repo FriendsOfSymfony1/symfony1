@@ -1,3 +1,21 @@
+09/21/10: Version 1.4.7
+-----------------------
+
+ * [30951] fixed WDT injects multiple times (closes #9080)
+ * [30915] added support for "image/x-ms-bmp" mime type (closes #9069, patch from pbowyer)
+ * [30912] fixed view class overriding (closes #5097, patch from caefer)
+ * [30901] reverted remove of comments in Doctrine-generated table classes (closes #8880)
+ * [30900] fixed getUriPrefix() when requested is forwarded from a secure one (closes #4723)
+ * [30790] fixed logging of PHP errors to the WDT when error messages include a "%" character
+ * [30563] fixed sfWebController::redirect method does not respect HTTP specification (closes #8952, patch from rande)
+ * [30530] fixed path when a project is created on Windows and used on Linux (closes #8835)
+ * [30529] fixed Swift_PropelSpool when the message is stored in a GLOB column (closes #8869, #8558, patch from netounet)
+ * [30526] updated russian and ukrainian translation for the admin gen (closes #8814)
+ * [30445] added a check whether doctrine is already loaded to allow use of a compiled core (closes #8917, thanks gnukix)
+ * [30444] updated doctrine plugin to load Doctrine_Core rather than Doctrine
+ * [30442] changed remaining calls to `Doctrine` to `Doctrine_Core`
+ * [30441] Changed registration of Doctrine autoloader to use Doctrine_Core.
+
 06/29/10: Version 1.4.6
 -----------------------
 
