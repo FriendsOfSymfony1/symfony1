@@ -169,6 +169,34 @@
         <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
         <target><![CDATA[da %from_date%<br />a %to_date%]]></target>
       </trans-unit>
+      <trans-unit>
+        <source>Required.</source>
+        <target>Obbligatorio.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Invalid.</source>
+        <target>Non valido.</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA["%value%" is not an integer.]]></source>
+        <target><![CDATA["%value%" non è un intero.]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA["%value%" is not an number.]]></source>
+        <target><![CDATA["%value%" non è un numero.]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[At least %min% values must be selected (%count% values selected).]]></source>
+        <target><![CDATA[Si devono selezionare almeno %min% valori (%count% selezionati).]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[At most %max% values must be selected (%count% values selected).]]></source>
+        <target><![CDATA[Si devono selezionare al più %max% valori (%count% selezionati).]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[CSRF attack detected.]]></source>
+        <target><![CDATA[Individuato attacco CSRF.]]></target>
+      </trans-unit>   
    </body>
   </file>
 </xliff>
