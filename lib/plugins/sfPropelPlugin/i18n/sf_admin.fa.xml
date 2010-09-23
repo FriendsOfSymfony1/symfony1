@@ -7,6 +7,14 @@
 	  <!-- Translated By Ehsan Chavoshi -->
       <!-- Actions -->
       <trans-unit>
+        <source>Choose an action</source>
+        <target>انتخاب عملیات</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>go</source>
+        <target>برو</target>
+      </trans-unit>            
+      <trans-unit>
         <source>New</source>
         <target>جديد</target>
       </trans-unit>
@@ -33,6 +41,14 @@
       <trans-unit>
         <source>Cancel</source>
         <target>لغو</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Show</source>
+        <target>نمایش</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Back to list</source>
+        <target>بازگشت به لیست</target>
       </trans-unit>
 
       <!-- Filters -->
