@@ -59,6 +59,10 @@
 
       <!-- List -->
       <trans-unit>
+        <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
+        <target>[0] 沒有數據|[1] 1 筆數據|(1,+Inf] %1% 筆數據</target>
+      </trans-unit>
+      <trans-unit>
         <source>No result</source>
         <target>沒有數據</target>
       </trans-unit>
