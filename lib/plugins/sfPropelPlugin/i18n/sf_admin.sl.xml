@@ -41,6 +41,14 @@
         <source>go</source>
         <target>Pojdi</target>
       </trans-unit>
+      <trans-unit>
+        <source>Back to list</source>
+        <target>Nazaj na seznam</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Are you sure?</source>
+        <target>Ste prepričani?</target>
+      </trans-unit>
 
       <!-- Filters -->
       <trans-unit>
@@ -63,7 +71,7 @@
       </trans-unit>
       <trans-unit>
         <source>(page %%page%%/%%nb_pages%%)</source>
-        <target>(stran %%stran%%/%%nb_stran%%)</target>
+        <target>(stran %%page%%/%%nb_pages%%)</target>
       </trans-unit>
       <trans-unit>
         <source>asc</source>
@@ -75,7 +83,11 @@
       </trans-unit>
       <trans-unit>
         <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
-        <target>[0] ni rezultata|[1] 1 rezultat|(1,+Inf] %1% rezultati</target>
+        <target><![CDATA[[0] ni rezultatov|{n: n == 1 || n % 100 == 1}%1% rezultat|{n: n==2 || n % 100 == 2}%1% rezultata|{n: n == 3 || n == 4 || n % 100 == 3 || n % 100 == 4 }%1% rezultati|(4,+Inf]%1% rezultatov]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source>Checked</source>
+        <target>Označeno</target>
       </trans-unit>
 
       <!-- Pagination -->
@@ -127,7 +139,7 @@
       </trans-unit>
       <trans-unit>
         <source>You must select an action to execute on the selected items.</source>
-        <target>Izbrati morate eno aktivnost za izbrane predmete.</target>
+        <target>Izbrati morate aktivnost za izbrane predmete.</target>
       </trans-unit>
       <trans-unit>
         <source>A problem occurs when deleting the selected items as some items do not exist anymore.</source>
