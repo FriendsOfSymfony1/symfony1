@@ -1,3 +1,12 @@
+09/24/10: Version 1.4.8
+-----------------------
+
+ * [30969] added more translations to german and italian translations (closes #9088)
+ * [30968] fixed Persian Translation of admin generator (closes #8960)
+ * [30967] fixed i18n support for traditional chinese (closes #8885)
+ * [30966] updated Slovenian translations for Doctrine and Propel messages (closes #8985)
+ * [30961] fixed missing WDT javascript (closes #9083, refs #9080)
+
 09/21/10: Version 1.4.7
 -----------------------
 
