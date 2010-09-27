@@ -24,6 +24,8 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
     $this->dispatcher->notify(new sfEvent($this, 'admin.pre_execute', array('configuration' => $this->configuration)));
 
     $this->helper = new <?php echo $this->getModuleName() ?>GeneratorHelper();
+
+    parent::preExecute();
   }
 
 <?php include dirname(__FILE__).'/../../parts/indexAction.php' ?>
