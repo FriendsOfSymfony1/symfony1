@@ -154,20 +154,33 @@ class sfWebDebug
    */
   public function injectToolbar($content)
   {
-    if (false !== $pos = function_exists('mb_stripos') ? mb_stripos($content, '</head>') : stripos($content, '</head>'))
+    if (function_exists('mb_stripos'))
+    {
+      $posFunction = 'mb_stripos';
+      $posrFunction = 'mb_strripos';
+      $substrFunction = 'mb_substr';
+    }
+    else
+    {
+      $posFunction = 'stripos';
+      $posrFunction = 'strripos';
+      $substrFunction = 'substr';
+    }
+
+    if (false !== $pos = $posFunction($content, '</head>'))
     {
       $styles = '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style>';
-      $content = substr($content, 0, $pos).$styles.substr($content, $pos);
+      $content = $substrFunction($content, 0, $pos).$styles.$substrFunction($content, $pos);
     }
 
     $debug = $this->asHtml();
-    if (false === $pos = function_exists('mb_strripos') ? mb_strripos($content, '</body>') : strripos($content, '</body>'))
+    if (false === $pos = $posrFunction($content, '</body>'))
     {
       $content .= $debug;
     }
     else
     {
-      $content = substr($content, 0, $pos).'<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.substr($content, $pos);
+      $content = $substrFunction($content, 0, $pos).'<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.$substrFunction($content, $pos);
     }
 
     return $content;
