@@ -84,6 +84,8 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
 
     $object->{$this->column} = serialize($message);
     $object->save();
+    
+    $object->free(true);
   }
 
   /**
