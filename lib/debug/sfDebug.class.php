@@ -161,11 +161,22 @@ class sfDebug
       return array();
     }
 
-    return array(
+    $data = array(
       'options'         => $user->getOptions(),
       'attributeHolder' => self::flattenParameterHolder($user->getAttributeHolder(), true),
       'culture'         => $user->getCulture(),
     );
+
+    if ($user instanceof sfSecurityUser)
+    {
+      $data = array_merge($data, array(
+          'authenticated'   => $user->isAuthenticated(),
+          'credentials'     => $user->getCredentials(),
+          'lastRequest'     => $user->getLastRequestTime(),
+      ));
+    }
+
+    return $data;
   }
 
   /**
