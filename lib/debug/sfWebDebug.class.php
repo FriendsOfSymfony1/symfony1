@@ -154,14 +154,14 @@ class sfWebDebug
    */
   public function injectToolbar($content)
   {
-    if (false !== $pos = stripos($content, '</head>'))
+    if (false !== $pos = function_exists('mb_stripos') ? mb_stripos($content, '</head>') : stripos($content, '</head>'))
     {
       $styles = '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style>';
       $content = substr($content, 0, $pos).$styles.substr($content, $pos);
     }
 
     $debug = $this->asHtml();
-    if (false === $pos = strripos($content, '</body>'))
+    if (false === $pos = function_exists('mb_strripos') ? mb_strripos($content, '</body>') : strripos($content, '</body>'))
     {
       $content .= $debug;
     }
