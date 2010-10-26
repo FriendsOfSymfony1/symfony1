@@ -30,7 +30,9 @@ class sfI18nModuleExtract extends sfI18nExtract
 
     $this->module = $this->parameters['module'];
 
-    $this->i18n->setMessageSource($this->i18n->getConfiguration()->getI18NDirs($this->module), $this->culture);
+    $options = $this->i18n->getOptions();
+    $dirs = $this->i18n->isMessageSourceFileBased($options['source']) ? $this->i18n->getConfiguration()->getI18NDirs($this->module) : null;
+    $this->i18n->setMessageSource($dirs, $this->culture);
   }
 
   /**
