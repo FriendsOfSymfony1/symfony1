@@ -427,7 +427,14 @@ class sfFilesystem
 
     if ($commonLength)
     {
-      $levelUp = substr_count($from, DIRECTORY_SEPARATOR, $commonLength);
+      if (extension_loaded('mbstring'))
+      {
+        $levelUp = mb_substr_count(mb_strcut($from, $commonLength), DIRECTORY_SEPARATOR);
+      }
+      else
+      {
+        $levelUp = substr_count($from, DIRECTORY_SEPARATOR, $commonLength);
+      }
 
       // up that many level
       $relativeDir = str_repeat('..'.DIRECTORY_SEPARATOR, $levelUp);
