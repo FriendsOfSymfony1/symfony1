@@ -63,6 +63,7 @@ class sfPearRestPlugin extends sfPearRest11
     }
 
     $mirror = $this->config->get('preferred_mirror', null, $channelName);
+
     if (!$channel->supportsREST($mirror))
     {
       throw new sfPluginRestException(sprintf('The channel "%s" does not support the REST protocol', $channelName));
