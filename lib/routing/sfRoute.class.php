@@ -533,7 +533,7 @@ class sfRoute implements Serializable
     // a route is an array of (separator + variable) or (separator + text) segments
     while (strlen($buffer))
     {
-      if (false !== $this->tokenizeBufferBefore($buffer, $tokens, $afterASeparator, $currentSeparator))
+      if (false !== $this->tokenizeBufferBefore($buffer, $this->tokens, $afterASeparator, $currentSeparator))
       {
         // a custom token
         $this->customToken = true;
@@ -565,7 +565,7 @@ class sfRoute implements Serializable
         $buffer = substr($buffer, strlen($match[0]));
         $afterASeparator = true;
       }
-      else if (false !== $this->tokenizeBufferAfter($buffer, $tokens, $afterASeparator, $currentSeparator))
+      else if (false !== $this->tokenizeBufferAfter($buffer, $this->tokens, $afterASeparator, $currentSeparator))
       {
         // a custom token
         $this->customToken = true;
