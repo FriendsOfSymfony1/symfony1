@@ -795,6 +795,10 @@ class sfWebResponse extends sfResponse
     $this->stylesheets = $response->getStylesheets(self::RAW);
     $this->javascripts = $response->getJavascripts(self::RAW);
     $this->slots       = $response->getSlots();
+
+    // HTTP protocol must be from the current request
+    // this fix is not nice but that's the only way to fix it and keep BC (see #9254)
+    $this->options['http_protocol'] = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
   }
 
   /**
