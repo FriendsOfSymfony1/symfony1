@@ -60,7 +60,7 @@ class sfSessionStorage extends sfStorage
       'session_cookie_domain'   => $cookieDefaults['domain'],
       'session_cookie_secure'   => $cookieDefaults['secure'],
       'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
-      'session_cache_limiter'   => 'none',
+      'session_cache_limiter'   => null,
     ), $options);
 
     // initialize parent
