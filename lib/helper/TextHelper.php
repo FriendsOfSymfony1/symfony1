@@ -234,7 +234,7 @@ if (!defined('SF_AUTO_LINK_RE'))
       (?::\d+)?                # port
       (?:/(?:(?:[\~\w\+%-]|(?:[,.;:][^\s$]))+)?)* # path
       (?:\?[\w\+%&=.;-]+)?     # query string
-      (?:\#[\w\-]*)?           # trailing anchor
+      (?:\#[\w\-/\?!=]*)?        # trailing anchor
     )
     ([[:punct:]]|\s|<|$)    # trailing text
    ~x');
