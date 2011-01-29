@@ -211,7 +211,7 @@ class CrudBrowser extends sfTestBrowser
         'body'                => 'my body',
         'Online'              => false,
         'category_id'         => 1,
-        'end_date'            => array('year' => 2005, 'month' => 10, 'day' => 15, 'hour' => '10', 'minute' => '20'),
+        'end_date'            => array('year' => date('Y'), 'month' => 10, 'day' => 15, 'hour' => '10', 'minute' => '20'),
         'book_id'             => 1,
         'author_article_list' => array(1, 3),
       ), 3, false)
