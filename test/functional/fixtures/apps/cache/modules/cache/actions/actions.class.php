@@ -30,6 +30,7 @@ class cacheActions extends sfActions
 
   public function executeMulti()
   {
+    $this->getResponse()->setTitle('Param: '.$this->getRequestParameter('param'));
   }
 
   public function executeMultiBis()

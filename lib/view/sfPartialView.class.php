@@ -92,11 +92,25 @@ class sfPartialView extends sfPHPView
     {
       return $retval;
     }
-    else if ($this->checkCache)
+
+    if ($this->checkCache)
     {
       $mainResponse = $this->context->getResponse();
+
       $responseClass = get_class($mainResponse);
-      $this->context->setResponse($response = new $responseClass($this->context->getEventDispatcher(), array_merge($mainResponse->getOptions(), array('content_type' => $mainResponse->getContentType()))));
+      $response = new $responseClass($this->context->getEventDispatcher(), $mainResponse->getOptions());
+
+      // the inner response has access to different properties, depending on whether it is marked as contextual in cache.yml
+      if ($this->viewCache->isContextual($this->viewCache->getPartialUri($this->moduleName, $this->actionName, $this->cacheKey)))
+      {
+        $response->copyProperties($mainResponse);
+      }
+      else
+      {
+        $response->setContentType($mainResponse->getContentType());
+      }
+
+      $this->context->setResponse($response);
     }
 
     try
