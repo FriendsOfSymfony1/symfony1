@@ -1,3 +1,18 @@
+02/04/11: Version 1.4.9
+-----------------------
+
+ * [31928] copied more values into a cachable partial's cloned response when the partial is marked as contextual in cache.yml (closes #7192)
+ * [31895] fixed _auto_link_urls() does not pick up URLs with complex fragments (as per RFC3986 - closes #9424 - patch from benlancaster)
+ * [31893] fixed sfDomCssSelector on class names with hyphens (patch from richsage, closes #9411)
+ * [31471] changed the default value for session_cache_limiter to 'null'.
+ * [31399] fixed sfViewCacheManager returns incorrect cached http_protocol (closes #9254)
+ * [31254] fixed WDT injection (closes #9107)
+ * [31249] fixed memory leak in Swift_DoctrineSpool
+ * [31248] fixed sfI18nModuleExtract.class.php always assumes a file based message source (closes #9153 - patch from daReaper)
+ * [31247] fixed mbstring problem in sfFilesystem (closes #9139 - based on a patch from nresni)
+ * [31002] added call to parent::preExecute() to generated admin action classes (closes #9099)
+
+
 09/24/10: Version 1.4.8
 -----------------------
 
