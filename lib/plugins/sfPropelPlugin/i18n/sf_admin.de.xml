@@ -163,7 +163,7 @@
         <target><![CDATA["%value%" ist kein Integer.]]></target>
       </trans-unit>
       <trans-unit>
-        <source><![CDATA["%value%" is not an number.]]></source>
+        <source><![CDATA["%value%" is not a number.]]></source>
         <target><![CDATA["%value%" ist keine Nummer.]]></target>
       </trans-unit>
       <trans-unit>

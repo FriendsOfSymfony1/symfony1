@@ -274,7 +274,7 @@
         <target><![CDATA["%value%" no es un entero.]]></target>
       </trans-unit>
       <trans-unit>
-        <source><![CDATA["%value%" is not an number.]]></source>
+        <source><![CDATA["%value%" is not a number.]]></source>
         <target><![CDATA["%value%" no es un número.]]></target>
       </trans-unit>
       <trans-unit>
