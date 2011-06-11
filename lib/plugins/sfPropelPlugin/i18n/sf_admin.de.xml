@@ -178,6 +178,14 @@
         <source><![CDATA[CSRF attack detected.]]></source>
         <target><![CDATA[CSRF Attacke erkannt.]]></target>
       </trans-unit>
-    </body>
+      <trans-unit>
+        <source>Checked</source>
+        <target>Ausgewählt</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Are you sure?</source>
+        <target>Sind Sie sicher?</target>
+      </trans-unit>
+     </body>
   </file>
 </xliff>
