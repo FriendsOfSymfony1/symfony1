@@ -281,7 +281,7 @@ class sfConfigCache
     // module level configuration handlers
 
     // checks modules directory exists
-    if (!is_readable($sf_app_modules_dir = sfConfig::get('sf_app_modules_dir')))
+    if (!is_readable($sf_app_module_dir = sfConfig::get('sf_app_module_dir')))
     {
       return;
     }
@@ -290,7 +290,7 @@ class sfConfigCache
     $ignore = array('.', '..', 'CVS', '.svn');
 
     // create a file pointer to the module dir
-    $fp = opendir($sf_app_modules_dir);
+    $fp = opendir($sf_app_module_dir);
 
     // loop through the directory and grab the modules
     while (($directory = readdir($fp)) !== false)
@@ -300,7 +300,7 @@ class sfConfigCache
         continue;
       }
 
-      $configPath = $sf_app_modules_dir.'/'.$directory.'/config/config_handlers.yml';
+      $configPath = $sf_app_module_dir.'/'.$directory.'/config/config_handlers.yml';
 
       if (is_readable($configPath))
       {
