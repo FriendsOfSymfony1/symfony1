@@ -86,7 +86,7 @@ class sfNumberFormat
     }
     else if ($formatInfo instanceof sfCultureInfo)
     {
-      $this->formatInfo = $formatInfo->sfNumberFormat;
+      $this->formatInfo = $formatInfo->getNumberFormat();
     }
     else if ($formatInfo instanceof sfNumberFormatInfo)
     {
