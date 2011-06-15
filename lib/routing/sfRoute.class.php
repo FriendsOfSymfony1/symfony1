@@ -840,12 +840,12 @@ class sfRoute implements Serializable
     // always serialize compiled routes
     $this->compile();
     // sfPatternRouting will always re-set defaultParameters, so no need to serialize them
-    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix));
+    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken));
   }
 
   public function unserialize($data)
   {
-    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix) = unserialize($data);
+    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = unserialize($data);
     $this->compiled = true;
   }
 }
