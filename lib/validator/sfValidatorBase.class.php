@@ -168,7 +168,7 @@ abstract class sfValidatorBase
    */
   public function setMessages($values)
   {
-    $this->messages = $values;
+    $this->messages = array_merge(array('required' => self::$globalDefaultMessages['required'], 'invalid' => self::$globalDefaultMessages['invalid']), $values);
 
     return $this;
   }
@@ -251,7 +251,7 @@ abstract class sfValidatorBase
    */
   public function setOptions($values)
   {
-    $this->options = $values;
+    $this->options = array_merge(array('required' => true, 'trim' => false, 'empty_value' => null), $values);
 
     return $this;
   }
