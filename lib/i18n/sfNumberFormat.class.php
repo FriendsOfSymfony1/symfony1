@@ -329,8 +329,14 @@ class sfNumberFormat
 
     list($significand, $exp) = explode('E', $string);
     list(, $decimal) = explode('.', $significand);
-    $exp = str_replace('+', '', $exp) - strlen($decimal);
+    if ('-' === $exp[0]) {
+        $exp = str_replace('-', '', $exp);
 
-    return str_replace('.', '', $significand).str_repeat('0', $exp);
+        return '0.'.str_repeat('0', $exp).str_replace('.', '', $significand);
+    } else {
+        $exp = str_replace('+', '', $exp) - strlen($decimal);
+
+        return str_replace('.', '', $significand).str_repeat('0', $exp);
+    }
   }
 }
