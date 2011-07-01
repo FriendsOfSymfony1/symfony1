@@ -1,6 +1,17 @@
 07/01/11: Version 1.4.12
 ------------------------
 
+ * [32634] fixed typo in an error message (closes #9762 - based on a patch from garak)
+ * [32635] fixed typo (closes #9682)
+ * [32637] added missing translations for fr (patch from Garfield-fr - closes #9025)
+ * [32638] added missing translations for de (patch from _GeG_ - closes #9659)
+ * [32639] fixed typo (closes #9561, patch from Elvis_the_King)
+ * [32641] fixed extra code in stack trace (closes #9511, patch from tomi)
+ * [32652] fixed sfRoute, which was not serializing some parameters (closes #9833)
+ * [32653] fixed possible PHP notice (closes #9813)
+ * [32654] fixed standard actions in sfObjectRouteCollection (HEAD is equivalent to GET, closes #9669, patch from ganchiku)
+ * [32677] fixed missing information about Swiftmailer version (closes #9838)
+ * [32678] fixed sfNumberFormat::format() when the value has a negative exponent (closes #9836)
 
 03/30/11: Version 1.4.11
 ------------------------
