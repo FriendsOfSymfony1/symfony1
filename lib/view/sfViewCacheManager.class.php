@@ -129,7 +129,8 @@ class sfViewCacheManager
       return call_user_func($callable, $internalUri, $hostName, $vary, $contextualPrefix, $this);
     }
 
-    if (strpos($internalUri, '@') === 0 && strpos($internalUri, '@sf_cache_partial') === false)
+    // note the special rules @sf_cache_partial and @sf_cache_fragment
+    if (strpos($internalUri, '@') === 0 && strpos($internalUri, '@sf_cache_partial') === false && strpos($internalUri, '@sf_cache_fragment') === false )
     {
       throw new sfException('A cache key cannot be generated for an internal URI using the @rule syntax');
     }
@@ -165,9 +166,17 @@ class sfViewCacheManager
       if ($route_name == 'sf_cache_partial')
       {
         $cacheKey = 'sf_cache_partial/';
+        $cacheKey .= $this->convertParametersToKey($params);
       }
-
-      $cacheKey .= $this->convertParametersToKey($params);
+      elseif( $route_name == 'sf_cache_fragment' )
+      {
+        $cacheKey = 'sf_cache_fragment/';
+        $cacheKey .= $this->convertParametersToFragmentKey($params);
+      }
+      else
+      {
+        $cacheKey .= $this->convertParametersToKey($params);
+      }
     }
 
     // add vary headers
@@ -291,6 +300,30 @@ class sfViewCacheManager
     }
 
     return $cacheKey;
+  }
+
+  /**
+   * Transforms an associative array of parameters from an URI into a unique key
+   * This method is only used for fragment
+   *
+   * @param  array $params  Associative array of parameters from the URI (including, at least, module and action)
+   *
+   * @return string Unique key
+   */
+  protected function convertParametersToFragmentKey($params)
+  {
+    // module should be __sf_cache_fragment and action should be the
+    // fragment name, also used as sf_cache_key parameter
+    // these parameters can be removed from the generated kay
+    unset($params['module'] , $params['action']);
+
+    ksort($params);
+    foreach ($params as $key => $value)
+    {
+      $cacheKey .= sprintf('%s/%s/', $key, $value);
+    }
+
+    return rtrim( $cacheKey , '/' );
   }
 
   /**
@@ -674,19 +707,22 @@ class sfViewCacheManager
    */
   public function start($name, $lifeTime, $clientLifeTime = null, $vary = array())
   {
-    $internalUri = $this->routing->getCurrentInternalUri();
-
     if (!$clientLifeTime)
     {
       $clientLifeTime = $lifeTime;
     }
 
+    // fetch fragment uri
+    $internalUri = $this->getFragmentUri( $name );
+
     // add cache config to cache manager
     list($route_name, $params) = $this->controller->convertUrlStringToParameters($internalUri);
+    // module should be __sf_cache_fragment and action should be the name of the fragment
     $this->addCache($params['module'], $params['action'], array('withLayout' => false, 'lifeTime' => $lifeTime, 'clientLifeTime' => $clientLifeTime, 'vary' => $vary));
 
     // get data from cache if available
-    $data = $this->get($internalUri.(strpos($internalUri, '?') ? '&' : '?').'_sf_cache_key='.$name);
+    // note that sf_cache_key is automatically add on getFragmentUri()
+    $data = $this->get( $internalUri );
     if ($data !== null)
     {
       return $data;
@@ -707,21 +743,33 @@ class sfViewCacheManager
    *
    * @return bool true, if success otherwise false
    */
-  public function stop($name)
+  public function stop( $name )
   {
     $data = ob_get_clean();
 
-    // save content to cache
-    $internalUri = $this->routing->getCurrentInternalUri();
     try
     {
-      $this->set($data, $internalUri.(strpos($internalUri, '?') ? '&' : '?').'_sf_cache_key='.$name);
+      $this->set( $data, $this->getFragmentUri( $name ) );
     }
     catch (Exception $e)
     {
     }
 
     return $data;
+  }
+
+  /**
+   * Computes a fragment internal URI.
+   *
+   * @param  string $name      The fragement name
+   *
+   * @return string The internal URI
+   */
+  public function getFragmentUri( $name )
+  {
+    // in fragement case, module is __sf_cache_fragment and action is the fragment name
+    // module and action are required to the set() procedure and isCacheable() method
+    return sprintf('@sf_cache_fragment?module=%s&action=%s&sf_cache_key=%s', '__sf_cache_fragment' , $name , $name );
   }
 
   /**
