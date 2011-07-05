@@ -355,7 +355,16 @@ class sfWebRequest extends sfRequest
   {
     $pathArray = $this->getPathInfoArray();
 
-    return isset($pathArray['HTTP_X_FORWARDED_HOST']) ? $pathArray['HTTP_X_FORWARDED_HOST'] : (isset($pathArray['HTTP_HOST']) ? $pathArray['HTTP_HOST'] : '');
+    if (isset($pathArray['HTTP_X_FORWARDED_HOST']))
+    {
+      $elements = explode(',', $pathArray['HTTP_X_FORWARDED_HOST']);
+
+      return trim($elements[count($elements) - 1]);
+    }
+    else
+    {
+      return isset($pathArray['HTTP_HOST']) ? $pathArray['HTTP_HOST'] : '';
+    }
   }
 
   /**
