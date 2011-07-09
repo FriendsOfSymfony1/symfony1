@@ -723,7 +723,15 @@ class sfCultureInfo
    */
   public function getCountries($countries = null)
   {
-    $allCountries = $this->findInfo('Countries', true);
+    // remove integer keys as they do not represent countries
+    $allCountries = array();
+    foreach ($this->findInfo('Countries', true) as $key => $value)
+    {
+      if (!is_int($key))
+      {
+        $allCountries[$key] = $value;
+      }
+    }
 
     // restrict countries to a sub-set
     if (null !== $countries)
