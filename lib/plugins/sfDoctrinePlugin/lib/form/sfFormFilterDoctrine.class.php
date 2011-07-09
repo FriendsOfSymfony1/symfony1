@@ -303,7 +303,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
     if (!$table->hasRelation($alias))
     {
-      throw new InvalidArgumentException(sprintf('The "%s" model has to "%s" relation.', $this->getModelName(), $alias));
+      throw new InvalidArgumentException(sprintf('The "%s" model has no "%s" relation.', $this->getModelName(), $alias));
     }
 
     $relation = $table->getRelation($alias);
