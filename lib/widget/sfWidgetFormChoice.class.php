@@ -127,6 +127,14 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
       $class = sprintf('sfWidgetFormSelect%s', ucfirst($type));
     }
 
-    return new $class(array_merge(array('choices' => new sfCallable(array($this, 'getChoices'))), $this->options['renderer_options']), $this->getAttributes());
+    $options = $this->options['renderer_options'];
+
+    // choices returned by the callback will already be translated (so we need to avoid double-translation)
+    $options['translate_choices'] = false;
+
+    $renderer = new $class(array_merge(array('choices' => new sfCallable(array($this, 'getChoices'))), $options), $this->getAttributes());
+    $renderer->setParent($this->getParent());
+
+    return $renderer;
   }
 }
