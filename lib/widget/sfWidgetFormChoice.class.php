@@ -130,10 +130,13 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
     $options = $this->options['renderer_options'];
     $options['choices'] = new sfCallable(array($this, 'getChoices'));
 
-    // choices returned by the callback will already be translated (so we need to avoid double-translation)
-    $options['translate_choices'] = false;
-
     $renderer = new $class($options, $this->getAttributes());
+
+    // choices returned by the callback will already be translated (so we need to avoid double-translation)
+    if ($renderer->hasOption('translate_choices')) {
+        $renderer->setOption('translate_choices', false);
+    }
+
     $renderer->setParent($this->getParent());
 
     return $renderer;
