@@ -780,7 +780,7 @@ EOF;
   margin: 0;
   padding: 0;
   margin-left: 20px;
-  list-style: number;
+  list-style: decimal;
 }
 
 #sfWebDebugDatabaseLogs li
