@@ -1,3 +1,17 @@
+08/05/11: Version 1.4.13
+------------------------
+
+ * [32707] fixed project:optimize which did not worked with plugins (closes #8760 - based on a patch from Pavel.Campr)
+ * [32729] updated getHost() to consider a chain of forwarded hosts
+ * [32740] fixed typo in error message (closes #9858)
+ * [32741] removed non-countries from sfCultureInfo::getCountries() (closes #9848)
+ * [32807] fixed parent for choice widgets (closes #8894)
+ * [32808] simplified code from previous commit
+ * [32810] fixed typo (closes #9866)
+ * [32835] fixed previous commit when the renderer does not have the translate_choices option (see sfFormExtraPlugin for some examples)
+ * [32836] fixed guessFromFileBinary in class sfvalidatorFile does not support MIME type including dot (closes #9871)
+ * [32845] removed dead code (closes #9881)
+
 07/01/11: Version 1.4.12
 ------------------------
 
