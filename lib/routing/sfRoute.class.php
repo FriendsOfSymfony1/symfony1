@@ -232,7 +232,7 @@ class sfRoute implements Serializable
     {
       // replace variables
       $variables = $this->variables;
-      uasort($variables, create_function('$a, $b', 'return strlen($a) < strlen($b);'));
+      uasort($variables, array('sfRoute', 'generateCompareVarsByStrlen'));
       foreach ($variables as $variable => $value)
       {
         $url = str_replace($value, urlencode($tparams[$variable]), $url);
@@ -257,6 +257,11 @@ class sfRoute implements Serializable
     }
 
     return $url;
+  }
+
+  static private function generateCompareVarsByStrlen($a, $b)
+  {
+    return strlen($a) < strlen($b);
   }
 
   /**
