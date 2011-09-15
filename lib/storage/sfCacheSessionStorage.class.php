@@ -230,7 +230,9 @@ class sfCacheSessionStorage extends sfStorage
     }
 
     // generate session id
-    $this->id = md5(rand(0, 999999).$_SERVER['REMOTE_ADDR'].$_SERVER['HTTP_USER_AGENT'].$this->options['session_cookie_secret']);
+    $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
+    
+    $this->id = md5(rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
 
     // save data to cache
     $this->cache->set($this->id, serialize($this->data));
