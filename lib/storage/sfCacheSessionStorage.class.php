@@ -129,14 +129,14 @@ class sfCacheSessionStorage extends sfStorage
       {
         $this->data = array();
       }
-      elseif (false !== $data = @unserialize($raw))
-      {
-        $this->data = $data;
-      }
-      else
+      elseif (is_array($raw))
       {
         // probably an old cached value (BC)
         $this->data = $raw;
+      }
+      else
+      {
+        $this->data = unserialize($raw);
       }
 
       if(sfConfig::get('sf_logging_enabled'))
