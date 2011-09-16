@@ -1,3 +1,14 @@
+09/16/11: Version 1.4.14
+------------------------
+
+ * [33025] fixed sfCacheSessionStorage does not always check whether HTTP_USER_AGENT is set (closes #9921, patch from boutell)
+ * [33022] fixed auto_link_text() when an email address is already linked (closes #9915, based on a patch from klemens_u)
+ * [33021] fixed sfCacheSessionStorage does not serialize properly, also uses wrong option name for httponly (closes #9919, based on a patch from boutell)
+ * [32939] fixed memory leak in sfRoute::generate() (closes #9886 - patch from acf0)
+ * [32892] fixed Doctrine form generation when a schema has abstract tables (closes #9885 - patch from chok)
+ * [32891] fixed sfFinder bug when mirroring file with twice the path inside it (closes #9892 - based on a patch from shordeaux)
+ * [32890] fixed bad value of property 'list-style' in css of WebDebug toolbar (closes #9891 - patch from tomi)
+
 08/05/11: Version 1.4.13
 ------------------------
 
