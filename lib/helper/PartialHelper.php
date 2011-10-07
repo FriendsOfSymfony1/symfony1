@@ -136,6 +136,8 @@ function get_component($moduleName, $componentName, $vars = array())
   $context = sfContext::getInstance();
   $actionName = '_'.$componentName;
 
+  require($context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/module.yml'));
+
   $class = sfConfig::get('mod_'.strtolower($moduleName).'_partial_view_class', 'sf').'PartialView';
   $view = new $class($context, $moduleName, $actionName, '');
   $view->setPartialVars(true === sfConfig::get('sf_escaping_strategy') ? sfOutputEscaper::unescape($vars) : $vars);
