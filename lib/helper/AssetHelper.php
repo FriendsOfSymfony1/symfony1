@@ -374,7 +374,7 @@ function image_tag($source, $options = array())
 
 function _compute_public_path($source, $dir, $ext, $absolute = false)
 {
-  if (strpos($source, '://'))
+  if (strpos($source, '://') || strpos($source, '//') === 0)
   {
     return $source;
   }
