@@ -142,14 +142,14 @@ EOF;
     else
     {
       $parameters = $options['rsync-options'];
-      if (file_exists($options['rsync-dir'].'/rsync_exclude.txt'))
-      {
-        $parameters .= sprintf(' --exclude-from=%s/rsync_exclude.txt', $options['rsync-dir']);
-      }
-
       if (file_exists($options['rsync-dir'].'/rsync_include.txt'))
       {
         $parameters .= sprintf(' --include-from=%s/rsync_include.txt', $options['rsync-dir']);
+      }
+
+      if (file_exists($options['rsync-dir'].'/rsync_exclude.txt'))
+      {
+        $parameters .= sprintf(' --exclude-from=%s/rsync_exclude.txt', $options['rsync-dir']);
       }
 
       if (file_exists($options['rsync-dir'].'/rsync.txt'))
