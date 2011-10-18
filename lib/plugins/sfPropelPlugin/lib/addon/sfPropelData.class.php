@@ -38,7 +38,7 @@ class sfPropelData extends sfData
     $files = $this->getFiles($directoryOrFile);
 
     // load map classes
-    $this->loadMapBuilders();
+    $this->loadMapBuilders($connectionName);
     $this->dbMap = Propel::getDatabaseMap($connectionName);
 
     // wrap all database operations in a single transaction
@@ -267,14 +267,14 @@ class sfPropelData extends sfData
    *
    * @throws sfException If the class cannot be found
    */
-  protected function loadMapBuilders()
+  protected function loadMapBuilders($connectionName)
   {
     $dbMap = Propel::getDatabaseMap();
     $files = sfFinder::type('file')->name('*TableMap.php')->in(sfProjectConfiguration::getActive()->getModelDirs());
     foreach ($files as $file)
     {
       $omClass = basename($file, 'TableMap.php');
-      if (class_exists($omClass) && is_subclass_of($omClass, 'BaseObject'))
+      if (class_exists($omClass) && is_subclass_of($omClass, 'BaseObject') && constant($omClass.'Peer::DATABASE_NAME') == $connectionName)
       {
         $tableMapClass = basename($file, '.php');
         $dbMap->addTableFromMapClass($tableMapClass);
@@ -323,7 +323,7 @@ class sfPropelData extends sfData
    */
   public function getData($tables = 'all', $connectionName = 'propel')
   {
-    $this->loadMapBuilders();
+    $this->loadMapBuilders($connectionName);
     $this->con = Propel::getConnection($connectionName);
     $this->dbMap = Propel::getDatabaseMap($connectionName);
 
