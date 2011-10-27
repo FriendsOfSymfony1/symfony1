@@ -1,3 +1,17 @@
+CHANGELOG
+=========
+
+10/27/11: Version 1.4.15
+------------------------
+
+ * [33151] fixed usage of mb_strlen in tasks (closes #9940)
+ * [33149] added missing admin.delete_object event (closes #9943)
+ * [33137] fixed multiple database support in Propel plugin (for the generator and sfPropelData, closes #8345)
+ * [33125] fixed the possibility to include files included in an exclude rule in the deploy task (closes #9912)
+ * [33122] fixed include|get_component when sfPartialView class is customized (closes #9932)
+ * [33121] fixed protocol relative URL in the asset helper (closes #9936)
+ * [33053] fixed typo (closes #9927, based on a patch from pmallet)
+
 09/16/11: Version 1.4.14
 ------------------------
 
