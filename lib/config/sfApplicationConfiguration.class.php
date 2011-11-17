@@ -152,7 +152,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     // compress output
     if (!self::$coreLoaded)
     {
-      ob_start(sfConfig::get('sf_compressed') ? 'ob_gzhandler' : '');
+      ob_start(sfConfig::get('sf_compressed') ? 'ob_gzhandler' : null);
     }
 
     self::$coreLoaded = true;
