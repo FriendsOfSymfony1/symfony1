@@ -163,7 +163,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
 
           $instances[] = sprintf("  \$class = sfConfig::get('sf_factory_routing', '%s');\n".
                            "  %s\n".
-                           "\$this->factories['routing'] = new \$class(\$this->dispatcher, \$cache, array_merge(array('auto_shutdown' => false, 'context' => \$this->factories['request']->getRequestContext()), sfConfig::get('sf_factory_routing_parameters', %s)));\n".
+                           "\$this->factories['routing'] = new \$class(\$this->dispatcher, \$cache, sfToolkit::arrayDeepMerge(array('auto_shutdown' => false, 'context' => \$this->factories['request']->getRequestContext()), sfConfig::get('sf_factory_routing_parameters', %s)));\n".
                            "if (\$parameters = \$this->factories['routing']->parse(\$this->factories['request']->getPathInfo()))\n".
                            "{\n".
                            "  \$this->factories['request']->addRequestParameters(\$parameters);\n".
