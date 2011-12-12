@@ -241,8 +241,8 @@ abstract class sfFormObject extends BaseForm
     {
       if ($form instanceof sfFormObject)
       {
-        $form->saveEmbeddedForms($con);
         $form->getObject()->save($con);
+        $form->saveEmbeddedForms($con);
       }
       else
       {
