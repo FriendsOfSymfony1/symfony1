@@ -51,7 +51,10 @@ class sfMessageSource_Aggregate extends sfMessageSource
     $lastModified = time();
     foreach ($sources as $source)
     {
-      $lastModified = min($lastModified, $source[0]->getLastModified($source[1]));
+      if (0 !== $sourceLastModified = $source[0]->getLastModified($source[1]))
+      {
+        $lastModified = min($lastModified, $sourceLastModified);
+      }
     }
 
     return $lastModified;
