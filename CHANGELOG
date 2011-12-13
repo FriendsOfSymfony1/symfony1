@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+12/13/12: Version 1.4.16
+------------------------
+
+ * [33251] fixed sfChoiceFormat when a string to translate contains a valid range (closes #9973)
+ * [33250] fixed saving i18n fields in subforms (closes #7626, patch from yoshy71)
+ * [33249] fixed last modified date calculation in sfMessageSource_Aggregate (closes #9981, patch from jamiel)
+ * [33226] fixed merging problem for the routing configuration (closes #8348)
+ * [33214] fixed ob_start() behavior on CLI (closes #9970)
+ * [33208] fixed ob_start usage (to avoid warning in PHP 5.4, closes #9970)
+
 10/27/11: Version 1.4.15
 ------------------------
 
