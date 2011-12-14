@@ -240,25 +240,25 @@ class sfContext implements ArrayAccess
    *
    * @return sfController The current sfController implementation instance.
    */
-   public function getController()
-   {
-     return isset($this->factories['controller']) ? $this->factories['controller'] : null;
-   }
+  public function getController()
+  {
+    return isset($this->factories['controller']) ? $this->factories['controller'] : null;
+  }
 
-   /**
-    * Retrieves the mailer.
-    *
-    * @return sfMailer The current sfMailer implementation instance.
-    */
-   public function getMailer()
-   {
-     if (!isset($this->factories['mailer']))
-     {
-       $this->factories['mailer'] = new $this->mailerConfiguration['class']($this->dispatcher, $this->mailerConfiguration);
-     }
+  /**
+   * Retrieves the mailer.
+   *
+   * @return sfMailer The current sfMailer implementation instance.
+   */
+  public function getMailer()
+  {
+    if (!isset($this->factories['mailer']))
+    {
+     $this->factories['mailer'] = new $this->mailerConfiguration['class']($this->dispatcher, $this->mailerConfiguration);
+    }
 
-     return $this->factories['mailer'];
-   }
+    return $this->factories['mailer'];
+  }
 
    public function setMailerConfiguration($configuration)
    {
@@ -432,6 +432,45 @@ class sfContext implements ArrayAccess
   }
 
   /**
+   * Retrieves the service container.
+   *
+   * @return sfServiceContainer The current sfServiceContainer implementation instance.
+   */
+  public function getServiceContainer()
+  {
+     if (!isset($this->factories['service_container']))
+     {
+       $this->factories['service_container'] = new sfServiceContainer();
+     }
+
+     return $this->factories['service_container'];
+  }
+
+  /**
+   * Retrieves a service from the service container.
+   *
+   * @param  string $id The service identifier
+   *
+   * @return object The service instance
+   */
+  public function getService($id)
+  {
+    return $this->getServiceContainer()->getService($id);
+  }
+
+  /**
+   * Returns true if the given service is defined.
+   *
+   * @param  string $id The service identifier
+   *
+   * @return Boolean true if the service is defined, false otherwise
+   */
+  public function hasService($id)
+  {
+    return $this->getServiceContainer()->hasService($id);
+  }
+
+  /**
    * Returns the configuration cache.
    *
    * @return sfConfigCache A sfConfigCache instance
@@ -440,7 +479,7 @@ class sfContext implements ArrayAccess
   {
     return $this->configuration->getConfigCache();
   }
-  
+
   /**
    * Returns true if the context object exists (implements the ArrayAccess interface).
    *
@@ -544,7 +583,7 @@ class sfContext implements ArrayAccess
 
     return $parameters;
   }
-  
+
   /**
    * Calls methods defined via sfEventDispatcher.
    *

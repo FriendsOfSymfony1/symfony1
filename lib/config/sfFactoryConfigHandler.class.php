@@ -221,7 +221,13 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
                         "require_once \$swift_dir.'/classes/Swift.php';\n".
                         "Swift::registerAutoload(\$swift_dir.'/swift_init.php');\n".
                         "\$this->setMailerConfiguration(array_merge(array('class' => sfConfig::get('sf_factory_mailer', '%s')), sfConfig::get('sf_factory_mailer_parameters', %s)));\n"
-                         , $class, var_export($parameters, true));
+                        , $class, var_export($parameters, true));
+          break;
+
+        case 'service_container':
+          $instances[] = sprintf(
+                        "  \$class = sfConfig::get('sf_factory_service_container', '%s'\n  \$this->factories['service_container'] = new \$class(%s)));\n"
+                        , $class, var_export($parameters, true));
           break;
       }
     }
