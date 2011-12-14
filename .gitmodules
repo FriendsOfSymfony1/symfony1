@@ -1,0 +1,3 @@
+[submodule "lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine"]
+	path = lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine
+	url = https://github.com/doctrine/doctrine1.git

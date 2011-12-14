@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -59,10 +59,7 @@ for a new project in the current directory:
 If the current directory already contains a symfony project,
 it throws a [sfCommandException|COMMENT].
 
-By default, the task configures Doctrine as the ORM. If you want to use
-Propel, use the [--orm|COMMENT] option:
-
-  [./symfony generate:project blog --orm=Propel|INFO]
+By default, the task configures Doctrine as the ORM.
 
 If you don't want to use an ORM, pass [none|COMMENT] to [--orm|COMMENT] option:
 
@@ -90,7 +87,7 @@ EOF;
       throw new sfCommandException(sprintf('A symfony project already exists in this directory (%s).', getcwd()));
     }
 
-    if (!in_array(strtolower($options['orm']), array('propel', 'doctrine', 'none')))
+    if (!in_array(strtolower($options['orm']), array('doctrine', 'none')))
     {
       throw new InvalidArgumentException(sprintf('Invalid ORM name "%s".', $options['orm']));
     }
@@ -126,7 +123,7 @@ EOF;
     $this->replaceTokens();
 
     // execute the choosen ORM installer script
-    if (in_array($options['orm'], array('Doctrine', 'Propel')))
+    if (in_array($options['orm'], array('Doctrine')))
     {
       include dirname(__FILE__).'/../../plugins/sf'.$options['orm'].'Plugin/config/installer.php';
     }

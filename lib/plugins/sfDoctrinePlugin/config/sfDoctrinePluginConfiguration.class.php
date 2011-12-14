@@ -39,7 +39,7 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
 
     if (!class_exists('Doctrine_Core', false))
     {
-      require_once sfConfig::get('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine')).'/Doctrine/Core.php';
+      require_once sfConfig::get('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine/lib')).'/Doctrine/Core.php';
     }
     spl_autoload_register(array('Doctrine_Core', 'autoload'));
 
