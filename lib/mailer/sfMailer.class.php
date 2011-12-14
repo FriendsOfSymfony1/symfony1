@@ -59,7 +59,7 @@ class sfMailer extends Swift_Mailer
     $options = array_merge(array(
       'charset' => 'UTF-8',
       'logging' => false,
-      'delivery_strategy' => 'realtime',
+      'delivery_strategy' => self::REALTIME,
       'transport' => array(
         'class' => 'Swift_MailTransport',
         'param' => array(),
@@ -71,6 +71,11 @@ class sfMailer extends Swift_Mailer
     if (!$this->strategy)
     {
       throw new InvalidArgumentException(sprintf('Unknown mail delivery strategy "%s" (should be one of realtime, spool, single_address, or none)', $options['delivery_strategy']));
+    }
+
+    if (sfMailer::NONE == $this->strategy)
+    {
+      $options['transport']['class'] = 'Swift_NullTransport';
     }
 
     // transport
@@ -139,12 +144,6 @@ class sfMailer extends Swift_Mailer
       $this->logger = new sfMailerMessageLoggerPlugin($dispatcher);
 
       $transport->registerPlugin($this->logger);
-    }
-
-    if (sfMailer::NONE == $this->strategy)
-    {
-      // must be registered after logging
-      $transport->registerPlugin(new Swift_Plugins_BlackholePlugin());
     }
 
     // preferences
@@ -322,10 +321,5 @@ class sfMailer extends Swift_Mailer
     }
 
     return $this->spool;
-  }
-
-  static public function initialize()
-  {
-    require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/swift_init.php';
   }
 }
