@@ -26,6 +26,11 @@ config/filters.yml:
 config/routing.yml:
   class:    sfRoutingConfigHandler
 
+config/services.yml:
+  class:    sfServiceConfigHandler
+  param:
+    base_class: sfServiceContainer
+
 modules/*/config/generator.yml:
   class:    sfGeneratorConfigHandler
 

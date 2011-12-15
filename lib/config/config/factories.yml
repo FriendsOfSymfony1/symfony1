@@ -112,3 +112,6 @@ default:
           encryption: ~
           username:   ~
           password:   ~
+
+  service_container:
+    class: sfServiceContainer

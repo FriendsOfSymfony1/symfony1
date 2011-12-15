@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(17);
+$t = new lime_test(27);
 
 class myContext extends sfContext
 {
@@ -36,6 +36,7 @@ class frontendConfiguration extends sfApplicationConfiguration
 require_once realpath(dirname(__FILE__).'/../../functional/fixtures/config/ProjectConfiguration.class.php');
 
 $frontend_context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true));
+$frontend_context_prod = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('frontend', 'prod', false));
 $i18n_context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('i18n', 'test', true));
 $cache_context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('cache', 'test', true));
 
@@ -100,3 +101,19 @@ catch (sfException $e)
 {
   $t->pass('->__call() throws an sfException if factory / method does not exist');
 }
+
+$t->diag('->getServiceContainer() test');
+$sc = $frontend_context->getServiceContainer();
+$t->ok(file_exists(sfConfig::get('sf_cache_dir').'/frontend/test/config/config_services.yml.php'), '->getServiceContainer() creates a cache file in /cache/frontend/test/config');
+$t->ok(class_exists('frontend_testServiceContainer'), '->getServiceContainer() creates and loads the frontend_testServiceContainer class');
+$t->ok($sc instanceof frontend_testServiceContainer, '->getServiceContainer() returns an instance of frontend_testServiceContainer');
+$t->ok($sc->hasService('my_app_service'), '->getServiceContainer() contains app/config/service.yml services');
+$t->ok($sc->hasService('my_project_service'), '->getServiceContainer() contains /config/service.yml services');
+$t->ok($sc->hasService('my_plugin_service'), '->getServiceContainer() contains plugin/config/service.yml services');
+$t->ok($sc->hasParameter('sf_root_dir'), '->getServiceContainer() sfConfig parameters are injected');
+
+$t->diag('->getServiceContainer() prod');
+$sc = $frontend_context_prod->getServiceContainer();
+$t->ok(file_exists(sfConfig::get('sf_cache_dir').'/frontend/prod/config/config_services.yml.php'), '->getServiceContainer() creates a cache file in /cache/frontend/prod/config');
+$t->ok(class_exists('frontend_prodServiceContainer'), '->getServiceContainer() creates and loads the frontend_prodServiceContainer class');
+$t->ok($sc instanceof frontend_prodServiceContainer, '->getServiceContainer() returns an instance of frontend_prodServiceContainer');

@@ -41,7 +41,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
     $instances = array();
 
     // available list of factories
-    $factories = array('view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer');
+    $factories = array('view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer', 'service_container');
 
     // let's do our fancy work
     foreach ($factories as $factory)
@@ -225,10 +225,11 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
           break;
 
         case 'service_container':
-          $instances[] = sprintf(
-                        "  \$class = sfConfig::get('sf_factory_service_container', '%s'\n  \$this->factories['service_container'] = new \$class(%s)));\n"
-                        , $class, var_export($parameters, true));
-          break;
+          $instances[] = (
+                        "\$class = require \$this->configuration->getConfigCache()->checkConfig('config/services.yml', true);\n".
+                        "\$this->setServiceContainerConfiguration(array('class' => \$class, 'parameters' => sfConfig::getAll()));\n"
+                        );
+        break;
       }
     }
 

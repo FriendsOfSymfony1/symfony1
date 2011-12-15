@@ -220,6 +220,7 @@ class sfCoreAutoload
     'sfdatabaseconfighandler' => 'config/sfDatabaseConfigHandler.class.php',
     'sfdefineenvironmentconfighandler' => 'config/sfDefineEnvironmentConfigHandler.class.php',
     'sffactoryconfighandler' => 'config/sfFactoryConfigHandler.class.php',
+    'sfserviceconfighandler' => 'config/sfServiceConfigHandler.class.php',
     'sffilterconfighandler' => 'config/sfFilterConfigHandler.class.php',
     'sfgeneratorconfighandler' => 'config/sfGeneratorConfigHandler.class.php',
     'sfpluginconfiguration' => 'config/sfPluginConfiguration.class.php',
@@ -535,6 +536,6 @@ class sfCoreAutoload
     'sfservicecontainer' => 'service/sfServiceContainer.php',
     'sfservicecontainerdumper' => 'service/sfServiceContainerDumper.php',
     'sfservicecontainerloaderfile' => 'service/sfServiceContainerLoaderFile.php',
-    'sfservicesefinition' => 'service/sfServiceDefinition.php',
+    'sfservicedefinition' => 'service/sfServiceDefinition.php',
   );
 }

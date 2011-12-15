@@ -117,6 +117,18 @@ abstract class sfComponent
   }
 
   /**
+   * Retrieves a service from the service container.
+   *
+   * @param  string $id The service identifier
+   *
+   * @return object The service instance
+   */
+  public function getService($id)
+  {
+    return $this->getServiceContainer()->getService($id);
+  }
+
+  /**
    * Retrieves the current logger instance.
    *
    * @return sfLogger The current sfLogger instance

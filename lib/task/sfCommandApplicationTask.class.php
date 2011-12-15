@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -21,7 +21,11 @@ abstract class sfCommandApplicationTask extends sfTask
   protected
     $mailer = null,
     $routing = null,
+    $serviceContainer = null,
     $commandApplication = null;
+
+  private
+    $factoryConfiguration;
 
   /**
    * Sets the command application instance for this task.
@@ -119,11 +123,11 @@ abstract class sfCommandApplicationTask extends sfTask
 
   protected function initializeMailer()
   {
-    require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/classes/Swift.php';
-    Swift::registerAutoload();
-    sfMailer::initialize();
+    $swift_dir = sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/lib';
+    require_once $swift_dir.'/classes/Swift.php';
+    Swift::registerAutoload($swift_dir.'/swift_init.php');
 
-    $config = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
+    $config = $this->getFactoryConfiguration();
 
     return new $config['mailer']['class']($this->dispatcher, $config['mailer']['param']);
   }
@@ -150,7 +154,7 @@ abstract class sfCommandApplicationTask extends sfTask
 
   protected function initializeRouting()
   {
-    $config = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
+    $config = $this->getFactoryConfiguration();
     $params = array_merge($config['routing']['param'], array('load_configuration' => false, 'logging' => false));
 
     $handler = new sfRoutingConfigHandler();
@@ -162,5 +166,62 @@ abstract class sfCommandApplicationTask extends sfTask
     $this->dispatcher->notify(new sfEvent($routing, 'routing.load_configuration'));
 
     return $routing;
+  }
+
+  /**
+   * Returns the service container instance.
+   *
+   * Notice that your task should accept an application option.
+   * The routing configuration is read from the current configuration
+   * instance, which is automatically created according to the current
+   * --application option.
+   *
+   * @return sfServiceContainer An application service container
+   */
+  protected function getServiceContainer()
+  {
+    if (null === $this->serviceContainer)
+    {
+      $this->serviceContainer = $this->initializeServiceContainer();
+    }
+
+    return $this->serviceContainer;
+  }
+
+  /**
+   * Retrieves a service from the service container.
+   *
+   * @param  string $id The service identifier
+   *
+   * @return object The service instance
+   */
+  public function getService($id)
+  {
+    return $this->getServiceContainer()->getService($id);
+  }
+
+  protected function initializeServiceContainer()
+  {
+    $class = require $this->configuration->getConfigCache()->checkConfig('config/services.yml', true);
+
+    if (null === $class)
+    {
+      return null;
+    }
+
+    $sc = new $class();
+    $sc->setParameters(sfConfig::getAll());
+
+    return $sc;
+  }
+
+  private function getFactoryConfiguration()
+  {
+    if (null === $this->factoryConfiguration)
+    {
+      $this->factoryConfiguration = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
+    }
+
+    return $this->factoryConfiguration;
   }
 }
