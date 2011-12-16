@@ -1,8 +1,9 @@
-parameters:
-  my_plugin_param: foo
-  other_param: bar
+all:
+  parameters:
+    my_plugin_param: foo
+    other_param: bar
 
-services:
-  my_plugin_service:
-    class: sfOutputEscaperSafe
-    arguments: [%my_plugin_param%]
+  services:
+    my_plugin_service:
+      class: sfOutputEscaperSafe
+      arguments: [%my_plugin_param%]

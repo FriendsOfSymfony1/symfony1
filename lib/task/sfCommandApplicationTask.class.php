@@ -19,12 +19,12 @@
 abstract class sfCommandApplicationTask extends sfTask
 {
   protected
-    $mailer = null,
-    $routing = null,
-    $serviceContainer = null,
-    $commandApplication = null;
+    $commandApplication;
 
   private
+    $mailer,
+    $routing,
+    $serviceContainer,
     $factoryConfiguration;
 
   /**
@@ -113,7 +113,7 @@ abstract class sfCommandApplicationTask extends sfTask
    */
   protected function getMailer()
   {
-    if (!$this->mailer)
+    if (null === $this->mailer)
     {
       $this->mailer = $this->initializeMailer();
     }
@@ -144,7 +144,7 @@ abstract class sfCommandApplicationTask extends sfTask
    */
   protected function getRouting()
   {
-    if (!$this->routing)
+    if (null === $this->routing)
     {
       $this->routing = $this->initializeRouting();
     }
@@ -182,7 +182,9 @@ abstract class sfCommandApplicationTask extends sfTask
   {
     if (null === $this->serviceContainer)
     {
-      $this->serviceContainer = $this->initializeServiceContainer();
+      $class = require $this->configuration->getConfigCache()->checkConfig('config/services.yml', true);
+
+      $this->serviceContainer = $class ? false : new $class();
     }
 
     return $this->serviceContainer;
@@ -200,22 +202,7 @@ abstract class sfCommandApplicationTask extends sfTask
     return $this->getServiceContainer()->getService($id);
   }
 
-  protected function initializeServiceContainer()
-  {
-    $class = require $this->configuration->getConfigCache()->checkConfig('config/services.yml', true);
-
-    if (null === $class)
-    {
-      return null;
-    }
-
-    $sc = new $class();
-    $sc->setParameters(sfConfig::getAll());
-
-    return $sc;
-  }
-
-  private function getFactoryConfiguration()
+  protected function getFactoryConfiguration()
   {
     if (null === $this->factoryConfiguration)
     {

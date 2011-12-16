@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(27);
+$t = new lime_test(29);
 
 class myContext extends sfContext
 {
@@ -111,9 +111,11 @@ $t->ok($sc->hasService('my_app_service'), '->getServiceContainer() contains app/
 $t->ok($sc->hasService('my_project_service'), '->getServiceContainer() contains /config/service.yml services');
 $t->ok($sc->hasService('my_plugin_service'), '->getServiceContainer() contains plugin/config/service.yml services');
 $t->ok($sc->hasParameter('sf_root_dir'), '->getServiceContainer() sfConfig parameters are injected');
+$t->ok($sc->hasParameter('my_app_test_param'), '->getServiceContainer() contains env specifiv parameters');
 
 $t->diag('->getServiceContainer() prod');
 $sc = $frontend_context_prod->getServiceContainer();
 $t->ok(file_exists(sfConfig::get('sf_cache_dir').'/frontend/prod/config/config_services.yml.php'), '->getServiceContainer() creates a cache file in /cache/frontend/prod/config');
 $t->ok(class_exists('frontend_prodServiceContainer'), '->getServiceContainer() creates and loads the frontend_prodServiceContainer class');
 $t->ok($sc instanceof frontend_prodServiceContainer, '->getServiceContainer() returns an instance of frontend_prodServiceContainer');
+$t->ok(false === $sc->hasParameter('my_app_test_param'), '->getServiceContainer() does not contain other env specifiv parameters');

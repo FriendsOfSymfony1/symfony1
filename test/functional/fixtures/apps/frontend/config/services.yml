@@ -1,7 +1,12 @@
-parameters:
-  my_app_param: foo
+all:
+  parameters:
+    my_app_param: foo
 
-services:
-  my_app_service:
-    class: sfOutputEscaperSafe
-    arguments: [%my_project_param%]
+  services:
+    my_app_service:
+      class: sfOutputEscaperSafe
+      arguments: [%my_project_param%]
+
+test:
+  parameters:
+    my_app_test_param: foo

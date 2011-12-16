@@ -523,6 +523,7 @@ class sfCoreAutoload
     'sfserviceparameter' => 'service/sfServiceParameter.php',
     'sfservicecontainerdumperxml' => 'service/sfServiceContainerDumperXml.php',
     'sfservicecontainerloaderfileyaml' => 'service/sfServiceContainerLoaderFileYaml.php',
+    'sfservicecontainerloaderarray' => 'service/sfServiceContainerLoaderArray.php',
     'sfservicereference' => 'service/sfServiceReference.php',
     'sfservicecontainerbuilder' => 'service/sfServiceContainerBuilder.php',
     'sfservicecontainerdumperyaml' => 'service/sfServiceContainerDumperYaml.php',

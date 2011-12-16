@@ -452,7 +452,6 @@ class sfContext implements ArrayAccess
       }
 
       $sc = new $this->serviceContainerConfiguration['class']();
-      $sc->setParameters($this->serviceContainerConfiguration['parameters']);
       $this->factories['service_container'] = $sc;
     }
 

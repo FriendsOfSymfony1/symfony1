@@ -227,7 +227,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
         case 'service_container':
           $instances[] = (
                         "\$class = require \$this->configuration->getConfigCache()->checkConfig('config/services.yml', true);\n".
-                        "\$this->setServiceContainerConfiguration(array('class' => \$class, 'parameters' => sfConfig::getAll()));\n"
+                        "\$this->setServiceContainerConfiguration(array('class' => \$class));\n"
                         );
         break;
       }
