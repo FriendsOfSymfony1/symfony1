@@ -219,6 +219,19 @@ class sfValidatedFile
   }
 
   /**
+   * Reset type
+   *
+   * @param string $type
+   * @return sfValidatedFile
+   */
+  public function resetType($type)
+  {
+    $this->type = $type;
+
+    return $this;
+  }
+
+  /**
    * Returns the size of the uploaded file.
    *
    * @return int The file size
