@@ -162,6 +162,12 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 
         $errorSchema->addError($e, (string) $name);
       }
+      catch (Exception $e)
+      {
+        $class = get_class($e);
+
+        throw new $class($e->getMessage().' of "'.$name.'" field');
+      }
     }
 
     // are non given values required?
