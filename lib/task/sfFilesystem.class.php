@@ -71,8 +71,11 @@ class sfFilesystem
     if ($options['override'] || !file_exists($targetFile) || $mostRecent)
     {
       $this->logSection('file+', $targetFile);
-      copy($originFile, $targetFile);
+
+      return copy($originFile, $targetFile);
     }
+
+    return true;
   }
 
   /**
@@ -186,7 +189,8 @@ class sfFilesystem
     }
 
     $this->logSection('rename', $origin.' > '.$target);
-    rename($origin, $target);
+
+    return rename($origin, $target);
   }
 
   /**
@@ -402,7 +406,7 @@ class sfFilesystem
    * @param string $to   The target directory
    *
    * @return string
-   */ 
+   */
   protected function calculateRelativeDir($from, $to)
   {
     $from = $this->canonicalizePath($from);
