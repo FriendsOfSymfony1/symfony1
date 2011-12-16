@@ -50,7 +50,7 @@ abstract class sfValidatorBase
    */
   public function __construct($options = array(), $messages = array())
   {
-    $this->options  = array_merge(array('required' => true, 'trim' => false, 'empty_value' => null), $this->options);
+    $this->options  = array_merge(array('required' => true, 'trim' => true, 'empty_value' => null), $this->options);
     $this->messages = array_merge(array('required' => self::$globalDefaultMessages['required'], 'invalid' => self::$globalDefaultMessages['invalid']), $this->messages);
 
     $this->configure($options, $messages);
