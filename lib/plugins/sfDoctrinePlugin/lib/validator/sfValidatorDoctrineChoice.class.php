@@ -69,7 +69,7 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
         $value = array($value);
       }
 
-      if (isset($value[0]) && !$value[0])
+      if (isset($values[0]) && '' === $values[0])
       {
         unset($value[0]);
       }
