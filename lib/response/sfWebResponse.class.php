@@ -671,6 +671,17 @@ class sfWebResponse extends sfResponse
   }
 
   /**
+   * Clear all previously added stylesheets
+   */
+  public function clearStylesheets()
+  {
+    foreach (array_keys($this->getStylesheets()) as $file)
+    {
+      $this->removeStylesheet($file);
+    }
+  }
+
+  /**
    * Retrieves javascript files from the current web response.
    *
    * By default, the position is sfWebResponse::ALL,
@@ -729,6 +740,17 @@ class sfWebResponse extends sfResponse
     foreach ($this->getPositions() as $position)
     {
       unset($this->javascripts[$position][$file]);
+    }
+  }
+
+  /**
+   * Clear all previously added javascripts
+   */
+  public function clearJavascripts()
+  {
+    foreach (array_keys($this->getJavascripts()) as $file)
+    {
+      $this->removeJavascript($file);
     }
   }
 

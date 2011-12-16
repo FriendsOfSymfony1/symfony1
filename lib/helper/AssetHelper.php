@@ -514,6 +514,16 @@ function include_javascripts()
 }
 
 /**
+ * Clear all javascripts of the response object.
+ *
+ * @see sfResponse->clearJavascripts()
+ */
+function clear_javascripts()
+{
+  sfContext::getInstance()->getResponse()->clearJavascripts();
+}
+
+/**
  * Returns <link> tags for all stylesheets configured in view.yml or added to the response object.
  *
  * You can use this helper to decide the location of stylesheets in pages.
@@ -544,6 +554,15 @@ function get_stylesheets()
 function include_stylesheets()
 {
   echo get_stylesheets();
+}
+
+/* Clear all stylesheets of the response object.
+ *
+ * @see sfResponse->clearStylesheets()
+ */
+function clear_stylesheets()
+{
+  sfContext::getInstance()->getResponse()->clearStylesheets();
 }
 
 /**
