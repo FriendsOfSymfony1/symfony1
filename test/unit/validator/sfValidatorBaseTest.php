@@ -110,7 +110,7 @@ catch (sfValidatorError $e)
   $t->pass('->clean() throws a sfValidatorError exception if the data does not validate');
   $t->is($e->getCode(), 'required', '->clean() throws a sfValidatorError');
 }
-$t->is($v->clean('  foo  '), '  foo  ', '->clean() does not trim whitespaces by default');
+$t->is($v->clean('  foo  '), 'foo', '->clean() trim whitespaces by default');
 
 // ->isEmpty()
 $t->diag('->isEmpty()');
