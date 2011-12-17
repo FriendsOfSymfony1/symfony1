@@ -1,0 +1,7 @@
+generator:
+  class: sfAdminGenerator
+  param:
+    model_class: Article
+    theme: default
+  list:
+    title: test

@@ -36,8 +36,8 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
 
     $dumper = new sfServiceContainerDumperPhp($serviceContainerBuilder);
     $code = $dumper->dump(array(
-      'class' => $class,
-      'base_class' => $this->parameterHolder->get('base_class'),
+      'class'       => $class,
+      'base_class'  => $this->parameterHolder->get('base_class'),
     ));
 
     // compile data

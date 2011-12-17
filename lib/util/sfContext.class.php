@@ -23,11 +23,11 @@
 class sfContext implements ArrayAccess
 {
   protected
-    $dispatcher          = null,
-    $configuration       = null,
-    $mailerConfiguration = array(),
-    $serviceContainerConfiguration = array(),
-    $factories           = array();
+    $dispatcher                     = null,
+    $configuration                  = null,
+    $mailerConfiguration            = array(),
+    $serviceContainerConfiguration  = array(),
+    $factories                      = array();
 
   protected static
     $instances = array(),
@@ -446,19 +446,18 @@ class sfContext implements ArrayAccess
   {
     if (!isset($this->factories['service_container']))
     {
-      if (null === $this->serviceContainerConfiguration['class'])
-      {
-        return null;
-      }
-
-      $sc = new $this->serviceContainerConfiguration['class']();
-      $this->factories['service_container'] = $sc;
+      $this->factories['service_container'] = new $this->serviceContainerConfiguration['class']();
     }
 
     return $this->factories['service_container'];
   }
 
-  public function setServiceContainerConfiguration($config)
+  /**
+   * Set service ontainer configuration
+   *
+   * @param array $config
+   */
+  public function setServiceContainerConfiguration(array $config)
   {
     $this->serviceContainerConfiguration = $config;
   }
