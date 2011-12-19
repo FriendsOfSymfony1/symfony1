@@ -212,8 +212,6 @@ EOF;
   protected function startClass($class, $baseClass)
   {
     return <<<EOF
-<?php
-
 class $class extends $baseClass
 {
   protected \$shared = array();
