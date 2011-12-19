@@ -1,0 +1,12 @@
+# Core Services:
+#   sf_event_dispatcher
+#   sf_formatter
+#   sf_filesystem
+#
+all:
+  services:
+    sf_filesystem:
+      class: sfFilesystem
+      arguments:
+        - '@sf_event_dispatcher'
+        - '@sf_formatter'

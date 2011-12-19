@@ -447,6 +447,8 @@ class sfContext implements ArrayAccess
     if (!isset($this->factories['service_container']))
     {
       $this->factories['service_container'] = new $this->serviceContainerConfiguration['class']();
+      $this->factories['service_container']->setService('sf_event_dispatcher', $this->configuration->getEventDispatcher());
+      $this->factories['service_container']->setService('sf_formatter', new sfFormatter());
     }
 
     return $this->factories['service_container'];
