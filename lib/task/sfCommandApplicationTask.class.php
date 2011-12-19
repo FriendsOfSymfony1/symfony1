@@ -185,6 +185,8 @@ abstract class sfCommandApplicationTask extends sfTask
       $class = require $this->configuration->getConfigCache()->checkConfig('config/services.yml', true);
 
       $this->serviceContainer = $class ? false : new $class();
+      $this->serviceContainer->setService('sf_event_dispatcher', $this->dispatcher);
+      $this->serviceContainer->setService('sf_formatter', $this->formatter);
     }
 
     return $this->serviceContainer;
