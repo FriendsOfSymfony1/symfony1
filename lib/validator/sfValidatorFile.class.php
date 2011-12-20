@@ -75,7 +75,7 @@ class sfValidatorFile extends sfValidatorBase
     $this->addOption('validated_file_class', 'sfValidatedFile');
     $this->addOption('path', null);
 
-    $this->addMessage('max_size', 'File is too large (maximum is %max_size% bytes).');
+    $this->addMessage('max_size', 'File is too large (maximum is %max_size% kilobytes).');
     $this->addMessage('mime_types', 'Invalid mime type (%mime_type%).');
     $this->addMessage('partial', 'The uploaded file was only partially uploaded.');
     $this->addMessage('no_tmp_dir', 'Missing a temporary folder.');
@@ -131,9 +131,15 @@ class sfValidatorFile extends sfValidatorBase
         {
           $max = min($max, $this->getOption('max_size'));
         }
-        throw new sfValidatorError($this, 'max_size', array('max_size' => $max, 'size' => (int) $value['size']));
+        throw new sfValidatorError($this, 'max_size', array(
+          'max_size' => round($max / 1024, 0), 
+          'size' => (int) $value['size']
+        ));
       case UPLOAD_ERR_FORM_SIZE:
-        throw new sfValidatorError($this, 'max_size', array('max_size' => 0, 'size' => (int) $value['size']));
+        throw new sfValidatorError($this, 'max_size', array(
+          'max_size' => 0,
+          'size' => (int) $value['size']
+        ));
       case UPLOAD_ERR_PARTIAL:
         throw new sfValidatorError($this, 'partial');
       case UPLOAD_ERR_NO_TMP_DIR:
@@ -147,7 +153,10 @@ class sfValidatorFile extends sfValidatorBase
     // check file size
     if ($this->hasOption('max_size') && $this->getOption('max_size') < (int) $value['size'])
     {
-      throw new sfValidatorError($this, 'max_size', array('max_size' => $this->getOption('max_size'), 'size' => (int) $value['size']));
+      throw new sfValidatorError($this, 'max_size', array(
+        'max_size' => round($this->getOption('max_size') / 1024, 0), 
+        'size' => (int) $value['size']
+      ));
     }
 
     $mimeType = $this->getMimeType((string) $value['tmp_name'], (string) $value['type']);
