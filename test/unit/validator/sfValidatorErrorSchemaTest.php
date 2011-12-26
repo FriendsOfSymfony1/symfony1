@@ -44,12 +44,13 @@ $t->is($es->getCode(), 'max_length min_length e1 [max_length min_length] e2 [max
 $es->addError($es1, 'e3');
 $t->is($es->getCode(), 'max_length min_length e1 [max_length min_length] e2 [max_length e1 [max_length] e2 [min_length]] e3 [max_length e1 [max_length] e2 [min_length]]', '->addError() adds an error to the error schema');
 $es->addError($es1);
-$t->is($es->getCode(), 'max_length min_length max_length e1 [max_length min_length max_length] e2 [max_length min_length e1 [max_length] e2 [min_length]] e3 [max_length e1 [max_length] e2 [min_length]]', '->addError() adds an error to the error schema');
+$t->is($es->getCode(), 'max_length min_length max_length e1 [max_length min_length max_length] e2 [max_length min_length min_length e1 [max_length] e2 [min_length]] e3 [max_length min_length min_length e1 [max_length] e2 [min_length]]', '->addError() adds an error to the error schema');
 
 $es = new sfValidatorErrorSchema($v1, array($e1, 'e1' => $e1, 'e2' => $es1));
+$es1 = new sfValidatorErrorSchema($v1, array($e1, 'e1' => $e1, 'e2' => $e2));
 $es2 = new sfValidatorErrorSchema($v1, array($e1, 'e1' => $e1, 'e2' => $es1));
 $es->addError($es2, 'e2');
-$t->is($es->getCode(), 'max_length e1 [max_length] e2 [max_length max_length e1 [max_length max_length] e2 [min_length max_length e1 [max_length] e2 [min_length]]]', '->addError() adds an error to the error schema');
+$t->is($es->getCode(), 'max_length e1 [max_length] e2 [max_length min_length min_length max_length max_length e1 [max_length max_length max_length] e2 [min_length max_length max_length e1 [max_length max_length] e2 [min_length min_length]]]', '->addError() adds an error to the error schema');
 
 // ->addErrors()
 $t->diag('->addErrors()');

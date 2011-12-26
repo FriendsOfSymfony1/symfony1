@@ -500,9 +500,11 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
       throw new InvalidArgumentException(sprintf('The field named "%s" does not exist.', $name));
     }
 
-    if ($widget instanceof sfWidgetFormSchema && $errors && !$errors instanceof sfValidatorErrorSchema)
+    if ($errors && $widget instanceof sfWidgetFormSchema && !$errors instanceof sfValidatorErrorSchema)
     {
-      $errors = new sfValidatorErrorSchema($errors->getValidator(), array($errors));
+      $schema = new sfValidatorErrorSchema($errors->getValidator());
+      $schema->addError($errors);
+      $errors = $schema;
     }
 
     // we clone the widget because we want to change the id format temporarily

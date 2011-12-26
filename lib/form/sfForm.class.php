@@ -154,7 +154,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    * @param boolean $recursive False will prevent hidden fields from embedded forms from rendering
    *
    * @return string
-   * 
+   *
    * @see sfFormFieldSchema
    */
   public function renderHiddenFields($recursive = true)
@@ -235,6 +235,11 @@ class sfForm implements ArrayAccess, Iterator, Countable
       $this->values = array();
       $this->errorSchema = $e;
     }
+
+    if ($this->embeddedForms)
+    {
+      $this->bindEmbeddedForms($this->taintedValues, $this->taintedFiles);
+    }
   }
 
   /**
@@ -248,6 +253,38 @@ class sfForm implements ArrayAccess, Iterator, Countable
   }
 
   /**
+   * Bind embedded forms (recursivly)
+   *
+   * @param array $taintedValues
+   * @param array $taintedFiles
+   */
+  public function bindEmbeddedForms(array $taintedValues = null, array $taintedFiles = null)
+  {
+    foreach ($this->embeddedForms as $name => $form)
+    {
+      $form->bind(
+        isset($taintedValues[$name]) ? $taintedValues[$name] : array(),
+        isset($taintedFiles[$name]) ? $taintedFiles[$name] : array()
+      );
+
+      $this->values[$name] = $form->getValues();
+
+      $widgetSchema = $form->getWidgetSchema();
+      $decorator = $widgetSchema->getFormFormatter()->getDecoratorFormat();
+      $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator($widgetSchema, $decorator);
+
+      // keep widgetSchema synchronized
+      $form->setWidgetSchema($this->widgetSchema[$name]->getWidget());
+
+      // update errorSchema
+      if ($form->hasErrors())
+      {
+        $this->errorSchema->addError($form->getErrorSchema(), $name);
+      }
+    }
+  }
+
+  /**
    * Returns true if the form is bound to input values.
    *
    * @return Boolean true if the form is bound to input values, false otherwise
@@ -255,6 +292,37 @@ class sfForm implements ArrayAccess, Iterator, Countable
   public function isBound()
   {
     return $this->isBound;
+  }
+
+  /**
+   * Directly updates form (and embbeded forms) values
+   *
+   * USE WITH CAUTION !!!!
+   *
+   * @param array $values
+   */
+  public function updateValues(array $values)
+  {
+    $this->values = $values + $this->values;
+
+    $this->updateValuesEmbeddedForms($values);
+  }
+
+  /**
+   * Directly updates embedded form values
+   *
+   * @param array $values®
+   */
+  public function updateValuesEmbeddedForms(array $values)
+  {
+    foreach ($this->embeddedForms as $name => $form)
+    {
+      if (isset($values[$name]))
+      {
+        $form->updateValues($values[$name]);
+        $this->values[$name] = $form->getValues();
+      }
+    }
   }
 
   /**
@@ -385,64 +453,10 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $decorator = null === $decorator ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $decorator;
 
     $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator($widgetSchema, $decorator);
-    $this->validatorSchema[$name] = $form->getValidatorSchema();
+    $this->validatorSchema[$name] = new sfValidatorPass();
 
-    $this->resetFormFields();
-  }
-
-  /**
-   * Embeds a sfForm into the current form n times.
-   *
-   * @param string  $name             The field name
-   * @param sfForm  $form             A sfForm instance
-   * @param integer $n                The number of times to embed the form
-   * @param string  $decorator        A HTML decorator for the main form around embedded forms
-   * @param string  $innerDecorator   A HTML decorator for each embedded form
-   * @param array   $options          Options for schema
-   * @param array   $attributes       Attributes for schema
-   * @param array   $labels           Labels for schema
-   */
-  public function embedFormForEach($name, sfForm $form, $n, $decorator = null, $innerDecorator = null, $options = array(), $attributes = array(), $labels = array())
-  {
-    if (true === $this->isBound() || true === $form->isBound())
-    {
-      throw new LogicException('A bound form cannot be embedded');
-    }
-
-    $this->embeddedForms[$name] = new sfForm();
-
-    $form = clone $form;
-    unset($form[self::$CSRFFieldName]);
-
-    $widgetSchema = $form->getWidgetSchema();
-
-    // generate default values
-    $defaults = array();
-    for ($i = 0; $i < $n; $i++)
-    {
-      $defaults[$i] = $form->getDefaults();
-
-      $this->embeddedForms[$name]->embedForm($i, $form);
-    }
-
-    $this->setDefault($name, $defaults);
-
-    $decorator = null === $decorator ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $decorator;
-    $innerDecorator = null === $innerDecorator ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $innerDecorator;
-
-    $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator(new sfWidgetFormSchemaForEach(new sfWidgetFormSchemaDecorator($widgetSchema, $innerDecorator), $n, $options, $attributes), $decorator);
-    $this->validatorSchema[$name] = new sfValidatorSchemaForEach($form->getValidatorSchema(), $n);
-
-    // generate labels
-    for ($i = 0; $i < $n; $i++)
-    {
-      if (!isset($labels[$i]))
-      {
-        $labels[$i] = sprintf('%s (%s)', $this->widgetSchema->getFormFormatter()->generateLabelName($name), $i);
-      }
-    }
-
-    $this->widgetSchema[$name]->setLabels($labels);
+    // keep widgetSchema synchronized
+    $form->setWidgetSchema($this->widgetSchema[$name]->getWidget());
 
     $this->resetFormFields();
   }
@@ -463,7 +477,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    * @param  string $name The name used to embed the form
    *
    * @return sfForm
-   * 
+   *
    * @throws InvalidArgumentException If there is no form embedded with the supplied name
    */
   public function getEmbeddedForm($name)
