@@ -262,13 +262,19 @@ class sfForm implements ArrayAccess, Iterator, Countable
   {
     foreach ($this->embeddedForms as $name => $form)
     {
+      // remove CSRF token
+      unset($form[self::$CSRFFieldName]);
+
+      // bind
       $form->bind(
         isset($taintedValues[$name]) ? $taintedValues[$name] : array(),
         isset($taintedFiles[$name]) ? $taintedFiles[$name] : array()
       );
 
+      // set values for current form
       $this->values[$name] = $form->getValues();
 
+      // set widget schema for current form
       $widgetSchema = $form->getWidgetSchema();
       $decorator = $widgetSchema->getFormFormatter()->getDecoratorFormat();
       $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator($widgetSchema, $decorator);
