@@ -24,7 +24,6 @@ class sfProjectConfiguration
     $dispatcher            = null,
     $plugins               = array(),
     $pluginPaths           = array(),
-    $basePluginPaths       = null,
     $overriddenPluginPaths = array(),
     $pluginConfigurations  = array(),
     $pluginsLoaded         = false;
@@ -358,22 +357,24 @@ class sfProjectConfiguration
       throw new LogicException('Plugins have already been loaded.');
     }
 
-    $this->pluginPaths = array();
-
-    if (empty($plugins))
+    if (!is_array($plugins))
     {
-      return;
+      $plugins = array($plugins);
     }
 
-    foreach ((array) $plugins as $plugin)
+    foreach ($plugins as $plugin)
     {
-      if (false === $pos = array_search($plugin, $this->plugins))
+      if (false !== $pos = array_search($plugin, $this->plugins))
+      {
+        unset($this->plugins[$pos]);
+      }
+      else
       {
         throw new InvalidArgumentException(sprintf('The plugin "%s" does not exist.', $plugin));
       }
-
-      unset($this->plugins[$pos]);
     }
+
+    $this->pluginPaths = array();
   }
 
   /**
@@ -471,45 +472,27 @@ class sfProjectConfiguration
    */
   public function getAllPluginPaths()
   {
-    $pluginPaths = $this->getBasePluginPaths();
+    $pluginPaths = array();
 
-    if ($this->overriddenPluginPaths)
+    // search for *Plugin directories representing plugins
+    // follow links and do not recurse. No need to exclude VC because they do not end with *Plugin
+    $finder = sfFinder::type('dir')->maxdepth(0)->ignore_version_control(false)->follow_link()->name('*Plugin');
+    $dirs = array(
+      $this->getSymfonyLibDir().'/plugins',
+      sfConfig::get('sf_plugins_dir'),
+    );
+
+    foreach ($finder->in($dirs) as $path)
     {
-      foreach ($this->overriddenPluginPaths as $plugin => $path)
-      {
-        $pluginPaths[$plugin] = $path;
-      }
+      $pluginPaths[basename($path)] = $path;
+    }
+
+    foreach ($this->overriddenPluginPaths as $plugin => $path)
+    {
+      $pluginPaths[$plugin] = $path;
     }
 
     return $pluginPaths;
-  }
-
-  /**
-   * Returns an array of paths for base plugins.
-   *
-   * @return array
-   */
-  protected function getBasePluginPaths()
-  {
-    if (null === $this->basePluginPaths)
-    {
-      $this->basePluginPaths = array();
-
-      // search for *Plugin directories representing plugins
-      // follow links and do not recurse. No need to exclude VC because they do not end with *Plugin
-      $finder = sfFinder::type('dir')->maxdepth(0)->ignore_version_control(false)->follow_link()->name('*Plugin');
-      $dirs = array(
-        $this->getSymfonyLibDir().'/plugins',
-        sfConfig::get('sf_plugins_dir'),
-      );
-
-      foreach ($finder->in($dirs) as $path)
-      {
-        $this->basePluginPaths[basename($path)] = $path;
-      }
-    }
-
-    return $this->basePluginPaths;
   }
 
   /**
