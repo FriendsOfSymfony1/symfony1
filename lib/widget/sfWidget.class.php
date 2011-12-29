@@ -157,12 +157,13 @@ abstract class sfWidget
    * Gets an option value.
    *
    * @param  string $name The option name
+   * @param  string $default A default value if option does not exists
    *
    * @return mixed  The option value
    */
-  public function getOption($name)
+  public function getOption($name, $default = null)
   {
-    return isset($this->options[$name]) ? $this->options[$name] : null;
+    return isset($this->options[$name]) ? $this->options[$name] : $default;
   }
 
   /**

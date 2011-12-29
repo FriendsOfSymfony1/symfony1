@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(32);
+$t = new lime_test(33);
 
 class MyWidget extends sfWidget
 {
@@ -73,6 +73,7 @@ $t->diag('->getOption() ->setOption() ->setOptions() ->getOptions() ->hasOption(
 $w->setOption('foo', 'bar');
 $t->is($w->getOption('foo'), 'bar', '->setOption() sets an option value');
 $t->is($w->getOption('nonexistant'), null, '->getOption() returns null if the option does not exist');
+$t->is($w->getOption('nonexistant', 'default value'), 'default value', '->getOption() returns default value if the option does not exist');
 $t->is($w->hasOption('foo'), true, '->hasOption() returns true if the option exist');
 $t->is($w->hasOption('nonexistant'), false, '->hasOption() returns false if the option does not exist');
 try
