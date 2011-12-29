@@ -19,8 +19,9 @@
 abstract class sfBaseTask extends sfCommandApplicationTask
 {
   protected
-    $configuration = null,
-    $pluginManager = null;
+    $configuration   = null,
+    $pluginManager   = null,
+    $statusStartTime = null;
 
   /**
    * @see sfTask
@@ -146,6 +147,21 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     {
       throw new sfException(sprintf('Module "%s/%s" does not exist.', $app, $module));
     }
+  }
+
+  /**
+   * Checks if trace mode is enable
+   *
+   * @return boolean
+   */
+  protected function withTrace()
+  {
+    if (is_null($this->commandApplication) || $this->commandApplication->withTrace())
+    {
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -388,5 +404,95 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     }
 
     return $task;
+  }
+
+  /**
+   * Show status of task
+   *
+   * @param integer $done
+   * @param integer $total
+   * @param integer $size
+   * @return void
+   */
+  protected function showStatus($done, $total, $size = 30)
+  {
+    // if we go over our bound, just ignore it
+    if ($done > $total)
+    {
+      return;
+    }
+
+    if (null === $this->statusStartTime)
+    {
+      $this->statusStartTime = time();
+    }
+
+    $now = time();
+    $perc = (double)($done / $total);
+    $bar = floor($perc * $size);
+
+    $statusBar = "\r[";
+    $statusBar .= str_repeat('=', $bar);
+    if ($bar < $size)
+    {
+      $statusBar .= '>';
+      $statusBar .= str_repeat(' ', $size - $bar);
+    }
+    else
+    {
+      $statusBar .= "=";
+    }
+
+    $disp = number_format($perc * 100, 0);
+
+    $statusBar .= "] $disp% ($done/$total)";
+
+    $rate = $done ? ($now - $this->statusStartTime) / $done : 0;
+    $left = $total - $done;
+    $eta = round($rate * $left, 2);
+
+    $elapsed = $now - $this->statusStartTime;
+
+    $eta = $this->convertTime($eta);
+    $elapsed = $this->convertTime($elapsed);
+
+    $statusBar .= ' [ remaining: '.$eta.' | elapsed: '.$elapsed.' ]     ';
+
+    echo $statusBar;
+
+    // when done, send a newline
+    if ($done == $total)
+    {
+      echo "\n";
+    }
+  }
+
+  /**
+   * Convert time into humain format
+   *
+   * @param integer $time
+   * @return string
+   */
+  private function convertTime($time)
+  {
+    $string = '';
+
+    if ($time > 3600)
+    {
+      $h = intval(abs($time / 3600));
+      $time -= ($h * 3600);
+      $string .= $h. ' h ';
+    }
+
+    if ($time > 60)
+    {
+      $m = intval(abs($time / 60));
+      $time -= ($m * 60);
+      $string .= $m. ' min ';
+    }
+
+    $string .= intval($time).' sec';
+
+    return $string;
   }
 }
