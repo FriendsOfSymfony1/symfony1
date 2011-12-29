@@ -48,36 +48,32 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
   }
 
-  protected function doSave($con = null)
+  protected function doUpdateObject($values)
   {
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
-    $this->save<?php echo $relation['alias'] ?>List($con);
+    $this->update<?php echo $relation['alias'] ?>List($values);
 <?php endforeach; ?>
 
-    parent::doSave($con);
+    parent::doUpdateObject($values);
   }
 
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
-  public function save<?php echo $relation['alias'] ?>List($con = null)
+  public function update<?php echo $relation['alias'] ?>List($values)
   {
-    if (!$this->isValid())
-    {
-      throw $this->getErrorSchema();
-    }
-
     if (!isset($this->widgetSchema['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
       // somebody has unset this widget
       return;
     }
 
-    if (null === $con)
+    if (!isset($values['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
-      $con = $this->getConnection();
+      // no values for this widget
+      return;
     }
 
     $existing = $this->object-><?php echo $relation['alias']; ?>->getPrimaryKeys();
-    $values = $this->getValue('<?php echo $this->underscore($relation['alias']) ?>_list');
+    $values = $values['<?php echo $this->underscore($relation['alias']) ?>_list'];
     if (!is_array($values))
     {
       $values = array();

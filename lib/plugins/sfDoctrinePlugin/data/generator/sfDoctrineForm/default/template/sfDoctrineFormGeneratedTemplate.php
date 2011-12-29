@@ -74,17 +74,17 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
   }
 
-  public function updateObject($values = null)
+  public function doUpdateObject($values)
   {
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
     $this->update<?php echo $relation['alias'] ?>List($values);
 <?php endforeach; ?>
 
-    parent::updateObject($values);
+    parent::doUpdateObject($values);
   }
 
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
-  public function update<?php echo $relation['alias'] ?>List($values = null)
+  public function update<?php echo $relation['alias'] ?>List($values)
   {
     if (!isset($this->widgetSchema['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
@@ -92,13 +92,14 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
       return;
     }
 
-    if (null === $values)
+    if (!isset($values['<?php echo $this->underscore($relation['alias']) ?>_list']))
     {
-      $values = $this->values;
+      // no values for this widget
+      return;
     }
 
     $existing = $this->object-><?php echo $relation['alias']; ?>->getPrimaryKeys();
-    $values = $this->getValue('<?php echo $this->underscore($relation['alias']) ?>_list');
+    $values = $values['<?php echo $this->underscore($relation['alias']) ?>_list'];
     if (!is_array($values))
     {
       $values = array();
