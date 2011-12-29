@@ -368,7 +368,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * It returns false if the form is not bound.
    *
-   * @return Boolean true if the form has no errors, false otherwise
+   * @return Boolean true if the form has some errors, false otherwise
    */
   public function hasErrors()
   {
