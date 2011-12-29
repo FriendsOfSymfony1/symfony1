@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(151);
+$t = new lime_test(152);
 
 class FormTest extends sfForm
 {
@@ -960,3 +960,30 @@ $f = new NumericFieldsForm(array('5' => 'default'));
 $t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'default'), '->getFormFieldSchema() includes default numeric fields');
 $f->bind(array('5' => 'bound'));
 $t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'bound'), '->getFormFieldSchema() includes bound numeric fields');
+
+// ->getErrors()
+$t->diag('->getErrors()');
+
+$f1 = new TestForm1();
+$f21 = new TestForm1();
+$f2 = new TestForm2();
+$f2->embedForm('F21', $f21);
+$f1->embedForm('F2', $f2);
+$f1->bind(array());
+$expected = array (
+  '1_a' => 'Required.',
+  '1_b' => 'Required.',
+  '1_c' => 'Required.',
+  'F2' =>
+  array (
+    '2_d' => 'Required.',
+    'F21' =>
+    array (
+      '1_a' => 'Required.',
+      '1_b' => 'Required.',
+      '1_c' => 'Required.',
+    ),
+  ),
+);
+
+$t->is($f1->getErrors(), $expected, '->getErrors() return array of errors');
