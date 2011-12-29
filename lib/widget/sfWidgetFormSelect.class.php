@@ -85,8 +85,11 @@ class sfWidgetFormSelect extends sfWidgetFormChoiceBase
       $value = array($value);
     }
 
-    $value = array_map('strval', array_values($value));
-    $value_set = array_flip($value);
+    $value_set = array();
+    foreach ($value as $v)
+    {
+      $value_set[strval($v)] = true;
+    }
 
     $options = array();
     foreach ($choices as $key => $option)

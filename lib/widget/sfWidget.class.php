@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -385,8 +385,12 @@ abstract class sfWidget
   public function attributesToHtml($attributes)
   {
     $attributes = array_merge($this->attributes, $attributes);
+    foreach ($attributes as $key => &$value)
+    {
+      $value = $this->attributesToHtmlCallback($key, $value);
+    }
 
-    return implode('', array_map(array($this, 'attributesToHtmlCallback'), array_keys($attributes), array_values($attributes)));
+    return implode('', $attributes);
   }
 
   /**
