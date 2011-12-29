@@ -92,7 +92,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
       return;
     }
 
-    if (!isset($values['<?php echo $this->underscore($relation['alias']) ?>_list']))
+    if (!array_key_exists('<?php echo $this->underscore($relation['alias']) ?>_list', $values))
     {
       // no values for this widget
       return;
