@@ -463,6 +463,7 @@ class sfCoreAutoload
     'sfvalidatorfile' => 'validator/sfValidatorFile.class.php',
     'sfvalidatorfromdescription' => 'validator/sfValidatorFromDescription.class.php',
     'sfvalidatorinteger' => 'validator/sfValidatorInteger.class.php',
+    'sfvalidatorip' => 'validator/sfValidatorIp.class.php',
     'sfvalidatornumber' => 'validator/sfValidatorNumber.class.php',
     'sfvalidatoror' => 'validator/sfValidatorOr.class.php',
     'sfvalidatorpass' => 'validator/sfValidatorPass.class.php',
