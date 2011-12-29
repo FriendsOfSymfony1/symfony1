@@ -13,42 +13,57 @@ require_once(dirname(__FILE__).'/../../../test/bootstrap/unit.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TextHelper.php');
 
-$t = new lime_test(56);
+$t = new lime_test(60);
 
 // truncate_text()
 $t->diag('truncate_text()');
-$t->is(truncate_text(''), '', 'text_truncate() does nothing on an empty string');
+$t->is(truncate_text(''), '', 'truncate_text() does nothing on an empty string');
 
-$t->is(truncate_text('Test'), 'Test', 'text_truncate() truncates to 30 characters by default');
+$t->is(truncate_text('Test'), 'Test', 'truncate_text() truncates to 30 characters by default');
 
 $text = str_repeat('A', 35);
 $truncated = str_repeat('A', 27).'...';
-$t->is(truncate_text($text), $truncated, 'text_truncate() adds ... to truncated text');
+$t->is(truncate_text($text), $truncated, 'truncate_text() adds ... to truncated text');
 
 $text = str_repeat('A', 35);
 $truncated = str_repeat('A', 22).'...';
-$t->is(truncate_text($text, 25), $truncated, 'text_truncate() takes the max length as its second argument');
+$t->is(truncate_text($text, 25), $truncated, 'truncate_text() takes the max length as its second argument');
 
 $text = str_repeat('A', 35);
 $truncated = str_repeat('A', 21).'BBBB';
-$t->is(truncate_text($text, 25, 'BBBB'), $truncated, 'text_truncate() takes the ... text as its third argument');
+$t->is(truncate_text($text, 25, 'BBBB'), $truncated, 'truncate_text() takes the ... text as its third argument');
 
 $text = str_repeat('A', 10).str_repeat(' ', 10).str_repeat('A', 10);
 $truncated_true = str_repeat('A', 10).'...';
 $truncated_false = str_repeat('A', 10).str_repeat(' ', 2).'...';
-$t->is(truncate_text($text, 15, '...', false), $truncated_false, 'text_truncate() accepts a truncate lastspace boolean as its fourth argument');
-$t->is(truncate_text($text, 15, '...', true), $truncated_true, 'text_truncate() accepts a truncate lastspace boolean as its fourth argument');
+$t->is(truncate_text($text, 15, '...', false), $truncated_false, 'truncate_text() accepts a truncate lastspace boolean as its fourth argument');
+$t->is(truncate_text($text, 15, '...', true), $truncated_true, 'truncate_text() accepts a truncate lastspace boolean as its fourth argument');
 
-if(extension_loaded('mbstring'))
+if (extension_loaded('mbstring'))
 {
   $oldEncoding = mb_internal_encoding();
-  $t->is(truncate_text('のビヘイビアにパラメーターを渡すことで特定のモデルでのフォーム生成を無効にできます', 11), 'のビヘイビアにパ...', 'text_truncate() handles unicode characters using mbstring if available');
-  $t->is(mb_internal_encoding(), $oldEncoding, 'text_truncate() sets back the internal encoding in case it changes it');
+  $t->is(truncate_text('のビヘイビアにパラメーターを渡すことで特定のモデルでのフォーム生成を無効にできます', 11), 'のビヘイビアにパ...', 'truncate_text() handles unicode characters using mbstring if available');
+  $t->is(mb_internal_encoding(), $oldEncoding, 'truncate_text() sets back the internal encoding in case it changes it');
 }
 else
 {
   $t->skip('mbstring extension is not enabled', 2);
 }
+
+$text = 'Web applications spend a large share of their code transforming arrays of data. PHP is a wonderful language for that, because it offers a lot of array manipulation functions. But web developers are actually required to translate business logic into a program - not to mess up with arrays. In fact, web developers should spend the least possible amount of tim';
+$result = 'Web applications spend a large share of their code transforming arrays of data. PHP is a wonderful language for that, because it offers a lot of array manipulation functions. But web developers are actually required to translate business logic into a program - not to mess up with arrays. [...]';
+
+$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/', 0), $result, 'truncate_text() truncate text after the first found pattern after 200 characters');
+
+$result = 'Web applications spend a large share of their code transforming arrays of data. [...]';
+$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/'), $result, 'truncate_text() truncate text after the last found pattern before 200 characters');
+
+$text = 'Web applications spend a large share of their code transforming arrays of data. PHP is a wonderful language for that.';
+$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/'), $text, 'truncate_text() does nothing for a text that not exceed 200 characters');
+
+$text = 'Web applications spend a large share of their code transforming arrays of data PHP is a wonderful language for that, because it offers a lot of array manipulation functions But web developers are actually required to translate business logic into a program - not to mess up with arrays In fact, web developers should spend the least possible amount of tim';
+$result = 'Web applications spend a large share of their code transforming arrays of data PHP is a wonderful language for that, because it offers a lot of array manipulation functions But web developers are[...]';
+$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/', 0), $result, 'truncate_text() whitout truncate_pattern on text, truncate it just after 200 characters');
 
 // highlight_text()
 $t->diag('highlight_text()');
