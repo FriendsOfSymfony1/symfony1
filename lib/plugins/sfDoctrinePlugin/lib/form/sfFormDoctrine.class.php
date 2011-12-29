@@ -187,7 +187,7 @@ abstract class sfFormDoctrine extends sfFormObject
         if ($this->validatorSchema[$field] instanceof sfValidatorFile)
         {
           $values[$field] = $this->processUploadedFile($field, null, $valuesToProcess);
-        }          
+        }
       }
     }
 
@@ -341,7 +341,20 @@ abstract class sfFormDoctrine extends sfFormObject
     }
 
     $directory = $this->validatorSchema[$field]->getOption('path');
-    if ($directory && is_file($file = $directory.'/'.$this->getObject()->$field))
+    $filename = $this->getObject()->$field;
+
+    // this is needed if the form is embedded, in which case
+    // the parent form has already changed the value of the field
+    if (!is_string($filename))
+    {
+      $oldValues = $this->getObject()->getModified(true, false);
+      if (isset($oldValues[$field]))
+      {
+        $filename = $oldValues[$field];
+      }
+    }
+
+    if ($directory && $filename && is_file($file = $directory.'/'.$filename))
     {
       unlink($file);
     }
@@ -402,11 +415,11 @@ abstract class sfFormDoctrine extends sfFormObject
 
   /**
    * Returns the name of the related model.
-   * 
+   *
    * @param string $alias A relation alias
-   * 
+   *
    * @return string
-   * 
+   *
    * @throws InvalidArgumentException If no relation with the supplied alias exists on the current model
    */
   protected function getRelatedModelName($alias)
