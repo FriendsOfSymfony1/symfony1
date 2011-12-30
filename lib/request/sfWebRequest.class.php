@@ -25,7 +25,7 @@ class sfWebRequest extends sfRequest
   const
     PORT_HTTP  = 80,
     PORT_HTTPS = 443;
-  
+
   protected
     $languages              = null,
     $charsets               = null,
@@ -579,6 +579,26 @@ class sfWebRequest extends sfRequest
       ||
       $this->isForwardedSecure()
     ;
+  }
+
+  /**
+   * Gets the client IP
+   *
+   * @return string The original client IP
+   */
+  static public function getClientIp()
+  {
+    if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+    {
+      return $_SERVER["HTTP_X_FORWARDED_FOR"];
+    }
+
+    if (isset($_SERVER["HTTP_CLIENT_IP"]))
+    {
+      return $_SERVER["HTTP_CLIENT_IP"];
+    }
+
+    return $_SERVER["REMOTE_ADDR"];
   }
 
   /**
