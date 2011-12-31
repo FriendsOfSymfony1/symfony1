@@ -800,6 +800,7 @@ class lime_harness extends lime_registration
       'force_colors' => false,
       'output'       => null,
       'verbose'      => false,
+      'test_path'    => sys_get_temp_dir(),
     ), $options);
 
     $this->php_cli = $this->find_php_cli($this->options['php_cli']);
@@ -890,8 +891,8 @@ class lime_harness extends lime_registration
 
       $relative_file = $this->get_relative_file($file);
 
-      $test_file = tempnam(sys_get_temp_dir(), 'lime');
-      $result_file = tempnam(sys_get_temp_dir(), 'lime');
+      $test_file = tempnam($this->options['test_path'], 'lime_test').'.php';
+      $result_file = tempnam($this->options['test_path'], 'lime_result');
       file_put_contents($test_file, <<<EOF
 <?php
 function lime_shutdown()
