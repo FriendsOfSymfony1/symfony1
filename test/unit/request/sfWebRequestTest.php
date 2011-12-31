@@ -3,14 +3,14 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(72);
+$t = new lime_test(76);
 
 class myRequest extends sfWebRequest
 {
@@ -236,6 +236,27 @@ $t->diag('->getForwardedFor()');
 $t->is($request->getForwardedFor(), null, '->getForwardedFor() returns null if the request was not forwarded.');
 $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
 $t->is_deeply($request->getForwardedFor(), array('10.0.0.1', '10.0.0.2'), '->getForwardedFor() returns the value from HTTP_X_FORWARDED_FOR');
+
+// ->getClientIp()
+$t->diag('->getClientIp()');
+
+$_SERVER['HTTP_CLIENT_IP'] = '10.0.0.1';
+$t->is($request->getClientIp(), '10.0.0.1', '->getClientIp() returns the value from HTTP_CLIENT_IP');
+
+// ->getRealIp()
+$t->diag('->getRealIp()');
+
+$_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
+$t->is($request->getRealIp(), array('10.0.0.1', '10.0.0.2'), '->getRealIp() returns the value from HTTP_X_FORWARDED_FOR if defined');
+
+$_SERVER['HTTP_X_FORWARDED_FOR'] = null;
+$_SERVER['HTTP_CLIENT_IP'] = '127.0.0.1';
+$t->is($request->getRealIp(), array('127.0.0.1'), '->getRealIp() returns the value from HTTP_CLIENT_IP if defined');
+
+$_SERVER['HTTP_X_FORWARDED_FOR'] = null;
+$_SERVER['HTTP_CLIENT_IP'] = null;
+$_SERVER['REMOTE_ADDR'] = '127.0.0.2';
+$t->is($request->getRealIp(), array('127.0.0.2'), '->getRealIp() returns the value from REMOTE_ADDR by default');
 
 // ->getMethod()
 $t->diag('->getMethod()');

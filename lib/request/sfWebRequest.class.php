@@ -582,26 +582,6 @@ class sfWebRequest extends sfRequest
   }
 
   /**
-   * Gets the client IP
-   *
-   * @return string The original client IP
-   */
-  static public function getClientIp()
-  {
-    if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-    {
-      return $_SERVER["HTTP_X_FORWARDED_FOR"];
-    }
-
-    if (isset($_SERVER["HTTP_CLIENT_IP"]))
-    {
-      return $_SERVER["HTTP_CLIENT_IP"];
-    }
-
-    return $_SERVER["REMOTE_ADDR"];
-  }
-
-  /**
    * Returns true if the current request is forwarded from a request that is secure.
    *
    * @return boolean
@@ -937,6 +917,43 @@ class sfWebRequest extends sfRequest
     }
 
     return explode(', ', $pathInfo['HTTP_X_FORWARDED_FOR']);
+  }
+
+  /**
+   * Returns the client IP address that made the request.
+   *
+   * @return string The client IP address
+   */
+  public function getClientIp()
+  {
+    $pathInfo = $this->getPathInfoArray();
+
+    if (isset($pathInfo["HTTP_CLIENT_IP"]))
+    {
+      return $pathInfo["HTTP_CLIENT_IP"];
+    }
+
+    return null;
+  }
+
+  /**
+   * Return the real IP (from proxies that passed the request or client if or remote addr)
+   *
+   * @return array An array of real IP(s)
+   */
+  public function getRealIp()
+  {
+    if ($ip = $this->getForwardedFor())
+    {
+      return $ip;
+    }
+
+    if ($ip = $this->getClientIp())
+    {
+      return array($ip);
+    }
+
+    return array($this->getRemoteAddress());
   }
 
   public function checkCSRFProtection()
