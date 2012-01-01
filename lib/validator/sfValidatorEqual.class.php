@@ -29,6 +29,7 @@ class sfValidatorEqual extends sfValidatorBase
    * Available error codes:
    *
    *  * not_equal
+   *  * not_strictly_equal
    *
    * @param array $options   An array of options
    * @param array $messages  An array of error messages
