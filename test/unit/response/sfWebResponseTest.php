@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(83);
+$t = new lime_test(87);
 
 class myWebResponse extends sfWebResponse
 {
