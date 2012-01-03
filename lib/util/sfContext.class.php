@@ -444,14 +444,15 @@ class sfContext implements ArrayAccess
    */
   public function getServiceContainer()
   {
-    if (!isset($this->factories['service_container']))
+    if (!isset($this->factories['serviceContainer']))
     {
-      $this->factories['service_container'] = new $this->serviceContainerConfiguration['class']();
-      $this->factories['service_container']->setService('sf_event_dispatcher', $this->configuration->getEventDispatcher());
-      $this->factories['service_container']->setService('sf_formatter', new sfFormatter());
+      $this->factories['serviceContainer'] = new $this->serviceContainerConfiguration['class']();
+      $this->factories['serviceContainer']->setService('sf_event_dispatcher', $this->configuration->getEventDispatcher());
+      $this->factories['serviceContainer']->setService('sf_formatter', new sfFormatter());
+      $this->factories['serviceContainer']->setService('sf_logger', $this->getLogger());
     }
 
-    return $this->factories['service_container'];
+    return $this->factories['serviceContainer'];
   }
 
   /**
