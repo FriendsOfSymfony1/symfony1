@@ -2,9 +2,18 @@ language: php
 
 php:
   - 5.2
+  - 5.3
+  - 5.4
 
 before_script:
+  - PHP_VERSION=`php -v | grep 'cli' | sed 's/^PHP \(.*\..*\)\..* (cli).*$/\1/'`
+  - sh -c "if [ '$PHP_VERSION' = '5.2' ]; then configure_option "--with-mbstring"; fi"
+  - wget http://pecl.php.net/get/APC-3.1.9.tgz
+  - tar -xzf APC-3.1.9.tgz
+  - sh -c "cd APC-3.1.9 && phpize && ./configure --enable-apc && make && sudo make install"
+  - echo -e "extension=apc.so\napc.enabled=1\napc.enable_cli=on" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - git submodule update --init --recursive
   - php data/bin/check_configuration.php
 
-script: php data/bin/symfony symfony:test
+script: php -dshort_open_tag=Off -dmagic_quotes_gpc=Off data/bin/symfony symfony:test --trace
+
