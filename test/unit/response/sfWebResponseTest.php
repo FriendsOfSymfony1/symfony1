@@ -3,14 +3,14 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(83);
+$t = new lime_test(87);
 
 class myWebResponse extends sfWebResponse
 {
@@ -134,13 +134,21 @@ $response->setContentType('text/xml');
 $response->setContentType('text/html');
 $t->is(count($response->getHttpHeader('content-type')), 1, '->setContentType() overrides previous content type if replace is true');
 
-// ->getTitle() ->setTitle()
-$t->diag('->getTitle() ->setTitle()');
+// ->getTitle() ->setTitle() ->prependTitle
+$t->diag('->getTitle() ->setTitle() ->prependTitle()');
 $t->is($response->getTitle(), '', '->getTitle() returns an empty string by default');
 $response->setTitle('my title');
 $t->is($response->getTitle(), 'my title', '->setTitle() sets the title');
 $response->setTitle('fööbäär');
 $t->is($response->getTitle(), 'fööbäär', '->setTitle() will leave encoding intact');
+$response->setTitle(null);
+$t->is($response->getTitle(), '', '->setTitle() to null remove existing title');
+$response->prependTitle('my title');
+$t->is($response->getTitle(), 'my title', '->prependTitle() set title if no title has been set');
+$response->prependTitle('my subtitle');
+$t->is($response->getTitle(), 'my subtitle - my title', '->prependTitle() prepend title');
+$response->prependTitle('other title', ' | ');
+$t->is($response->getTitle(), 'other title | my subtitle - my title', '->prependTitle() prepend title with custom separator');
 
 // ->addHttpMeta()
 $t->diag('->addHttpMeta()');

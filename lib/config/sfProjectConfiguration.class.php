@@ -24,7 +24,6 @@ class sfProjectConfiguration
     $dispatcher            = null,
     $plugins               = array(),
     $pluginPaths           = array(),
-    $basePluginPaths       = null,
     $overriddenPluginPaths = array(),
     $pluginConfigurations  = array(),
     $pluginsLoaded         = false;
@@ -175,8 +174,9 @@ class sfProjectConfiguration
   public function setWebDir($webDir)
   {
     sfConfig::add(array(
-      'sf_web_dir'    => $webDir,
-      'sf_upload_dir' => $webDir.DIRECTORY_SEPARATOR.'uploads',
+      'sf_web_dir'         => $webDir,
+      'sf_upload_dir_name' => $uploadDirName = 'uploads',
+      'sf_upload_dir'      => $webDir.DIRECTORY_SEPARATOR.$uploadDirName,
     ));
   }
 
@@ -307,7 +307,7 @@ class sfProjectConfiguration
    * Sets the enabled plugins.
    *
    * @param array $plugins An array of plugin names
-   * 
+   *
    * @throws LogicException If plugins have already been loaded
    */
   public function setPlugins(array $plugins)
@@ -340,7 +340,7 @@ class sfProjectConfiguration
         $plugins = array($plugins);
       }
     }
-    
+
     $this->setPlugins(array_merge($this->plugins, $plugins));
   }
 
@@ -348,7 +348,7 @@ class sfProjectConfiguration
    * Disables a plugin.
    *
    * @param array|string $plugins A plugin name or a plugin list
-   * 
+   *
    * @throws LogicException If plugins have already been loaded
    */
   public function disablePlugins($plugins)
@@ -358,29 +358,31 @@ class sfProjectConfiguration
       throw new LogicException('Plugins have already been loaded.');
     }
 
-    $this->pluginPaths = array();
-
-    if (empty($plugins))
+    if (!is_array($plugins))
     {
-      return;
+      $plugins = array($plugins);
     }
 
-    foreach ((array) $plugins as $plugin)
+    foreach ($plugins as $plugin)
     {
-      if (false === $pos = array_search($plugin, $this->plugins))
+      if (false !== $pos = array_search($plugin, $this->plugins))
+      {
+        unset($this->plugins[$pos]);
+      }
+      else
       {
         throw new InvalidArgumentException(sprintf('The plugin "%s" does not exist.', $plugin));
       }
-
-      unset($this->plugins[$pos]);
     }
+
+    $this->pluginPaths = array();
   }
 
   /**
    * Enabled all installed plugins except the one given as argument.
    *
    * @param array|string $plugins A plugin name or a plugin list
-   * 
+   *
    * @throws LogicException If plugins have already been loaded
    */
   public function enableAllPluginsExcept($plugins = array())
@@ -466,59 +468,41 @@ class sfProjectConfiguration
 
   /**
    * Returns an array of paths for all available plugins.
-   * 
+   *
    * @return array
    */
   public function getAllPluginPaths()
   {
-    $pluginPaths = $this->getBasePluginPaths();
+    $pluginPaths = array();
 
-    if ($this->overriddenPluginPaths)
+    // search for *Plugin directories representing plugins
+    // follow links and do not recurse. No need to exclude VC because they do not end with *Plugin
+    $finder = sfFinder::type('dir')->maxdepth(0)->ignore_version_control(false)->follow_link()->name('*Plugin');
+    $dirs = array(
+      $this->getSymfonyLibDir().'/plugins',
+      sfConfig::get('sf_plugins_dir'),
+    );
+
+    foreach ($finder->in($dirs) as $path)
     {
-      foreach ($this->overriddenPluginPaths as $plugin => $path)
-      {
-        $pluginPaths[$plugin] = $path;
-      }
+      $pluginPaths[basename($path)] = $path;
+    }
+
+    foreach ($this->overriddenPluginPaths as $plugin => $path)
+    {
+      $pluginPaths[$plugin] = $path;
     }
 
     return $pluginPaths;
   }
 
   /**
-   * Returns an array of paths for base plugins.
-   *
-   * @return array
-   */
-  protected function getBasePluginPaths()
-  {
-    if (null === $this->basePluginPaths)
-    {
-      $this->basePluginPaths = array();
-
-      // search for *Plugin directories representing plugins
-      // follow links and do not recurse. No need to exclude VC because they do not end with *Plugin
-      $finder = sfFinder::type('dir')->maxdepth(0)->ignore_version_control(false)->follow_link()->name('*Plugin');
-      $dirs = array(
-        $this->getSymfonyLibDir().'/plugins',
-        sfConfig::get('sf_plugins_dir'),
-      );
-
-      foreach ($finder->in($dirs) as $path)
-      {
-        $this->basePluginPaths[basename($path)] = $path;
-      }
-    }
-
-    return $this->basePluginPaths;
-  }
-
-  /**
    * Manually sets the location of a particular plugin.
-   * 
+   *
    * This method can be used to ease functional testing of plugins. It is not
    * intended to support sharing plugins between projects, as many plugins
    * save project specific code (to /lib/form/base, for example).
-   * 
+   *
    * @param string $plugin
    * @param string $path
    */
@@ -529,9 +513,9 @@ class sfProjectConfiguration
 
   /**
    * Returns the configuration for the requested plugin.
-   * 
+   *
    * @param   string $name
-   * 
+   *
    * @return  sfPluginConfiguration
    */
   public function getPluginConfiguration($name)
@@ -581,7 +565,7 @@ class sfProjectConfiguration
 
   /**
    * Returns true if these is an active configuration.
-   * 
+   *
    * @return boolean
    */
   static public function hasActive()

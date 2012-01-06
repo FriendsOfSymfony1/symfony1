@@ -3,4 +3,4 @@
 	url = https://github.com/swiftmailer/swiftmailer.git
 [submodule "lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine"]
 	path = lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine
-	url = git://github.com/LExpress/doctrine1.git
+	url = https://github.com/LExpress/doctrine1.git

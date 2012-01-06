@@ -588,6 +588,32 @@ class sfWebResponse extends sfResponse
   }
 
   /**
+   * Preprend title
+   *
+   * @param string  $title      Title name
+   * @param string  $separator  Separator string (default: " - ")
+   * @param boolean $escape     true, for escaping the title
+   */
+  public function prependTitle($title, $separator = ' - ', $escape = true)
+  {
+    if (!isset($this->metas['title']))
+    {
+      $this->setTitle($title);
+
+      return;
+    }
+
+    // FIXME: If you use the i18n layer and escape the data here, it won't work
+    // see include_metas() in AssetHelper
+    if ($escape)
+    {
+      $title = htmlspecialchars($title, ENT_QUOTES, $this->options['charset']);
+    }
+
+    $this->metas['title'] = $title.$separator.$this->metas['title'];
+  }
+
+  /**
    * Sets title for the current web response.
    *
    * @param string  $title   Title name

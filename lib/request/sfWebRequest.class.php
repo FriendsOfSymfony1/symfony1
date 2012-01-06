@@ -25,7 +25,7 @@ class sfWebRequest extends sfRequest
   const
     PORT_HTTP  = 80,
     PORT_HTTPS = 443;
-  
+
   protected
     $languages              = null,
     $charsets               = null,
@@ -917,6 +917,43 @@ class sfWebRequest extends sfRequest
     }
 
     return explode(', ', $pathInfo['HTTP_X_FORWARDED_FOR']);
+  }
+
+  /**
+   * Returns the client IP address that made the request.
+   *
+   * @return string The client IP address
+   */
+  public function getClientIp()
+  {
+    $pathInfo = $this->getPathInfoArray();
+
+    if (isset($pathInfo["HTTP_CLIENT_IP"]))
+    {
+      return $pathInfo["HTTP_CLIENT_IP"];
+    }
+
+    return null;
+  }
+
+  /**
+   * Return the real IP (from proxies that passed the request or client if or remote addr)
+   *
+   * @return array An array of real IP(s)
+   */
+  public function getRealIp()
+  {
+    if ($ip = $this->getForwardedFor())
+    {
+      return $ip;
+    }
+
+    if ($ip = $this->getClientIp())
+    {
+      return array($ip);
+    }
+
+    return array($this->getRemoteAddress());
   }
 
   public function checkCSRFProtection()

@@ -22,25 +22,56 @@
 /**
  * Truncates +text+ to the length of +length+ and replaces the last three characters with the +truncate_string+
  * if the +text+ is longer than +length+.
+ *
+ * @param string $text The original text
+ * @param integer $length The length for truncate
+ * @param string $truncate_string The string to add after truncated text
+ * @param string $truncate_lastspace Remove or not last space after truncate
+ * @param string $truncate_pattern Pattern
+ * @param integer $length_max Used only with truncate_patter
+ *
+ * @return string
  */
-function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false)
+function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false, $truncate_pattern = null, $length_max = null)
 {
-  if ($text == '')
+  if ('' == $text)
   {
     return '';
   }
 
   $mbstring = extension_loaded('mbstring');
-  if($mbstring)
+  if ($mbstring)
   {
-   $old_encoding = mb_internal_encoding();
-   @mb_internal_encoding(mb_detect_encoding($text));
+    $old_encoding = mb_internal_encoding();
+    @mb_internal_encoding(mb_detect_encoding($text));
   }
   $strlen = ($mbstring) ? 'mb_strlen' : 'strlen';
   $substr = ($mbstring) ? 'mb_substr' : 'substr';
 
   if ($strlen($text) > $length)
   {
+    if ($truncate_pattern)
+    {
+      $length_min = null !== $length_max && (0 == $length_max || $length_max > $length) ? $length : null;
+
+      preg_match($truncate_pattern, $text, $matches, PREG_OFFSET_CAPTURE, $length_min);
+
+      if ($matches)
+      {
+        if ($length_min)
+        {
+          $truncate_string = $matches[0][0].$truncate_string;
+          $length = $matches[0][1] + $strlen($truncate_string);
+        }
+        else
+        {
+          $match = end($matches);
+          $truncate_string = $match[0].$truncate_string;
+          $length = $match[1] + $strlen($truncate_string);
+        }
+      }
+    }
+
     $truncate_text = $substr($text, 0, $length - $strlen($truncate_string));
     if ($truncate_lastspace)
     {
@@ -49,9 +80,9 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
     $text = $truncate_text.$truncate_string;
   }
 
-  if($mbstring)
+  if ($mbstring)
   {
-   @mb_internal_encoding($old_encoding);
+    @mb_internal_encoding($old_encoding);
   }
 
   return $text;
@@ -64,7 +95,7 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
  * N.B.: The +phrase+ is sanitized to include only letters, digits, and spaces before use.
  *
  * @param string $text subject input to preg_replace.
- * @param string $phrase string or array of words to highlight
+ * @param mixed $phrase string, array or sfOutputEscaperArrayDecorator instance of words to highlight
  * @param string $highlighter regex replacement input to preg_replace.
  *
  * @return string
@@ -286,7 +317,7 @@ function _auto_link_email_addresses($text)
   // Taken from http://snippets.dzone.com/posts/show/6156
   return preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $text);
 
-  // Removed since it destroys already linked emails 
+  // Removed since it destroys already linked emails
   // Example:   <a href="mailto:me@example.com">bar</a> gets <a href="mailto:me@example.com">bar</a> gets <a href="mailto:<a href="mailto:me@example.com">bar</a>
   //return preg_replace('/([\w\.!#\$%\-+.]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+)/', '<a href="mailto:\\1">\\1</a>', $text);
 }

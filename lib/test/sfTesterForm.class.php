@@ -95,6 +95,16 @@ class sfTesterForm extends sfTester
       $this->tester->is($this->form->hasErrors(), $value, sprintf('the submitted form %s.', ($value) ? 'has some errors' : 'is valid'));
     }
 
+    if ((false === $value || is_int($value) && $value != count($this->form->getErrorSchema()))
+      && $this->form->hasErrors())
+    {
+      $this->tester->diag(sprintf('%s Errors:', get_class($this->form)));
+      foreach ($this->form->getErrorSchema()->getErrors() as $key => $error)
+      {
+        $this->tester->diag(sprintf('  - %s: %s', $key, $error));
+      }
+    }
+
     return $this->getObjectToReturn();
   }
 
