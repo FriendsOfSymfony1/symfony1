@@ -128,6 +128,11 @@ abstract class sfMessageSource implements sfIMessageSource
       include_once($filename);
     }
 
+    if (('SQLite' == $type) && version_compare(PHP_VERSION, '5.3', '>'))
+    {
+      $type .= '3';
+    }
+
     $class = 'sfMessageSource_'.$type;
     if (!class_exists($class))
     {

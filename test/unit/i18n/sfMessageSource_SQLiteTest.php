@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -84,16 +84,37 @@ $t->is($format->format('New message'), 'New message', '->delete() deletes a mess
 
 function init_fixtures($temp)
 {
-  $db = sqlite_open($temp);
+  $queries = array(
+    'CREATE TABLE catalogue (cat_id INTEGER PRIMARY KEY, name VARCHAR NOT NULL, source_lang VARCHAR, target_lang VARCHAR, date_created INT, date_modified INT, author VARCHAR);',
+    'CREATE TABLE trans_unit (msg_id INTEGER PRIMARY KEY, cat_id INTEGER NOT NULL DEFAULT \'1\', id VARCHAR, source TEXT, target TEXT, comments TEXT, date_added INT, date_modified INT, author VARCHAR, translated INT(1) NOT NULL DEFAULT \'0\');',
+    "INSERT INTO catalogue (cat_id, name) VALUES (1, 'messages.fr_FR')",
+    "INSERT INTO catalogue (cat_id, name) VALUES (2, 'messages.it')",
+    "INSERT INTO trans_unit (msg_id, cat_id, id, source, target, translated) VALUES (1, 1, 1, 'an english sentence', 'une phrase en français', 1)",
+    "INSERT INTO trans_unit (msg_id, cat_id, id, source, target, translated) VALUES (2, 1, 2, 'another english sentence', 'une autre phrase en français', 1)",
+  );
 
-  sqlite_query('CREATE TABLE catalogue (cat_id INTEGER PRIMARY KEY, name VARCHAR NOT NULL, source_lang VARCHAR, target_lang VARCHAR, date_created INT, date_modified INT, author VARCHAR);', $db);
-  sqlite_query('CREATE TABLE trans_unit (msg_id INTEGER PRIMARY KEY, cat_id INTEGER NOT NULL DEFAULT \'1\', id VARCHAR, source TEXT, target TEXT, comments TEXT, date_added INT, date_modified INT, author VARCHAR, translated INT(1) NOT NULL DEFAULT \'0\');', $db);
-  sqlite_query("INSERT INTO catalogue (cat_id, name) VALUES (1, 'messages.fr_FR')", $db);
-  sqlite_query("INSERT INTO catalogue (cat_id, name) VALUES (2, 'messages.it')", $db);
-  sqlite_query("INSERT INTO trans_unit (msg_id, cat_id, id, source, target, translated) VALUES (1, 1, 1, 'an english sentence', 'une phrase en français', 1)", $db);
-  sqlite_query("INSERT INTO trans_unit (msg_id, cat_id, id, source, target, translated) VALUES (2, 1, 2, 'another english sentence', 'une autre phrase en français', 1)", $db);
+  if (version_compare(PHP_VERSION, '5.3', '>'))
+  {
+    $db = new SQLite3($temp);
 
-  sqlite_close($db);
+    foreach ($queries as $query)
+    {
+      $db->exec($query);
+    }
+
+    $db->close();
+  }
+  else
+  {
+    $db = sqlite_open($temp);
+
+    foreach ($queries as $query)
+    {
+      sqlite_query($query, $db);
+    }
+
+    sqlite_close($db);
+  }
 
   return sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 }
