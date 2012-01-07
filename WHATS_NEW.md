@@ -52,14 +52,12 @@ Added showStatus method. You can display a status bar show your avancement, elap
 Helper
 ------
 
-Text
-====
+### Text
 
 Added arguments truncate_pattern and max_lenght (used only when truncate_pattern is set) to the truncate_text function.
 See unit tests for usage examples.
 
-Asset
-=====
+### Asset
 
 Added clear_javascripts and clear_stylesheets functions.
 
