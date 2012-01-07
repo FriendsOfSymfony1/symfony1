@@ -36,12 +36,3 @@ symfony uses the lime software
 Url:       http://www.symfony-project.com/
 Copyright: Fabien Potencier
 License:   MIT - see licenses/LICENSE.lime file
-
-SwiftMailer
------------
-
-symfony uses the SwiftMailer library
-
-Url:       http://www.swiftmailer.org/
-Copyright: Chris Corbyn
-License:   LGPL - see licenses/LICENSE.swiftmailer
