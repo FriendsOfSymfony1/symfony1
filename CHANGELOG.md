@@ -31,6 +31,8 @@ CHANGELOG
  * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
  * removed sfPropelPlugin
 
+ * reverted [33226] because of side effects (see http://trac.symfony-project.org/ticket/8348)
+
 12/13/11: Version 1.4.16
 ------------------------
 
