@@ -1,7 +1,35 @@
 CHANGELOG
 =========
 
-12/13/12: Version 1.4.16
+ * used SQLite 3 for php 5.3 or later, as it's required for php 5.4
+ * fixed sfI18NTest for php version > 5.2
+ * displayed form errors with sfTestBrowser->with(form)->hasError()
+ * added test_path option to sfLimeHarness (patch by @stephaneerard)
+ * added sfWebRequest::getRealIp() method
+ * added sfWebRequest::getClientIp() method
+ * added sf_upload_dir_name to config
+ * fixed sfDoctrineRecordI18nFilter::filterGet() do not return empty translation (patch from @mahono)
+ * fixed possible warning in sfDoctrineConnectionProfiler (patch from @mahono)
+ * added sfWebResponse::prependTitle() method
+ * added options truncate_pattern and max_lenght arguments to truncate_text function in TextHelper
+ * added sfBaseTask::withTrace() and sfBaseTask::showStatus() methods
+ * fixed sfValidatorFileTest for PHP >= 5.3.7
+ * added a dic with sf_event_dispatcher, sf_formatter and sf_logger injected in core
+ * formatted sfValidatorFile error with KB instead of Bytes for readability
+ * added sfComponent::renderJson() method
+ * added foreign field name for column in foreign key field form definition
+ * removed first choice only if it's strictly an empty string in sfValidatorDoctrineChoice
+ * added sfValidatedFile::resetType() method
+ * enable trim option by default on sfValidatorBase
+ * throw real exception on sfValidatorSchema and sfValidatorSchemaFilter
+ * return php result for copy and rename methods of sfFilesystem
+ * added clearJavascripts() and clearStylesheets() methods to sfWebResponse
+ * added clear_javascripts and clear_stylesheets functions to AssetHelper
+ * fixed sfAction::setTemplate() to allow view exists only in plugin dir when the module action is extended in application
+ * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
+ * removed sfPropelPlugin
+
+12/13/11: Version 1.4.16
 ------------------------
 
  * [33251] fixed sfChoiceFormat when a string to translate contains a valid range (closes #9973)
