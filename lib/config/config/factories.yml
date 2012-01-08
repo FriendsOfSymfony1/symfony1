@@ -9,6 +9,7 @@ default:
       path_info_array:   SERVER
       path_info_key:     PATH_INFO
       relative_url_root: ~
+      trust_proxy:       true
       formats:
         txt:  text/plain
         js:   [application/javascript, application/x-javascript, text/javascript]
