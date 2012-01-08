@@ -70,3 +70,10 @@ Test
 ----
 
 Added test_path option. It allow you to use another directory for unit tests temporary files.
+
+Doctrine
+--------
+
+### Form generation
+
+Added column name for foreign key colums. It allow you to add foreign key on a non primary key.
