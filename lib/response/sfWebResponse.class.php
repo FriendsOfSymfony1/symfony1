@@ -395,6 +395,11 @@ class sfWebResponse extends sfResponse
   {
     $this->sendHttpHeaders();
     $this->sendContent();
+
+    if (function_exists('fastcgi_finish_request'))
+    {
+      fastcgi_finish_request();
+    }
   }
 
   /**
