@@ -11,12 +11,22 @@ It has been thoroughly tested in various real-world projects, and is actually in
 It is compatible with most of the available databases engines, including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server.
 It runs on *nix and Windows platforms.
 
-LICENSE
--------
-
-see LICENSE file
-
-INSTALLATION
+Requirements
 ------------
 
-see http://www.symfony-project.org/getting-started/1_4/en/
+PHP 5.2.4 and up. See prerequisites on http://www.symfony-project.org/getting-started/1_4/en/02-Prerequisites
+
+Installation
+------------
+
+See http://www.symfony-project.org/getting-started/1_4/en/03-Symfony-Installation
+
+Documentation
+-------------
+
+Read the official [symfony1 documentation](http://www.symfony-project.org/doc/1_4/)
+
+Contributing
+------------
+
+You can let pull requests or create an issue.
