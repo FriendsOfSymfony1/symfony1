@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(76);
+$t = new lime_test(108);
 
 class myRequest extends sfWebRequest
 {
@@ -22,6 +22,12 @@ class myRequest extends sfWebRequest
 
   public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
   {
+    if (isset($options['content_custom_only_for_test']))
+    {
+      $this->content = $options['content_custom_only_for_test'];
+      unset($options['content_custom_only_for_test']);
+    }
+
     parent::initialize($dispatcher, $parameters, $attributes, $options);
 
     if (null === self::$initialPathArrayKeys)
@@ -62,8 +68,16 @@ $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-us,en;q=0.5,fr;q=0.3';
 $t->is($request->getLanguages(), array('en_US', 'en', 'fr'), '->getLanguages() returns an array with all accepted languages');
 
+$request->languages = null;
+$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'i-cherokee';
+$t->is($request->getLanguages(), array('cherokee'), '->getLanguages() returns an array with all accepted languages');
+
+
 // ->getPreferredCulture()
 $t->diag('->getPreferredCulture()');
+
+$request->languages = array('fr');
+$t->is($request->getPreferredCulture(), 'fr', '->getPreferredCulture() returns the first given languages if no parameter given');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
@@ -82,6 +96,9 @@ $t->diag('->getCharsets()');
 
 $t->is($request->getCharsets(), array(), '->getCharsets() returns an empty array if the client do not send an ACCEPT_CHARSET header');
 
+$request->charsets = array('ISO-8859-1');
+$t->is($request->getCharsets(), array('ISO-8859-1'), '->getCharsets() returns an empty array if charsets are already defined');
+
 $request->charsets = null;
 $_SERVER['HTTP_ACCEPT_CHARSET'] = '';
 $t->is($request->getCharsets(), array(), '->getCharsets() returns an empty array if the client send an empty ACCEPT_CHARSET header');
@@ -94,6 +111,9 @@ $t->is($request->getCharsets(), array('ISO-8859-1', 'utf-8', '*'), '->getCharset
 $t->diag('->getAcceptableContentTypes()');
 
 $t->is($request->getAcceptableContentTypes(), array(), '->getAcceptableContentTypes() returns an empty array if the client do not send an ACCEPT header');
+
+$request->acceptableContentTypes = array('text/xml');
+$t->is($request->getAcceptableContentTypes(), array('text/xml'), '->getAcceptableContentTypes() returns an empty array if acceptableContentTypes are already set');
 
 $request->acceptableContentTypes = null;
 $_SERVER['HTTP_ACCEPT'] = '';
@@ -125,6 +145,9 @@ $t->is($request->getRequestFormat(), 'css', '->setRequestFormat() sets the reque
 
 // ->getFormat() ->setFormat()
 $t->diag('->getFormat() ->setFormat()');
+
+$customRequest = new myRequest($dispatcher, array(), array(), array('formats' => array('custom' => 'application/custom')));
+$t->is($customRequest->getFormat('application/custom'), 'custom', '->getFormat() returns the format for the given mime type if when is set as initialisation option');
 
 $request->setFormat('js', 'application/x-javascript');
 $t->is($request->getFormat('application/x-javascript'), 'js', '->getFormat() returns the format for the given mime type');
@@ -162,6 +185,18 @@ $request->resetPathInfoArray();
 $_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
 $t->is($request->isSecure(), true, '->isSecure() checks the "HTTP_X_FORWARDED_PROTO" environment variable');
 $request->resetPathInfoArray();
+
+$request->setOption('trust_proxy', false);
+
+$_SERVER['HTTP_SSL_HTTPS'] = '1';
+$t->is($request->isSecure(), false, '->isSecure() not checks the "HTTP_SSL_HTTPS" environment variable when "trust_proxy" option is set to false');
+$request->resetPathInfoArray();
+
+$_SERVER['HTTP_X_FORWARDED_PROTO'] = '1';
+$t->is($request->isSecure(), false, '->isSecure() not checks the "HTTP_X_FORWARDED_PROTO" environment variable when "trust_proxy" option is set to false');
+$request->resetPathInfoArray();
+
+$request->setOption('trust_proxy', true);
 
 // ->getUriPrefix()
 $t->diag('->getUriPrefix()');
@@ -240,26 +275,82 @@ $t->is_deeply($request->getForwardedFor(), array('10.0.0.1', '10.0.0.2'), '->get
 // ->getClientIp()
 $t->diag('->getClientIp()');
 
-$_SERVER['HTTP_CLIENT_IP'] = '10.0.0.1';
-$t->is($request->getClientIp(), '10.0.0.1', '->getClientIp() returns the value from HTTP_CLIENT_IP');
-
-// ->getRealIp()
-$t->diag('->getRealIp()');
+$_SERVER['HTTP_CLIENT_IP'] = '127.1.1.1';
+$t->is($request->getClientIp(), '127.1.1.1', '->getClientIp() returns the value from HTTP_CLIENT_IP if it exists');
+unset($_SERVER['HTTP_CLIENT_IP']);
 
 $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
-$t->is($request->getRealIp(), array('10.0.0.1', '10.0.0.2'), '->getRealIp() returns the value from HTTP_X_FORWARDED_FOR if defined');
+$t->is($request->getClientIp(), '10.0.0.1', '->getClientIp() returns the first HTTP_X_FORWARDED_FOR if it exists');
+unset($_SERVER['HTTP_X_FORWARDED_FOR']);
 
-$_SERVER['HTTP_X_FORWARDED_FOR'] = null;
-$_SERVER['HTTP_CLIENT_IP'] = '127.0.0.1';
-$t->is($request->getRealIp(), array('127.0.0.1'), '->getRealIp() returns the value from HTTP_CLIENT_IP if defined');
+$_SERVER['HTTP_CLIENT_IP'] = '127.1.1.1';
+$t->is($request->getClientIp(false), '127.0.0.1', '->getClientIp() returns the remote address even if HTTP_CLIENT_IP exists when "proxy" argument is set to false');
+unset($_SERVER['HTTP_CLIENT_IP']);
 
-$_SERVER['HTTP_X_FORWARDED_FOR'] = null;
-$_SERVER['HTTP_CLIENT_IP'] = null;
-$_SERVER['REMOTE_ADDR'] = '127.0.0.2';
-$t->is($request->getRealIp(), array('127.0.0.2'), '->getRealIp() returns the value from REMOTE_ADDR by default');
+$_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
+$t->is($request->getClientIp(false), '127.0.0.1', '->getClientIp() returns the remote address even if HTTP_X_FORWARDED_FOR exists when "proxy" argument is set to false');
+unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+
+$t->is($request->getClientIp(false), '127.0.0.1', '->getClientIp() returns remote address by default');
+
+$request->setOption('trust_proxy', false);
+$_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
+$t->is($request->getClientIp(), '127.0.0.1', '->getClientIp() returns the remote address even if HTTP_X_FORWARDED_FOR exists when "trust_proxy" is set ot false');
+$request->setOption('trust_proxy', true);
+unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+
+// ->getGetParameters() ->getGetParameter()
+$t->diag('->getGetParameters() ->getGetParameter()');
+
+$_GET['get_param'] = 'value';
+$request = new myRequest($dispatcher);
+$t->is($request->getGetParameters(), array('get_param' => 'value'), '->getGetParameters() returns GET parameters');
+$t->is($request->getGetParameter('get_param'), 'value', '->getGetParameter() returns GET parameter by name');
+unset($_GET['get_param']);
+
+// ->getPostParameters() ->getPostParameter()
+$t->diag('->getPostParameters() ->getPostParameter()');
+
+$_POST['post_param'] = 'value';
+$request = new myRequest($dispatcher);
+$t->is($request->getPostParameters(), array('post_param' => 'value'), '->getPostParameters() returns POST parameters');
+$t->is($request->getPostParameter('post_param'), 'value', '->getPostParameter() returns POST parameter by name');
+unset($_POST['post_param']);
 
 // ->getMethod()
 $t->diag('->getMethod()');
+
+$_SERVER['REQUEST_METHOD'] = 'none';
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'GET', '->getMethod() returns GET by default');
+
+$_SERVER['REQUEST_METHOD'] = 'GET';
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'GET', '->getMethod() returns GET if the method is GET');
+
+$_SERVER['REQUEST_METHOD'] = 'PUT';
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'PUT', '->getMethod() returns PUT if the method is PUT');
+
+$_SERVER['REQUEST_METHOD'] = 'PUT';
+$_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+$request = new myRequest($dispatcher, array(), array(), array('content_custom_only_for_test' => 'first=value'));
+$t->is($request->getPostParameter('first'), 'value', '->getMethod() set POST parameters from parsed content if content type is "application/x-www-form-urlencoded" and the method is PUT');
+unset($_POST['first'], $_SERVER['CONTENT_TYPE']);
+
+$_SERVER['REQUEST_METHOD'] = 'DELETE';
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'DELETE', '->getMethod() returns DELETE if the method is DELETE');
+
+$_SERVER['REQUEST_METHOD'] = 'DELETE';
+$_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+$request = new myRequest($dispatcher, array(), array(), array('content_custom_only_for_test' => 'first=value'));
+$t->is($request->getPostParameter('first'), 'value', '->getMethod() set POST parameters from parsed content if content type is "application/x-www-form-urlencoded" and the method is DELETE');
+unset($_POST['first'], $_SERVER['CONTENT_TYPE']);
+
+$_SERVER['REQUEST_METHOD'] = 'HEAD';
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'HEAD', '->getMethod() returns DELETE if the method is HEAD');
 
 $_SERVER['REQUEST_METHOD'] = 'POST';
 $_POST['sf_method'] = 'PUT';
@@ -275,6 +366,36 @@ $_SERVER['REQUEST_METHOD'] = 'POST';
 unset($_POST['sf_method']);
 $request = new myRequest($dispatcher);
 $t->is($request->getMethod(), 'POST', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
+
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$_GET['sf_method'] = 'PUT';
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'PUT', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
+
+$_SERVER['REQUEST_METHOD'] = 'POST';
+unset($_GET['sf_method']);
+$request = new myRequest($dispatcher);
+$t->is($request->getMethod(), 'POST', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
+
+// ->isMethod()
+$t->diag('->isMethod()');
+
+$_SERVER['REQUEST_METHOD'] = 'POST';
+$request = new myRequest($dispatcher);
+$t->ok($request->isMethod('POST'), '->isMethod() returns true if the method is POST');
+
+// ->isXmlHttpRequest()
+$t->diag('->isXmlHttpRequest()');
+
+$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+$t->ok($request->isXmlHttpRequest(), '->isXmlHttpRequest() returns true if the method has HTTP_X_REQUESTED_WITH to XMLHttpRequest');
+
+// ->getCookie()
+$t->diag('->getCookie()');
+
+$_COOKIE['test'] = 'value';
+$request = new myRequest($dispatcher);
+$t->is($request->getCookie('test'), 'value', '->getCookie() returns value of cookie');
 
 // ->getScriptName()
 $t->diag('->getScriptName()');
@@ -326,8 +447,14 @@ $request->resetPathInfoArray();
 $request = new myRequest($dispatcher);
 $t->is($request->getPathInfo(), '/', '->getPathInfo() returns the url path value if it not exists use default /');
 
+// -setRelativeUrlRoot() ->getRelativeUrlRoot()
+$t->diag('-setRelativeUrlRoot() ->getRelativeUrlRoot()');
+$t->is($request->getRelativeUrlRoot(), '', '->getRelativeUrlRoot() return computed relative url root');
+$request->setRelativeUrlRoot('toto');
+$t->is($request->getRelativeUrlRoot(), 'toto', '->getRelativeUrlRoot() return previously set relative url root');
+
 // ->addRequestParameters() ->getRequestParameters() ->fixParameters()
-$t->diag('getPathInfo');
+$t->diag('->addRequestParameters() ->getRequestParameters() ->fixParameters()');
 
 $request = new myRequest($dispatcher);
 $t->is($request->getRequestParameters(), array(), '->getRequestParameters() returns the request parameters default array');
@@ -341,6 +468,10 @@ $t->is($request->getRequestParameters(), array('test' => 'test'), '->getRequestP
 $request->addRequestParameters(array('_sf_ignore_cache' => 1, 'test2' => 'test2'));
 $t->is($request->getRequestParameters(), array('test' => 'test', 'test2' => 'test2', '_sf_ignore_cache' => 1), '->getRequestParameters() returns the request parameters check fixParameters call for special _sf_ params');
 $t->is($request->getAttribute('sf_ignore_cache'), 1, '->getAttribute() check special param is set as attribute');
+
+// ->getUrlParameter
+$t->diag('->getUrlParameter()');
+$t->is($request->getUrlParameter('test'), 'test', '->getUrlParameter() returns URL parameter by name');
 
 // ->checkCSRFProtection()
 $t->diag('->checkCSRFProtection()');
@@ -389,6 +520,13 @@ $_SERVER['CONTENT_TYPE'] = 'text/html; charset=UTF-8';
 $t->is($request->getContentType(), 'text/html', '->getContentType() strips the charset information by default');
 $t->is($request->getContentType(false), 'text/html; charset=UTF-8', '->getContentType() does not strip the charset information by defaultif you pass false as the first argument');
 
+// ->getReferer()
+$t->diag('->getReferer()');
+
+$request = new myRequest($dispatcher);
+$_SERVER['HTTP_REFERER'] = 'http://domain';
+$t->is($request->getReferer(), 'http://domain', '->getContentType() returns the content type');
+
 // ->getHost()
 $t->diag('->getHost()');
 
@@ -396,3 +534,47 @@ $request = new myRequest($dispatcher);
 $_SERVER['HTTP_X_FORWARDED_HOST'] = 'example1.com, example2.com, example3.com';
 $t->is($request->getHost(), 'example3.com', '->getHost() returns the last forwarded host');
 unset($_SERVER['HTTP_X_FORWARDED_HOST']);
+
+$_SERVER['HTTP_HOST'] = 'symfony-project.org';
+$t->is($request->getHost(), 'symfony-project.org', '->getHost() returns the host');
+
+$request->setOption('trust_proxy', false);
+$_SERVER['HTTP_X_FORWARDED_HOST'] = 'example1.com, example2.com, example3.com';
+$t->is($request->getHost(), 'symfony-project.org', '->getHost() returns the host even if forwarded host is define when "trust_proxy" option is set to false');
+unset($_SERVER['HTTP_X_FORWARDED_HOST']);
+
+// ->getFiles()
+$t->diag('->getFiles()');
+
+$_FILES = array(
+  'article' => array(
+    'name' => array(
+      'media' => '1.png',
+    ),
+    'type' => array(
+      'media' => 'image/png',
+    ),
+    'tmp_name' => array(
+      'media' => '/private/var/tmp/phpnTrAJG',
+    ),
+    'error' => array(
+      'media' => 0,
+    ),
+    'size' => array(
+      'media' => 899,
+    ),
+  ),
+);
+$taintedFiles = array(
+  'article' => array(
+    'media' => array (
+      'error'    => 0,
+      'name'     => '1.png',
+      'type'     => 'image/png',
+      'tmp_name' => '/private/var/tmp/phpnTrAJG',
+      'size'     => 899,
+    ),
+  ),
+);
+$t->is_deeply($request->getFiles(), $taintedFiles, '->getFiles() return clean array extracted from $_FILES');
+

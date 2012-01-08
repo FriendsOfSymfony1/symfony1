@@ -1,11 +1,13 @@
 CHANGELOG
 =========
 
+ * better code coverage for sfWebRequest class unit tests
+ * added parameters proxy to sfWebRequest::getClientIp() method (default true)
+ * introduced trust_proxy option on sfWebRequest (default true)
  * used SQLite 3 for php 5.3 or later, as it's required for php 5.4
  * fixed sfI18NTest for php version > 5.2
  * displayed form errors with sfTestBrowser->with(form)->hasError()
  * added test_path option to sfLimeHarness (patch by @stephaneerard)
- * added sfWebRequest::getRealIp() method
  * added sfWebRequest::getClientIp() method
  * added sf_upload_dir_name to config
  * fixed sfDoctrineRecordI18nFilter::filterGet() do not return empty translation (patch from @mahono)
