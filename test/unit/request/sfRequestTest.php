@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -22,7 +22,7 @@ class fakeRequest
 {
 }
 
-$t = new lime_test(36);
+$t = new lime_test(41);
 
 $dispatcher = new sfEventDispatcher();
 
@@ -71,6 +71,19 @@ $t->is($request['foo2'], 'foo2', '->offsetSet() sets parameter by name');
 unset($request['foo2']);
 $t->is(isset($request['foo2']), false, '->offsetUnset() unsets parameter by name');
 
+// ->getOption()
+$t->diag('->getOption()');
+$request = new myRequest($dispatcher, array(), array(), array('val_1' => 'value', 'val_2' => false));
+$t->is($request->getOption('val_1'), 'value', '->getOption() returns the option value if exists');
+$t->is($request->getOption('val_2'), false, '->getOption() returns the option value if exists');
+$t->is($request->getOption('none'), null, '->getOption() returns the option value if not exists');
+
+// ->getOption()
+$t->diag('->__clone()');
+$request = new myRequest($dispatcher);
+$requestClone = clone $request;
+$t->ok($request->getParameterHolder() !== $requestClone->getParameterHolder(), '->__clone() clone parameterHolder');
+$t->ok($request->getAttributeHolder() !== $requestClone->getAttributeHolder(), '->__clone() clone attributeHolder');
 
 $request = new myRequest($dispatcher);
 

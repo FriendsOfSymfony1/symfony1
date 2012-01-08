@@ -82,6 +82,18 @@ abstract class sfRequest implements ArrayAccess
   }
 
   /**
+   * Return an option value or null if option does not exists
+   *
+   * @param string $name The option name.
+   *
+   * @return mixed The option value
+   */
+  public function getOption($name)
+  {
+    return isset($this->options[$name]) ? $this->options[$name] : null;
+  }
+
+  /**
    * Returns the options.
    *
    * @return array The options.
