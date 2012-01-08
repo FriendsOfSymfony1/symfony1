@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(87);
+$t = new lime_test(89);
 
 class myWebResponse extends sfWebResponse
 {
@@ -232,12 +232,17 @@ $t->is($response->getStylesheets(''), array('test' => array(), 'foo' => array(),
 $t->is($response->getStylesheets('first'), array('first' => array()), '->getStylesheets() takes a position as its first argument');
 $t->is($response->getStylesheets('last'), array('last' => array()), '->getStylesheets() takes a position as its first argument');
 
+// ->removeStylesheet()
 $t->diag('->removeStylesheet()');
 $response->removeStylesheet('foo');
-$t->is(array_keys($response->getStylesheets()), array('first', 'test', 'bar', 'last'), '->getStylesheets() removes a stylesheet from the response');
-
+$t->is(array_keys($response->getStylesheets()), array('first', 'test', 'bar', 'last'), '->removeStylesheet() removes a stylesheet from the response');
 $response->removeStylesheet('first');
-$t->is(array_keys($response->getStylesheets()), array('test', 'bar', 'last'), '->getStylesheets() removes a stylesheet from the response');
+$t->is(array_keys($response->getStylesheets()), array('test', 'bar', 'last'), '->removeStylesheet() removes a stylesheet from the response');
+
+// ->clearStylesheets()
+$t->diag('->clearStylesheets()');
+$response->clearStylesheets();
+$t->is($response->getStylesheets(), array(), '->clearStylesheets() removes all stylesheets from the response');
 
 // ->addJavascript()
 $t->diag('->addJavascript()');
@@ -268,12 +273,17 @@ $t->is($response->getJavascripts(''), array('test' => array(), 'foo' => array('r
 $t->is($response->getJavascripts('first'), array('first_js' => array()), '->getJavascripts() takes a position as its first argument');
 $t->is($response->getJavascripts('last'), array('last_js' => array()), '->getJavascripts() takes a position as its first argument');
 
+// ->removeJavascript()
 $t->diag('->removeJavascript()');
 $response->removeJavascript('test');
 $t->is(array_keys($response->getJavascripts()), array('first_js', 'foo', 'last_js'), '->removeJavascripts() removes a javascript file');
-
 $response->removeJavascript('first_js');
 $t->is(array_keys($response->getJavascripts()), array('foo', 'last_js'), '->removeJavascripts() removes a javascript file');
+
+// ->clearJavascripts()
+$t->diag('->clearJavascripts()');
+$response->clearJavascripts();
+$t->is($response->clearJavascripts(), array(), '->clearJavascripts() removes all javascripts from the response');
 
 // ->setCookie() ->getCookies()
 $t->diag('->setCookie() ->getCookies()');
