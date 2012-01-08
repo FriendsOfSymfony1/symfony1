@@ -1,7 +1,8 @@
 Service container
 -----------------
 
-We now provide a service container available via a factory (extracted from the [symfony dependency injection component](http://components.symfony-project.org/dependency-injection/)).
+A service container have been added (extracted from the [symfony dependency injection component](http://components.symfony-project.org/dependency-injection/).  
+[More details](https://github.com/LExpress/symfony1/wiki/ServiceContainer) about the integration on symfony core.
 
 Action
 ------
@@ -11,69 +12,90 @@ When you overwrite a module from any plugin, it's not required anymore to copy a
 Response
 --------
 
-Two new methods are available :
+Two new methods have been added :
 
-* clearJavascripts
-* clearStylesheet
+* `sfWebResponse::clearJavascripts()`
+* `sfWebResponse::clearStylesheet()`
 
-This allow you to remove all stylesheets and all javascripts added into the gloval view.yml from actions file without added a view.yml with [-*] in your module.
+This allow you to remove all stylesheets and/or all javascripts added into the global `view.yml` from action files without added a `view.yml` with `[-*]` in your module.
 
 Request
 -------
 
-Added getClientIp and getRealIp methods to sfWebRequest.
+A new option `trust_proxy` have been added to `sfWebRequest`.  
+You can set to false by adding `trust_proxy: false` in `request` section of your `factories.yml`.
+
+If set to false, the following methods will not use the `HTTP_X_FORWARDED_*` server indication:
+
+* `getHost()`
+* `isSecure()`
+* `getClientIp()`
+
+The new `sfWebRequest::getClientIp()` method returns the client IP address that made the request.  
+It takes a `proxy` parameter. If set to `false`, the IP will never come from proxy that passed the request.
 
 Filesystem
 ----------
 
-Methods copy() and rename() return the result from copy() or rename() php functions (boolean).
+`sfFilesystem::copy()` and `sfFilesystem::rename()` methods now return the result from `copy()` or `rename()` php functions (boolean).
 
 Validator
 ---------
 
-sfValidatorFile now return size error in Kilo Byte instead of Byte.
+The `sfValidatorFile` now returns size error in Kilo Byte instead of Byte.
 
-sfValidator file has now a resetType() method.
+A new method `sfValidator::resetType()` have been added.
 
-[BC Break] The trim option of sfValidatorBase is now set to true by default.
+[BC Break] The `trim` option of `sfValidatorBase` is set to `true` by default.
 
 Component
 ---------
 
-Added method renderJson (take an array as parameter).
+The `sfAction::renderJson` have been added.
 
 Task
 ----
 
-Added withTrace proxy method.
+A new method `sfBaseTask::withTrace()` have been added. This a proxy method to `sfCommandApplication::withTrace()` if available, returns `false` otherwise.
 
-Added showStatus method. You can display a status bar show your avancement, elapsed and reamaining time for repetitive actions in part of your task.
+A new method `sfBaseTask::showStatus()` have been added.  
+This allow you to display a status bar with the progression, elapsed and reamaining time for repetitive actions in part of your task.
 
 Helper
 ------
 
 ### Text
 
-Added arguments truncate_pattern and max_lenght (used only when truncate_pattern is set) to the truncate_text function.
+Two new arguments `truncate_pattern` and `max_lenght` (used only when `truncate_pattern` is set) have been added to the `truncate_text` function.  
 See unit tests for usage examples.
 
 ### Asset
 
-Added clear_javascripts and clear_stylesheets functions.
+Two new functions `clear_javascripts` and `clear_stylesheets` have been added.  
+This allow you to remove all stylesheets and/or all javascripts added into the global `view.yml` from view files.
 
 Configuration
 -------------
 
-Added sf_upload_dir_name contains 'uploads'.
+A new configuration `sf_upload_dir_name` contains 'uploads' have been added.
 
 Test
 ----
 
-Added test_path option. It allow you to use another directory for unit tests temporary files.
+A new option `test_path` have been added. This allow you to use another directory for unit tests temporary files storage.
 
 Doctrine
 --------
 
 ### Form generation
 
-Added column name for foreign key colums. It allow you to add foreign key on a non primary key.
+Added column name for foreign key colums. This allow you to add foreign key on a non primary key (works only for indexed columns on Mysql).
+
+Tasks
+-----
+
+`php test/bin/coverage.php` take an optional argument to define only one file for coverage of a symfony class:
+
+```bash
+php test/bin/coverage.php sfWebRequest
+```
