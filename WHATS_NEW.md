@@ -4,6 +4,33 @@ Service container
 A service container have been added (extracted from the [symfony dependency injection component](http://components.symfony-project.org/dependency-injection/).  
 [More details](https://github.com/LExpress/symfony1/wiki/ServiceContainer) about the integration on symfony core.
 
+Form
+----
+
+Many issues have been fixed for embedded form included:
+
+* You can use `sfFormObject::updateObject` without save, all embeded objects are updated.
+* You can use file upload into your embedded forms, files will be correctly removed in embedded forms using `sfWidgetFormInputFileEditable`.
+* `sfFormObject::updateObject` and `sfFormObject::save` methos are call recursivly into embeded forms.
+
+Method `sfForm::embedFormForForeach` have been deleted.
+
+A new method `sfForm::getErrors` have been added.  
+This method returns an array with label as key and the validation error message as value (included embedded forms).
+
+Widget
+------
+
+A new parameter `default` have been added to the method `sfWidget::getOption`.
+
+New widget `sfWidgetFormInputRead` have been added.  
+This allow you to display a readonly input without border, with the value of your choice AND an hidden input with real value and name for submit.
+
+Validator
+---------
+
+A new `sfValidatorIp`have been added (extracted from symfony2).
+
 Action
 ------
 
