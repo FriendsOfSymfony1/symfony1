@@ -30,7 +30,7 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
    * @param sfValidatorBase $validator  An sfValidatorBase instance
    * @param array           $errors     An array of errors
    */
-  public function __construct(sfValidatorBase $validator, $errors = array())
+  public function __construct(sfValidatorBase $validator)
   {
     $this->validator = $validator;
     $this->arguments = array();
@@ -38,8 +38,6 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
     // override default exception message and code
     $this->code    = '';
     $this->message = '';
-
-    $this->addErrors($errors);
   }
 
   /**
@@ -66,22 +64,19 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
         $this->errors[] = $error;
       }
     }
-    elseif (isset($this->namedErrors[$name]))
+    else if (isset($this->namedErrors[$name]))
     {
       if (!$this->namedErrors[$name] instanceof sfValidatorErrorSchema)
       {
         $current = $this->namedErrors[$name];
         $this->namedErrors[$name] = new sfValidatorErrorSchema($current->getValidator());
-        $this->errors[$name] = new sfValidatorErrorSchema($current->getValidator());
-
-        $method = $current instanceof sfValidatorErrorSchema ? 'addErrors' : 'addError';
-        $this->namedErrors[$name]->$method($current);
-        $this->errors[$name]->$method($current);
+        $this->namedErrors[$name]->addError($current);
       }
 
       $method = $error instanceof sfValidatorErrorSchema ? 'addErrors' : 'addError';
       $this->namedErrors[$name]->$method($error);
-      $this->errors[$name]->$method($error);
+
+      $this->errors[$name] = $this->namedErrors[$name];
     }
     else
     {
@@ -102,27 +97,16 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
    *
    * @return sfValidatorErrorSchema The current error schema instance
    */
-  public function addErrors($errors)
+  public function addErrors(sfValidatorErrorSchema $errors)
   {
-    if ($errors instanceof sfValidatorErrorSchema)
+    foreach ($errors->getGlobalErrors() as $error)
     {
-      foreach ($errors->getGlobalErrors() as $error)
-      {
-        $this->addError($error);
-      }
-
-      foreach ($errors->getNamedErrors() as $name => $error)
-      {
-        $this->addError($error, (string) $name);
-      }
+      $this->addError($error);
     }
-    else
-    {
-      foreach ($errors as $name => $error)
-      {
-        $this->addError($error, is_numeric($name) ? null : $name);
 
-      }
+    foreach ($errors->getNamedErrors() as $name => $error)
+    {
+      $this->addError($error, (string) $name);
     }
 
     return $this;
