@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,9 +35,9 @@ class sfSymfonyTestTask extends sfTask
     $this->briefDescription = 'Launches the symfony test suite';
 
     $this->detailedDescription = <<<EOF
-The [test:all|INFO] task launches the symfony test suite:
+The [{$this->getFullName()}|INFO] task launches the symfony test suite:
 
-  [./symfony symfony:test|INFO]
+  [./symfony {$this->getFullName()}|INFO]
 EOF;
   }
 
