@@ -10,7 +10,19 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(7);
+$t = new lime_test(9);
+
+// __construct()
+$t->diag('__construct()');
+try
+{
+  new sfValidatorEqual();
+  $t->fail('->__construct() throws an "RuntimeException" if you don\'t pass a "value" option');
+}
+catch (RuntimeException $e)
+{
+  $t->pass('->__construct() throws an "RuntimeException" if you don\'t pass a "value" option');
+}
 
 $v = new sfValidatorEqual(array('value' => 'foo'));
 
@@ -57,4 +69,15 @@ catch (sfValidatorError $e)
 {
   $t->pass('"strict" option set the operator for comparaison');
   $t->is($e->getCode(), 'not_strictly_equal', '->clean() throws a sfValidatorError');
+}
+
+$v->setMessage('not_strictly_equal', 'Not strictly equal');
+try
+{
+  $v->clean(0);
+  $t->fail('"not_strictly_equal" error message customization');
+}
+catch (sfValidatorError $e)
+{
+  $t->is($e->getMessage(), 'Not strictly equal', '"not_strictly_equal" error message customization');
 }

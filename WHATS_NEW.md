@@ -100,6 +100,9 @@ Also, the method `sfValidatorErrorSchema::addError` uses much less memory for co
 
 [BC Break] The `sfValidatorErrorSchema` constructor no longer accept an array of errors as second argument.
 
+A new `sfValidatorEqual` have been added.  
+It take one required `value` option an an optional `strict` to compare strictly or not.
+
 The `sfValidatorFile` now returns size error in Kilo Byte instead of Byte.
 
 A new method `sfValidator::resetType()` have been added.

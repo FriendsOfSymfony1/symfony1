@@ -38,8 +38,8 @@ class sfValidatorEqual extends sfValidatorBase
    */
   protected function configure($options = array(), $messages = array())
   {
+    $this->addRequiredOption('value');
     $this->addOption('strict', false);
-    $this->addOption('value', false);
 
     $this->addMessage('not_equal', '%value% is not equal to %compared_value%');
     $this->addMessage('not_strictly_equal', '%value% is not strictly equal to %compared_value%');
