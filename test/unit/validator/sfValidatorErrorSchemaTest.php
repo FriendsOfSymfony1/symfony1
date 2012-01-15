@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(33);
+$t = new lime_test(32);
 
 $v1 = new sfValidatorString();
 $v2 = new sfValidatorString();
@@ -63,14 +63,6 @@ $es3->addError($e2, 'e2');
 
 $es->addError($es3);
 $t->is($es->getCode(), 'max_length min_length max_length e1 [max_length min_length max_length] e2 [max_length min_length e1 [max_length] e2 [min_length]] e3 [max_length e1 [max_length] e2 [min_length]]', '->addError() adds an error to the error schema');
-
-$es4 = new sfValidatorErrorSchema(new sfValidatorString());
-$es4->addError($e1);
-$es4->addError($e1, 'e1');
-$es4->addError($e2, 'e2');
-
-$es->addError($es4);
-$t->is($es->getCode(), 'max_length min_length max_length max_length e1 [max_length min_length max_length max_length] e2 [max_length min_length min_length e1 [max_length] e2 [min_length]] e3 [max_length e1 [max_length] e2 [min_length]]', '->addError() adds an error to the error schema');
 
 
 $es1 = new sfValidatorErrorSchema($v1);
