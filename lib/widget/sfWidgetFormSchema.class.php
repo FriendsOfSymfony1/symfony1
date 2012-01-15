@@ -535,7 +535,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
     if (!is_array($values) && !$values instanceof ArrayAccess)
     {
-      throw new InvalidArgumentException('You must pass an array of values to render a widget schema');
+      throw new InvalidArgumentException('You must pass an array of values or an instanceof ArrayAccess to render a widget schema');
     }
 
     $formFormat = $this->getFormFormatter();
@@ -561,7 +561,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
         $field = $this->renderField($name, $value, $widgetAttributes, $error);
 
         // don't add a label tag and errors if we embed a form schema
-        $label = $widget instanceof sfWidgetFormSchema ? $this->getFormFormatter()->generateLabelName($name) : $this->getFormFormatter()->generateLabel($name);
+        $label = $widget instanceof sfWidgetFormSchema ? $formFormat->generateLabelName($name) : $formFormat->generateLabel($name);
         $error = $widget instanceof sfWidgetFormSchema ? array() : $error;
 
         $rows[] = $formFormat->formatRow($label, $field, $error, $this->getHelp($name));
@@ -582,7 +582,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
       $rows[0] = implode("\n", $hiddenRows);
     }
 
-    return $this->getFormFormatter()->formatErrorRow($this->getGlobalErrors($errors)).implode('', $rows);
+    return $formFormat->formatErrorRow($this->getGlobalErrors($errors)).implode('', $rows);
   }
 
   /**
