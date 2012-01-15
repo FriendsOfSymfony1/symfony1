@@ -100,6 +100,11 @@ Doctrine
 Added column name for foreign key colums.  
 This allow you to add foreign key on a non primary key (works only for indexed columns on Mysql).
 
+### Task
+
+A new option `skip-build` have been added to `sfDoctrineCreateModelTablesTask`.  
+This option allow you to skip the build model subtask called before the model creation.
+
 Tasks
 -----
 
