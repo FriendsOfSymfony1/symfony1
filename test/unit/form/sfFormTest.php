@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(152);
+$t = new lime_test(153);
 
 class FormTest extends sfForm
 {
@@ -619,20 +619,25 @@ $t->diag('->embedForm()');
 $author = new FormTest(array('first_name' => 'Fabien'));
 $author->setWidgetSchema($author_widget_schema = new sfWidgetFormSchema(array('first_name' => new sfWidgetFormInputText())));
 $author->setValidatorSchema($author_validator_schema = new sfValidatorSchema(array('first_name' => new sfValidatorString(array('min_length' => 2)))));
+$author->addCSRFProtection(null);
+
 
 $company = new FormTest();
 $company->setWidgetSchema($company_widget_schema = new sfWidgetFormSchema(array('name' => new sfWidgetFormInputText())));
 $company->setValidatorSchema($company_validator_schema = new sfValidatorSchema(array('name' => new sfValidatorString(array('min_length' => 2)))));
+$company->addCSRFProtection(null);
 
 $article = new FormTest();
 $article->setWidgetSchema($article_widget_schema = new sfWidgetFormSchema(array('title' => new sfWidgetFormInputText())));
 $article->setValidatorSchema($article_validator_schema = new sfValidatorSchema(array('title' => new sfValidatorString(array('min_length' => 2)))));
+$article->addCSRFProtection(null);
 
 $author->embedForm('company', $company);
 $article->embedForm('author', $author);
 $v = $article->getValidatorSchema();
 $w = $article->getWidgetSchema();
 $d = $article->getDefaults();
+$f = $article->getEmbeddedForms();
 
 $w->setNameFormat('article[%s]');
 
@@ -642,6 +647,7 @@ $w['author']['first_name']->setParent(null); $author_widget_schema['first_name']
 $t->ok($w['author']['first_name'] == $author_widget_schema['first_name'], '->embedForm() embeds the widget schema');
 $t->is($d['author']['first_name'], 'Fabien', '->embedForm() merges default values from the embedded form');
 $t->is($w['author'][sfForm::getCSRFFieldName()], null, '->embedForm() removes the CSRF token for the embedded form');
+$t->ok(!isset($f['author'][sfForm::getCSRFFieldName()]), '->embedForm() removes the CSRF token for the embedded form');
 
 $t->is($w['author']->generateName('first_name'), 'article[author][first_name]', '->embedForm() changes the name format to reflect the embedding');
 $t->is($w['author']['company']->generateName('name'), 'article[author][company][name]', '->embedForm() changes the name format to reflect the embedding');

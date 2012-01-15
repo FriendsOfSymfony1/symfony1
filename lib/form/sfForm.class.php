@@ -447,10 +447,9 @@ class sfForm implements ArrayAccess, Iterator, Countable
       throw new LogicException('A bound form cannot be embedded');
     }
 
-    $this->embeddedForms[$name] = $form;
-
-    $form = clone $form;
     unset($form[self::$CSRFFieldName]);
+
+    $this->embeddedForms[$name] = $form;
 
     $widgetSchema = $form->getWidgetSchema();
 
