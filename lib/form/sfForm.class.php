@@ -1171,7 +1171,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   }
 
   /**
-   * Get errors
+   * Get all errors (included embedded forms errors)
    *
    * @return array
    */
@@ -1181,82 +1181,26 @@ class sfForm implements ArrayAccess, Iterator, Countable
 
     if ($this->hasGlobalErrors())
     {
-      $errors[] = $this->getGlobalErrors();
+      $errors['_globals'] = $this->getGlobalErrors();
     }
+
     foreach ($this as $name => $field)
     {
       if (!($field instanceof sfFormFieldSchema) && $field->hasError())
       {
-        $errors[$this->widgetSchema->getFormFormatter()->generateLabelName($name)] = $this->getFieldErrors($field);
+        $errors[$this->widgetSchema->getFormFormatter()->generateLabelName($name)] = $field->getError()->getMessage();
       }
     }
 
     foreach ($this->getEmbeddedForms() as $name => $form)
     {
-      if (!isset($errors[$name]))
+      if ($form->hasErrors())
       {
-        $errors[$name] = array();
-      }
-
-      if ($form->hasGlobalErrors())
-      {
-        $errors[$name][] = $form->getGlobalErrors();
-      }
-
-      foreach ($form as $fieldName => $field)
-      {
-        if ($field->hasError())
-        {
-          $errors[$name][$form->widgetSchema->getFormFormatter()->generateLabelName($fieldName)] = $this->getFieldErrors($field);
-        }
+        $errors[$name] = $form->getErrors();
       }
     }
 
     return $errors;
-  }
-
-  /**
-   * Get field errors as array
-   *
-   * @param sfFormField $field
-   *
-   * @return array
-   */
-  protected function getFieldErrors(sfFormField $field)
-  {
-    if (!($field->getWidget() instanceof sfWidgetFormSchema))
-    {
-      return $field->getError()->getMessage();
-    }
-
-    $error = $globalErrors = array();
-
-    if ($field->hasError())
-    {
-      foreach ($field->getError() as $name => $validatorError)
-      {
-        $globalErrors[$name] = $validatorError->getMessage();
-      }
-    }
-
-    foreach ($field as $subName => $subField)
-    {
-      if ($subField->hasError())
-      {
-        if (isset($globalErrors[$subName]))
-        {
-          unset($globalErrors[$subName]);
-        }
-        $error[$subField->getWidget()->getParent()->getFormFormatter()->generateLabelName($subField->getName())] = $this->getFieldErrors($subField);
-      }
-    }
-
-    if ($globalErrors)
-    {
-      $error[] = $globalErrors;
-    }
-
-    return $error;
   }
 
   /**
