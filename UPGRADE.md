@@ -1,3 +1,11 @@
+Information
+===========
+
+All tests of 1.4 release pass without any change of excepted values and none of them have been removed.
+
+Warning
+=======
+
 Plugin
 ------
 
