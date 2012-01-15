@@ -12,9 +12,12 @@ Form
 
 The `trim` option of `sfValidatorBase` is now set to `true` by default.
 
-Method `sfForm::embedFormForForeach` have been deleted.
+The method `sfForm::embedFormForForeach` have been removed.
 
-Due to the new embed form management:
+Due to the new embed form enhancements:
 
-* you can't re-embed the same form twice or more into an sfForm.
-* you can't re-added the same sfValidatorErrorSchema twice or more into an sfValidatorErrorSchema.
+* The form is not cloned anymore when it you embed it
+* You cannot embed the same `sfForm` instance twice or more into an `sfForm`.
+* You cannot added the same `sfValidatorErrorSchema` instance twice or more into an `sfValidatorErrorSchema`.
+* The method `sfValidatorErrorSchema::addErrors` only accept an `sfValidatorErrorSchema` instance as argument.
++ The `sfValidatorErrorSchema` constructor no longer accept an array of errors as second argument.
