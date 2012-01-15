@@ -113,7 +113,10 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
 
     $columns = $this->getOption('column');
 
-    throw new sfValidatorErrorSchema($this, array($columns[0] => $error));
+    $errorSchema = new sfValidatorErrorSchema($this);
+    $errorSchema->addError($error, $columns[0]);
+
+    throw $errorSchema;
   }
 
   /**
