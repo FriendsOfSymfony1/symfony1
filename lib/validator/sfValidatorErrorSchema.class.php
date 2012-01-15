@@ -91,9 +91,9 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
   }
 
   /**
-   * Adds an array of errors.
+   * Adds a collection of errors.
    *
-   * @param array $errors  An array of sfValidatorError instances
+   * @param sfValidatorErrorSchema $errorsAn sfValidatorErrorSchema instance
    *
    * @return sfValidatorErrorSchema The current error schema instance
    */
@@ -106,7 +106,7 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
 
     foreach ($errors->getNamedErrors() as $name => $error)
     {
-      $this->addError($error, (string) $name);
+      $this->addError($error, $name);
     }
 
     return $this;
