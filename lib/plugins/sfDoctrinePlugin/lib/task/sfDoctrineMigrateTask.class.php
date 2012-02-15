@@ -100,7 +100,23 @@ EOF;
     $this->logSection('doctrine', sprintf('Migrating from version %s to %s%s', $from, $version, $options['dry-run'] ? ' (dry run)' : ''));
     try
     {
-      $migration->migrate($version, $options['dry-run']);
+      $migration_classes = $migration->getMigrationClasses();
+      if($version < $from)
+      {
+        for($i = (int)$from - 1; $i >= (int)$version; $i--)
+        {
+          $this->logSection('doctrine', 'executing migration : '.$i .', class: '.$migration_classes[$i]);
+          $migration->migrate($i, $options['dry-run']);
+        }
+      }
+      else
+      {
+        for($i = (int)$from + 1; $i <= (int)$version; $i++)
+        {
+          $this->logSection('doctrine', 'executing migration : '.$i.', class: '.$migration_classes[$i]);
+          $migration->migrate($i, $options['dry-run']);
+        }
+      }
     }
     catch (Exception $e)
     {
