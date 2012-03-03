@@ -26,7 +26,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-abstract class sfLogger
+abstract class sfLogger implements sfLoggerInterface
 {
   const EMERG   = 0; // System is unusable
   const ALERT   = 1; // Immediate action required

@@ -36,7 +36,7 @@ require_once $rootDir.'/config/ProjectConfiguration.class.php';
 $configuration = new ProjectConfiguration($rootDir, $dispatcher);
 $autoload = sfSimpleAutoload::getInstance();
 
-$t = new lime_test(7);
+$t = new lime_test(16);
 $task = new TestTask($dispatcher, new sfFormatter());
 
 // ->initializeAutoload()
@@ -70,6 +70,21 @@ class ApplicationTask extends sfBaseTask
       throw new Exception('This task requires an application configuration be loaded.');
     }
   }
+
+  public function getServiceContainer()
+  {
+    return parent::getServiceContainer();
+  }
+
+  public function getRouting()
+  {
+    return parent::getRouting();
+  }
+
+  public function getMailer()
+  {
+    return parent::getMailer();
+  }
 }
 
 chdir($rootDir);
@@ -98,3 +113,27 @@ catch (Exception $e)
   $t->diag($e->getMessage());
   $t->fail('->run() creates an application configuration if only a project configuration is set');
 }
+
+// ->getServiceContainer()
+$t->diag('->getServiceContainer()');
+$serviceContainer = $task->getServiceContainer();
+
+$t->ok($serviceContainer instanceof sfServiceContainer, '->getServiceContainer() returns an sfServiceContainer');
+$t->is($serviceContainer, $task->getServiceContainer(), '->getServiceContainer() returns always the same instance');
+$t->ok($serviceContainer->hasService('my_project_service'), '->getServiceContainer() is correctly configured');
+
+// ->getRouting()
+$t->diag('->getRouting()');
+$routing = $task->getRouting();
+
+$t->ok($routing instanceof sfRouting, '->getRouting() returns an sfPatternRouting');
+$t->is($routing, $task->getRouting(), '->getRouting() returns always the same instance');
+$t->ok($routing->hasRouteName('homepage'), '->getRouting() is correctly configured');
+
+// ->getMailer()
+$t->diag('->getMailer()');
+$mailer = $task->getMailer();
+
+$t->ok($mailer instanceof sfMailer, '->getMailer() returns an sfMailer');
+$t->is($mailer, $task->getMailer(), '->getMailer() returns always the same instance');
+$t->is($mailer->getDeliveryStrategy(), sfMailer::REALTIME, '->getMailer() is correctly configured');

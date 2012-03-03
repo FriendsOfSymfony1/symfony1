@@ -126,7 +126,7 @@ class sfValidatorFile extends sfValidatorBase
     switch ($value['error'])
     {
       case UPLOAD_ERR_INI_SIZE:
-        $max = ini_get('upload_max_filesize');
+        $max = $this->getMaxFilesize();
         if ($this->getOption('max_size'))
         {
           $max = min($max, $this->getOption('max_size'));
@@ -304,5 +304,32 @@ class sfValidatorFile extends sfValidatorBase
       (!is_array($value))
         ||
       (is_array($value) && isset($value['error']) && UPLOAD_ERR_NO_FILE === $value['error']);
+  }
+
+  /**
+   * Returns the maximum size of an uploaded file as configured in php.ini
+   *
+   * @return type The maximum size of an uploaded file in bytes
+   */
+  protected function getMaxFilesize()
+  {
+    $max = trim(ini_get('upload_max_filesize'));
+
+    if ('' === $max)
+    {
+      return PHP_INT_MAX;
+    }
+
+    switch (strtolower(substr($max, -1)))
+    {
+      case 'g':
+        $max *= 1024;
+      case 'm':
+        $max *= 1024;
+      case 'k':
+        $max *= 1024;
+    }
+
+    return (integer) $max;
   }
 }

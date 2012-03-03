@@ -80,6 +80,12 @@ If set to false, the following methods will not use the `HTTP_X_FORWARDED_*` ser
 The new `sfWebRequest::getClientIp()` method returns the client IP address that made the request.  
 It takes a `proxy` parameter. If set to `false`, the IP will never come from proxy that passed the request.
 
+Response
+--------
+
+A new method `sfWebResponse::prependTitle` have been added.  
+This allow you to prepend title to the previous defined title, split by default by a `-` separator.
+
 Filesystem
 ----------
 
@@ -117,7 +123,8 @@ The `sfAction::renderJson` have been added.
 Task
 ----
 
-A new method `sfBaseTask::withTrace()` have been added. This a proxy method to `sfCommandApplication::withTrace()` if available, returns `false` otherwise.
+A new method `sfBaseTask::withTrace()` have been added.  
+This a proxy method to `sfCommandApplication::withTrace()` if available, returns `false` otherwise.
 
 A new method `sfBaseTask::showStatus()` have been added.  
 This allow you to display a status bar with the progression, elapsed and reamaining time for repetitive actions in part of your task.
@@ -143,14 +150,21 @@ A new configuration `sf_upload_dir_name` contains 'uploads' have been added.
 Test
 ----
 
-A new option `test_path` have been added. This allow you to use another directory for unit tests temporary files storage.
+A new option `test_path` have been added.  
+This allow you to use another directory for unit tests temporary files storage.
 
 Doctrine
 --------
 
 ### Form generation
 
-Added column name for foreign key colums. This allow you to add foreign key on a non primary key (works only for indexed columns on Mysql).
+Added column name for foreign key colums.  
+This allow you to add foreign key on a non primary key (works only for indexed columns on Mysql).
+
+### Task
+
+A new option `skip-build` have been added to `sfDoctrineCreateModelTablesTask`.  
+This option allow you to skip the build model subtask called before the model creation.
 
 Tasks
 -----
