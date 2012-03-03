@@ -336,7 +336,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
   {
     if (!$validator instanceof sfValidatorBase)
     {
-      throw new InvalidArgumentException('A field must be an instance of sfValidatorBase.');
+      throw new InvalidArgumentException('A validator must be an instance of sfValidatorBase.');
     }
 
     $this->fields[$name] = clone $validator;
