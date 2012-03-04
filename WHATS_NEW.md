@@ -156,6 +156,11 @@ This allow you to use another directory for unit tests temporary files storage.
 Doctrine
 --------
 
+### Widget
+
+A new `sfWidgetFormDoctrineArrayChoice` have been added.
+This allow you to use an array builded by a table method of a model to increase performance. See unit tests for usage examples.
+
 ### Form generation
 
 Added column name for foreign key colums.  

@@ -15,4 +15,21 @@ class AuthorTable extends Doctrine_Table
     $q->addWhere('a.id > 0');
     return $q;
   }
+
+  public function getChoices($limit = null)
+  {
+    $q = $this->createQuery('a');
+    if (null !== $limit)
+    {
+      $q->limit($limit);
+    }
+    $choices = array();
+
+    foreach ($q->fetchArray() as $author)
+    {
+      $choices[$author['id']] = $author['name'];
+    }
+
+    return $choices;
+  }
 }
