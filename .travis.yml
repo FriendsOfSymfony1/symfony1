@@ -6,6 +6,6 @@ php:
   - 5.4
 
 before_script:
-  - ./tests/travis.sh
+  - ./test/travis.sh
 
 script: php -dshort_open_tag=Off -dmagic_quotes_gpc=Off data/bin/symfony symfony:test --trace
