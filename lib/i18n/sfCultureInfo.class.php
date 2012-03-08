@@ -772,15 +772,20 @@ class sfCultureInfo
       $allCurrencies = array_intersect_key($allCurrencies, array_flip($currencies));
     }
 
-    if (!$full)
+    foreach ($allCurrencies as $key => $value)
     {
-      foreach ($allCurrencies as $key => $value)
-      {
-        $allCurrencies[$key] = $value[1];
-      }
+      $allCurrencies[$key] = $value[1];
     }
 
     $this->sortArray($allCurrencies);
+
+    if ($full)
+    {
+        foreach ($allCurrencies as $key => $value)
+        {
+          $allCurrencies[$key] = array($key, $value);
+        }
+    }
 
     return $allCurrencies;
   }
@@ -846,7 +851,7 @@ class sfCultureInfo
   /**
    * sorts the passed array according to the locale of this sfCultureInfo class
    *
-   * @param  array the array to pe sorted wiht "asort" and this locale
+   * @param  array the array to be sorted with "asort" and this locale
    */
   public function sortArray(&$array)
   {
