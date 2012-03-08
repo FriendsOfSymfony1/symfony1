@@ -772,9 +772,11 @@ class sfCultureInfo
       $allCurrencies = array_intersect_key($allCurrencies, array_flip($currencies));
     }
 
+    $tmp = array();
     foreach ($allCurrencies as $key => $value)
     {
       $allCurrencies[$key] = $value[1];
+      $tmp[$key] = $value[0];
     }
 
     $this->sortArray($allCurrencies);
@@ -783,7 +785,7 @@ class sfCultureInfo
     {
         foreach ($allCurrencies as $key => $value)
         {
-          $allCurrencies[$key] = array($key, $value);
+          $allCurrencies[$key] = array($tmp[$key], $value);
         }
     }
 
