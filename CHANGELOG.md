@@ -32,8 +32,6 @@ CHANGELOG
  * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
  * removed sfPropelPlugin
 
- * reverted [33226] because of side effects (see http://trac.symfony-project.org/ticket/8348)
-
 08/03/12: Versions 1.4.17
 -------------------------
 
@@ -44,7 +42,7 @@ CHANGELOG
  * [33299] reverted [33226] because of side effects (refs #8348)
  * [33292] fixed test for PHP 5.3 (patch from pylebecq)
 
-12/13/12: Version 1.4.16
+12/13/11: Version 1.4.16
 ------------------------
 
  * [33251] fixed sfChoiceFormat when a string to translate contains a valid range (closes #9973)
