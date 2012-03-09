@@ -3,10 +3,9 @@ language: php
 php:
   - 5.2
   - 5.3
-  - 5.4
+#  - 5.4
 
 before_script:
-  - git submodule update --init --recursive
-  - php data/bin/check_configuration.php
+  - ./test/travis.sh
 
 script: php -dshort_open_tag=Off -dmagic_quotes_gpc=Off data/bin/symfony symfony:test --trace

@@ -32,7 +32,15 @@ CHANGELOG
  * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
  * removed sfPropelPlugin
 
- * reverted [33226] because of side effects (see http://trac.symfony-project.org/ticket/8348)
+08/03/12: Versions 1.4.17
+-------------------------
+
+ * [33363] added some tests (closes #3237, patch from Stephen.Ostrow)
+ * [33362] fixed a notice on PHP 5.4 (closes #9985, patch from bshaffer)
+ * [33358] fixed Notice with PHP 5.4 (closes #10003)
+ * [33309] fixed error in Debug mode from sfDebug.class.php when myUser implements sfSecurityUser (closes #9996)
+ * [33299] reverted [33226] because of side effects (refs #8348)
+ * [33292] fixed test for PHP 5.3 (patch from pylebecq)
 
 12/13/11: Version 1.4.16
 ------------------------
