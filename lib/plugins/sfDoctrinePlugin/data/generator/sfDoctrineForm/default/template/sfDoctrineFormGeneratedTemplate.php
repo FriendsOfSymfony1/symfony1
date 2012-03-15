@@ -74,7 +74,7 @@ abstract class Base<?php echo $this->modelName ?>Form extends <?php echo $this->
 <?php endforeach; ?>
   }
 
-  public function doUpdateObject($values)
+  protected function doUpdateObject($values)
   {
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
     $this->update<?php echo $relation['alias'] ?>List($values);
