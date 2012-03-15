@@ -29,7 +29,7 @@ class sfI18nYamlGeneratorExtractor extends sfI18nYamlExtractor
   {
     $this->strings = array();
 
-    $config = sfYaml::load($content);
+    $config = sfYaml::load($content, sfConfig::get('sf_charset', 'UTF-8'));
 
     if (!isset($config['generator']['param']['config']))
     {
@@ -82,7 +82,7 @@ class sfI18nYamlGeneratorExtractor extends sfI18nYamlExtractor
         }
       }
     }
-  
+
     return $this->strings;
   }
 
