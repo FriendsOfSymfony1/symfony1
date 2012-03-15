@@ -64,7 +64,7 @@ class sfYaml
    *
    * @throws InvalidArgumentException If the YAML is not valid
    */
-  public static function load($input)
+  public static function load($input, $encoding = 'UTF-8')
   {
     $file = '';
 
@@ -87,6 +87,14 @@ class sfYaml
       return $input;
     }
 
+    $mbConvertEncoding = false;
+    $encoding = strtoupper($encoding);
+    if ('UTF-8' != $encoding && function_exists('mb_convert_encoding'))
+    {
+      $input = mb_convert_encoding($input, 'UTF-8', $encoding);
+      $mbConvertEncoding = true;
+    }
+
     require_once dirname(__FILE__).'/sfYamlParser.php';
 
     $yaml = new sfYamlParser();
@@ -98,6 +106,11 @@ class sfYaml
     catch (Exception $e)
     {
       throw new InvalidArgumentException(sprintf('Unable to parse %s: %s', $file ? sprintf('file "%s"', $file) : 'string', $e->getMessage()));
+    }
+
+    if ($ret && $mbConvertEncoding)
+    {
+      $ret = self::arrayConvertEncoding($ret, $encoding);
     }
 
     return $ret;
@@ -121,6 +134,25 @@ class sfYaml
     $yaml = new sfYamlDumper();
 
     return $yaml->dump($array, $inline);
+  }
+
+  /**
+   * Converts all kayes and values from UTF-8 to given encoding
+   *
+   * @param  array  $result   Original result
+   * @param  string $encoding The expected encoding
+   * @param  array $convertedResult Converted result
+   * @return array
+   */
+  protected static function arrayConvertEncoding(array $result, $encoding, &$convertedResult = array())
+  {
+    foreach ($result as $key => $value)
+    {
+      $key = mb_convert_encoding($key, 'UTF-8', $encoding);
+      $convertedResult[$key] = is_array($value) ? self::arrayConvertEncoding($value, $encoding, $convertedArray) : mb_convert_encoding($value, $encoding, 'UTF-8');
+    }
+
+    return $convertedResult;
   }
 }
 

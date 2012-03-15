@@ -69,7 +69,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
     }
 
     // parse our config
-    $config = sfYaml::load($configFile);
+    $config = sfYaml::load($configFile, sfConfig::get('sf_charset', 'UTF-8'));
 
     if ($config === false)
     {
