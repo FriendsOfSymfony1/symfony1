@@ -23,7 +23,7 @@ define('SYMFONY_VERSION', '1.4.17-DEV');
  * @subpackage autoload
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfCoreAutoload.class.php 32415 2011-03-30 16:09:00Z Kris.Wallsmith
- $
+ *
  */
 class sfCoreAutoload
 {
@@ -472,11 +472,13 @@ class sfCoreAutoload
     'sfvalidatordatetime' => 'validator/sfValidatorDateTime.class.php',
     'sfvalidatordecorator' => 'validator/sfValidatorDecorator.class.php',
     'sfvalidatoremail' => 'validator/sfValidatorEmail.class.php',
+    'sfvalidatorequal' => 'validator/sfValidatorEqual.class.php',
     'sfvalidatorerror' => 'validator/sfValidatorError.class.php',
     'sfvalidatorerrorschema' => 'validator/sfValidatorErrorSchema.class.php',
     'sfvalidatorfile' => 'validator/sfValidatorFile.class.php',
     'sfvalidatorfromdescription' => 'validator/sfValidatorFromDescription.class.php',
     'sfvalidatorinteger' => 'validator/sfValidatorInteger.class.php',
+    'sfvalidatorip' => 'validator/sfValidatorIp.class.php',
     'sfvalidatornumber' => 'validator/sfValidatorNumber.class.php',
     'sfvalidatoror' => 'validator/sfValidatorOr.class.php',
     'sfvalidatorpass' => 'validator/sfValidatorPass.class.php',
@@ -484,7 +486,6 @@ class sfCoreAutoload
     'sfvalidatorschema' => 'validator/sfValidatorSchema.class.php',
     'sfvalidatorschemacompare' => 'validator/sfValidatorSchemaCompare.class.php',
     'sfvalidatorschemafilter' => 'validator/sfValidatorSchemaFilter.class.php',
-    'sfvalidatorschemaforeach' => 'validator/sfValidatorSchemaForEach.class.php',
     'sfvalidatorstring' => 'validator/sfValidatorString.class.php',
     'sfvalidatortime' => 'validator/sfValidatorTime.class.php',
     'sfvalidatorurl' => 'validator/sfValidatorUrl.class.php',
@@ -515,10 +516,10 @@ class sfCoreAutoload
     'sfwidgetforminputfileeditable' => 'widget/sfWidgetFormInputFileEditable.class.php',
     'sfwidgetforminputhidden' => 'widget/sfWidgetFormInputHidden.class.php',
     'sfwidgetforminputpassword' => 'widget/sfWidgetFormInputPassword.class.php',
+    'sfwidgetforminputread' => 'widget/sfWidgetFormInputRead.class.php',
     'sfwidgetforminputtext' => 'widget/sfWidgetFormInputText.class.php',
     'sfwidgetformschema' => 'widget/sfWidgetFormSchema.class.php',
     'sfwidgetformschemadecorator' => 'widget/sfWidgetFormSchemaDecorator.class.php',
-    'sfwidgetformschemaforeach' => 'widget/sfWidgetFormSchemaForEach.class.php',
     'sfwidgetformschemaformatter' => 'widget/sfWidgetFormSchemaFormatter.class.php',
     'sfwidgetformschemaformatterlist' => 'widget/sfWidgetFormSchemaFormatterList.class.php',
     'sfwidgetformschemaformattertable' => 'widget/sfWidgetFormSchemaFormatterTable.class.php',

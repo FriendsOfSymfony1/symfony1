@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(84);
+$t = new lime_test(85);
 
 class PreValidator extends sfValidatorBase
 {
@@ -20,6 +20,8 @@ class PreValidator extends sfValidatorBase
     {
       throw new sfValidatorError($this, 's1_or_s2', array('value' => $values));
     }
+
+    return array_map('strtoupper', $values);
   }
 }
 
@@ -173,6 +175,9 @@ catch (sfValidatorErrorSchema $e)
   $t->is(count($e), 1, '->clean() throws an exception with all error messages');
   $t->is($e[0]->getCode(), 's1_or_s2', '->clean() throws an exception with all error messages');
 }
+
+$s = $v->clean(array('s1' => 'foo'));
+$t->is('FOO', $s['s1'], '->clean() takes values returned by pre-validator');
 
 // ->getPostValidator() ->setPostValidator()
 $t->diag('->getPostValidator() ->setPostValidator()');

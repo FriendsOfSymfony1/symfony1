@@ -58,7 +58,7 @@ class sfWidgetFormDateTime extends sfWidgetForm
    *
    * @see sfWidgetForm
    */
-  function render($name, $value = null, $attributes = array(), $errors = array())
+  public function render($name, $value = null, $attributes = array(), $errors = array())
   {
     $date = $this->getDateWidget($attributes)->render($name, $value);
 

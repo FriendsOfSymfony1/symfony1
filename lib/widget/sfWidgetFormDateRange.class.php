@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -70,7 +70,7 @@ class sfWidgetFormDateRange extends sfWidgetForm
    */
   public function getStylesheets()
   {
-    return array_unique(array_merge($this->getOption('from_date')->getStylesheets(), $this->getOption('to_date')->getStylesheets()));
+    return array_merge($this->getOption('from_date')->getStylesheets(), $this->getOption('to_date')->getStylesheets());
   }
 
   /**
@@ -80,6 +80,6 @@ class sfWidgetFormDateRange extends sfWidgetForm
    */
   public function getJavaScripts()
   {
-    return array_unique(array_merge($this->getOption('from_date')->getJavaScripts(), $this->getOption('to_date')->getJavaScripts()));
+    return array_merge($this->getOption('from_date')->getJavaScripts(), $this->getOption('to_date')->getJavaScripts());
   }
 }

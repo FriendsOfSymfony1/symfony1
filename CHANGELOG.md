@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+ * Added sfFormObject::saveObject() method
  * Added skip-build option to sfDoctrineCreateModelTablesTask (patch from @estahn)
  * better code coverage for sfWebRequest class unit tests
  * added parameters proxy to sfWebRequest::getClientIp() method (default true)

@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -157,12 +157,13 @@ abstract class sfWidget
    * Gets an option value.
    *
    * @param  string $name The option name
+   * @param  string $default A default value if option does not exists
    *
    * @return mixed  The option value
    */
-  public function getOption($name)
+  public function getOption($name, $default = null)
   {
-    return isset($this->options[$name]) ? $this->options[$name] : null;
+    return isset($this->options[$name]) ? $this->options[$name] : $default;
   }
 
   /**
@@ -385,8 +386,12 @@ abstract class sfWidget
   public function attributesToHtml($attributes)
   {
     $attributes = array_merge($this->attributes, $attributes);
+    foreach ($attributes as $key => &$value)
+    {
+      $value = $this->attributesToHtmlCallback($key, $value);
+    }
 
-    return implode('', array_map(array($this, 'attributesToHtmlCallback'), array_keys($attributes), array_values($attributes)));
+    return implode('', $attributes);
   }
 
   /**

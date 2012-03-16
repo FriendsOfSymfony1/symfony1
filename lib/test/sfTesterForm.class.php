@@ -137,7 +137,11 @@ class sfTesterForm extends sfTester
 
     if (null === $field)
     {
-      $error = new sfValidatorErrorSchema(new sfValidatorPass(), $this->form->getGlobalErrors());
+      $error = new sfValidatorErrorSchema(new sfValidatorPass());
+      foreach ($this->form->getGlobalErrors() as $globalError)
+      {
+        $error->addError($globalError);
+      }
     }
     else
     {
