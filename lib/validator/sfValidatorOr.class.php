@@ -53,7 +53,7 @@ class sfValidatorOr extends sfValidatorBase
     {
       throw new InvalidArgumentException('sfValidatorOr constructor takes a sfValidatorBase object, or a sfValidatorBase array.');
     }
-    
+
     parent::__construct($options, $messages);
   }
 
@@ -90,7 +90,7 @@ class sfValidatorOr extends sfValidatorBase
    */
   protected function doClean($value)
   {
-    $errors = array();
+    $errors = new sfValidatorErrorSchema($this);
     foreach ($this->validators as $validator)
     {
       try
@@ -99,7 +99,7 @@ class sfValidatorOr extends sfValidatorBase
       }
       catch (sfValidatorError $e)
       {
-        $errors[] = $e;
+        $errors->addError($e);
       }
     }
 
@@ -108,7 +108,7 @@ class sfValidatorOr extends sfValidatorBase
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
     }
 
-    throw new sfValidatorErrorSchema($this, $errors);
+    throw $errors;
   }
 
   /**

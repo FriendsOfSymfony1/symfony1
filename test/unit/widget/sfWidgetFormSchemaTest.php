@@ -46,44 +46,44 @@ $w = new sfWidgetFormSchema();
 $w['w1'] = $w1;
 $w['w2'] = $w2;
 $w1->setParent($w); $w2->setParent($w);
-$t->ok($w->getFields() == array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->ok($w->getFields() == array('w1' => $w1, 'w2' => $w2), '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 $t->is($w1->getParent(), $w, 'The widget schema is associated with the fields');
 $t->is($w2->getParent(), $w, 'The widget schema is associated with the fields');
 
 try
 {
   $w['w1'] = 'string';
-  $t->fail('sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+  $t->fail('"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 }
 catch (LogicException $e)
 {
-  $t->pass('sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+  $t->pass('"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 }
 
 $w = new sfWidgetFormSchema(array('w1' => $w1));
-$t->is(isset($w['w1']), true, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
-$t->is(isset($w['w2']), false, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->is(isset($w['w1']), true, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
+$t->is(isset($w['w2']), false, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 
 $w = new sfWidgetFormSchema(array('w1' => $w1));
 $w1->setParent($w); $w2->setParent($w);
-$t->ok($w['w1'] == $w1, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
-$t->is($w['w2'], null, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->ok($w['w1'] == $w1, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
+$t->is($w['w2'], null, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 
 $w = new sfWidgetFormSchema(array('w1' => $w1, 'w2' => $w2));
 unset($w['w1']);
-$t->is($w['w1'], null, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
-$t->is($w->getPositions(), array('w2'), 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->is($w['w1'], null, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
+$t->is($w->getPositions(), array('w2'), '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 
 // unset with numeric keys
 $w = new sfWidgetFormSchema(array('0' => $w1, 'w2' => $w2));
 unset($w['w2']);
-$t->is($w['w2'], null, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
-$t->is($w->getPositions(), array('0'), 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->is($w['w2'], null, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
+$t->is($w->getPositions(), array('0'), '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 
 $w = new sfWidgetFormSchema(array('w1' => $w1, '0' => $w2));
 unset($w[0]);
-$t->is($w[0], null, 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
-$t->is($w->getPositions(), array('w1'), 'sfWidgetFormSchema implements the ArrayAccess interface for the fields');
+$t->is($w[0], null, '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
+$t->is($w->getPositions(), array('w1'), '"sfWidgetFormSchema" implements the ArrayAccess interface for the fields');
 
 
 // ->addFormFormatter() ->setFormFormatterName() ->getFormFormatterName() ->getFormFormatter() ->getFormFormatters()

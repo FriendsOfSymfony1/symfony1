@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(163);
+$t = new lime_test(153);
 
 class FormTest extends sfForm
 {
@@ -619,30 +619,35 @@ $t->diag('->embedForm()');
 $author = new FormTest(array('first_name' => 'Fabien'));
 $author->setWidgetSchema($author_widget_schema = new sfWidgetFormSchema(array('first_name' => new sfWidgetFormInputText())));
 $author->setValidatorSchema($author_validator_schema = new sfValidatorSchema(array('first_name' => new sfValidatorString(array('min_length' => 2)))));
+$author->addCSRFProtection(null);
+
 
 $company = new FormTest();
 $company->setWidgetSchema($company_widget_schema = new sfWidgetFormSchema(array('name' => new sfWidgetFormInputText())));
 $company->setValidatorSchema($company_validator_schema = new sfValidatorSchema(array('name' => new sfValidatorString(array('min_length' => 2)))));
+$company->addCSRFProtection(null);
 
 $article = new FormTest();
 $article->setWidgetSchema($article_widget_schema = new sfWidgetFormSchema(array('title' => new sfWidgetFormInputText())));
 $article->setValidatorSchema($article_validator_schema = new sfValidatorSchema(array('title' => new sfValidatorString(array('min_length' => 2)))));
+$article->addCSRFProtection(null);
 
 $author->embedForm('company', $company);
 $article->embedForm('author', $author);
 $v = $article->getValidatorSchema();
 $w = $article->getWidgetSchema();
 $d = $article->getDefaults();
+$f = $article->getEmbeddedForms();
 
 $w->setNameFormat('article[%s]');
 
-$t->ok($v['author']['first_name'] == $author_validator_schema['first_name'], '->embedForm() embeds the validator schema');
+$t->ok($v['author'] instanceof sfValidatorPass, '->embedForm() set validator pass');
 // ignore parents in comparison
 $w['author']['first_name']->setParent(null); $author_widget_schema['first_name']->setParent(null);
 $t->ok($w['author']['first_name'] == $author_widget_schema['first_name'], '->embedForm() embeds the widget schema');
 $t->is($d['author']['first_name'], 'Fabien', '->embedForm() merges default values from the embedded form');
-$t->is($v['author'][sfForm::getCSRFFieldName()], null, '->embedForm() removes the CSRF token for the embedded form');
 $t->is($w['author'][sfForm::getCSRFFieldName()], null, '->embedForm() removes the CSRF token for the embedded form');
+$t->ok(!isset($f['author'][sfForm::getCSRFFieldName()]), '->embedForm() removes the CSRF token for the embedded form');
 
 $t->is($w['author']->generateName('first_name'), 'article[author][first_name]', '->embedForm() changes the name format to reflect the embedding');
 $t->is($w['author']['company']->generateName('name'), 'article[author][company][name]', '->embedForm() changes the name format to reflect the embedding');
@@ -654,33 +659,15 @@ $f1->embedForm('f2', $f2);
 $t->is($f1['f2']['c']->render(), '<textarea rows="4" cols="30" name="f2[c]" id="f2_c"></textarea>', '->embedForm() generates a correct id in embedded form fields');
 $t->is($f1['f2']['c']->renderLabel(), '<label for="f2_c">2_c</label>', '->embedForm() generates a correct label id correctly in embedded form fields');
 
-// ->embedFormForEach()
-$t->diag('->embedFormForEach()');
-$article->embedFormForEach('authors', $author, 2, null, null, array('id_format' => '%s_id'), array('class' => 'embedded'));
-$v = $article->getValidatorSchema();
-$w = $article->getWidgetSchema();
-$d = $article->getDefaults();
-$w->setNameFormat('article[%s]');
-
-for ($i = 0; $i < 2; $i++)
-{
-  $t->ok($v['authors'][$i]['first_name'] == $author_validator_schema['first_name'], '->embedFormForEach() embeds the validator schema');
-  // ignore the parents in comparison
-  $w['authors'][$i]['first_name']->setParent(null); $author_widget_schema['first_name']->setParent(null);
-  $t->ok($w['authors'][$i]['first_name'] == $author_widget_schema['first_name'], '->embedFormForEach() embeds the widget schema');
-  $t->is($d['authors'][$i]['first_name'], 'Fabien', '->embedFormForEach() merges default values from the embedded forms');
-  $t->is($v['authors'][$i][sfForm::getCSRFFieldName()], null, '->embedFormForEach() removes the CSRF token for the embedded forms');
-  $t->is($w['authors'][$i][sfForm::getCSRFFieldName()], null, '->embedFormForEach() removes the CSRF token for the embedded forms');
-}
-
-$t->is($w['authors'][0]->generateName('first_name'), 'article[authors][0][first_name]', '->embedFormForEach() changes the name format to reflect the embedding');
-
 // bind too many values for embedded forms
 $t->diag('bind too many values for embedded forms');
 $list = new FormTest();
 $list->setWidgets(array('title' => new sfWidgetFormInputText()));
 $list->setValidators(array('title' => new sfValidatorString()));
-$list->embedFormForEach('items', clone $list, 2);
+$containerForm = new sfForm();
+$containerForm->embedForm('0', clone $list);
+$containerForm->embedForm('1', clone $list);
+$list->embedForm('items', $containerForm);
 $list->bind(array(
   'title' => 'list title',
   'items' => array(
@@ -979,3 +966,30 @@ $f = new NumericFieldsForm(array('5' => 'default'));
 $t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'default'), '->getFormFieldSchema() includes default numeric fields');
 $f->bind(array('5' => 'bound'));
 $t->is_deeply($f->getFormFieldSchema()->getValue(), array('5' => 'bound'), '->getFormFieldSchema() includes bound numeric fields');
+
+// ->getErrors()
+$t->diag('->getErrors()');
+
+$f1 = new TestForm1();
+$f21 = new TestForm1();
+$f2 = new TestForm2();
+$f2->embedForm('F21', $f21);
+$f1->embedForm('F2', $f2);
+$f1->bind(array());
+$expected = array (
+  '1_a' => 'Required.',
+  '1_b' => 'Required.',
+  '1_c' => 'Required.',
+  'F2' =>
+  array (
+    '2_d' => 'Required.',
+    'F21' =>
+    array (
+      '1_a' => 'Required.',
+      '1_b' => 'Required.',
+      '1_c' => 'Required.',
+    ),
+  ),
+);
+
+$t->is($f1->getErrors(), $expected, '->getErrors() return array of errors');

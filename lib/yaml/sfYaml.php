@@ -141,15 +141,29 @@ class sfYaml
    *
    * @param  array  $result   Original result
    * @param  string $encoding The expected encoding
-   * @param  array $convertedResult Converted result
    * @return array
    */
-  protected static function arrayConvertEncoding(array $result, $encoding, &$convertedResult = array())
+  protected static function arrayConvertEncoding(array $result, $encoding)
   {
+    $convertedResult = array();
     foreach ($result as $key => $value)
     {
-      $key = mb_convert_encoding($key, 'UTF-8', $encoding);
-      $convertedResult[$key] = is_array($value) ? self::arrayConvertEncoding($value, $encoding, $convertedArray) : mb_convert_encoding($value, $encoding, 'UTF-8');
+      if (is_string($key))
+      {
+        $key = mb_convert_encoding($key, $encoding, 'UTF-8');
+      }
+      if (is_array($value))
+      {
+        $convertedResult[$key] = self::arrayConvertEncoding($value, $encoding);
+      }
+      else if (is_string($value))
+      {
+        $convertedResult[$key] = mb_convert_encoding($value, $encoding, 'UTF-8');
+      }
+      else
+      {
+        $convertedResult[$key] = $value;
+      }
     }
 
     return $convertedResult;

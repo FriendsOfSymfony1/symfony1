@@ -120,7 +120,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     // pre validator
     try
     {
-      $this->preClean($values);
+      $values = $this->preClean($values);
     }
     catch (sfValidatorErrorSchema $e)
     {
@@ -218,16 +218,18 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
    *
    * @param  array $values  The input values
    *
+   * @return array The cleaned values
+   *
    * @throws sfValidatorError
    */
   public function preClean($values)
   {
     if (null === $validator = $this->getPreValidator())
     {
-      return;
+      return $values;
     }
 
-    $validator->clean($values);
+    return $validator->clean($values);
   }
 
   /**
@@ -334,7 +336,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
   {
     if (!$validator instanceof sfValidatorBase)
     {
-      throw new InvalidArgumentException('A field must be an instance of sfValidatorBase.');
+      throw new InvalidArgumentException('A validator must be an instance of sfValidatorBase.');
     }
 
     $this->fields[$name] = clone $validator;

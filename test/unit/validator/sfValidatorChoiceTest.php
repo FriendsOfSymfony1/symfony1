@@ -10,11 +10,19 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(13);
+$t = new lime_test(14);
 
 function choice_callable()
 {
   return array(1, 2, 3);
+}
+
+class ValidatorChoiceTestIsEmpty extends sfValidatorChoice
+{
+  public function run($value)
+  {
+    return $this->isEmpty($value);
+  }
 }
 
 // __construct()
@@ -28,6 +36,12 @@ catch (RuntimeException $e)
 {
   $t->pass('__construct() throws an RuntimeException if you don\'t pass an expected option');
 }
+
+$v = new ValidatorChoiceTestIsEmpty(array('choices' => array('foo', 'bar')));
+
+// ->isEmpty()
+$t->diag('->isEmpty()');
+$t->is($v->run(array('', '')), true, '->isEmpty() return true if array has only empty value(s)');
 
 $v = new sfValidatorChoice(array('choices' => array('foo', 'bar')));
 

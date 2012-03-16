@@ -4,6 +4,52 @@ Service container
 A service container have been added (extracted from the [symfony dependency injection component](http://components.symfony-project.org/dependency-injection/).  
 [More details](https://github.com/LExpress/symfony1/wiki/ServiceContainer) about the integration on symfony core.
 
+Form
+----
+
+Many issues have been fixed for embedded form included:
+
+* You can use `sfFormObject::updateObject()` without save, all embedded form objects are updated.
+* You can use file upload into your embedded forms, files will be correctly removed in embedded forms using `sfWidgetFormInputFileEditable`.
+* `sfFormObject::updateObject()` and `sfFormObject::save()` methods are call recursivly from embeded forms.
+* You can use integer in `name` argument of `sfForm::embedForm`.
+
+This fixes the following tickets :
+
+* http://trac.symfony-project.org/ticket/4903
+* http://trac.symfony-project.org/ticket/5805
+* http://trac.symfony-project.org/ticket/5867
+* http://trac.symfony-project.org/ticket/6937
+* http://trac.symfony-project.org/ticket/7032
+* http://trac.symfony-project.org/ticket/7440
+* http://trac.symfony-project.org/ticket/8500
+* http://trac.symfony-project.org/ticket/8800
+* http://trac.symfony-project.org/ticket/9147
+* http://trac.symfony-project.org/ticket/9172
+* http://trac.symfony-project.org/ticket/9637
+
+[BC Break] The form is not cloned anymore when you passed it to `sfForm::embedForm`.
+
+The method `sfForm::embedFormForForeach()` have been removed.
+
+A new method `sfForm::getErrors()` have been added.  
+This method returns an array with label as key and the validation error message as value (included embedded form errors).
+
+Widget
+------
+
+A new parameter `default` have been added to the method `sfWidget::getOption`.
+
+New widget `sfWidgetFormInputRead` have been added.  
+This allow you to display a readonly input without border, with the value of your choice AND an hidden input with real value and name for submit.
+
+The method `sfWidgetFormDateRange::getStylesheets()` does not try to remove duplicate (fixes http://trac.symfony-project.org/ticket/9224).
+
+Validator
+---------
+
+A new `sfValidatorIp`have been added (extracted from symfony2).
+
 Action
 ------
 
@@ -47,6 +93,21 @@ Filesystem
 
 Validator
 ---------
+
+The method `sfValidatorSchema::preClean` now returns cleaned values (fixes http://trac.symfony-project.org/ticket/5952).  
+This allow you to modified into validotors defined in your form `preValidator.
+
+The method `sfValidatorErrorSchema::addError` accept all possible name different of `null` as second argement.  
+This allow you to set integer name for named error (fixes http://trac.symfony-project.org/ticket/6112).
+
+Also, the method `sfValidatorErrorSchema::addError` uses much less memory for complex form with many (recursive) embedded forms.
+
+[BC Break] The method `sfValidatorErrorSchema::addErrors` only accept an `sfValidatorErrorSchema` instance as argument.
+
+[BC Break] The `sfValidatorErrorSchema` constructor no longer accept an array of errors as second argument.
+
+A new `sfValidatorEqual` have been added.  
+It take one required `value` option an an optional `strict` to compare strictly or not.
 
 The `sfValidatorFile` now returns size error in Kilo Byte instead of Byte.
 
@@ -94,6 +155,12 @@ This allow you to use another directory for unit tests temporary files storage.
 
 Doctrine
 --------
+
+### Widget
+
+A new `sfWidgetFormDoctrineArrayChoice` have been added.  
+This allow you to use an array builded by a table method of a model to increase performance.  
+See unit tests for usage examples.
 
 ### Form generation
 
