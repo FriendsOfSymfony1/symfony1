@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/LExpress/symfony1.png?branch=form)](http://travis-ci.org/LExpress/symfony1)
+[![Build Status](https://secure.travis-ci.org/LExpress/symfony1.png)](http://travis-ci.org/LExpress/symfony1)
 
 Symfony is a complete framework designed to optimize the development of web applications by way of several key features.
 For starters, it separates a web application's business rules, server logic, and presentation views.
