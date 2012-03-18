@@ -8,11 +8,7 @@
  * file that was distributed with this source code.
  */
 
-$_test_dir = realpath(dirname(__FILE__).'/../..');
-require_once($_test_dir.'/../lib/vendor/lime/lime.php');
-require_once($_test_dir.'/../lib/yaml/sfYaml.php');
-require_once($_test_dir.'/../lib/yaml/sfYamlParser.php');
-require_once($_test_dir.'/../lib/yaml/sfYamlDumper.php');
+require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
 sfYaml::setSpecVersion('1.1');
 

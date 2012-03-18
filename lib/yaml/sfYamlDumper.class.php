@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/sfYamlInline.php');
-
 /**
  * sfYamlDumper dumps PHP variables to YAML strings.
  *

@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,7 @@
  * sfServiceContainerLoader is the abstract class used by all built-in loaders.
  *
  * @package    symfony
- * @subpackage dependency_injection
+ * @subpackage service
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfServiceContainerLoader.php 267 2009-03-26 19:56:18Z fabien $
  */

@@ -8,10 +8,7 @@
  * file that was distributed with this source code.
  */
 
-$_test_dir = realpath(dirname(__FILE__).'/../..');
-require_once($_test_dir.'/../lib/vendor/lime/lime.php');
-require_once($_test_dir.'/../lib/event_dispatcher/sfEvent.php');
-require_once($_test_dir.'/../lib/event_dispatcher/sfEventDispatcher.php');
+require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
 $t = new lime_test(19);
 

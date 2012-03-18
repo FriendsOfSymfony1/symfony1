@@ -2,21 +2,21 @@
 
 /*
  * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 /**
- * sfServiceParameter represents a parameter reference.
+ * sfServiceReference represents a service reference.
  *
  * @package    symfony
- * @subpackage dependency_injection
+ * @subpackage service
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfServiceReference.php 267 2009-03-26 19:56:18Z fabien $
  */
-class sfServiceParameter
+class sfServiceReference
 {
   protected
     $id = null;
@@ -24,7 +24,7 @@ class sfServiceParameter
   /**
    * Constructor.
    *
-   * @param string $id The parameter key
+   * @param string $id The service identifier
    */
   public function __construct($id)
   {
@@ -34,7 +34,7 @@ class sfServiceParameter
   /**
    * __toString.
    *
-   * @return string The parameter key
+   * @return string The service identifier
    */
   public function __toString()
   {

@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -12,7 +12,7 @@
  * sfEvent.
  *
  * @package    symfony
- * @subpackage event_dispatcher
+ * @subpackage event
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfEvent.class.php 8698 2008-04-30 16:35:28Z fabien $
  */
@@ -143,7 +143,7 @@ class sfEvent implements ArrayAccess
    * Sets a parameter (implements the ArrayAccess interface).
    *
    * @param string  $name   The parameter name
-   * @param mixed   $value  The parameter value 
+   * @param mixed   $value  The parameter value
    */
   public function offsetSet($name, $value)
   {

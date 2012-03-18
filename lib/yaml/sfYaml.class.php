@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -95,8 +95,6 @@ class sfYaml
       $mbConvertEncoding = true;
     }
 
-    require_once dirname(__FILE__).'/sfYamlParser.php';
-
     $yaml = new sfYamlParser();
 
     try
@@ -129,8 +127,6 @@ class sfYaml
    */
   public static function dump($array, $inline = 2)
   {
-    require_once dirname(__FILE__).'/sfYamlDumper.php';
-
     $yaml = new sfYamlDumper();
 
     return $yaml->dump($array, $inline);
@@ -168,14 +164,4 @@ class sfYaml
 
     return $convertedResult;
   }
-}
-
-/**
- * Wraps echo to automatically provide a newline.
- *
- * @param string $string The string to echo with new line
- */
-function echoln($string)
-{
-  echo $string."\n";
 }

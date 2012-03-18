@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-require_once dirname(__FILE__).'/sfYaml.php';
-
 /**
  * sfYamlInline implements a YAML parser/dumper for the YAML inline syntax.
  *
