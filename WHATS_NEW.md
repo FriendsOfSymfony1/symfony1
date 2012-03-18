@@ -48,7 +48,7 @@ The method `sfWidgetFormDateRange::getStylesheets()` does not try to remove dupl
 Validator
 ---------
 
-A new `sfValidatorIp`have been added (extracted from symfony2).
+A new `sfValidatorIp` have been added (extracted from symfony2).
 
 Action
 ------
