@@ -230,8 +230,15 @@ EOF;
         }
         $class = $class['class'];
       }
-      $cache = new $class($parameters);
-      $cache->clean();
+      try
+      {
+        $cache = new $class($parameters);
+        $cache->clean();
+      }
+      catch (Exception $e)
+      {
+        $this->logSection('error', $e->getMessage(), 255, 'ERROR');
+      }
     }
   }
 
