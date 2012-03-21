@@ -426,6 +426,8 @@ abstract class sfCommandApplication
       }
 
       fwrite(STDERR, "\n");
+
+      $this->dispatcher->notify(new sfEvent($e, 'application.throw_exception'));
     }
   }
 
