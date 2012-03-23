@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+ * added task doctrine:compile to package the library into an unique cached file
  * added unit tests for yaml and event classes
  * added sfWidgetFormDoctrineArrayChoice widget
  * added sfFormObject::saveObject() method
