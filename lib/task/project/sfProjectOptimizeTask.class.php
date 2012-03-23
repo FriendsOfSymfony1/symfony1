@@ -51,6 +51,9 @@ EOF;
     $modules = $this->findModules();
     $target = sfConfig::get('sf_cache_dir').'/'.$arguments['application'].'/'.$arguments['env'].'/config/configuration.php';
 
+    $current_umask = umask();
+    umask(0000);
+
     // remove existing optimization file
     if (file_exists($target))
     {
@@ -58,7 +61,7 @@ EOF;
     }
 
     // recreate configuration without the cache
-    $this->setConfiguration($this->createConfiguration($this->configuration->getApplication(), $this->configuration->getEnvironment()));
+    $this->setConfiguration($this->createConfiguration($arguments['application'], $arguments['env']));
 
     // initialize the context
     sfContext::createInstance($this->configuration);
@@ -66,7 +69,8 @@ EOF;
     // force cache generation for generated modules
     foreach ($modules as $module)
     {
-      $this->configuration->getConfigCache()->import('modules/'.$module.'/config/generator.yml', false, true);
+      $this->logSection('module', $module);
+      $this->configuration->getConfigCache()->checkConfig('modules/'.$module.'/config/generator.yml',  true);
     }
 
     $templates = $this->findTemplates($modules);
@@ -83,6 +87,8 @@ EOF;
 
     $this->logSection('file+', $target);
     file_put_contents($target, '<?php return '.var_export($data, true).';');
+
+    umask($current_umask);
   }
 
   protected function optimizeGetControllerDirs($modules)
