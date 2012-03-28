@@ -28,9 +28,9 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
    * Constructor.
    *
    * @param sfValidatorBase $validator  An sfValidatorBase instance
-   * @param array           $errors     An array of errors
+   * @param array           $errors     An array of errors, depreciated
    */
-  public function __construct(sfValidatorBase $validator)
+  public function __construct(sfValidatorBase $validator, $errors = array())
   {
     $this->validator = $validator;
     $this->arguments = array();
@@ -38,6 +38,11 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
     // override default exception message and code
     $this->code    = '';
     $this->message = '';
+
+    foreach ($errors as $name => $error)
+    {
+      $this->addError($error, is_numeric($name) ? null : $name);
+    }
   }
 
   /**

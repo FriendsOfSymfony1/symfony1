@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(32);
+$t = new lime_test(33);
 
 $v1 = new sfValidatorString();
 $v2 = new sfValidatorString();
@@ -23,6 +23,8 @@ $e = new sfValidatorErrorSchema($v1);
 // __construct()
 $t->diag('__construct()');
 $t->is($e->getValidator(), $v1, '__construct() takes a sfValidator as its first argument');
+$e = new sfValidatorErrorSchema($v1, array('e1' => $e1, 'e2' => $e2));
+$t->is($e->getErrors(), array('e1' => $e1, 'e2' => $e2), '__construct() can take an array of sfValidatorError as its second argument (depreciated)');
 
 // ->addError() ->getErrors()
 $t->diag('->addError() ->getErrors()');
