@@ -95,7 +95,7 @@ EOF;
 
     if (is_dir($webDir))
     {
-      $this->getFilesystem()->relativeSymlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+      $this->getFilesystem()->symlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
     }
   }
 }
