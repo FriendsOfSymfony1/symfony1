@@ -1181,7 +1181,11 @@ class sfForm implements ArrayAccess, Iterator, Countable
 
     if ($this->hasGlobalErrors())
     {
-      $errors['_globals'] = $this->getGlobalErrors();
+      $errors['_globals'] = array();
+      foreach ($this->getGlobalErrors() as $name => $error)
+      {
+        $errors['_globals'][$name] = $error->getMessage();
+      }
     }
 
     foreach ($this as $name => $field)
