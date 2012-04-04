@@ -98,13 +98,13 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     $configCache = $this->getConfigCache();
 
     // in debug mode, start global timer
-    if ($this->isDebug() && !sfWebDebugPanelTimer::isStarted())
+    if ($this->isDebug() && !sfConfig::get('sf_cli') && !sfWebDebugPanelTimer::isStarted())
     {
       sfWebDebugPanelTimer::startTime();
     }
 
     // required core classes for the framework
-    if (!$this->isDebug() && !sfConfig::get('sf_test') && !self::$coreLoaded)
+    if (!$this->isDebug() && !sfConfig::get('sf_test') && !sfConfig::get('sf_cli') && !self::$coreLoaded)
     {
       $configCache->import('config/core_compile.yml', false);
     }
@@ -124,7 +124,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
       include($file);
     }
 
-    if (false !== sfConfig::get('sf_csrf_secret'))
+    if (!sfConfig::get('sf_cli') && false !== sfConfig::get('sf_csrf_secret'))
     {
       sfForm::enableCSRFProtection(sfConfig::get('sf_csrf_secret'));
     }
@@ -178,10 +178,10 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
 
   /**
    * Adds enabled plugins to autoload config.
-   * 
+   *
    * @param   sfEvent $event
    * @param   array   $config
-   * 
+   *
    * @return  array
    */
   public function filterAutoloadConfig(sfEvent $event, array $config)
@@ -288,6 +288,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
       'sf_app'         => $this->getApplication(),
       'sf_environment' => $this->getEnvironment(),
       'sf_debug'       => $this->isDebug(),
+      'sf_cli'         => 0 === strncasecmp(PHP_SAPI, 'cli', 3)
     ));
 
     $this->setAppDir(sfConfig::get('sf_apps_dir').DIRECTORY_SEPARATOR.$this->getApplication());
