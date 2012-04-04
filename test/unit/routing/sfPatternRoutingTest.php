@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(145);
+$t = new lime_test(149);
 
 class sfPatternRoutingTest extends sfPatternRouting
 {
@@ -37,6 +37,11 @@ class sfPatternRoutingTest extends sfPatternRouting
   public function isRouteLoaded($name)
   {
     return isset($this->routes[$name]) && is_object($this->routes[$name]);
+  }
+
+  protected function getConfigFileName()
+  {
+    return dirname(__FILE__).'/fixtures/config_routing.yml.php';
   }
 }
 
@@ -627,3 +632,15 @@ $r->connect('posts_pages', new sfRoute('/posts/:page', array('module' => 'posts'
 $t->is($r->generate('', array('module' => 'posts', 'action' => 'index')), '/posts.html', '->generate() creates URL when using suffix and generate_shortest_url');
 $t->is($r->generate('', array('module' => 'posts', 'action' => 'index', 'page' => '1')), '/posts.html', '->generate() creates URL when using suffix and generate_shortest_url');
 $t->is($r->generate('', array('module' => 'posts', 'action' => 'index', 'page' => '2')), '/posts/2.html', '->generate() creates URL when using suffix and generate_shortest_url');
+
+
+$t->diag('load_configuration with serialized routes');
+
+// see fixtures/config_routing.yml.php
+$r = new sfPatternRoutingTest(new sfEventDispatcher(), new sfNoCache(), array('load_configuration' => true));
+$t->ok($r->hasRouteName('test1'), '->loadConfiguration() Config file is loaded');
+$routes = $r->getRoutes();
+$t->ok(is_string($routes['test1']), '->loadConfiguration() Route objects are not serialized in cache');
+$route = $r->getRoute('test1');
+$t->ok(is_object($route), '->loadConfiguration() Route objects are unserialized on demand');
+$t->is_deeply($r->parse('/'), array('module' => 'default', 'action' => 'index'), '->parse() Default parameters are applied to serialized routes');
