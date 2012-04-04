@@ -1,39 +1,74 @@
 CHANGELOG
 =========
 
+ * added logger into service container for command
+ * optimized sfPatternRouting cache with unserialise sfRoute objects on demand, huge gain with lookup_cache_dedicated_keys
+ * added sf_cli core configuration
+ * added default option --no-debug for tasks (usefull for project:optimize task)
+ * used is_file instead of file_exists in sfFileCache, sfAutoload, sfApplicationConfiguration, sfProjectConfiguration and sfSessionTestStorage classes
+ * added sfBaseTask::isVerbose() method
+ * fixed "plugin:publish-assets" task generate absolute symlinks
+ * fixed "project:optimize" task: file permissions, configurable environment and module generation
  * added task doctrine:compile to package the library into an unique cached file
+ * added send event "application.throw_exception" when an exception occurs in a task
+ * added exceptions catch in "cache:clear" task
  * fixed task project:optimize
+ * added sfServiceContainer* classes to core_compile
+ * cleaned some file class names, removed some require_once
+ * fixed possible warning in sfWidgetFormSelectCheckbox
+ * sfLogger implements sfLoggerInterface
  * added unit tests for yaml and event classes
+ * added possibility to parse yaml for value when encoding is not utf-8
  * added sfWidgetFormDoctrineArrayChoice widget
+ * added unit test for sfWidgetFormDoctrineChoice
  * added sfFormObject::saveObject() method
+ * fixed sfValidatorFile error message for php.ini upload_max_filesize (inspired from Symfony2)
+ * added sfForm::getErrors method
+ * added possibility to set integer as name for named error
+ * fixed: do not clone the form on embed anymore
+ * removed unused sfWidgetFormSchemaForEach and sfValidatorSchemaForEach classes
  * added skip-build option to sfDoctrineCreateModelTablesTask (patch from @estahn)
  * better code coverage for sfWebRequest class unit tests
  * added parameters proxy to sfWebRequest::getClientIp() method (default true)
  * introduced trust_proxy option on sfWebRequest (default true)
+ * added call to fastcgi_finish_request() function if available on sfWebResponse::run() method
+ * added possibility to launch bin/coverage task for only one class
+ * added sfRequest::getOption() method
  * used SQLite 3 for php 5.3 or later, as it's required for php 5.4
  * fixed sfI18NTest for php version > 5.2
+ * added possibility for preValidator to modify values
  * displayed form errors with sfTestBrowser->with(form)->hasError()
+ * added sfValidatorEqual
  * added test_path option to sfLimeHarness (patch by @stephaneerard)
+ * allowed '-' character in key for sfToolkit::stringToArray (patch by @eXtreme)
+ * added sfValidatorChoice::isEmpty method to test if value is an array with only empty value(s) (inspired by patch of @antitoxic)
  * added sfWebRequest::getClientIp() method
  * added sf_upload_dir_name to config
+ * added sfValidatorIp (extracted from symfony2)
+ * removed usage of array_unique in getStylesheets and getJavascripts methods of sfWidgetFormDateRange
  * fixed sfDoctrineRecordI18nFilter::filterGet() do not return empty translation (patch from @mahono)
  * fixed possible warning in sfDoctrineConnectionProfiler (patch from @mahono)
+ * added sfWidgetFormInputRead
  * added sfWebResponse::prependTitle() method
  * added options truncate_pattern and max_lenght arguments to truncate_text function in TextHelper
  * added sfBaseTask::withTrace() and sfBaseTask::showStatus() methods
+ * removed usage of array_map in widget
  * fixed sfValidatorFileTest for PHP >= 5.3.7
- * added a dic with sf_event_dispatcher, sf_formatter and sf_logger injected in core
+ * injected sf_event_dispatcher, sf_formatter and sf_logger to core service container
+ * introduced recursive form embed (fix many embed form issues)
  * formatted sfValidatorFile error with KB instead of Bytes for readability
  * added sfComponent::renderJson() method
  * added foreign field name for column in foreign key field form definition
  * removed first choice only if it's strictly an empty string in sfValidatorDoctrineChoice
  * added sfValidatedFile::resetType() method
- * enable trim option by default on sfValidatorBase
+ * enabled trim option by default on sfValidatorBase
  * throw real exception on sfValidatorSchema and sfValidatorSchemaFilter
  * return php result for copy and rename methods of sfFilesystem
  * added clearJavascripts() and clearStylesheets() methods to sfWebResponse
  * added clear_javascripts and clear_stylesheets functions to AssetHelper
  * fixed sfAction::setTemplate() to allow view exists only in plugin dir when the module action is extended in application
+ * added sfServiceConfigHandler
+ * imported sfServiceContainer component
  * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
  * removed sfPropelPlugin
 
