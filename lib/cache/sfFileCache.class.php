@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -53,7 +53,7 @@ class sfFileCache extends sfCache
   public function get($key, $default = null)
   {
     $file_path = $this->getFilePath($key);
-    if (!file_exists($file_path))
+    if (!is_file($file_path))
     {
       return $default;
     }
@@ -74,7 +74,8 @@ class sfFileCache extends sfCache
   public function has($key)
   {
     $path = $this->getFilePath($key);
-    return file_exists($path) && $this->isValid($path);
+
+    return is_file($path) && $this->isValid($path);
   }
 
   /**
@@ -164,7 +165,7 @@ class sfFileCache extends sfCache
   {
     $path = $this->getFilePath($key);
 
-    if (!file_exists($path))
+    if (!is_file($path))
     {
       return 0;
     }
@@ -181,11 +182,11 @@ class sfFileCache extends sfCache
   {
     $path = $this->getFilePath($key);
 
-    if (!file_exists($path))
+    if (!is_file($path))
     {
       return 0;
     }
-    
+
     $data = $this->read($path, self::READ_TIMEOUT | self::READ_LAST_MODIFIED);
 
     if ($data[self::READ_TIMEOUT] < time())
