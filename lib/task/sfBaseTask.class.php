@@ -61,7 +61,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
       $this->configuration = $this->createConfiguration($application, $env);
     }
 
-    if (null !== $this->commandApplication && !$this->commandApplication->withTrace())
+    if (!$this->withTrace())
     {
       sfConfig::set('sf_logging_enabled', false);
     }
@@ -92,7 +92,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
   {
     if (!isset($this->filesystem))
     {
-      if (null === $this->commandApplication || $this->commandApplication->isVerbose())
+      if ($this->isVerbose())
       {
         $this->filesystem = new sfFilesystem($this->dispatcher, $this->formatter);
       }
@@ -156,12 +156,27 @@ abstract class sfBaseTask extends sfCommandApplicationTask
    */
   protected function withTrace()
   {
-    if (is_null($this->commandApplication) || $this->commandApplication->withTrace())
+    if (null !== $this->commandApplication && !$this->commandApplication->withTrace())
     {
-      return true;
+      return false;
     }
 
-    return false;
+    return true;
+  }
+
+  /**
+   * Checks if verbose mode is enable
+   *
+   * @return boolean
+   */
+  protected function isVerbose()
+  {
+    if (null !== $this->commandApplication && !$this->commandApplication->isVerbose())
+    {
+      return false;
+    }
+
+    return true;
   }
 
   /**
