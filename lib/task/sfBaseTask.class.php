@@ -150,7 +150,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
   }
 
   /**
-   * Checks if trace mode is enable
+   * Checks if trace mode is enabled
    *
    * @return boolean
    */
@@ -165,13 +165,28 @@ abstract class sfBaseTask extends sfCommandApplicationTask
   }
 
   /**
-   * Checks if verbose mode is enable
+   * Checks if verbose mode is enabled
    *
    * @return boolean
    */
   protected function isVerbose()
   {
     if (null !== $this->commandApplication && !$this->commandApplication->isVerbose())
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Checks if debug mode is enabled
+   *
+   * @return boolean
+   */
+  protected function isDebug()
+  {
+    if (null !== $this->commandApplication && !$this->commandApplication->isDebug())
     {
       return false;
     }
@@ -195,7 +210,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
       require_once sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php';
 
-      $configuration = ProjectConfiguration::getApplicationConfiguration($application, $env, true, null, $this->dispatcher);
+      $configuration = ProjectConfiguration::getApplicationConfiguration($application, $env, $this->isDebug(), null, $this->dispatcher);
     }
     else
     {
