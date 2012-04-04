@@ -55,7 +55,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
       $this->checkLock();
     }
 
-    if (file_exists($file = sfConfig::get('sf_app_cache_dir').'/config/configuration.php'))
+    if (is_file($file = sfConfig::get('sf_app_cache_dir').'/config/configuration.php'))
     {
       $this->cache = require $file;
     }

@@ -605,7 +605,7 @@ class sfProjectConfiguration
       $rootDir = self::guessRootDir();
     }
 
-    if (!file_exists($file = $rootDir.'/apps/'.$application.'/config/'.$class.'.class.php'))
+    if (!is_file($file = $rootDir.'/apps/'.$application.'/config/'.$class.'.class.php'))
     {
       throw new InvalidArgumentException(sprintf('The application "%s" does not exist.', $application));
     }
