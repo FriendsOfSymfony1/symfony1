@@ -121,6 +121,11 @@ abstract class sfCommandApplicationTask extends sfTask
     return $this->mailer;
   }
 
+  /**
+   * Initialize mailer
+   *
+   * @return sfMailer A sfMailer instance
+   */
   protected function initializeMailer()
   {
     $swift_dir = sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/lib';
@@ -152,6 +157,11 @@ abstract class sfCommandApplicationTask extends sfTask
     return $this->routing;
   }
 
+  /**
+   * Initialize routing
+   *
+   * @return sfRouting A sfRouting instance
+   */
   protected function initializeRouting()
   {
     $config = $this->getFactoryConfiguration();
@@ -204,6 +214,11 @@ abstract class sfCommandApplicationTask extends sfTask
     return $this->getServiceContainer()->getService($id);
   }
 
+  /**
+   * Gets the factory configuration
+   *
+   * @return array
+   */
   protected function getFactoryConfiguration()
   {
     if (null === $this->factoryConfiguration)
