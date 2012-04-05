@@ -84,6 +84,38 @@ class sfPatternRouting extends sfRouting
     parent::loadConfiguration();
   }
 
+  /**
+   * @see sfRouting
+   */
+  public function setDefaultParameter($key, $value)
+  {
+    parent::setDefaultParameter($key, $value);
+
+    foreach ($this->routes as $route)
+    {
+      if (is_object($route))
+      {
+        $route->setDefaultParameters($this->defaultParameters);
+      }
+    }
+  }
+
+  /**
+   * @see sfRouting
+   */
+  public function setDefaultParameters($parameters)
+  {
+    parent::setDefaultParameters($parameters);
+
+    foreach ($this->routes as $route)
+    {
+      if (is_object($route))
+      {
+        $route->setDefaultParameters($this->defaultParameters);
+      }
+    }
+  }
+
   protected function getConfigFileName()
   {
     return sfContext::getInstance()->getConfigCache()->checkConfig('config/routing.yml', true);
