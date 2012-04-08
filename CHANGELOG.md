@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+ * optimized sfCompileConfigHandler and added unit tests
+ * added possibility to use sfAPCCache without APC (same as sfNoCache)
  * added logger into service container for command
  * optimized sfPatternRouting cache with unserialise sfRoute objects on demand, huge gain with lookup_cache_dedicated_keys
  * added sf_cli core configuration
