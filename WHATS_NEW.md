@@ -11,7 +11,7 @@ Many issues have been fixed for embedded form included:
 
 * You can use `sfFormObject::updateObject()` without save, all embedded form objects are updated.
 * You can use file upload into your embedded forms, files will be correctly removed in embedded forms using `sfWidgetFormInputFileEditable`.
-* `sfFormObject::updateObject()` and `sfFormObject::save()` methods are call recursivly from embeded forms.
+* `sfFormObject::updateObject()` and `sfFormObject::saveObject()` methods are call recursivly from embeded forms.
 * You can use integer in `name` argument of `sfForm::embedForm`.
 
 This fixes the following tickets :
@@ -35,6 +35,8 @@ The method `sfForm::embedFormForForeach()` have been removed.
 A new method `sfForm::getErrors()` have been added.  
 This method returns an array with label as key and the validation error message as value (included embedded form errors).
 
+The CRSF protection is now disable in cli environement.
+
 Widget
 ------
 
@@ -49,6 +51,12 @@ Validator
 ---------
 
 A new `sfValidatorIp` have been added (extracted from symfony2).
+
+Routing
+-------
+
+Routing part receive a huge performance improvement. Routes declared in cache are unserialize on demand.
+With the usage of combined `lookup_cache_dedicated_keys` and `cache` in `factories.yml`, only routes you use in page are instantiate.
 
 Action
 ------
@@ -104,7 +112,7 @@ Also, the method `sfValidatorErrorSchema::addError` uses much less memory for co
 
 [BC Break] The method `sfValidatorErrorSchema::addErrors` only accept an `sfValidatorErrorSchema` instance as argument.
 
-[BC Break] The `sfValidatorErrorSchema` constructor no longer accept an array of errors as second argument.
+The second argument (an array of errors) of the `sfValidatorErrorSchema` constructor should not be use anymore (mark as deprecated).
 
 A new `sfValidatorEqual` have been added.  
 It take one required `value` option an an optional `strict` to compare strictly or not.
@@ -123,8 +131,18 @@ The `sfAction::renderJson` have been added.
 Task
 ----
 
+The debug mode of a task is now configurable. 
+You can pass `--no-debug` option to any task, wish will desactivate debug mode.
+
+A new `sf_cli` configuration is available. 
+This configuration is now use to detect cli context (instead of using only debug mode). 
+This allow to run task in non-debug mode, usefull for using cache or using `project:optimize` for production environnement.
+
 A new method `sfBaseTask::withTrace()` have been added.  
 This a proxy method to `sfCommandApplication::withTrace()` if available, returns `false` otherwise.
+
+A new method `sfBaseTask::isVerbose()` have been added.  
+This a proxy method to `sfCommandApplication::isVerbose()` if available, returns `false` otherwise.
 
 A new method `sfBaseTask::showStatus()` have been added.  
 This allow you to display a status bar with the progression, elapsed and reamaining time for repetitive actions in part of your task.
@@ -172,8 +190,12 @@ This allow you to add foreign key on a non primary key (works only for indexed c
 A new option `skip-build` have been added to `sfDoctrineCreateModelTablesTask`.  
 This option allow you to skip the build model subtask called before the model creation.
 
+The `doctrine:compile` task has been added and the generated file is automaticaly detect and use by symfony.
+
 Tasks
 -----
+
+The `project:optimize` task has been fixed.
 
 `php test/bin/coverage.php` take an optional argument to define only one file for coverage of a symfony class:
 

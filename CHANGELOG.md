@@ -14,7 +14,6 @@ CHANGELOG
  * added task doctrine:compile to package the library into an unique cached file
  * added send event "application.throw_exception" when an exception occurs in a task
  * added exceptions catch in "cache:clear" task
- * fixed task project:optimize
  * added sfServiceContainer* classes to core_compile
  * cleaned some file class names, removed some require_once
  * fixed possible warning in sfWidgetFormSelectCheckbox
