@@ -62,7 +62,7 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
       }
 
       // strip php tags
-      $contents = sfToolkit::pregtr($contents, array('/^\s*<\?(php)?/m' => '', '/^\s*\?>/m' => ''));
+      $contents = sfToolkit::pregtr($contents, array('/^\s*<\?(php\s*)?/m' => '', '/^\s*\?>/m' => ''));
 
       // append file data
       $data .= PHP_EOL.$contents;
