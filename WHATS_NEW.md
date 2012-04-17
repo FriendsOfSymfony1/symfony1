@@ -55,7 +55,7 @@ A new `sfValidatorIp` have been added (extracted from symfony2).
 Routing
 -------
 
-Routing part receive a huge performance improvement. Routes declared in cache are unserialize on demand.
+Routing part receive a huge performance improvement. Routes declared in cache are unserialize on demand.  
 With the usage of combined `lookup_cache_dedicated_keys` and `cache` in `factories.yml`, only routes you use in page are instantiate.
 
 Action
@@ -131,11 +131,11 @@ The `sfAction::renderJson` have been added.
 Task
 ----
 
-The debug mode of a task is now configurable. 
+The debug mode of a task is now configurable.  
 You can pass `--no-debug` option to any task, wish will desactivate debug mode.
 
-A new `sf_cli` configuration is available. 
-This configuration is now use to detect cli context (instead of using only debug mode). 
+A new `sf_cli` configuration is available.  
+This configuration is now use to detect cli context (instead of using only debug mode).  
 This allow to run task in non-debug mode, usefull for using cache or using `project:optimize` for production environnement.
 
 A new method `sfBaseTask::withTrace()` have been added.  
