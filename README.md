@@ -21,6 +21,18 @@ Installation
 
 See http://www.symfony-project.org/getting-started/1_4/en/03-Symfony-Installation
 
+Get the framework with all its dependencies:
+
+    git clone https://github.com/LExpress/symfony1.git symfony1
+    cd symfony1
+    git submodule update --init 
+
+Add the framework to your project:
+
+    git init
+    git submodule add https://github.com/LExpress/symfony1.git lib/vendor/symfony
+    git submodule update --init --recursive
+
 Documentation
 -------------
 
