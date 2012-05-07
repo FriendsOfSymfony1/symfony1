@@ -312,8 +312,8 @@ class sfPatternRouting extends sfRouting
     // fetch from cache
     if (null !== $this->cache)
     {
-      $cacheKey = 'generate_'.$name.'_'.md5(serialize(array_merge($this->defaultParameters, $params))).'_'.md5(serialize($this->options['context']));
-      if ($this->options['lookup_cache_dedicated_keys'] && $url = $this->cache->get('symfony.routing.data.'.$cacheKey))
+      $cacheKey = $this->getGenerateCacheKey($name, (array) $params);
+      if ($this->options['lookup_cache_dedicated_keys'] && $url = $this->cache->get($cacheKey))
       {
         return $this->fixGeneratedUrl($url, $absolute);
       }
@@ -343,7 +343,7 @@ class sfPatternRouting extends sfRouting
     {
       if ($this->options['lookup_cache_dedicated_keys'])
       {
-        $this->cache->set('symfony.routing.data.'.$cacheKey, $url);
+        $this->cache->set($cacheKey, $url);
       }
       else
       {
@@ -353,6 +353,11 @@ class sfPatternRouting extends sfRouting
     }
 
     return $this->fixGeneratedUrl($url, $absolute);
+  }
+
+  protected function getGenerateCacheKey($name, $params)
+  {
+    return 'generate_'.$name.'_'.md5(serialize(array_merge($this->defaultParameters, $params))).'_'.md5(serialize($this->options['context']));
   }
 
   /**
@@ -428,8 +433,8 @@ class sfPatternRouting extends sfRouting
     // fetch from cache
     if (null !== $this->cache)
     {
-      $cacheKey = 'parse_'.$url.'_'.md5(serialize($this->options['context']));
-      if ($this->options['lookup_cache_dedicated_keys'] && $info = $this->cache->get('symfony.routing.data.'.$cacheKey))
+      $cacheKey = $this->getParseCacheKey($url);
+      if ($this->options['lookup_cache_dedicated_keys'] && $info = $this->cache->get($cacheKey))
       {
         return unserialize($info);
       }
@@ -446,7 +451,7 @@ class sfPatternRouting extends sfRouting
     {
       if ($this->options['lookup_cache_dedicated_keys'])
       {
-        $this->cache->set('symfony.routing.data.'.$cacheKey, serialize($info));
+        $this->cache->set($cacheKey, serialize($info));
       }
       else
       {
@@ -456,6 +461,11 @@ class sfPatternRouting extends sfRouting
     }
 
     return $info;
+  }
+
+  protected function getParseCacheKey($url)
+  {
+    return 'parse_'.$url.'_'.md5(serialize($this->options['context']));
   }
 
   static public function flattenRoutes($routes)
