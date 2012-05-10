@@ -449,6 +449,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     // if we go over our bound, just ignore it
     if ($done > $total)
     {
+      $this->statusStartTime = null;
       return;
     }
 
@@ -493,6 +494,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     // when done, send a newline
     if ($done == $total)
     {
+      $this->statusStartTime = null;
       echo "\n";
     }
   }
