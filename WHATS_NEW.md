@@ -58,6 +58,8 @@ Routing
 Routing part receive a huge performance improvement. Routes declared in cache are unserialize on demand.  
 With the usage of combined `lookup_cache_dedicated_keys` and `cache` in `factories.yml`, only routes you use in page are instantiate.
 
+When using routing cache, the cache key generated to identify a route or an URL can be customized bu extending the sfPatternRouting class.
+
 Action
 ------
 
