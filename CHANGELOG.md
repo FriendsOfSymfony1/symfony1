@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+ * decoupled routing cache key generation to make it customizable
  * optimized sfCompileConfigHandler and added unit tests
  * added possibility to use sfAPCCache without APC (same as sfNoCache)
  * added logger into service container for command
