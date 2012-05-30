@@ -70,7 +70,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
           unset($this->credentials[$key]);
 
-          $this->storage->regenerate(false);
+          $this->storage->regenerate(true);
 
           return;
         }
@@ -117,7 +117,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
     if ($added)
     {
-      $this->storage->regenerate(false);
+      $this->storage->regenerate(true);
     }
   }
 
@@ -205,7 +205,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
       $this->dispatcher->notify(new sfEvent($this, 'user.change_authentication', array('authenticated' => $this->authenticated)));
 
-      $this->storage->regenerate(false);
+      $this->storage->regenerate(true);
     }
   }
 

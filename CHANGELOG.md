@@ -74,6 +74,12 @@ CHANGELOG
  * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
  * removed sfPropelPlugin
 
+05/30/12: Versions 1.4.18 
+------------------------- 
+
+ * [33466] fixed a possible DB session fixation attack (patch from Dmitri Groutso) 
+ * [33373] fixed test browser click function does not handle css selector without [ or ] (closes #9982, patch from mouette) 
+
 08/03/12: Versions 1.4.17
 -------------------------
 
