@@ -700,7 +700,10 @@ abstract class sfBrowserBase
     $query .= sprintf('|//input[((@type="submit" or @type="button") and @value="%s") or (@type="image" and @alt="%s")]', $name, $name);
     $query .= sprintf('|//button[.="%s" or @id="%s" or @name="%s"]', $name, $name, $name);
 
-    $list = $this->getResponseDomXpath()->query($query);
+    if (!$list = @$this->getResponseDomXpath()->query($query))
+    {
+      throw new InvalidArgumentException(sprintf('The name "%s" is not valid', $name));
+    }
 
     $position = isset($options['position']) ? $options['position'] - 1 : 0;
 
