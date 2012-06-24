@@ -67,7 +67,7 @@ class sfPatternRouting extends sfRouting
 
     if (null !== $this->cache && !$options['lookup_cache_dedicated_keys'] && $cacheData = $this->cache->get('symfony.routing.data'))
     {
-      $this->cacheData = unserialize($cacheData);
+      $this->cacheData = sfToolkit::unserialize($cacheData);
     }
   }
 
@@ -161,7 +161,7 @@ class sfPatternRouting extends sfRouting
 
     if (is_string($route))
     {
-      $this->routes[$name] = $route = unserialize($route);
+      $this->routes[$name] = $route = sfToolkit::unserialize($route);
       $route->setDefaultParameters($this->defaultParameters);
     }
 
@@ -357,7 +357,7 @@ class sfPatternRouting extends sfRouting
 
   protected function getGenerateCacheKey($name, $params)
   {
-    return 'generate_'.$name.'_'.md5(serialize(array_merge($this->defaultParameters, $params))).'_'.md5(serialize($this->options['context']));
+    return 'generate_'.$name.'_'.md5(sfToolkit::serialize(array_merge($this->defaultParameters, $params))).'_'.md5(sfToolkit::serialize($this->options['context']));
   }
 
   /**
@@ -436,7 +436,7 @@ class sfPatternRouting extends sfRouting
       $cacheKey = $this->getParseCacheKey($url);
       if ($this->options['lookup_cache_dedicated_keys'] && $info = $this->cache->get($cacheKey))
       {
-        return unserialize($info);
+        return sfToolkit::unserialize($info);
       }
       elseif (isset($this->cacheData[$cacheKey]))
       {
@@ -451,7 +451,7 @@ class sfPatternRouting extends sfRouting
     {
       if ($this->options['lookup_cache_dedicated_keys'])
       {
-        $this->cache->set($cacheKey, serialize($info));
+        $this->cache->set($cacheKey, sfToolkit::serialize($info));
       }
       else
       {
@@ -465,7 +465,7 @@ class sfPatternRouting extends sfRouting
 
   protected function getParseCacheKey($url)
   {
-    return 'parse_'.$url.'_'.md5(serialize($this->options['context']));
+    return 'parse_'.$url.'_'.md5(sfToolkit::serialize($this->options['context']));
   }
 
   static public function flattenRoutes($routes)
@@ -546,7 +546,7 @@ class sfPatternRouting extends sfRouting
     if (null !== $this->cache && $this->cacheChanged)
     {
       $this->cacheChanged = false;
-      $this->cache->set('symfony.routing.data', serialize($this->cacheData));
+      $this->cache->set('symfony.routing.data', sfToolkit::serialize($this->cacheData));
     }
   }
 }

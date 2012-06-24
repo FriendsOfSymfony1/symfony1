@@ -109,7 +109,7 @@ class sfValidatorError extends Exception implements Serializable
    * error messages:
    *
    * $i18n->__($error->getMessageFormat(), $error->getArguments());
-   * 
+   *
    * If no message format has been set in the validator, the exception standard
    * message is returned.
    *
@@ -140,7 +140,7 @@ class sfValidatorError extends Exception implements Serializable
    */
   public function serialize()
   {
-    return serialize(array($this->validator, $this->arguments, $this->code, $this->message));
+    return sfToolkit::serialize(array($this->validator, $this->arguments, $this->code, $this->message));
   }
 
   /**
@@ -151,6 +151,6 @@ class sfValidatorError extends Exception implements Serializable
    */
   public function unserialize($serialized)
   {
-    list($this->validator, $this->arguments, $this->code, $this->message) = unserialize($serialized);
+    list($this->validator, $this->arguments, $this->code, $this->message) = sfToolkit::unserialize($serialized);
   }
 }

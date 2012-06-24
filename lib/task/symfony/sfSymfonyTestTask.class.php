@@ -72,7 +72,7 @@ EOF;
     {
       if (file_exists($statusFile))
       {
-        $status = unserialize(file_get_contents($statusFile));
+        $status = sfToolkit::unserialize(file_get_contents($statusFile));
       }
     }
 
@@ -114,7 +114,7 @@ EOF;
 
     $ret = $h->run() ? 0 : 1;
 
-    file_put_contents($statusFile, serialize($h->get_failed_files()));
+    file_put_contents($statusFile, sfToolkit::serialize($h->get_failed_files()));
 
     if ($options['xml'])
     {

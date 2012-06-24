@@ -20,6 +20,8 @@
  */
 class sfToolkit
 {
+  protected static $serializer = null;
+
   /**
    * Extract the class or interface name from filename.
    *
@@ -607,5 +609,37 @@ class sfToolkit
     }
 
     return set_include_path(join(PATH_SEPARATOR, $paths));
+  }
+
+  /**
+   * Serialize
+   *
+   * @param  mixed  $object Object to serialize
+   * @return string         Serialized object
+   */
+  public static function serialize($object)
+  {
+    if (null === self::$serializer)
+    {
+      self::$serializer = function_exists('igbinary_serialize') ? 'igbinary' : 'php';
+    }
+
+    return 'igbinary' == self::$serializer ? igbinary_serialize($object) : serialize($object);
+  }
+
+  /**
+   * Unserialize
+   *
+   * @param  string $string String to unserialize
+   * @return mixed          Unserialized string
+   */
+  public static function unserialize($string)
+  {
+    if (null === self::$serializer)
+    {
+      self::$serializer = function_exists('igbinary_serialize') ? 'igbinary' : 'php';
+    }
+
+    return 'igbinary' == self::$serializer ? igbinary_unserialize($string) : unserialize($string);
   }
 }

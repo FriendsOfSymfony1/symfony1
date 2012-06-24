@@ -742,7 +742,7 @@ class sfViewCacheManager
     }
     ksort($parameters);
 
-    return md5(serialize($parameters));
+    return md5(sfToolkit::serialize($parameters));
   }
 
   /**
@@ -816,7 +816,7 @@ class sfViewCacheManager
       return null;
     }
 
-    $cache = unserialize($cache);
+    $cache = sfToolkit::unserialize($cache);
     $content = $cache['content'];
     $this->context->getResponse()->merge($cache['response']);
 
@@ -846,7 +846,7 @@ class sfViewCacheManager
       return $content;
     }
 
-    $saved = $this->set(serialize(array('content' => $content, 'response' => $this->context->getResponse())), $uri);
+    $saved = $this->set(sfToolkit::serialize(array('content' => $content, 'response' => $this->context->getResponse())), $uri);
 
     if ($saved && sfConfig::get('sf_web_debug'))
     {
@@ -890,7 +890,7 @@ class sfViewCacheManager
       return null;
     }
 
-    $cache = unserialize($cache);
+    $cache = sfToolkit::unserialize($cache);
     $content = $cache['content'];
     $cache['response']->setEventDispatcher($this->dispatcher);
     $this->context->getResponse()->copyProperties($cache['response']);
@@ -919,7 +919,7 @@ class sfViewCacheManager
       return $content;
     }
 
-    $saved = $this->set(serialize(array('content' => $content, 'decoratorTemplate' => $decoratorTemplate, 'response' => $this->context->getResponse())), $uri);
+    $saved = $this->set(sfToolkit::serialize(array('content' => $content, 'decoratorTemplate' => $decoratorTemplate, 'response' => $this->context->getResponse())), $uri);
 
     if ($saved && sfConfig::get('sf_web_debug'))
     {
@@ -942,7 +942,7 @@ class sfViewCacheManager
     }
 
     // save content in cache
-    $saved = $this->set(serialize($this->context->getResponse()), $uri);
+    $saved = $this->set(sfToolkit::serialize($this->context->getResponse()), $uri);
 
     if ($saved && sfConfig::get('sf_web_debug'))
     {
@@ -968,7 +968,7 @@ class sfViewCacheManager
       return false;
     }
 
-    $cachedResponse = unserialize($retval);
+    $cachedResponse = sfToolkit::unserialize($retval);
     $cachedResponse->setEventDispatcher($this->dispatcher);
 
     if (sfView::RENDER_VAR == $this->controller->getRenderMode())

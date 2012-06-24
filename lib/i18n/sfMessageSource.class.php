@@ -181,7 +181,7 @@ abstract class sfMessageSource implements sfIMessageSource
         $lastModified = $this->getLastModified($source);
         if ($lastModified >= 0 && $lastModified < $this->cache->getLastModified($variant.':'.$this->culture))
         {
-          $data = unserialize($this->cache->get($variant.':'.$this->culture));
+          $data = sfToolkit::unserialize($this->cache->get($variant.':'.$this->culture));
 
           if (is_array($data))
           {
@@ -201,7 +201,7 @@ abstract class sfMessageSource implements sfIMessageSource
           $this->messages[$variant] = $data;
           if ($this->cache)
           {
-            $this->cache->set($variant.':'.$this->culture, serialize($data));
+            $this->cache->set($variant.':'.$this->culture, sfToolkit::serialize($data));
           }
         }
 

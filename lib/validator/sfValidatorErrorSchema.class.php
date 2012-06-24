@@ -306,7 +306,7 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
    */
   public function serialize()
   {
-    return serialize(array($this->validator, $this->arguments, $this->code, $this->message, $this->errors, $this->globalErrors, $this->namedErrors));
+    return sfToolkit::serialize(array($this->validator, $this->arguments, $this->code, $this->message, $this->errors, $this->globalErrors, $this->namedErrors));
   }
 
   /**
@@ -317,6 +317,6 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
    */
   public function unserialize($serialized)
   {
-    list($this->validator, $this->arguments, $this->code, $this->message, $this->errors, $this->globalErrors, $this->namedErrors) = unserialize($serialized);
+    list($this->validator, $this->arguments, $this->code, $this->message, $this->errors, $this->globalErrors, $this->namedErrors) = sfToolkit::unserialize($serialized);
   }
 }

@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -53,7 +53,7 @@ class sfFunctionCache
     $serialized = $this->cache->get($key);
     if ($serialized !== null)
     {
-      $data = unserialize($serialized);
+      $data = sfToolkit::unserialize($serialized);
     }
     else
     {
@@ -79,7 +79,7 @@ class sfFunctionCache
 
       $data['output'] = ob_get_clean();
 
-      $this->cache->set($key, serialize($data));
+      $this->cache->set($key, sfToolkit::serialize($data));
     }
 
     echo $data['output'];
@@ -107,6 +107,6 @@ class sfFunctionCache
    */
   public function computeCacheKey($callable, $arguments = array())
   {
-    return md5(serialize($callable).serialize($arguments));
+    return md5(sfToolkit::serialize($callable).sfToolkit::serialize($arguments));
   }
 }

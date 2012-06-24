@@ -52,7 +52,7 @@ class sfSessionTestStorage extends sfStorage
     {
       // we read session data from temp file
       $file = $this->options['session_path'].DIRECTORY_SEPARATOR.$this->sessionId.'.session';
-      $this->sessionData = is_file($file) ? unserialize(file_get_contents($file)) : array();
+      $this->sessionData = is_file($file) ? sfToolkit::unserialize(file_get_contents($file)) : array();
     }
     else
     {
@@ -163,7 +163,7 @@ class sfSessionTestStorage extends sfStorage
         mkdir($this->options['session_path'], 0777, true);
       }
       umask($current_umask);
-      file_put_contents($this->options['session_path'].DIRECTORY_SEPARATOR.$this->sessionId.'.session', serialize($this->sessionData));
+      file_put_contents($this->options['session_path'].DIRECTORY_SEPARATOR.$this->sessionId.'.session', sfToolkit::serialize($this->sessionData));
       $this->sessionId   = '';
       $this->sessionData = array();
     }

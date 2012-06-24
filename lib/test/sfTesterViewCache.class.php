@@ -112,13 +112,13 @@ class sfTesterViewCache extends sfTester
         }
         else if ($with_layout)
         {
-          $response = unserialize($cacheManager->get($uri));
+          $response = sfToolkit::unserialize($cacheManager->get($uri));
           $content = $response->getContent();
           $this->tester->ok($content == $this->response->getContent(), 'content in cache is ok');
         }
         else
         {
-          $ret = unserialize($cacheManager->get($uri));
+          $ret = sfToolkit::unserialize($cacheManager->get($uri));
           $content = $ret['content'];
           $this->tester->ok(false !== strpos($this->response->getContent(), $content), 'content in cache is ok');
         }

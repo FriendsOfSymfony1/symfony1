@@ -147,7 +147,7 @@ class sfSimpleAutoload
       return;
     }
 
-    list($this->classes, $this->dirs, $this->files) = unserialize(file_get_contents($this->cacheFile));
+    list($this->classes, $this->dirs, $this->files) = sfToolkit::unserialize(file_get_contents($this->cacheFile));
 
     $this->cacheLoaded = true;
     $this->cacheChanged = false;
@@ -162,7 +162,7 @@ class sfSimpleAutoload
     {
       if (is_writable(dirname($this->cacheFile)))
       {
-        file_put_contents($this->cacheFile, serialize(array($this->classes, $this->dirs, $this->files)));
+        file_put_contents($this->cacheFile, sfToolkit::serialize(array($this->classes, $this->dirs, $this->files)));
       }
 
       $this->cacheChanged = false;
@@ -326,7 +326,7 @@ class sfSimpleAutoload
    * Loads configuration from the supplied files.
    *
    * @param array $files An array of autoload.yml files
-   * 
+   *
    * @see sfAutoloadConfigHandler
    */
   public function loadConfiguration(array $files)

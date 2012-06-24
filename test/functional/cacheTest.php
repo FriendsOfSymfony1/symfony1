@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -58,40 +58,40 @@ class myTestBrowser extends sfTestBrowser
         isCached(false)->
 
         // partial cache
-        isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(serialize(array())), false)->
-        isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(sfToolkit::serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_partial&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), false)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), true)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'another'))), false)->
 
         // contextual partial cache
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(serialize(array())), false)->
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(sfToolkit::serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualPartial&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), false)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), true)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'another'))), false)->
 
         // component cache
-        isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(serialize(array())), false)->
-        isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(sfToolkit::serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_component&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), false)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), true)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'another'))), false)->
 
         // contextual component cache
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(serialize(array())), false)->
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(sfToolkit::serialize(array())), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualComponent&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), false)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'varParam'))), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'varParam'))), true)->
 
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array('varParam' => 'another'))), false)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array('varParam' => 'another'))), false)->
       end()
     ;
   }
@@ -231,16 +231,16 @@ class myTestBrowser extends sfTestBrowser
       with('view_cache')->begin()->
         isCached(false)->
         // partial cache
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheablePartial&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
 
         // contextual partial cache
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
 
         // component cache
-        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_cacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
 
         // contextual component cache
-        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(serialize(array())), true)->
+        isUriCached('@sf_cache_partial?module=cache&action=_contextualCacheableComponent&sf_cache_key='.md5(sfToolkit::serialize(array())), true)->
       end()
     ;
 
@@ -505,7 +505,7 @@ $b->setHttpHeader('If-Modified-Since', sfWebResponse::getDate(sfConfig::get('LAS
 $b->launch();
 
 // test with sfSQLiteCache class
-if (extension_loaded('SQLite') || extension_loaded('pdo_SQLite')) 
+if ((extension_loaded('SQLite') || extension_loaded('pdo_SQLite')) && !function_exists('igbinary_serialize'))
 {
   sfConfig::set('sf_factory_view_cache', 'sfSQLiteCache');
   sfConfig::set('sf_factory_view_cache_parameters', array('database' => sfConfig::get('sf_template_cache_dir').DIRECTORY_SEPARATOR.'cache.db'));
