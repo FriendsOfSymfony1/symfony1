@@ -8,6 +8,9 @@ class ProjectConfiguration extends sfProjectConfiguration
   public function setup()
   {
     $this->enableAllPluginsExcept();
+
+    $this->dispatcher->connect('doctrine.configure', array($this, 'configureDoctrineEvent'));
+    $this->dispatcher->connect('doctrine.configure_connection', array($this, 'configureDoctrineConnectionEvent'));
   }
 
   public function initializeDoctrine()
@@ -37,20 +40,22 @@ class ProjectConfiguration extends sfProjectConfiguration
     $task->run(array($path));
   }
 
-  public function configureDoctrine(Doctrine_Manager $manager)
+  public function configureDoctrineEvent(sfEvent $event)
   {
+    $manager = $event->getSubject();
     $manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, true);
 
     $options = array('baseClassName' => 'myDoctrineRecord');
     sfConfig::set('doctrine_model_builder_options', $options);
   }
 
-  public function configureDoctrineConnection(Doctrine_Connection $connection)
+  public function configureDoctrineConnectionEvent(sfEvent $event)
   {
-  }
+    $parameters = $event->getParameters();
 
-  public function configureDoctrineConnectionDoctrine2(Doctrine_Connection $connection)
-  {
-    $connection->setAttribute(Doctrine_Core::ATTR_VALIDATE, false);
+    if ('doctrine2' === $parameters['connection']->getName())
+    {
+      $parameters['connection']->setAttribute(Doctrine_Core::ATTR_VALIDATE, false);
+    }
   }
 }
