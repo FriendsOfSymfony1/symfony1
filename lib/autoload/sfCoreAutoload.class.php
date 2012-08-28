@@ -327,6 +327,7 @@ class sfCoreAutoload
     'sfnumberformatinfo' => 'i18n/sfNumberFormatInfo.class.php',
     'sfaggregatelogger' => 'log/sfAggregateLogger.class.php',
     'sfconsolelogger' => 'log/sfConsoleLogger.class.php',
+    'sfeventlogger' => 'log/sfEventLogger.class.php',
     'sffilelogger' => 'log/sfFileLogger.class.php',
     'sflogger' => 'log/sfLogger.class.php',
     'sfloggerinterface' => 'log/sfLoggerInterface.class.php',
