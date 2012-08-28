@@ -27,8 +27,13 @@ Get the framework with all its dependencies:
     cd symfony1
     git submodule update --init 
 
-Add the framework to your project:
+Add the framework to your project with composer:
+  
+    Add "lexpress/symfony1" to requirements of your composer.json
+    Launch "composer install"
 
+Add the framework to your project with submodule:
+  
     git init
     git submodule add https://github.com/LExpress/symfony1.git lib/vendor/symfony
     git submodule update --init --recursive
