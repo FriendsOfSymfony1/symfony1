@@ -53,11 +53,7 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
     // apply default attributes
     $manager->setDefaultAttributes();
 
-    if (method_exists($this->configuration, 'configureDoctrine'))
-    {
-      $this->configuration->configureDoctrine($manager);
-    }
-
+    // configure doctrine through the dispatcher
     $this->dispatcher->notify(new sfEvent($manager, 'doctrine.configure'));
 
     // make sure the culture is intercepted
@@ -80,13 +76,10 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
       'baseClassName'        => 'sfDoctrineRecord',
     );
 
-    // for BC
-    $options = array_merge($options, sfConfig::get('doctrine_model_builder_options', array()));
-
     // filter options through the dispatcher
-    $options = $this->dispatcher->filter(new sfEvent($this, 'doctrine.filter_model_builder_options'), $options)->getReturnValue();
-
-    return $options;
+    return $this->dispatcher
+      ->filter(new sfEvent($this, 'doctrine.filter_model_builder_options'), $options)
+      ->getReturnValue();
   }
 
   /**
