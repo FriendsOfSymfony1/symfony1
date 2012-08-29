@@ -110,7 +110,7 @@ $t->ok($sc instanceof frontend_testServiceContainer, '->getServiceContainer() re
 $t->ok($sc->hasService('my_app_service'), '->getServiceContainer() contains app/config/service.yml services');
 $t->ok($sc->hasService('my_project_service'), '->getServiceContainer() contains /config/service.yml services');
 $t->ok($sc->hasService('my_plugin_service'), '->getServiceContainer() contains plugin/config/service.yml services');
-$t->ok($sc->hasParameter('sf_root_dir'), '->getServiceContainer() sfConfig parameters are injected');
+$t->ok($sc->getParameter('sf_root_dir'), '->getServiceContainer() sfConfig parameters are accessibles');
 $t->ok($sc->hasParameter('my_app_test_param'), '->getServiceContainer() contains env specifiv parameters');
 
 $t->diag('->getServiceContainer() prod');

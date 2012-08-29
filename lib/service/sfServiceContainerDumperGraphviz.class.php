@@ -150,7 +150,7 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
       $container->setServiceDefinition($id, new sfServiceDefinition('stdClass'));
     }
 
-    foreach ($container as $id => $service)
+    foreach ($container->getServiceIds() as $id)
     {
       if (in_array($id, array_keys($container->getAliases())))
       {
@@ -159,7 +159,7 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
 
       if (!$container->hasServiceDefinition($id))
       {
-        $nodes[$id] = array('class' => get_class($service), 'attributes' => $this->options['node.instance']);
+        $nodes[$id] = array('class' => get_class($container->getService($id)), 'attributes' => $this->options['node.instance']);
       }
     }
 

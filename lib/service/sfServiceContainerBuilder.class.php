@@ -299,14 +299,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
     {
       if (preg_match('/^%([^%]+)%$/', $value, $match))
       {
-        // we do this to deal with non string values (boolean, integer, ...)
-        // the preg_replace_callback converts them to strings
-        if (!$this->hasParameter($name = strtolower($match[1])))
-        {
-          throw new RuntimeException(sprintf('The parameter "%s" must be defined.', $name));
-        }
-
-        $value = $this->getParameter($name);
+        $value = $this->getParameter($match[1]);
       }
       else
       {
@@ -340,11 +333,6 @@ class sfServiceContainerBuilder extends sfServiceContainer
 
   protected function replaceParameter($match)
   {
-    if (!$this->hasParameter($name = strtolower($match[2])))
-    {
-      throw new RuntimeException(sprintf('The parameter "%s" must be defined.', $name));
-    }
-
-    return $this->getParameter($name);
+    return $this->getParameter($match[2]);
   }
 }

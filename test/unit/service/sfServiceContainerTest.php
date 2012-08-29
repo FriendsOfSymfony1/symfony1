@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(41);
+$t = new lime_test(27);
 
 // __construct()
 $t->diag('__construct()');
@@ -41,13 +41,7 @@ $t->diag('->setParameter() ->getParameter() ');
 $sc = new sfServiceContainer(array('foo' => 'bar'));
 $sc->setParameter('bar', 'foo');
 $t->is($sc->getParameter('bar'), 'foo', '->setParameter() sets the value of a new parameter');
-$t->is($sc['bar'], 'foo', '->offsetGet() gets the value of a parameter');
-
-$sc['bar1'] = 'foo1';
-$t->is($sc['bar1'], 'foo1', '->offsetset() sets the value of a parameter');
-
-unset($sc['bar1']);
-$t->ok(!isset($sc['bar1']), '->offsetUnset() removes a parameter');
+$t->is($sc->getParameter('bar'), 'foo', '->getParameter() gets the value of a parameter');
 
 $sc->setParameter('foo', 'baz');
 $t->is($sc->getParameter('foo'), 'baz', '->setParameter() overrides previously set parameter');
@@ -55,7 +49,6 @@ $t->is($sc->getParameter('foo'), 'baz', '->setParameter() overrides previously s
 $sc->setParameter('Foo', 'baz1');
 $t->is($sc->getParameter('foo'), 'baz1', '->setParameter() converts the key to lowercase');
 $t->is($sc->getParameter('FOO'), 'baz1', '->getParameter() converts the key to lowercase');
-$t->is($sc['FOO'], 'baz1', '->offsetGet() converts the key to lowercase');
 
 try
 {
@@ -67,25 +60,12 @@ catch (InvalidArgumentException $e)
   $t->pass('->getParameter() thrown an InvalidArgumentException if the key does not exist');
 }
 
-try
-{
-  $sc['baba'];
-  $t->fail('->offsetGet() thrown an InvalidArgumentException if the key does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->offsetGet() thrown an InvalidArgumentException if the key does not exist');
-}
-
 // ->hasParameter()
 $t->diag('->hasParameter()');
 $sc = new sfServiceContainer(array('foo' => 'bar'));
 $t->ok($sc->hasParameter('foo'), '->hasParameter() returns true if a parameter is defined');
 $t->ok($sc->hasParameter('Foo'), '->hasParameter() converts the key to lowercase');
-$t->ok(isset($sc['Foo']), '->offsetExists() converts the key to lowercase');
 $t->ok(!$sc->hasParameter('bar'), '->hasParameter() returns false if a parameter is not defined');
-$t->ok(isset($sc['foo']), '->offsetExists() returns true if a parameter is defined');
-$t->ok(!isset($sc['bar']), '->offsetExists() returns false if a parameter is not defined');
 
 // ->addParameters()
 $t->diag('->addParameters()');
@@ -102,13 +82,8 @@ $sc->setService('foo', $obj = new stdClass());
 $t->is(spl_object_hash($sc->getService('foo')), spl_object_hash($obj), '->setService() registers a service under a key name');
 
 $sc->foo1 = $obj1 = new stdClass();
-$t->is(spl_object_hash($sc->foo1), spl_object_hash($obj1), '->__set() sets a service');
-
-$t->is(spl_object_hash($sc->foo), spl_object_hash($obj), '->__get() gets a service by name');
 $t->ok($sc->hasService('foo'), '->hasService() returns true if the service is defined');
-$t->ok(isset($sc->foo), '->__isset() returns true if the service is defined');
 $t->ok(!$sc->hasService('bar'), '->hasService() returns false if the service is not defined');
-$t->ok(!isset($sc->bar), '->__isset() returns false if the service is not defined');
 
 // ->getServiceIds()
 $t->diag('->getServiceIds()');
@@ -163,42 +138,5 @@ catch (InvalidArgumentException $e)
   $t->pass('->getService() thrown an InvalidArgumentException if the service does not exist');
 }
 
-try
-{
-  $sc->baba;
-  $t->fail('->__get() thrown an InvalidArgumentException if the service does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->__get() thrown an InvalidArgumentException if the service does not exist');
-}
-
-try
-{
-  unset($sc->baba);
-  $t->fail('->__unset() thrown an LogicException if you try to remove a service');
-}
-catch (LogicException $e)
-{
-  $t->pass('->__unset() thrown an LogicException if you try to remove a service');
-}
-
 $t->is(spl_object_hash($sc->getService('foo_bar')), spl_object_hash($sc->__foo_bar), '->getService() camelizes the service id when looking for a method');
 $t->is(spl_object_hash($sc->getService('foo.baz')), spl_object_hash($sc->__foo_baz), '->getService() camelizes the service id when looking for a method');
-
-// Iterator
-$t->diag('implements Iterator');
-$sc = new ProjectServiceContainer();
-$sc->setService('foo', $foo = new stdClass());
-$services = array();
-foreach ($sc as $id => $service)
-{
-  $services[$id] = spl_object_hash($service);
-}
-$t->is($services, array(
-  'service_container' => spl_object_hash($sc),
-  'bar' => spl_object_hash($sc->__bar),
-  'foo_bar' => spl_object_hash($sc->__foo_bar),
-  'foo.baz' => spl_object_hash($sc->__foo_baz),
-  'foo' => spl_object_hash($foo)),
-'sfServiceContainer implements the Iterator interface');
