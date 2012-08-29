@@ -75,7 +75,7 @@ $builder->register('foo', 'FooClass');
 $t->ok($builder->hasService('foo'), '->hasService() returns true if a service definition exists');
 $builder->setAlias('foobar', 'foo');
 $t->ok($builder->hasService('foo'), '->hasService() returns true if a service definition exists');
-$builder->bar = new stdClass();
+$builder->setService('bar', new stdClass());
 $t->ok($builder->hasService('bar'), '->hasService() returns true if a service exists');
 $builder->setAlias('foobar2', 'foo');
 $t->ok($builder->hasService('foobar2'), '->hasService() returns true if a service exists');
@@ -94,7 +94,7 @@ catch (InvalidArgumentException $e)
 }
 $builder->register('foo', 'stdClass');
 $t->ok(is_object($builder->getService('foo')), '->getService() returns the service definition associated with the id');
-$builder->bar = $bar = new stdClass();
+$builder->setService('bar', $bar = new stdClass());
 $t->is($builder->getService('bar'), $bar, '->getService() returns the service associated with the id');
 $builder->register('bar', 'stdClass');
 $t->is($builder->getService('bar'), $bar, '->getService() returns the service associated with the id even if a definition has been defined');
