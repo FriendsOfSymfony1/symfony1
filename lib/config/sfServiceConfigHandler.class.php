@@ -29,7 +29,7 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
   {
     $class = sfConfig::get('sf_app').'_'.sfConfig::get('sf_environment').'ServiceContainer';
 
-    $serviceContainerBuilder = new sfServiceContainerBuilder(sfConfig::getAll());
+    $serviceContainerBuilder = new sfServiceContainerBuilder();
 
     $loader = new sfServiceContainerLoaderArray($serviceContainerBuilder);
     $loader->load(self::getConfiguration($configFiles));

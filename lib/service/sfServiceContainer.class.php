@@ -105,12 +105,17 @@ class sfServiceContainer implements sfServiceContainerInterface
    */
   public function getParameter($name)
   {
-    if (!$this->hasParameter($name))
+    if ($this->hasParameter($name))
     {
-      throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
+      return $this->parameters[strtolower($name)];
     }
 
-    return $this->parameters[strtolower($name)];
+    if (sfConfig::has($name))
+    {
+      return sfConfig::get($name);
+    }
+
+    throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
   }
 
   /**

@@ -208,21 +208,21 @@ $t->is($builder->resolveValue('I\'m a %foo% %%foo %foo%'), 'I\'m a bar %foo bar'
 try
 {
   $builder->resolveValue('%foobar%');
-  $t->fail('->resolveValue() throws a RuntimeException if a placeholder references a non-existant parameter');
+  $t->fail('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
 }
-catch (RuntimeException $e)
+catch (InvalidArgumentException $e)
 {
-  $t->pass('->resolveValue() throws a RuntimeException if a placeholder references a non-existant parameter');
+  $t->pass('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
 }
 
 try
 {
   $builder->resolveValue('foo %foobar% bar');
-  $t->fail('->resolveValue() throws a RuntimeException if a placeholder references a non-existant parameter');
+  $t->fail('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
 }
-catch (RuntimeException $e)
+catch (InvalidArgumentException $e)
 {
-  $t->pass('->resolveValue() throws a RuntimeException if a placeholder references a non-existant parameter');
+  $t->pass('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
 }
 
 // ->resolveServices()
