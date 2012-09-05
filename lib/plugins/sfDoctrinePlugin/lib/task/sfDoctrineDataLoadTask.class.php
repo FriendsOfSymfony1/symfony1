@@ -35,6 +35,7 @@ class sfDoctrineDataLoadTask extends sfDoctrineBaseTask
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
       new sfCommandOption('append', null, sfCommandOption::PARAMETER_NONE, 'Don\'t delete current data in the database'),
+      new sfCommandOption('charset', null, sfCommandOption::PARAMETER_OPTIONAL, 'Specify charset'),
     ));
 
     $this->namespace = 'doctrine';
@@ -77,6 +78,7 @@ EOF;
     $doctrineArguments = array(
       'data_fixtures_path' => $arguments['dir_or_file'],
       'append'             => $options['append'],
+      'charset'            => $options['charset'],
     );
 
     foreach ($arguments['dir_or_file'] as $target)
