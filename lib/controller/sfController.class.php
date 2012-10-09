@@ -489,7 +489,7 @@ abstract class sfController
    */
   public function inCLI()
   {
-    return 0 == strncasecmp(PHP_SAPI, 'cli', 3);
+    return 'cli' == PHP_SAPI;
   }
 
   /**
