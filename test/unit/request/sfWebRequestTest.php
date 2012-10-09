@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(108);
+$t = new lime_test(109);
 
 class myRequest extends sfWebRequest
 {
@@ -121,15 +121,16 @@ $t->is($request->getAcceptableContentTypes(), array(), '->getAcceptableContentTy
 
 $request->acceptableContentTypes = null;
 $_SERVER['HTTP_ACCEPT'] = 'text/xml,application/xhtml+xml,application/xml,text/html;q=0.9,text/plain;q=0.8,*/*;q=0.5';
-$t->is($request->getAcceptableContentTypes(), array('text/xml', 'application/xml', 'application/xhtml+xml', 'text/html', 'text/plain', '*/*'), '->getAcceptableContentTypes() returns an array with all accepted content types');
+$t->is($request->getAcceptableContentTypes(), array('text/xml', 'application/xhtml+xml', 'application/xml', 'text/html', 'text/plain', '*/*'), '->getAcceptableContentTypes() returns an array with all accepted content types');
 
 // ->splitHttpAcceptHeader()
 $t->diag('->splitHttpAcceptHeader()');
 
 $t->is($request->splitHttpAcceptHeader(''), array(), '->splitHttpAcceptHeader() returns an empty array if the header is empty');
-$t->is($request->splitHttpAcceptHeader('a,b,c'), array('c', 'b', 'a'), '->splitHttpAcceptHeader() returns an array of values');
+$t->is($request->splitHttpAcceptHeader('a,b,c'), array('a', 'b', 'c'), '->splitHttpAcceptHeader() returns an array of values');
 $t->is($request->splitHttpAcceptHeader('a,b;q=0.7,c;q=0.3'), array('a', 'b', 'c'), '->splitHttpAcceptHeader() strips the q value');
 $t->is($request->splitHttpAcceptHeader('a;q=0.1,b,c;q=0.3'), array('b', 'c', 'a'), '->splitHttpAcceptHeader() sorts values by the q value');
+$t->is($request->splitHttpAcceptHeader('a;q=0.3,b,c;q=0.3'), array('b', 'a', 'c'), '->splitHttpAcceptHeader() sorts values by the q value including equal values');
 $t->is($request->splitHttpAcceptHeader('a; q=0.1, b, c; q=0.3'), array('b', 'c', 'a'), '->splitHttpAcceptHeader() trims whitespaces');
 $t->is($request->splitHttpAcceptHeader('a; q=0, b'), array('b'), '->splitHttpAcceptHeader() removes values when q = 0 (as per the RFC)');
 
