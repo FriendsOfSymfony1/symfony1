@@ -109,6 +109,6 @@ class sfPDODatabase extends sfDatabase
    */
   public function __call($method, $arguments)
   {
-    return $this->getConnection()->$method($arguments);
+    return call_user_func_array(array($this->getConnection(), $method), $arguments);
   }
 }
