@@ -487,7 +487,25 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     $eta = $this->convertTime($eta);
     $elapsed = $this->convertTime($elapsed);
 
-    $statusBar .= ' [ remaining: '.$eta.' | elapsed: '.$elapsed.' ]     ';
+    $memory = memory_get_usage(true);
+    if ($memory>1024*1024*1024*10)
+    {
+      $memory = sprintf('%.2fGB', $memory/1024/1024/1024);
+    }
+    elseif ($memory>1024*1024*10)
+    {
+      $memory = sprintf('%.2fMB', $memory/1024/1024);
+    }
+    elseif ($memory>1024*10)
+    {
+      $memory = sprintf('%.2fkB', $memory/1024);
+    }
+    else
+    {
+      $memory = sprintf('%.2fB', $memory);
+    }
+
+    $statusBar .= ' [ remaining: '.$eta.' | elapsed: '.$elapsed.' ] (memory: '.$memory.')     ';
 
     echo $statusBar;
 
