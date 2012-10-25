@@ -3,13 +3,17 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../autoload/sfCoreAutoload.class.php');
-sfCoreAutoload::register();
+// Try autoloading using composer if available.
+if (!file_exists($autoload = dirname(__FILE__).'/../../../../autoload.php'))
+{
+  $autoload = dirname(__FILE__).'/../../autoload.php';
+}
+require_once $autoload;
 
 try
 {
