@@ -14,12 +14,12 @@ It runs on *nix and Windows platforms.
 Requirements
 ------------
 
-PHP 5.2.4 and up. See prerequisites on http://www.symfony-project.org/getting-started/1_4/en/02-Prerequisites
+PHP 5.2.4 and up. See prerequisites on http://symfony.com/legacy/doc/getting-started/1_4/en/02-Prerequisites
 
 Installation
 ------------
 
-See http://www.symfony-project.org/getting-started/1_4/en/03-Symfony-Installation
+See http://symfony.com/legacy/doc/getting-started/1_4/en/03-Symfony-Installation
 
 Get the framework with all its dependencies:
 
@@ -27,10 +27,10 @@ Get the framework with all its dependencies:
     cd symfony1
     git submodule update --init 
 
-Add the framework to your project with composer:
-  
-    Add "lexpress/symfony1" to requirements of your composer.json
-    Launch "composer install"
+Add the framework to your project with [Composer](http://getcomposer.org/doc/00-intro.md):
+
+    composer require lexpress/symfony1 dev-master
+    composer install
 
 Add the framework to your project with submodule:
   
@@ -41,7 +41,7 @@ Add the framework to your project with submodule:
 Documentation
 -------------
 
-Read the official [symfony1 documentation](http://www.symfony-project.org/doc/1_4/)
+Read the official [symfony1 documentation](http://symfony.com/legacy)
 
 Contributing
 ------------
