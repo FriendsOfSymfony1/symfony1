@@ -29,14 +29,17 @@ class sfTimerManager
    *
    * @return sfTimer The timer instance
    */
-  public static function getTimer($name)
+  public static function getTimer($name, $reset=true)
   {
     if (!isset(self::$timers[$name]))
     {
       self::$timers[$name] = new sfTimer($name);
     }
 
-    self::$timers[$name]->startTimer();
+    if ($reset)
+    {
+       self::$timers[$name]->startTimer();
+    }
 
     return self::$timers[$name];
   }
