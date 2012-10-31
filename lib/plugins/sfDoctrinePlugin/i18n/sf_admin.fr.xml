@@ -81,14 +81,6 @@
         <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
         <target>[0] aucun résultat|[1] 1 résultat|(1,+Inf] %1% résultats</target>
       </trans-unit>
-      <trans-unit>
-        <source>Are you sure?</source>
-        <target>Etes-vous sûr?</target>
-      </trans-unit>
-      <trans-unit>
-        <source>Checked</source>
-        <target>Activé</target>
-      </trans-unit>
 
       <!-- Pagination -->
       <trans-unit>
@@ -176,6 +168,43 @@
       <trans-unit>
         <source><![CDATA[from %from_date%<br />to %to_date%]]></source>
         <target><![CDATA[du %from_date%<br />au %to_date%]]></target>
+      </trans-unit>
+
+      <trans-unit>
+        <source>Required.</source>
+        <target>Obligatoire.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Invalid.</source>
+        <target>Invalide.</target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA["%value%" is not an integer.]]></source>
+        <target><![CDATA["%value%" n'est pas un nombre entier.]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA["%value%" is not a number.]]></source>
+        <target><![CDATA["%value%" n'est pas un nombre.]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[At least %min% values must be selected (%count% values selected).]]></source>
+        <target><![CDATA[Au minimum %min% valeurs doivent être choisies (%count% choisies).]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[At most %max% values must be selected (%count% values selected).]]></source>
+        <target><![CDATA[Au maximum %max% valeurs doivent être choisies (%count% choisies).]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source><![CDATA[CSRF attack detected.]]></source>
+        <target><![CDATA[Attaque CSRF détectée.]]></target>
+      </trans-unit>
+      <trans-unit>
+        <source>Are you sure?</source>
+        <target>Etes-vous sûr ?</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Checked</source>
+        <target>Activé</target>
       </trans-unit>
     </body>
   </file>
