@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(153);
+$t = new lime_test(155);
 
 class FormTest extends sfForm
 {
@@ -993,3 +993,46 @@ $expected = array (
 );
 
 $t->is($f1->getErrors(), $expected, '->getErrors() return array of errors');
+
+// bind with a simulated file upload in the POST array
+$f = new FormTest();
+try
+{
+  $f->bind(array(
+    'file' => array(
+      'name' => 'foo.txt',
+      'type' => 'text/plain',
+      'tmp_name' => 'somefile',
+      'error' => 0,
+      'size' => 10,
+     ),
+  ));
+  $t->fail('Cannot fake a file upload with a POST');
+}
+catch (InvalidArgumentException $e)
+{
+  $t->pass('Cannot fake a file upload with a POST');
+}
+
+$f = new FormTest();
+try
+{
+  $f->bind(array(
+      'foo' => array(
+        'bar' => array(
+          'file' => array(
+            'name' => 'foo.txt',
+            'type' => 'text/plain',
+            'tmp_name' => 'somefile',
+            'error' => 0,
+            'size' => 10,
+          ),
+        ),
+      ),
+  ));
+  $t->fail('Cannot fake a file upload with a POST');
+}
+catch (InvalidArgumentException $e)
+{
+  $t->pass('Cannot fake a file upload with a POST');
+}

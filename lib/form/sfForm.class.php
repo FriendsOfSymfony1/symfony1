@@ -222,6 +222,8 @@ class sfForm implements ArrayAccess, Iterator, Countable
       $this->taintedFiles = array();
     }
 
+    $this->checkTaintedValues($this->taintedValues);
+
     try
     {
       $this->doBind(self::deepArrayUnion($this->taintedValues, self::convertFileInformation($this->taintedFiles)));
@@ -1391,5 +1393,25 @@ class sfForm implements ArrayAccess, Iterator, Countable
     }
 
     return $array1;
+  }
+
+  /**
+   * Checks that the $_POST values do not contain something that
+   * looks like a file upload (coming from $_FILE).
+   */
+  protected function checkTaintedValues($values)
+  {
+    foreach ($values as $name => $value)
+    {
+      if (!is_array($value)) {
+        continue;
+      }
+
+      if (isset($value['tmp_name'])) {
+        throw new InvalidArgumentException('Do not try to fake a file upload.');
+      }
+
+      $this->checkTaintedValues($value);
+    }
   }
 }
