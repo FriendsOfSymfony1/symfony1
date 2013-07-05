@@ -244,7 +244,7 @@ abstract class sfWidgetForm extends sfWidget
     // check to see if we have an array variable for a field name
     if (strstr($name, '['))
     {
-      $name = str_replace(array('[]', '][', '[', ']'), array((null !== $value ? '_'.$value : ''), '_', '_', ''), $name);
+      $name = str_replace(array('[]', '][', '[', ']'), array((null !== $value && !is_array($value) ? '_'.$value : ''), '_', '_', ''), $name);
     }
 
     if (false !== strpos($this->getOption('id_format'), '%s'))
@@ -330,7 +330,7 @@ abstract class sfWidgetForm extends sfWidget
    * @param  array $parameters  The values to replace the placeholders
    *
    * @return array              The translated texts
-   * 
+   *
    * @see sfWidgetFormSchemaFormatter::translate()
    */
   protected function translateAll(array $texts, array $parameters = array())
