@@ -450,6 +450,7 @@ class sfContext implements ArrayAccess
       $this->factories['serviceContainer']->setService('sf_event_dispatcher', $this->configuration->getEventDispatcher());
       $this->factories['serviceContainer']->setService('sf_formatter', new sfFormatter());
       $this->factories['serviceContainer']->setService('sf_user', $this->getUser());
+      $this->factories['serviceContainer']->setService('sf_routing', $this->getRouting());
     }
 
     return $this->factories['serviceContainer'];
