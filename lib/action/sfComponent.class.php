@@ -157,6 +157,20 @@ abstract class sfComponent
   }
 
   /**
+   * Gets the translation for the given string
+   *
+   * @param  string $string     The string to translate
+   * @param  array  $args       An array of arguments for the translation
+   * @param  string $catalogue  The catalogue name
+   *
+   * @return string The translated string
+   */
+  public function __($string, $args = array(), $catalogue = 'messages')
+  {
+    return $this->context->getI18N()->__($string, $args, $catalogue);
+  }
+
+  /**
    * Returns the value of a request parameter.
    *
    * This is a proxy method equivalent to:
