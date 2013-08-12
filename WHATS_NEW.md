@@ -167,6 +167,17 @@ Configuration
 
 A new configuration `sf_upload_dir_name` contains 'uploads' have been added.
 
+Performance
+-----------
+
+### Disable SwiftMailer for real
+
+You can no completely disable SwiftMailer (which is initialized on **each** request by default) by using 
+the new `sfNoMailer` class in your factories.yml:
+
+    mailer:
+      class: sfNoMailer
+
 Test
 ----
 
