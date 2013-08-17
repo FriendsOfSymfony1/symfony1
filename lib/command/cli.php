@@ -13,7 +13,17 @@ if (!file_exists($autoload = dirname(__FILE__).'/../../../../autoload.php'))
 {
   $autoload = dirname(__FILE__).'/../../autoload.php';
 }
-require_once $autoload;
+
+// Fall back to classic Symfony loading
+if (!file_exists($autoload))
+{
+  require_once(dirname(__FILE__).'/../autoload/sfCoreAutoload.class.php');
+  sfCoreAutoload::register();
+}
+else
+{
+  require_once $autoload;
+}
 
 try
 {
