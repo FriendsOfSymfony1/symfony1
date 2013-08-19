@@ -6,10 +6,10 @@ CHANGELOG
  * optimized sfCompileConfigHandler and added unit tests
  * added possibility to use sfAPCCache without APC (same as sfNoCache)
  * added logger into service container for command
- * optimized sfPatternRouting cache with unserialise sfRoute objects on demand, huge gain with lookup_cache_dedicated_keys
+ * optimized sfPatternRouting cache with unserialise sfRoute objects on demand, huge gain with `lookup_cache_dedicated_keys`
  * added sf_cli core configuration
  * added default option --no-debug for tasks (usefull for project:optimize task)
- * used is_file instead of file_exists in sfFileCache, sfAutoload, sfApplicationConfiguration, sfProjectConfiguration and sfSessionTestStorage classes
+ * used `is_file` instead of `file_exists` in sfFileCache, sfAutoload, sfApplicationConfiguration, sfProjectConfiguration and sfSessionTestStorage classes
  * added sfBaseTask::isVerbose() method
  * fixed "plugin:publish-assets" task generate absolute symlinks
  * fixed "project:optimize" task: file permissions, configurable environment and module generation
@@ -34,7 +34,7 @@ CHANGELOG
  * better code coverage for sfWebRequest class unit tests
  * added parameters proxy to sfWebRequest::getClientIp() method (default true)
  * introduced trust_proxy option on sfWebRequest (default true)
- * added call to fastcgi_finish_request() function if available on sfWebResponse::run() method
+ * added call to `fastcgi_finish_request()` function if available on sfWebResponse::run() method
  * added possibility to launch bin/coverage task for only one class
  * added sfRequest::getOption() method
  * used SQLite 3 for php 5.3 or later, as it's required for php 5.4
@@ -74,6 +74,7 @@ CHANGELOG
  * imported sfServiceContainer component
  * replaced embedded swiftmailer by upstream submodule of swiftmailer 4.1
  * removed sfPropelPlugin
+ * add `sfNoMailer` class for application without mail
 
 05/30/12: Versions 1.4.18 
 ------------------------- 
