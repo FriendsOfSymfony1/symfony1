@@ -78,7 +78,7 @@ EOF;
     }
 
     // finder to find directories (1 level) in a directory
-    $dirFinder = sfFinder::type('dir')->discard('.sf')->maxdepth(0)->relative();
+    $dirFinder = sfFinder::type('dir')->discard('.*')->maxdepth(0)->relative();
 
     // iterate through applications
     $apps = null === $options['app'] ? $dirFinder->in(sfConfig::get('sf_apps_dir')) : array($options['app']);
@@ -125,7 +125,7 @@ EOF;
     // clear global cache
     if (null === $options['app'] && 'all' == $options['type'])
     {
-      $this->getFilesystem()->remove(sfFinder::type('file')->discard('.sf')->in(sfConfig::get('sf_cache_dir')));
+      $this->getFilesystem()->remove(sfFinder::type('file')->discard('.*')->in(sfConfig::get('sf_cache_dir')));
     }
   }
 
@@ -150,7 +150,7 @@ EOF;
     if (is_dir($subDir))
     {
       // remove cache files
-      $this->getFilesystem()->remove(sfFinder::type('file')->discard('.sf')->in($subDir));
+      $this->getFilesystem()->remove(sfFinder::type('file')->discard('.*')->in($subDir));
     }
   }
 
@@ -191,7 +191,7 @@ EOF;
     if (is_dir($subDir))
     {
       // remove cache files
-      $this->getFilesystem()->remove(sfFinder::type('file')->discard('.sf')->in($subDir));
+      $this->getFilesystem()->remove(sfFinder::type('file')->discard('.*')->in($subDir));
     }
   }
 
