@@ -1,6 +1,7 @@
 CHANGELOG
 =========
 
+ * injected sf_mailer to the core service container
  * inject the routing into the service container
  * decoupled routing cache key generation to make it customizable
  * optimized sfCompileConfigHandler and added unit tests
@@ -76,11 +77,11 @@ CHANGELOG
  * removed sfPropelPlugin
  * add `sfNoMailer` class for application without mail
 
-05/30/12: Versions 1.4.18 
-------------------------- 
+05/30/12: Versions 1.4.18
+-------------------------
 
- * [33466] fixed a possible DB session fixation attack (patch from Dmitri Groutso) 
- * [33373] fixed test browser click function does not handle css selector without [ or ] (closes #9982, patch from mouette) 
+ * [33466] fixed a possible DB session fixation attack (patch from Dmitri Groutso)
+ * [33373] fixed test browser click function does not handle css selector without [ or ] (closes #9982, patch from mouette)
 
 08/03/12: Versions 1.4.17
 -------------------------

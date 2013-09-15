@@ -253,12 +253,7 @@ class sfContext implements ArrayAccess
    */
   public function getMailer()
   {
-    if (!isset($this->factories['mailer']))
-    {
-     $this->factories['mailer'] = new $this->mailerConfiguration['class']($this->dispatcher, $this->mailerConfiguration);
-    }
-
-    return $this->factories['mailer'];
+    return $this->getServiceContainer()->getService('sf_mailer');
   }
 
   /**
@@ -451,6 +446,7 @@ class sfContext implements ArrayAccess
       $this->factories['serviceContainer']->setService('sf_formatter', new sfFormatter());
       $this->factories['serviceContainer']->setService('sf_user', $this->getUser());
       $this->factories['serviceContainer']->setService('sf_routing', $this->getRouting());
+      $this->factories['serviceContainer']->setService('sf_mailer', new $this->mailerConfiguration['class']($this->dispatcher, $this->mailerConfiguration));
     }
 
     return $this->factories['serviceContainer'];

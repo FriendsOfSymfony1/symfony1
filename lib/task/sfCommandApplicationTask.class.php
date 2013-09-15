@@ -113,12 +113,7 @@ abstract class sfCommandApplicationTask extends sfTask
    */
   protected function getMailer()
   {
-    if (null === $this->mailer)
-    {
-      $this->mailer = $this->initializeMailer();
-    }
-
-    return $this->mailer;
+    return $this->getServiceContainer()->getService('sf_mailer');
   }
 
   /**
@@ -201,6 +196,7 @@ abstract class sfCommandApplicationTask extends sfTask
       $this->serviceContainer->setService('sf_event_dispatcher', $this->dispatcher);
       $this->serviceContainer->setService('sf_formatter', $this->formatter);
       $this->serviceContainer->setService('sf_routing', $this->getRouting());
+      $this->serviceContainer->setService('sf_mailer', $this->initializeMailer());
     }
 
     return $this->serviceContainer;
