@@ -27,7 +27,7 @@ class sfSimpleYamlConfigHandler extends sfYamlConfigHandler
    */
   public function execute($configFiles)
   {
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     // compile data
     $retval = "<?php\n".
@@ -43,6 +43,6 @@ class sfSimpleYamlConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    return self::parseYamls($configFiles);
+    return static::parseYamls($configFiles);
   }
 }

@@ -1,6 +1,8 @@
 CHANGELOG
 =========
 
+* use late static binding for config classes.
+
 01/17/2014: Version 1.5.3
 -----------------------
 

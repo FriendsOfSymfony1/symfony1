@@ -69,7 +69,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
   protected function parse(array $configFiles)
   {
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     $mappings = array();
     foreach ($config['autoload'] as $name => $entry)
@@ -170,13 +170,13 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
 
     $configFiles = array_merge($pluginConfigFiles, $configFiles);
 
-    $config = self::replaceConstants(self::parseYamls($configFiles));
+    $config = static::replaceConstants(static::parseYamls($configFiles));
 
     foreach ($config['autoload'] as $name => $values)
     {
       if (isset($values['path']))
       {
-        $config['autoload'][$name]['path'] = self::replacePath($values['path']);
+        $config['autoload'][$name]['path'] = static::replacePath($values['path']);
       }
     }
 

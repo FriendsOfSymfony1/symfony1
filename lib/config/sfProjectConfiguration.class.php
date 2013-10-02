@@ -44,7 +44,7 @@ class sfProjectConfiguration
       self::$active = $this;
     }
 
-    $this->rootDir = null === $rootDir ? self::guessRootDir() : realpath($rootDir);
+    $this->rootDir = null === $rootDir ? static::guessRootDir() : realpath($rootDir);
     $this->symfonyLibDir = realpath(__DIR__.'/..');
     $this->dispatcher = null === $dispatcher ? new sfEventDispatcher() : $dispatcher;
 
@@ -555,7 +555,7 @@ class sfProjectConfiguration
    */
   static public function getActive()
   {
-    if (!self::hasActive())
+    if (!static::hasActive())
     {
       throw new RuntimeException('There is no active configuration.');
     }
@@ -602,7 +602,7 @@ class sfProjectConfiguration
 
     if (null === $rootDir)
     {
-      $rootDir = self::guessRootDir();
+      $rootDir = static::guessRootDir();
     }
 
     if (!is_file($file = $rootDir.'/apps/'.$application.'/config/'.$class.'.class.php'))

@@ -42,7 +42,7 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
     }
 
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     $values = array();
     foreach ($config as $category => $keys)
@@ -143,6 +143,6 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    return self::replaceConstants(self::flattenConfigurationWithEnvironment(self::parseYamls($configFiles)));
+    return static::replaceConstants(static::flattenConfigurationWithEnvironment(static::parseYamls($configFiles)));
   }
 }

@@ -36,7 +36,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
     {
       // the first level is an environment and its value must be an array
       $values = array();
-      foreach (self::parseYaml($configFile) as $env => $value)
+      foreach (static::parseYaml($configFile) as $env => $value)
       {
         if (null !== $value)
         {
