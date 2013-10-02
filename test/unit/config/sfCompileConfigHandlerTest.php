@@ -21,8 +21,8 @@ $t->diag('execute');
 
 sfConfig::set('sf_debug', true);
 $data = $handler->execute(array($dir.'simple.yml'));
-$t->ok(false !== strpos($data, 'class sfInflector'.PHP_EOL.'{'.PHP_EOL.'  /**'), '->execute() return complete classe codes');
+$t->ok(false !== strpos($data, "class sfInflector\n{\n  /**"), '->execute() return complete classe codes');
 
 sfConfig::set('sf_debug', false);
 $data = $handler->execute(array($dir.'simple.yml'));
-$t->ok(false !== strpos($data, 'class sfInflector { public'), '->execute() return minified classe codes');
+$t->ok(false !== strpos($data, "class sfInflector\n{\n  public"), '->execute() return minified classe codes');
