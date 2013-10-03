@@ -6,6 +6,9 @@ php:
   - 5.4
 
 before_script:
-  - ./test/travis.sh
+  - sh -c 'if [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
+  - git submodule update --init --recursive
 
-script: php -dshort_open_tag=Off -dmagic_quotes_gpc=Off data/bin/symfony symfony:test --trace
+script:
+  - php data/bin/check_configuration.php
+  - php -dshort_open_tag=Off -dmagic_quotes_gpc=Off data/bin/symfony symfony:test --trace
