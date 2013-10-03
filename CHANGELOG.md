@@ -1,8 +1,14 @@
 CHANGELOG
 =========
 
-10/04/13: Versions 1.5.0
-------------------------
+xx/xx/xx: Version 1.5.1
+-----------------------
+
+ * Drop support for PHP 5.2
+ * Add support for PHP 5.5
+
+10/04/13: Version 1.5.0
+-----------------------
 
  * inject the routing into the service container
  * decoupled routing cache key generation to make it customizable
