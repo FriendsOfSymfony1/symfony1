@@ -709,7 +709,7 @@ class lime_output
       $message = preg_replace_callback(
         '/(\->|\:\:)?([a-zA-Z0-9_]+?)\(\)/',
         function ($match) use ($colorizer) {
-          return $colorizer->colorize($match[1].$match[2], 'PARAMETER');
+          return $colorizer->colorize($match[1].$match[2].'()', 'PARAMETER');
         },
         $message
       );

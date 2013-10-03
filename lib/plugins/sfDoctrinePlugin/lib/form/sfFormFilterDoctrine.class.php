@@ -323,7 +323,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
   protected function camelize($text)
   {
-    return strtr(ucwords(strtr($text, array('/' => '::', '_' => ' ', '-' => ' ', '.' => '_ '))), array(' ' => ''));
+    return strtr(ucwords(strtr($text, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
   }
 
   protected function getTable()
