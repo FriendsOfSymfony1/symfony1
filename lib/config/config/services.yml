@@ -3,6 +3,7 @@
 #   sf_formatter
 #   sf_filesystem
 #   sf_logger
+#   sf_mailer
 #
 all:
   services:

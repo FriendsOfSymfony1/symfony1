@@ -100,7 +100,7 @@ default:
             file: %SF_LOG_DIR%/%SF_APP%_%SF_ENVIRONMENT%.log
 
   mailer:
-    class: sfMailer
+    class: sfNoMailer
     param:
       logging:           %SF_LOGGING_ENABLED%
       charset:           %SF_CHARSET%

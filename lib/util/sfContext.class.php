@@ -451,6 +451,7 @@ class sfContext implements ArrayAccess
       $this->factories['serviceContainer']->setService('sf_formatter', new sfFormatter());
       $this->factories['serviceContainer']->setService('sf_user', $this->getUser());
       $this->factories['serviceContainer']->setService('sf_routing', $this->getRouting());
+      $this->factories['serviceContainer']->setService('sf_mailer', $this->getMailer());
     }
 
     return $this->factories['serviceContainer'];
