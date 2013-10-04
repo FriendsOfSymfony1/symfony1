@@ -21,20 +21,14 @@ Installation
 
 See http://symfony.com/legacy/doc/getting-started/1_4/en/03-Symfony-Installation
 
-Get the framework with all its dependencies:
+Option 1: Using [Composer](http://getcomposer.org/doc/00-intro.md) as dependency management:
 
-    git clone https://github.com/LExpress/symfony1.git symfony1
-    cd symfony1
-    git submodule update --init 
-
-Add the framework to your project with [Composer](http://getcomposer.org/doc/00-intro.md):
-
-    composer require lexpress/symfony1 dev-master
+    composer require lexpress/symfony1 v1.5.*
     composer install
 
-Add the framework to your project with submodule:
+Option 2: Using Git submodules:
   
-    git init
+    git init # your project
     git submodule add https://github.com/LExpress/symfony1.git lib/vendor/symfony
     git submodule update --init --recursive
 
