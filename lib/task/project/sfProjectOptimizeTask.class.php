@@ -70,7 +70,17 @@ EOF;
     foreach ($modules as $module)
     {
       $this->logSection('module', $module);
-      $this->configuration->getConfigCache()->checkConfig('modules/'.$module.'/config/generator.yml',  true);
+
+      try
+      {
+        $this->configuration->getConfigCache()->checkConfig('modules/'.$module.'/config/generator.yml',  true);
+      }
+      catch (Exception $e)
+      {
+        $this->dispatcher->notifyUntil(new sfEvent($e, 'application.throw_exception'));
+
+        $this->logSection($module, $e->getMessage(), null, 'ERROR');
+      }
     }
 
     $templates = $this->findTemplates($modules);
