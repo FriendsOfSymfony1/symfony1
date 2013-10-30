@@ -213,7 +213,7 @@ class sfServiceContainer implements sfServiceContainerInterface
 
   static public function camelize($id)
   {
-    return preg_replace(array('/(^|_|-)+(.)/e', '/\.(.)/e'), array("strtoupper('\\2')", "'_'.strtoupper('\\1')"), $id);
+    return strtr(ucwords(strtr($id, array('_' => ' ', '-' => ' ', '.' => '_ '))), array(' ' => ''));
   }
 
   static public function underscore($id)
