@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-xx/xx/xx: Version 1.5.1
+10/30/2013: Version 1.5.2
 -----------------------
 
  * Drop support for PHP 5.2
