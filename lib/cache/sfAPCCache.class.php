@@ -36,9 +36,9 @@ class sfAPCCache extends sfCache
     $this->enabled = function_exists('apc_store') && ini_get('apc.enabled');
   }
 
- /**
-  * @see sfCache
-  */
+  /**
+   * @see sfCache
+   */
   public function get($key, $default = null)
   {
     if (!$this->enabled)
@@ -133,7 +133,7 @@ class sfAPCCache extends sfCache
   {
     if ($info = $this->getCacheInfo($key))
     {
-      return $info['creation_time'] + $info['ttl'] > time() ? $info['mtime'] : 0;
+      return $info['ctime'] + $info['ttl'] > time() ? $info['mtime'] : 0;
     }
 
     return 0;
@@ -146,7 +146,7 @@ class sfAPCCache extends sfCache
   {
     if ($info = $this->getCacheInfo($key))
     {
-      return $info['creation_time'] + $info['ttl'] > time() ? $info['creation_time'] + $info['ttl'] : 0;
+      return $info['ctime'] + $info['ttl'] > time() ? $info['ctime'] + $info['ttl'] : 0;
     }
 
     return 0;
@@ -172,9 +172,9 @@ class sfAPCCache extends sfCache
 
     foreach ($infos['cache_list'] as $info)
     {
-      if (preg_match($regexp, $info['info']))
+      if (preg_match($regexp, $info['key']))
       {
-        apc_delete($info['info']);
+        apc_delete($info['key']);
       }
     }
   }
@@ -199,7 +199,7 @@ class sfAPCCache extends sfCache
     {
       foreach ($infos['cache_list'] as $info)
       {
-        if ($this->getOption('prefix').$key == $info['info'])
+        if ($this->getOption('prefix').$key == $info['key'])
         {
           return $info;
         }
