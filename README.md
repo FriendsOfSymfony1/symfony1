@@ -31,7 +31,7 @@ It runs on *nix and Windows platforms.
 Requirements
 ------------
 
-PHP 5.2.4 and up. See prerequisites on http://symfony.com/legacy/doc/getting-started/1_4/en/02-Prerequisites
+PHP 5.3.4 and up. See prerequisites on http://symfony.com/legacy/doc/getting-started/1_4/en/02-Prerequisites
 
 Installation
 ------------
