@@ -3,14 +3,17 @@
 About this version
 ------------------
 
-This is a community driven fork of symfony 1, as official support as been [interrupted in November 2012](http://symfony.com/blog/symfony-1-4-end-of-maintenance-what-does-it-mean).
+This is a community driven fork of symfony 1, as official support has been [interrupted in November 2012](http://symfony.com/blog/symfony-1-4-end-of-maintenance-what-does-it-mean).
 
-**Please do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony2](http://symfony.com/) is the way to go today.**
-All the enhancements and BC breaks are listed in [WHATS_NEW.md](https://github.com/LExpress/symfony1/blob/master/WHATS_NEW.md), this include:
+**Do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony2](http://symfony.com/) is the way to go today.**
 
-- Composer support
+All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.com/LExpress/symfony1/blob/master/WHATS_NEW.md) file, this include:
+
 - [DIC](https://github.com/LExpress/symfony1/wiki/ServiceContainer)
-- new features like `sfAction::renderJson` or `sfValidatorIp`
+- Composer support
+- PHP 5.5 support
+- performance boost
+- new widgets & validators
 - some tickets fixed from the symfony trac
 - ...
 
