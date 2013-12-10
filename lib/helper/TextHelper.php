@@ -26,9 +26,9 @@
  * @param string $text The original text
  * @param integer $length The length for truncate
  * @param string $truncate_string The string to add after truncated text
- * @param string $truncate_lastspace Remove or not last space after truncate
+ * @param bool $truncate_lastspace Remove or not last space after truncate
  * @param string $truncate_pattern Pattern
- * @param integer $length_max Used only with truncate_patter
+ * @param integer $length_max Used only with truncate_pattern
  *
  * @return string
  */
@@ -82,7 +82,7 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
 
   if ($mbstring)
   {
-    @mb_internal_encoding($old_encoding);
+   @mb_internal_encoding($old_encoding);
   }
 
   return $text;
@@ -131,11 +131,18 @@ function highlight_text($text, $phrase, $highlighter = '<strong class="highlight
 
 /**
  * Extracts an excerpt from the +text+ surrounding the +phrase+ with a number of characters on each side determined
- * by +radius+. If the phrase isn't found, nil is returned. Ex:
- *   excerpt("hello my world", "my", 3) => "...lo my wo..."
- * If +excerpt_space+ is true the text will only be truncated on whitespace, never inbetween words.
+ * by +radius+. If the phrase isn't found, an empty string is returned.
+ * Example: excerpt("hello my world", "my", 3) => "...lo my wo..."
+ * If +excerpt_space+ is true the text will be truncated on only whitespace, not in the middle of words.
  * This might return a smaller radius than specified.
- *   excerpt("hello my world", "my", 3, "...", true) => "... my ..."
+ * Example: excerpt("hello my world", "my", 3, "...", true) => "... my ..."
+ *
+ * @param string $text The original text
+ * @param string $phrase The phrase to excerpt
+ * @param string $excerpt_string The string to add before & after excerpted phrase
+ * @param bool $excerpt_space If true the text will be truncated on only whitespace, not in the middle of words
+ *
+ * @return string
  */
 function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $excerpt_space = false)
 {
@@ -183,13 +190,18 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
 
   if($mbstring)
   {
-   @mb_internal_encoding($old_encoding);
+    @mb_internal_encoding($old_encoding);
   }
   return $return_string;
 }
 
 /**
- * Word wrap long lines to line_width.
+ * Word wrap long lines to line_width
+ *
+ * @param string $text The original text
+ * @param integer $line_width The length to wrap the lines
+ *
+ * @return string
  */
 function wrap_text($text, $line_width = 80)
 {
@@ -201,6 +213,11 @@ function wrap_text($text, $line_width = 80)
  * Surrounds paragraphs with <tt>&lt;p&gt;</tt> tags, and converts line breaks into <tt>&lt;br /&gt;</tt>
  * Two consecutive newlines(<tt>\n\n</tt>) are considered as a paragraph, one newline (<tt>\n</tt>) is
  * considered a linebreak, three or more consecutive newlines are turned into two newlines
+ *
+ * @param string $text The original text
+ * @param array $options Html options for paragraphs
+ *
+ * @return string
  */
 function simple_format_text($text, $options = array())
 {
@@ -215,32 +232,47 @@ function simple_format_text($text, $options = array())
 }
 
 /**
- * Turns all urls and email addresses into clickable links. The +link+ parameter can limit what should be linked.
- * Options are :all (default), :email_addresses, and :urls.
+ * Turns all urls and email addresses into clickable links
  *
  * Example:
  *   auto_link("Go to http://www.symfony-project.com and say hello to fabien.potencier@example.com") =>
  *     Go to <a href="http://www.symfony-project.com">http://www.symfony-project.com</a> and
  *     say hello to <a href="mailto:fabien.potencier@example.com">fabien.potencier@example.com</a>
+ *
+ * @param string $text The original text
+ * @param string $link Define what should be linked. Options are 'all' (default), 'email_addresses' and 'urls'
+ * @param array $html_options Html options for the links
+ * @param bool $truncate Truncate link or not
+ * @param integer $truncate_length Truncate length. Used only if $truncate is true
+ * @param string $truncate_pad The string to add after truncated text. Used only if $truncate is true
+ * @param bool $is_unicode If true, allows the inclusion of unicode characters in email addresses
+ *
+ * @return string
  */
-function auto_link_text($text, $link = 'all', $href_options = array(), $truncate = false, $truncate_len = 35, $pad = '...')
+function auto_link_text($text, $link = 'all', $html_options = array(), $truncate = false, $truncate_length = 30, $truncate_pad = '...', $is_unicode = false)
 {
   if ($link == 'all')
   {
-    return _auto_link_urls(_auto_link_email_addresses($text), $href_options, $truncate, $truncate_len, $pad);
+    return _auto_link_urls(_auto_link_email_addresses($text, $html_options, $is_unicode), $html_options, $truncate, $truncate_length, $truncate_pad);
   }
   else if ($link == 'email_addresses')
   {
-    return _auto_link_email_addresses($text);
+    return _auto_link_email_addresses($text, $html_options, $is_unicode);
   }
   else if ($link == 'urls')
   {
-    return _auto_link_urls($text, $href_options, $truncate, $truncate_len, $pad);
+    return _auto_link_urls($text, $html_options, $truncate, $truncate_length, $truncate_pad);
   }
 }
 
 /**
- * Turns all links into words, like "<a href="something">else</a>" to "else".
+ * Removes links from text
+ * Examples: strip_links_text('<a href="http://www.google.com">Google</a>') => Google
+ *  strip_links_text('<a href="mailto:me@dot.com">Email Me!</a>') => Email Me!
+ *
+ * @param string $text The original text
+ *
+ * @return string
  */
 function strip_links_text($text)
 {
@@ -272,11 +304,20 @@ if (!defined('SF_AUTO_LINK_RE'))
 }
 
 /**
- * Turns all urls into clickable links.
+ * Turns all URLs into clickable links.
+ * Ignores URLs that are already linked.
+ *
+ * @param string $text The original text
+ * @param array $html_options Html options for the links
+ * @param bool $truncate Truncate link or not
+ * @param integer $truncate_length Truncate length. Used only if $truncate is true
+ * @param string $truncate_pad The string to add after truncated text. Used only if $truncate is true
+ *
+ * @return string
  */
-function _auto_link_urls($text, $href_options = array(), $truncate = false, $truncate_len = 40, $pad = '...')
+function _auto_link_urls($text, $html_options = array(), $truncate = false, $truncate_length = 30, $truncate_pad = '...')
 {
-  $href_options = _tag_options($href_options);
+  $html_options = _tag_options($html_options);
 
   $callback_function = '
     if (preg_match("/<a\s/i", $matches[1]))
@@ -288,9 +329,9 @@ function _auto_link_urls($text, $href_options = array(), $truncate = false, $tru
   if ($truncate)
   {
     $callback_function .= '
-      else if (strlen($matches[2].$matches[3]) > '.$truncate_len.')
+      else if (strlen($matches[2].$matches[3]) > '.$truncate_length.')
       {
-        return $matches[1].\'<a href="\'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].\'"'.$href_options.'>\'.substr($matches[2].$matches[3], 0, '.$truncate_len.').\''.$pad.'</a>\'.$matches[4];
+        return $matches[1].\'<a href="\'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].\'"'.$html_options.'>\'.substr($matches[2].$matches[3], 0, '.$truncate_length.').\''.$truncate_pad.'</a>\'.$matches[4];
       }
       ';
   }
@@ -298,7 +339,7 @@ function _auto_link_urls($text, $href_options = array(), $truncate = false, $tru
   $callback_function .= '
     else
     {
-      return $matches[1].\'<a href="\'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].\'"'.$href_options.'>\'.$matches[2].$matches[3].\'</a>\'.$matches[4];
+      return $matches[1].\'<a href="\'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].\'"'.$html_options.'>\'.$matches[2].$matches[3].\'</a>\'.$matches[4];
     }
     ';
 
@@ -310,14 +351,55 @@ function _auto_link_urls($text, $href_options = array(), $truncate = false, $tru
 }
 
 /**
- * Turns all email addresses into clickable links.
+ * Turns email addresses into clickable links.
+ * Ignores email addresses that are already linked.
+ *
+ * @param string $text The original text
+ * @param array $html_options Html options for the links
+ * @param bool $is_unicode If true, allows the inclusion of unicode characters in email addresses
+ *
+ * @return string
  */
-function _auto_link_email_addresses($text)
+function _auto_link_email_addresses($text, $html_options = array(), $is_unicode = false)
 {
-  // Taken from http://snippets.dzone.com/posts/show/6156
-  return preg_replace("#(^|[\n ])([a-z0-9&\-_\.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", "\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>", $text);
+  if (false === strpos($text, '@'))
+  {
+    return $text;
+  }
 
-  // Removed since it destroys already linked emails
-  // Example:   <a href="mailto:me@example.com">bar</a> gets <a href="mailto:me@example.com">bar</a> gets <a href="mailto:<a href="mailto:me@example.com">bar</a>
-  //return preg_replace('/([\w\.!#\$%\-+.]+@[A-Za-z0-9\-]+(\.[A-Za-z0-9\-]+)+)/', '<a href="mailto:\\1">\\1</a>', $text);
+  $html_options = _tag_options($html_options);
+
+  /*
+    Allowed username characters: upper & lowercase letters and digits 0-9
+      and special characters: ! # $ % & ' * + - / = ? ^ _ ` { } | ~
+    Other special characters are allowed with restrictions. They are:
+      Space and "(),:;<>@[\] (ASCII: 32, 34, 40, 41, 44, 58, 59, 60, 62, 64, 91-93)
+      The restrictions for these special characters are that they must only be used when contained between quotation marks,
+      and that 2 of them (the backslash \ and quotation mark " (ASCII: 92, 34)) must also be preceded by a backslash \ (e.g. "\\\"").
+     Source: http://en.wikipedia.org/wiki/Email_address
+  */
+  $allowedUsernameChars = ($is_unicode ? '\p{L}\p{Nd}' : '\w'); // '\w' = [a-zA-Z0-9\_] (letters, digits, underscore)
+
+  $allowedUsernameChars .= '\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\}\|\~\.'; // extended allowed username chars
+
+  /*
+    Allowed hostname characters: letters, digits 0-9 and a dash
+      'words' (labels) separated by a dot
+  */
+  $allowedHostnameChars = 'a-zA-Z0-9\-\.';
+
+  $allowedHostnameChars .= ($is_unicode ? '\p{L}\p{Nd}' : null);
+
+  return preg_replace('~
+    (?<!mailto:) # no previous mailto:
+    (?<!http:|https:) # no previous http: or https:
+    (?<!['.$allowedUsernameChars.']) # no previous valid email chars
+    (['.$allowedUsernameChars.']+) # valid username chars
+    @
+    (['.$allowedHostnameChars.']+) # valid hostname chars
+    (?!['.$allowedHostnameChars.']) # no following valid hostname chars
+    (?!</a>) # no trailing </a>
+    ~ixu',
+    '<a href="mailto:\1@\2"'.$html_options.'>\1@\2</a>',
+    $text);
 }

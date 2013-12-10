@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+12/10/2013
+----------
+
+ * Update auto_link_text, fix & update email linking & add option for unicode characters in email addresses (#10065) (patch from @frost-nzcr4)
+
 10/30/2013: Version 1.5.2
 -----------------------
 
