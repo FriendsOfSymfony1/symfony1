@@ -20,21 +20,29 @@
  */
 
 /**
- * Truncates +text+ to the length of +length+ and replaces the last three characters with the +truncate_string+
- * if the +text+ is longer than +length+.
+ * Truncates text.
  *
- * @param string $text The original text
- * @param integer $length The length for truncate
- * @param string $truncate_string The string to add after truncated text
- * @param bool $truncate_lastspace Remove or not last space after truncate
- * @param string $truncate_pattern Pattern
- * @param integer $length_max Used only with truncate_pattern
- *
+ * @param string $text The incoming text.
+ * @param integer $truncate_length Default: 30. The length of returned string.
+ *  This value may be ignored with some values of *truncate_pattern* and *length_max*
+ * @param string $truncate_pad Default: '...'. Appended to returned string.
+ *  Length of pad is included in returned string length.
+ * @param bool $truncate_lastspace Default: false. If true, truncates *text* on the last whitespace found,
+ *  if any, before *truncate_length* is reached, and then appends pad.
+ *  Returned string length may be shorter than *truncate_length* if true.
+ * @param string $truncate_pattern Default: null. Regex pattern to define where to break *text* for truncation.
+ *  If *truncate_pattern* is not found, *text* is truncated to *truncate_length*
+ *  N.b.: *truncate_lastspace* value is ignored if *truncate_pattern* is set.
+ * @param integer $length_max Default: null. The max returned string length. Use with *truncate_pattern*.
+ *  - If *length_max* is not given or is < *truncate_length*, *text* will break on the
+ *    first *truncate_pattern* found. Returned string length may be shorter than *truncate_length*.
+ *  - If *length_max* = 0 or is > *truncate_length*, *text* will break on the
+ *    first *truncate_pattern* found between *truncate_length* and *length_max*.
  * @return string
  */
-function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_lastspace = false, $truncate_pattern = null, $length_max = null)
+function truncate_text($text, $truncate_length = 30, $truncate_pad = '...', $truncate_lastspace = false, $truncate_pattern = null, $length_max = null)
 {
-  if ('' == $text)
+  if (empty($text))
   {
     return '';
   }
@@ -48,11 +56,11 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
   $strlen = ($mbstring) ? 'mb_strlen' : 'strlen';
   $substr = ($mbstring) ? 'mb_substr' : 'substr';
 
-  if ($strlen($text) > $length)
+  if ($strlen($text) > $truncate_length)
   {
     if ($truncate_pattern)
     {
-      $length_min = null !== $length_max && (0 == $length_max || $length_max > $length) ? $length : null;
+      $length_min = null !== $length_max && (0 == $length_max || $length_max > $truncate_length) ? $truncate_length : null;
 
       preg_match($truncate_pattern, $text, $matches, PREG_OFFSET_CAPTURE, $length_min);
 
@@ -60,43 +68,45 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
       {
         if ($length_min)
         {
-          $truncate_string = $matches[0][0].$truncate_string;
-          $length = $matches[0][1] + $strlen($truncate_string);
+          $truncate_pad = $matches[0][0].$truncate_pad;
+          $truncate_length = $matches[0][1] + $strlen($truncate_pad);
         }
         else
         {
           $match = end($matches);
-          $truncate_string = $match[0].$truncate_string;
-          $length = $match[1] + $strlen($truncate_string);
+          $truncate_pad = $match[0].$truncate_pad;
+          $truncate_length = $match[1] + $strlen($truncate_pad);
         }
       }
     }
 
-    $truncate_text = $substr($text, 0, $length - $strlen($truncate_string));
-    if ($truncate_lastspace)
+    $truncate_text = $substr($text, 0, $truncate_length - $strlen($truncate_pad));
+    // ignore truncate_lastspace if truncate_pattern is set
+    if ($truncate_lastspace && !$truncate_pattern)
     {
       $truncate_text = preg_replace('/\s+?(\S+)?$/', '', $truncate_text);
     }
-    $text = $truncate_text.$truncate_string;
+    $text = $truncate_text.$truncate_pad;
   }
 
   if ($mbstring)
   {
-   @mb_internal_encoding($old_encoding);
+    @mb_internal_encoding($old_encoding);
   }
 
   return $text;
 }
 
 /**
- * Highlights the +phrase+ where it is found in the +text+ by surrounding it like
- * <strong class="highlight">I'm a highlight phrase</strong>. The highlighter can be specialized by
- * passing +highlighter+ as single-quoted string with \1 where the phrase is supposed to be inserted.
- * N.B.: The +phrase+ is sanitized to include only letters, digits, and spaces before use.
+ * Highlights *phrase* where it is found in *text* by surrounding it with *highlighter*.
  *
- * @param string $text subject input to preg_replace.
- * @param mixed $phrase string, array or sfOutputEscaperArrayDecorator instance of words to highlight
- * @param string $highlighter regex replacement input to preg_replace.
+ * Example: <strong class="highlight">I'm a highlighted phrase.</strong>.
+ * N.b.: The *phrase* is sanitized to include only letters, digits, and spaces before use.
+ *
+ * @param string $text The incoming text.
+ * @param mixed $phrase Case-insensitive string, array or sfOutputEscaperArrayDecorator instance of words to highlight
+ * @param string $highlighter Default: '<strong class="highlight">\\1</strong>'. Regex replacement input to preg_replace.
+ *  Pass a single-quoted string with \\1 where the *phrase* is to be inserted.
  *
  * @return string
  */
@@ -130,29 +140,31 @@ function highlight_text($text, $phrase, $highlighter = '<strong class="highlight
 }
 
 /**
- * Extracts an excerpt from the +text+ surrounding the +phrase+ with a number of characters on each side determined
- * by +radius+. If the phrase isn't found, an empty string is returned.
- * Example: excerpt("hello my world", "my", 3) => "...lo my wo..."
- * If +excerpt_space+ is true the text will be truncated on only whitespace, not in the middle of words.
- * This might return a smaller radius than specified.
- * Example: excerpt("hello my world", "my", 3, "...", true) => "... my ..."
+ * Extracts an excerpt from *text*.
  *
- * @param string $text The original text
- * @param string $phrase The phrase to excerpt
- * @param string $excerpt_string The string to add before & after excerpted phrase
- * @param bool $excerpt_space If true the text will be truncated on only whitespace, not in the middle of words
+ * Surrounds *phrase* found within *text* with *radius* number of chars.
+ * Example: excerpt("hello my world", "my", 3) => "...lo my wo...".
+ *
+ * @param string $text The incoming text.
+ * @param string $phrase Case-insensitive phrase to excerpt.
+ *  N.b.: If the phrase isn't found, an empty string is returned.
+ * @param integer $radius Default: 100. Number of chars on either side of excerpted *phrase*.
+ * @param string $excerpt_pad Default: '...'. The string to prepend and append to the excerpted *phrase*.
+ * @param bool $excerpt_space Default: false. If true, text will be broken on only whitespace, not in the middle of words.
+ *  This might return a smaller *radius* than specified.
+ *  Example: excerpt("hello my world", "my", 3, "...", true) => "... my ..."
  *
  * @return string
  */
-function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $excerpt_space = false)
+function excerpt_text($text, $phrase, $radius = 100, $excerpt_pad = '...', $excerpt_space = false)
 {
-  if ($text == '' || $phrase == '')
+  if (empty($text) || empty($phrase))
   {
     return '';
   }
 
   $mbstring = extension_loaded('mbstring');
-  if($mbstring)
+  if ($mbstring)
   {
     $old_encoding = mb_internal_encoding();
     @mb_internal_encoding(mb_detect_encoding($text));
@@ -169,17 +181,17 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
     $start_pos = max($found_pos - $radius, 0);
     $end_pos = min($found_pos + $strlen($phrase) + $radius, $strlen($text));
     $excerpt = $substr($text, $start_pos, $end_pos - $start_pos);
-    $prefix = ($start_pos > 0) ? $excerpt_string : '';
-    $postfix = $end_pos < $strlen($text) ? $excerpt_string : '';
+    $prefix = ($start_pos > 0) ? $excerpt_pad : '';
+    $postfix = $end_pos < $strlen($text) ? $excerpt_pad : '';
 
     if ($excerpt_space)
     {
-      // only cut off at ends where $exceprt_string is added
-      if($prefix)
+      // only cut off at ends where $excerpt_string is added
+      if ($prefix)
       {
         $excerpt = preg_replace('/^(\S+)?\s+?/', ' ', $excerpt);
       }
-      if($postfix)
+      if ($postfix)
       {
         $excerpt = preg_replace('/\s+?(\S+)?$/', ' ', $excerpt);
       }
@@ -188,7 +200,7 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
     $return_string = $prefix.$excerpt.$postfix;
   }
 
-  if($mbstring)
+  if ($mbstring)
   {
     @mb_internal_encoding($old_encoding);
   }
@@ -196,56 +208,72 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
 }
 
 /**
- * Word wrap long lines to line_width
+ * Wrap long lines to specified length.
  *
- * @param string $text The original text
- * @param integer $line_width The length to wrap the lines
+ * @param string $text The incoming text.
+ * @param integer $line_length Default: 80. The length to wrap the lines.
  *
  * @return string
  */
-function wrap_text($text, $line_width = 80)
+function wrap_text($text, $line_length = 80)
 {
-  return preg_replace('/(.{1,'.$line_width.'})(\s+|$)/s', "\\1\n", preg_replace("/\n/", "\n\n", $text));
+  return preg_replace('/(.{1,'.$line_length.'})(\s+|$)/s', "\\1\n", preg_replace("/\n/", "\n\n", $text));
 }
 
 /**
- * Returns +text+ transformed into html using very simple formatting rules
- * Surrounds paragraphs with <tt>&lt;p&gt;</tt> tags, and converts line breaks into <tt>&lt;br /&gt;</tt>
+ * Returns *text* transformed into html using very simple formatting rules.
+ *
+ * Surrounds paragraphs with <tt>&lt;p&gt;</tt> tags, and converts line breaks into <tt>&lt;br /&gt;</tt>.
  * Two consecutive newlines(<tt>\n\n</tt>) are considered as a paragraph, one newline (<tt>\n</tt>) is
- * considered a linebreak, three or more consecutive newlines are turned into two newlines
+ * considered a linebreak, three or more consecutive newlines are turned into two newlines.
  *
- * @param string $text The original text
- * @param array $options Html options for paragraphs
+ * @param string $text The incoming text.
+ * @param array $html_options Default: array(). Html options for paragraphs.
  *
  * @return string
  */
-function simple_format_text($text, $options = array())
+function simple_format_text($text, $html_options = array())
 {
-  $css = (isset($options['class'])) ? ' class="'.$options['class'].'"' : '';
+  $html_options = _tag_options($html_options);
 
-  $text = sfToolkit::pregtr($text, array("/(\r\n|\r)/"        => "\n",               // lets make them newlines crossplatform
-                                         "/\n{2,}/"           => "</p><p$css>"));    // turn two and more newlines into paragraph
+  $text = sfToolkit::pregtr($text, array("/(\r\n|\r)/"        => "\n",               //  Make the newlines crossplatform
+                                         "/\n{2,}/"           => "</p><p$html_options>")); // Make two and more newlines into paragraph
 
-  // turn single newline into <br/>
+  // Make single newline into <br/>
   $text = str_replace("\n", "\n<br />", $text);
-  return '<p'.$css.'>'.$text.'</p>'; // wrap the first and last line in paragraphs before we're done
+  return '<p'.$html_options.'>'.$text.'</p>'; // Wrap the first and last line in paragraph tags
 }
 
 /**
- * Turns all urls and email addresses into clickable links
+ * Removes links from text.
+ *
+ * Examples: strip_links_text('<a href="http://www.google.com">Google</a>') => Google
+ *  strip_links_text('<a href="mailto:me@dot.com">Email Me.</a>') => Email Me.
+ *
+ * @param string $text The incoming text.
+ *
+ * @return string
+ */
+function strip_links_text($text)
+{
+  return preg_replace('/<a[^>]*>(.*?)<\/a>/s', '\\1', $text);
+}
+
+/**
+ * Makes urls and email addresses into clickable links.
  *
  * Example:
- *   auto_link("Go to http://www.symfony-project.com and say hello to fabien.potencier@example.com") =>
+ *   auto_link("Go to http://www.symfony-project.com and say hello to fabien.potencier@example.com.") =>
  *     Go to <a href="http://www.symfony-project.com">http://www.symfony-project.com</a> and
- *     say hello to <a href="mailto:fabien.potencier@example.com">fabien.potencier@example.com</a>
+ *     say hello to <a href="mailto:fabien.potencier@example.com">fabien.potencier@example.com</a>.
  *
- * @param string $text The original text
- * @param string $link Define what should be linked. Options are 'all' (default), 'email_addresses' and 'urls'
- * @param array $html_options Html options for the links
- * @param bool $truncate Truncate link or not
- * @param integer $truncate_length Truncate length. Used only if $truncate is true
- * @param string $truncate_pad The string to add after truncated text. Used only if $truncate is true
- * @param bool $is_unicode If true, allows the inclusion of unicode characters in email addresses
+ * @param string $text The incoming text.
+ * @param string $link Default: 'all'. Define what should be linked. Options are 'all', 'email_addresses' and 'urls'.
+ * @param array $html_options Default: array(). Html options for URL and email links.
+ * @param bool $truncate Default: false. Truncate URLs or not. Does not apply to email addresses.
+ * @param integer $truncate_length Default: 30. Truncation length. Used only if *truncate* is true.
+ * @param string $truncate_pad Default: '...'. The string to append to truncated text. Used only if *truncate* is true.
+ * @param bool $is_unicode Default: false. If true, allows the inclusion of unicode characters in email addresses.
  *
  * @return string
  */
@@ -266,52 +294,13 @@ function auto_link_text($text, $link = 'all', $html_options = array(), $truncate
 }
 
 /**
- * Removes links from text
- * Examples: strip_links_text('<a href="http://www.google.com">Google</a>') => Google
- *  strip_links_text('<a href="mailto:me@dot.com">Email Me!</a>') => Email Me!
+ * Makes URLs into clickable links. Ignores URLs that are already linked.
  *
- * @param string $text The original text
- *
- * @return string
- */
-function strip_links_text($text)
-{
-  return preg_replace('/<a[^>]*>(.*?)<\/a>/s', '\\1', $text);
-}
-
-if (!defined('SF_AUTO_LINK_RE'))
-{
-  define('SF_AUTO_LINK_RE', '~
-    (                       # leading text
-      <\w+.*?>|             #   leading HTML tag, or
-      [^=!:\'"/]|           #   leading punctuation, or
-      ^                     #   beginning of line
-    )
-    (
-      (?:https?://)|        # protocol spec, or
-      (?:www\.)             # www.*
-    )
-    (
-      [-\w]+                   # subdomain or domain
-      (?:\.[-\w]+)*            # remaining subdomains or domain
-      (?::\d+)?                # port
-      (?:/(?:(?:[\~\w\+%-]|(?:[,.;:][^\s$]))+)?)* # path
-      (?:\?[\w\+%&=.;-]+)?     # query string
-      (?:\#[\w\-/\?!=]*)?        # trailing anchor
-    )
-    ([[:punct:]]|\s|<|$)    # trailing text
-   ~x');
-}
-
-/**
- * Turns all URLs into clickable links.
- * Ignores URLs that are already linked.
- *
- * @param string $text The original text
- * @param array $html_options Html options for the links
- * @param bool $truncate Truncate link or not
- * @param integer $truncate_length Truncate length. Used only if $truncate is true
- * @param string $truncate_pad The string to add after truncated text. Used only if $truncate is true
+ * @param string $text The incoming text.
+ * @param array $html_options Default: array(). Html options for the links.
+ * @param bool $truncate Default: false. Truncate link or not.
+ * @param integer $truncate_length Default: 30. Truncate length. Used only if *truncate* is true.
+ * @param string $truncate_pad Default: '...'. The string to append to truncated text. Used only if *truncate* is true.
  *
  * @return string
  */
@@ -350,13 +339,36 @@ function _auto_link_urls($text, $html_options = array(), $truncate = false, $tru
     );
 }
 
+if (!defined('SF_AUTO_LINK_RE'))
+{
+  define('SF_AUTO_LINK_RE', '~
+    (                       # leading text
+      <\w+.*?>|             # leading HTML tag, or
+      [^=!:\'"/]|           # leading punctuation, or
+      ^                     # beginning of line
+    )
+    (
+      (?:https?://)|        # protocol spec, or
+      (?:www\.)             # www.*
+    )
+    (
+      [-\w]+                   # subdomain or domain
+      (?:\.[-\w]+)*            # remaining subdomains or domain
+      (?::\d+)?                # port
+      (?:/(?:(?:[\~\w\+%-]|(?:[,.;:][^\s$]))+)?)* # path
+      (?:\?[\w\+%&=.;-]+)?     # query string
+      (?:\#[\w\-/\?!=]*)?      # trailing anchor
+    )
+    ([[:punct:]]|\s|<|$)       # trailing text
+   ~x');
+}
+
 /**
- * Turns email addresses into clickable links.
- * Ignores email addresses that are already linked.
+ * Makes email addresses into clickable links. Ignores email addresses that are already linked.
  *
- * @param string $text The original text
- * @param array $html_options Html options for the links
- * @param bool $is_unicode If true, allows the inclusion of unicode characters in email addresses
+ * @param string $text The incoming text.
+ * @param array $html_options Default: array(). Html options for the links.
+ * @param bool $is_unicode Default: false. If true, allows the inclusion of unicode characters in email addresses.
  *
  * @return string
  */

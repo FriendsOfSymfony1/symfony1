@@ -13,31 +13,39 @@ require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
 require_once(dirname(__FILE__).'/../../../lib/helper/TextHelper.php');
 
-$t = new lime_test(66);
+$t = new lime_test(73);
 
 // truncate_text()
 $t->diag('truncate_text()');
 $t->is(truncate_text(''), '', 'truncate_text() does nothing on an empty string');
-
-$t->is(truncate_text('Test'), 'Test', 'truncate_text() truncates to 30 characters by default');
+$t->is(truncate_text('Test test test test test test test test test'), 'Test test test test test te...', 'truncate_text() truncates to 30 characters by default');
 
 $text = str_repeat('A', 35);
 $truncated = str_repeat('A', 27).'...';
-$t->is(truncate_text($text), $truncated, 'truncate_text() adds ... to truncated text');
+$t->is(truncate_text($text), $truncated, 'truncate_text() adds ... to the truncated text');
 
 $text = str_repeat('A', 35);
 $truncated = str_repeat('A', 22).'...';
-$t->is(truncate_text($text, 25), $truncated, 'truncate_text() takes the max length as its second argument');
+$t->is(truncate_text($text, 25), $truncated, 'truncate_text() takes the truncate length as its second argument');
 
 $text = str_repeat('A', 35);
 $truncated = str_repeat('A', 21).'BBBB';
-$t->is(truncate_text($text, 25, 'BBBB'), $truncated, 'truncate_text() takes the ... text as its third argument');
+$t->is(truncate_text($text, 25, 'BBBB'), $truncated, 'truncate_text() takes the pad text as its third argument');
+$t->is(truncate_text('Test1 test2', 6), 'Tes...', 'truncate_text() includes the length of the pad text in the total length');
+$t->is(truncate_text('Short test', 10), 'Short test', 'truncate_text() returns the text unchanged if the truncate length is longer than the text. No pad text is added.');
 
-$text = str_repeat('A', 10).str_repeat(' ', 10).str_repeat('A', 10);
-$truncated_true = str_repeat('A', 10).'...';
-$truncated_false = str_repeat('A', 10).str_repeat(' ', 2).'...';
-$t->is(truncate_text($text, 15, '...', false), $truncated_false, 'truncate_text() accepts a truncate lastspace boolean as its fourth argument');
-$t->is(truncate_text($text, 15, '...', true), $truncated_true, 'truncate_text() accepts a truncate lastspace boolean as its fourth argument');
+$text = 'Testing testing testing testing';
+$truncated_false = 'Testing testi...';
+$truncated_true = 'Testing...';
+$t->is(truncate_text($text, 16, '...', false), $truncated_false, 'truncate_text() accepts a lastspace boolean as its fourth argument');
+$t->is(truncate_text($text, 16, '...', true), $truncated_true, 'truncate_text() with lastspace=true truncates text on the last whitespace found before truncate_length is reached, and then appends pad. Final results may be shorter than truncate_length.');
+
+$text = 'Web. applications. spend. a. large. share.';
+$t->is(truncate_text($text, 15, '[...]', false, '/[.]\s+?/'), 'Web. [...]', 'truncate_text() accepts a regex pattern as its fifth argument. If pattern is not found, truncate_text() will truncate to truncate_length');
+$t->is(truncate_text($text, 15, '[...]', false, '/[.]\s+?/', 0), 'Web. applications. [...]', 'truncate_text() accepts an max length as its sixth argument if pattern argument is provided');
+$t->is(truncate_text($text, 15, '[...]', false, '/[.]\s+?/', 5), 'Web. [...]', 'truncate_text(), if length_max is not given or is less than truncate_length, truncates on first pattern found');
+$t->is(truncate_text($text, 15, '[...]', false, '/[.]\s+?/', 22), 'Web. applications. [...]', 'truncate_text(), if length_max=0 or is greater than truncate_length, truncates on pattern found after truncate_length and before length_max');
+$t->is(truncate_text($text, 15, '[...]', true, '/[.]\s+?/', 0), 'Web. applications. [...]', 'truncate_text() ignores value of truncate_lastspace if pattern is set.');
 
 if (extension_loaded('mbstring'))
 {
@@ -50,60 +58,56 @@ else
   $t->skip('mbstring extension is not enabled', 2);
 }
 
-$text = 'Web applications spend a large share of their code transforming arrays of data. PHP is a wonderful language for that, because it offers a lot of array manipulation functions. But web developers are actually required to translate business logic into a program - not to mess up with arrays. In fact, web developers should spend the least possible amount of tim';
-$result = 'Web applications spend a large share of their code transforming arrays of data. PHP is a wonderful language for that, because it offers a lot of array manipulation functions. But web developers are actually required to translate business logic into a program - not to mess up with arrays. [...]';
-
-$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/', 0), $result, 'truncate_text() truncate text after the first found pattern after 200 characters');
-
-$result = 'Web applications spend a large share of their code transforming arrays of data. [...]';
-$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/'), $result, 'truncate_text() truncate text after the last found pattern before 200 characters');
-
-$text = 'Web applications spend a large share of their code transforming arrays of data. PHP is a wonderful language for that.';
-$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/'), $text, 'truncate_text() does nothing for a text that not exceed 200 characters');
-
-$text = 'Web applications spend a large share of their code transforming arrays of data PHP is a wonderful language for that, because it offers a lot of array manipulation functions But web developers are actually required to translate business logic into a program - not to mess up with arrays In fact, web developers should spend the least possible amount of tim';
-$result = 'Web applications spend a large share of their code transforming arrays of data PHP is a wonderful language for that, because it offers a lot of array manipulation functions But web developers are[...]';
-$t->is(truncate_text($text, 200, '[...]', false, '/[.]\s+?/', 0), $result, 'truncate_text() without truncate_pattern on text, truncates it after 200 characters');
-
 // highlight_text()
 $t->diag('highlight_text()');
-$t->is(highlight_text("This is a beautiful morning", "beautiful"),
+$t->is(highlight_text("This is a beautiful morning", "BEAUTIFUL"),
   "This is a <strong class=\"highlight\">beautiful</strong> morning",
-  'text_highlighter() highlights a word given as its second argument'
+  'highlight_text() highlights a phrase given as its second argument and is case-insensitive'
+);
+
+$t->is(highlight_text("This is a most beautiful morning", "most beautiful"),
+  "This is a <strong class=\"highlight\">most beautiful</strong> morning",
+  'highlight_text() highlights the entire phrase given as its second argument'
+);
+
+$t->is(highlight_text("This is a most beautiful mid afternoon", array('a most', 'mid afternoon')),
+  "This is <strong class=\"highlight\">a most</strong> beautiful <strong class=\"highlight\">mid afternoon</strong>",
+  'highlight_text() accepts an array of phrases as its second argument'
 );
 
 $t->is(highlight_text("This is a beautiful morning, but also a beautiful day", "beautiful"),
   "This is a <strong class=\"highlight\">beautiful</strong> morning, but also a <strong class=\"highlight\">beautiful</strong> day",
-  'text_highlighter() highlights all occurrences of a word given as its second argument'
+  'highlight_text() highlights all occurrences of a phrase given as its second argument'
 );
 
 $t->is(highlight_text("This is a beautiful morning, but also a beautiful day", "beautiful", '<b>\\1</b>'),
   "This is a <b>beautiful</b> morning, but also a <b>beautiful</b> day",
-  'text_highlighter() takes a pattern as its third argument'
+  'highlight_text() takes a highlight pattern as its third argument'
 );
 
-$t->is(highlight_text('', 'beautiful'), '', 'text_highlighter() returns an empty string if input is empty');
-$t->is(highlight_text('', ''), '', 'text_highlighter() returns an empty string if input is empty');
-$t->is(highlight_text('foobar', 'beautiful'), 'foobar', 'text_highlighter() does nothing is string to highlight is not present');
-$t->is(highlight_text('foobar', ''), 'foobar', 'text_highlighter() returns input if string to highlight is not present');
+$t->is(highlight_text('', 'beautiful'), '', 'highlight_text() returns an empty string if input text is empty');
+$t->is(highlight_text('', ''), '', 'highlight_text() returns an empty string if input text is empty');
+$t->is(highlight_text('foobar', 'beautiful'), 'foobar', 'highlight_text() returns the input text unchanged if the phrase to highlight is not found');
+$t->is(highlight_text('foobar', ''), 'foobar', 'highlight_text() returns the input text unchanged if the phrase to highlight empty');
 
-$t->is(highlight_text("This is a beautiful! morning", "beautiful!"), "This is a <strong class=\"highlight\">beautiful!</strong> morning", 'text_highlighter() escapes search string to be safe in a regex');
-$t->is(highlight_text("This is a beautiful! morning", "beautiful! morning"), "This is a <strong class=\"highlight\">beautiful! morning</strong>", 'text_highlighter() escapes search string to be safe in a regex');
-$t->is(highlight_text("This is a beautiful? morning", "beautiful? morning"), "This is a <strong class=\"highlight\">beautiful? morning</strong>", 'text_highlighter() escapes search string to be safe in a regex');
+$t->is(highlight_text("This is a beautiful! morning", "beautiful!"), "This is a <strong class=\"highlight\">beautiful!</strong> morning", 'highlight_text() escapes search string to be safe in a regex');
+$t->is(highlight_text("This is a beautiful! morning", "beautiful! morning"), "This is a <strong class=\"highlight\">beautiful! morning</strong>", 'highlight_text() escapes search string to be safe in a regex');
+$t->is(highlight_text("This is a beautiful? morning", "beautiful? morning"), "This is a <strong class=\"highlight\">beautiful? morning</strong>", 'highlight_text() escapes search string to be safe in a regex');
 
-$t->is(highlight_text("The http://www.google.com/ website is great", "http://www.google.com/"), "The <strong class=\"highlight\">http://www.google.com/</strong> website is great", 'text_highlighter() escapes search string to be safe in a regex');
+$t->is(highlight_text("The http://www.google.com/ website is great", "http://www.google.com/"), "The <strong class=\"highlight\">http://www.google.com/</strong> website is great", 'highlight_text() escapes search string to be safe in a regex');
 
 // excerpt_text()
 $t->diag('excerpt_text()');
-$t->is(excerpt_text('', 'foo', 5), '', 'text_excerpt() return an empty string if argument is empty');
-$t->is(excerpt_text('foo', '', 5), '', 'text_excerpt() return an empty string if phrase is empty');
-$t->is(excerpt_text("This is a beautiful morning", "beautiful", 5), "...is a beautiful morn...", 'text_excerpt() creates an excerpt of a text');
-$t->is(excerpt_text("This is a beautiful morning", "this", 5), "This is a...", 'text_excerpt() creates an excerpt of a text');
-$t->is(excerpt_text("This is a beautiful morning", "morning", 5), "...iful morning", 'text_excerpt() creates an excerpt of a text');
-$t->is(excerpt_text("This is a beautiful morning", "morning", 5, '...', true), "... morning", 'text_excerpt() takes a fifth argument allowing excerpt on whitespace');
-$t->is(excerpt_text("This is a beautiful morning", "beautiful", 5, '...', true), "... a beautiful ...", 'text_excerpt() takes a fifth argument allowing excerpt on whitespace');
-$t->is(excerpt_text("This is a beautiful morning", "This", 5, '...', true), "This is ...", 'text_excerpt() takes a fifth argument allowing excerpt on whitespace');
-$t->is(excerpt_text("This is a beautiful morning", "day"), '', 'text_excerpt() does nothing if the search string is not in input');
+$t->is(excerpt_text('', 'foo', 5), '', 'excerpt_text() returns an empty string if the input text is empty');
+$t->is(excerpt_text('foo', '', 5), '', 'excerpt_text() returns an empty string if the second argument, case-insensitive phrase is empty');
+$t->is(excerpt_text("This is a beautiful morning", "day"), '', 'excerpt_text() returns an empty string if the phrase is not found in the text');
+$t->is(excerpt_text("This is a beautiful morning", "BEAUTIFUL", 5), "...is a beautiful morn...", 'excerpt_text() takes a radius as its third argument.');
+$t->is(excerpt_text("This is a beautiful morning", "this", 5), "This is a...", 'excerpt_text() leaves a maximum of radius number of chars on either side of excerpted phrase.');
+$t->is(excerpt_text("This is a beautiful morning", "morning", 5), "...iful morning", 'excerpt_text() leaves a maximum of radius number of chars on either side of excerpted phrase.');
+$t->is(excerpt_text("This is a beautiful morning", "beautiful", 2, '****'), "****a beautiful m****", 'excerpt_text() takes a fourth argument of a custom excerpt pad.');
+$t->is(excerpt_text("This is a beautiful morning", "morning", 5, '...', true), "... morning", 'excerpt_text() takes a fifth argument allowing excerpt on whitespace');
+$t->is(excerpt_text("This is a beautiful mid morning", "ful", 10, '...', true), "... a beautiful mid ...", 'excerpt_text() takes a fifth argument allowing excerpt on whitespace');
+$t->is(excerpt_text("This is a beautiful morning", "This", 5, '...', true), "This is ...", 'excerpt_text() takes a fifth argument allowing excerpt on whitespace');
 
 // wrap_text()
 $t->diag('wrap_text()');
@@ -114,16 +118,17 @@ $t->is(wrap_text($line, 5), "This\nis a\nvery\nlong\nline\nto be\nwrapped...\n",
 
 // simple_format_text()
 $t->diag('simple_format_text()');
-$t->is(simple_format_text("crazy\r\n cross\r platform linebreaks"), "<p>crazy\n<br /> cross\n<br /> platform linebreaks</p>", 'text_simple_format() replaces \n by <br />');
-$t->is(simple_format_text("A paragraph\n\nand another one!"), "<p>A paragraph</p><p>and another one!</p>", 'text_simple_format() replaces \n\n by <p>');
-$t->is(simple_format_text("A paragraph\n\n\n\nand another one!"), "<p>A paragraph</p><p>and another one!</p>", 'text_simple_format() replaces \n\n\n\n by <p>');
-$t->is(simple_format_text("A paragraph\n With a newline"), "<p>A paragraph\n<br /> With a newline</p>", 'text_simple_format() wrap all string with <p>');
-$t->is(simple_format_text("1\n2\n3"), "<p>1\n<br />2\n<br />3</p>", 'text_simple_format() Ticket #6824');
+$t->is(simple_format_text("crazy\r\n cross\r platform linebreaks"), "<p>crazy\n<br /> cross\n<br /> platform linebreaks</p>", 'simple_format_text() replaces \n by <br />');
+$t->is(simple_format_text("A paragraph\n\nand another one!"), "<p>A paragraph</p><p>and another one!</p>", 'simple_format_text() replaces \n\n by <p>');
+$t->is(simple_format_text("A paragraph\n\n\n\nand another one!"), "<p>A paragraph</p><p>and another one!</p>", 'simple_format_text() replaces \n\n\n\n by <p>');
+$t->is(simple_format_text("A paragraph\n With a newline"), "<p>A paragraph\n<br /> With a newline</p>", 'simple_format_text() wrap all string with <p>');
+$t->is(simple_format_text("1\n2\n3"), "<p>1\n<br />2\n<br />3</p>", 'simple_format_text() Ticket #6824');
+$t->is(simple_format_text("A paragraph\n With a newline", array('class' => 'my_class', 'title' => 'My Title')), "<p class=\"my_class\" title=\"My Title\">A paragraph\n<br /> With a newline</p>", 'simple_format_text() accepts an array of html options to be applied to paragraph tag.');
 
-// text_strip_links()
-$t->diag('text_strip_links()');
-$t->is(strip_links_text("<a href='almost'>on my mind</a>"), "on my mind", 'text_strip_links() strips all links in input');
-$t->is(strip_links_text('<a href="first.html">first</a> and <a href="second.html">second</a>'), "first and second", 'text_strip_links() strips all links in input');
+// strip_links_text()
+$t->diag('strip_links_text()');
+$t->is(strip_links_text('<a href="almost">on my mind</a> and <a href="mailto:me@dot.com">email me</a>'), 'on my mind and email me', 'strip_links_text() strips all links in input');
+$t->is(strip_links_text('<a href="first.html">first</a> and <a href="second.html">second</a>'), "first and second", 'strip_links_text() strips all links in input');
 
 // auto_link_text()
 $t->diag('auto_link_text()');
