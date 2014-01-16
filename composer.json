@@ -9,6 +9,10 @@
     "autoload": {
         "files": ["autoload.php"]
     },
+    "suggest": {
+        "lexpress/doctrine1": "Doctrine plugin",
+        "propel/sf-propel-o-r-m-plugin": "Propel plugin"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.5-dev"
