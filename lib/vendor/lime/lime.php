@@ -530,13 +530,18 @@ class lime_test
     $this->results['tests'][$this->test_nb]['error'] = implode("\n", $errors);
   }
 
+  private function is_test_object($object)
+  {
+    return $object instanceof lime_test || $object instanceof sfTestFunctionalBase || $object instanceof sfTester;
+  }
+
   protected function find_caller($traces)
   {
     // find the first call to a method of an object that is an instance of lime_test
     $t = array_reverse($traces);
     foreach ($t as $trace)
     {
-      if (isset($trace['object']) && $trace['object'] instanceof lime_test)
+      if (isset($trace['object']) && $this->is_test_object($trace['object']))
       {
         return array($trace['file'], $trace['line']);
       }
