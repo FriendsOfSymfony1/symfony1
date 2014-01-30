@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+12/15/2013
+----------
+
+ * Update TextHelper class and unit tests, add documentation, fix & update email linking & add option for unicode characters in email addresses (#10065) (patch from @frost-nzcr4)
+
 10/30/2013: Version 1.5.2
 -----------------------
 
