@@ -309,20 +309,51 @@ abstract class sfModelGeneratorConfiguration
     if ($this->getFilterDisplay())
     {
       $fields = array();
-      foreach ($this->getFilterDisplay() as $name)
+
+      /**
+       * Libre Informatique - 2013-09-17
+       * Adding the idea of fieldsets in filters
+       * Still optional...
+       *
+       * Must be used with proper partials
+       * cf. http://svn.gna.org/viewcvs/e-venement/trunk/apps/templates/_filters*
+       *
+       */
+      foreach ($this->getFilterDisplay() as $setname => $fieldset)
       {
-        list($name, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($name);
-        if (!isset($this->configuration['filter']['fields'][$name]))
+        if (!is_int($setname))
         {
-          $this->configuration['filter']['fields'][$name] = new sfModelGeneratorConfigurationField($name, array_merge(
-            isset($config['default'][$name]) ? $config['default'][$name] : array(),
-            isset($config['filter'][$name]) ? $config['filter'][$name] : array(),
-            array('is_real' => false, 'type' => 'Text', 'flag' => $flag)
-          ));
+          $fields[$setname] = array();
         }
-        $field = $this->configuration['filter']['fields'][$name];
-        $field->setFlag($flag);
-        $fields[$name] = $field;
+        else
+        {
+          $fieldset = array($fieldset);
+        }
+
+        foreach ($fieldset as $name)
+        {
+          list($name, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($name);
+          if (!isset($this->configuration['filter']['fields'][$name]))
+          {
+            $this->configuration['filter']['fields'][$name] = new sfModelGeneratorConfigurationField($name, array_merge(
+              isset($config['default'][$name]) ? $config['default'][$name] : array(),
+              isset($config['filter'][$name]) ? $config['filter'][$name] : array(),
+              array('is_real' => false, 'type' => 'Text', 'flag' => $flag)
+            ));
+          }
+
+          $field = $this->configuration['filter']['fields'][$name];
+          $field->setFlag($flag);
+
+          if (!is_int($setname))
+          {
+            $fields[$setname][$name] = $field;
+          }
+          else
+          {
+            $fields[$name] = $field;
+          }
+        }
       }
 
       return $fields;
