@@ -129,14 +129,21 @@ class sfCacheSessionStorage extends sfStorage
       {
         $this->data = array();
       }
-      elseif (is_array($raw))
-      {
-        // probably an old cached value (BC)
-        $this->data = $raw;
-      }
       else
       {
-        $this->data = unserialize($raw);
+        $data = @unserialize($raw);
+        // We test 'b:0' special case, because such a string would result
+        // in $data being === false, while raw is serialized
+        // see http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
+        if ( $raw === 'b:0;' || $data !== false)
+        {
+          $this->data = $data;
+        }
+        else
+        {
+          // Probably an old cached value (BC)
+          $this->data = $raw;
+        }
       }
 
       if(sfConfig::get('sf_logging_enabled'))
