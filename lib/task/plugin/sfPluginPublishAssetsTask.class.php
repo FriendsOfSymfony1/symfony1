@@ -32,6 +32,10 @@ class sfPluginPublishAssetsTask extends sfPluginBaseTask
     $this->addOptions(array(
       new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
     ));
+    
+    $this->addOptions(array(
+      new sfCommandOption('relative', '', sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
+    ));
 
     $this->namespace = 'plugin';
     $this->name = 'publish-assets';
@@ -79,7 +83,7 @@ EOF;
       $pluginConfiguration = $this->configuration->getPluginConfiguration($plugin);
 
       $this->logSection('plugin', 'Configuring plugin - '.$plugin);
-      $this->installPluginAssets($plugin, $pluginConfiguration->getRootDir());
+      $this->installPluginAssets($plugin, $pluginConfiguration->getRootDir(), $options['relative']);
     }
   }
 
@@ -89,13 +93,17 @@ EOF;
    * @param string $plugin The plugin name
    * @param string $dir    The plugin directory
    */
-  protected function installPluginAssets($plugin, $dir)
+  protected function installPluginAssets($plugin, $dir, $relative)
   {
     $webDir = $dir.DIRECTORY_SEPARATOR.'web';
 
     if (is_dir($webDir))
     {
-      $this->getFilesystem()->symlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+    	if($relative) {
+	      $this->getFilesystem()->relativeSymlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+    	} else {
+	      $this->getFilesystem()->symlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+    	}
     }
   }
 }
