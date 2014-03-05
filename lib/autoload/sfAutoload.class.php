@@ -138,7 +138,10 @@ class sfAutoload
 
     $file = $configuration->getConfigCache()->checkConfig('config/autoload.yml');
 
-    $this->classes = include($file);
+    if (file_exists($file))
+    {
+      $this->classes = include($file);
+    }
 
     foreach ($this->overriden as $class => $path)
     {
