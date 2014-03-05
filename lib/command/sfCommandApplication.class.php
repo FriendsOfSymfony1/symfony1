@@ -557,7 +557,11 @@ abstract class sfCommandApplication
   protected function fixCgi()
   {
     // handle output buffering
-    @ob_end_flush();
+    if (ob_get_level() > 0)
+    {
+      @ob_end_flush();
+    }
+
     ob_implicit_flush(true);
 
     // PHP ini settings
