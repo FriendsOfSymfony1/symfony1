@@ -9,7 +9,7 @@
  */
 require_once dirname(__FILE__).'/../../bootstrap/unit.php';
 
-$t = new lime_test(15);
+$t = new lime_test(16);
 
 abstract class BaseTestTask extends sfTask
 {
@@ -114,3 +114,19 @@ $t->is_deeply($task->lastOptions, array('none' => true, 'required' => 'TEST1', '
 
 $task->run(array(), array('array' => 'one'));
 $t->is_deeply($task->lastOptions, array('none' => false, 'required' => null, 'optional' => null, 'array' => array('one')), '->run() accepts an associative array of options with a scalar array option value');
+
+// ->getDetailedDescription()
+$t->diag('->getDetailedDescription()');
+
+class DetailedDescriptionTestTask extends BaseTestTask
+{
+  protected function configure()
+  {
+    $this->detailedDescription = <<<EOF
+The [detailedDescription|INFO] formats special string like [...|COMMENT] or [--xml|COMMENT]
+EOF;
+  }
+}
+
+$task = new DetailedDescriptionTestTask();
+$t->is($task->getDetailedDescription(), "The detailedDescription formats special string like ... or --xml", "->getDetailedDescription() formats special string");
