@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+01/17/2014: Version 1.5.3
+-----------------------
+
+* Remove Doctrine from dependencies (add Doctrine and Propel as suggestions)
+
 10/30/2013: Version 1.5.2
 -----------------------
 

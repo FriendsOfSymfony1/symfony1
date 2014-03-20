@@ -3,12 +3,15 @@
     "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
     "license": "MIT",
     "require": {
-        "swiftmailer/swiftmailer": ">=4.2.2,<5.1.0-dev",
-        "lexpress/doctrine1": "*"
+        "swiftmailer/swiftmailer": ">=4.2.2,<5.1.0-dev"
     },
     "type": "library",
     "autoload": {
         "files": ["autoload.php"]
+    },
+    "suggest": {
+        "lexpress/doctrine1": "Doctrine plugin",
+        "propel/sf-propel-o-r-m-plugin": "Propel plugin"
     },
     "extra": {
         "branch-alias": {
