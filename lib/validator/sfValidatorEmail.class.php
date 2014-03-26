@@ -26,7 +26,7 @@ class sfValidatorEmail extends sfValidatorBase
 		$clean = filter_var($value, FILTER_VALIDATE_EMAIL);
 		if (!$clean)
 		{
-			throw new sfValidatorException($this, 'invalid', array('value' => $value));
+			throw new sfValidatorError($this, 'invalid', array('value' => $value));
 		}
 		return $clean;
 	}
