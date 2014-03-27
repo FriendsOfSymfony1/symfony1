@@ -18,16 +18,16 @@
  */
 class sfValidatorEmail extends sfValidatorBase
 {
-	/**
-	 * @see sfValidatorBase
-	 */
-	protected function doClean($value)
-	{
-		$clean = filter_var($value, FILTER_VALIDATE_EMAIL);
-		if (!$clean)
-		{
-			throw new sfValidatorError($this, 'invalid', array('value' => $value));
-		}
-		return $clean;
-	}
+  /**
+   * @see sfValidatorBase
+   */
+  protected function doClean($value)
+  {
+    $clean = filter_var($value, FILTER_VALIDATE_EMAIL);
+    if (!$clean)
+    {
+      throw new sfValidatorError($this, 'invalid', array('value' => $value));
+    }
+    return $clean;
+  }
 }
