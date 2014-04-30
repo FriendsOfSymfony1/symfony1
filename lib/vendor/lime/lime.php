@@ -104,7 +104,7 @@ class lime_test
       foreach ($result['tests'] as $test)
       {
         $testsuite->appendChild($testcase = $dom->createElement('testcase'));
-        $testcase->setAttribute('name', $test['message']);
+        $testcase->setAttribute('name', utf8_encode($test['message']));
         $testcase->setAttribute('file', $test['file']);
         $testcase->setAttribute('line', $test['line']);
         $testcase->setAttribute('assertions', 1);
