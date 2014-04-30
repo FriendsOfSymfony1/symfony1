@@ -816,6 +816,7 @@ class lime_harness extends lime_registration
   public $php_cli = null;
   public $stats   = array();
   public $output  = null;
+  public $full_output = false;
 
   public function __construct($options = array())
   {
@@ -978,7 +979,14 @@ EOF
         }
       }
 
-      $this->output->echoln(sprintf('%s%s%s', substr($relative_file, -min(67, strlen($relative_file))), str_repeat('.', 70 - min(67, strlen($relative_file))), $stats['status']));
+      if (true === $this->full_output)
+      {
+        $this->output->echoln(sprintf('%s%s%s', $relative_file, '.....', $stats['status']));
+      }
+      else
+      {
+        $this->output->echoln(sprintf('%s%s%s', substr($relative_file, -min(67, strlen($relative_file))), str_repeat('.', 70 - min(67, strlen($relative_file))), $stats['status']));
+      }
 
       if ('dubious' == $stats['status'])
       {
