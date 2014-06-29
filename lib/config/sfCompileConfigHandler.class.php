@@ -34,7 +34,7 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
   public function execute($configFiles)
   {
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     // init our data
     $data = '';
@@ -85,9 +85,9 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
     $config = array();
     foreach ($configFiles as $configFile)
     {
-      $config = array_merge($config, self::parseYaml($configFile));
+      $config = array_merge($config, static::parseYaml($configFile));
     }
 
-    return self::replacePath(self::replaceConstants($config));
+    return static::replacePath(static::replaceConstants($config));
   }
 }

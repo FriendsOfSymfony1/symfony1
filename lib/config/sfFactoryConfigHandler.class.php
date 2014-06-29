@@ -34,7 +34,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
   public function execute($configFiles)
   {
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     // init our data and includes arrays
     $includes  = array();
@@ -250,13 +250,13 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    $config = self::replaceConstants(self::flattenConfigurationWithEnvironment(self::parseYamls($configFiles)));
+    $config = static::replaceConstants(static::flattenConfigurationWithEnvironment(static::parseYamls($configFiles)));
 
     foreach ($config as $factory => $values)
     {
       if (isset($values['file']))
       {
-        $config[$factory]['file'] = self::replacePath($values['file']);
+        $config[$factory]['file'] = static::replacePath($values['file']);
       }
     }
 

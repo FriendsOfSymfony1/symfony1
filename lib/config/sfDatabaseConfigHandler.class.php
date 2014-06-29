@@ -74,7 +74,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
   protected function parse($configFiles)
   {
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     // init our data and includes arrays
     $data      = array();
@@ -134,13 +134,13 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    $config = self::replaceConstants(self::flattenConfigurationWithEnvironment(self::parseYamls($configFiles)));
+    $config = static::replaceConstants(static::flattenConfigurationWithEnvironment(static::parseYamls($configFiles)));
 
     foreach ($config as $name => $dbConfig)
     {
       if (isset($dbConfig['file']))
       {
-        $config[$name]['file'] = self::replacePath($dbConfig['file']);
+        $config[$name]['file'] = static::replacePath($dbConfig['file']);
       }
     }
 

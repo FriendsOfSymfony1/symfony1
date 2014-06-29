@@ -32,7 +32,7 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
   public function execute($configFiles)
   {
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = static::getConfiguration($configFiles);
 
     // compile data
     $retval = sprintf("<?php\n".
@@ -48,7 +48,7 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    $config = self::flattenConfiguration(self::parseYamls($configFiles));
+    $config = static::flattenConfiguration(static::parseYamls($configFiles));
 
     // change all of the keys to lowercase
     $config = array_change_key_case($config);

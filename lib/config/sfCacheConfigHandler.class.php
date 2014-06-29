@@ -35,7 +35,7 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
   public function execute($configFiles)
   {
     // parse the yaml
-    $this->yamlConfig = self::getConfiguration($configFiles);
+    $this->yamlConfig = static::getConfiguration($configFiles);
 
     // iterate through all action names
     $data  = array();
@@ -109,6 +109,6 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    return self::flattenConfiguration(self::parseYamls($configFiles));
+    return static::flattenConfiguration(static::parseYamls($configFiles));
   }
 }

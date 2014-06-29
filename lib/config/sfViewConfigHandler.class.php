@@ -32,7 +32,7 @@ class sfViewConfigHandler extends sfYamlConfigHandler
   public function execute($configFiles)
   {
     // parse the yaml
-    $this->yamlConfig = self::getConfiguration($configFiles);
+    $this->yamlConfig = static::getConfiguration($configFiles);
 
     // init our data array
     $data = array();
@@ -319,7 +319,7 @@ EOF;
    */
   static public function getConfiguration(array $configFiles)
   {
-    return self::mergeConfig(self::parseYamls($configFiles));
+    return static::mergeConfig(static::parseYamls($configFiles));
   }
 
   static protected function mergeConfig($config)
@@ -339,6 +339,6 @@ EOF;
 
     unset($config['default']);
 
-    return self::replaceConstants($config);
+    return static::replaceConstants($config);
   }
 }

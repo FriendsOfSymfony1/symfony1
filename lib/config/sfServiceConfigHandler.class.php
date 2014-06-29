@@ -32,7 +32,7 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
     $serviceContainerBuilder = new sfServiceContainerBuilder();
 
     $loader = new sfServiceContainerLoaderArray($serviceContainerBuilder);
-    $loader->load(self::getConfiguration($configFiles));
+    $loader->load(static::getConfiguration($configFiles));
 
     $dumper = new sfServiceContainerDumperPhp($serviceContainerBuilder);
     $code = $dumper->dump(array(
@@ -60,8 +60,8 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
-    $config = self::parseYamls($configFiles);
-    $config = self::flattenConfigurationWithEnvironment($config);
+    $config = static::parseYamls($configFiles);
+    $config = static::flattenConfigurationWithEnvironment($config);
 
     return $config;
   }
