@@ -57,7 +57,7 @@ abstract class sfCache
     $this->options = array_merge(array(
       'automatic_cleaning_factor' => 1000,
       'lifetime'                  => 86400,
-      'prefix'                    => md5(dirname(__FILE__)),
+      'prefix'                    => md5(__DIR__),
     ), $options);
 
     $this->options['prefix'] .= self::SEPARATOR;

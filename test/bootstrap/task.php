@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/unit.php');
+require_once(__DIR__.'/unit.php');
 
 require_once(sfConfig::get('sf_symfony_lib_dir').'/command/sfCommandApplication.class.php');
 require_once(sfConfig::get('sf_symfony_lib_dir').'/command/sfSymfonyCommandApplication.class.php');

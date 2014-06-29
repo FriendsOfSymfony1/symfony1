@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
-sfConfig::set('sf_symfony_lib_dir', realpath(dirname(__FILE__).'/../../../lib'));
+sfConfig::set('sf_symfony_lib_dir', realpath(__DIR__.'/../../../lib'));
 
 $t = new lime_test(1);
 
@@ -18,7 +18,7 @@ $t = new lime_test(1);
 $handler = new sfDefineEnvironmentConfigHandler();
 $handler->initialize(array('prefix' => 'sf_'));
 
-$dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfDefineEnvironmentConfigHandler'.DIRECTORY_SEPARATOR;
+$dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfDefineEnvironmentConfigHandler'.DIRECTORY_SEPARATOR;
 
 $files = array(
   $dir.'prefix_default.yml',

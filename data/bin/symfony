@@ -17,10 +17,10 @@ if (file_exists('config/ProjectConfiguration.class.php'))
 }
 else
 {
-  if (is_readable(dirname(__FILE__).'/../../lib/autoload/sfCoreAutoload.class.php'))
+  if (is_readable(__DIR__.'/../../lib/autoload/sfCoreAutoload.class.php'))
   {
     // SVN
-    $dir = realpath(dirname(__FILE__).'/../../lib');
+    $dir = realpath(__DIR__.'/../../lib');
   }
   else
   {

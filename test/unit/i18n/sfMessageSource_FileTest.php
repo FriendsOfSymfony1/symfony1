@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(7);
 
@@ -26,7 +26,7 @@ class sfMessageSource_Simple extends sfMessageSource_File
   }
 }
 
-$source = sfMessageSource::factory('Simple', dirname(__FILE__).'/fixtures');
+$source = sfMessageSource::factory('Simple', __DIR__.'/fixtures');
 $source->setCulture('fr_FR');
 
 // ->getCatalogueByDir()
@@ -39,7 +39,7 @@ $t->is($source->getCatalogueList('messages'), array('fr_FR/messages.xml', 'fr/me
 
 // ->getSource()
 $t->diag('->getSource()');
-$t->is($source->getSource('fr_FR/messages.xml'), dirname(__FILE__).'/fixtures/fr_FR/messages.xml', '->getSource() returns the full path name to a specific variant');
+$t->is($source->getSource('fr_FR/messages.xml'), __DIR__.'/fixtures/fr_FR/messages.xml', '->getSource() returns the full path name to a specific variant');
 
 // ->isValidSource()
 $t->diag('->isValidSource()');

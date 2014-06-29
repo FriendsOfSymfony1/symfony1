@@ -82,7 +82,7 @@ EOF;
 
   protected function getUpgradeClasses()
   {
-    $baseDir = dirname(__FILE__).'/validation/';
+    $baseDir = __DIR__.'/validation/';
     $classes = array();
 
     foreach (glob($baseDir.'*.class.php') as $file)

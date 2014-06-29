@@ -16,7 +16,7 @@ ini_set('allow_url_fopen', 'on');
 
 if (!isset($root_dir))
 {
-  $root_dir = realpath(dirname(__FILE__).sprintf('/../%s/fixtures', isset($type) ? $type : 'functional'));
+  $root_dir = realpath(__DIR__.sprintf('/../%s/fixtures', isset($type) ? $type : 'functional'));
 }
 
 require_once $root_dir.'/config/ProjectConfiguration.class.php';

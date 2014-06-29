@@ -21,7 +21,7 @@
  * @license     PHP License
  */
  
-require_once dirname(__FILE__).'/TGettext.class.php';
+require_once __DIR__.'/TGettext.class.php';
 
 /** 
  * File_Gettext_PO

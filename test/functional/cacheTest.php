@@ -9,7 +9,7 @@
  */
 
 $app = 'cache';
-if (!include(dirname(__FILE__).'/../bootstrap/functional.php'))
+if (!include(__DIR__.'/../bootstrap/functional.php'))
 {
   return;
 }
@@ -322,7 +322,7 @@ class myTestBrowser extends sfTestBrowser
 $b = new myTestBrowser();
 
 // non HTML cache
-$image = file_get_contents(dirname(__FILE__).'/fixtures/apps/cache/modules/cache/data/ok48.png');
+$image = file_get_contents(__DIR__.'/fixtures/apps/cache/modules/cache/data/ok48.png');
 sfConfig::set('sf_web_debug', true);
 $b->
   get('/cache/imageWithLayoutCacheWithLayout')->

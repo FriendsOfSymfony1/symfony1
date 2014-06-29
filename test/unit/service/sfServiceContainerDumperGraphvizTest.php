@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(4);
 
-$dir = dirname(__FILE__).'/fixtures/graphviz';
+$dir = __DIR__.'/fixtures/graphviz';
 
 
 // ->dump()
@@ -24,15 +24,15 @@ $t->is($dumper->dump(), file_get_contents($dir.'/services1.dot'), '->dump() dump
 $container = new sfServiceContainerBuilder();
 $dumper = new sfServiceContainerDumperGraphviz($container);
 
-$container = include dirname(__FILE__).'/fixtures/containers/container9.php';
+$container = include __DIR__.'/fixtures/containers/container9.php';
 $dumper = new sfServiceContainerDumperGraphviz($container);
-$t->is($dumper->dump(), str_replace('%path%', dirname(__FILE__), file_get_contents($dir.'/services9.dot')), '->dump() dumps services');
+$t->is($dumper->dump(), str_replace('%path%', __DIR__, file_get_contents($dir.'/services9.dot')), '->dump() dumps services');
 
-$container = include dirname(__FILE__).'/fixtures/containers/container10.php';
+$container = include __DIR__.'/fixtures/containers/container10.php';
 $dumper = new sfServiceContainerDumperGraphviz($container);
-$t->is($dumper->dump(), str_replace('%path%', dirname(__FILE__), file_get_contents($dir.'/services10.dot')), '->dump() dumps services');
+$t->is($dumper->dump(), str_replace('%path%', __DIR__, file_get_contents($dir.'/services10.dot')), '->dump() dumps services');
 
-$container = include dirname(__FILE__).'/fixtures/containers/container10.php';
+$container = include __DIR__.'/fixtures/containers/container10.php';
 $dumper = new sfServiceContainerDumperGraphviz($container);
 $t->is($dumper->dump(array(
   'graph' => array('ratio' => 'normal'),
@@ -41,4 +41,4 @@ $t->is($dumper->dump(array(
   'node.instance' => array('fillcolor' => 'green', 'style' => 'empty'),
   'node.definition' => array('fillcolor' => 'grey'),
   'node.missing' => array('fillcolor' => 'red', 'style' => 'empty'),
-)), str_replace('%path%', dirname(__FILE__), file_get_contents($dir.'/services10-1.dot')), '->dump() dumps services');
+)), str_replace('%path%', __DIR__, file_get_contents($dir.'/services10-1.dot')), '->dump() dumps services');

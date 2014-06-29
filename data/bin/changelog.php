@@ -17,7 +17,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-require_once dirname(__FILE__).'/../../lib/task/sfFilesystem.class.php';
+require_once __DIR__.'/../../lib/task/sfFilesystem.class.php';
 
 if (!isset($argv[1]))
 {

@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
-require_once(dirname(__FILE__).'/../../../lib/helper/EscapingHelper.php');
+require_once(__DIR__.'/../../../lib/helper/EscapingHelper.php');
 
 $t = new lime_test(11);
 

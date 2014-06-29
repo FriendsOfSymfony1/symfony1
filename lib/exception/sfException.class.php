@@ -259,7 +259,7 @@ class sfException extends Exception
     $templatePaths = array(
       sfConfig::get('sf_app_config_dir').'/error',
       sfConfig::get('sf_config_dir').'/error',
-      dirname(__FILE__).'/data',
+      __DIR__.'/data',
     );
 
     $template = sprintf('%s.%s.php', $debug ? 'exception' : 'error', $format);

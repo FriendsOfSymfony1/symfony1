@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../../bootstrap/task.php');
+require_once(__DIR__.'/../../../bootstrap/task.php');
 
 $t = new lime_test(2);
 

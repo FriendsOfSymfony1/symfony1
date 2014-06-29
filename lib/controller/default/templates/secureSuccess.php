@@ -1,4 +1,4 @@
-<?php decorate_with(dirname(__FILE__).'/defaultLayout.php') ?>
+<?php decorate_with(__DIR__.'/defaultLayout.php') ?>
 
 <div class="sfTMessageContainer sfTLock"> 
   <?php echo image_tag('/sf/sf_default/images/icons/lock48.png', array('alt' => 'credentials required', 'class' => 'sfTMessageIcon', 'size' => '48x48')) ?>

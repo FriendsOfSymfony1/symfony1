@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../../vendor/lime/lime.php';
+require_once __DIR__.'/../../vendor/lime/lime.php';
 
 class sfLimeHarness extends lime_harness
 {

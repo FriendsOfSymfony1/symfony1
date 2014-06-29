@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(95);
 
@@ -225,27 +225,27 @@ $t->is(sfToolkit::getArrayValueForPath($arr, 'foo[bar][baz][booze]'), null, '::g
 // ::addIncludePath()
 $t->diag('::addIncludePath()');
 $path = get_include_path();
-$t->is(sfToolkit::addIncludePath(dirname(__FILE__)), $path, '::addIncludePath() returns the previous include_path');
-$t->is(get_include_path(), dirname(__FILE__).PATH_SEPARATOR.$path, '::addIncludePath() adds a path to the front of include_path');
+$t->is(sfToolkit::addIncludePath(__DIR__), $path, '::addIncludePath() returns the previous include_path');
+$t->is(get_include_path(), __DIR__.PATH_SEPARATOR.$path, '::addIncludePath() adds a path to the front of include_path');
 
-sfToolkit::addIncludePath(dirname(__FILE__), 'back');
-$t->is(get_include_path(), $path.PATH_SEPARATOR.dirname(__FILE__), '::addIncludePath() moves a path to the end of include_path');
+sfToolkit::addIncludePath(__DIR__, 'back');
+$t->is(get_include_path(), $path.PATH_SEPARATOR.__DIR__, '::addIncludePath() moves a path to the end of include_path');
 
 sfToolkit::addIncludePath(array(
-  dirname(__FILE__),
-  dirname(__FILE__).'/..',
+  __DIR__,
+  __DIR__.'/..',
 ));
-$t->is(get_include_path(), dirname(__FILE__).PATH_SEPARATOR.dirname(__FILE__).'/..'.PATH_SEPARATOR.$path, '::addIncludePath() adds multiple paths the the front of include_path');
+$t->is(get_include_path(), __DIR__.PATH_SEPARATOR.__DIR__.'/..'.PATH_SEPARATOR.$path, '::addIncludePath() adds multiple paths the the front of include_path');
 
 sfToolkit::addIncludePath(array(
-  dirname(__FILE__),
-  dirname(__FILE__).'/..',
+  __DIR__,
+  __DIR__.'/..',
 ), 'back');
-$t->is(get_include_path(), $path.PATH_SEPARATOR.dirname(__FILE__).PATH_SEPARATOR.dirname(__FILE__).'/..', '::addIncludePath() adds multiple paths the the back of include_path');
+$t->is(get_include_path(), $path.PATH_SEPARATOR.__DIR__.PATH_SEPARATOR.__DIR__.'/..', '::addIncludePath() adds multiple paths the the back of include_path');
 
 try
 {
-  sfToolkit::addIncludePath(dirname(__FILE__), 'foobar');
+  sfToolkit::addIncludePath(__DIR__, 'foobar');
   $t->fail('::addIncludePath() throws an exception if position is not valid');
 }
 catch (Exception $e)

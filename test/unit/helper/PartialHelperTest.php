@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 require_once($_test_dir.'/unit/sfContextMock.class.php');
-require_once(dirname(__FILE__).'/../../../lib/helper/PartialHelper.php');
+require_once(__DIR__.'/../../../lib/helper/PartialHelper.php');
 
 // Fixme: make this test more beautiful and extend it
 

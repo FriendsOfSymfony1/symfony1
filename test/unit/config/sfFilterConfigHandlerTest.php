@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(8);
 
 $handler = new sfFilterConfigHandler();
 $handler->initialize();
 
-$dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfFilterConfigHandler'.DIRECTORY_SEPARATOR;
+$dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfFilterConfigHandler'.DIRECTORY_SEPARATOR;
 
 // parse errors
 $t->diag('parse errors');
