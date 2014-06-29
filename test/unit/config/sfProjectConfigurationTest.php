@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(6);
 
@@ -21,7 +21,7 @@ class ProjectConfiguration extends sfProjectConfiguration
   }
 }
 
-$configuration = new ProjectConfiguration(dirname(__FILE__).'/../../functional/fixtures');
+$configuration = new ProjectConfiguration(__DIR__.'/../../functional/fixtures');
 
 // ->setPlugins() ->disablePlugins() ->enablePlugins() ->enableAllPluginsExcept()
 $t->diag('->setPlugins() ->disablePlugins() ->enablePlugins() ->enableAllPluginsExcept()');
@@ -47,7 +47,7 @@ class ProjectConfiguration2 extends sfProjectConfiguration
   }
 }
 
-$configuration = new ProjectConfiguration2(dirname(__FILE__).'/../../functional/fixtures');
+$configuration = new ProjectConfiguration2(__DIR__.'/../../functional/fixtures');
 $t->is_deeply($configuration->getPlugins(), array('sfAutoloadPlugin', 'sfConfigPlugin'), '->enablePlugins() can enable plugins passed as arguments instead of array');
 
 // ->__construct()
@@ -63,7 +63,7 @@ class ProjectConfiguration3 extends sfProjectConfiguration
 
 try
 {
-  $configuration = new ProjectConfiguration3(dirname(__FILE__).'/../../functional/fixtures');
+  $configuration = new ProjectConfiguration3(__DIR__.'/../../functional/fixtures');
   $t->fail('->__construct() throws an exception if a non-existant plugin is enabled');
 }
 catch (Exception $e)

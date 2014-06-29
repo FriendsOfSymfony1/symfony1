@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 sfYaml::setSpecVersion('1.1');
 
@@ -17,7 +17,7 @@ $t = new lime_test(149);
 $parser = new sfYamlParser();
 $dumper = new sfYamlDumper();
 
-$path = dirname(__FILE__).'/fixtures';
+$path = __DIR__.'/fixtures';
 $files = $parser->parse(file_get_contents($path.'/index.yml'));
 foreach ($files as $file)
 {

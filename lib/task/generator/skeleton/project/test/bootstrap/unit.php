@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-$_test_dir = realpath(dirname(__FILE__).'/..');
+$_test_dir = realpath(__DIR__.'/..');
 
 // configuration
-require_once dirname(__FILE__).'/../../config/ProjectConfiguration.class.php';
+require_once __DIR__.'/../../config/ProjectConfiguration.class.php';
 $configuration = ProjectConfiguration::hasActive() ? ProjectConfiguration::getActive() : new ProjectConfiguration(realpath($_test_dir.'/..'));
 
 // autoloader

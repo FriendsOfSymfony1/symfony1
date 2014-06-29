@@ -204,7 +204,7 @@ class sfTesterResponse extends sfTester
           $filesystem = new sfFilesystem();
 
           $finder = sfFinder::type('any')->discard('.sf');
-          $filesystem->mirror(dirname(__FILE__).'/w3', $cache, $finder);
+          $filesystem->mirror(__DIR__.'/w3', $cache, $finder);
 
           $finder = sfFinder::type('file');
           $filesystem->replaceTokens($finder->in($cache), '##', '##', array('LOCAL_W3' => $local));

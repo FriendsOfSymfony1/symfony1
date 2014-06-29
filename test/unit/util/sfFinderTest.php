@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 class my_lime_test extends lime_test
 {
@@ -24,7 +24,7 @@ $t = new my_lime_test(39);
 
 require_once($_test_dir.'/../lib/util/sfFinder.class.php');
 
-$fixtureDir = dirname(__FILE__).'/fixtures/finder';
+$fixtureDir = __DIR__.'/fixtures/finder';
 $phpFiles = array(
   'dir1/dir2/file21.php',
   'dir1/file12.php',

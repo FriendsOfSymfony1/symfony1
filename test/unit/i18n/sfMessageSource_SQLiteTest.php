@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $plan = 10;
 $t = new lime_test($plan);
@@ -20,7 +20,7 @@ if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite'))
 }
 
 // setup
-$temp = dirname(__FILE__).'/'.rand(11111, 99999);
+$temp = __DIR__.'/'.rand(11111, 99999);
 sf_test_shutdown();
 
 register_shutdown_function('sf_test_shutdown');

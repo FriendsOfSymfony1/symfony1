@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(7);
 
-require_once(dirname(__FILE__).'/../../../lib/util/sfToolkit.class.php');
+require_once(__DIR__.'/../../../lib/util/sfToolkit.class.php');
 $file = sys_get_temp_dir().DIRECTORY_SEPARATOR.'sf_log_file.txt';
 if (file_exists($file))
 {

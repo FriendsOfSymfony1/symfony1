@@ -9,15 +9,15 @@
  */
 
 // Try autoloading using composer if available.
-if (!file_exists($autoload = dirname(__FILE__).'/../../../../autoload.php'))
+if (!file_exists($autoload = __DIR__.'/../../../../autoload.php'))
 {
-  $autoload = dirname(__FILE__).'/../../autoload.php';
+  $autoload = __DIR__.'/../../autoload.php';
 }
 
 // Fall back to classic Symfony loading
 if (!file_exists($autoload))
 {
-  require_once(dirname(__FILE__).'/../autoload/sfCoreAutoload.class.php');
+  require_once(__DIR__.'/../autoload/sfCoreAutoload.class.php');
   sfCoreAutoload::register();
 }
 else
@@ -30,7 +30,7 @@ try
   $dispatcher = new sfEventDispatcher();
   $logger = new sfCommandLogger($dispatcher);
 
-  $application = new sfSymfonyCommandApplication($dispatcher, null, array('symfony_lib_dir' => realpath(dirname(__FILE__).'/..')));
+  $application = new sfSymfonyCommandApplication($dispatcher, null, array('symfony_lib_dir' => realpath(__DIR__.'/..')));
   $statusCode = $application->run();
 }
 catch (Exception $e)

@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../../test/bootstrap/unit.php');
+require_once(__DIR__.'/../../../test/bootstrap/unit.php');
 
-require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
-require_once(dirname(__FILE__).'/../../../lib/helper/TextHelper.php');
+require_once(__DIR__.'/../../../lib/helper/TagHelper.php');
+require_once(__DIR__.'/../../../lib/helper/TextHelper.php');
 
 $t = new lime_test(60);
 

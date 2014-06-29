@@ -1,12 +1,12 @@
 <?php
 
-$this->installDir(dirname(__FILE__).'/sandbox_skeleton');
+$this->installDir(__DIR__.'/sandbox_skeleton');
 
 $this->logSection('install', 'add symfony CLI for Windows users');
-$this->getFilesystem()->copy(dirname(__FILE__).'/symfony.bat', sfConfig::get('sf_root_dir').'/symfony.bat');
+$this->getFilesystem()->copy(__DIR__.'/symfony.bat', sfConfig::get('sf_root_dir').'/symfony.bat');
 
 $this->logSection('install', 'add LICENSE');
-$this->getFilesystem()->copy(dirname(__FILE__).'/../../LICENSE', sfConfig::get('sf_root_dir').'/LICENSE');
+$this->getFilesystem()->copy(__DIR__.'/../../LICENSE', sfConfig::get('sf_root_dir').'/LICENSE');
 
 $this->logSection('install', 'default to sqlite');
 $this->runTask('configure:database', sprintf("'sqlite:%s/sandbox.db'", sfConfig::get('sf_data_dir')));

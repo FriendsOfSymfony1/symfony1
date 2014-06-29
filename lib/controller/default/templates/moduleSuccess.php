@@ -1,4 +1,4 @@
-<?php decorate_with(dirname(__FILE__).'/defaultLayout.php') ?>
+<?php decorate_with(__DIR__.'/defaultLayout.php') ?>
 
 <div class="sfTMessageContainer sfTMessage"> 
   <?php echo image_tag('/sf/sf_default/images/icons/ok48.png', array('alt' => 'module created', 'class' => 'sfTMessageIcon', 'size' => '48x48')) ?>

@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../../lib/vendor/lime/lime.php');
-require_once(dirname(__FILE__).'/../../../lib/escaper/sfOutputEscaper.class.php');
-require_once(dirname(__FILE__).'/../../../lib/escaper/sfOutputEscaperGetterDecorator.class.php');
-require_once(dirname(__FILE__).'/../../../lib/escaper/sfOutputEscaperArrayDecorator.class.php');
-require_once(dirname(__FILE__).'/../../../lib/escaper/sfOutputEscaperObjectDecorator.class.php');
-require_once(dirname(__FILE__).'/../../../lib/escaper/sfOutputEscaperIteratorDecorator.class.php');
-require_once(dirname(__FILE__).'/../../../lib/escaper/sfOutputEscaperSafe.class.php');
+require_once(__DIR__.'/../../../lib/vendor/lime/lime.php');
+require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaper.class.php');
+require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperGetterDecorator.class.php');
+require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperArrayDecorator.class.php');
+require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperObjectDecorator.class.php');
+require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperIteratorDecorator.class.php');
+require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperSafe.class.php');
 
-require_once(dirname(__FILE__).'/../../../lib/helper/EscapingHelper.php');
-require_once(dirname(__FILE__).'/../../../lib/config/sfConfig.class.php');
+require_once(__DIR__.'/../../../lib/helper/EscapingHelper.php');
+require_once(__DIR__.'/../../../lib/config/sfConfig.class.php');
 
 sfConfig::set('sf_charset', 'UTF-8');
 

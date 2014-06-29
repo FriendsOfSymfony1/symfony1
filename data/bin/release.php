@@ -17,10 +17,10 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-require_once(dirname(__FILE__).'/../../lib/exception/sfException.class.php');
-require_once(dirname(__FILE__).'/../../lib/task/sfFilesystem.class.php');
-require_once(dirname(__FILE__).'/../../lib/util/sfFinder.class.php');
-require_once(dirname(__FILE__).'/../../lib/vendor/lime/lime.php');
+require_once(__DIR__.'/../../lib/exception/sfException.class.php');
+require_once(__DIR__.'/../../lib/task/sfFilesystem.class.php');
+require_once(__DIR__.'/../../lib/util/sfFinder.class.php');
+require_once(__DIR__.'/../../lib/vendor/lime/lime.php');
 
 if (!isset($argv[1]))
 {

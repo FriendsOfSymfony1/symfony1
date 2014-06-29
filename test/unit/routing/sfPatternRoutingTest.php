@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(149);
 
@@ -41,7 +41,7 @@ class sfPatternRoutingTest extends sfPatternRouting
 
   protected function getConfigFileName()
   {
-    return dirname(__FILE__).'/fixtures/config_routing.yml.php';
+    return __DIR__.'/fixtures/config_routing.yml.php';
   }
 }
 

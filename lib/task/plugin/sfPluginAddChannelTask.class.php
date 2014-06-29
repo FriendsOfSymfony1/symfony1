@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/sfPluginBaseTask.class.php');
+require_once(__DIR__.'/sfPluginBaseTask.class.php');
 
 /**
  * Installs a plugin.

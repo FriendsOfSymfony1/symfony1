@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(5);
 
-$dir = dirname(__FILE__).'/fixtures/php';
+$dir = __DIR__.'/fixtures/php';
 
 
 // ->dump()
@@ -27,15 +27,15 @@ $dumper = new sfServiceContainerDumperPhp($container);
 
 // ->addParameters()
 $t->diag('->addParameters()');
-$container = include dirname(__FILE__).'/fixtures/containers/container8.php';
+$container = include __DIR__.'/fixtures/containers/container8.php';
 $dumper = new sfServiceContainerDumperPhp($container);
 $t->is($dumper->dump(), file_get_contents($dir.'/services8.php'), '->dump() dumps parameters');
 
 // ->addService()
 $t->diag('->addService()');
-$container = include dirname(__FILE__).'/fixtures/containers/container9.php';
+$container = include __DIR__.'/fixtures/containers/container9.php';
 $dumper = new sfServiceContainerDumperPhp($container);
-$t->is($dumper->dump(), str_replace('%path%', dirname(__FILE__).'/fixtures/includes', file_get_contents($dir.'/services9.php')), '->dump() dumps services');
+$t->is($dumper->dump(), str_replace('%path%', __DIR__.'/fixtures/includes', file_get_contents($dir.'/services9.php')), '->dump() dumps services');
 
 $dumper = new sfServiceContainerDumperPhp($container = new sfServiceContainerBuilder());
 $container->register('foo', 'FooClass')->addArgument(new stdClass());

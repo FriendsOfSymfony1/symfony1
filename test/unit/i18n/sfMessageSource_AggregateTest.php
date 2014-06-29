@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(9);
 
@@ -22,8 +22,8 @@ unlink($temp2);
 mkdir($temp2);
 
 // copy fixtures to tmp directory
-copy(dirname(__FILE__).'/fixtures/messages.fr.xml', $temp1.'/messages.fr.xml');
-copy(dirname(__FILE__).'/fixtures/messages_bis.fr.xml', $temp2.'/messages.fr.xml');
+copy(__DIR__.'/fixtures/messages.fr.xml', $temp1.'/messages.fr.xml');
+copy(__DIR__.'/fixtures/messages_bis.fr.xml', $temp2.'/messages.fr.xml');
 
 $source = get_source($temp1, $temp2);
 $source->setCulture('fr_FR');

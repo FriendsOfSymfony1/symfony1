@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(48);
 
@@ -124,9 +124,9 @@ $t->is($builder->getServiceIds(), array('foo', 'bar', 'service_container'), '->g
 // ->createService() # file
 $t->diag('->createService() # file');
 $builder = new sfServiceContainerBuilder();
-$builder->register('foo1', 'FooClass')->setFile(dirname(__FILE__).'/fixtures/includes/foo.php');
+$builder->register('foo1', 'FooClass')->setFile(__DIR__.'/fixtures/includes/foo.php');
 $t->ok($builder->getService('foo1'), '->createService() requires the file defined by the service definition');
-$builder->register('foo2', 'FooClass')->setFile(dirname(__FILE__).'/fixtures/includes/%file%.php');
+$builder->register('foo2', 'FooClass')->setFile(__DIR__.'/fixtures/includes/%file%.php');
 $builder->setParameter('file', 'foo');
 $t->ok($builder->getService('foo2'), '->createService() replaces parameters in the file provided by the service definition');
 
@@ -163,7 +163,7 @@ $builder->setParameter('value', 'bar');
 $t->is($builder->getService('foo1')->bar, array('bar', $builder->getService('bar')), '->createService() replaces the values in the method calls arguments');
 
 // ->createService() # configurator
-require_once dirname(__FILE__).'/fixtures/includes/classes.php';
+require_once __DIR__.'/fixtures/includes/classes.php';
 $t->diag('->createService() # configurator');
 $builder = new sfServiceContainerBuilder();
 $builder->register('foo1', 'FooClass')->setConfigurator('sc_configure');

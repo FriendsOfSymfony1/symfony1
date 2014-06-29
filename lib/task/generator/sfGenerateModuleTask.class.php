@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/sfGeneratorBaseTask.class.php');
+require_once(__DIR__.'/sfGeneratorBaseTask.class.php');
 
 /**
  * Generates a new module.
@@ -96,7 +96,7 @@ EOF;
     }
     else
     {
-      $skeletonDir = dirname(__FILE__).'/skeleton/module';
+      $skeletonDir = __DIR__.'/skeleton/module';
     }
 
     // create basic application structure

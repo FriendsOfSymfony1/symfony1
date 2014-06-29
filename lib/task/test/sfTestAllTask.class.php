@@ -76,7 +76,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    require_once dirname(__FILE__).'/sfLimeHarness.class.php';
+    require_once __DIR__.'/sfLimeHarness.class.php';
 
     $h = new sfLimeHarness(array(
       'force_colors' => isset($options['color']) && $options['color'],

@@ -14,15 +14,15 @@ ini_set('session.auto_start', 'off');
 ini_set('arg_separator.output', '&amp;');
 ini_set('allow_url_fopen', 'on');
 
-$_test_dir = realpath(dirname(__FILE__).'/..');
+$_test_dir = realpath(__DIR__.'/..');
 require_once($_test_dir.'/../lib/vendor/lime/lime.php');
 require_once($_test_dir.'/../lib/config/sfConfig.class.php');
 sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
 
-require_once(dirname(__FILE__).'/../../lib/autoload/sfCoreAutoload.class.php');
+require_once(__DIR__.'/../../lib/autoload/sfCoreAutoload.class.php');
 sfCoreAutoload::register();
 
-require_once(dirname(__FILE__).'/../../lib/util/sfToolkit.class.php');
+require_once(__DIR__.'/../../lib/util/sfToolkit.class.php');
 sfConfig::set('sf_test_cache_dir', sys_get_temp_dir().'/sf_test_project');
 
 // remove all test cache

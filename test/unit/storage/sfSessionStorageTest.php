@@ -10,11 +10,11 @@
 
 $app = 'frontend';
 
-require_once(dirname(__FILE__).'/../../bootstrap/functional.php');
+require_once(__DIR__.'/../../bootstrap/functional.php');
 
 ob_start();
 
-$_test_dir = realpath(dirname(__FILE__).'/../../');
+$_test_dir = realpath(__DIR__.'/../../');
 require_once($_test_dir.'/../lib/vendor/lime/lime.php');
 
 sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));

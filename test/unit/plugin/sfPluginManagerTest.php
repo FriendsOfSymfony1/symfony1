@@ -10,7 +10,7 @@
 
 error_reporting(error_reporting() & ~E_STRICT);
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(40);
 
@@ -21,9 +21,9 @@ if (!class_exists('PEAR'))
   return;
 }
 
-require_once dirname(__FILE__).'/sfPearDownloaderTest.class.php';
-require_once dirname(__FILE__).'/sfPearRestTest.class.php';
-require_once dirname(__FILE__).'/sfPluginTestHelper.class.php';
+require_once __DIR__.'/sfPearDownloaderTest.class.php';
+require_once __DIR__.'/sfPearRestTest.class.php';
+require_once __DIR__.'/sfPluginTestHelper.class.php';
 
 // setup
 $temp = tempnam('/tmp/sf_plugin_test', 'tmp');
@@ -170,7 +170,7 @@ $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.1.4', '->ins
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');
 $t->ok(!is_file($temp.'/plugins/sfTestPlugin/VERSION'), '->uninstallPlugin() uninstalls a plugin');
 
-$pluginManager->installPlugin(dirname(__FILE__).'/fixtures/http/pear.example.com/get/sfTestPlugin/sfTestPlugin-1.1.4.tgz');
+$pluginManager->installPlugin(__DIR__.'/fixtures/http/pear.example.com/get/sfTestPlugin/sfTestPlugin-1.1.4.tgz');
 $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.1.4', '->installPlugin() can install a local PEAR package');
 
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');

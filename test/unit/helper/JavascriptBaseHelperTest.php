@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
-require_once(dirname(__FILE__).'/../../../lib/helper/TagHelper.php');
-require_once(dirname(__FILE__).'/../../../lib/helper/JavascriptBaseHelper.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../../lib/helper/TagHelper.php');
+require_once(__DIR__.'/../../../lib/helper/JavascriptBaseHelper.php');
 
 $t = new lime_test(9, new lime_output_color());
 

@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(92);
 
 $t->diag('i18n data');
-$en = unserialize(file_get_contents(dirname(__FILE__).'/../../../lib/i18n/data/en.dat'));
+$en = unserialize(file_get_contents(__DIR__.'/../../../lib/i18n/data/en.dat'));
 
 // check main keys
 foreach (array('Countries', 'Currencies', 'Languages', 'LocaleScript', 'NumberPatterns', 'Scripts', 'Types', 'Variants', 'Version', 'calendar', 'zoneStrings') as $entry)

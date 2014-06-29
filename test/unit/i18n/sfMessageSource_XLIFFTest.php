@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(11);
 
@@ -18,7 +18,7 @@ unlink($temp);
 mkdir($temp);
 
 // copy fixtures to tmp directory
-copy(dirname(__FILE__).'/fixtures/messages.fr.xml', $temp.'/messages.fr.xml');
+copy(__DIR__.'/fixtures/messages.fr.xml', $temp.'/messages.fr.xml');
 
 $source = sfMessageSource::factory('XLIFF', $temp);
 $source->setCulture('fr_FR');

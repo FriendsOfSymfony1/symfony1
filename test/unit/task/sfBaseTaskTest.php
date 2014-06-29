@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-include dirname(__FILE__).'/../../bootstrap/unit.php';
+include __DIR__.'/../../bootstrap/unit.php';
 require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
 
 class TestTask extends sfBaseTask
@@ -28,7 +28,7 @@ class TestTask extends sfBaseTask
   }
 }
 
-$rootDir = dirname(__FILE__).'/../../functional/fixtures';
+$rootDir = __DIR__.'/../../functional/fixtures';
 sfToolkit::clearDirectory($rootDir.'/cache');
 
 $dispatcher = new sfEventDispatcher();

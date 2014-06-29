@@ -153,7 +153,7 @@ function distance_of_time_in_words($from_time, $to_time = null, $include_seconds
 
   if (sfConfig::get('sf_i18n'))
   {
-    require_once dirname(__FILE__).'/I18NHelper.php';
+    require_once __DIR__.'/I18NHelper.php';
 
     return __($string, $parameters);
   }

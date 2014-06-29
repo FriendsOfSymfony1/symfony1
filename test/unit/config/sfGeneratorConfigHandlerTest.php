@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
-sfConfig::set('sf_symfony_lib_dir', realpath(dirname(__FILE__).'/../../../lib'));
+sfConfig::set('sf_symfony_lib_dir', realpath(__DIR__.'/../../../lib'));
 
 $t = new lime_test(5);
 
 $handler = new sfGeneratorConfigHandler();
 $handler->initialize();
 
-$dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfGeneratorConfigHandler'.DIRECTORY_SEPARATOR;
+$dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfGeneratorConfigHandler'.DIRECTORY_SEPARATOR;
 
 $t->diag('parse errors');
 $files = array(

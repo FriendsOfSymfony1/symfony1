@@ -9,6 +9,6 @@
  * file that was distributed with this source code.
  */
 
-chdir(dirname(__FILE__));
-require_once(dirname(__FILE__).'/config/ProjectConfiguration.class.php');
+chdir(__DIR__);
+require_once(__DIR__.'/config/ProjectConfiguration.class.php');
 include(sfCoreAutoload::getInstance()->getBaseDir().'/command/cli.php');

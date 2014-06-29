@@ -92,7 +92,7 @@ class cacheActions extends sfActions
   protected function prepareImage()
   {
     $this->getResponse()->setContentType('image/png');
-    $this->image = file_get_contents(dirname(__FILE__).'/../data/ok48.png');
+    $this->image = file_get_contents(__DIR__.'/../data/ok48.png');
     $this->setTemplate('image');
   }
 
