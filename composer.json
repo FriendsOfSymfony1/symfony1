@@ -3,7 +3,7 @@
     "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
     "license": "MIT",
     "require": {
-        "swiftmailer/swiftmailer": ">=4.2.2,<5.1.0-dev"
+        "swiftmailer/swiftmailer": "~5.2.1"
     },
     "type": "library",
     "autoload": {
