@@ -460,7 +460,8 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $decorator = null === $decorator ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $decorator;
 
     $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator($widgetSchema, $decorator);
-    $this->validatorSchema[$name] = new sfValidatorPass();
+    
+    $this->validatorSchema[$name] = $form->getValidatorSchema();
 
     // keep widgetSchema synchronized
     $form->setWidgetSchema($this->widgetSchema[$name]->getWidget());
