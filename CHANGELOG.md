@@ -1,12 +1,16 @@
 CHANGELOG
 =========
 
-* use late static binding for config classes.
-
-01/17/2014: Version 1.5.3
+xx/xx/xxx: Version 1.5.3
 -----------------------
 
-* Remove Doctrine from dependencies (add Doctrine and Propel as suggestions)
+* Use late static binding for config classes #25
+* Remove Doctrine from dependencies (add Doctrine and Propel as suggestions) #35
+* Add relative option for PublishAssetsTask #43
+* Add an option to test:all task to show full output #55
+* Improve PHP built-in webserver compatibility #58
+* Update Swiftmailer to ~5.2.1 #59
+* Re-add Propel in sfDatabaseSessionStorage #66
 
 10/30/2013: Version 1.5.2
 -----------------------
