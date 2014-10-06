@@ -43,7 +43,7 @@ See http://symfony.com/legacy/doc/getting-started/1_4/en/03-Symfony-Installation
 
 Option 1: Using [Composer](http://getcomposer.org/doc/00-intro.md) as dependency management:
 
-    composer require lexpress/symfony1 v1.5.*
+    composer require lexpress/symfony1 "1.5.*"
     composer install
 
 Option 2: Using Git submodules:
