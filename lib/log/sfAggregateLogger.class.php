@@ -78,7 +78,7 @@ class sfAggregateLogger extends sfLogger
    *
    * @param object $logger The Logger object
    */
-  public function addLogger(sfLogger $logger)
+  public function addLogger(sfLoggerInterface $logger)
   {
     $this->loggers[] = $logger;
 
