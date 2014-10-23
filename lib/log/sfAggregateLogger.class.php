@@ -106,7 +106,10 @@ class sfAggregateLogger extends sfLogger
   {
     foreach ($this->loggers as $logger)
     {
-      $logger->shutdown();
+      if($logger instanceof sfLogger) 
+      {
+        $logger->shutdown();
+      }
     }
 
     $this->loggers = array();
