@@ -98,6 +98,12 @@ default:
           param:
             level: debug
             file: %SF_LOG_DIR%/%SF_APP%_%SF_ENVIRONMENT%.log
+        sf_psr_logger:
+          class: sfPsrLoggerAdapter
+          param:
+            logger_service_id: logger.psr
+            auto_connect: true
+            condition: %SF_PSR_LOGGER%
 
   mailer:
     class: sfMailer

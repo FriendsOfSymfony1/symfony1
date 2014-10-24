@@ -214,3 +214,34 @@ The `project:optimize` task has been fixed.
 ```bash
 php test/bin/coverage.php sfWebRequest
 ```
+
+Logger
+------
+
+You can now integrate a [psr compliant log](https://github.com/php-fig/log). For this you need to set the psr_logger
+setting to true and configure a service with the id logger.psr.
+
+```YAML
+#In settings.yml
+all:
+  .settings:
+    psr_logger: true
+```
+
+This is a example of service configuration using [monolog](https://github.com/Seldaek/monolog)
+
+```YAML
+#In services.yml
+
+all:
+  services:
+    logger.psr:
+      class: Monolog\Logger
+      arguments: [default]
+      calls:
+        - [pushHandler, [@monolog.handler.file]]
+
+    monolog.handler.file:
+      class: Monolog\Handler\StreamHandler
+      arguments: [/the/file/path/of/your/file.log]
+```

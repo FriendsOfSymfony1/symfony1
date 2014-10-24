@@ -5,13 +5,17 @@
     "require": {
         "swiftmailer/swiftmailer": "~5.2.1"
     },
+    "require-dev": {
+        "psr/log": "*"
+    },
     "type": "library",
     "autoload": {
         "files": ["autoload.php"]
     },
     "suggest": {
         "lexpress/doctrine1": "Doctrine plugin",
-        "propel/sf-propel-o-r-m-plugin": "Propel plugin"
+        "propel/sf-propel-o-r-m-plugin": "Propel plugin",
+        "psr/log": "Psr logger"
     },
     "extra": {
         "branch-alias": {

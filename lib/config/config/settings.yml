@@ -53,6 +53,7 @@ default:
 
     # Logging
     logging_enabled:        true
+    psr_logger:             false
 
     # i18n
     default_culture:        en        # Default user culture
