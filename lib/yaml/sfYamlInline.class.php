@@ -85,7 +85,8 @@ class sfYamlInline
     switch (true)
     {
       case is_resource($value):
-        throw new InvalidArgumentException('Unable to dump PHP resources in a YAML file.');
+        return stream_get_contents($value);
+        // throw new InvalidArgumentException('Unable to dump PHP resources in a YAML file.');
       case is_object($value):
         return '!!php/object:'.serialize($value);
       case is_array($value):
