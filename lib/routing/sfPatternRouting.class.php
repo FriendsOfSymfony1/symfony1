@@ -490,8 +490,6 @@ class sfPatternRouting extends sfRouting
   {
     foreach ($this->routes as $name => $route)
     {
-      $route = $this->getRoute($name);
-
       if (false === $parameters = $route->matchesUrl($url, $this->options['context']))
       {
         continue;
@@ -507,8 +505,6 @@ class sfPatternRouting extends sfRouting
   {
     foreach ($this->routes as $name => $route)
     {
-      $route = $this->getRoute($name);
-
       if ($route->matchesParameters($parameters, $this->options['context']))
       {
         return $route;
