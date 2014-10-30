@@ -10,7 +10,7 @@
         "files": ["autoload.php"]
     },
     "suggest": {
-        "lexpress/doctrine1": "Doctrine plugin",
+        "drak/doctrine1": "Doctrine plugin",
         "propel/sf-propel-o-r-m-plugin": "Propel plugin"
     },
     "extra": {
