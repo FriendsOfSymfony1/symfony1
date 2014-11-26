@@ -6,14 +6,66 @@
 #
 all:
   services:
-
-    sf_logger:
-      class: sfEventLogger
-      arguments:
-        - '@sf_event_dispatcher'
-
     sf_filesystem:
       class: sfFilesystem
       arguments:
         - '@sf_event_dispatcher'
         - '@sf_formatter'
+
+    sf_formatter:
+      class: sfFormatter
+
+    sf_controller:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, controller]
+
+    sf_request:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, request]
+
+    sf_response:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, response]
+
+    sf_storage:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, storage]
+
+    sf_user:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, user]
+
+    sf_view_cache:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, view_cache]
+
+    sf_i18n:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, i18n]
+
+    sf_routing:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, routing]
+
+    sf_logger:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, logger]
+
+    sf_mailer:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, mailer]
+
+    sf_event_dispatcher:
+      class: sfContext
+      constructor: factoryAsService
+      arguments: [@sf_context, event_dispatcher]
