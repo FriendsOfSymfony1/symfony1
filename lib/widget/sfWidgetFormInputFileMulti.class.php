@@ -39,7 +39,12 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    $name .= $this->getOption('multiple') ? '[]' : '';
-    return $this->renderTag('input', array_merge(array('type' => $this->getOption('type'), 'name' => $name, 'value' => $value, 'multiple' => $this->getOption('multiple')), $attributes));
+    if ($this->getOption('multiple'))
+    {
+      $name .= '[]';
+      $attributes['multiple'] = $this->getOption('multiple');
+    }
+
+    return parent::render($name, $value, $attributes, $errors);
   }
 }
