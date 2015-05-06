@@ -517,6 +517,7 @@ class sfCoreAutoload
     'sfwidgetforminput' => 'widget/sfWidgetFormInput.class.php',
     'sfwidgetforminputcheckbox' => 'widget/sfWidgetFormInputCheckbox.class.php',
     'sfwidgetforminputfile' => 'widget/sfWidgetFormInputFile.class.php',
+    'sfwidgetforminputfilemulti' => 'widget/sfWidgetFormInputFileMulti.class.php',
     'sfwidgetforminputfileeditable' => 'widget/sfWidgetFormInputFileEditable.class.php',
     'sfwidgetforminputhidden' => 'widget/sfWidgetFormInputHidden.class.php',
     'sfwidgetforminputpassword' => 'widget/sfWidgetFormInputPassword.class.php',
