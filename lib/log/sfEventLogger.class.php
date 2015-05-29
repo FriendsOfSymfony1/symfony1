@@ -27,7 +27,7 @@ class sfEventLogger extends sfLogger
   /**
    * {@inheritDoc}
    */
-  protected function doLog($message, $priority)
+  protected function doLog($message, $priority, array $context = array())
   {
     $this->dispatcher->notify(new sfEvent($this, 'command.log', array($message)));
   }

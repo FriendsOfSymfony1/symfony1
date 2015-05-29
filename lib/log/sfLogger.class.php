@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -75,7 +75,7 @@ abstract class sfLogger implements sfLoggerInterface
   {
     $this->dispatcher = $dispatcher;
     $this->options = $options;
-    
+
     if (isset($this->options['level']))
     {
       $this->setLogLevel($this->options['level']);
@@ -83,7 +83,7 @@ abstract class sfLogger implements sfLoggerInterface
 
     $dispatcher->connect('application.log', array($this, 'listenToLogEvent'));
   }
-  
+
   /**
    * Returns the options for the logger instance.
    */
@@ -91,7 +91,7 @@ abstract class sfLogger implements sfLoggerInterface
   {
     return $this->options;
   }
-  
+
   /**
    * Returns the options for the logger instance.
    */
@@ -131,14 +131,14 @@ abstract class sfLogger implements sfLoggerInterface
    * @param string $message   Message
    * @param string $priority  Message priority
    */
-  public function log($message, $priority = self::INFO)
+  public function log($message, $priority = self::INFO, array $context = array())
   {
     if ($this->getLogLevel() < $priority)
     {
       return false;
     }
 
-    return $this->doLog($message, $priority);
+    return $this->doLog($message, $priority, $context);
   }
 
   /**
@@ -147,16 +147,16 @@ abstract class sfLogger implements sfLoggerInterface
    * @param string $message   Message
    * @param string $priority  Message priority
    */
-  abstract protected function doLog($message, $priority);
+  abstract protected function doLog($message, $priority, array $context = array());
 
   /**
    * Logs an emerg message.
    *
    * @param string $message Message
    */
-  public function emerg($message)
+  public function emerg($message, array $context = array())
   {
-    $this->log($message, self::EMERG);
+    $this->log($message, self::EMERG, $context);
   }
 
   /**
@@ -164,9 +164,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function alert($message)
+  public function alert($message, array $context = array())
   {
-    $this->log($message, self::ALERT);
+    $this->log($message, self::ALERT, $context);
   }
 
   /**
@@ -174,9 +174,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function crit($message)
+  public function crit($message, array $context = array())
   {
-    $this->log($message, self::CRIT);
+    $this->log($message, self::CRIT, $context);
   }
 
   /**
@@ -184,9 +184,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function err($message)
+  public function err($message, array $context = array())
   {
-    $this->log($message, self::ERR);
+    $this->log($message, self::ERR, $context);
   }
 
   /**
@@ -194,9 +194,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function warning($message)
+  public function warning($message, array $context = array())
   {
-    $this->log($message, self::WARNING);
+    $this->log($message, self::WARNING, $context);
   }
 
   /**
@@ -204,9 +204,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function notice($message)
+  public function notice($message, array $context = array())
   {
-    $this->log($message, self::NOTICE);
+    $this->log($message, self::NOTICE, $context);
   }
 
   /**
@@ -214,9 +214,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function info($message)
+  public function info($message, array $context = array())
   {
-    $this->log($message, self::INFO);
+    $this->log($message, self::INFO, $context);
   }
 
   /**
@@ -224,9 +224,9 @@ abstract class sfLogger implements sfLoggerInterface
    *
    * @param string $message Message
    */
-  public function debug($message)
+  public function debug($message, array $context = array())
   {
-    $this->log($message, self::DEBUG);
+    $this->log($message, self::DEBUG, $context);
   }
 
   /**

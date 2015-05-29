@@ -122,7 +122,7 @@ class sfPsrLoggerAdapter extends sfLogger
    *
    * @return void
    */
-  public function doLog($message, $priority)
+  public function doLog($message, $priority, array $context = array())
   {
     if (!$this->logger)
     {
@@ -133,28 +133,28 @@ class sfPsrLoggerAdapter extends sfLogger
     switch ($priority)
     {
       case sfLogger::EMERG:
-        $this->logger->emergency($message);
+        $this->logger->emergency($message, $context);
         break;
       case sfLogger::ALERT:
-        $this->logger->alert($message);
+        $this->logger->alert($message, $context);
         break;
       case sfLogger::CRIT:
-        $this->logger->critical($message);
+        $this->logger->critical($message, $context);
         break;
       case sfLogger::ERR:
-        $this->logger->error($message);
+        $this->logger->error($message, $context);
         break;
       case sfLogger::WARNING:
-        $this->logger->warning($message);
+        $this->logger->warning($message, $context);
         break;
       case sfLogger::NOTICE:
-        $this->logger->notice($message);
+        $this->logger->notice($message, $context);
         break;
       case sfLogger::INFO:
-        $this->logger->info($message);
+        $this->logger->info($message, $context);
         break;
       case sfLogger::DEBUG:
-        $this->logger->debug($message);
+        $this->logger->debug($message, $context);
         break;
     }
   }
