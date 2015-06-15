@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+15/06/2015: Version 1.5.4
+-----------------------
+
+* Add blob support to yaml files #38
+* Ability to integrate a psr compliant log #71
+* Add OPTIONS method in sfRequest #75
+* Add multiple file input #86
+* Allows newer versions of Swiftmailer #90
+* Allow to specify environment in sfI18nExtractTask #92
+
 17/09/2014: Version 1.5.3
 -----------------------
 
