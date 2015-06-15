@@ -9,7 +9,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,11 +34,8 @@ class sfI18nExtractTask extends sfBaseTask
       new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
     ));
 
-    $this->addOptions( array(
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'The environment', 'dev'),
-    ));
-
     $this->addOptions(array(
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'The environment', 'dev'),
       new sfCommandOption('display-new', null, sfCommandOption::PARAMETER_NONE, 'Output all new found strings'),
       new sfCommandOption('display-old', null, sfCommandOption::PARAMETER_NONE, 'Output all old strings'),
       new sfCommandOption('auto-save', null, sfCommandOption::PARAMETER_NONE, 'Save the new strings'),
@@ -71,7 +68,7 @@ To save them in the i18n message catalogue, use the [--auto-save|COMMENT] option
   [./symfony i18n:extract --auto-save frontend fr|INFO]
 
 If you want to display strings that are present in the i18n messages
-catalogue but are not found in the application, use the 
+catalogue but are not found in the application, use the
 [--display-old|COMMENT] option:
 
   [./symfony i18n:extract --display-old frontend fr|INFO]
