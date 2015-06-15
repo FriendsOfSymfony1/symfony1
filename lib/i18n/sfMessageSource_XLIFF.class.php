@@ -162,58 +162,67 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
       throw new sfException(sprintf("Unable to save to file %s, file must be writable.", $filename));
     }
 
-    // create a new dom, import the existing xml
-    $dom = $this->createDOMDocument();
-    @$dom->load($filename);
+    $reader = new XMLReader();
+    $reader->open( $filename );
 
-    // find the body element
-    $xpath = new DomXPath($dom);
-    $body = $xpath->query('//body')->item(0);
+    $identifiers = $transUnit =  array();
 
-    if (null === $body)
-    {
-      //create and try again
-      $this->createMessageTemplate($catalogue);
-      $dom->load($filename);
-      $xpath = new DomXPath($dom);
-      $body = $xpath->query('//body')->item(0);
+    while ( $reader->read() ) {
+        if ( $reader->nodeType == XMLReader::ELEMENT && $reader->name == 'trans-unit' ) {
+            $identifiers[] = $reader->getAttribute( "id" );
+            $transUnit[]   = $reader->readOuterXml();
+        }
+    }
+    $nextId = max($identifiers);
+
+    foreach ( $messages as $message ) {
+
+        $xmlWriter = new XMLWriter();
+        $xmlWriter->openMemory();
+        $xmlWriter->setIndent( true );
+        $xmlWriter->startElement( "trans-unit" );
+        $xmlWriter->writeAttribute( "id", ++ $nextId );
+
+        $xmlWriter->writeElement( "source", $message );
+        $xmlWriter->writeElement( "target" );
+
+        $xmlWriter->endElement();
+        $transUnit[] = $xmlWriter->outputMemory( true );
     }
 
-    // find the biggest "id" used
-    $lastNodes = $xpath->query('//trans-unit[not(@id <= preceding-sibling::trans-unit/@id) and not(@id <= following-sibling::trans-unit/@id)]');
-    if (null !== $last = $lastNodes->item(0))
-    {
-      $count = intval($last->getAttribute('id'));
-    }
-    else
-    {
-      $count = 0;
-    }
+    $fileXmlWriter = new XMLWriter();
+    $fileXmlWriter->openMemory();
+    $fileXmlWriter->setIndent( true );
+    $fileXmlWriter->startDocument( '1.0' );
+    
+    $fileXmlWriter->startElement( "xliff" );
+    $fileXmlWriter->writeAttribute( "version", "1.0" );
 
-    // for each message add it to the XML file using DOM
-    foreach ($messages as $message)
-    {
-      $unit = $dom->createElement('trans-unit');
-      $unit->setAttribute('id', ++$count);
+    $fileXmlWriter->startElement( "file" );
+    $fileXmlWriter->writeAttribute( "source-language", "EN" );
+    $fileXmlWriter->writeAttribute( "target-language", $this->culture );
+    $fileXmlWriter->writeAttribute( "datatype", "plaintext" );
+    $fileXmlWriter->writeAttribute( "original", $catalogue );
+    $fileXmlWriter->writeAttribute( "date", date( 'c' ) );
+    $fileXmlWriter->writeAttribute( "product-name", $catalogue );
 
-      $source = $dom->createElement('source');
-      $source->appendChild($dom->createTextNode($message));
-      $target = $dom->createElement('target');
-      $target->appendChild($dom->createTextNode(''));
+    $fileXmlWriter->writeElement( "header" );
+    $fileXmlWriter->startElement( "body" );
 
-      $unit->appendChild($source);
-      $unit->appendChild($target);
-
-      $body->appendChild($unit);
+    foreach ($transUnit as $unit) {
+        $fileXmlWriter->writeRaw( $unit );
     }
 
-    $fileNode = $xpath->query('//file')->item(0);
-    $fileNode->setAttribute('date', @date('Y-m-d\TH:i:s\Z'));
+    $fileXmlWriter->endElement();
 
-    $dom = $this->createDOMDocument($dom->saveXML());
+    $fileXmlWriter->endElement();
 
-    // save it and clear the cache for this variant
-    $dom->save($filename);
+    $fileXmlWriter->endElement();
+    $fileXmlWriter->endDocument();
+
+    $xml = $fileXmlWriter->outputMemory( true );
+    file_put_contents( $filename, $xml );
+
     if ($this->cache)
     {
       $this->cache->remove($variant.':'.$this->culture);
@@ -428,20 +437,4 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
     return array($variant, $file);
   }
 
-  protected function getTemplate($catalogue)
-  {
-    $date = date('c');
-
-    return <<<EOD
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd" >
-<xliff version="1.0">
-  <file source-language="EN" target-language="{$this->culture}" datatype="plaintext" original="$catalogue" date="$date" product-name="$catalogue">
-    <header />
-    <body>
-    </body>
-  </file>
-</xliff>
-EOD;
-  }
 }
