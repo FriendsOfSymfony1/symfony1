@@ -34,6 +34,10 @@ class sfI18nExtractTask extends sfBaseTask
       new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
     ));
 
+    $this->addOptions( array(
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'The environment', 'dev'),
+    ));
+
     $this->addOptions(array(
       new sfCommandOption('display-new', null, sfCommandOption::PARAMETER_NONE, 'Output all new found strings'),
       new sfCommandOption('display-old', null, sfCommandOption::PARAMETER_NONE, 'Output all old strings'),
@@ -53,6 +57,10 @@ for the given application and target culture:
 
 By default, the task only displays the number of new and old strings
 it found in the current project.
+
+You can specify project environment by setting option:
+
+  [./symfony i18n:extract --env=ENVIRONMENT|INFO]
 
 If you want to display the new strings, use the [--display-new|COMMENT] option:
 
