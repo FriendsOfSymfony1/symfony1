@@ -197,9 +197,12 @@ class sfAPCCache extends sfCache
 
     if (is_array($infos['cache_list']))
     {
+      // Compatibility with APCu PHP 5.5+
+      $infoKey = extension_loaded('apcu') ? 'key' : 'info';
+
       foreach ($infos['cache_list'] as $info)
       {
-        if ($this->getOption('prefix').$key == $info['info'])
+        if ($this->getOption('prefix').$key == $info[$infoKey])
         {
           return $info;
         }
