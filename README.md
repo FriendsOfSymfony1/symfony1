@@ -11,7 +11,7 @@ All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.
 
 - [DIC](https://github.com/LExpress/symfony1/wiki/ServiceContainer)
 - Composer support
-- PHP 5.5 support
+- PHP 5.6 support
 - performance boost
 - new widgets & validators
 - some tickets fixed from the symfony trac
