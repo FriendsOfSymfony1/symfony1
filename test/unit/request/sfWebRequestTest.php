@@ -137,7 +137,7 @@ $t->is($request->splitHttpAcceptHeader('a; q=0, b'), array('b'), '->splitHttpAcc
 // ->getRequestFormat() ->setRequestFormat()
 $t->diag('->getRequestFormat() ->setRequestFormat()');
 
-$t->ok(is_null($request->getRequestFormat()), '->getRequestFormat() returns null if the format is not defined in the request');
+$t->ok(null === $request->getRequestFormat(), '->getRequestFormat() returns null if the format is not defined in the request');
 $request->setParameter('sf_format', 'js');
 $t->is($request->getRequestFormat(), 'js', '->getRequestFormat() returns the request format');
 

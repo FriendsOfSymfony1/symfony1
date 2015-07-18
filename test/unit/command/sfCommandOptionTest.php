@@ -84,7 +84,7 @@ $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED, 
 $t->is($option->getDefault(), 'default', '->getDefault() returns the default value');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED);
-$t->ok(is_null($option->getDefault()), '->getDefault() returns null if no default value is configured');
+$t->ok(null === $option->getDefault(), '->getDefault() returns null if no default value is configured');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::IS_ARRAY);
 $t->is($option->getDefault(), array(), '->getDefault() returns an empty array if option is an array');
@@ -96,7 +96,7 @@ $t->ok($option->getDefault() === false, '->getDefault() returns false if the opt
 $t->diag('->setDefault()');
 $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED, '', 'default');
 $option->setDefault(null);
-$t->ok(is_null($option->getDefault()), '->setDefault() can reset the default value by passing null');
+$t->ok(null === $option->getDefault(), '->setDefault() can reset the default value by passing null');
 $option->setDefault('another');
 $t->is($option->getDefault(), 'another', '->setDefault() changes the default value');
 
