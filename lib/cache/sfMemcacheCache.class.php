@@ -60,7 +60,7 @@ class sfMemcacheCache extends sfCache
         foreach ($this->getOption('servers') as $server)
         {
           $port = isset($server['port']) ? $server['port'] : 11211;
-          if (!$this->memcache->addserver($server['host'], $port, isset($server['persistent']) ? $server['persistent'] : true))
+          if (!$this->memcache->addServer($server['host'], $port, isset($server['persistent']) ? $server['persistent'] : true))
           {
             throw new sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $server['host'], $port));
           }
