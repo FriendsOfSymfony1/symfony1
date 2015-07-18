@@ -195,13 +195,4 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
 
     return $this->sessionWrite($newId, $this->sessionRead($currentId));
   }
-
-  /**
-   * Executes the shutdown procedure.
-   *
-   */
-  public function shutdown()
-  {
-    parent::shutdown();
-  }
 }
