@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ class sfPluginPublishAssetsTask extends sfPluginBaseTask
     $this->addOptions(array(
       new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
     ));
-    
+
     $this->addOptions(array(
       new sfCommandOption('relative', '', sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
     ));
@@ -65,7 +65,7 @@ EOF;
 
     if ($diff = array_diff($arguments['plugins'], $enabledPlugins))
     {
-      throw new InvalidArgumentException('Plugin(s) not found: '.join(', ', $diff));
+      throw new InvalidArgumentException('Plugin(s) not found: '.implode(', ', $diff));
     }
 
     if ($options['core-only'])

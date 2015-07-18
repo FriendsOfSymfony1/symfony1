@@ -16,7 +16,7 @@
 
 /**
  * File::Gettext
- * 
+ *
  * @author      Michael Wallner <mike@php.net>
  * @license     PHP License
  */
@@ -26,11 +26,11 @@
  */
 //ini_set('track_errors', true);
 
-/** 
+/**
  * File_Gettext
- * 
+ *
  * GNU gettext file reader and writer.
- * 
+ *
  * #################################################################
  * # All protected members of this class are public in its childs. #
  * #################################################################
@@ -38,15 +38,15 @@
  * @author      Michael Wallner <mike@php.net>
  * @version     $Revision: 9856 $
  * @access      public
- * @package System.I18N.core 
+ * @package System.I18N.core
  */
 class TGettext
 {
     /**
      * strings
-     * 
+     *
      * associative array with all [msgid => msgstr] entries
-     * 
+     *
      * @access  protected
      * @var     array
     */
@@ -54,40 +54,40 @@ class TGettext
 
     /**
      * meta
-     * 
-     * associative array containing meta 
+     *
+     * associative array containing meta
      * information like project name or content type
-     * 
+     *
      * @access  protected
      * @var     array
      */
     protected $meta = array();
-    
+
     /**
      * file path
-     * 
+     *
      * @access  protected
      * @var     string
      */
     protected $file = '';
-    
+
     /**
      * Factory
      *
      * @static
      * @access  public
-     * @return  object  Returns File_Gettext_PO or File_Gettext_MO on success 
+     * @return  object  Returns File_Gettext_PO or File_Gettext_MO on success
      *                  or PEAR_Error on failure.
      * @param   string  $format MO or PO
      * @param   string  $file   path to GNU gettext file
      */
     static function factory($format, $file = '')
     {
-        $format = strToUpper($format);
+        $format = strtoupper($format);
         $filename = __DIR__.'/'.$format.'.php';
         if (is_file($filename) == false)
         	throw new Exception ("Class file $file not found");
-        	
+
         include_once $filename;
         $class = 'TGettext_' . $format;
 
@@ -99,7 +99,7 @@ class TGettext
      *
      * That's a simple fake of the 'msgfmt' console command.  It reads the
      * contents of a GNU PO file and saves them to a GNU MO file.
-     * 
+     *
      * @static
      * @access  public
      * @return  mixed   Returns true on success or PEAR_Error on failure.
@@ -111,23 +111,23 @@ class TGettext
         if (!is_file($pofile)) {
             throw new Exception("File $pofile doesn't exist.");
         }
-        
+
         include_once __DIR__.'/PO.php';
-        
+
         $PO = new TGettext_PO($pofile);
         if (true !== ($e = $PO->load())) {
             return $e;
         }
-        
+
         $MO = $PO->toMO();
         if (true !== ($e = $MO->save($mofile))) {
             return $e;
         }
         unset($PO, $MO);
-        
+
         return true;
     }
-    
+
     /**
      * prepare
      *
@@ -150,7 +150,7 @@ class TGettext
             return (string) str_replace($smap, $rmap, $string);
         }
     }
-    
+
     /**
      * meta2array
      *
@@ -173,7 +173,7 @@ class TGettext
 
     /**
      * toArray
-     * 
+     *
      * Returns meta info and strings as an array of a structure like that:
      * <code>
      *   array(
@@ -190,7 +190,7 @@ class TGettext
      *       )
      *   )
      * </code>
-     * 
+     *
      * @see     fromArray()
      * @access  protected
      * @return  array
@@ -199,10 +199,10 @@ class TGettext
     {
     	return array('meta' => $this->meta, 'strings' => $this->strings);
     }
-    
+
     /**
      * fromArray
-     * 
+     *
      * Assigns meta info and strings from an array of a structure like that:
      * <code>
      *   array(
@@ -219,7 +219,7 @@ class TGettext
      *       )
      *   )
      * </code>
-     * 
+     *
      * @see     toArray()
      * @access  protected
      * @return  bool
@@ -239,7 +239,7 @@ class TGettext
         }
         return true;
     }
-    
+
     /**
      * toMO
      *
@@ -253,7 +253,7 @@ class TGettext
         $MO->fromArray($this->toArray());
         return $MO;
     }
-    
+
     /**
      * toPO
      *

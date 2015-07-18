@@ -245,7 +245,7 @@ abstract class sfWidgetFormSchemaFormatter
           $err = $this->translate($error);
         }
 
-        if (!is_integer($name))
+        if (!is_int($name))
         {
           $newErrors[] = strtr($this->getNamedErrorRowFormatInARow(), array('%error%' => $err, '%name%' => ($prefix ? $prefix.' > ' : '').$name));
         }

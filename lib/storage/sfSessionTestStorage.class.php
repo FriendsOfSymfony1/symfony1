@@ -56,7 +56,7 @@ class sfSessionTestStorage extends sfStorage
     }
     else
     {
-      $this->sessionId   = md5(uniqid(rand(), true));
+      $this->sessionId   = md5(uniqid(mt_rand(), true));
       $this->sessionData = array();
     }
   }

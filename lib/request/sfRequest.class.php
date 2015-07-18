@@ -301,12 +301,9 @@ abstract class sfRequest implements ArrayAccess
    */
   public function getContent()
   {
-    if (null === $this->content)
+    if (null === $this->content && '' === trim($this->content = file_get_contents('php://input')))
     {
-      if (0 === strlen(trim($this->content = file_get_contents('php://input'))))
-      {
-        $this->content = false;
-      }
+      $this->content = false;
     }
 
     return $this->content;

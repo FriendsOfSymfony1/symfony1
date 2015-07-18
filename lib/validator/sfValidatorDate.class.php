@@ -71,7 +71,7 @@ class sfValidatorDate extends sfValidatorBase
     {
       if (!preg_match($regex, $value, $match))
       {
-        throw new sfValidatorError($this, 'bad_format', array('value' => $value, 'date_format' => $this->getOption('date_format_error') ? $this->getOption('date_format_error') : $this->getOption('date_format')));
+        throw new sfValidatorError($this, 'bad_format', array('value' => $value, 'date_format' => $this->getOption('date_format_error') ?: $this->getOption('date_format')));
       }
 
       $value = $match;
@@ -195,7 +195,7 @@ class sfValidatorDate extends sfValidatorBase
       return $this->getEmptyValue();
     }
 
-    if (!checkdate(intval($value['month']), intval($value['day']), intval($value['year'])))
+    if (!checkdate((int) $value['month'], (int) $value['day'], (int) $value['year']))
     {
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
     }
@@ -215,21 +215,21 @@ class sfValidatorDate extends sfValidatorBase
 
       $clean = sprintf(
         "%04d-%02d-%02d %02d:%02d:%02d",
-        intval($value['year']),
-        intval($value['month']),
-        intval($value['day']),
-        isset($value['hour']) ? intval($value['hour']) : 0,
-        isset($value['minute']) ? intval($value['minute']) : 0,
-        isset($value['second']) ? intval($value['second']) : 0
+        (int) $value['year'],
+        (int) $value['month'],
+        (int) $value['day'],
+        isset($value['hour']) ? (int) $value['hour'] : 0,
+        isset($value['minute']) ? (int) $value['minute'] : 0,
+        isset($value['second']) ? (int) $value['second'] : 0
       );
     }
     else
     {
       $clean = sprintf(
         "%04d-%02d-%02d %02d:%02d:%02d",
-        intval($value['year']),
-        intval($value['month']),
-        intval($value['day']),
+        (int) $value['year'],
+        (int) $value['month'],
+        (int) $value['day'],
         0,
         0,
         0

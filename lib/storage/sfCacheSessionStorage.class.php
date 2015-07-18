@@ -40,14 +40,14 @@ class sfCacheSessionStorage extends sfStorage
   public function initialize($options = array())
   {
     // initialize parent
-    
+
     // bc with a slightly different name formerly used here, let's be
     // compatible with the base class name for it from here on out
     if (isset($options['session_cookie_http_only']))
     {
       $options['session_cookie_httponly'] = $options['session_cookie_http_only'];
     }
-    
+
     parent::initialize(array_merge(array('session_name' => 'sfproject',
                                          'session_cookie_lifetime' => '+30 days',
                                          'session_cookie_path' => '/',
@@ -102,7 +102,7 @@ class sfCacheSessionStorage extends sfStorage
        $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
 
        // generate new id based on random # / ip / user agent / secret
-       $this->id = md5(rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
+       $this->id = md5(mt_rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
 
        if(sfConfig::get('sf_logging_enabled'))
        {
@@ -125,7 +125,7 @@ class sfCacheSessionStorage extends sfStorage
       // load data from cache. Watch out for the default case. We could
       // serialize(array()) as the default to the call but that would be a performance hit
       $raw = $this->cache->get($this->id, null);
-      if (is_null($raw))
+      if (null === $raw)
       {
         $this->data = array();
       }
@@ -238,8 +238,8 @@ class sfCacheSessionStorage extends sfStorage
 
     // generate session id
     $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
-    
-    $this->id = md5(rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
+
+    $this->id = md5(mt_rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
 
     // save data to cache
     $this->cache->set($this->id, serialize($this->data));

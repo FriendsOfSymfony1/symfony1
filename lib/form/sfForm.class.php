@@ -848,7 +848,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
 
     if ($this->isCSRFProtected())
     {
-      $this->setDefault(self::$CSRFFieldName, $this->getCSRFToken($this->localCSRFSecret ? $this->localCSRFSecret : self::$CSRFSecret));
+      $this->setDefault(self::$CSRFFieldName, $this->getCSRFToken($this->localCSRFSecret ?: self::$CSRFSecret));
     }
 
     $this->resetFormFields();
@@ -918,7 +918,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   {
     if (null === $secret)
     {
-      $secret = $this->localCSRFSecret ? $this->localCSRFSecret : self::$CSRFSecret;
+      $secret = $this->localCSRFSecret ?: self::$CSRFSecret;
     }
 
     return md5($secret.session_id().get_class($this));

@@ -139,7 +139,7 @@ abstract class sfValidatorBase
    */
   public function setMessage($name, $value)
   {
-    if (!in_array($name, array_keys($this->messages)))
+    if (!array_key_exists($name, $this->messages))
     {
       throw new InvalidArgumentException(sprintf('%s does not support the following error code: \'%s\'.', get_class($this), $name));
     }

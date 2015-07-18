@@ -65,7 +65,7 @@ class sfFilesystem
     {
       $statTarget = stat($targetFile);
       $stat_origin = stat($originFile);
-      $mostRecent = ($stat_origin['mtime'] > $statTarget['mtime']) ? true : false;
+      $mostRecent = ($stat_origin['mtime'] > $statTarget['mtime']);
     }
 
     if ($options['override'] || !file_exists($targetFile) || $mostRecent)

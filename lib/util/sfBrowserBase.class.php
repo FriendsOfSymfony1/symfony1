@@ -60,8 +60,7 @@ abstract class sfBrowserBase
    */
   public function initialize($hostname = null, $remote = null, $options = array())
   {
-    unset($_SERVER['argv']);
-    unset($_SERVER['argc']);
+    unset($_SERVER['argv'], $_SERVER['argc']);
 
     // setup our fake environment
     $this->hostname = null === $hostname ? 'localhost' : $hostname;
@@ -799,7 +798,7 @@ abstract class sfBrowserBase
     {
       $url = $this->stack[$this->stackPosition]['uri'];
     }
-    $method = strtolower(isset($options['method']) ? $options['method'] : ($item->getAttribute('method') ? $item->getAttribute('method') : 'get'));
+    $method = strtolower(isset($options['method']) ? $options['method'] : ($item->getAttribute('method') ?: 'get'));
 
     // merge form default values and arguments
     $defaults = array();
@@ -1018,6 +1017,6 @@ abstract class sfBrowserBase
    */
   protected function newSession()
   {
-    $this->defaultServerArray['session_id'] = $_SERVER['session_id'] = md5(uniqid(rand(), true));
+    $this->defaultServerArray['session_id'] = $_SERVER['session_id'] = md5(uniqid(mt_rand(), true));
   }
 }

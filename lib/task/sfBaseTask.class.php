@@ -529,19 +529,19 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
     if ($time > 3600)
     {
-      $h = intval(abs($time / 3600));
+      $h = (int) abs($time / 3600);
       $time -= ($h * 3600);
       $string .= $h. ' h ';
     }
 
     if ($time > 60)
     {
-      $m = intval(abs($time / 60));
+      $m = (int) abs($time / 60);
       $time -= ($m * 60);
       $string .= $m. ' min ';
     }
 
-    $string .= intval($time).' sec';
+    $string .= (int) $time.' sec';
 
     return $string;
   }

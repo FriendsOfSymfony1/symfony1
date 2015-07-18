@@ -152,7 +152,7 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
 
     foreach ($container->getServiceIds() as $id)
     {
-      if (in_array($id, array_keys($container->getAliases())))
+      if (array_key_exists($id, $container->getAliases()))
       {
         continue;
       }
@@ -211,7 +211,7 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
 
   protected function dotize($id)
   {
-    return strtolower(preg_replace('/[^\w]/i', '_', $id));
+    return strtolower(preg_replace('/\W/i', '_', $id));
   }
 
   protected function getAliases($id)

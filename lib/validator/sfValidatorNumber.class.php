@@ -57,7 +57,7 @@ class sfValidatorNumber extends sfValidatorBase
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
     }
 
-    $clean = floatval($value);
+    $clean = (float) $value;
 
     if ($this->hasOption('max') && $clean > $this->getOption('max'))
     {

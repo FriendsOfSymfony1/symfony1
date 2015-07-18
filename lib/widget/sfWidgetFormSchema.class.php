@@ -822,7 +822,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
         array_unshift($this->positions, $field);
         break;
       case sfWidgetFormSchema::LAST:
-        array_push($this->positions, $field);
+        $this->positions []= $field;
         break;
       case sfWidgetFormSchema::BEFORE:
         if (null === $pivot)
