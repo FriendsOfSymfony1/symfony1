@@ -88,7 +88,7 @@ class sfWidgetFormSelect extends sfWidgetFormChoiceBase
     $value_set = array();
     foreach ($value as $v)
     {
-      $value_set[strval($v)] = true;
+      $value_set[(string) $v] = true;
     }
 
     $options = array();
@@ -101,7 +101,7 @@ class sfWidgetFormSelect extends sfWidgetFormChoiceBase
       else
       {
         $attributes = array('value' => self::escapeOnce($key));
-        if (isset($value_set[strval($key)]))
+        if (isset($value_set[(string) $key]))
         {
           $attributes['selected'] = 'selected';
         }

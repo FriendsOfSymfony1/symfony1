@@ -160,7 +160,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
     foreach ($configFiles as $i => $configFile)
     {
       $configFilePath = str_replace(DIRECTORY_SEPARATOR, '/', $configFile);
-      $path = str_replace(DIRECTORY_SEPARATOR, '/', realpath(join('/', array_slice(explode('/', $configFilePath), 0, -2))));
+      $path = str_replace(DIRECTORY_SEPARATOR, '/', realpath(implode('/', array_slice(explode('/', $configFilePath), 0, -2))));
       if (in_array($path, $pluginPaths))
       {
         $pluginConfigFiles[] = $configFile;

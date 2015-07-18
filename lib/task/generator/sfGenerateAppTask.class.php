@@ -118,7 +118,7 @@ EOF;
 
     if (true === $options['csrf-secret'])
     {
-      $options['csrf-secret'] = sha1(rand(111111111, 99999999).getmypid());
+      $options['csrf-secret'] = sha1(mt_rand(111111111, 99999999).getmypid());
     }
 
     // Set no_script_name value in settings.yml for production environment

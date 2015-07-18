@@ -94,7 +94,7 @@ class sfSQLiteCache extends sfCache
    */
   public function set($key, $data, $lifetime = null)
   {
-    if ($this->getOption('automatic_cleaning_factor') > 0 && rand(1, $this->getOption('automatic_cleaning_factor')) == 1)
+    if ($this->getOption('automatic_cleaning_factor') > 0 && mt_rand(1, $this->getOption('automatic_cleaning_factor')) == 1)
     {
       $this->clean(sfCache::OLD);
     }
@@ -167,7 +167,7 @@ class sfSQLiteCache extends sfCache
 
     $rs = $this->dbh->query(sprintf("SELECT timeout FROM cache WHERE key = '%s' AND timeout > %d", sqlite_escape_string($key), time()));
 
-    return $rs->numRows() ? intval($rs->fetchSingle()) : 0;
+    return $rs->numRows() ? (int) $rs->fetchSingle() : 0;
   }
 
   /**
@@ -184,7 +184,7 @@ class sfSQLiteCache extends sfCache
 
     $rs = $this->dbh->query(sprintf("SELECT last_modified FROM cache WHERE key = '%s' AND timeout > %d", sqlite_escape_string($key), time()));
 
-    return $rs->numRows() ? intval($rs->fetchSingle()) : 0;
+    return $rs->numRows() ? (int) $rs->fetchSingle() : 0;
   }
 
   /**

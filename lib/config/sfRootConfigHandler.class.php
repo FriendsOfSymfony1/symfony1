@@ -35,7 +35,7 @@ class sfRootConfigHandler extends sfYamlConfigHandler
     $config = static::getConfiguration($configFiles);
 
     // determine if we're loading the system config_handlers.yml or a module config_handlers.yml
-    $moduleLevel = ($this->getParameterHolder()->get('module_level') === true) ? true : false;
+    $moduleLevel = ($this->getParameterHolder()->get('module_level') === true);
 
     if ($moduleLevel)
     {

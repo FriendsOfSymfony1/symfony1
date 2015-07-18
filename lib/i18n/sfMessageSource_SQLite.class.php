@@ -20,7 +20,7 @@
 
 /**
  * sfMessageSource_SQLite class.
- * 
+ *
  * Retrieve the message translation from a SQLite database.
  *
  * See the MessageSource::factory() method to instantiate this class.
@@ -89,7 +89,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
 {
   /**
    * The SQLite datasource, the filename of the database.
-   * @var string 
+   * @var string
    */
   protected $source;
 
@@ -155,7 +155,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
 
     $rs = sqlite_query("SELECT date_modified FROM catalogue WHERE name = '{$source}'", $db);
 
-    $result = $rs ? intval(sqlite_fetch_single($rs)) : 0;
+    $result = $rs ? (int) sqlite_fetch_single($rs) : 0;
 
     sqlite_close($db);
 
@@ -173,7 +173,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
     $variant = sqlite_escape_string($variant);
     $db = sqlite_open($this->source);
     $rs = sqlite_query("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'", $db);
-    $result = $rs && intval(sqlite_fetch_single($rs));
+    $result = $rs && (int) sqlite_fetch_single($rs);
     sqlite_close($db);
 
     return $result;
@@ -205,12 +205,12 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
       return false;
     }
 
-    $cat_id = intval(sqlite_fetch_single($rs));
+    $cat_id = (int) (sqlite_fetch_single($rs);
 
     // first get the catalogue ID
     $rs = sqlite_query("SELECT count(msg_id) FROM trans_unit WHERE cat_id = {$cat_id}", $db);
 
-    $count = intval(sqlite_fetch_single($rs));
+    $count = (int) sqlite_fetch_single($rs);
 
     sqlite_close($db);
 
@@ -220,7 +220,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
   /**
    * Updates the catalogue last modified time.
    *
-   * @return boolean true if updated, false otherwise. 
+   * @return boolean true if updated, false otherwise.
    */
   protected function updateCatalogueTime($cat_id, $variant, $db)
   {
@@ -237,7 +237,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
   }
 
   /**
-   * Saves the list of untranslated blocks to the translation source. 
+   * Saves the list of untranslated blocks to the translation source.
    * If the translation was not found, you should add those
    * strings to the translation source via the <b>append()</b> method.
    *
@@ -299,7 +299,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
    * @param string $target    the new translation string.
    * @param string $comments  comments
    * @param string $catalogue the catalogue of the translation.
-   * @return boolean true if translation was updated, false otherwise. 
+   * @return boolean true if translation was updated, false otherwise.
    */
   function update($text, $target, $comments, $catalogue = 'messages')
   {
@@ -343,7 +343,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
    *
    * @param string  $message    the source message to delete.
    * @param string  $catalogue  the catalogue to delete from.
-   * @return boolean true if deleted, false otherwise. 
+   * @return boolean true if deleted, false otherwise.
    */
   function delete($message, $catalogue = 'messages')
   {
@@ -380,7 +380,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
   /**
    * Returns a list of catalogue as key and all it variants as value.
    *
-   * @return array list of catalogues 
+   * @return array list of catalogues
    */
   function catalogues()
   {

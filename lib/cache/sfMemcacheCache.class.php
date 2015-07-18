@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -60,7 +60,7 @@ class sfMemcacheCache extends sfCache
         foreach ($this->getOption('servers') as $server)
         {
           $port = isset($server['port']) ? $server['port'] : 11211;
-          if (!$this->memcache->addServer($server['host'], $port, isset($server['persistent']) ? $server['persistent'] : true))
+          if (!$this->memcache->addserver($server['host'], $port, isset($server['persistent']) ? $server['persistent'] : true))
           {
             throw new sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $server['host'], $port));
           }

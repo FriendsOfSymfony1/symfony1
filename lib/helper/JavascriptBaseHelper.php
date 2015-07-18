@@ -133,7 +133,7 @@ function array_or_string_for_javascript($option)
 {
   if (is_array($option))
   {
-    return "['".join('\',\'', $option)."']";
+    return "['".implode('\',\'', $option)."']";
   }
   else if (is_string($option) && $option[0] != "'")
   {
@@ -161,7 +161,7 @@ function options_for_javascript($options)
   }
   sort($opts);
 
-  return '{'.join(', ', $opts).'}';
+  return '{'.implode(', ', $opts).'}';
 }
 
 /**

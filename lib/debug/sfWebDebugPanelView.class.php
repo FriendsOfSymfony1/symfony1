@@ -10,7 +10,7 @@
 
 /**
  * sfWebDebugPanelView adds a panel to the web debug toolbar with information about the view layer.
- * 
+ *
  * @package     symfony
  * @subpackage  debug
  * @author      Kris Wallsmith <kris.wallsmith@symfony-project.com>
@@ -37,7 +37,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Resets the parameter collections.
-   * 
+   *
    * @param sfEvent $event
    */
   public function listenForChangeAction(sfEvent $event)
@@ -48,10 +48,10 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Stacks action and partial parameters in the template.filter_parameters event.
-   * 
+   *
    * @param  sfEvent $event
    * @param  array   $parameters
-   * 
+   *
    * @return array
    */
   public function filterTemplateParameters(sfEvent $event, $parameters)
@@ -72,9 +72,9 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Returns the path to the last template rendered.
-   * 
+   *
    * @param  string $class Name of the rendering view class
-   * 
+   *
    * @return string|null
    */
   protected function getLastTemplate($class = 'sfPHPView')
@@ -128,18 +128,18 @@ class sfWebDebugPanelView extends sfWebDebugPanel
       $html[] = $this->renderTemplateInformation($partial['file'], $partial['parameters'], 'Partial');
     }
 
-    return join("\n", $html);
+    return implode("\n", $html);
   }
 
   /**
    * Renders information about the passed template and its parameters.
-   * 
+   *
    * The rendered HTML for each parameter is filtered through the "debug.web.view.filter_parameter_html" event.
-   * 
+   *
    * @param  string $file       The template file path
    * @param  array  $parameters
    * @param  string $label
-   * 
+   *
    * @return string
    */
   protected function renderTemplateInformation($file, $parameters, $label = 'Template')
@@ -169,15 +169,15 @@ class sfWebDebugPanelView extends sfWebDebugPanel
     }
     $html[] = '</div>';
 
-    return join("\n", $html);
+    return implode("\n", $html);
   }
 
   /**
    * Formats information about a parameter as HTML.
-   * 
+   *
    * @param  string $name
    * @param  mixed  $parameter
-   * 
+   *
    * @return string
    */
   protected function formatParameterAsHtml($name, $parameter)
@@ -192,10 +192,10 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Formats object information as HTML.
-   * 
+   *
    * @param  string $name
    * @param  object $parameter
-   * 
+   *
    * @return string
    */
   protected function formatObjectAsHtml($name, $parameter)
@@ -212,10 +212,10 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Formats form information as HTML.
-   * 
+   *
    * @param  string $name
    * @param  sfForm $form
-   * 
+   *
    * @return string
    */
   protected function formatFormAsHtml($name, sfForm $form)
@@ -242,15 +242,15 @@ class sfWebDebugPanelView extends sfWebDebugPanel
     $html[] = '<ul>'.$this->formatFormFieldSchemaAsHtml($form->getFormFieldSchema(), $name.'[%s]').'</ul>';
     $html[] = '</div>';
 
-    return join("\n", $html);
+    return implode("\n", $html);
   }
 
   /**
    * Formats form field schema information as HTML.
-   * 
+   *
    * @param  sfFormFieldSchema $fieldSchema
    * @param  string            $nameFormat
-   * 
+   *
    * @return string
    */
   protected function formatFormFieldSchemaAsHtml(sfFormFieldSchema $fieldSchema, $nameFormat = '%s')
@@ -278,15 +278,15 @@ class sfWebDebugPanelView extends sfWebDebugPanel
       }
     }
 
-    return join("\n", $html);
+    return implode("\n", $html);
   }
 
   /**
    * Formats information about a parameter as HTML.
-   * 
+   *
    * @param  string $name
    * @param  mixed  $parameter
-   * 
+   *
    * @return string
    */
   protected function getParameterDescription($name, $parameter, $nameFormat = null, $typeFormat = null)
@@ -306,9 +306,9 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Shortens an action's template path.
-   * 
+   *
    * @param  string $path
-   * 
+   *
    * @return string
    */
   protected function shortenTemplatePath($path)
@@ -327,9 +327,9 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Removes parameters prefixed with "sf_" from the array.
-   * 
+   *
    * @param  array $parameters
-   * 
+   *
    * @return array
    */
   protected function filterCoreParameters($parameters)
@@ -349,9 +349,9 @@ class sfWebDebugPanelView extends sfWebDebugPanel
 
   /**
    * Returns a string representation of a value.
-   * 
+   *
    * @param  string $value
-   * 
+   *
    * @return string
    */
   protected function varExport($value)

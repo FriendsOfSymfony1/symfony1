@@ -21,18 +21,18 @@
 
 /**
  * sfChoiceFormat class.
- * 
- * sfChoiceFormat converts between ranges of numeric values and string 
+ *
+ * sfChoiceFormat converts between ranges of numeric values and string
  * names for those ranges.
  *
- * A sfChoiceFormat splits the real number line -Inf to +Inf into two or 
- * more contiguous ranges. Each range is mapped to a string. 
- * sfChoiceFormat is generally used in a MessageFormat for displaying 
+ * A sfChoiceFormat splits the real number line -Inf to +Inf into two or
+ * more contiguous ranges. Each range is mapped to a string.
+ * sfChoiceFormat is generally used in a MessageFormat for displaying
  * grammatically correct plurals such as "There are 2 files."
  *
  * <code>
  *  $string = '[0] are no files |[1] is one file |(1,Inf] are {number} files';
- *  
+ *
  *  $formatter = new sfMessageFormat(...); //init for a source
  *  $translated = $formatter->format($string);
  *
@@ -45,7 +45,7 @@
  *  # <t>[1,2]</t> -- accepts values between 1 and 2, inclusive.
  *  # <t>(1,2)</t> -- accepts values between 1 and 2, excluding 1 and 2.
  *  # <t>{1,2,3,4}</t> -- only values defined in the set are accepted.
- *  # <t>[-Inf,0)</t> -- accepts value greater or equal to negative infinity 
+ *  # <t>[-Inf,0)</t> -- accepts value greater or equal to negative infinity
  *                       and strictly less than 0
  * Any non-empty combinations of the delimiters of square and round brackets
  * are acceptable.
@@ -122,13 +122,13 @@ class sfChoiceFormat
         }
         else
         {
-          $elements[] = floatval($string);
+          $elements[] = (float) $string;
         }
       }
       $i++;
     }
     $total = count($elements);
-    $number = floatval($number);
+    $number = (float) $number;
 
     if ($leftBracket == '{' && $rightBracket == '}')
     {

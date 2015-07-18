@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -124,7 +124,7 @@ abstract class sfTask
         {
           if ($indexArguments[$name]->isArray())
           {
-            $value = join(' ', (array) $value);
+            $value = implode(' ', (array) $value);
             $arguments[$pos] = isset($arguments[$pos]) ? $arguments[$pos].' '.$value : $value;
           }
           else
@@ -157,7 +157,7 @@ abstract class sfTask
         }
 
         // convert associative array
-        $value = true === $value ? $name : sprintf('%s=%s', $name, isset($indexedOptions[$name]) && $indexedOptions[$name]->isArray() ? join(' --'.$name.'=', (array) $value) : $value);
+        $value = true === $value ? $name : sprintf('%s=%s', $name, isset($indexedOptions[$name]) && $indexedOptions[$name]->isArray() ? implode(' --'.$name.'=', (array) $value) : $value);
       }
 
       // add -- before each option if needed
@@ -468,7 +468,7 @@ abstract class sfTask
 
     $ret = trim(fgets(STDIN));
 
-    return $ret ? $ret : $default;
+    return $ret ?: $default;
   }
 
   /**
@@ -574,7 +574,7 @@ abstract class sfTask
     $dom->formatOutput = true;
     $dom->appendChild($taskXML = $dom->createElement('task'));
     $taskXML->setAttribute('id', $this->getFullName());
-    $taskXML->setAttribute('namespace', $this->getNamespace() ? $this->getNamespace() : '_global');
+    $taskXML->setAttribute('namespace', $this->getNamespace() ?: '_global');
     $taskXML->setAttribute('name', $this->getName());
 
     $taskXML->appendChild($usageXML = $dom->createElement('usage'));
@@ -639,7 +639,7 @@ abstract class sfTask
       }
     }
 
-    return $dom->saveXml();
+    return $dom->saveXML();
   }
 
   /**

@@ -3,14 +3,14 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 /**
  * sfPluginConfiguration represents a configuration for a symfony plugin.
- * 
+ *
  * @package    symfony
  * @subpackage config
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
@@ -26,7 +26,7 @@ abstract class sfPluginConfiguration
 
   /**
    * Constructor.
-   * 
+   *
    * @param sfProjectConfiguration $configuration The project configuration
    * @param string                 $rootDir       The plugin root directory
    * @param string                 $name          The plugin name
@@ -50,7 +50,7 @@ abstract class sfPluginConfiguration
 
   /**
    * Sets up the plugin.
-   * 
+   *
    * This method can be used when creating a base plugin configuration class for other plugins to extend.
    */
   public function setup()
@@ -59,7 +59,7 @@ abstract class sfPluginConfiguration
 
   /**
    * Configures the plugin.
-   * 
+   *
    * This method is called before the plugin's classes have been added to sfAutoload.
    */
   public function configure()
@@ -68,9 +68,9 @@ abstract class sfPluginConfiguration
 
   /**
    * Initializes the plugin.
-   * 
+   *
    * This method is called after the plugin's classes have been added to sfAutoload.
-   * 
+   *
    * @return boolean|null If false sfApplicationConfiguration will look for a config.php (maintains BC with symfony < 1.2)
    */
   public function initialize()
@@ -79,7 +79,7 @@ abstract class sfPluginConfiguration
 
   /**
    * Returns the plugin root directory.
-   * 
+   *
    * @return string
    */
   public function getRootDir()
@@ -89,7 +89,7 @@ abstract class sfPluginConfiguration
 
   /**
    * Returns the plugin name.
-   * 
+   *
    * @return string
    */
   public function getName()
@@ -99,11 +99,11 @@ abstract class sfPluginConfiguration
 
   /**
    * Initializes autoloading for the plugin.
-   * 
+   *
    * This method is called when a plugin is initialized in a project
    * configuration. Otherwise, autoload is handled in
    * {@link sfApplicationConfiguration} using {@link sfAutoload}.
-   * 
+   *
    * @see sfSimpleAutoload
    */
   public function initializeAutoload()
@@ -126,10 +126,10 @@ abstract class sfPluginConfiguration
 
   /**
    * Filters sfAutoload configuration values.
-   * 
-   * @param sfEvent $event  
-   * @param array   $config 
-   * 
+   *
+   * @param sfEvent $event
+   * @param array   $config
+   *
    * @return array
    */
   public function filterAutoloadConfig(sfEvent $event, array $config)
@@ -169,10 +169,10 @@ abstract class sfPluginConfiguration
 
   /**
    * Listens for the "task.test.filter_test_files" event and adds tests from the current plugin.
-   * 
+   *
    * @param  sfEvent $event
    * @param  array   $files
-   * 
+   *
    * @return array An array of files with the appropriate tests from the current plugin merged in
    */
   public function filterTestFiles(sfEvent $event, $files)
@@ -211,18 +211,18 @@ abstract class sfPluginConfiguration
 
   /**
    * Guesses the plugin root directory.
-   * 
+   *
    * @return string
    */
   protected function guessRootDir()
   {
     $r = new ReflectionClass(get_class($this));
-    return realpath(dirname($r->getFilename()).'/..');
+    return realpath(dirname($r->getFileName()).'/..');
   }
 
   /**
    * Guesses the plugin name.
-   * 
+   *
    * @return string
    */
   protected function guessName()

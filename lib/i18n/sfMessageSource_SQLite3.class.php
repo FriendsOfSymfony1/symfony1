@@ -156,7 +156,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
 
     $source = $db->escapeString($source);
     $rs = $db->querySingle("SELECT date_modified FROM catalogue WHERE name = '{$source}'");
-    $result = null !== $rs ? intval($rs) : 0;
+    $result = null !== $rs ? (int) $rs : 0;
 
     $db->close();
 
@@ -175,7 +175,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
 
     $variant = $db->escapeString($variant);
     $rs = $db->querySingle("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'");
-    $result = null !== $rs && intval($rs);
+    $result = null !== $rs && (int) $rs;
 
     $db->close();;
 
@@ -208,7 +208,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
     {
       if (0 == $i)
       {
-        $cat_id = intval($row[0]);
+        $cat_id = (int) $row[0];
       }
 
       if (1 == $i)
@@ -222,7 +222,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
     // first get the catalogue ID
     $rs = $db->querySingle("SELECT count(msg_id) FROM trans_unit WHERE cat_id = {$cat_id}");
 
-    $count = intval($rs);
+    $count = (int) $rs;
 
     $db->close();
 

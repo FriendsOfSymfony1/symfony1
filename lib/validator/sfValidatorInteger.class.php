@@ -52,9 +52,9 @@ class sfValidatorInteger extends sfValidatorBase
    */
   protected function doClean($value)
   {
-    $clean = intval($value);
+    $clean = (int) $value;
 
-    if (strval($clean) != $value)
+    if ((string) $clean != $value)
     {
       throw new sfValidatorError($this, 'invalid', array('value' => $value));
     }

@@ -161,7 +161,7 @@ class sfDomCssSelector implements Countable, Iterator
         // Code to deal with attribute selectors
         if (preg_match('/^(\w+|\*)(\[.+\])$/', $token, $matches))
         {
-          $tagName = $matches[1] ? $matches[1] : '*';
+          $tagName = $matches[1] ?: '*';
           preg_match_all('/
             \[
               ([\w\-]+)             # attribute
@@ -540,7 +540,7 @@ class sfDomCssSelector implements Countable, Iterator
     {
       throw new Exception(sprintf('Unable to parse custom selector "%s".', $selector));
     }
-    return array('selector' => $matches[1], 'parameter' => isset($matches[3]) ? ($matches[3] ? $matches[3] : $matches[4]) : '');
+    return array('selector' => $matches[1], 'parameter' => isset($matches[3]) ? ($matches[3] ?: $matches[4]) : '');
   }
 
   protected function nth($cur, $result = 1, $dir = 'nextSibling')

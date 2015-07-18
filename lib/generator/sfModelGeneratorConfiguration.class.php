@@ -99,12 +99,12 @@ abstract class sfModelGeneratorConfiguration
       'new'    => array(
         'fields'  => array(),
         'title'   => $this->getNewTitle(),
-        'actions' => $this->getNewActions() ? $this->getNewActions() : $this->getFormActions(),
+        'actions' => $this->getNewActions() ?: $this->getFormActions(),
       ),
       'edit'   => array(
         'fields'  => array(),
         'title'   => $this->getEditTitle(),
-        'actions' => $this->getEditActions() ? $this->getEditActions() : $this->getFormActions(),
+        'actions' => $this->getEditActions() ?: $this->getFormActions(),
       ),
     );
 

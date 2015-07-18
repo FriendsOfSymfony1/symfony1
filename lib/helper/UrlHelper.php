@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -109,7 +109,7 @@ function url_for1($internal_uri, $absolute = false)
  *  echo url_for('my_module/my_action');
  *    => /path/to/my/action
  *  echo url_for('@my_rule');
- *    => /path/to/my/action 
+ *    => /path/to/my/action
  *  echo url_for('@my_rule', true);
  *    => http://myapp.example.com/path/to/my/action
  * </code>
@@ -136,11 +136,11 @@ function url_for()
  * Creates a <a> link tag of the given name using a routed URL
  * based on the module/action passed as argument and the routing configuration.
  * It's also possible to pass a string instead of a module/action pair to
- * get a link tag that just points without consideration. 
+ * get a link tag that just points without consideration.
  * If null is passed as a name, the link itself will become the name.
  * If an object is passed as a name, the object string representation is used.
- * One of the options serves for for creating javascript confirm alerts where 
- * if you pass 'confirm' => 'Are you sure?', the link will be guarded 
+ * One of the options serves for for creating javascript confirm alerts where
+ * if you pass 'confirm' => 'Are you sure?', the link will be guarded
  * with a JS popup asking that question. If the user accepts, the link is processed,
  * otherwise not.
  *
@@ -149,7 +149,7 @@ function url_for()
  * - 'query_string' - to append a query string (starting by ?) to the routed url
  * - 'anchor' - to append an anchor (starting by #) to the routed url
  * - 'confirm' - displays a javascript confirmation alert when the link is clicked
- * - 'popup' - if set to true, the link opens a new browser window 
+ * - 'popup' - if set to true, the link opens a new browser window
  * - 'post' - if set to true, the link submits a POST request instead of GET (caution: do not use inside a form)
  * - 'method' - if set to post, delete, or put, the link submits a request with the given HTTP method instead of GET (caution: do not use inside a form)
  *
@@ -220,14 +220,14 @@ function form_tag_for(sfForm $form, $routePrefix, $attributes = array())
  * - 'query_string' - to append a query string (starting by ?) to the routed url
  * - 'anchor' - to append an anchor (starting by #) to the routed url
  * - 'confirm' - displays a javascript confirmation alert when the link is clicked
- * - 'popup' - if set to true, the link opens a new browser window 
+ * - 'popup' - if set to true, the link opens a new browser window
  * - 'post' - if set to true, the link submits a POST request instead of GET (caution: do not use inside a form)
  *
  * <b>Examples:</b>
  * <code>
  *  echo link_to_if($user->isAdministrator(), 'Delete this page', 'my_module/my_action');
  *    => <a href="/path/to/my/action">Delete this page</a>
- *  echo link_to_if(!$user->isAdministrator(), 'Delete this page', 'my_module/my_action'); 
+ *  echo link_to_if(!$user->isAdministrator(), 'Delete this page', 'my_module/my_action');
  *    => <span>Delete this page</span>
  * </code>
  *
@@ -261,9 +261,7 @@ function link_to_if()
   }
   else
   {
-    unset($html_options['query_string']);
-    unset($html_options['absolute_url']);
-    unset($html_options['absolute']);
+    unset($html_options['query_string'], $html_options['absolute_url'], $html_options['absolute']);
 
     $tag = _get_option($html_options, 'tag', 'span');
 
@@ -283,14 +281,14 @@ function link_to_if()
  * - 'query_string' - to append a query string (starting by ?) to the routed url
  * - 'anchor' - to append an anchor (starting by #) to the routed url
  * - 'confirm' - displays a javascript confirmation alert when the link is clicked
- * - 'popup' - if set to true, the link opens a new browser window 
+ * - 'popup' - if set to true, the link opens a new browser window
  * - 'post' - if set to true, the link submits a POST request instead of GET (caution: do not use inside a form)
  *
  * <b>Examples:</b>
  * <code>
  *  echo link_to_unless($user->isAdministrator(), 'Delete this page', 'my_module/my_action');
  *    => <span>Delete this page</span>
- *  echo link_to_unless(!$user->isAdministrator(), 'Delete this page', 'my_module/my_action'); 
+ *  echo link_to_unless(!$user->isAdministrator(), 'Delete this page', 'my_module/my_action');
  *    => <a href="/path/to/my/action">Delete this page</a>
  * </code>
  *
@@ -313,9 +311,9 @@ function link_to_unless()
 /**
  * Returns a URL rooted at the web root
  *
- * @param   string  $path     The route to append 
+ * @param   string  $path     The route to append
  * @param   bool    $absolute If true, an absolute path is returned (optional)
- * @return  The web URL root 
+ * @return  The web URL root
  */
 function public_path($path, $absolute = false)
 {
@@ -335,7 +333,7 @@ function public_path($path, $absolute = false)
   {
     $source = $root;
   }
-  
+
   if (substr($path, 0, 1) != '/')
   {
     $path = '/'.$path;
@@ -354,7 +352,7 @@ function public_path($path, $absolute = false)
  * - 'query_string' - to append a query string (starting by ?) to the routed url
  * - 'anchor' - to append an anchor (starting by #) to the routed url
  * - 'confirm' - displays a javascript confirmation alert when the button is clicked
- * - 'popup' - if set to true, the button opens a new browser window 
+ * - 'popup' - if set to true, the button opens a new browser window
  * - 'post' - if set to true, the button submits a POST request instead of GET (caution: do not use inside a form)
  *
  * <b>Examples:</b>
@@ -419,7 +417,7 @@ function button_to($name, $internal_uri, $options = array())
  * Returns an HTML <form> tag that points to a valid action, route or URL as defined by <i>$url_for_options</i>.
  *
  * By default, the form tag is generated in POST format, but can easily be configured along with any additional
- * HTML parameters via the optional <i>$options</i> parameter. If you are using file uploads, be sure to set the 
+ * HTML parameters via the optional <i>$options</i> parameter. If you are using file uploads, be sure to set the
  * <i>multipart</i> option to true.
  *
  * <b>Options:</b>
@@ -633,7 +631,7 @@ function _encodeText($text)
   for ($i = 0; $i < strlen($text); $i++)
   {
     $char = $text{$i};
-    $r = rand(0, 100);
+    $r = mt_rand(0, 100);
 
     # roughly 10% raw, 45% hex, 45% dec
     # '@' *must* be encoded. I insist.

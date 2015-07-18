@@ -380,7 +380,7 @@ abstract class sfPager implements Iterator, Countable
    */
   public function setPage($page)
   {
-    $this->page = intval($page);
+    $this->page = (int) $page;
 
     if ($this->page <= 0)
     {

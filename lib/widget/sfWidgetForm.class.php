@@ -242,7 +242,7 @@ abstract class sfWidgetForm extends sfWidget
     }
 
     // check to see if we have an array variable for a field name
-    if (strstr($name, '['))
+    if (false !== strpos($name, '['))
     {
       $name = str_replace(array('[]', '][', '[', ']'), array((null !== $value && !is_array($value) ? '_'.$value : ''), '_', '_', ''), $name);
     }

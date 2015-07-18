@@ -640,7 +640,7 @@ function _dynamic_path($uri, $format, $absolute = false)
 function get_javascripts_for_form(sfForm $form)
 {
   $html = '';
-  foreach ($form->getJavascripts() as $file)
+  foreach ($form->getJavaScripts() as $file)
   {
     $html .= javascript_include_tag($file);
   }
@@ -667,7 +667,7 @@ function use_javascripts_for_form(sfForm $form)
 {
   $response = sfContext::getInstance()->getResponse();
 
-  foreach ($form->getJavascripts() as $file)
+  foreach ($form->getJavaScripts() as $file)
   {
     $response->addJavascript($file);
   }

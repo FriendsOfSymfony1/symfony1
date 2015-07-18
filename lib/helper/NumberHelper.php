@@ -43,5 +43,5 @@ function format_currency($amount, $currency = null, $culture = null)
 
 function _current_language($culture)
 {
-  return $culture ? $culture : sfContext::getInstance()->getUser()->getCulture();
+  return $culture ?: sfContext::getInstance()->getUser()->getCulture();
 }

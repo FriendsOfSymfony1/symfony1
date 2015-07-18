@@ -183,7 +183,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
     $lastNodes = $xpath->query('//trans-unit[not(@id <= preceding-sibling::trans-unit/@id) and not(@id <= following-sibling::trans-unit/@id)]');
     if (null !== $last = $lastNodes->item(0))
     {
-      $count = intval($last->getAttribute('id'));
+      $count = (int) $last->getAttribute('id');
     }
     else
     {

@@ -59,7 +59,7 @@ class sfValidatorTime extends sfValidatorBase
     {
       if (!preg_match($regex, $value, $match))
       {
-        throw new sfValidatorError($this, 'bad_format', array('value' => $value, 'time_format' => $this->getOption('time_format_error') ? $this->getOption('time_format_error') : $this->getOption('time_format')));
+        throw new sfValidatorError($this, 'bad_format', array('value' => $value, 'time_format' => $this->getOption('time_format_error') ?: $this->getOption('time_format')));
       }
 
       $clean = $this->convertTimeArrayToTimestamp($match);
@@ -112,9 +112,9 @@ class sfValidatorTime extends sfValidatorBase
     }
 
     $clean = mktime(
-      isset($value['hour']) ? intval($value['hour']) : 0,
-      isset($value['minute']) ? intval($value['minute']) : 0,
-      isset($value['second']) ? intval($value['second']) : 0
+      isset($value['hour']) ? (int) $value['hour'] : 0,
+      isset($value['minute']) ? (int) $value['minute'] : 0,
+      isset($value['second']) ? (int) $value['second'] : 0
     );
 
     if (false === $clean)
