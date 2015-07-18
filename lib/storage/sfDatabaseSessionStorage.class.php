@@ -70,9 +70,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
                              array($this, 'sessionGC'));
 
     // start our session
-    if ('' === session_id()) {
-      session_start();
-    }
+    session_start();
   }
 
   /**
