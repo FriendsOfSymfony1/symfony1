@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+18/07/2015: Version 1.5.5
+-----------------------
+
+* Static Code Analysis with Php Inspections #97
+* Change log level of sfException to CRITICAL #96
+
 15/06/2015: Version 1.5.4
 -----------------------
 
