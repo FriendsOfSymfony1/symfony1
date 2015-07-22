@@ -1,14 +1,19 @@
 CHANGELOG
 =========
 
+22/07/2015: Version 1.5.6
+-------------------------
+
+* Reverts #94. APCu 4.0.7+ is required for PHP 5.5+ #99
+
 18/07/2015: Version 1.5.5
------------------------
+-------------------------
 
 * Static Code Analysis with Php Inspections #97
 * Change log level of sfException to CRITICAL #96
 
 15/06/2015: Version 1.5.4
------------------------
+-------------------------
 
 * Add blob support to yaml files #38
 * Ability to integrate a psr compliant log #71
@@ -18,7 +23,7 @@ CHANGELOG
 * Allow to specify environment in sfI18nExtractTask #92
 
 17/09/2014: Version 1.5.3
------------------------
+-------------------------
 
 * Use late static binding for config classes #25
 * Remove Doctrine from dependencies (add Doctrine and Propel as suggestions) #35
@@ -29,7 +34,7 @@ CHANGELOG
 * Re-add Propel in sfDatabaseSessionStorage #66
 
 10/30/2013: Version 1.5.2
------------------------
+-------------------------
 
  * Drop support for PHP 5.2
  * Add support for PHP 5.5
