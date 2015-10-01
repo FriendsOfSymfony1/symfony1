@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(155);
+$t = new lime_test(157);
 
 class FormTest extends sfForm
 {
@@ -651,6 +651,18 @@ $t->ok(!isset($f['author'][sfForm::getCSRFFieldName()]), '->embedForm() removes 
 
 $t->is($w['author']->generateName('first_name'), 'article[author][first_name]', '->embedForm() changes the name format to reflect the embedding');
 $t->is($w['author']['company']->generateName('name'), 'article[author][company][name]', '->embedForm() changes the name format to reflect the embedding');
+
+// tests for ticket #56
+$t->ok($author->getValidator('company') == $company_validator_schema, '->getValidator() gets a validator schema for an embedded form');
+try
+{
+  $author->setValidator('company', new sfValidatorPass());
+  $t->fail('"sfForm" Trying to set a validator for an embedded form field throws a LogicException');
+}
+catch (LogicException $e)
+{
+  $t->pass('"sfForm" Trying to set a validator for an embedded form field throws a LogicException');
+}
 
 // tests for ticket #4754
 $f1 = new TestForm1();
