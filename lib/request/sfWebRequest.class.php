@@ -114,6 +114,14 @@ class sfWebRequest extends sfRequest
           }
           break;
 
+        case 'PATCH':
+          $this->setMethod(self::PATCH);
+          if ('application/x-www-form-urlencoded' === $this->getContentType())
+          {
+            parse_str($this->getContent(), $postParameters);
+          }
+          break;
+
         case 'DELETE':
           $this->setMethod(self::DELETE);
           if ('application/x-www-form-urlencoded' === $this->getContentType())
