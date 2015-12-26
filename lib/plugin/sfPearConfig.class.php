@@ -24,8 +24,6 @@ class sfPearConfig extends PEAR_Config
   {
     $class = 'sfPearRest'.str_replace('.', '', $version);
 
-    $remote = new $class($this, $options);
-
-    return $remote;
+    return new $class($this, $options);
   }
 }

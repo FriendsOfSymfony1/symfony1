@@ -45,8 +45,8 @@ function truncate_text($text, $length = 30, $truncate_string = '...', $truncate_
     $old_encoding = mb_internal_encoding();
     @mb_internal_encoding(mb_detect_encoding($text));
   }
-  $strlen = ($mbstring) ? 'mb_strlen' : 'strlen';
-  $substr = ($mbstring) ? 'mb_substr' : 'substr';
+  $strlen = $mbstring ? 'mb_strlen' : 'strlen';
+  $substr = $mbstring ? 'mb_substr' : 'substr';
 
   if ($strlen($text) > $length)
   {

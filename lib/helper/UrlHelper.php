@@ -74,7 +74,7 @@ function link_to1($name, $internal_uri, $options = array())
     }
   }
 
-  if (!strlen($name))
+  if ('' === $name)
   {
     $name = $html_options['href'];
   }

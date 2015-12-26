@@ -123,7 +123,7 @@ EOF;
     $this->replaceTokens();
 
     // execute the choosen ORM installer script
-    if (in_array($options['orm'], array('Doctrine')))
+    if ('Doctrine' === $options['orm'])
     {
       include __DIR__.'/../../plugins/sf'.$options['orm'].'Plugin/config/installer.php';
     }

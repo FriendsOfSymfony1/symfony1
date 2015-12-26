@@ -255,9 +255,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
     $rs = mysql_query("SELECT date_modified FROM catalogue WHERE name = '{$source}'", $this->db);
 
-    $result = $rs ? (int) mysql_result($rs, 0) : 0;
-
-    return $result;
+    return $rs ? (int)mysql_result($rs, 0) : 0;
   }
 
   /**
@@ -274,9 +272,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
     $row = mysql_fetch_array($rs, MYSQL_NUM);
 
-    $result = $row && $row[0] == '1';
-
-    return $result;
+    return $row && $row[0] == '1';
   }
 
   /**

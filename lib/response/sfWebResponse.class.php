@@ -484,7 +484,7 @@ class sfWebResponse extends sfResponse
         $currentHeaders[$tmp[0]] = isset($tmp[1]) ? $tmp[1] : null;
       }
     }
-    $currentHeaders[strtr(strtolower($name), '_', '-')] = $value;
+    $currentHeaders[str_replace('_', '-', strtolower($name))] = $value;
 
     $headers = array();
     foreach ($currentHeaders as $key => $value)

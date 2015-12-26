@@ -142,7 +142,7 @@ class sfSQLiteCache extends sfCache
     {
       $res = $this->dbh->exec("DELETE FROM cache".(sfCache::OLD == $mode ? sprintf(" WHERE timeout < '%s'", time()) : ''));
 
-      if ($res);
+      if ($res)
       {
         return (boolean) $this->dbh->changes();
       }
