@@ -280,7 +280,7 @@ class sfFileCache extends sfCache
     $cacheDir = dirname($path);
     if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true) && !is_dir($cacheDir))
     {
-      throw new sfCacheException(sprintf('Cache was not able to create a directory "%s".', $cacheDir));
+      throw new \sfCacheException(sprintf('Cache was not able to create a directory "%s".', $cacheDir));
     }
 
     $tmpFile = tempnam($cacheDir, basename($path));

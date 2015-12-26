@@ -94,7 +94,7 @@ class sfValidatorTime extends sfValidatorBase
     // all elements must be empty or a number
     foreach (array('hour', 'minute', 'second') as $key)
     {
-      if (isset($value[$key]) && !empty($value[$key]) && !ctype_digit($value[$key]))
+      if (isset($value[$key]) && !ctype_digit($value[$key]) && !empty($value[$key]))
       {
         throw new sfValidatorError($this, 'invalid', array('value' => $value));
       }
