@@ -779,7 +779,8 @@ abstract class sfBrowserBase
     else if ('button' == $item->nodeName || ('input' == $item->nodeName && in_array($item->getAttribute('type'), array('submit', 'button', 'image'))))
     {
       // add the item's value to the arguments if name is provided
-      if ($item->getAttribute('name')) {
+      if ($item->getAttribute('name'))
+      {
         $this->parseArgumentAsArray($item->getAttribute('name'), $item->getAttribute('value'), $arguments);
       }
 
