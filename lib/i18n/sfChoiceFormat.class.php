@@ -155,12 +155,7 @@ class sfChoiceFormat
       $right = $number < $elements[$total - 1];
     }
 
-    if ($left && $right)
-    {
-      return true;
-    }
-
-    return false;
+    return $left && $right;
   }
 
   protected function isValidSetNotation($number, $set)

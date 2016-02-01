@@ -277,13 +277,13 @@ class sfFileCache extends sfCache
     $current_umask = umask();
     umask(0000);
 
-    if (!is_dir(dirname($path)))
+    $cacheDir = dirname($path);
+    if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true) && !is_dir($cacheDir))
     {
-      // create directory structure if needed
-      mkdir(dirname($path), 0777, true);
+      throw new \sfCacheException(sprintf('Cache was not able to create a directory "%s".', $cacheDir));
     }
 
-    $tmpFile = tempnam(dirname($path), basename($path));
+    $tmpFile = tempnam($cacheDir, basename($path));
 
     if (!$fp = @fopen($tmpFile, 'wb'))
     {

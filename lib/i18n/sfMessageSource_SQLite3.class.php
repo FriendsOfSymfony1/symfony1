@@ -138,7 +138,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
       $result[$source][] = $row[3]; //comments
     }
 
-    $db->close();;
+    $db->close();
 
     return $result;
   }
@@ -177,7 +177,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
     $rs = $db->querySingle("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'");
     $result = null !== $rs && (int) $rs;
 
-    $db->close();;
+    $db->close();
 
     return $result;
   }
@@ -303,7 +303,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
       $this->updateCatalogueTime($cat_id, $variant);
     }
 
-    $db->close();;
+    $db->close();
 
     return $inserted > 0;
   }
@@ -345,7 +345,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
       $updated = true;
     }
 
-    $db->close();;
+    $db->close();
 
     return $updated;
   }
@@ -384,7 +384,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
       $deleted = false;
     }
 
-    $db->close();;
+    $db->close();
 
     return $deleted;
   }
@@ -411,7 +411,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
 
       $result[] = $details;
     }
-    $db->close();;
+    $db->close();
 
     return $result;
   }

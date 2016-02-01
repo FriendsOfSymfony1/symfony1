@@ -307,7 +307,7 @@ class sfViewCacheManager
     {
       foreach ($options['vary'] as $key => $name)
       {
-        $options['vary'][$key] = strtr(strtolower($name), '_', '-');
+        $options['vary'][$key] = str_replace('_', '-', strtolower($name));
       }
     }
 

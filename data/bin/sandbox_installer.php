@@ -26,7 +26,7 @@ $this->logSection('install', 'add an empty file in empty directories');
 $seen = array();
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(sfConfig::get('sf_root_dir')), RecursiveIteratorIterator::CHILD_FIRST) as $path => $item)
 {
-  if ($item->isDir() && !$item->isLink() && !isset($seen[$path]))
+  if (!isset($seen[$path]) && $item->isDir() && !$item->isLink())
   {
     touch($item->getRealPath().'/.sf');
   }
