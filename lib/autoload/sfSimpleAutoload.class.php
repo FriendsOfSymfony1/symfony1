@@ -286,7 +286,7 @@ class sfSimpleAutoload
       $this->cacheChanged = true;
     }
 
-    preg_match_all('~^\s*(?:abstract\s+|final\s+)?(?:class|interface)\s+(\w+)~mi', file_get_contents($file), $classes);
+    preg_match_all('~^\s*(?:abstract\s+|final\s+)?(?:class|interface|trait)\s+(\w+)~mi', file_get_contents($file), $classes);
     foreach ($classes[1] as $class)
     {
       $this->classes[strtolower($class)] = $file;

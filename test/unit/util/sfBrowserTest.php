@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(74);
+$t = new lime_test(76);
 
 // ->click()
 $t->diag('->click()');
@@ -125,6 +125,11 @@ $html = <<<EOF
         <input type="text" name="bar" value="bar" />
         <input type="submit" name="submit" value="submit6" />
       </span></div>
+    </form>
+
+    <form action="/myform7" method="post">
+      <input type="text" name="text_default_value" value="default" />
+      <input type="submit" value="submit7" />
     </form>
 
     <a href="/myotherlink">test link</a>
@@ -353,3 +358,9 @@ $t->diag('bug #7816');
 list($method, $uri, $parameters) = $b->click('submit6');
 $t->is($parameters['bar'], 'bar', '->click() overrides input elements defined several times');
 $t->is($parameters['foo']['bar'], 'bar', '->click() overrides input elements defined several times');
+
+// bug #106
+$t->diag('bug #106');
+list($method, $uri, $parameters) = $b->click('submit7');
+$t->is(isset($parameters['']), false, 'submit without name is not submitted');
+$t->is($parameters['text_default_value'], 'default', 'input field with name is still submitted');
