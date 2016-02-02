@@ -31,7 +31,7 @@ Doctrine & Project configuration
 --------------------------------
 
 Previously, you were able to configure doctrine in your `/config/ProjectConfiguration.class.php` using the method `configureDoctrine`.
-This method isn't called anymore. You know need to connect to the `doctrine.configure` event:
+This method isn't called anymore. You now need to connect to the `doctrine.configure` event:
 
 ```php
 <?php
