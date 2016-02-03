@@ -177,7 +177,7 @@ abstract class sfModelGenerator extends sfGenerator
     return implode(".'&", $params);
   }
 
-  /** 
+  /**
    * Configures this generator.
    */
   abstract protected function configure();
@@ -218,6 +218,14 @@ abstract class sfModelGenerator extends sfGenerator
 
     return '[?php echo link_to(__(\''.$params['label'].'\', array(), \''.$this->getI18nCatalogue().'\'), \''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).') ?]';
   }
+
+  public function getLinkToActionWithUrlQuery($actionName, $params, $url_params)
+  {
+    $action = isset($params['action']) ? $params['action'] : 'List'.sfInflector::camelize($actionName);
+
+    return '[?php echo link_to(__(\''.$params['label'].'\', array(), \''.$this->getI18nCatalogue().'\'), "'.$this->getModuleName().'/'.$action.$url_params.'", '.$this->asPhp($params['params']).') ?]';
+  }
+
 
   /**
    * Wraps content with a credential condition.
@@ -267,7 +275,15 @@ EOF;
     }
     else if ($field->isPartial())
     {
-      return sprintf("get_partial('%s/%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
+      if (strpos($field->getName(), '/')) {
+          return sprintf("get_partial('%s', array('type' => 'list', 'object' => \$%s))", $field->getName(), $this->getSingularName());
+      } else {
+          return sprintf("get_partial('%s/%s', array('type' => 'list', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
+      }
+    }
+    else if ('bearbeiter' == $field->getName())
+    {
+      return sprintf("get_partial('mitarbeiter/%s', array('type' => 'list', 'object' => \$%s))", $field->getName(), $this->getSingularName());
     }
     else if ('Date' == $field->getType())
     {
@@ -282,6 +298,35 @@ EOF;
     {
       $html = sprintf("link_to(%s, '%s', \$%s)", $html, $this->getUrlForAction('edit'), $this->getSingularName());
     }
+
+    return $html;
+  }
+
+  public function renderFieldForExport($field)
+  {
+    $html = $this->getColumnGetter($field->getName(), true);
+
+    if ($renderer = $field->getRenderer())
+    {
+      $html = sprintf("$html ? call_user_func_array(%s, array_merge(array(%s), %s)) : ''", $this->asPhp($renderer), $html, $this->asPhp($field->getRendererArguments()));
+    }
+    else if ($field->isComponent())
+    {
+      return sprintf("get_component('%s', '%s', array('type' => 'export', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
+    }
+    else if ($field->isPartial())
+    {
+      if (strpos($field->getName(), '/')) {
+          return sprintf("get_partial('%s', array('type' => 'export', 'object' => \$%s))", $field->getName(), $this->getSingularName());
+      } else {
+          return sprintf("get_partial('%s/%s', array('type' => 'export', '%s' => \$%s))", $this->getModuleName(), $field->getName(), $this->getSingularName(), $this->getSingularName());
+      }
+    }
+    else if ('Date' == $field->getType())
+    {
+      $html = sprintf("false !== strtotime($html) ? format_date(%s, \"%s\") : ''", $html, $field->getConfig('date_format', 'f'));
+    }
+    //TODO add "" around strings
 
     return $html;
   }

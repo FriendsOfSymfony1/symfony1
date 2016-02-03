@@ -19,7 +19,8 @@ abstract class sfModelGeneratorHelper
 
   public function linkToEdit($object, $params)
   {
-    return '<li class="sf_admin_action_edit">'.link_to(__($params['label'], array(), 'sf_admin'), $this->getUrlForAction('edit'), $object).'</li>';
+    $html_params = array_key_exists('target', $params) ? array('target' => $params['target']) : array();
+    return '<li class="sf_admin_action_edit">'.link_to(__($params['label'], array(), 'sf_admin'), $this->getUrlForAction('edit'), $object, $html_params).'</li>';
   }
 
   public function linkToDelete($object, $params)

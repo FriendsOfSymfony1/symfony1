@@ -93,6 +93,9 @@ abstract class sfModelGeneratorConfiguration
       'filter' => array(
         'fields'  => array(),
       ),
+      'excel' => array(
+        'display'  => array(),
+      ),
       'form'   => array(
         'fields'  => array(),
       ),
@@ -129,6 +132,19 @@ abstract class sfModelGeneratorConfiguration
         isset($config['list'][$field]) ? $config['list'][$field] : array(),
         array('flag' => $flag)
       ));
+    }
+    foreach ($this->getListLayouts() as $layout => $params)
+    {
+      foreach ($params['display'] as $field)
+      {
+        list($field, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($field);
+        $this->configuration['list']['fields'][$field] = new sfModelGeneratorConfigurationField($field, array_merge(
+          array('type' => 'Text', 'label' => sfInflector::humanize(sfInflector::underscore($field))),
+          isset($config['default'][$field]) ? $config['default'][$field] : array(),
+          isset($config['list'][$field]) ? $config['list'][$field] : array(),
+          array('flag' => $flag)
+        ));
+      }
     }
 
     // form actions
@@ -177,6 +193,38 @@ abstract class sfModelGeneratorConfiguration
       $this->configuration['list']['display'][$name] = $field;
     }
 
+    foreach ($this->getListLayouts() as $layout => $params)
+    {
+      //T::log('sfModelGeneratorConfiguration::compile: '.print_r($params, true));
+      $this->configuration['list'][$layout]['display'] = array();
+      foreach ($params['display'] as $name)
+      {
+          //T::log(print_r($name, true));
+          list($name, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($name);
+          if (!isset($this->configuration['list']['fields'][$name]))
+          {
+            throw new InvalidArgumentException(sprintf('The field "%s" does not exist.', $name));
+          }
+          $field = $this->configuration['list']['fields'][$name];
+          $field->setFlag($flag);
+          $this->configuration['list'][$layout]['display'][$name] = $field;
+      }
+    }
+
+    // export field configuration
+    $this->configuration['excel']['display'] = array();
+    foreach ($this->getExcelDisplay() as $name)
+    {
+      list($name, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($name);
+      if (!isset($this->configuration['list']['fields'][$name]))
+      {
+        throw new InvalidArgumentException(sprintf('The field "%s" does not exist.', $name));
+      }
+      $field = $this->configuration['list']['fields'][$name];
+      $field->setFlag($flag);
+      $this->configuration['excel']['display'][$name] = $field;
+    }
+
     // parse the %%..%% variables, remove flags and add default fields where
     // necessary (fixes #7578)
     $this->parseVariables('list', 'params');
@@ -187,6 +235,7 @@ abstract class sfModelGeneratorConfiguration
     // action credentials
     $this->configuration['credentials'] = array(
       'list'   => array(),
+      'excel'   => array(),
       'new'    => array(),
       'create' => array(),
       'edit'   => array(),
