@@ -86,22 +86,30 @@ class sfValidatorDate extends sfValidatorBase
     // convert timestamp to date number format
     if (is_numeric($value))
     {
-      $cleanTime = (integer) $value;
-      $clean     = date('YmdHis', $cleanTime);
+        if ($date = T::completeDate((string) $value)) {
+            $clean = $date->format('YmdHis');
+        } else {
+            $cleanTime = (integer) $value;
+            $clean     = date('YmdHis', $cleanTime);
+        }
     }
     // convert string to date number format
     else
     {
-      try
-      {
-        $date = new DateTime($value);
-        $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
-        $clean = $date->format('YmdHis');
-      }
-      catch (Exception $e)
-      {
-        throw new sfValidatorError($this, 'invalid', array('value' => $value));
-      }
+        if(preg_match('/^(\d{4})-(\d{2})-(\d{2})/', $value, $match)) {
+            //per Kalender eingegebenes Datum (Y-m-d) oder Bearbeitungsdatum (Datum mit Zeit Y-m-d H:i:s)
+            try {
+                $date = new DateTime($value);
+            } catch (Exception $e) {
+                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            }
+            $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
+            $clean = $date->format('YmdHis');
+        } elseif ($date = T::completeDate((string) $value)) {
+            $clean = $date->format('YmdHis');
+        } else {
+            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+        }
     }
 
     // check max
@@ -174,7 +182,7 @@ class sfValidatorDate extends sfValidatorBase
     // all elements must be empty or a number
     foreach (array('year', 'month', 'day', 'hour', 'minute', 'second') as $key)
     {
-      if (isset($value[$key]) && !ctype_digit((string)$value[$key]) && !empty($value[$key]))
+      if (isset($value[$key]) && !preg_match('#^\d+$#', $value[$key]) && !empty($value[$key]))
       {
         throw new sfValidatorError($this, 'invalid', array('value' => $value));
       }

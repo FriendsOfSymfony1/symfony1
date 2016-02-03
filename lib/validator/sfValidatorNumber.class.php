@@ -52,6 +52,7 @@ class sfValidatorNumber extends sfValidatorBase
    */
   protected function doClean($value)
   {
+    $value = str_replace(',' , '.', $value);
     if (!is_numeric($value))
     {
       throw new sfValidatorError($this, 'invalid', array('value' => $value));

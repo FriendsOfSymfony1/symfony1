@@ -78,7 +78,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     $this->addOption('allow_extra_fields', false);
     $this->addOption('filter_extra_fields', true);
 
-    $this->addMessage('extra_fields', 'Unexpected extra form field named "%field%".');
+    $this->addMessage('extra_fields', 'Unbekannter Feldname "%field%".');
     $this->addMessage('post_max_size', 'The form submission cannot be processed. It probably means that you have uploaded a file that is too big.');
   }
 
