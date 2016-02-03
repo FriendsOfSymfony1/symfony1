@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -36,6 +36,8 @@ class sfWidgetFormInput extends sfWidgetForm
 
     // to maintain BC with symfony 1.2
     $this->setOption('type', 'text');
+    //to allow setting attribute size as option
+    $this->addOption('size');
   }
 
   /**
@@ -52,6 +54,7 @@ class sfWidgetFormInput extends sfWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    $attributes = array_merge($this->attributes, $attributes);
     return $this->renderTag('input', array_merge(array('type' => $this->getOption('type'), 'name' => $name, 'value' => $value), $attributes));
   }
 }

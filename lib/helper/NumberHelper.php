@@ -38,7 +38,9 @@ function format_currency($amount, $currency = null, $culture = null)
 
   $numberFormat = new sfNumberFormat(_current_language($culture));
 
-  return $numberFormat->format($amount, 'c', $currency);
+  //remove nbsp (sonst erkennt Excel keine Zahl)
+  return substr($numberFormat->format($amount, 'c', $currency, 'ISO-8859-15'), 0, -1);
+  //return rtrim($numberFormat->format($amount, 'c', $currency, 'ISO-8859-15'), '0\xa0');
 }
 
 function _current_language($culture)

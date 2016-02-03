@@ -19,7 +19,7 @@ $t->diag('->formatRow()');
 $output = <<<EOF
 <li>
   label
-  <input /><br />help
+  <input />help
 </li>
 
 EOF;

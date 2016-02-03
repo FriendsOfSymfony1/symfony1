@@ -43,10 +43,12 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
     parent::configure($options, $attributes);
 
     $this->addOption('multiple', false);
+    $this->addOption('hide_if_empty', false);
     $this->addOption('expanded', false);
     $this->addOption('renderer_class', false);
     $this->addOption('renderer_options', array());
     $this->addOption('renderer', false);
+    $this->addOption('size', false);
   }
 
   /**
@@ -76,6 +78,11 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    if ($this->getOption('hide_if_empty') && count($this->getChoices()) <= 1)  {
+        //T::log(__METHOD__. " $name ausgeblendet $value");
+        return "";
+    }
+
     if ($this->getOption('multiple'))
     {
       $attributes['multiple'] = 'multiple';

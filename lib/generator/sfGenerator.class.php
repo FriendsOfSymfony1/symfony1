@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -64,7 +64,18 @@ abstract class sfGenerator
   {
     foreach ($files as $file)
     {
-      $this->getGeneratorManager()->save($generatedModuleName.'/'.$file, $this->evalTemplate($file));
+      if (strpos($file, '_layout')) {
+          //duplicate _list_t[hd]_layout for every layout
+          foreach ($this->configuration->getListLayouts() as $layout => $params) {
+              $filename = preg_replace('/_layout/', '_'.$layout, $file);
+              $this->configuration->currentLayout = $layout;
+              //Name des Layouts übergeben
+              //T::log("generatePhpFiles $layout: $file -> $filename");
+              $this->getGeneratorManager()->save($generatedModuleName.'/'.$filename, $this->evalTemplate($file));
+          }
+      } else {
+        $this->getGeneratorManager()->save($generatedModuleName.'/'.$file, $this->evalTemplate($file));
+      }
     }
   }
 

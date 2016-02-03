@@ -16,7 +16,9 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfWidgetFormDate extends sfWidgetForm
+//replaced by plugins/igFormsPlugin/lib/widget/sfWidgetFormDateDynarch.class.php:2:class sfWidgetFormDate extends sfWidgetFormInput
+//TODO: use DI
+class sfWidgetFormDate1 extends sfWidgetForm
 {
   /**
    * Configures the current widget.
