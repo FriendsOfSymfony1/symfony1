@@ -366,14 +366,14 @@ $expected = <<<EOF
   </ul>
 </td></tr>
 <tr>
-  <th><label style="padding: 5px" for="id_article_first_name">First name</label></th>
+  <th><label style="padding: 5px" for="id_article_first_name">First Name</label></th>
   <td>  <ul class="error_list">
     <li>Too short</li>
   </ul>
 <input class="foo" type="text" name="article[first_name]" value="Fabien" id="id_article_first_name" /></td>
 </tr>
 <tr>
-  <th><label style="padding: 5px" for="id_article_last_name">Last name</label></th>
+  <th><label style="padding: 5px" for="id_article_last_name">Last Name</label></th>
   <td><input type="text" name="article[last_name]" value="Potencier" class="bar" id="id_article_last_name" /><input type="hidden" name="article[id]" id="id_article_id" /></td>
 </tr>
 

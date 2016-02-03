@@ -127,7 +127,7 @@ $w = new sfWidgetFormSchema(array(
   'last_name'  => new sfWidgetFormInputText(),
 ));
 $f = new MyFormatter($w);
-$t->is($f->generateLabelName('first_name'), 'First name', '->generateLabelName() generates a label value from a label name');
+$t->is($f->generateLabelName('first_name'), 'First Name', '->generateLabelName() generates a label value from a label name');
 $t->is($f->generateLabelName('author_id'), 'Author', '->generateLabelName() removes _id from auto-generated labels');
 
 $w->setLabels(array('first_name' => 'The first name'));

@@ -45,5 +45,5 @@ $w = new sfWidgetFormFilterDate(array('from_date' => new WidgetFormStub(), 'to_d
 $w->setParent($ws);
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
-$t->is($css->matchSingle('label[for="foo_is_empty"]')->getValue(), 'translation[is empty]', '->render() translates the empty_label option');
+$t->is($css->matchSingle('label[for="foo_is_empty"]')->getValue(), 'translation[leer]', '->render() translates the empty_label option');
 

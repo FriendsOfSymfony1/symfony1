@@ -62,7 +62,7 @@ $t->is($v->getMessage('required'), 'This string is required.', '->getMessage() r
 $v->setMessage('invalid', 'This string is invalid.');
 $t->is($v->getMessages(), array('required' => 'This string is required.', 'invalid' => 'This string is invalid.', 'max_length' => '"%value%" is too long (%max_length% characters max).', 'min_length' => '"%value%" is too short (%min_length% characters min).'), '->getMessages() returns messages from the embedded validator');
 $v->setMessages(array('required' => 'Required...'));
-$t->is($v->getMessages(), array('required' => 'Required...', 'invalid' => 'Invalid.'), '->setMessages() sets all messages for the embedded validator');
+$t->is($v->getMessages(), array('required' => 'Required...', 'invalid' => 'Unerlaubter Wert.'), '->setMessages() sets all messages for the embedded validator');
 
 // ->getOption() ->getOptions() ->hasOption() ->getOptions() ->setOptions()
 $v = new MyValidator();

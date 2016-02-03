@@ -28,4 +28,4 @@ $t->is(sfInflector::underscore('HTMLTest'), 'html_test', '::underscore() lower-c
 // ::humanize()
 $t->diag('::humanize()');
 $t->is(sfInflector::humanize('symfony'), 'Symfony', '::humanize() upper-case the first letter');
-$t->is(sfInflector::humanize('symfony_is_great'), 'Symfony is great', '::humanize() replaces _ by a space');
+$t->is(sfInflector::humanize('symfony_is_great'), 'Symfony Is Great', '::humanize() replaces _ by a space');
