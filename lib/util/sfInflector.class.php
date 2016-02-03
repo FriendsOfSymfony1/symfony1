@@ -106,13 +106,25 @@ class sfInflector
    *
    * @return string Human-readable string.
    */
-  public static function humanize($lower_case_and_underscored_word)
+  public static function humanize($lower_case_and_underscored_word, $html_entities = true)
   {
+    //geht nicht / wird als Profilingmerkmal verwendet
+    //if ($pos_global_partial = strpos($lower_case_and_underscored_word, '/') ) {
+    //  $lower_case_and_underscored_word = substr($lower_case_and_underscored_word, $pos_global_partial+1);
+    //}
     if (substr($lower_case_and_underscored_word, -3) === '_id')
     {
       $lower_case_and_underscored_word = substr($lower_case_and_underscored_word, 0, -3);
     }
-
-    return ucfirst(str_replace('_', ' ', $lower_case_and_underscored_word));
+    if (substr($lower_case_and_underscored_word, 0, 3) === 'id_' || substr($lower_case_and_underscored_word, 0, 3) === 'is_' )
+    {
+      $lower_case_and_underscored_word = substr($lower_case_and_underscored_word, 3);
+    }
+    if ($html_entities) {
+        $lower_case_and_underscored_word = preg_replace(array('/ae/','/oe/','/([^a])ue/'),array('&auml;','&ouml;','${1}&uuml;'), $lower_case_and_underscored_word);
+    } else {
+        $lower_case_and_underscored_word = preg_replace(array('/ae/','/oe/','/([^a])ue/'),array('ä','ö','${1}ü'), $lower_case_and_underscored_word);
+    }
+    return ucwords(str_replace('_', ' ', $lower_case_and_underscored_word));
   }
 }
