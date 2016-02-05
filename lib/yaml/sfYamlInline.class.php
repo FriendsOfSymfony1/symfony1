@@ -405,8 +405,10 @@ class sfYamlInline
         return true;
       case in_array(strtolower($scalar), $falseValues):
         return false;
+      case 0 === strpos($scalar, '0x'):
+        return hexdec($scalar);
       case is_numeric($scalar):
-        return '0x' == $scalar[0].$scalar[1] ? hexdec($scalar) : (float) $scalar;
+        return floatval($scalar);
       case 0 == strcasecmp($scalar, '.inf'):
       case 0 == strcasecmp($scalar, '.NaN'):
         return -log(0);

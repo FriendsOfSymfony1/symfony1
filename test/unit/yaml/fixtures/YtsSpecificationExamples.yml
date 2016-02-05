@@ -501,7 +501,7 @@ yaml: |
 php: | 
   array(  
     'canonical' => 12345,  
-    'decimal' => 12345,  
+    'decimal' => 12345.0,  
     'octal' => 014,  
     'hexadecimal' => 0xC
   )
@@ -1522,7 +1522,7 @@ yaml: |
 php: | 
    array( 
      'canonical' => 12345, 
-     'decimal' => 12345, 
+     'decimal' => 12345.0, 
      'octal' => 12, 
      'hexadecimal' => 12  
    )
