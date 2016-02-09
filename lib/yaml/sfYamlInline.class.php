@@ -415,7 +415,11 @@ class sfYamlInline
       case 0 == strcasecmp($scalar, '-.inf'):
         return log(0);
       case preg_match('/^(-|\+)?[0-9,]+(\.\d+)?$/', $scalar):
-        return (float) str_replace(',', '', $scalar);
+        $replaced = str_replace(',', '', $scalar);
+        $replaced = str_replace('+', '', $replaced);
+        $floatval = floatval($replaced);
+        $intval = intval($replaced);
+        return $floatval == $intval ? $intval : $floatval;
       case preg_match(self::getTimestampRegex(), $scalar):
         return strtotime($scalar);
       default:
