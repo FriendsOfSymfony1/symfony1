@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+02/02/2016: Version 1.5.7
+-------------------------
+
+* Fix error in embedded form #105
+* Added HTTP PATCH request method #110
+* Fix integers used in mt_rand() #113
+* Remove array cast from parameter of sfAction::renderJson #115
+* Don't post unnamed submit fields in sfBrowserBase #112
+* Add support for traits in autoloaders #112
+* Php Inspections (EA Extended): Static Code Analysis #111
+
 22/07/2015: Version 1.5.6
 -------------------------
 

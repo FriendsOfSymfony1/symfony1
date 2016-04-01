@@ -269,15 +269,15 @@ abstract class sfAction extends sfComponent
   }
 
   /**
-   * Convert the given array of data into a JSON response.
+   * Convert the given data into a JSON response.
    *
    * <code>return $this->renderJson(array('username' => 'john'))</code>
    *
-   * @param array $data Data to encode as JSON
+   * @param mixed $data Data to encode as JSON
    *
    * @return sfView::NONE
    */
-  public function renderJson(array $data)
+  public function renderJson($data)
   {
     $this->getResponse()->setContentType('application/json');
     $this->getResponse()->setContent(json_encode($data));

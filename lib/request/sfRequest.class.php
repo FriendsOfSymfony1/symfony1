@@ -25,6 +25,7 @@ abstract class sfRequest implements ArrayAccess
   const GET    = 'GET';
   const POST   = 'POST';
   const PUT    = 'PUT';
+  const PATCH  = 'PATCH';
   const DELETE = 'DELETE';
   const HEAD   = 'HEAD';
   const OPTIONS = 'OPTIONS';
@@ -148,7 +149,7 @@ abstract class sfRequest implements ArrayAccess
    */
   public function setMethod($method)
   {
-    if (!in_array(strtoupper($method), array(self::GET, self::POST, self::PUT, self::DELETE, self::HEAD, self::OPTIONS)))
+    if (!in_array(strtoupper($method), array(self::GET, self::POST, self::PUT, self::PATCH, self::DELETE, self::HEAD, self::OPTIONS)))
     {
       throw new sfException(sprintf('Invalid request method: %s.', $method));
     }

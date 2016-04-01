@@ -114,6 +114,14 @@ class sfWebRequest extends sfRequest
           }
           break;
 
+        case 'PATCH':
+          $this->setMethod(self::PATCH);
+          if ('application/x-www-form-urlencoded' === $this->getContentType())
+          {
+            parse_str($this->getContent(), $postParameters);
+          }
+          break;
+
         case 'DELETE':
           $this->setMethod(self::DELETE);
           if ('application/x-www-form-urlencoded' === $this->getContentType())
@@ -571,7 +579,7 @@ class sfWebRequest extends sfRequest
       $prefix = strtoupper($prefix).'_';
     }
 
-    $name = $prefix.strtoupper(strtr($name, '-', '_'));
+    $name = $prefix.strtoupper(str_replace('-', '_', $name));
 
     $pathArray = $this->getPathInfoArray();
 
@@ -983,7 +991,7 @@ class sfWebRequest extends sfRequest
 
       if ($this->getOption('trust_proxy') && ($ip = $this->getForwardedFor()))
       {
-        return isset($ip[0]) ? trim($ip[0]) : '';;
+        return isset($ip[0]) ? trim($ip[0]) : '';
       }
     }
 
