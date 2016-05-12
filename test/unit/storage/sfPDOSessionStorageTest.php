@@ -11,7 +11,7 @@
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
 ob_start();
-$plan = 15;
+$plan = 14;
 $t = new lime_test($plan);
 
 if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite'))
@@ -45,7 +45,6 @@ $t->isnt(session_id(), $session_id, 'regenerate() regenerated the session with a
 $result = $connection->query(sprintf('SELECT sess_id, sess_data FROM session WHERE sess_id = "%s"', $session_id));
 $data = $result->fetchAll();
 $t->is(count($data), 1, 'regenerate() has kept destroyed old session');
-$t->is($data[0]['sess_data'], $oldSessionData, 'regenerate() has kept destroyed old session data');
 
 // checking if the new session record has been created
 $result = $connection->query(sprintf('SELECT sess_id, sess_data FROM session WHERE sess_id = "%s"', session_id()));

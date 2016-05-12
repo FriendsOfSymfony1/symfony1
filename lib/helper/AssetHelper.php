@@ -365,7 +365,9 @@ function image_tag($source, $options = array())
 
   if (isset($options['size']))
   {
-    list($options['width'], $options['height']) = explode('x', $options['size'], 2);
+    list($width, $height) = explode('x', $options['size'], 2);
+    $options['height'] = $height;
+    $options['width'] = $width;
     unset($options['size']);
   }
 

@@ -405,15 +405,21 @@ class sfYamlInline
         return true;
       case in_array(strtolower($scalar), $falseValues):
         return false;
+      case 0 === strpos($scalar, '0x'):
+        return hexdec($scalar);
       case is_numeric($scalar):
-        return '0x' == $scalar[0].$scalar[1] ? hexdec($scalar) : (float) $scalar;
+        return floatval($scalar);
       case 0 == strcasecmp($scalar, '.inf'):
       case 0 == strcasecmp($scalar, '.NaN'):
         return -log(0);
       case 0 == strcasecmp($scalar, '-.inf'):
         return log(0);
       case preg_match('/^(-|\+)?[0-9,]+(\.\d+)?$/', $scalar):
-        return (float) str_replace(',', '', $scalar);
+        $replaced = str_replace(',', '', $scalar);
+        $replaced = str_replace('+', '', $replaced);
+        $floatval = floatval($replaced);
+        $intval = intval($replaced);
+        return $floatval == $intval ? $intval : $floatval;
       case preg_match(self::getTimestampRegex(), $scalar):
         return strtotime($scalar);
       default:
