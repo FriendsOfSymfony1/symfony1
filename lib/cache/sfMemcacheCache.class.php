@@ -92,7 +92,7 @@ class sfMemcacheCache extends sfCache
   {
     $value = $this->memcache->get($this->getOption('prefix').$key);
 
-    return false === $value ? $default : $value;
+    return (false === $value && false === $this->getMetadata($key)) ? $default : $value;
   }
 
   /**
@@ -100,7 +100,13 @@ class sfMemcacheCache extends sfCache
    */
   public function has($key)
   {
-    return !(false === $this->memcache->get($this->getOption('prefix').$key));
+    if (false === $this->memcache->get($this->getOption('prefix') . $key))
+    {
+      // if there is metadata, $key exists with a false value
+      return !(false === $this->getMetadata($key));
+    }
+
+    return true;
   }
 
   /**
