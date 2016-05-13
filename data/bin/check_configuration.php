@@ -97,6 +97,8 @@ check(!ini_get('magic_quotes_gpc'), 'php.ini has magic_quotes_gpc set to off', '
 check(!ini_get('register_globals'), 'php.ini has register_globals set to off', 'Set it to off in php.ini', false);
 check(!ini_get('session.auto_start'), 'php.ini has session.auto_start set to off', 'Set it to off in php.ini', false);
 
+check(class_exists('Memcache'), 'Memcache is available', 'You must have memcache installed and enabled to use sfMemcacheCache class.', false);
+
 if (!is_cli())
 {
   echo '</pre></body></html>';

@@ -19,6 +19,9 @@ matrix:
 # faster builds on new travis setup not using sudo
 sudo: false
 
+services:
+    - memcached
+
 # cache vendor dirs
 cache:
     directories:
@@ -30,6 +33,7 @@ install:
 
 before_script:
     - sh -c 'if [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ] && [ $(php -r "echo PHP_MAJOR_VERSION;") -le 5 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
+    - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     - composer install
 
 script:
