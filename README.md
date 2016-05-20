@@ -11,7 +11,7 @@ All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.
 
 - [DIC](https://github.com/LExpress/symfony1/wiki/ServiceContainer)
 - Composer support
-- PHP 7 support
+- PHP 7.0 support
 - Admin Generator with multiple layouts
 - performance boost
 - new widgets & validators

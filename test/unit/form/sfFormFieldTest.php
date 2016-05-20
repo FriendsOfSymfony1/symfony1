@@ -105,7 +105,7 @@ $output = <<<EOF
   <td>  <ul class="error_list">
     <li>title error</li>
   </ul>
-<input type="text" name="article[title]" value="symfony" id="article_title" /><br />help</td>
+<input type="text" name="article[title]" value="symfony" id="article_title" />help</td>
 </tr>
 
 EOF;

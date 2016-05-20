@@ -403,7 +403,7 @@ $f->bind(array());
 $t->ok(!$f->isValid(), '->isValid() returns false if the form does not pass the validation');
 $t->ok($f->hasErrors(), '->isValid() returns true if the form does not pass the validation');
 $t->is($f->getValues(), array(), '->getValues() returns an empty array if the form does not pass the validation');
-$t->is($f->getErrorSchema()->getMessage(), 'first_name [Required.] last_name [Required.]', '->getErrorSchema() returns an error schema object with all errors');
+$t->is($f->getErrorSchema()->getMessage(), 'first_name [Ben&ouml;tigter Wert.] last_name [Ben&ouml;tigter Wert.]', '->getErrorSchema() returns an error schema object with all errors');
 
 $t->diag('bind when field names are numeric');
 $f = new FormTest();
@@ -499,11 +499,11 @@ $f->setWidgets(array(
 // unbound
 $output = <<<EOF
 <tr>
-  <th><label for="first_name">First name</label></th>
+  <th><label for="first_name">First Name</label></th>
   <td><input type="text" name="first_name" value="Fabien" id="first_name" /></td>
 </tr>
 <tr>
-  <th><label for="last_name">Last name</label></th>
+  <th><label for="last_name">Last Name</label></th>
   <td><input type="text" name="last_name" value="Potencier" id="last_name" /><input type="hidden" name="id" value="3" id="id" /></td>
 </tr>
 
@@ -511,11 +511,11 @@ EOF;
 $t->is($f->__toString(), fix_linebreaks($output), '->__toString() renders the form as HTML');
 $output = <<<EOF
 <tr>
-  <th><label for="first_name">First name</label></th>
+  <th><label for="first_name">First Name</label></th>
   <td><input type="text" name="first_name" value="Fabien" class="foo" id="first_name" /></td>
 </tr>
 <tr>
-  <th><label for="last_name">Last name</label></th>
+  <th><label for="last_name">Last Name</label></th>
   <td><input type="text" name="last_name" value="Potencier" id="last_name" /><input type="hidden" name="id" value="3" id="id" /></td>
 </tr>
 
@@ -533,11 +533,11 @@ $f->bind(array(
 ));
 $output = <<<EOF
 <tr>
-  <th><label for="first_name">First name</label></th>
+  <th><label for="first_name">First Name</label></th>
   <td><input type="text" name="first_name" value="Fabien" id="first_name" /></td>
 </tr>
 <tr>
-  <th><label for="last_name">Last name</label></th>
+  <th><label for="last_name">Last Name</label></th>
   <td><input type="text" name="last_name" value="Potencier" id="last_name" /><input type="hidden" name="id" value="1" id="id" /></td>
 </tr>
 
@@ -545,11 +545,11 @@ EOF;
 $t->is($f->__toString(), fix_linebreaks($output), '->__toString() renders the form as HTML');
 $output = <<<EOF
 <tr>
-  <th><label for="first_name">First name</label></th>
+  <th><label for="first_name">First Name</label></th>
   <td><input type="text" name="first_name" value="Fabien" class="foo" id="first_name" /></td>
 </tr>
 <tr>
-  <th><label for="last_name">Last name</label></th>
+  <th><label for="last_name">Last Name</label></th>
   <td><input type="text" name="last_name" value="Potencier" id="last_name" /><input type="hidden" name="id" value="1" id="id" /></td>
 </tr>
 
@@ -989,17 +989,17 @@ $f2->embedForm('F21', $f21);
 $f1->embedForm('F2', $f2);
 $f1->bind(array());
 $expected = array (
-  '1_a' => 'Required.',
-  '1_b' => 'Required.',
-  '1_c' => 'Required.',
+  '1_a' => 'Ben&ouml;tigter Wert.',
+  '1_b' => 'Ben&ouml;tigter Wert.',
+  '1_c' => 'Ben&ouml;tigter Wert.',
   'F2' =>
   array (
-    '2_d' => 'Required.',
+    '2_d' => 'Ben&ouml;tigter Wert.',
     'F21' =>
     array (
-      '1_a' => 'Required.',
-      '1_b' => 'Required.',
-      '1_c' => 'Required.',
+      '1_a' => 'Ben&ouml;tigter Wert.',
+      '1_b' => 'Ben&ouml;tigter Wert.',
+      '1_c' => 'Ben&ouml;tigter Wert.',
     ),
   ),
 );
