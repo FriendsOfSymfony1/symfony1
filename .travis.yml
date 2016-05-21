@@ -32,6 +32,8 @@ install:
     - composer self-update
 
 before_script:
+    # by default, --remote is not used on travis
+    - git submodule update --remote --force
     - sh -c 'if [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ] && [ $(php -r "echo PHP_MAJOR_VERSION;") -le 5 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
     - sh -c 'if [ $(php -r "echo PHP_RELEASE_VERSION;") -le 98 ] && [ $(php -r "echo PHP_MAJOR_VERSION;") -le 5 ]; then echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
     - composer install
