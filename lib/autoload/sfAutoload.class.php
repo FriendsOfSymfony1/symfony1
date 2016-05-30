@@ -138,7 +138,15 @@ class sfAutoload
 
     $file = $configuration->getConfigCache()->checkConfig('config/autoload.yml');
 
-    $this->classes = include($file);
+    if (defined('HHVM_VERSION'))
+    {
+      // workaround for https://github.com/facebook/hhvm/issues/1447
+      $this->classes = eval(str_replace('<?php', '', file_get_contents($file)));
+    }
+    else
+    {
+      $this->classes = include $file;
+    }
 
     foreach ($this->overriden as $class => $path)
     {
