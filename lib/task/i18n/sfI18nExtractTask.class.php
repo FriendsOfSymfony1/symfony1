@@ -103,7 +103,7 @@ EOF;
 
     if ($options['display-new'])
     {
-      $this->logSection('i18n', sprintf('display new i18n strings', count($extract->getOldMessages())));
+      $this->logSection('i18n', sprintf('display "%d" new i18n strings', count($extract->getOldMessages())));
       foreach ($extract->getNewMessages() as $message)
       {
         $this->log('               '.$message."\n");
@@ -119,7 +119,7 @@ EOF;
 
     if ($options['display-old'])
     {
-      $this->logSection('i18n', sprintf('display old i18n strings', count($extract->getOldMessages())));
+      $this->logSection('i18n', sprintf('display "%d" old i18n strings', count($extract->getOldMessages())));
       foreach ($extract->getOldMessages() as $message)
       {
         $this->log('               '.$message."\n");

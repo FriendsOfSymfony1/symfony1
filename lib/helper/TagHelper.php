@@ -34,7 +34,7 @@ function tag($name, $options = array(), $open = false)
     return '';
   }
 
-  return '<'.$name._tag_options($options).(($open) ? '>' : ' />');
+  return '<'.$name._tag_options($options).($open ? '>' : ' />');
 }
 
 function content_tag($name, $content = '', $options = array())

@@ -263,6 +263,7 @@ EOF;
       $position = '';
       if (is_array($asset))
       {
+        reset($asset);
         $key = key($asset);
         $options = $asset[$key];
         if (isset($options['position']))
