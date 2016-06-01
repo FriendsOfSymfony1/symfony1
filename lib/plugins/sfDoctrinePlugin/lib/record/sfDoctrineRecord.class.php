@@ -242,7 +242,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
     $type = $this->getTable()->getTypeOf($dateFieldName);
     if ($type == 'date' || $type == 'timestamp' || $type == 'datetime')
     {
-      if (is_null($dateTimeObject))
+      if (null === $dateTimeObject)
       {
         return $this->set($dateFieldName, null);
       }
