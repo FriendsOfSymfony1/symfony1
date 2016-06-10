@@ -210,6 +210,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    * Get the Doctrine date value as a PHP DateTime object, null if the value is not set
    *
    * @param string $dateFieldName   The field name to get the DateTime object for
+   *
    * @return DateTime|null $dateTime     The instance of PHPs DateTime
    * @throws sfException if the field is not one of date, datetime, or timestamp types
    */
@@ -235,6 +236,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    *
    * @param string $dateFieldName       The field name to set the date for
    * @param DateTime $dateTimeObject    The DateTime instance to use to set the value
+   *
    * @return void
    * @throws sfException if the field is not one of date, datetime, or timestamp types
    */
