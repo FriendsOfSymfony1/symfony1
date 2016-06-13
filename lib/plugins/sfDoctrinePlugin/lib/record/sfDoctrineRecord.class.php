@@ -207,17 +207,23 @@ abstract class sfDoctrineRecord extends Doctrine_Record
   }
 
   /**
-   * Get the Doctrine date value as a PHP DateTime object
+   * Get the Doctrine date value as a PHP DateTime object, null if the value is not set
    *
    * @param string $dateFieldName   The field name to get the DateTime object for
-   * @return DateTime $dateTime     The instance of PHPs DateTime
+   *
+   * @return DateTime|null $dateTime     The instance of PHPs DateTime
+   * @throws sfException if the field is not one of date, datetime, or timestamp types
    */
   public function getDateTimeObject($dateFieldName)
   {
     $type = $this->getTable()->getTypeOf($dateFieldName);
     if ($type == 'date' || $type == 'timestamp' || $type == 'datetime')
     {
-      return new DateTime($this->get($dateFieldName));
+      $datetime = $this->get($dateFieldName);
+      if ($datetime)
+      {
+        return new DateTime($datetime);
+      }
     }
     else
     {
@@ -230,13 +236,19 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    *
    * @param string $dateFieldName       The field name to set the date for
    * @param DateTime $dateTimeObject    The DateTime instance to use to set the value
+   *
    * @return void
+   * @throws sfException if the field is not one of date, datetime, or timestamp types
    */
-  public function setDateTimeObject($dateFieldName, DateTime $dateTimeObject)
+  public function setDateTimeObject($dateFieldName, DateTime $dateTimeObject = null)
   {
     $type = $this->getTable()->getTypeOf($dateFieldName);
     if ($type == 'date' || $type == 'timestamp' || $type == 'datetime')
     {
+      if (null === $dateTimeObject)
+      {
+        return $this->set($dateFieldName, null);
+      }
       return $this->set($dateFieldName, $dateTimeObject->format('Y-m-d H:i:s'));
     }
     else
