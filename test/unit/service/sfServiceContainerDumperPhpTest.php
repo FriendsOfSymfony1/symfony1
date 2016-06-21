@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(5);
+$t = new lime_test(6);
 
 $dir = __DIR__.'/fixtures/php';
 
@@ -36,6 +36,12 @@ $t->diag('->addService()');
 $container = include __DIR__.'/fixtures/containers/container9.php';
 $dumper = new sfServiceContainerDumperPhp($container);
 $t->is($dumper->dump(), str_replace('%path%', __DIR__.'/fixtures/includes', file_get_contents($dir.'/services9.php')), '->dump() dumps services');
+
+// ->hasService()
+$t->diag('->hasService()');
+$container = include __DIR__.'/fixtures/containers/container11.php';
+$dumper = new sfServiceContainerDumperPhp($container);
+$t->is($dumper->dump(), file_get_contents($dir . '/services11.php'), '->dump() dumps optional services');
 
 $dumper = new sfServiceContainerDumperPhp($container = new sfServiceContainerBuilder());
 $container->register('foo', 'FooClass')->addArgument(new stdClass());

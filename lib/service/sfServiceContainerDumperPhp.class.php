@@ -143,7 +143,22 @@ EOF;
     {
       if (is_object($callable[0]) && $callable[0] instanceof sfServiceReference)
       {
-        return sprintf("    %s->%s(\$instance);\n", $this->getServiceCall((string) $callable[0]), $callable[1]);
+        $refId = (string) $callable[0];
+
+        if (0 === strpos($refId, '?'))
+        {
+          return <<< BLOCK
+    \$configurator = {$this->getServiceCall($refId)};
+    if (null !== \$configurator)
+    {
+      \$configurator->{$callable[1]}(\$instance);
+    }
+
+BLOCK
+;
+        }
+
+        return sprintf("    %s->%s(\$instance);\n", $this->getServiceCall($refId), $callable[1]);
       }
       else
       {
@@ -349,6 +364,11 @@ EOF;
     if ('service_container' == $id)
     {
       return '$this';
+    }
+
+    if (0 === strpos($id, '?'))
+    {
+      return sprintf('(! $this->hasService(\'%1$s\') ? null : $this->getService(\'%1$s\'))', substr($id, 1));
     }
 
     return sprintf('$this->getService(\'%s\')', $id);

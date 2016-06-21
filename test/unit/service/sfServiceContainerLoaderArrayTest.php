@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(20);
+$t = new lime_test(21);
 
 class ProjectLoader extends sfServiceContainerLoaderArray
 {
@@ -73,3 +73,4 @@ $t->is($services['method_call1']->getMethodCalls(), array(array('setBar', array(
 $t->is($services['method_call2']->getMethodCalls(), array(array('setBar', array('foo', new sfServiceReference('foo'), array(true, false)))), '->load() parses the method_call tag');
 $t->ok(isset($services['alias_for_foo']), '->load() parses aliases');
 $t->is($services['alias_for_foo'], 'foo', '->load() parses aliases');
+$t->is($services['opt_args']->getArguments(), array(new sfServiceReference('bar'), new sfServiceReference('?bar')), '->getArguments() Required and optional service name');

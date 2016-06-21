@@ -18,3 +18,5 @@ services:
     calls:
       - [ setBar, [ foo, @foo, [true, false] ] ]
   alias_for_foo: @foo
+  bar: { class: BarClass }
+  opt_args: { class: ClassOptionalArguments, arguments: ['@bar', '@?bar'] }
