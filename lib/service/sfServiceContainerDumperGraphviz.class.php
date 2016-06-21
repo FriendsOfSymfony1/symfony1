@@ -22,7 +22,7 @@
  */
 class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
 {
-  protected $nodes, $edges;
+  protected $nodes, $edges, $options;
 
   /**
    * Dumps the service container as a graphviz graph.
@@ -64,13 +64,13 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
     $this->edges = array();
     foreach ($this->container->getServiceDefinitions() as $id => $definition)
     {
-      $this->edges[$id] = $this->findEdges($id, $definition->getArguments(), true, '');
+      $this->edges[$id] = $this->findEdges($id, $definition->getArguments(), '');
 
       foreach ($definition->getMethodCalls() as $call)
       {
         $this->edges[$id] = array_merge(
           $this->edges[$id],
-          $this->findEdges($id, $call[1], false, $call[0].'()')
+          $this->findEdges($id, $call[1], $call[0].'()')
         );
       }
     }
@@ -105,11 +105,12 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
     return $code;
   }
 
-  protected function findEdges($id, $arguments, $required, $name)
+  protected function findEdges($id, $arguments, $name)
   {
     $edges = array();
     foreach ($arguments as $argument)
     {
+      $required = true;
       if (is_object($argument) && $argument instanceof sfServiceParameter)
       {
         $argument = $this->container->hasParameter($argument) ? $this->container->getParameter($argument) : null;
@@ -121,16 +122,31 @@ class sfServiceContainerDumperGraphviz extends sfServiceContainerDumper
 
       if ($argument instanceof sfServiceReference)
       {
-        if (!$this->container->hasService((string) $argument))
+        $serviceId = (string) $argument;
+
+        if (0 === strpos($serviceId, '?'))
         {
-          $this->nodes[(string) $argument] = array('name' => $name, 'required' => $required, 'class' => '', 'attributes' => $this->options['node.missing']);
+          // Mark optional (starts with "?") services as non-required
+          $serviceId = substr($serviceId, 1);
+          $argument = new sfServiceReference($serviceId);
+          $required = false;
+        }
+
+        if (!$this->container->hasService($serviceId))
+        {
+          $this->nodes[$serviceId] = array(
+            'name' => $name,
+            'required' => $required,
+            'class' => '',
+            'attributes' => $this->options['node.missing']
+          );
         }
 
         $edges[] = array('name' => $name, 'required' => $required, 'to' => $argument);
       }
       elseif (is_array($argument))
       {
-        $edges = array_merge($edges, $this->findEdges($id, $argument, $required, $name));
+        $edges = array_merge($edges, $this->findEdges($id, $argument, $name));
       }
     }
 

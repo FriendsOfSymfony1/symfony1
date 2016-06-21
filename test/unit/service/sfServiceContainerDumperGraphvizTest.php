@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(4);
+$t = new lime_test(5);
 
 $dir = __DIR__.'/fixtures/graphviz';
 
@@ -42,3 +42,7 @@ $t->is($dumper->dump(array(
   'node.definition' => array('fillcolor' => 'grey'),
   'node.missing' => array('fillcolor' => 'red', 'style' => 'empty'),
 )), str_replace('%path%', __DIR__, file_get_contents($dir.'/services10-1.dot')), '->dump() dumps services');
+
+$container = include __DIR__.'/fixtures/containers/container11.php';
+$dumper = new sfServiceContainerDumperGraphviz($container);
+$t->is($dumper->dump(), str_replace('%path%', __DIR__, file_get_contents($dir.'/services11.dot')), '->dump() dumps optional services');

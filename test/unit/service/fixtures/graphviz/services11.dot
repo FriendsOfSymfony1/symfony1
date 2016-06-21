@@ -1,0 +1,16 @@
+digraph sc {
+  ratio="compress"
+  node [fontsize="11" fontname="Arial" shape="record"];
+  edge [fontsize="9" fontname="Arial" color="grey" arrowhead="open" arrowsize="0.5"];
+
+  node_bar [label="bar\nBarClass\n", shape=record, fillcolor="#eeeeee", style="filled"];
+  node_demo [label="demo\nClassOptionalArguments\n", shape=record, fillcolor="#eeeeee", style="filled"];
+  node_service_container [label="service_container\nsfServiceContainerBuilder\n", shape=record, fillcolor="#9999ff", style="filled"];
+  node_missing_bar [label="missing_bar\n\n", shape=record, fillcolor="#ff9999", style="filled"];
+  node_demo -> node_bar [label="" style="filled"];
+  node_demo -> node_bar [label="" style="dashed"];
+  node_demo -> node_bar [label="setOptionalRegisteredObject()" style="dashed"];
+  node_demo -> node_bar [label="setRequiredRegisteredObject()" style="filled"];
+  node_demo -> node_missing_bar [label="setOptionalMissingObject()" style="dashed"];
+  node_demo -> node_missing_bar [label="setRequiredMissingObject()" style="filled"];
+}
