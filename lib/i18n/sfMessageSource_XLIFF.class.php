@@ -197,7 +197,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
       $source = $dom->createElement('source');
       $source->appendChild($dom->createTextNode($message));
       $target = $dom->createElement('target');
-      $target->appendChild($dom->createTextNode(''));
+      $target->appendChild($dom->createCDATASection(''));
 
       $unit->appendChild($source);
       $unit->appendChild($target);
@@ -277,7 +277,8 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
           // set the new translated string
           if ($node->nodeName == 'target')
           {
-            $node->nodeValue = $target;
+            $node->nodeValue = '';            
+            $node->appendChild($dom->createCDATASection($target));
             $targetted = true;
           }
 
@@ -294,7 +295,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
       if ($found && !$targetted)
       {
         $targetNode = $dom->createElement('target');
-        $targetNode->appendChild($dom->createTextNode($target));
+        $targetNode->appendChild($dom->createCDATASection($target));
         $unit->appendChild($targetNode);
       }
 
