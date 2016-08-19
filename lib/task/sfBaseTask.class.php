@@ -18,10 +18,80 @@
  */
 abstract class sfBaseTask extends sfCommandApplicationTask
 {
-  protected
-    $configuration   = null,
-    $pluginManager   = null,
-    $statusStartTime = null;
+  /**
+   * @var sfServiceContainer
+   */
+  protected $serviceContainer = null;
+
+  /**
+   * @var sfApplicationConfiguration
+   */
+  public $configuration = null;
+
+  /**
+   * @var sfSymfonyPluginManager
+   */
+  protected $pluginManager = null;
+
+  /**
+   * @var int
+   */
+  protected $statusStartTime = null;
+
+  /**
+   * @var sfRouting
+   */
+  protected $routing;
+
+  /**
+   * @param sfEventDispatcher $dispatcher
+   * @param sfFormatter       $formatter
+   */
+  public function initialize(sfEventDispatcher $dispatcher, sfFormatter $formatter)
+  {
+    parent::initialize($dispatcher, $formatter);
+
+    $this->dispatcher->connect(
+      'service_container.before_compile',
+      function (sfEvent $event)
+      {
+
+        $containerBuilder = $event->getSubject();
+        $params           = $event->getParameters();
+
+        /* @var $containerBuilder \Symfony\Component\DependencyInjection\ContainerBuilder */
+
+        $containerBuilder->addCompilerPass(new sfServiceFactoryRoutingPass($params['factoryConfig']));
+        $containerBuilder->addCompilerPass(new sfServiceFactoryMailerPass($params['factoryConfig']));
+      }
+    );
+
+    $projectConfigurationFile = sfConfig::get('sf_config_dir') . '/ProjectConfiguration.class.php';
+    if (is_file($projectConfigurationFile))
+    {
+      /** @noinspection PhpIncludeInspection */
+      require_once $projectConfigurationFile;
+      $configuration = new ProjectConfiguration(null, $this->dispatcher);
+    }
+    else
+    {
+      $configuration = new sfProjectConfiguration(getcwd(), $this->dispatcher);
+    }
+
+    $builder = new sfServiceBuilder($dispatcher, $configuration);
+
+    $container = $builder->create('TaskServiceContainer', 'task_services.yml');
+
+    // Set real objects into synthetic stub-services
+    $container->set('sf_event_dispatcher', $this->dispatcher);
+    $container->set('sf_application_configuration', $this->configuration);
+    $container->set('sf_formatter', $this->getFormatter());
+    $container->set('sf_filesystem', $this->getFilesystem());
+
+    $this->dispatcher->notify(new sfEvent($container, 'service_container.created'));
+
+    $this->serviceContainer = $container;
+  }
 
   /**
    * @see sfTask
@@ -208,6 +278,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     {
       $this->checkAppExists($application);
 
+      /** @noinspection PhpIncludeInspection */
       require_once sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php';
 
       $configuration = ProjectConfiguration::getApplicationConfiguration($application, $env, $this->isDebug(), null, $this->dispatcher);
@@ -216,6 +287,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     {
       if (file_exists(sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php'))
       {
+        /** @noinspection PhpIncludeInspection */
         require_once sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php';
         $configuration = new ProjectConfiguration(null, $this->dispatcher);
       }
@@ -518,7 +590,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
   }
 
   /**
-   * Convert time into humain format
+   * Convert time into human format
    *
    * @param integer $time
    * @return string
@@ -545,4 +617,36 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
     return $string;
   }
+
+  /**
+   * @return sfMailer
+   */
+  protected function getMailer()
+  {
+    return $this->getServiceContainer()->get('sf_mailer');
+  }
+
+  /**
+   * Returns a routing instance.
+   *
+   * Notice that your task should accept an application option.
+   * The routing configuration is read from the current configuration
+   * instance, which is automatically created according to the current
+   * --application option.
+   *
+   * @return sfRouting A sfRouting instance
+   */
+  protected function getRouting()
+  {
+    return $this->getServiceContainer()->get('sf_routing');
+  }
+
+  /**
+   * @return sfServiceContainer
+   */
+  protected function getServiceContainer()
+  {
+    return $this->serviceContainer;
+  }
+
 }

@@ -18,15 +18,45 @@
  */
 abstract class sfComponent
 {
-  protected
-    $moduleName             = '',
-    $actionName             = '',
-    $context                = null,
-    $dispatcher             = null,
-    $request                = null,
-    $response               = null,
-    $varHolder              = null,
-    $requestParameterHolder = null;
+  /**
+   * @var string
+   */
+  protected $moduleName = '';
+
+  /**
+   * @var string
+   */
+  protected $actionName = '';
+
+  /**
+   * @var sfParameterHolder
+   */
+  protected $varHolder;
+
+  /**
+   * @var sfParameterHolder
+   */
+  protected $requestParameterHolder;
+
+  /**
+   * @var sfContext
+   */
+  protected $context;
+
+  /**
+   * @var sfWebRequest
+   */
+  protected $request;
+
+  /**
+   * @var sfWebResponse
+   */
+  protected $response;
+
+  /**
+   * @var sfEventDispatcher
+   */
+  protected $dispatcher;
 
   /**
    * Class constructor.
@@ -125,7 +155,7 @@ abstract class sfComponent
    */
   public function getService($id)
   {
-    return $this->getServiceContainer()->getService($id);
+    return $this->getServiceContainer()->get($id);
   }
 
   /**
@@ -251,9 +281,9 @@ abstract class sfComponent
    *
    * <code>$this->getContext()->getRouting()->generate(...)</code>
    *
-   * @param string  The route name
-   * @param array   An array of parameters for the route
-   * @param Boolean Whether to generate an absolute URL or not
+   * @param string  $route      The route name
+   * @param array   $params     An array of parameters for the route
+   * @param Boolean $absolute   Whether to generate an absolute URL or not
    *
    * @return string  The URL
    */
@@ -290,7 +320,7 @@ abstract class sfComponent
    * Sets a variable for the template.
    *
    * If you add a safe value, the variable won't be output escaped
-   * by symfony, so this is your responsability to ensure that the
+   * by symfony, so this is your responsibility to ensure that the
    * value is escaped properly.
    *
    * @param string  $name  The variable name

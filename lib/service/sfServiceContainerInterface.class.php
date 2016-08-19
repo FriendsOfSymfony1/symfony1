@@ -16,23 +16,46 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-interface sfServiceContainerInterface
+interface sfServiceContainerInterface extends \Symfony\Component\DependencyInjection\ContainerInterface
 {
+  /**
+   * @param array $parameters
+   *
+   * @return void
+   */
   public function setParameters(array $parameters);
 
+  /**
+   * @param array $parameters
+   *
+   * @return void
+   */
   public function addParameters(array $parameters);
 
+  /**
+   * @return array
+   */
   public function getParameters();
 
-  public function getParameter($name);
-
-  public function setParameter($name, $value);
-
-  public function hasParameter($name);
-
+  /**
+   * @param string $id
+   * @param mixed $service
+   *
+   * @return void
+   */
   public function setService($id, $service);
 
+  /**
+   * @param string $id
+   *
+   * @return mixed
+   */
   public function getService($id);
 
+  /**
+   * @param string $name
+   *
+   * @return boolean
+   */
   public function hasService($name);
 }

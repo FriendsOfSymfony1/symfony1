@@ -1,0 +1,33 @@
+imports:
+  - { resource: 'core_services.yml' }
+
+services:
+
+  # auto-initialization in task
+  sf_formatter:
+    synthetic: true
+
+  # auto-initialization in task
+  sf_filesystem:
+    synthetic: true
+
+  sf_routing_handler:
+    class: sfRoutingConfigHandler
+
+  sf_routing_configurator:
+    class: sfServiceTaskRoutingConfigurator
+#    public: false # defined in parent
+    arguments:
+      - '@sf_application_configuration'
+      - '@sf_routing_handler'
+      - '@sf_event_dispatcher'
+
+#    sf_routing:
+#      configurator: ['@sf_routing_configurator', 'configure']
+
+#    sf_command_logger:
+#      class: sfCommandLogger
+
+#    sf_logger:
+#      class: sfEventLogger
+#      arguments: ['@sf_event_dispatcher']

@@ -1,0 +1,29 @@
+parameters:
+  sf_logger.NoLogger.class: sfNoLogger
+
+services:
+
+  # auto-initialization in app and task
+  sf_application_configuration:
+    synthetic: true
+
+  # auto-initialization in app and task
+  sf_event_dispatcher:
+    synthetic: true
+
+  sf_routing:
+    synthetic: true
+
+  sf_i18n:
+    synthetic: true
+
+  sf_no_logger:
+    class: '%sf_logger.NoLogger.class%'
+    arguments: ['@sf_event_dispatcher', {}]
+
+  sf_routing_configurator:
+    synthetic: true
+    public: false
+
+  sf_view_cache:
+    synthetic: true

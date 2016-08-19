@@ -34,6 +34,9 @@ class sfCoreAutoload
   protected
     $baseDir = null;
 
+  /**
+   * sfCoreAutoload constructor.
+   */
   protected function __construct()
   {
     $this->baseDir = realpath(__DIR__.'/..');
@@ -230,7 +233,6 @@ class sfCoreAutoload
     'sfrootconfighandler' => 'config/sfRootConfigHandler.class.php',
     'sfroutingconfighandler' => 'config/sfRoutingConfigHandler.class.php',
     'sfsecurityconfighandler' => 'config/sfSecurityConfigHandler.class.php',
-    'sfserviceconfighandler' => 'config/sfServiceConfigHandler.class.php',
     'sfsimpleyamlconfighandler' => 'config/sfSimpleYamlConfigHandler.class.php',
     'sfviewconfighandler' => 'config/sfViewConfigHandler.class.php',
     'sfyamlconfighandler' => 'config/sfYamlConfigHandler.class.php',
@@ -367,19 +369,20 @@ class sfCoreAutoload
     'sfroute' => 'routing/sfRoute.class.php',
     'sfroutecollection' => 'routing/sfRouteCollection.class.php',
     'sfrouting' => 'routing/sfRouting.class.php',
+    'sfserviceresponseconfigurator' => 'service/configurators/sfServiceResponseConfigurator.class.php',
+    'sfserviceroutingconfigurator' => 'service/configurators/sfServiceRoutingConfigurator.class.php',
+    'sfabstractservicefactorypass' => 'service/passes/sfAbstractServiceFactoryPass.class.php',
+    'sfservicefactoryaggregateloggerpass' => 'service/passes/sfServiceFactoryAggregateLoggerPass.class.php',
+    'sfservicefactorycontrollerpass' => 'service/passes/sfServiceFactoryControllerPass.class.php',
+    'sfservicefactoryloggerspass' => 'service/passes/sfServiceFactoryLoggersPass.class.php',
+    'sfservicefactorymailerpass' => 'service/passes/sfServiceFactoryMailerPass.class.php',
+    'sfservicefactoryrequestpass' => 'service/passes/sfServiceFactoryRequestPass.class.php',
+    'sfservicefactoryresponsepass' => 'service/passes/sfServiceFactoryResponsePass.class.php',
+    'sfservicefactoryroutingpass' => 'service/passes/sfServiceFactoryRoutingPass.class.php',
+    'sfservicebuilder' => 'service/sfServiceBuilder.class.php',
     'sfservicecontainer' => 'service/sfServiceContainer.class.php',
-    'sfservicecontainerbuilder' => 'service/sfServiceContainerBuilder.class.php',
-    'sfservicecontainerdumper' => 'service/sfServiceContainerDumper.class.php',
-    'sfservicecontainerdumpergraphviz' => 'service/sfServiceContainerDumperGraphviz.class.php',
-    'sfservicecontainerdumperinterface' => 'service/sfServiceContainerDumperInterface.class.php',
-    'sfservicecontainerdumperphp' => 'service/sfServiceContainerDumperPhp.class.php',
     'sfservicecontainerinterface' => 'service/sfServiceContainerInterface.class.php',
-    'sfservicecontainerloader' => 'service/sfServiceContainerLoader.class.php',
-    'sfservicecontainerloaderarray' => 'service/sfServiceContainerLoaderArray.class.php',
-    'sfservicecontainerloaderinterface' => 'service/sfServiceContainerLoaderInterface.class.php',
-    'sfservicedefinition' => 'service/sfServiceDefinition.class.php',
-    'sfserviceparameter' => 'service/sfServiceParameter.class.php',
-    'sfservicereference' => 'service/sfServiceReference.class.php',
+    'sfservicefactory' => 'service/sfServiceFactory.class.php',
     'sfcachesessionstorage' => 'storage/sfCacheSessionStorage.class.php',
     'sfdatabasesessionstorage' => 'storage/sfDatabaseSessionStorage.class.php',
     'sfmysqlsessionstorage' => 'storage/sfMySQLSessionStorage.class.php',
@@ -520,8 +523,8 @@ class sfCoreAutoload
     'sfwidgetforminput' => 'widget/sfWidgetFormInput.class.php',
     'sfwidgetforminputcheckbox' => 'widget/sfWidgetFormInputCheckbox.class.php',
     'sfwidgetforminputfile' => 'widget/sfWidgetFormInputFile.class.php',
-    'sfwidgetforminputfilemulti' => 'widget/sfWidgetFormInputFileMulti.class.php',
     'sfwidgetforminputfileeditable' => 'widget/sfWidgetFormInputFileEditable.class.php',
+    'sfwidgetforminputfilemulti' => 'widget/sfWidgetFormInputFileMulti.class.php',
     'sfwidgetforminputhidden' => 'widget/sfWidgetFormInputHidden.class.php',
     'sfwidgetforminputpassword' => 'widget/sfWidgetFormInputPassword.class.php',
     'sfwidgetforminputread' => 'widget/sfWidgetFormInputRead.class.php',

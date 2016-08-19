@@ -17,7 +17,7 @@ $t->diag('__construct()');
 $sc = new sfServiceContainer();
 $t->is(spl_object_hash($sc->getService('service_container')), spl_object_hash($sc), '__construct() automatically registers itself as a service');
 
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(new \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag(array('foo' => 'bar')));
 $t->is($sc->getParameters(), array('foo' => 'bar'), '__construct() takes an array of parameters as its first argument');
 
 // ->setParameters() ->getParameters()
@@ -38,7 +38,7 @@ $t->is($sc->getParameters(), array('bar' => 'foo'), '->setParameters() converts 
 // ->setParameter() ->getParameter()
 $t->diag('->setParameter() ->getParameter() ');
 
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(new \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag(array('foo' => 'bar')));
 $sc->setParameter('bar', 'foo');
 $t->is($sc->getParameter('bar'), 'foo', '->setParameter() sets the value of a new parameter');
 $t->is($sc->getParameter('bar'), 'foo', '->getParameter() gets the value of a parameter');
@@ -62,14 +62,14 @@ catch (InvalidArgumentException $e)
 
 // ->hasParameter()
 $t->diag('->hasParameter()');
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(new \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag(array('foo' => 'bar')));
 $t->ok($sc->hasParameter('foo'), '->hasParameter() returns true if a parameter is defined');
 $t->ok($sc->hasParameter('Foo'), '->hasParameter() converts the key to lowercase');
 $t->ok(!$sc->hasParameter('bar'), '->hasParameter() returns false if a parameter is not defined');
 
 // ->addParameters()
 $t->diag('->addParameters()');
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(new \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag(array('foo' => 'bar')));
 $sc->addParameters(array('bar' => 'foo'));
 $t->is($sc->getParameters(), array('foo' => 'bar', 'bar' => 'foo'), '->addParameters() adds parameters to the existing ones');
 $sc->addParameters(array('Bar' => 'fooz'));
@@ -96,9 +96,9 @@ class ProjectServiceContainer extends sfServiceContainer
 {
   public $__bar, $__foo_bar, $__foo_baz;
 
-  public function __construct()
+  public function __construct(\Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag = null)
   {
-    parent::__construct();
+    parent::__construct($parameterBag);
 
     $this->__bar = new stdClass();
     $this->__foo_bar = new stdClass();

@@ -18,11 +18,25 @@
  */
 abstract class sfRouting
 {
-  protected
-    $dispatcher        = null,
-    $cache             = null,
-    $defaultParameters = array(),
-    $options           = array();
+  /**
+   * @var array
+   */
+  protected $defaultParameters = array();
+
+  /**
+   * @var array
+   */
+  protected $options = array();
+
+  /**
+   * @var sfEventDispatcher
+   */
+  protected $dispatcher;
+
+  /**
+   * @var sfCache
+   */
+  protected $cache;
 
   /**
    * Class constructor.
@@ -102,6 +116,19 @@ abstract class sfRouting
   public function getOptions()
   {
     return $this->options;
+  }
+
+  /**
+   * @param string $name
+   * @param mixed  $value
+   *
+   * @return self
+   */
+  public function setOption($name, $value)
+  {
+    $this->options[$name] = $value;
+
+    return $this;
   }
 
   /**
@@ -259,6 +286,12 @@ abstract class sfRouting
     return array_merge($parameters, $params);
   }
 
+  /**
+   * @param string $url
+   * @param bool   $absolute
+   *
+   * @return string
+   */
   protected function fixGeneratedUrl($url, $absolute = false)
   {
     if (isset($this->options['context']['prefix']))
