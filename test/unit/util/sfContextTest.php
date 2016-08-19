@@ -36,16 +36,17 @@ class frontendConfiguration extends sfApplicationConfiguration
 require_once realpath(__DIR__.'/../../functional/fixtures/config/ProjectConfiguration.class.php');
 
 $frontend_context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true));
-$frontend_context_prod = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('frontend', 'prod', false));
+$frontend_context_prod = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('frontend', 'prod', false), 'frontend_prod');
 $i18n_context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('i18n', 'test', true));
 $cache_context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('cache', 'test', true));
+
 
 // ::getInstance()
 $t->diag('::getInstance()');
 $t->isa_ok($frontend_context, 'sfContext', '::createInstance() takes an application configuration and returns application context instance');
-$t->isa_ok(sfContext::getInstance('frontend'), 'sfContext', '::createInstance() creates application name context instance');
+$t->isa_ok(sfContext::getInstance('frontend_prod'), 'sfContext', '::createInstance() creates application name context instance');
 
-$context = sfContext::getInstance('frontend');
+$context = sfContext::getInstance('frontend_prod');
 $context1 = sfContext::getInstance('i18n');
 $context2 = sfContext::getInstance('cache');
 $t->is(sfContext::getInstance('i18n'), $context1, '::getInstance() returns the named context if it already exists');
@@ -102,20 +103,31 @@ catch (sfException $e)
   $t->pass('->__call() throws an sfException if factory / method does not exist');
 }
 
+$context = sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true), 'frontend_dic');
+sfContext::switchTo('frontend_dic');
+
 $t->diag('->getServiceContainer() test');
-$sc = $frontend_context->getServiceContainer();
-$t->ok(file_exists(sfConfig::get('sf_cache_dir').'/frontend/test/config/config_services.yml.php'), '->getServiceContainer() creates a cache file in /cache/frontend/test/config');
-$t->ok(class_exists('frontend_testServiceContainer'), '->getServiceContainer() creates and loads the frontend_testServiceContainer class');
-$t->ok($sc instanceof frontend_testServiceContainer, '->getServiceContainer() returns an instance of frontend_testServiceContainer');
+$sc = $context->getServiceContainer();
+$className = sfInflector::camelize('frontend_dic') . 'ContextServiceContainer';
+$scFile = sfConfig::get('sf_config_cache_dir') . "/{$className}.php";
+$t->diag($scFile);
+$t->ok(is_file($scFile), '->getServiceContainer() creates a cache file in /cache/frontend/test/config');
+$t->ok(class_exists($className), '->getServiceContainer() creates and loads the frontend_testServiceContainer class');
+$t->ok($sc instanceof sfServiceContainer, '->getServiceContainer() returns an instance of ContainerInterface');
 $t->ok($sc->hasService('my_app_service'), '->getServiceContainer() contains app/config/service.yml services');
 $t->ok($sc->hasService('my_project_service'), '->getServiceContainer() contains /config/service.yml services');
 $t->ok($sc->hasService('my_plugin_service'), '->getServiceContainer() contains plugin/config/service.yml services');
-$t->ok($sc->getParameter('sf_root_dir'), '->getServiceContainer() sfConfig parameters are accessibles');
-$t->ok($sc->hasParameter('my_app_test_param'), '->getServiceContainer() contains env specifiv parameters');
+$t->ok($sc->getParameter('sf_root_dir'), '->getServiceContainer() sfConfig parameters are accessible');
+$t->ok($sc->hasParameter('my_app_test_param'), '->getServiceContainer() contains env specific parameters');
 
-$t->diag('->getServiceContainer() prod');
+sfContext::switchTo('frontend_prod');
 $sc = $frontend_context_prod->getServiceContainer();
-$t->ok(file_exists(sfConfig::get('sf_cache_dir').'/frontend/prod/config/config_services.yml.php'), '->getServiceContainer() creates a cache file in /cache/frontend/prod/config');
-$t->ok(class_exists('frontend_prodServiceContainer'), '->getServiceContainer() creates and loads the frontend_prodServiceContainer class');
-$t->ok($sc instanceof frontend_prodServiceContainer, '->getServiceContainer() returns an instance of frontend_prodServiceContainer');
-$t->ok(false === $sc->hasParameter('my_app_test_param'), '->getServiceContainer() does not contain other env specifiv parameters');
+$t->diag('->getServiceContainer() prod');
+$class = ucfirst($frontend_context_prod->getConfiguration()->getApplication()) . 'ContextServiceContainer';
+$className = sfInflector::camelize('frontend_prod') . 'ContextServiceContainer';
+$scFile = sfConfig::get('sf_config_cache_dir') . "/{$className}.php";
+$t->diag($scFile);
+$t->ok(is_file($scFile), '->getServiceContainer() creates a cache file in /cache/frontend/prod/config');
+$t->ok(class_exists($className), '->getServiceContainer() creates and loads the frontend_prodServiceContainer class');
+$t->ok($sc instanceof sfServiceContainer, '->getServiceContainer() returns an instance of frontend_prodServiceContainer');
+$t->ok(false === $sc->hasParameter('my_app_test_param'), '->getServiceContainer() does not contain other env specific parameters');

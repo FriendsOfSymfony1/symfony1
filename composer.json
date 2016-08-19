@@ -1,16 +1,28 @@
 {
-    "name": "lexpress/symfony1",
-    "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
+    "name": "fruit/symfony1",
+    "description": "Fork of Symfony v1.5",
+    "version": "1.6.0-dev",
     "license": "MIT",
     "require": {
-        "swiftmailer/swiftmailer": "~5.2"
+        "php": ">=5.5.9",
+        "swiftmailer/swiftmailer": "~5.2",
+        "symfony/dependency-injection": "~3.1.1",
+        "symfony/config": "~3.1.1",
+        "symfony/yaml": "~3.1.1"
     },
     "require-dev": {
         "psr/log": "*"
     },
     "type": "library",
     "autoload": {
-        "files": ["autoload.php"]
+        "classmap": ["lib/"],
+        "exclude-from-classmap": [
+            "/lib/plugins/",
+            "/lib/vendor/",
+            "/lib/task/generator/skeleton/",
+            "/lib/controller/default/",
+            "/lib/helper/"
+        ]
     },
     "suggest": {
         "lexpress/doctrine1": "Doctrine plugin",
@@ -19,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.5-dev"
+            "dev-master": "symfony3-dic"
         }
     },
     "bin": ["data/bin/symfony"]

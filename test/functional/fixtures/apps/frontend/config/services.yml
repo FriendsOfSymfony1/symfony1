@@ -5,7 +5,7 @@ all:
   services:
     my_app_service:
       class: sfOutputEscaperSafe
-      arguments: [%my_project_param%]
+      arguments: ['%my_project_param%']
 
 test:
   parameters:

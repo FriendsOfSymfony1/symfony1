@@ -1,0 +1,70 @@
+imports:
+  - { resource: 'core_services.yml' }
+
+parameters:
+#  sf_logger.AggregateLogger.class: sfAggregateLogger
+#  sf_logger.FileDebugLogger.class: sfFileLogger
+#  sf_logger.PSRLogger.class: sfPsrLoggerAdapter
+#  sf_logger.WebDebugLogger.class: sfWebDebugLogger
+  sf_database_manager.class: sfDatabaseManager
+  sf_database_manager.param: { my_value: 10 }
+
+services:
+
+  # auto-initialization in app
+  sf_context:
+    synthetic: true
+
+  # auto-initialization in app, but can be NULL
+  sf_i18n:
+    synthetic: true
+
+  sf_formatter:
+    class: sfFormatter
+
+  sf_filesystem:
+    class: sfFilesystem
+    arguments:
+      - '@sf_event_dispatcher'
+      - '@sf_formatter'
+
+  sf_event_logger:
+    class: sfEventLogger
+    arguments:
+      - '@sf_event_dispatcher'
+
+  # auto-initialization in app, but can be NULL
+  sf_view_cache_manager:
+    synthetic: true
+
+  # auto-initialization in app, but can be NULL
+  sf_database_manager:
+    class: '%sf_database_manager.class%'
+    synthetic: true
+#    arguments:
+#      - '@sf_application_configuration'
+#      - { auto_shutdown: false }
+
+  sf_user:
+    synthetic: true
+
+  sf_action_stack:
+    class: sfActionStack
+
+  sf_response_configurator:
+    class: sfServiceResponseConfigurator
+    arguments: ['@sf_request']
+    public: false
+
+  sf_request_configurator:
+    class: sfServiceRequestConfigurator
+    arguments: ['@sf_routing']
+    public: false
+
+  sf_routing_configurator:
+    class: sfServiceAppRoutingConfigurator
+    arguments: ['@sf_request']
+    # public: false # defined in parent
+
+  sf_i18n_configurator:
+    class: sfServiceI18nConfigurator

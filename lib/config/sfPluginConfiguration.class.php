@@ -18,11 +18,25 @@
  */
 abstract class sfPluginConfiguration
 {
-  protected
-    $configuration = null,
-    $dispatcher    = null,
-    $name          = null,
-    $rootDir       = null;
+  /**
+   * @var string
+   */
+  protected $name = null;
+
+  /**
+   * @var string
+   */
+  protected $rootDir = null;
+
+  /**
+   * @var sfProjectConfiguration
+   */
+  protected $configuration;
+
+  /**
+   * @var sfEventDispatcher
+   */
+  protected $dispatcher;
 
   /**
    * Constructor.
@@ -34,9 +48,14 @@ abstract class sfPluginConfiguration
   public function __construct(sfProjectConfiguration $configuration, $rootDir = null, $name = null)
   {
     $this->configuration = $configuration;
-    $this->dispatcher = $configuration->getEventDispatcher();
-    $this->rootDir = null === $rootDir ? $this->guessRootDir() : realpath($rootDir);
-    $this->name = null === $name ? $this->guessName() : $name;
+    $this->dispatcher    = $configuration->getEventDispatcher();
+    $this->rootDir       = null === $rootDir ? $this->guessRootDir() : realpath($rootDir);
+    $this->name          = null === $name ? $this->guessName() : $name;
+
+    $this->dispatcher->connect(
+      'service_container.before_compile',
+      $configuration->onServiceContainerBuild("{$this->getRootDir()}/config")
+    );
 
     $this->setup();
     $this->configure();

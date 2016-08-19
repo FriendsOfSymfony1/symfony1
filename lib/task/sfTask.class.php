@@ -19,15 +19,23 @@
 abstract class sfTask
 {
   protected
-    $namespace           = '',
-    $name                = null,
-    $aliases             = array(),
-    $briefDescription    = '',
+    $namespace = '',
+    $name = null,
+    $aliases = array(),
+    $briefDescription = '',
     $detailedDescription = '',
-    $arguments           = array(),
-    $options             = array(),
-    $dispatcher          = null,
-    $formatter           = null;
+    $arguments = array(),
+    $options = array();
+
+  /**
+   * @var sfEventDispatcher
+   */
+  protected $dispatcher;
+
+  /**
+   * @var sfAnsiColorFormatter
+   */
+  protected $formatter;
 
   /**
    * Constructor.
@@ -74,7 +82,7 @@ abstract class sfTask
   /**
    * Sets the formatter instance.
    *
-   * @param sfFormatter The formatter instance
+   * @param sfFormatter $formatter The formatter instance
    */
   public function setFormatter(sfFormatter $formatter)
   {
@@ -176,7 +184,7 @@ abstract class sfTask
   /**
    * Returns the argument objects.
    *
-   * @return sfCommandArgument An array of sfCommandArgument objects.
+   * @return array An array of sfCommandArgument objects.
    */
   public function getArguments()
   {
@@ -208,7 +216,7 @@ abstract class sfTask
   /**
    * Returns the options objects.
    *
-   * @return sfCommandOption An array of sfCommandOption objects.
+   * @return array An array of sfCommandOption objects.
    */
   public function getOptions()
   {
@@ -330,6 +338,7 @@ abstract class sfTask
     $options = array();
     foreach ($this->getOptions() as $option)
     {
+      /* @var $option sfCommandOption */
       $shortcut = $option->getShortcut() ? sprintf('-%s|', $option->getShortcut()) : '';
       $options[] = sprintf('['.($option->isParameterRequired() ? '%s--%s="..."' : ($option->isParameterOptional() ? '%s--%s[="..."]' : '%s--%s')).']', $shortcut, $option->getName());
     }
@@ -337,6 +346,7 @@ abstract class sfTask
     $arguments = array();
     foreach ($this->getArguments() as $argument)
     {
+      /* @var $argument sfCommandArgument */
       $arguments[] = sprintf($argument->isRequired() ? '%s' : '[%s]', $argument->getName().($argument->isArray() ? '1' : ''));
 
       if ($argument->isArray())
@@ -348,6 +358,12 @@ abstract class sfTask
     return sprintf('%%s %s %s %s', $this->getFullName(), implode(' ', $options), implode(' ', $arguments));
   }
 
+  /**
+   * @param sfCommandManager  $commandManager
+   * @param array             $options
+   *
+   * @throws sfCommandArgumentsException
+   */
   protected function process(sfCommandManager $commandManager, $options)
   {
     $commandManager->process($options);
@@ -357,6 +373,12 @@ abstract class sfTask
     }
   }
 
+  /**
+   * @param sfCommandManager  $commandManager
+   * @param array             $options
+   *
+   * @return int|mixed
+   */
   protected function doRun(sfCommandManager $commandManager, $options)
   {
     $event = $this->dispatcher->filter(new sfEvent($this, 'command.filter_options', array('command_manager' => $commandManager)), $options);
@@ -453,7 +475,7 @@ abstract class sfTask
    * @param string       $style    The style to use (QUESTION by default)
    * @param string       $default  The default answer if none is given by the user
    *
-   * @param string       The user answer
+   * @return string       The user answer
    */
   public function ask($question, $style = 'QUESTION', $default = null)
   {
@@ -480,7 +502,7 @@ abstract class sfTask
    * @param string       $style    The style to use (QUESTION by default)
    * @param Boolean      $default  The default answer if the user enters nothing
    *
-   * @param Boolean      true if the user has confirmed, false otherwise
+   * @return Boolean      true if the user has confirmed, false otherwise
    */
   public function askConfirmation($question, $style = 'QUESTION', $default = true)
   {
@@ -599,6 +621,7 @@ abstract class sfTask
     $taskXML->appendChild($argumentsXML = $dom->createElement('arguments'));
     foreach ($this->getArguments() as $argument)
     {
+      /* @var $argument sfCommandArgument */
       $argumentsXML->appendChild($argumentXML = $dom->createElement('argument'));
       $argumentXML->setAttribute('name', $argument->getName());
       $argumentXML->setAttribute('is_required', $argument->isRequired() ? 1 : 0);
@@ -618,6 +641,7 @@ abstract class sfTask
     $taskXML->appendChild($optionsXML = $dom->createElement('options'));
     foreach ($this->getOptions() as $option)
     {
+      /* @var $option sfCommandOption */
       $optionsXML->appendChild($optionXML = $dom->createElement('option'));
       $optionXML->setAttribute('name', '--'.$option->getName());
       $optionXML->setAttribute('shortcut', $option->getShortcut() ? '-'.$option->getShortcut() : '');
@@ -652,6 +676,11 @@ abstract class sfTask
    */
    abstract protected function execute($arguments = array(), $options = array());
 
+  /**
+   * @param string $string
+   *
+   * @return int
+   */
    protected function strlen($string)
    {
      if (!function_exists('mb_strlen')) {

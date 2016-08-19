@@ -48,6 +48,12 @@ class sfProjectConfiguration
     $this->symfonyLibDir = realpath(__DIR__.'/..');
     $this->dispatcher = null === $dispatcher ? new sfEventDispatcher() : $dispatcher;
 
+    $ref = new ReflectionClass($this);
+    $this->dispatcher->connect(
+      'service_container.before_compile',
+      $this->onServiceContainerBuild(dirname($ref->getFileName()))
+    );
+
     ini_set('magic_quotes_runtime', 'off');
 
     sfConfig::set('sf_symfony_lib_dir', $this->symfonyLibDir);
@@ -61,6 +67,35 @@ class sfProjectConfiguration
 
     $this->loadPlugins();
     $this->setupPlugins();
+  }
+
+  /**
+   * @param string $configDir
+   *
+   * @return Closure
+   */
+  public function onServiceContainerBuild($configDir)
+  {
+    return function (sfEvent $event) use ($configDir)
+    {
+      $params = $event->getParameters();
+
+      $containerBuilder = $event->getSubject();
+      /* @var $containerBuilder \Symfony\Component\DependencyInjection\ContainerBuilder */
+      $loader = new \Symfony\Component\DependencyInjection\Loader\YamlFileLoader(
+        $containerBuilder,
+        new \Symfony\Component\Config\FileLocator($configDir)
+      );
+
+      try
+      {
+        $loader->load($params['configBasename']);
+      }
+      catch (\InvalidArgumentException $e)
+      {
+
+      }
+    };
   }
 
   /**

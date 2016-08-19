@@ -29,6 +29,9 @@ class sfAutoload
     $overriden = array(),
     $classes   = array();
 
+  /**
+   * sfAutoload constructor.
+   */
   protected function __construct()
   {
   }
@@ -36,7 +39,7 @@ class sfAutoload
   /**
    * Retrieves the singleton instance of this class.
    *
-   * @return sfCoreAutoload A sfCoreAutoload implementation instance.
+   * @return sfAutoload A sfCoreAutoload implementation instance.
    */
   static public function getInstance()
   {
