@@ -237,7 +237,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
    * @param string $dateFieldName       The field name to set the date for
    * @param DateTime $dateTimeObject    The DateTime instance to use to set the value
    *
-   * @return void
+   * @return sfDoctrineRecord
    * @throws sfException if the field is not one of date, datetime, or timestamp types
    */
   public function setDateTimeObject($dateFieldName, DateTime $dateTimeObject = null)
