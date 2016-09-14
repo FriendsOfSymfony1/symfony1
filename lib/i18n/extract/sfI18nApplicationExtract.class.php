@@ -45,6 +45,18 @@ class sfI18nApplicationExtract extends sfI18nExtract
       $extractObject->extract();
     }
 
+    // extracts i18n-strings from arbitrary paths psecified in Symfony-project's app.yml 
+     $includeMorePaths = sfConfig::get('app_i18n-extract-additional_enabled'); 
+     if (isset($includeMorePaths) && ($includeMorePaths == true)) 
+     { 
+       $paths = sfConfig::get('app_i18n-extract-additional_paths'); 
+          
+       foreach ($paths as $path) 
+       { 
+         $this->extractFromPhpFiles($path); 
+       } 
+     } 	
+
     // Add global templates
     $this->extractFromPhpFiles(sfConfig::get('sf_app_template_dir'));
 
