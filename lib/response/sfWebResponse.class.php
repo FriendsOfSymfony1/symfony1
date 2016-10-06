@@ -398,6 +398,7 @@ class sfWebResponse extends sfResponse
 
     if (function_exists('fastcgi_finish_request'))
     {
+      $this->dispatcher->notify(new sfEvent($this, 'response.fastcgi_finish_request'));
       fastcgi_finish_request();
     }
   }

@@ -27,7 +27,8 @@ class sfContext implements ArrayAccess
     $configuration                  = null,
     $mailerConfiguration            = array(),
     $serviceContainerConfiguration  = array(),
-    $factories                      = array();
+    $factories                      = array(),
+    $hasShutdownUserAndStorage      = false;
 
   protected static
     $instances = array(),
@@ -87,6 +88,7 @@ class sfContext implements ArrayAccess
     }
 
     $this->dispatcher->connect('template.filter_parameters', array($this, 'filterTemplateParameters'));
+    $this->dispatcher->connect('response.fastcgi_finish_request', array($this, 'shutdownUserAndStorage'));
 
     // register our shutdown function
     register_shutdown_function(array($this, 'shutdown'));
@@ -593,6 +595,22 @@ class sfContext implements ArrayAccess
   }
 
   /**
+   * Shuts the user/storage down.
+   *
+   * @internal Should be called only via invoking "response.fastcgi_finish_request" or context shutting down.
+   */
+  public function shutdownUserAndStorage()
+  {
+    if (!$this->hasShutdownUserAndStorage && $this->has('user'))
+    {
+      $this->getUser()->shutdown();
+      $this->getStorage()->shutdown();
+
+      $this->hasShutdownUserAndStorage = true;
+    }
+  }
+
+  /**
    * Calls methods defined via sfEventDispatcher.
    *
    * If a method cannot be found via sfEventDispatcher, the method name will
@@ -635,12 +653,7 @@ class sfContext implements ArrayAccess
    */
   public function shutdown()
   {
-    // shutdown all factories
-    if($this->has('user'))
-    {
-      $this->getUser()->shutdown();
-      $this->getStorage()->shutdown();
-    }
+    $this->shutdownUserAndStorage();
 
     if ($this->has('routing'))
     {
