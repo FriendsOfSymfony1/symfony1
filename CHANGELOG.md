@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+06/10/2016: Version 1.5.8
+-------------------------
+
+* PHP7 compatibility by @timmipetit #121
+* sfMemcacheCache fix #124
+* sfAutoload include fix for HHVM support #127
+* sfAutoload include: eval only if forced on HHVM #130
+* Fix phpdoc for sfDoctrineRecord::setDateTimeObject() #136
+* Fix session data losing under certain situation #139
+
 02/02/2016: Version 1.5.7
 -------------------------
 
