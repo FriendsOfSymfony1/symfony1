@@ -908,7 +908,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $token = $this->getCSRFToken($secret);
 
     $this->validatorSchema[self::$CSRFFieldName] = new sfValidatorCSRFToken(array('token' => $token));
-    $this->widgetSchema[self::$CSRFFieldName] = new sfWidgetFormInputHidden();
+    $this->widgetSchema[self::$CSRFFieldName] = new sfWidgetFormInputHidden(array(), array('value' => $token));
     $this->setDefault(self::$CSRFFieldName, $token);
 
     return $this;
