@@ -41,7 +41,7 @@ $invalidPrivateV4Ips = array(
 
 $invalidReservedV4Ips = array(
   '0.0.0.0',
-  '224.0.0.1',
+  '240.0.0.1',
   '255.255.255.255'
 );
 
