@@ -395,7 +395,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     $number   = (float) $matches[1];
     $modifier = strtoupper($matches[2]);
 
-    $exp_by_modifier = [
+    $exp_by_modifier = array(
       'K' => 1,
       'M' => 2,
       'G' => 3,
@@ -404,7 +404,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
       'E' => 6,
       'Z' => 7,
       'Y' => 8,
-    ];
+    );
 
     if (array_key_exists($modifier, $exp_by_modifier)) {
       $exp    = $exp_by_modifier[$modifier];
