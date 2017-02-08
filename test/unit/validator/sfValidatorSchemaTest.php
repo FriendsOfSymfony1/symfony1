@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(85);
+$t = new lime_test(94);
 
 class PreValidator extends sfValidatorBase
 {
@@ -45,6 +45,14 @@ class Post1Validator extends sfValidatorBase
     if ($values['s1'] == $values['s2'])
 
     throw new sfValidatorError($this, 's1_not_equal_s2', array('value' => $values));
+  }
+}
+
+class BytesValidatorSchema extends sfValidatorSchema
+{
+  public function getBytes($value)
+  {
+    return parent::getBytes($value);
   }
 }
 
@@ -401,3 +409,15 @@ $t->ok($v1->getPreValidator() !== $v->getPreValidator(), '__clone() clones the p
 $t->ok($v1->getPreValidator() == $v->getPreValidator(), '__clone() clones the pre validator');
 $t->ok($v1->getPostValidator() !== $v->getPostValidator(), '__clone() clones the post validator');
 $t->ok($v1->getPostValidator() == $v->getPostValidator(), '__clone() clones the post validator');
+
+$t->diag('convert post_max_size to bytes');
+$v = new BytesValidatorSchema();
+$t->is($v->getBytes(null), 0, 'empty string considered as 0 bytes');
+$t->is($v->getBytes(''), 0, 'empty string considered as 0 bytes');
+$t->is($v->getBytes('0'), 0, 'simple bytes');
+$t->is($v->getBytes('1'), 1, 'simple bytes');
+$t->is($v->getBytes('1B'), 1, 'simple bytes');
+$t->is($v->getBytes('1K'), 1024, 'kilobytes');
+$t->is($v->getBytes('1M'), 1024 * 1024, 'megabytes short syntax');
+$t->is($v->getBytes('0.5M'), 1024 * 1024 / 2, 'fractional megabytes');
+$t->is($v->getBytes('1G'), 1024 * 1024 * 1024, 'gigabytes');
