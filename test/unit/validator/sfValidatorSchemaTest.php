@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(103);
+$t = new lime_test(94);
 
 class PreValidator extends sfValidatorBase
 {
@@ -417,16 +417,7 @@ $t->is($v->getBytes(''), 0, 'empty string considered as 0 bytes');
 $t->is($v->getBytes('0'), 0, 'simple bytes');
 $t->is($v->getBytes('1'), 1, 'simple bytes');
 $t->is($v->getBytes('1B'), 1, 'simple bytes');
-$t->is($v->getBytes('1K'), 1024, 'kilobytes short syntax');
-$t->is($v->getBytes('1 K'), 1024, 'kilobytes short syntax with space delimiter');
-$t->is($v->getBytes('1KB'), 1024, 'kilobytes long syntax');
-$t->is($v->getBytes('1 KB'), 1024, 'kilobytes long syntax with space delimiter');
+$t->is($v->getBytes('1K'), 1024, 'kilobytes');
 $t->is($v->getBytes('1M'), 1024 * 1024, 'megabytes short syntax');
-$t->is($v->getBytes('0.5M'), 1024 * 1024 / 2, 'fractional megabytes short syntax');
-$t->is($v->getBytes('0.5 M'), 1024 * 1024 / 2, 'fractional megabytes short syntax with space delimeter');
-$t->is($v->getBytes('1 G'), 1024 * 1024 * 1024, 'gigabytes');
-$t->is($v->getBytes('1 T'), 1024 * 1024 * 1024 * 1024, 'terabytes');
-$t->is($v->getBytes('1 P'), 1024 * 1024 * 1024 * 1024 * 1024, 'petabytes');
-$t->is($v->getBytes('1 E'), 1024 * 1024 * 1024 * 1024 * 1024 * 1024, 'exabytes');
-$t->is($v->getBytes('1 Z'), 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024, 'zettabytes');
-$t->is($v->getBytes('1 Y'), 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024, 'yottabytes');
+$t->is($v->getBytes('0.5M'), 1024 * 1024 / 2, 'fractional megabytes');
+$t->is($v->getBytes('1G'), 1024 * 1024 * 1024, 'gigabytes');
