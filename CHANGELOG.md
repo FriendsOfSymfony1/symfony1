@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+09/02/2017: Version 1.5.9
+-------------------------
+
+* Fix notice in sfValidatorSchema::getBytes" PHP 7.1 #148
+* Fix dumpArray() for PHP 7.1 #146
+* Fix some bugs with new PHP versions #143
+* Fix yaml dumpArray() for PHP 7.1 #142
+
 06/10/2016: Version 1.5.8
 -------------------------
 
