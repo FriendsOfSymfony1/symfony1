@@ -86,7 +86,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
    * @param string $keyName  The key name
    * @param string $category The category name
    *
-   * @return string The value associated with this key name and category
+   * @return array The value associated with this key name and category
    */
   protected function mergeConfigValue($keyName, $category)
   {
