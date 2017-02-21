@@ -252,8 +252,11 @@ abstract class sfWidgetForm extends sfWidget
       $name = sprintf($this->getOption('id_format'), $name);
     }
 
-    // remove illegal characters
-    $name = preg_replace(array('/^[^A-Za-z]+/', '/[^A-Za-z0-9\:_\.\-]/'), array('', '_'), $name);
+    // Hash $name if illegal characters are contained, instead of replacing them with '_'.
+    if (preg_match( '/([A-Za-z0-9\:_\.\-]*)([^A-Za-z0-9\:_\.\-])/', $name, $matches))
+    {
+      $name = $matches[1].substr(md5($matches[2]), 0, 8);
+    }
 
     return $name;
   }
