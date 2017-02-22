@@ -1,7 +1,6 @@
 <?php
 
-require_once ##SYMFONY_CORE_AUTOLOAD##;
-sfCoreAutoload::register();
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
