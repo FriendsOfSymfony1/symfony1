@@ -358,12 +358,11 @@ class sfFinder
     if ($numargs === 1 && is_array($arg_list[0]))
     {
       $arg_list = $arg_list[0];
-      $numargs  = count($arg_list);
     }
 
-    for ($i = 0; $i < $numargs; $i++)
+    foreach ($arg_list as $arg)
     {
-      $dir = realpath($arg_list[$i]);
+      $dir = realpath($arg);
 
       if (!is_dir($dir))
       {
