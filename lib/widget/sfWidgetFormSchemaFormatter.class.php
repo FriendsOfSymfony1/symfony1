@@ -88,6 +88,11 @@ abstract class sfWidgetFormSchemaFormatter
       return self::$translationCallable->call($subject, $parameters, $catalogue);
     }
 
+    if (is_callable('__'))
+    {
+      $this->setTranslationCallable('__');
+    }
+
     return call_user_func(self::$translationCallable, $subject, $parameters, $catalogue);
   }
 
