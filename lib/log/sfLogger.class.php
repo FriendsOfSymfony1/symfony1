@@ -129,12 +129,13 @@ abstract class sfLogger implements sfLoggerInterface
 
     $this->level = $level;
   }
-
+  
   /**
    * Logs a message.
    *
    * @param string $message   Message
    * @param string $priority  Message priority
+   * @return void|bool
    */
   public function log($message, $priority = self::INFO)
   {
@@ -143,7 +144,7 @@ abstract class sfLogger implements sfLoggerInterface
       return false;
     }
 
-    return $this->doLog($message, $priority);
+    $this->doLog($message, $priority);
   }
 
   /**
