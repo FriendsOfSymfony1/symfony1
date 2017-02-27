@@ -18,10 +18,12 @@
  */
 class sfWebDebugLogger extends sfVarLogger
 {
-  protected
-    $context       = null,
-    $webDebugClass = null,
-    $webDebug      = null;
+  /** @var sfContext */
+  protected $context       = null;
+  /** @var string */
+  protected $webDebugClass = null;
+  /** @var sfWebDebug */
+  protected $webDebug      = null;
 
   /**
    * Initializes this logger.
@@ -147,6 +149,7 @@ class sfWebDebugLogger extends sfVarLogger
     // * if not rendering to the client
     // * if HTTP headers only
     $response = $event->getSubject();
+    /** @var sfWebRequest $request */
     $request  = $this->context->getRequest();
     if (
       null === $this->webDebug
