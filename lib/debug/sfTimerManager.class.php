@@ -18,6 +18,7 @@
  */
 class sfTimerManager
 {
+  /** @var sfTimer[] */
   static public $timers = array();
 
   /**
@@ -47,7 +48,7 @@ class sfTimerManager
   /**
    * Gets all sfTimer instances stored in sfTimerManager.
    *
-   * @return array An array of all sfTimer instances
+   * @return sfTimer[] An array of all sfTimer instances
    */
   public static function getTimers()
   {
