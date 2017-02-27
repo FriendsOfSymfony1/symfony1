@@ -56,7 +56,7 @@ abstract class sfComponent
    * @param string    $moduleName The module name.
    * @param string    $actionName The action name.
    *
-   * @return boolean true, if initialization completes successfully, otherwise false
+   * @return void
    */
   public function initialize($context, $moduleName, $actionName)
   {
