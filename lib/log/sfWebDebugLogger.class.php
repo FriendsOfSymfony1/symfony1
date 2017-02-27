@@ -63,7 +63,7 @@ class sfWebDebugLogger extends sfVarLogger
   {
     set_error_handler(array($this,'handlePhpError'));
   }
-
+  
   /**
    * PHP error handler send PHP errors to log.
    *
@@ -76,6 +76,8 @@ class sfWebDebugLogger extends sfVarLogger
    * @param string $errfile    The filename that the error was raised in, as a string.
    * @param string $errline    The line number the error was raised at, as an integer.
    * @param array  $errcontext An array that points to the active symbol table at the point the error occurred.
+   *
+   * @return bool
    */
   public function handlePhpError($errno, $errstr, $errfile, $errline, $errcontext = array())
   {
