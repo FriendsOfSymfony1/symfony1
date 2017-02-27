@@ -18,6 +18,7 @@
  */
 class sfStreamLogger extends sfLogger
 {
+  /** @var resource */
   protected
     $stream = null;
 

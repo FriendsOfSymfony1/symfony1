@@ -36,11 +36,13 @@ abstract class sfLogger implements sfLoggerInterface
   const NOTICE  = 5; // Normal but significant
   const INFO    = 6; // Informational
   const DEBUG   = 7; // Debug-level messages
-
-  protected
-    $dispatcher = null,
-    $options = array(),
-    $level = self::INFO;
+  
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var array */
+  protected $options = array();
+  /** @var int */
+  protected $level = self::INFO;
 
   /**
    * Class constructor.
