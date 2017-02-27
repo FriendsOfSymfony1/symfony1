@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -46,6 +46,9 @@ abstract class sfLogger implements sfLoggerInterface
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
+   * @param  array             $options     An array of options.
    */
   public function __construct(sfEventDispatcher $dispatcher, $options = array())
   {
@@ -67,7 +70,7 @@ abstract class sfLogger implements sfLoggerInterface
    * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
    * @param  array             $options     An array of options.
    *
-   * @return Boolean      true, if initialization completes successfully, otherwise false.
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfLogger.
    */

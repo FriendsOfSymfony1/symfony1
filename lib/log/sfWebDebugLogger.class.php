@@ -33,7 +33,7 @@ class sfWebDebugLogger extends sfVarLogger
    * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
    * @param  array             $options     An array of options.
    *
-   * @return Boolean           true, if initialization completes successfully, otherwise false.
+   * @return void
    *
    * @see sfVarLogger
    */
@@ -51,7 +51,7 @@ class sfWebDebugLogger extends sfVarLogger
 
     $this->registerErrorHandler();
 
-    return parent::initialize($dispatcher, $options);
+    parent::initialize($dispatcher, $options);
   }
 
   /**
@@ -104,7 +104,7 @@ class sfWebDebugLogger extends sfVarLogger
 
   /**
    * Listens for the context.load_factories event.
-   * 
+   *
    * @param sfEvent $event
    */
   public function listenForLoadFactories(sfEvent $event)
