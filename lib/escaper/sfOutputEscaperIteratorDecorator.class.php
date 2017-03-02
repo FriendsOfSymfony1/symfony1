@@ -54,7 +54,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
   /**
    * Resets the iterator (as required by the Iterator interface).
    *
-   * @return bool true, if the iterator rewinds successfully otherwise false
+   * @return void
    */
   public function rewind()
   {
@@ -83,6 +83,8 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
 
   /**
    * Moves to the next element in the iterator (as required by the Iterator interface).
+   *
+   * @return void
    */
   public function next()
   {
