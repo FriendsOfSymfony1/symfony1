@@ -36,7 +36,7 @@ class sfLoggerWrapper extends sfLogger
    * Logs a message.
    *
    * @param string $message   Message
-   * @param string $priority  Message priority
+   * @param int    $priority  Message priority
    */
   protected function doLog($message, $priority)
   {

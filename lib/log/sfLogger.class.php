@@ -91,6 +91,8 @@ abstract class sfLogger implements sfLoggerInterface
   
   /**
    * Returns the options for the logger instance.
+   *
+   * @return array
    */
   public function getOptions()
   {
@@ -99,6 +101,9 @@ abstract class sfLogger implements sfLoggerInterface
   
   /**
    * Returns the options for the logger instance.
+   *
+   * @param string $name
+   * @param mixed $value
    */
   public function setOption($name, $value)
   {
@@ -108,7 +113,7 @@ abstract class sfLogger implements sfLoggerInterface
   /**
    * Retrieves the log level for the current logger instance.
    *
-   * @return string Log level
+   * @return int Log level
    */
   public function getLogLevel()
   {
@@ -118,7 +123,7 @@ abstract class sfLogger implements sfLoggerInterface
   /**
    * Sets a log level for the current logger instance.
    *
-   * @param string $level Log level
+   * @param int $level Log level
    */
   public function setLogLevel($level)
   {
@@ -134,7 +139,7 @@ abstract class sfLogger implements sfLoggerInterface
    * Logs a message.
    *
    * @param string $message   Message
-   * @param string $priority  Message priority
+   * @param int    $priority  Message priority
    * @return void|bool
    */
   public function log($message, $priority = self::INFO)
@@ -151,7 +156,7 @@ abstract class sfLogger implements sfLoggerInterface
    * Logs a message.
    *
    * @param string $message   Message
-   * @param string $priority  Message priority
+   * @param int    $priority  Message priority
    */
   abstract protected function doLog($message, $priority);
 
