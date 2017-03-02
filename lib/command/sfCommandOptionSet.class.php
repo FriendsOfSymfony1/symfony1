@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -56,11 +56,13 @@ class sfCommandOptionSet
       $this->addOption($option);
     }
   }
-
+  
   /**
    * Add a sfCommandOption objects.
    *
    * @param sfCommandOption $option A sfCommandOption object
+   *
+   * @throws sfCommandException
    */
   public function addOption(sfCommandOption $option)
   {
@@ -79,13 +81,15 @@ class sfCommandOptionSet
       $this->shortcuts[$option->getShortcut()] = $option->getName();
     }
   }
-
+  
   /**
    * Returns an option by name.
    *
    * @param string $name The option name
    *
    * @return sfCommandOption A sfCommandOption object
+   *
+   * @throws sfCommandException
    */
   public function getOption($name)
   {
@@ -112,7 +116,7 @@ class sfCommandOptionSet
   /**
    * Gets the array of sfCommandOption objects.
    *
-   * @return array An array of sfCommandOption objects
+   * @return sfCommandOption[] An array of sfCommandOption objects
    */
   public function getOptions()
   {
@@ -130,9 +134,11 @@ class sfCommandOptionSet
   {
     return isset($this->shortcuts[$name]);
   }
-
+  
   /**
    * Gets an option by shortcut.
+   *
+   * @param string $shortcut
    *
    * @return sfCommandOption A sfCommandOption object
    */
@@ -156,13 +162,15 @@ class sfCommandOptionSet
 
     return $values;
   }
-
+  
   /**
    * Returns the option name given a shortcut.
    *
    * @param string $shortcut The shortcut
    *
    * @return string The option name
+   *
+   * @throws sfCommandException
    */
   protected function shortcutToName($shortcut)
   {

@@ -18,14 +18,20 @@
  */
 class sfCommandManager
 {
-  protected
-    $arguments            = '',
-    $errors               = array(),
-    $optionSet            = null,
-    $argumentSet          = array(),
-    $optionValues         = array(),
-    $argumentValues       = array(),
-    $parsedArgumentValues = array();
+  /** @var array */
+  protected $arguments = '';
+  /** @var string[] */
+  protected $errors = array();
+  /** @var sfCommandOptionSet */
+  protected $optionSet = null;
+  /** @var sfCommandArgumentSet */
+  protected $argumentSet = array();
+  /** @var array */
+  protected $optionValues = array();
+  /** @var array */
+  protected $argumentValues = array();
+  /** @var array */
+  protected $parsedArgumentValues = array();
 
   /**
    * Constructor.
@@ -203,13 +209,15 @@ class sfCommandManager
   {
     return $this->argumentValues;
   }
-
+  
   /**
    * Returns the argument value for a given argument name.
    *
    * @param string $name The argument name
    *
    * @return mixed The argument value
+   *
+   * @throws sfCommandException
    */
   public function getArgumentValue($name)
   {
@@ -230,13 +238,15 @@ class sfCommandManager
   {
     return $this->optionValues;
   }
-
+  
   /**
    * Returns the option value for a given option name.
    *
    * @param string $name The option name
    *
    * @return mixed The option value
+   *
+   * @throws sfCommandException
    */
   public function getOptionValue($name)
   {
