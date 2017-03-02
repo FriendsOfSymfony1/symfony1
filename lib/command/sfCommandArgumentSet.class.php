@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -62,11 +62,13 @@ class sfCommandArgumentSet
       }
     }
   }
-
+  
   /**
    * Add a sfCommandArgument objects.
    *
    * @param sfCommandArgument $argument A sfCommandArgument object
+   *
+   * @throws sfCommandException
    */
   public function addArgument(sfCommandArgument $argument)
   {
@@ -101,13 +103,15 @@ class sfCommandArgumentSet
 
     $this->arguments[$argument->getName()] = $argument;
   }
-
+  
   /**
    * Returns an argument by name.
    *
    * @param string $name The argument name
    *
    * @return sfCommandArgument A sfCommandArgument object
+   *
+   * @throws sfCommandException
    */
   public function getArgument($name)
   {
@@ -134,7 +138,7 @@ class sfCommandArgumentSet
   /**
    * Gets the array of sfCommandArgument objects.
    *
-   * @return array An array of sfCommandArgument objects
+   * @return sfCommandArgument[] An array of sfCommandArgument objects
    */
   public function getArguments()
   {

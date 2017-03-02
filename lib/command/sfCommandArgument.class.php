@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -28,7 +28,7 @@ class sfCommandArgument
     $mode    = null,
     $default = null,
     $help    = '';
-
+  
   /**
    * Constructor.
    *
@@ -36,6 +36,8 @@ class sfCommandArgument
    * @param integer $mode    The argument mode: self::REQUIRED or self::OPTIONAL
    * @param string  $help    A help text
    * @param mixed   $default The default value (for self::OPTIONAL mode only)
+   *
+   * @throws sfCommandException
    */
   public function __construct($name, $mode = null, $help = '', $default = null)
   {
@@ -84,11 +86,13 @@ class sfCommandArgument
   {
     return self::IS_ARRAY === (self::IS_ARRAY & $this->mode);
   }
-
+  
   /**
    * Sets the default value.
    *
    * @param mixed $default The default value
+   *
+   * @throws sfCommandException
    */
   public function setDefault($default = null)
   {
