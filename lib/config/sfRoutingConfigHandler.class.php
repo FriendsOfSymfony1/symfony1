@@ -35,6 +35,7 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
     foreach ($this->parse($configFiles) as $name => $routeConfig)
     {
       $r = new ReflectionClass($routeConfig[0]);
+      /** @var sfRoute $route */
       $route = $r->newInstanceArgs($routeConfig[1]);
 
       $routes = $route instanceof sfRouteCollection ? $route : array($name => $route);
