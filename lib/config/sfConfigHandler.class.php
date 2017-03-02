@@ -22,13 +22,15 @@
  */
 abstract class sfConfigHandler
 {
+  /** @var sfParameterHolder */
   protected
     $parameterHolder = null;
-
+  
   /**
    * Class constructor.
    *
    * @see initialize()
+   * @param array|null $parameters
    */
   public function __construct($parameters = null)
   {
@@ -40,7 +42,7 @@ abstract class sfConfigHandler
    *
    * @param array $parameters An associative array of initialization parameters
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this ConfigHandler
    */
@@ -69,7 +71,7 @@ abstract class sfConfigHandler
    *
    * @param mixed $value The value on which to run the replacement procedure
    *
-   * @return string The new value
+   * @return string|mixed|array The new value
    */
   static public function replaceConstants($value)
   {

@@ -19,8 +19,8 @@
  */
 abstract class sfYamlConfigHandler extends sfConfigHandler
 {
-  protected
-    $yamlConfig = null;
+  /** @var array */
+  protected $yamlConfig = null;
 
   /**
    * Parses an array of YAMLs files and merges them in one configuration array.
@@ -55,7 +55,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
    *
    * @param string $configFile An absolute filesystem path to a configuration file
    *
-   * @return string A parsed .yml configuration
+   * @return string|array A parsed .yml configuration
    *
    * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
    * @throws sfParseException If a requested configuration file is improperly formatted
