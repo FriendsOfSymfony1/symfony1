@@ -24,11 +24,13 @@ abstract class sfCache
 
   protected
     $options = array();
-
+  
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param array $options
    */
   public function __construct($options = array())
   {
@@ -116,9 +118,9 @@ abstract class sfCache
   /**
    * Cleans the cache.
    *
-   * @param string $mode The clean mode
-   *                     sfCache::ALL: remove all keys (default)
-   *                     sfCache::OLD: remove all expired keys
+   * @param int $mode The clean mode
+   *                  sfCache::ALL: remove all keys (default)
+   *                  sfCache::OLD: remove all expired keys
    *
    * @return Boolean true if no problem
    */
@@ -138,7 +140,7 @@ abstract class sfCache
    *
    * @param string $key The cache key
    *
-   * @return int The last modified time
+   * @return int The last modified time (timestamp)
    */
   abstract public function getLastModified($key);
 
@@ -171,11 +173,13 @@ abstract class sfCache
   {
     return null === $lifetime ? $this->getOption('lifetime') : $lifetime;
   }
-
+  
   /**
    * Gets the backend object.
    *
-   * @return object The backend object
+   * @return mixed The backend object
+   *
+   * @throws sfException
    */
   public function getBackend()
   {
@@ -194,12 +198,14 @@ abstract class sfCache
   {
     return isset($this->options[$name]) ? $this->options[$name] : $default;
   }
-
+  
   /**
    * Sets an option value.
    *
    * @param string $name  The option name
    * @param mixed  $value The option value
+   *
+   * @return mixed
    */
   public function setOption($name, $value)
   {
