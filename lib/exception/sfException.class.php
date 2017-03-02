@@ -22,6 +22,7 @@
  */
 class sfException extends Exception
 {
+  /** @var Exception|Throwable|null */
   protected
     $wrappedException = null;
 
@@ -47,7 +48,7 @@ class sfException extends Exception
   /**
    * Sets the wrapped exception.
    *
-   * @param Exception|Throwable $e An Throwable instance
+   * @param Exception|Throwable $e A Throwable instance
    */
   public function setWrappedException($e)
   {
@@ -107,7 +108,7 @@ class sfException extends Exception
       header('HTTP/1.0 500 Internal Server Error');
     }
 
-    if (version_compare(PHP_VERSION, '7.0.0') >= 0) 
+    if (version_compare(PHP_VERSION, '7.0.0') >= 0)
     {
       try
       {
@@ -116,8 +117,8 @@ class sfException extends Exception
       catch (Throwable $e)
       {
       }
-    } 
-    else 
+    }
+    else
     {
       try
       {
@@ -133,9 +134,10 @@ class sfException extends Exception
       exit(1);
     }
   }
-
+  
   /**
    * Gets the stack trace for this exception.
+   * @param Exception|Throwable $exception
    */
   static protected function outputStackTrace($exception)
   {
@@ -146,6 +148,9 @@ class sfException extends Exception
     $response = null;
     if (class_exists('sfContext', false) && sfContext::hasInstance() && is_object($request = sfContext::getInstance()->getRequest()) && is_object($response = sfContext::getInstance()->getResponse()))
     {
+      /** @var $request sfWebRequest */
+      /** @var $response sfWebResponse */
+      
       $dispatcher = sfContext::getInstance()->getEventDispatcher();
 
       if (sfConfig::get('sf_logging_enabled'))
