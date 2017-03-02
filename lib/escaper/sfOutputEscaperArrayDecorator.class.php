@@ -25,11 +25,12 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    * @var int
    */
   private $count;
-
+  
   /**
    * Constructor.
    *
    * @see sfOutputEscaper
+   * @inheritdoc
    */
   public function __construct($escapingMethod, $value)
   {
