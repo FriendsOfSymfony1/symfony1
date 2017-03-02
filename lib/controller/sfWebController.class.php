@@ -80,13 +80,15 @@ abstract class sfWebController extends sfController
 
     return $url;
   }
-
+  
   /**
    * Converts an internal URI string to an array of parameters.
    *
    * @param string $url An internal URI
    *
    * @return array An array of parameters
+   *
+   * @throws sfParseException
    */
   public function convertUrlStringToParameters($url)
   {
@@ -177,7 +179,7 @@ abstract class sfWebController extends sfController
   {
     if (empty($url))
     {
-      throw new InvalidArgumentException('Cannot redirect to an empty URL.'); 
+      throw new InvalidArgumentException('Cannot redirect to an empty URL.');
     }
 
     $url = $this->genUrl($url, true);
@@ -190,6 +192,7 @@ abstract class sfWebController extends sfController
     }
 
     // redirect
+    /** @var sfWebResponse $response */
     $response = $this->context->getResponse();
     $response->clearHttpHeaders();
     $response->setStatusCode($statusCode);

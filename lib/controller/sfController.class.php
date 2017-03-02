@@ -20,17 +20,20 @@
  */
 abstract class sfController
 {
-  protected
-    $context           = null,
-    $dispatcher        = null,
-    $controllerClasses = array(),
-    $renderMode        = sfView::RENDER_CLIENT,
-    $maxForwards       = 5;
-
+  /** @var sfContext */
+  protected $context = null;
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var string[] */
+  protected $controllerClasses = array();
+  protected $renderMode = sfView::RENDER_CLIENT;
+  protected $maxForwards = 5;
+  
   /**
    * Class constructor.
    *
    * @see initialize()
+   * @param sfContext $context A sfContext implementation instance
    */
   public function __construct($context)
   {
@@ -285,7 +288,7 @@ abstract class sfController
    * @param string $controllerName A component name
    * @param string $extension      Either 'action' or 'component' depending on the type of controller to look for
    *
-   * @return object A controller implementation instance, if the controller exists, otherwise null
+   * @return sfAction A controller implementation instance, if the controller exists, otherwise null
    *
    * @see getComponent(), getAction()
    */
@@ -368,7 +371,7 @@ abstract class sfController
 
     return new $class($this->context, $moduleName, $actionName, $viewName);
   }
-
+  
   /**
    * Returns the rendered view presentation of a given module/action.
    *
@@ -377,6 +380,9 @@ abstract class sfController
    * @param string $viewName A View class name
    *
    * @return string The generated content
+   *
+   * @throws Exception
+   * @throws sfException
    */
   public function getPresentationFor($module, $action, $viewName = null)
   {
@@ -465,7 +471,7 @@ abstract class sfController
    *                  - sfView::RENDER_VAR
    *                  - sfView::RENDER_NONE
    *
-   * @return true
+   * @return void
    *
    * @throws sfRenderException If an invalid render mode has been set
    */
@@ -491,7 +497,7 @@ abstract class sfController
   {
     return 'cli' == PHP_SAPI;
   }
-
+  
   /**
    * Calls methods defined via sfEventDispatcher.
    *
@@ -499,6 +505,8 @@ abstract class sfController
    * @param array  $arguments The method arguments
    *
    * @return mixed The returned value of the called method
+   *
+   * @throws sfException
    */
   public function __call($method, $arguments)
   {
