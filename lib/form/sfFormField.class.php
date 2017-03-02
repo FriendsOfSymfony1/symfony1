@@ -20,13 +20,17 @@ class sfFormField
 {
   protected static
     $toStringException = null;
-
-  protected
-    $widget = null,
-    $parent = null,
-    $name   = '',
-    $value  = null,
-    $error  = null;
+  
+  /** @var sfWidgetForm */
+  protected $widget = null;
+  /** @var null|sfFormField */
+  protected $parent = null;
+  /** @var string */
+  protected $name = '';
+  /** @var string */
+  protected $value = null;
+  /** @var null|sfValidatorError|sfValidatorErrorSchema */
+  protected $error = null;
 
   /**
    * Constructor.
@@ -235,7 +239,7 @@ class sfFormField
 
   /**
    * Returns the name attribute of the widget.
-   * 
+   *
    * @return string The name attribute of the widget
    */
   public function renderName()
@@ -286,7 +290,7 @@ class sfFormField
   /**
    * Returns the wrapped widget.
    *
-   * @return sfWidget A sfWidget instance
+   * @return sfWidget|sfWidgetFormSchemaDecorator A sfWidget instance
    */
   public function getWidget()
   {
