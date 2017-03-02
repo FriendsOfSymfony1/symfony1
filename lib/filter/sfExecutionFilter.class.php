@@ -32,6 +32,7 @@ class sfExecutionFilter extends sfFilter
   public function execute($filterChain)
   {
     // get the current action instance
+    /** @var sfAction $actionInstance */
     $actionInstance = $this->context->getController()->getActionStack()->getLastEntry()->getActionInstance();
 
     // execute the action, execute and render the view
