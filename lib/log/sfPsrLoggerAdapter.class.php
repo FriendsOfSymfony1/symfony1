@@ -118,7 +118,7 @@ class sfPsrLoggerAdapter extends sfLogger
    * Logs a message.
    *
    * @param string $message Message
-   * @param string $priority Message priority
+   * @param int    $priority Message priority
    *
    * @return void
    */
