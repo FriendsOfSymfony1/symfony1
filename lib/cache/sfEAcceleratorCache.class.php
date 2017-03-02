@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -26,6 +26,10 @@ class sfEAcceleratorCache extends sfCache
    * * see sfCache for options available for all drivers
    *
    * @see sfCache
+   *
+   * @param  array $options
+   *
+   * @throws sfInitializationException
    */
   public function initialize($options = array())
   {
@@ -36,43 +40,60 @@ class sfEAcceleratorCache extends sfCache
       throw new sfInitializationException('You must have EAccelerator installed and enabled to use sfEAcceleratorCache class (or perhaps you forgot to add --with-eaccelerator-shared-memory when installing).');
     }
   }
-
- /**
-  * @see sfCache
-  */
+  
+  /**
+   * @see sfCache
+   *
+   * @param string $key
+   * @param mixed  $default
+   *
+   * @return null|string
+   */
   public function get($key, $default = null)
   {
     $value = eaccelerator_get($this->getOption('prefix').$key);
 
     return null === $value ? $default : $value;
   }
-
+  
   /**
    * @see sfCache
+   *
+   * @param string $key
+   *
+   * @return bool
    */
   public function has($key)
   {
     return null !== eaccelerator_get($this->getOption('prefix'.$key));
   }
-
+  
   /**
    * @see sfCache
+   *
+   * @param  string   $key
+   * @param  string   $data
+   * @param  int|null $lifetime
+   *
+   * @return bool
    */
   public function set($key, $data, $lifetime = null)
   {
     return eaccelerator_put($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
     return eaccelerator_rm($this->getOption('prefix').$key);
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {
@@ -91,9 +112,10 @@ class sfEAcceleratorCache extends sfCache
       }
     }
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = sfCache::ALL)
   {
@@ -121,9 +143,10 @@ class sfEAcceleratorCache extends sfCache
 
     return true;
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {
@@ -134,9 +157,10 @@ class sfEAcceleratorCache extends sfCache
 
     return 0;
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {

@@ -23,18 +23,19 @@ class sfFileCache extends sfCache
   const READ_LAST_MODIFIED = 4;
 
   const EXTENSION = '.cache';
-
- /**
-  * Initializes this sfCache instance.
-  *
-  * Available options:
-  *
-  * * cache_dir: The directory where to put cache files
-  *
-  * * see sfCache for options available for all drivers
-  *
-  * @see sfCache
-  */
+  
+  /**
+   * Initializes this sfCache instance.
+   *
+   * Available options:
+   *
+   * * cache_dir: The directory where to put cache files
+   *
+   * * see sfCache for options available for all drivers
+   *
+   * @see sfCache
+   * @inheritdoc
+   */
   public function initialize($options = array())
   {
     parent::initialize($options);
@@ -46,9 +47,10 @@ class sfFileCache extends sfCache
 
     $this->setcache_dir($this->getOption('cache_dir'));
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function get($key, $default = null)
   {
@@ -67,9 +69,10 @@ class sfFileCache extends sfCache
 
     return $data[self::READ_DATA];
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function has($key)
   {
@@ -77,9 +80,10 @@ class sfFileCache extends sfCache
 
     return is_file($path) && $this->isValid($path);
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function set($key, $data, $lifetime = null)
   {
@@ -90,17 +94,19 @@ class sfFileCache extends sfCache
 
     return $this->write($this->getFilePath($key), $data, time() + $this->getLifetime($lifetime));
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
     return @unlink($this->getFilePath($key));
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {
@@ -135,9 +141,10 @@ class sfFileCache extends sfCache
       }
     }
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = sfCache::ALL)
   {
@@ -157,9 +164,10 @@ class sfFileCache extends sfCache
 
     return $result;
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {
@@ -174,9 +182,10 @@ class sfFileCache extends sfCache
 
     return $data[self::READ_TIMEOUT] < time() ? 0 : $data[self::READ_TIMEOUT];
   }
-
+  
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {
