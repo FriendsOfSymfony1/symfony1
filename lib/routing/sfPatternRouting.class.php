@@ -20,12 +20,13 @@
  */
 class sfPatternRouting extends sfRouting
 {
-  protected
-    $currentRouteName   = null,
-    $currentInternalUri = array(),
-    $routes             = array(),
-    $cacheData          = array(),
-    $cacheChanged       = false;
+  /** @var null|string */
+  protected $currentRouteName = null;
+  protected $currentInternalUri = array();
+  /** @var sfRoute[] */
+  protected $routes = array();
+  protected $cacheData = array();
+  protected $cacheChanged = false;
 
   /**
    * Initializes this Routing.
@@ -43,6 +44,7 @@ class sfPatternRouting extends sfRouting
    *                                      cache backend (like sfAPCCache).
    *
    * @see sfRouting
+   * @inheritdoc
    */
   public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
   {
@@ -73,6 +75,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function loadConfiguration()
   {
@@ -86,6 +89,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function setDefaultParameter($key, $value)
   {
@@ -102,6 +106,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function setDefaultParameters($parameters)
   {
@@ -120,9 +125,10 @@ class sfPatternRouting extends sfRouting
   {
     return sfContext::getInstance()->getConfigCache()->checkConfig('config/routing.yml', true);
   }
-
+  
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function getCurrentInternalUri($withRouteName = false)
   {
@@ -141,6 +147,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function getRoutes()
   {
@@ -149,6 +156,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see  sfRouting
+   * @inheritdoc
    */
   public function getRoute($name)
   {
@@ -170,6 +178,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function setRoutes($routes)
   {
@@ -181,6 +190,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function hasRoutes()
   {
@@ -189,6 +199,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function clearRoutes()
   {
@@ -211,11 +222,14 @@ class sfPatternRouting extends sfRouting
   {
     return array_key_exists($name, $this->routes);
   }
-
+  
   /**
    * Adds a new route at the beginning of the current list of routes.
    *
    * @see connect
+   *
+   * @param string $name
+   * @param sfRoute $route
    */
   public function prependRoute($name, $route)
   {
@@ -224,23 +238,33 @@ class sfPatternRouting extends sfRouting
     $this->connect($name, $route);
     $this->routes = array_merge($this->routes, $routes);
   }
-
+  
   /**
    * Adds a new route.
    *
    * Alias for the connect method.
    *
    * @see connect
+   *
+   * @param string $name
+   * @param sfRoute $route
+   * @return array
    */
   public function appendRoute($name, $route)
   {
     return $this->connect($name, $route);
   }
-
+  
   /**
    * Adds a new route before a given one in the current list of routes.
    *
    * @see connect
+   *
+   * @param string $pivot
+   * @param string $name
+   * @param sfRoute $route
+   *
+   * @throws sfConfigurationException
    */
   public function insertRouteBefore($pivot, $name, $route)
   {
@@ -306,6 +330,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function generate($name, $params = array(), $absolute = false)
   {
@@ -362,6 +387,7 @@ class sfPatternRouting extends sfRouting
 
   /**
    * @see sfRouting
+   * @inheritdoc
    */
   public function parse($url)
   {
