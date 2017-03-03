@@ -18,16 +18,21 @@
  */
 abstract class sfRouting
 {
-  protected
-    $dispatcher        = null,
-    $cache             = null,
-    $defaultParameters = array(),
-    $options           = array();
-
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var sfCache|null */
+  protected $cache = null;
+  protected $defaultParameters = array();
+  protected $options = array();
+  
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfCache           $cache
+   * @param array             $options
    */
   public function __construct(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
   {
@@ -237,13 +242,14 @@ abstract class sfRouting
     // change the culture in the routing default parameters
     $this->setDefaultParameter('sf_culture', $event['culture']);
   }
-
+  
   /**
    * Listens to the request.filter_parameters event.
    *
-   * @param  sfEvent $event       An sfEvent instance
+   * @param  sfEvent $event An sfEvent instance
+   * @param  array   $parameters
    *
-   * @return array   $parameters  An array of parameters for the event
+   * @return array $parameters  An array of parameters for the event
    */
   public function filterParametersEvent(sfEvent $event, $parameters)
   {

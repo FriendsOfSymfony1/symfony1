@@ -20,9 +20,10 @@
  */
 class sfObjectRoute extends sfRequestRoute
 {
-  protected
-    $object  = false,
-    $objects = false;
+  /** @var bool|object */
+  protected $object = false;
+  /** @var bool|array */
+  protected $objects = false;
 
   /**
    * Constructor.
@@ -80,13 +81,15 @@ class sfObjectRoute extends sfRequestRoute
   {
     return parent::generate('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params, $context, $absolute);
   }
-
+  
   /**
    * Gets the object related to the current route and parameters.
    *
    * This method is only accessible if the route is bound and of type "object".
    *
    * @return Object The related object
+   *
+   * @throws sfError404Exception
    */
   public function getObject()
   {
@@ -113,13 +116,15 @@ class sfObjectRoute extends sfRequestRoute
 
     return $this->object;
   }
-
+  
   /**
    * Gets the list of objects related to the current route and parameters.
    *
    * This method is only accessible if the route is bound and of type "list".
    *
    * @return array And array of related objects
+   *
+   * @throws sfError404Exception
    */
   public function getObjects()
   {
