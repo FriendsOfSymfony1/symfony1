@@ -126,7 +126,7 @@ class sfToolkit
   /**
    * Determine if a filesystem path is absolute.
    *
-   * @param  path $path  A filesystem path.
+   * @param  string $path  A filesystem path.
    *
    * @return bool true, if the path is absolute, otherwise false.
    */
