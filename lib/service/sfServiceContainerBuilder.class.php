@@ -175,12 +175,14 @@ class sfServiceContainerBuilder extends sfServiceContainer
   {
     return $this->definitions;
   }
-
+  
   /**
    * Sets a service definition.
    *
    * @param  string              $id         The service identifier
    * @param  sfServiceDefinition $definition A sfServiceDefinition instance
+   *
+   * @return sfServiceDefinition
    */
   public function setServiceDefinition($id, sfServiceDefinition $definition)
   {

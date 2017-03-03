@@ -45,7 +45,12 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
       $this->endClass()
     ;
   }
-
+  
+  /**
+   * @param string $id
+   * @param sfServiceDefinition $definition
+   * @return string
+   */
   protected function addServiceInclude($id, $definition)
   {
     if (null !== $definition->getFile())
@@ -53,7 +58,12 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
       return sprintf("    require_once %s;\n\n", $this->dumpValue($definition->getFile()));
     }
   }
-
+  
+  /**
+   * @param string $id
+   * @param sfServiceDefinition $definition
+   * @return string
+   */
   protected function addServiceShared($id, $definition)
   {
     if ($definition->isShared())
@@ -65,7 +75,12 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
 EOF;
     }
   }
-
+  
+  /**
+   * @param string $id
+   * @param sfServiceDefinition $definition
+   * @return string
+   */
   protected function addServiceReturn($id, $definition)
   {
     if ($definition->isShared())
@@ -87,7 +102,12 @@ EOF;
 EOF;
     }
   }
-
+  
+  /**
+   * @param string $id
+   * @param sfServiceDefinition $definition
+   * @return string
+   */
   protected function addServiceInstance($id, $definition)
   {
     $class = $this->dumpValue($definition->getClass());
@@ -114,7 +134,12 @@ EOF;
       }
     }
   }
-
+  
+  /**
+   * @param string $id
+   * @param sfServiceDefinition $definition
+   * @return string
+   */
   protected function addServiceMethodCalls($id, $definition)
   {
     $calls = '';
@@ -131,7 +156,12 @@ EOF;
 
     return $calls;
   }
-
+  
+  /**
+   * @param string $id
+   * @param sfServiceDefinition $definition
+   * @return string
+   */
   protected function addServiceConfigurator($id, $definition)
   {
     if (!$callable = $definition->getConfigurator())
