@@ -19,11 +19,13 @@
  */
 abstract class sfResponse implements Serializable
 {
+  /** @var array */
   protected $options = array();
   /** @var sfEventDispatcher */
   protected $dispatcher = null;
+  /** @var string */
   protected $content = '';
-  
+
   /**
    * Class constructor.
    *
