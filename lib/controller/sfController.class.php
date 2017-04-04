@@ -26,9 +26,11 @@ abstract class sfController
   protected $dispatcher = null;
   /** @var string[] */
   protected $controllerClasses = array();
+  /** @var int */
   protected $renderMode = sfView::RENDER_CLIENT;
+  /** @var int */
   protected $maxForwards = 5;
-  
+
   /**
    * Class constructor.
    *
@@ -371,7 +373,7 @@ abstract class sfController
 
     return new $class($this->context, $moduleName, $actionName, $viewName);
   }
-  
+
   /**
    * Returns the rendered view presentation of a given module/action.
    *
@@ -497,7 +499,7 @@ abstract class sfController
   {
     return 'cli' == PHP_SAPI;
   }
-  
+
   /**
    * Calls methods defined via sfEventDispatcher.
    *
