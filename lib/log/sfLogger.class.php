@@ -36,7 +36,7 @@ abstract class sfLogger implements sfLoggerInterface
   const NOTICE  = 5; // Normal but significant
   const INFO    = 6; // Informational
   const DEBUG   = 7; // Debug-level messages
-  
+
   /** @var sfEventDispatcher */
   protected $dispatcher = null;
   /** @var array */
@@ -80,7 +80,7 @@ abstract class sfLogger implements sfLoggerInterface
   {
     $this->dispatcher = $dispatcher;
     $this->options = $options;
-    
+
     if (isset($this->options['level']))
     {
       $this->setLogLevel($this->options['level']);
@@ -88,7 +88,7 @@ abstract class sfLogger implements sfLoggerInterface
 
     $dispatcher->connect('application.log', array($this, 'listenToLogEvent'));
   }
-  
+
   /**
    * Returns the options for the logger instance.
    *
@@ -98,7 +98,7 @@ abstract class sfLogger implements sfLoggerInterface
   {
     return $this->options;
   }
-  
+
   /**
    * Returns the options for the logger instance.
    *
@@ -134,7 +134,7 @@ abstract class sfLogger implements sfLoggerInterface
 
     $this->level = $level;
   }
-  
+
   /**
    * Logs a message.
    *

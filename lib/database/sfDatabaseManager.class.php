@@ -25,7 +25,7 @@ class sfDatabaseManager
   /** @var sfProjectConfiguration */
   protected $configuration = null;
   protected $databases = array();
-  
+
   /**
    * Class constructor.
    *

@@ -19,7 +19,7 @@
 class sfAPCCache extends sfCache
 {
   protected $enabled;
-  
+
   /**
    * Initializes this sfCache instance.
    *
@@ -36,7 +36,7 @@ class sfAPCCache extends sfCache
 
     $this->enabled = function_exists('apc_store') && ini_get('apc.enabled');
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -52,7 +52,7 @@ class sfAPCCache extends sfCache
 
     return $has ? $value : $default;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -85,8 +85,8 @@ class sfAPCCache extends sfCache
 
     return $value;
   }
-  
-  
+
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -100,7 +100,7 @@ class sfAPCCache extends sfCache
 
     return apc_store($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -114,7 +114,7 @@ class sfAPCCache extends sfCache
 
     return apc_delete($this->getOption('prefix').$key);
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -131,7 +131,7 @@ class sfAPCCache extends sfCache
       return apc_clear_cache('user');
     }
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -145,7 +145,7 @@ class sfAPCCache extends sfCache
 
     return 0;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -159,7 +159,7 @@ class sfAPCCache extends sfCache
 
     return 0;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc

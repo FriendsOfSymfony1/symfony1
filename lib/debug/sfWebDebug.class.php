@@ -132,7 +132,7 @@ class sfWebDebug
   {
     unset($this->panels[$name]);
   }
-  
+
   /**
    * Gets an option value by name.
    *

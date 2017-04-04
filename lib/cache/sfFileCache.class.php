@@ -23,7 +23,7 @@ class sfFileCache extends sfCache
   const READ_LAST_MODIFIED = 4;
 
   const EXTENSION = '.cache';
-  
+
   /**
    * Initializes this sfCache instance.
    *
@@ -47,7 +47,7 @@ class sfFileCache extends sfCache
 
     $this->setcache_dir($this->getOption('cache_dir'));
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -69,7 +69,7 @@ class sfFileCache extends sfCache
 
     return $data[self::READ_DATA];
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -80,7 +80,7 @@ class sfFileCache extends sfCache
 
     return is_file($path) && $this->isValid($path);
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -94,7 +94,7 @@ class sfFileCache extends sfCache
 
     return $this->write($this->getFilePath($key), $data, time() + $this->getLifetime($lifetime));
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -103,7 +103,7 @@ class sfFileCache extends sfCache
   {
     return @unlink($this->getFilePath($key));
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -141,7 +141,7 @@ class sfFileCache extends sfCache
       }
     }
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -164,7 +164,7 @@ class sfFileCache extends sfCache
 
     return $result;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -182,7 +182,7 @@ class sfFileCache extends sfCache
 
     return $data[self::READ_TIMEOUT] < time() ? 0 : $data[self::READ_TIMEOUT];
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc

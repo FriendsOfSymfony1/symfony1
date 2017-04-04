@@ -33,7 +33,7 @@ class sfFilesystem
     $this->dispatcher = $dispatcher;
     $this->formatter = $formatter;
   }
-  
+
   /**
    * Copies a file.
    *
@@ -175,7 +175,7 @@ class sfFilesystem
 
     umask($currentUmask);
   }
-  
+
   /**
    * Renames a file.
    *
@@ -251,7 +251,7 @@ class sfFilesystem
 
     $this->symlink($originDir, $targetDir, $copyOnWindows);
   }
-  
+
   /**
    * Mirrors a directory to another.
    *

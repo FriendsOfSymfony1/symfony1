@@ -60,7 +60,7 @@ class sfSimpleAutoload
 
     return self::$instance;
   }
-  
+
   /**
    * Register sfSimpleAutoload in spl autoloader.
    *

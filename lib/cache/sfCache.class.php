@@ -24,7 +24,7 @@ abstract class sfCache
 
   protected
     $options = array();
-  
+
   /**
    * Class constructor.
    *
@@ -173,7 +173,7 @@ abstract class sfCache
   {
     return null === $lifetime ? $this->getOption('lifetime') : $lifetime;
   }
-  
+
   /**
    * Gets the backend object.
    *
@@ -198,7 +198,7 @@ abstract class sfCache
   {
     return isset($this->options[$name]) ? $this->options[$name] : $default;
   }
-  
+
   /**
    * Sets an option value.
    *

@@ -49,15 +49,15 @@ class sfXCacheCache extends sfCache
   */
   public function get($key, $default = null)
   {
-    
+
     $set = $this->getBaseValue($key);
-    
+
     if (!is_array($set) || !array_key_exists('data', $set))
     {
-      
+
       return $default;
     }
-    
+
     return $set['data'];
   }
 
@@ -83,7 +83,7 @@ class sfXCacheCache extends sfCache
       'data'    => $data,
       'ctime'   => time()
     );
-    
+
     return xcache_set($this->getOption('prefix').$key, $set, $lifetime);
   }
 
@@ -127,13 +127,13 @@ class sfXCacheCache extends sfCache
   public function getLastModified($key)
   {
     $set = $this->getBaseValue($key);
-    
+
     if (!is_array($set) || !array_key_exists('ctime', $set))
     {
-      
+
       return 0;
     }
-    
+
     return $set['ctime'];
   }
 
@@ -143,18 +143,18 @@ class sfXCacheCache extends sfCache
    */
   public function getTimeout($key)
   {
-    
+
     $set = $this->getBaseValue($key);
-    
+
     if (!is_array($set) || !array_key_exists('timeout', $set))
     {
-      
+
       return 0;
     }
-    
+
     return $set['timeout'];
   }
-  
+
   /**
    * @param string $key
    * @return mixed|null
@@ -163,7 +163,7 @@ class sfXCacheCache extends sfCache
   {
     return xcache_isset($this->getOption('prefix').$key) ? xcache_get($this->getOption('prefix').$key) : null;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -191,7 +191,7 @@ class sfXCacheCache extends sfCache
       }
     }
   }
-  
+
   /**
    * @param string $key
    * @return array|null

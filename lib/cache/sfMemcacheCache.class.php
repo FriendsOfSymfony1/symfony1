@@ -20,7 +20,7 @@ class sfMemcacheCache extends sfCache
 {
   /** @var Memcache */
   protected $memcache = null;
-  
+
   /**
    * Initializes this sfCache instance.
    *
@@ -86,7 +86,7 @@ class sfMemcacheCache extends sfCache
   {
     return $this->memcache;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -97,7 +97,7 @@ class sfMemcacheCache extends sfCache
 
     return (false === $value && false === $this->getMetadata($key)) ? $default : $value;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -112,7 +112,7 @@ class sfMemcacheCache extends sfCache
 
     return true;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -137,7 +137,7 @@ class sfMemcacheCache extends sfCache
 
     return $this->memcache->set($this->getOption('prefix').$key, $data, false, time() + $lifetime);
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -152,7 +152,7 @@ class sfMemcacheCache extends sfCache
     }
     return $this->memcache->delete($this->getOption('prefix').$key, 0);
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -164,7 +164,7 @@ class sfMemcacheCache extends sfCache
       return $this->memcache->flush();
     }
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -178,7 +178,7 @@ class sfMemcacheCache extends sfCache
 
     return $retval['lastModified'];
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -192,7 +192,7 @@ class sfMemcacheCache extends sfCache
 
     return $retval['timeout'];
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -215,7 +215,7 @@ class sfMemcacheCache extends sfCache
       }
     }
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc

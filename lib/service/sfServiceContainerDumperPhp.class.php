@@ -45,7 +45,7 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
       $this->endClass()
     ;
   }
-  
+
   /**
    * @param string $id
    * @param sfServiceDefinition $definition
@@ -58,7 +58,7 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
       return sprintf("    require_once %s;\n\n", $this->dumpValue($definition->getFile()));
     }
   }
-  
+
   /**
    * @param string $id
    * @param sfServiceDefinition $definition
@@ -75,7 +75,7 @@ class sfServiceContainerDumperPhp extends sfServiceContainerDumper
 EOF;
     }
   }
-  
+
   /**
    * @param string $id
    * @param sfServiceDefinition $definition
@@ -102,7 +102,7 @@ EOF;
 EOF;
     }
   }
-  
+
   /**
    * @param string $id
    * @param sfServiceDefinition $definition
@@ -134,7 +134,7 @@ EOF;
       }
     }
   }
-  
+
   /**
    * @param string $id
    * @param sfServiceDefinition $definition
@@ -156,7 +156,7 @@ EOF;
 
     return $calls;
   }
-  
+
   /**
    * @param string $id
    * @param sfServiceDefinition $definition

@@ -266,7 +266,7 @@ class sfRoute implements Serializable
   {
     return strlen($a) < strlen($b);
   }
-  
+
   /**
    * Generates a URL for the given parameters by using the route tokens.
    *
@@ -586,7 +586,7 @@ class sfRoute implements Serializable
         throw new InvalidArgumentException(sprintf('Unable to parse "%s" route near "%s".', $this->pattern, $buffer));
       }
     }
-    
+
     // check for suffix
     if ($this->suffix)
     {

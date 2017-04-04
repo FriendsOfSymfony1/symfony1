@@ -56,7 +56,7 @@ class sfCommandOptionSet
       $this->addOption($option);
     }
   }
-  
+
   /**
    * Add a sfCommandOption objects.
    *
@@ -81,7 +81,7 @@ class sfCommandOptionSet
       $this->shortcuts[$option->getShortcut()] = $option->getName();
     }
   }
-  
+
   /**
    * Returns an option by name.
    *
@@ -134,7 +134,7 @@ class sfCommandOptionSet
   {
     return isset($this->shortcuts[$name]);
   }
-  
+
   /**
    * Gets an option by shortcut.
    *
@@ -162,7 +162,7 @@ class sfCommandOptionSet
 
     return $values;
   }
-  
+
   /**
    * Returns the option name given a shortcut.
    *

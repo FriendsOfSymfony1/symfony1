@@ -663,7 +663,7 @@ class sfWebRequest extends sfRequest
   {
     $this->relativeUrlRoot = $value;
   }
-  
+
   /**
    * Splits an HTTP header for the current web request.
    *

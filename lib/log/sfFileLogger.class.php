@@ -23,7 +23,7 @@ class sfFileLogger extends sfLogger
     $format     = '%time% %type% [%priority%] %message%%EOL%',
     $timeFormat = '%b %d %H:%M:%S',
     $fp         = null;
-  
+
   /**
    * Initializes this logger.
    *

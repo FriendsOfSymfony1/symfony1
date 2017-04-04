@@ -197,7 +197,7 @@ class sfSQLiteCache extends sfCache
 
     return $rs->numRows() ? (int) $rs->fetchSingle() : 0;
   }
-  
+
   /**
    * Sets the database name.
    *
@@ -253,7 +253,7 @@ class sfSQLiteCache extends sfCache
       $this->createSchema();
     }
   }
-  
+
   /**
    * Callback used when deleting keys from cache.
    * @param string $regexp

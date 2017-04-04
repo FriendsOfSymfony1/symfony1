@@ -44,7 +44,6 @@ abstract class sfCommandApplication
   protected $formatter = null;
   /** @var mixed */
   protected $commandOptions;
-
   /**
    * Constructor.
    *
@@ -144,7 +143,7 @@ abstract class sfCommandApplication
       $this->registerTask($task);
     }
   }
-  
+
   /**
    * Registers a task object.
    *
@@ -202,7 +201,7 @@ abstract class sfCommandApplication
   {
     return $this->tasks;
   }
-  
+
   /**
    * Returns a registered task by name or alias.
    *
@@ -464,7 +463,7 @@ abstract class sfCommandApplication
 
     $this->dispatcher->notify(new sfEvent($e, 'application.throw_exception'));
   }
-  
+
   /**
    * Gets a task from a task name or a shortcut.
    *
@@ -608,7 +607,7 @@ abstract class sfCommandApplication
     // close the streams on script termination
     register_shutdown_function(create_function('', 'fclose(STDIN); fclose(STDOUT); fclose(STDERR); return true;'));
   }
-  
+
   /**
    * Returns an array of possible abbreviations given a set of names.
    *

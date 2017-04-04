@@ -69,7 +69,7 @@ class sfGeneratorManager
   {
     $this->basePath = $basePath;
   }
-  
+
   /**
    * Saves some content.
    *

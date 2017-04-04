@@ -134,7 +134,7 @@ class sfException extends Exception
       exit(1);
     }
   }
-  
+
   /**
    * Gets the stack trace for this exception.
    * @param Exception|Throwable $exception
@@ -150,7 +150,7 @@ class sfException extends Exception
     {
       /** @var $request sfWebRequest */
       /** @var $response sfWebResponse */
-      
+
       $dispatcher = sfContext::getInstance()->getEventDispatcher();
 
       if (sfConfig::get('sf_logging_enabled'))

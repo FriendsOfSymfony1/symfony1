@@ -29,7 +29,7 @@ abstract class sfRequest implements ArrayAccess
   const DELETE = 'DELETE';
   const HEAD   = 'HEAD';
   const OPTIONS = 'OPTIONS';
-  
+
   /** @var sfEventDispatcher */
   protected $dispatcher = null;
   /** @var string|null */
@@ -41,7 +41,7 @@ abstract class sfRequest implements ArrayAccess
   protected $parameterHolder = null;
   /** @var sfParameterHolder */
   protected $attributeHolder = null;
-  
+
   /**
    * Class constructor.
    *
@@ -267,7 +267,7 @@ abstract class sfRequest implements ArrayAccess
   {
     $this->attributeHolder->set($name, $value);
   }
-  
+
   /**
    * Retrieves a parameter for the current request.
    *

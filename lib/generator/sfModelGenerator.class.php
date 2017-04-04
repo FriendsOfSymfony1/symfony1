@@ -25,7 +25,7 @@ abstract class sfModelGenerator extends sfGenerator
   protected $params = array();
   protected $config = array();
   protected $formObject = null;
-  
+
   /**
    * Generates classes and templates in cache.
    *
@@ -132,7 +132,7 @@ abstract class sfModelGenerator extends sfGenerator
   {
     return isset($this->params['i18n_catalogue']) ? $this->params['i18n_catalogue'] : 'messages';
   }
-  
+
   /**
    * Returns PHP code for primary keys parameters.
    *
@@ -150,7 +150,7 @@ abstract class sfModelGenerator extends sfGenerator
 
     return implode(",\n".str_repeat(' ', max(0, $indent - strlen($this->getSingularName().$this->modelClass))), $params);
   }
-  
+
   /**
    * Returns PHP code to add to a URL for primary keys.
    *
@@ -352,7 +352,7 @@ EOF;
       return $this->getFormObject()->isMultipart() ? ' enctype="multipart/form-data"' : '';
     }
   }
-  
+
   /**
    * Validates the basic structure of the parameters.
    *
@@ -433,7 +433,7 @@ EOF;
 
     return new $class();
   }
-  
+
   /**
    * Returns the URL for a given action.
    *
