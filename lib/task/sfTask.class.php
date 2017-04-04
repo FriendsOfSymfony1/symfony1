@@ -193,7 +193,7 @@ abstract class sfTask
   {
     $this->arguments = array_merge($this->arguments, $arguments);
   }
-  
+
   /**
    * Add an argument.
    *
@@ -229,7 +229,7 @@ abstract class sfTask
   {
     $this->options = array_merge($this->options, $options);
   }
-  
+
   /**
    * Add an option.
    *
@@ -510,7 +510,7 @@ abstract class sfTask
       return !$answer || 'y' == strtolower($answer[0]);
     }
   }
-  
+
   /**
    * Asks for a value and validates the response.
    *

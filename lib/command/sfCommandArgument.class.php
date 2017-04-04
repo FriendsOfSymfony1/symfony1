@@ -28,7 +28,7 @@ class sfCommandArgument
     $mode    = null,
     $default = null,
     $help    = '';
-  
+
   /**
    * Constructor.
    *
@@ -86,7 +86,7 @@ class sfCommandArgument
   {
     return self::IS_ARRAY === (self::IS_ARRAY & $this->mode);
   }
-  
+
   /**
    * Sets the default value.
    *

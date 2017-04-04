@@ -22,7 +22,7 @@ abstract class sfCommandApplicationTask extends sfTask
 {
   /** @var sfSymfonyCommandApplication */
   protected $commandApplication;
-  
+
   /** @var sfMailer */
   private $mailer;
   /** @var sfRouting */

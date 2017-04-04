@@ -25,7 +25,7 @@ abstract class sfConfigHandler
   /** @var sfParameterHolder */
   protected
     $parameterHolder = null;
-  
+
   /**
    * Class constructor.
    *

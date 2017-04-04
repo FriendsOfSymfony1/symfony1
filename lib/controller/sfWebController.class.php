@@ -51,7 +51,7 @@ abstract class sfWebController extends sfController
       {
         return $parameters;
       }
-  
+
       // strip fragment
       if (false !== ($pos = strpos($parameters, '#')))
       {
@@ -80,7 +80,7 @@ abstract class sfWebController extends sfController
 
     return $url;
   }
-  
+
   /**
    * Converts an internal URI string to an array of parameters.
    *

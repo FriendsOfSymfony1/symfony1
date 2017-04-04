@@ -209,7 +209,7 @@ class sfCommandManager
   {
     return $this->argumentValues;
   }
-  
+
   /**
    * Returns the argument value for a given argument name.
    *
@@ -238,7 +238,7 @@ class sfCommandManager
   {
     return $this->optionValues;
   }
-  
+
   /**
    * Returns the option value for a given option name.
    *

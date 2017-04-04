@@ -47,7 +47,7 @@ class sfAutoload
 
     return self::$instance;
   }
-  
+
   /**
    * Register sfAutoload in spl autoloader.
    *

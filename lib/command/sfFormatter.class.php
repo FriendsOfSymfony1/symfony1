@@ -61,7 +61,7 @@ class sfFormatter
   {
     return $text;
   }
-  
+
   /**
    * Formats a message within a section.
    *

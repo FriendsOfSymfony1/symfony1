@@ -81,7 +81,7 @@ class sfObjectRoute extends sfRequestRoute
   {
     return parent::generate('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params, $context, $absolute);
   }
-  
+
   /**
    * Gets the object related to the current route and parameters.
    *
@@ -116,7 +116,7 @@ class sfObjectRoute extends sfRequestRoute
 
     return $this->object;
   }
-  
+
   /**
    * Gets the list of objects related to the current route and parameters.
    *

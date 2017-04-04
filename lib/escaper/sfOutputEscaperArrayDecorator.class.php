@@ -25,7 +25,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    * @var int
    */
   private $count;
-  
+
   /**
    * Constructor.
    *

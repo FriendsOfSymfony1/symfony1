@@ -26,7 +26,7 @@ class sfNoCache extends sfCache
   {
     return $default;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -35,7 +35,7 @@ class sfNoCache extends sfCache
   {
     return false;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -44,7 +44,7 @@ class sfNoCache extends sfCache
   {
     return true;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -53,7 +53,7 @@ class sfNoCache extends sfCache
   {
     return true;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -62,7 +62,7 @@ class sfNoCache extends sfCache
   {
     return true;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc
@@ -71,7 +71,7 @@ class sfNoCache extends sfCache
   {
     return true;
   }
-  
+
   /**
    * @see sfCache
    * @inheritdoc

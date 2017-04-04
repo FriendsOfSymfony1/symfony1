@@ -26,7 +26,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
 {
   protected $default_namespace = null;
   protected $parameters = array();
-  
+
   /**
    * The constructor for sfNamespacedParameterHolder.
    *
@@ -233,7 +233,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
 
     return $retval;
   }
-  
+
   /**
    * Remove A parameter namespace and all of its associated parameters.
    *

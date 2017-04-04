@@ -87,7 +87,7 @@ class sfFormSymfony extends sfForm
       throw $error;
     }
   }
-  
+
   /**
    * Calls methods defined via sfEventDispatcher.
    *

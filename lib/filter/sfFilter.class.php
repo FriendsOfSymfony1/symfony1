@@ -28,7 +28,7 @@ abstract class sfFilter
   /** @var bool[] */
   public static
     $filterCalled    = array();
-  
+
   /**
    * Class constructor.
    *

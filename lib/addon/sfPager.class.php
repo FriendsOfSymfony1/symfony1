@@ -62,7 +62,7 @@ abstract class sfPager implements Iterator, Countable
    * @return array
    */
   abstract public function getResults();
-  
+
   /**
    * Returns an object at a certain offset.
    *

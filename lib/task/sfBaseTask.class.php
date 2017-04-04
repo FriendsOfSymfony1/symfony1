@@ -105,7 +105,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
     return $this->filesystem;
   }
-  
+
   /**
    * Checks if the current directory is a symfony project directory.
    *
@@ -120,7 +120,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
       throw new sfException('You must be in a symfony project directory.');
     }
   }
-  
+
   /**
    * Checks if an application exists.
    *
@@ -137,7 +137,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
       throw new sfException(sprintf('Application "%s" does not exist', $app));
     }
   }
-  
+
   /**
    * Checks if a module exists.
    *

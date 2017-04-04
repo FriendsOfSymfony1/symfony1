@@ -30,7 +30,7 @@ class sfCommandOption
     $mode     = null,
     $default  = null,
     $help     = '';
-  
+
   /**
    * Constructor.
    *
@@ -138,7 +138,7 @@ class sfCommandOption
   {
     return self::IS_ARRAY === (self::IS_ARRAY & $this->mode);
   }
-  
+
   /**
    * Sets the default value.
    *

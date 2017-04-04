@@ -24,7 +24,7 @@ abstract class sfRouting
   protected $cache = null;
   protected $defaultParameters = array();
   protected $options = array();
-  
+
   /**
    * Class constructor.
    *
@@ -242,7 +242,7 @@ abstract class sfRouting
     // change the culture in the routing default parameters
     $this->setDefaultParameter('sf_culture', $event['culture']);
   }
-  
+
   /**
    * Listens to the request.filter_parameters event.
    *

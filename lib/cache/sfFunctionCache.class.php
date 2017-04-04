@@ -29,7 +29,7 @@ class sfFunctionCache
   {
     $this->cache = $cache;
   }
-  
+
   /**
    * Calls a cacheable function or method (or not if there is already a cache for it).
    *

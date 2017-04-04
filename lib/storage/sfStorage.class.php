@@ -22,7 +22,7 @@ abstract class sfStorage
 {
   protected
     $options = array();
-  
+
   /**
    * Class constructor.
    *

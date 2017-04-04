@@ -231,7 +231,7 @@ abstract class sfModelGeneratorConfiguration
       $this->configuration[$context][$key] = str_replace('%%'.$flag.$name.'%%', '%%'.$name.'%%', $this->configuration[$context][$key]);
     }
   }
-  
+
   /**
    * @param string        $context
    * @param string[]|null $fields
@@ -299,7 +299,7 @@ abstract class sfModelGeneratorConfiguration
 
     return $escaped ? str_replace("'", "\\'", $v) : $v;
   }
-  
+
   /**
    * Gets the fields that represents the filters.
    *
@@ -349,7 +349,7 @@ abstract class sfModelGeneratorConfiguration
 
     return $fields;
   }
-  
+
   /**
    * Gets the fields that represents the form.
    *

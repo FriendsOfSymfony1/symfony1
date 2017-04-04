@@ -47,7 +47,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
   {
     return $this->widget;
   }
-  
+
   /**
    * Renders the widget.
    *

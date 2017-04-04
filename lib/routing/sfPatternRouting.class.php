@@ -125,7 +125,7 @@ class sfPatternRouting extends sfRouting
   {
     return sfContext::getInstance()->getConfigCache()->checkConfig('config/routing.yml', true);
   }
-  
+
   /**
    * @see sfRouting
    * @inheritdoc
@@ -222,7 +222,7 @@ class sfPatternRouting extends sfRouting
   {
     return array_key_exists($name, $this->routes);
   }
-  
+
   /**
    * Adds a new route at the beginning of the current list of routes.
    *
@@ -238,7 +238,7 @@ class sfPatternRouting extends sfRouting
     $this->connect($name, $route);
     $this->routes = array_merge($this->routes, $routes);
   }
-  
+
   /**
    * Adds a new route.
    *
@@ -254,7 +254,7 @@ class sfPatternRouting extends sfRouting
   {
     return $this->connect($name, $route);
   }
-  
+
   /**
    * Adds a new route before a given one in the current list of routes.
    *

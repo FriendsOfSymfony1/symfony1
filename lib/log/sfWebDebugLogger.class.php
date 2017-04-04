@@ -63,7 +63,7 @@ class sfWebDebugLogger extends sfVarLogger
   {
     set_error_handler(array($this,'handlePhpError'));
   }
-  
+
   /**
    * PHP error handler send PHP errors to log.
    *

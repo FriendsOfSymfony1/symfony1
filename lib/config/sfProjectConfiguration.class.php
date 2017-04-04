@@ -621,7 +621,7 @@ class sfProjectConfiguration
 
     return new $class($environment, $debug, $rootDir, $dispatcher);
   }
-  
+
   /**
    * Calls methods defined via sfEventDispatcher.
    *

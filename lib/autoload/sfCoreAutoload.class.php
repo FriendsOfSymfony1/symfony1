@@ -53,7 +53,7 @@ class sfCoreAutoload
 
     return self::$instance;
   }
-  
+
   /**
    * Register sfCoreAutoload in spl autoloader.
    *

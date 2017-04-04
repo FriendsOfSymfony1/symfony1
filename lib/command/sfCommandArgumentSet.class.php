@@ -62,7 +62,7 @@ class sfCommandArgumentSet
       }
     }
   }
-  
+
   /**
    * Add a sfCommandArgument objects.
    *
@@ -103,7 +103,7 @@ class sfCommandArgumentSet
 
     $this->arguments[$argument->getName()] = $argument;
   }
-  
+
   /**
    * Returns an argument by name.
    *

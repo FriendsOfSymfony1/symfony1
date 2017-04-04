@@ -34,7 +34,7 @@ class sfContext implements ArrayAccess
   protected static
     $instances = array(),
     $current   = 'default';
-  
+
   /**
    * Creates a new context instance.
    *
@@ -96,7 +96,7 @@ class sfContext implements ArrayAccess
     // register our shutdown function
     register_shutdown_function(array($this, 'shutdown'));
   }
-  
+
   /**
    * Retrieves the singleton instance of this class.
    *
@@ -412,7 +412,7 @@ class sfContext implements ArrayAccess
   {
     return isset($this->factories['viewCacheManager']) ? $this->factories['viewCacheManager'] : null;
   }
-  
+
   /**
    * Retrieve the i18n instance
    *

@@ -30,7 +30,7 @@ class sfUser implements ArrayAccess
   const ATTRIBUTE_NAMESPACE = 'symfony/user/sfUser/attributes';
 
   const CULTURE_NAMESPACE = 'symfony/user/sfUser/culture';
-  
+
   protected $options = array();
   /** @var sfNamespacedParameterHolder */
   protected $attributeHolder = null;
@@ -39,7 +39,7 @@ class sfUser implements ArrayAccess
   protected $storage = null;
   /** @var sfEventDispatcher */
   protected $dispatcher = null;
-  
+
   /**
    * Class constructor.
    *

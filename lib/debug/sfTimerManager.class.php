@@ -20,7 +20,7 @@ class sfTimerManager
 {
   /** @var sfTimer[] */
   static public $timers = array();
-  
+
   /**
    * Gets a sfTimer instance.
    *

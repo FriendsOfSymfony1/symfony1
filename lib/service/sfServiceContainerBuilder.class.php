@@ -175,7 +175,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
   {
     return $this->definitions;
   }
-  
+
   /**
    * Sets a service definition.
    *

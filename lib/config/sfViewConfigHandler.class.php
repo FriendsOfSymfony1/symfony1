@@ -248,7 +248,7 @@ EOF;
 
     return implode("\n", array_merge($css, $js))."\n";
   }
-  
+
   /**
    * Creates a list of add$Type PHP statements for the given type and config.
    *

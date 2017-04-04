@@ -31,7 +31,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $CSRFSecret        = false,
     $CSRFFieldName     = '_csrf_token',
     $toStringException = null;
-  
+
   /** @var sfWidgetFormSchema|sfWidget[]|sfWidgetFormSchemaDecorator[] */
   protected $widgetSchema    = null;
   /** @var sfValidatorSchema|sfValidatorBase[] */
@@ -793,7 +793,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
 
     return $this;
   }
-  
+
   /**
    * Gets an option value.
    *
@@ -835,7 +835,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   {
     return isset($this->defaults[$name]) ? $this->defaults[$name] : null;
   }
-  
+
   /**
    * Returns true if the form has a default value for a form field.
    *
@@ -1409,7 +1409,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
 
     return $array1;
   }
-  
+
   /**
    * Checks that the $_POST values do not contain something that
    * looks like a file upload (coming from $_FILE).
