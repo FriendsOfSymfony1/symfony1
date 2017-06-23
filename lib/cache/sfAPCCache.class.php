@@ -32,9 +32,15 @@ class sfAPCCache extends sfCache
    */
   public function initialize($options = array())
   {
-    parent::initialize($options);
+    // Check if the APC is enabled and the apc_store function is available
+    // Be aware that php7's apcu extension removes the  backward compatibility with the original
+    // apcu used in php 5.x. The "apcu-bc" extension to be enabled to provide backward compatibility.
+    if (!function_exists('apc_store') || !ini_get('apc.enabled'))
+    {
+      throw new sfConfigurationException('sfAPCCache class needs the "apc" extension and the "apc_store" function to be enabled.');
+    }
 
-    $this->enabled = function_exists('apc_store') && ini_get('apc.enabled');
+    parent::initialize($options);
   }
 
   /**
@@ -43,11 +49,6 @@ class sfAPCCache extends sfCache
    */
   public function get($key, $default = null)
   {
-    if (!$this->enabled)
-    {
-      return $default;
-    }
-
     $value = $this->fetch($this->getOption('prefix').$key, $has);
 
     return $has ? $value : $default;
@@ -59,11 +60,6 @@ class sfAPCCache extends sfCache
    */
   public function has($key)
   {
-    if (!$this->enabled)
-    {
-      return false;
-    }
-
     $this->fetch($this->getOption('prefix').$key, $has);
 
     return $has;
@@ -93,25 +89,14 @@ class sfAPCCache extends sfCache
    */
   public function set($key, $data, $lifetime = null)
   {
-    if (!$this->enabled)
-    {
-      return true;
-    }
-
     return apc_store($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
   }
 
   /**
    * @see sfCache
-   * @inheritdoc
    */
   public function remove($key)
   {
-    if (!$this->enabled)
-    {
-      return true;
-    }
-
     return apc_delete($this->getOption('prefix').$key);
   }
 
@@ -121,11 +106,6 @@ class sfAPCCache extends sfCache
    */
   public function clean($mode = sfCache::ALL)
   {
-    if (!$this->enabled)
-    {
-      return true;
-    }
-
     if (sfCache::ALL === $mode)
     {
       return apc_clear_cache('user');
@@ -166,11 +146,6 @@ class sfAPCCache extends sfCache
    */
   public function removePattern($pattern)
   {
-    if (!$this->enabled)
-    {
-      return true;
-    }
-
     $infos = apc_cache_info('user');
     if (!is_array($infos['cache_list']))
     {
@@ -197,11 +172,6 @@ class sfAPCCache extends sfCache
    */
   protected function getCacheInfo($key)
   {
-    if (!$this->enabled)
-    {
-      return false;
-    }
-
     $infos = apc_cache_info('user');
 
     if (is_array($infos['cache_list']))
