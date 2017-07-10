@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -107,7 +107,7 @@ $string = '{n: n%2 == 0} are even numbers |{n: n >= 5} are not even and greater 
 $t->is($n->format($string, 0), 'are even numbers', '->format() can takes a set notation in the format string');
 $t->is($n->format($string, 2), 'are even numbers', '->format() can takes a set notation in the format string');
 $t->is($n->format($string, 4), 'are even numbers', '->format() can takes a set notation in the format string');
-$t->is(!$n->format($string, 1), 'are even numbers', '->format() can takes a set notation in the format string');
+$t->isnt($n->format($string, 1), 'are even numbers', '->format() can takes a set notation in the format string');
 $t->is($n->format($string, 5), 'are not even and greater than or equal to 5', '->format() can takes a set notation in the format string');
 
 $t->diag('set notation for polish');

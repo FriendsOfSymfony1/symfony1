@@ -24,7 +24,7 @@ $t->diag('->render()');
 
 foreach (array(
   $year.'-10-15 12:30:35' => array('year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35),
-  time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'), 'hour' => date('G'), 'minute' => date('i'), 'second' => date('s')),
+  time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'), 'hour' => date('H'), 'minute' => date('i'), 'second' => date('s')),
   'tomorrow 12:30:35' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400), 'hour' => 12, 'minute' => 30, 'second' => 35),
 ) as $date => $values)
 {
