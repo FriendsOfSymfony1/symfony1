@@ -283,14 +283,16 @@ function _auto_link_urls($text, $href_options = array(), $truncate = false, $tru
       {
           return $matches[0];
       }
-      else if ($truncate && strlen($matches[2].$matches[3]) > $truncate_len)
+
+      $text = $matches[2] . $matches[3];
+      $href = ($matches[2] == "www." ? "http://www." : $matches[2]) . $matches[3];
+
+      if ($truncate && strlen($text) > $truncate_len)
       {
-          return $matches[1].'<a href="'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].'"'.$href_options.'>'.substr($matches[2].$matches[3], 0, $truncate_len).$pad.'</a>'.$matches[4];
+          $text = substr($text, 0, $truncate_len).$pad;
       }
-      else
-      {
-          return $matches[1].'<a href="'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].'"'.$href_options.'>'.$matches[2].$matches[3].'</a>'.$matches[4];
-      }
+
+      return sprintf('%s<a href="%s"%s>%s</a>%s', $matches[1], $href, $href_options, $text, $matches[4]);
   };
 
   return preg_replace_callback(
