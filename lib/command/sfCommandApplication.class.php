@@ -605,7 +605,12 @@ abstract class sfCommandApplication
     }
 
     // close the streams on script termination
-    register_shutdown_function(create_function('', 'fclose(STDIN); fclose(STDOUT); fclose(STDERR); return true;'));
+    register_shutdown_function(function() {
+        fclose(STDIN);
+        fclose(STDOUT);
+        fclose(STDERR);
+        return true;
+    });
   }
 
   /**
