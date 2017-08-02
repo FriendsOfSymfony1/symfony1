@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+02/08/2017: Version 1.5.10
+--------------------------
+
+* Add support of Throwables #144
+* Fixed return type in PHPDoc #151
+* Fix `sfEventLogger`: add priority and event.name overriding #160
+* Don't try to autoload a trait if it's already been declared #162
+* Fix/php 7.2 deprecation warnings #163
+
 09/02/2017: Version 1.5.9
 -------------------------
 
