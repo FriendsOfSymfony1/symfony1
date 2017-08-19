@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(27);
+$t = new lime_test(28);
 
 // ->clear()
 $t->diag('->clear()');
@@ -42,6 +42,7 @@ $ref2 = 'barfoo';
 
 $t->is($ref1, 'barfoo');
 $t->is($ref2, 'barfoo');
+$t->is($ph->get('ref'), 'barfoo');
 $t->is($ref2 , $ref1, '->get() returns a reference for the given key');
 
 $ph = new sfParameterHolder();
