@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(26);
+$t = new lime_test(28);
 
 $t->comment('A. Equal numbers');
 $t->is(1, 1);
@@ -41,3 +41,5 @@ $t->is(array(), null);
 $t->comment('F. Values that should not be equal');
 $t->isnt(true, 'Hello');
 $t->isnt('Hello', true);
+$t->isnt('Hello', 0);
+$t->isnt(0, 'Hello');
