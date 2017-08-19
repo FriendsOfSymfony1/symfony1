@@ -44,9 +44,9 @@ $w1 = new sfWidgetFormDate(array('years' => array_combine($years, $years)));
 $dom->loadHTML($w1->render('foo', '1910-01-15'));
 $css = new sfDomCssSelector($dom);
 
-$t->is($css->matchSingle('#foo_year option[value="1910"][selected="selected"]')->getValue(), 1910, '->render() renders a select tag for the year');
-$t->is($css->matchSingle('#foo_month option[value="01"][selected="selected"]')->getValue(), 01, '->render() renders a select tag for the month');
-$t->is($css->matchSingle('#foo_day option[value="15"][selected="selected"]')->getValue(), 15, '->render() renders a select tag for the day');
+$t->is($css->matchSingle('#foo_year option[selected="selected"]')->getValue(), '1910', '->render() renders a select tag for the year');
+$t->is($css->matchSingle('#foo_month option[selected="selected"]')->getValue(), '01', '->render() renders a select tag for the month');
+$t->is($css->matchSingle('#foo_day option[selected="selected"]')->getValue(), '15', '->render() renders a select tag for the day');
 
 // date as an array
 $t->diag('date as an array');
