@@ -16,7 +16,7 @@ $t->is('A', 'A');
 $t->is('aaa', 'aaa');
 $t->is("\0", "\0");
 
-$t->comment('C. Equivalent number <-> strings');
+$t->comment('C. Equivalent number <-> numeric string');
 $t->is('0', 0);
 $t->is('1', 1);
 $t->is('-1', -1);
@@ -30,10 +30,9 @@ $t->isnt(0, -1);
 $t->isnt(-2, 'Hello');
 $t->isnt(100, array(100));
 
-$t->comment('E. Equivalent falsy');
+$t->comment('E. Both falsy');
 $t->is(0, false);
 $t->is(0, null);
-$t->is('', 0);
 $t->is('', false);
 $t->is(false, null);
 $t->is(array(), null);
@@ -43,3 +42,4 @@ $t->isnt(true, 'Hello');
 $t->isnt('Hello', true);
 $t->isnt('Hello', 0);
 $t->isnt(0, 'Hello');
+$t->isnt('', 0);
