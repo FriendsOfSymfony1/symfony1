@@ -288,7 +288,7 @@ abstract class sfValidatorBase
    */
   static public function setDefaultMessage($name, $message)
   {
-    self::$globalDefaultMessages[$name] = $message;
+    static::$globalDefaultMessages[$name] = $message;
   }
 
   /**
