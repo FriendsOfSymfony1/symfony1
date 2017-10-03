@@ -37,7 +37,7 @@ foreach ($tests as $string => $attributes)
 
 // ::isUTF8()
 $t->diag('::isUTF8()');
-$t->is('été', true, '::isUTF8() returns true if the parameter is an UTF-8 encoded string');
+$t->is(sfToolkit::isUTF8('été'), true, '::isUTF8() returns true if the parameter is an UTF-8 encoded string');
 $t->is(sfToolkit::isUTF8('AZERTYazerty1234-_'), true, '::isUTF8() returns true if the parameter is an UTF-8 encoded string');
 $t->is(sfToolkit::isUTF8('AZERTYazerty1234-_'.chr(254)), false, '::isUTF8() returns false if the parameter is not an UTF-8 encoded string');
 // check a very long string
