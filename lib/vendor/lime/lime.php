@@ -200,17 +200,15 @@ class lime_test
   private function equals($exp1, $exp2)
   {
     if (is_object($exp1) || is_object($exp2)) {
-      $value = $exp1 === $exp2;
+      return $exp1 === $exp2;
     } else if (is_float($exp1) && is_float($exp2)) {
-      $value = abs($exp1 - $exp2) < self::EPSILON;
+      return abs($exp1 - $exp2) < self::EPSILON;
     } else if (is_string($exp1) && is_numeric($exp1) || is_string($exp2) && is_numeric($exp2)) {
       return $exp1 == $exp2;
     } else if (is_string($exp1) || is_string($exp2)) {
       return (string) $exp1 === (string) $exp2;
-    } else {
-      $value = $exp1 == $exp2;
     }
-    return $value;
+    return $exp1 == $exp2;
   }
 
   /**
