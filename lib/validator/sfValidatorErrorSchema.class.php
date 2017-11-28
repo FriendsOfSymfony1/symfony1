@@ -130,7 +130,7 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
   /**
    * Gets an array of all named errors
    *
-   * @return array An array of sfValidatorError instances
+   * @return sfValidatorError[] An array of sfValidatorError instances
    */
   public function getNamedErrors()
   {

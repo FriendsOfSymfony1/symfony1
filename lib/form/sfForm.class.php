@@ -476,7 +476,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Gets the list of embedded forms.
    *
-   * @return array An array of embedded forms
+   * @return sfForm[] An array of embedded forms
    */
   public function getEmbeddedForms()
   {
@@ -1074,7 +1074,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @param  string $name  The offset of the value to get
    *
-   * @return sfFormField   A form field instance
+   * @return sfFormField|sfFormFieldSchema A form field instance
    */
   public function offsetGet($name)
   {
