@@ -355,7 +355,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
   /**
    * Returns an array of fields.
    *
-   * @return sfValidatorBase An array of sfValidatorBase instances
+   * @return sfValidatorBase[] An array of sfValidatorBase instances
    */
   public function getFields()
   {

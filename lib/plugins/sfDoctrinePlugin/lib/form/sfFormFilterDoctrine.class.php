@@ -75,7 +75,8 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
   /**
    * Returns a Doctrine Query based on the current values form the form.
    *
-   * @return Query A Doctrine Query object
+   * @throws sfValidatorErrorSchema
+   * @return Doctrine_Query A Doctrine Query object
    */
   public function getQuery()
   {
@@ -97,7 +98,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
    * The method must return the processed value or false to remove the value
    * from the array of cleaned up values.
    *
-   * @param  array An array of cleaned up values to process
+   * @param  array $values An array of cleaned up values to process
    *
    * @return array An array of cleaned up values processed by the user defined methods
    */
@@ -126,9 +127,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
   /**
    * Builds a Doctrine Query based on the passed values.
    *
-   * @param  array    An array of parameters to build the Query object
+   * @param  array $values An array of parameters to build the Query object
    *
-   * @return Query A Doctrine Query object
+   * @return Doctrine_Query A Doctrine Query object
    */
   public function buildQuery(array $values)
   {
@@ -141,8 +142,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
    * Overload this method instead of {@link buildQuery()} to avoid running
    * {@link processValues()} multiple times.
    *
-   * @param  array $values
+   * @throws LogicException
    *
+   * @param  array $values
    * @return Doctrine_Query
    */
   protected function doBuildQuery(array $values)
