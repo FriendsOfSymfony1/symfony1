@@ -35,7 +35,7 @@ class sfProjectConfiguration
   /** @var bool */
   protected $pluginsLoaded = false;
 
-  /** @var sfApplicationConfiguration|sfProjectConfiguration */
+  /** @var sfApplicationConfiguration */
   static protected $active = null;
 
   /**
@@ -558,7 +558,7 @@ class sfProjectConfiguration
   /**
    * Returns the active configuration.
    *
-   * @return sfProjectConfiguration The current sfProjectConfiguration instance
+   * @return sfApplicationConfiguration The current sfProjectConfiguration instance
    */
   static public function getActive()
   {
