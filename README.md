@@ -5,7 +5,7 @@ About this version
 
 This is a community driven fork of symfony 1, as official support has been [interrupted in November 2012](http://symfony.com/blog/symfony-1-4-end-of-maintenance-what-does-it-mean).
 
-**Do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony2](http://symfony.com/) is the way to go today.**
+**Do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony4](http://symfony.com/) is the way to go today.**
 
 All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.com/LExpress/symfony1/blob/master/WHATS_NEW.md) file, this include:
 
