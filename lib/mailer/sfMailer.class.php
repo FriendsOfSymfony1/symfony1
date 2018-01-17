@@ -61,7 +61,7 @@ class sfMailer extends Swift_Mailer
       'logging' => false,
       'delivery_strategy' => self::REALTIME,
       'transport' => array(
-        'class' => 'Swift_MailTransport',
+        'class' => 'Swift_SendmailTransport',
         'param' => array(),
        ),
     ), $options);
@@ -239,7 +239,7 @@ class sfMailer extends Swift_Mailer
    */
   public function compose($from = null, $to = null, $subject = null, $body = null)
   {
-    return Swift_Message::newInstance()
+    return (new Swift_Message)
       ->setFrom($from)
       ->setTo($to)
       ->setSubject($subject)
@@ -282,7 +282,7 @@ class sfMailer extends Swift_Mailer
    *
    * @return int|false The number of sent emails
    */
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send(Swift_Message $message, &$failedRecipients = null)
   {
     if ($this->force)
     {

@@ -30,7 +30,6 @@ services:
 # cache vendor dirs
 cache:
     directories:
-        - lib/vendor/swiftmailer
         - $HOME/.composer/cache
 
 install:

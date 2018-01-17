@@ -40,7 +40,7 @@ class TestMailerTransport implements Swift_Transport
     return $this->count;
   }
 
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
   {
     ++$this->count;
 
@@ -50,6 +50,11 @@ class TestMailerTransport implements Swift_Transport
     }
 
     return 1;
+  }
+
+  public function ping()
+  {
+    return $this->started;
   }
 
   public function reset()
