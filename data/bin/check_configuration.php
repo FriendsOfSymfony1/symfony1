@@ -67,7 +67,7 @@ if (is_cli())
 
 // mandatory
 echo "\n** Mandatory requirements **\n\n";
-check(version_compare(phpversion(), '5.3.1', '>='), sprintf('PHP version is at least 5.3.1 (%s)', phpversion()), 'Current version is '.phpversion(), true);
+check(version_compare(phpversion(), '7.0', '>='), sprintf('PHP version is at least 7.0 (%s)', phpversion()), 'Current version is '.phpversion(), true);
 
 // warnings
 echo "\n** Optional checks **\n\n";
