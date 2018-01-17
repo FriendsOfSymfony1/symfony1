@@ -15,6 +15,7 @@ ini_set('arg_separator.output', '&amp;');
 ini_set('allow_url_fopen', 'on');
 
 $_test_dir = realpath(__DIR__.'/..');
+require_once($_test_dir.'/../autoload.php');
 require_once($_test_dir.'/../lib/vendor/lime/lime.php');
 require_once($_test_dir.'/../lib/config/sfConfig.class.php');
 sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
