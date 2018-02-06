@@ -320,7 +320,7 @@ class sfValidatorFile extends sfValidatorBase
       return PHP_INT_MAX;
     }
 
-    $value = strtolower(substr($max, 0, -1));
+    $value = (int) $max;
     switch (strtolower(substr($max, -1)))
     {
       case 'g':
