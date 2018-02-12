@@ -40,12 +40,6 @@ class sfError404Exception extends sfException
     }
     else
     {
-      // log all exceptions in php log
-      if (!sfConfig::get('sf_test'))
-      {
-        error_log($this->getMessage());
-      }
-
       sfContext::getInstance()->getController()->forward(sfConfig::get('sf_error_404_module'), sfConfig::get('sf_error_404_action'));
     }
   }
