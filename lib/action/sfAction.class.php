@@ -282,7 +282,9 @@ abstract class sfAction extends sfComponent
    */
   public function renderJson($data)
   {
-    $this->getResponse()->setContentType('application/json');
+    $this->getResponse()->setHttpHeader('Cache-Control', 'no-cache, must-revalidate');
+    $this->getResponse()->setHttpHeader('Expires', '0');
+    $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
     $this->getResponse()->setContent(json_encode($data));
 
     return sfView::NONE;
