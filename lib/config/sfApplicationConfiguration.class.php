@@ -288,7 +288,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
       'sf_app'         => $this->getApplication(),
       'sf_environment' => $this->getEnvironment(),
       'sf_debug'       => $this->isDebug(),
-      'sf_cli'         => PHP_SAPI === 'cli',
+      'sf_cli'         => 0 === strncasecmp(PHP_SAPI, 'cli', 3) && 'cli-server' !== PHP_SAPI,
     ));
 
     $this->setAppDir(sfConfig::get('sf_apps_dir').DIRECTORY_SEPARATOR.$this->getApplication());
