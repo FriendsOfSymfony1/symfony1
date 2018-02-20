@@ -1,21 +1,25 @@
 language: php
 
 php:
-    - 5.3
-    - 5.4
     - 5.5
     - 5.6
     - 7.0
     - 7.1
-    - hhvm
+    - 7.2
     - nightly
 
 # run build against nightly but allow them to fail
 matrix:
     fast_finish: true
     allow_failures:
-        - php: hhvm
         - php: nightly
+    include:
+        - php: 5.3
+          dist: precise
+          sudo: required
+        - php: 5.4
+          dist: precise
+          sudo: required
 
 # faster builds on new travis setup not using sudo
 sudo: false
@@ -26,7 +30,7 @@ services:
 # cache vendor dirs
 cache:
     directories:
-        - lib/vendor
+        - lib/vendor/swiftmailer
         - $HOME/.composer/cache
 
 install:

@@ -76,7 +76,7 @@ EOF;
       {
         if (!$options['no-confirmation'] && !$this->askConfirmation(array_merge(
           array('The following '.$modelName.' files will be deleted:', ''),
-          array_map(create_function('$v', 'return \' - \'.sfDebug::shortenFilePath($v);'), $files),
+          array_map(function($v) { return ' - '.sfDebug::shortenFilePath($v); }, $files),
           array('', 'Continue? (y/N)')
         ), 'QUESTION_LARGE', false))
         {
@@ -100,10 +100,10 @@ EOF;
 
   /**
    * Converts an array of values to a regular expression pattern fragment.
-   * 
+   *
    * @param array  $values    An array of values for the pattern
    * @param string $delimiter The regular expression delimiter
-   * 
+   *
    * @return string A regular expression fragment
    */
   protected function valuesToRegex($values, $delimiter = '/')

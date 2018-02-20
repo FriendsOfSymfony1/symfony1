@@ -79,14 +79,16 @@ class sfAnsiColorFormatter extends sfFormatter
 
     return "\033[".implode(';', $codes).'m'.$text."\033[0m";
   }
-
+  
   /**
    * Formats a message within a section.
    *
-   * @param string  $section  The section name
-   * @param string  $text     The text message
-   * @param integer $size     The maximum size allowed for a line
-   * @param string  $style    The color scheme to apply to the section string (INFO, ERROR, COMMENT or QUESTION)
+   * @param string  $section The section name
+   * @param string  $text    The text message
+   * @param integer $size    The maximum size allowed for a line
+   * @param string  $style   The color scheme to apply to the section string (INFO, ERROR, COMMENT or QUESTION)
+   *
+   * @return string
    */
   public function formatSection($section, $text, $size = null, $style = 'INFO')
   {

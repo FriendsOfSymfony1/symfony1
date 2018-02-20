@@ -4,7 +4,7 @@
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
  * (c) 2004-2006 Sean Kerr <sean@code-box.org>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,6 +27,8 @@ abstract class sfStorage
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param array $options
    */
   public function __construct($options = array())
   {
@@ -47,7 +49,7 @@ abstract class sfStorage
    *
    * @param  array $options  An associative array of options
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfStorage
    */

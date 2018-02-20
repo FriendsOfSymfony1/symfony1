@@ -12,15 +12,22 @@
  */
 class sfCacheSessionStorage extends sfStorage
 {
-  protected
-    $id          = null,
-    $context     = null,
-    $dispatcher  = null,
-    $request     = null,
-    $response    = null,
-    $cache       = null,
-    $data        = array(),
-    $dataChanged = false;
+  /** @var string */
+  protected $id = null;
+  /** @var sfContext */
+  protected $context = null;
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var sfWebRequest */
+  protected $request = null;
+  /** @var sfWebResponse */
+  protected $response = null;
+  /** @var sfCache|null */
+  protected $cache = null;
+  /** @var array */
+  protected $data = array();
+  /** @var bool */
+  protected $dataChanged = false;
 
   /**
    * Initialize this Storage.

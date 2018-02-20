@@ -18,10 +18,12 @@
  */
 class sfWebDebugLogger extends sfVarLogger
 {
-  protected
-    $context       = null,
-    $webDebugClass = null,
-    $webDebug      = null;
+  /** @var sfContext */
+  protected $context       = null;
+  /** @var string */
+  protected $webDebugClass = null;
+  /** @var sfWebDebug */
+  protected $webDebug      = null;
 
   /**
    * Initializes this logger.
@@ -33,7 +35,7 @@ class sfWebDebugLogger extends sfVarLogger
    * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
    * @param  array             $options     An array of options.
    *
-   * @return Boolean           true, if initialization completes successfully, otherwise false.
+   * @return void
    *
    * @see sfVarLogger
    */
@@ -51,7 +53,7 @@ class sfWebDebugLogger extends sfVarLogger
 
     $this->registerErrorHandler();
 
-    return parent::initialize($dispatcher, $options);
+    parent::initialize($dispatcher, $options);
   }
 
   /**
@@ -74,6 +76,8 @@ class sfWebDebugLogger extends sfVarLogger
    * @param string $errfile    The filename that the error was raised in, as a string.
    * @param string $errline    The line number the error was raised at, as an integer.
    * @param array  $errcontext An array that points to the active symbol table at the point the error occurred.
+   *
+   * @return bool
    */
   public function handlePhpError($errno, $errstr, $errfile, $errline, $errcontext = array())
   {
@@ -104,7 +108,7 @@ class sfWebDebugLogger extends sfVarLogger
 
   /**
    * Listens for the context.load_factories event.
-   * 
+   *
    * @param sfEvent $event
    */
   public function listenForLoadFactories(sfEvent $event)
@@ -147,6 +151,7 @@ class sfWebDebugLogger extends sfVarLogger
     // * if not rendering to the client
     // * if HTTP headers only
     $response = $event->getSubject();
+    /** @var sfWebRequest $request */
     $request  = $this->context->getRequest();
     if (
       null === $this->webDebug

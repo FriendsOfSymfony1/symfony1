@@ -46,9 +46,9 @@ $t->is($css->matchSingle('#foo_second option[value="35"][selected="selected"]')-
 $t->diag('time as an array - single digits');
 $dom->loadHTML($w->render('foo', '01:03:05'));
 $css = new sfDomCssSelector($dom);
-$t->is($css->matchSingle('#foo_hour option[value="1"][selected="selected"]')->getValue(), 1, '->render() renders a select tag for the hour');
-$t->is($css->matchSingle('#foo_minute option[value="3"][selected="selected"]')->getValue(), 3, '->render() renders a select tag for the minute');
-$t->is($css->matchSingle('#foo_second option[value="5"][selected="selected"]')->getValue(), 5, '->render() renders a select tag for the second');
+$t->is($css->matchSingle('#foo_hour option[selected="selected"]')->getValue(), '01', '->render() renders a select tag for the hour');
+$t->is($css->matchSingle('#foo_minute option[selected="selected"]')->getValue(), '03', '->render() renders a select tag for the minute');
+$t->is($css->matchSingle('#foo_second option[selected="selected"]')->getValue(), '05', '->render() renders a select tag for the second');
 
 // invalid time
 $t->diag('time as an array');

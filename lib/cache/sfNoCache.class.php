@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -20,6 +20,7 @@ class sfNoCache extends sfCache
 {
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function get($key, $default = null)
   {
@@ -28,6 +29,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function has($key)
   {
@@ -36,6 +38,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function set($key, $data, $lifetime = null)
   {
@@ -44,6 +47,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
@@ -52,6 +56,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {
@@ -60,6 +65,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = self::ALL)
   {
@@ -68,6 +74,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {
@@ -76,6 +83,7 @@ class sfNoCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {

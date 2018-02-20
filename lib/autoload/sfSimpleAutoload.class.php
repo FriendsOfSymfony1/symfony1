@@ -65,6 +65,8 @@ class sfSimpleAutoload
    * Register sfSimpleAutoload in spl autoloader.
    *
    * @return void
+   *
+   * @throws sfException
    */
   static public function register()
   {
@@ -326,7 +328,7 @@ class sfSimpleAutoload
    * Loads configuration from the supplied files.
    *
    * @param array $files An array of autoload.yml files
-   * 
+   *
    * @see sfAutoloadConfigHandler
    */
   public function loadConfiguration(array $files)

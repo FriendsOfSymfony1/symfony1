@@ -4,7 +4,7 @@
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
  * (c) 2004-2006 Sean Kerr <sean@code-box.org>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -21,15 +21,19 @@
  */
 abstract class sfDatabase
 {
-  protected
-    $parameterHolder = null,
-    $connection      = null,
-    $resource        = null;
-
+  /** @var sfParameterHolder */
+  protected $parameterHolder = null;
+  /** @var resource|PDO */
+  protected $connection = null;
+  /** @var resource|PDO (It's interchangeable with $connection. Can be dropped at all.) */
+  protected $resource = null;
+  
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param array $parameters An associative array of initialization parameters
    */
   public function __construct($parameters = array())
   {
@@ -41,7 +45,7 @@ abstract class sfDatabase
    *
    * @param array $parameters An associative array of initialization parameters
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabase object
    */

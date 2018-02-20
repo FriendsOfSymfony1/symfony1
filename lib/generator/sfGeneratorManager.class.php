@@ -75,6 +75,10 @@ class sfGeneratorManager
    *
    * @param string $path    The relative path
    * @param string $content The content
+   *
+   * @return int
+   *
+   * @throws sfCacheException
    */
   public function save($path, $content)
   {
@@ -109,6 +113,7 @@ class sfGeneratorManager
    */
   public function generate($generatorClass, $param)
   {
+    /** @var sfGenerator $generator */
     $generator = new $generatorClass($this);
 
     return $generator->generate($param);

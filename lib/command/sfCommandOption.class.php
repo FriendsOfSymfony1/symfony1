@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -39,6 +39,8 @@ class sfCommandOption
    * @param integer $mode     The option mode: self::PARAMETER_REQUIRED, self::PARAMETER_NONE or self::PARAMETER_OPTIONAL
    * @param string  $help     A help text
    * @param mixed   $default  The default value (must be null for self::PARAMETER_REQUIRED or self::PARAMETER_NONE)
+   *
+   * @throws sfCommandException
    */
   public function __construct($name, $shortcut = null, $mode = null, $help = '', $default = null)
   {
@@ -141,6 +143,8 @@ class sfCommandOption
    * Sets the default value.
    *
    * @param mixed $default The default value
+   *
+   * @throws sfCommandException
    */
   public function setDefault($default = null)
   {

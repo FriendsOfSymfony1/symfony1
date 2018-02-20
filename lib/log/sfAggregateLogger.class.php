@@ -31,7 +31,7 @@ class sfAggregateLogger extends sfLogger
    * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
    * @param  array             $options     An array of options.
    *
-   * @return Boolean      true, if initialization completes successfully, otherwise false.
+   * @return void
    */
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
@@ -47,7 +47,7 @@ class sfAggregateLogger extends sfLogger
       $this->addLoggers($options['loggers']);
     }
 
-    return parent::initialize($dispatcher, $options);
+    parent::initialize($dispatcher, $options);
   }
 
   /**
@@ -76,7 +76,7 @@ class sfAggregateLogger extends sfLogger
   /**
    * Adds a logger.
    *
-   * @param object $logger The Logger object
+   * @param sfLoggerInterface $logger The Logger object
    */
   public function addLogger(sfLoggerInterface $logger)
   {
@@ -89,7 +89,7 @@ class sfAggregateLogger extends sfLogger
    * Logs a message.
    *
    * @param string $message   Message
-   * @param string $priority  Message priority
+   * @param int    $priority  Message priority
    */
   protected function doLog($message, $priority)
   {

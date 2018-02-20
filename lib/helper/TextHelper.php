@@ -278,33 +278,26 @@ function _auto_link_urls($text, $href_options = array(), $truncate = false, $tru
 {
   $href_options = _tag_options($href_options);
 
-  $callback_function = '
-    if (preg_match("/<a\s/i", $matches[1]))
-    {
-      return $matches[0];
-    }
-    ';
-
-  if ($truncate)
-  {
-    $callback_function .= '
-      else if (strlen($matches[2].$matches[3]) > '.$truncate_len.')
+  $callback_function = function($matches) use ($href_options, $truncate, $truncate_len, $pad) {
+      if (preg_match("/<a\s/i", $matches[1]))
       {
-        return $matches[1].\'<a href="\'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].\'"'.$href_options.'>\'.substr($matches[2].$matches[3], 0, '.$truncate_len.').\''.$pad.'</a>\'.$matches[4];
+          return $matches[0];
       }
-      ';
-  }
 
-  $callback_function .= '
-    else
-    {
-      return $matches[1].\'<a href="\'.($matches[2] == "www." ? "http://www." : $matches[2]).$matches[3].\'"'.$href_options.'>\'.$matches[2].$matches[3].\'</a>\'.$matches[4];
-    }
-    ';
+      $text = $matches[2] . $matches[3];
+      $href = ($matches[2] == "www." ? "http://www." : $matches[2]) . $matches[3];
+
+      if ($truncate && strlen($text) > $truncate_len)
+      {
+          $text = substr($text, 0, $truncate_len).$pad;
+      }
+
+      return sprintf('%s<a href="%s"%s>%s</a>%s', $matches[1], $href, $href_options, $text, $matches[4]);
+  };
 
   return preg_replace_callback(
     SF_AUTO_LINK_RE,
-    create_function('$matches', $callback_function),
+    $callback_function,
     $text
     );
 }

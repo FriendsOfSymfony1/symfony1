@@ -205,7 +205,7 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
       return false;
     }
 
-    $cat_id = (int) (sqlite_fetch_single($rs);
+    $cat_id = (int) (sqlite_fetch_single($rs));
 
     // first get the catalogue ID
     $rs = sqlite_query("SELECT count(msg_id) FROM trans_unit WHERE cat_id = {$cat_id}", $db);

@@ -17,6 +17,9 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id$
+ *
+ * @method sfWebController getController()
+ * @method sfWebResponse getResponse()
  */
 abstract class sfAction extends sfComponent
 {
@@ -30,7 +33,7 @@ abstract class sfAction extends sfComponent
    * @param string    $moduleName The module name.
    * @param string    $actionName The action name.
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    */
   public function initialize($context, $moduleName, $actionName)
   {
@@ -186,7 +189,7 @@ abstract class sfAction extends sfComponent
    * This method stops the action. So, no code is executed after a call to this method.
    *
    * @param  string $url         Url
-   * @param  string $statusCode  Status code (default to 302)
+   * @param  int    $statusCode  Status code (default to 302)
    *
    * @throws sfStopException
    */
@@ -211,7 +214,7 @@ abstract class sfAction extends sfComponent
    *
    * @param  bool   $condition  A condition that evaluates to true or false
    * @param  string $url        Url
-   * @param  string $statusCode Status code (default to 302)
+   * @param  int    $statusCode Status code (default to 302)
    *
    * @throws sfStopException
    *
@@ -234,7 +237,7 @@ abstract class sfAction extends sfComponent
    *
    * @param  bool   $condition  A condition that evaluates to true or false
    * @param  string $url        Url
-   * @param  string $statusCode Status code (default to 302)
+   * @param  int    $statusCode Status code (default to 302)
    *
    * @throws sfStopException
    *
@@ -259,7 +262,7 @@ abstract class sfAction extends sfComponent
    *
    * @param string $text Text to append to the response
    *
-   * @return sfView::NONE
+   * @return string sfView::NONE
    */
   public function renderText($text)
   {
@@ -275,7 +278,7 @@ abstract class sfAction extends sfComponent
    *
    * @param mixed $data Data to encode as JSON
    *
-   * @return sfView::NONE
+   * @return string sfView::NONE
    */
   public function renderJson($data)
   {
@@ -318,7 +321,7 @@ abstract class sfAction extends sfComponent
    * @param  string $templateName partial name
    * @param  array  $vars         vars
    *
-   * @return sfView::NONE
+   * @return string sfView::NONE
    *
    * @see    getPartial
    */
@@ -362,7 +365,7 @@ abstract class sfAction extends sfComponent
    * @param  string  $componentName  component name
    * @param  array   $vars          vars
    *
-   * @return sfView::NONE
+   * @return string  sfView::NONE
    *
    * @see    getComponent
    */

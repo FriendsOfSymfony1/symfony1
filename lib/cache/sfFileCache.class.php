@@ -24,17 +24,18 @@ class sfFileCache extends sfCache
 
   const EXTENSION = '.cache';
 
- /**
-  * Initializes this sfCache instance.
-  *
-  * Available options:
-  *
-  * * cache_dir: The directory where to put cache files
-  *
-  * * see sfCache for options available for all drivers
-  *
-  * @see sfCache
-  */
+  /**
+   * Initializes this sfCache instance.
+   *
+   * Available options:
+   *
+   * * cache_dir: The directory where to put cache files
+   *
+   * * see sfCache for options available for all drivers
+   *
+   * @see sfCache
+   * @inheritdoc
+   */
   public function initialize($options = array())
   {
     parent::initialize($options);
@@ -49,6 +50,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function get($key, $default = null)
   {
@@ -70,6 +72,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function has($key)
   {
@@ -80,6 +83,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function set($key, $data, $lifetime = null)
   {
@@ -93,6 +97,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
@@ -101,6 +106,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {
@@ -138,6 +144,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = sfCache::ALL)
   {
@@ -160,6 +167,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {
@@ -177,6 +185,7 @@ class sfFileCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {

@@ -56,7 +56,7 @@ class sfWebRequest extends sfRequest
    * @param  array             $attributes  An associative array of initialization attributes
    * @param  array             $options     An associative array of options
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfRequest
    *
@@ -169,7 +169,7 @@ class sfWebRequest extends sfRequest
   /**
    * Returns the content type of the current request.
    *
-   * @param  Boolean $trimmed If false the full Content-Type header will be returned
+   * @param  Boolean $trim If false the full Content-Type header will be returned
    *
    * @return string
    */
@@ -568,7 +568,7 @@ class sfWebRequest extends sfRequest
   /**
    * Gets the value of HTTP header
    *
-   * @param string $nameThe HTTP header name
+   * @param string $name The HTTP header name
    * @param string $prefix The HTTP header prefix
    * @return string The value of HTTP header
    */
@@ -667,7 +667,9 @@ class sfWebRequest extends sfRequest
   /**
    * Splits an HTTP header for the current web request.
    *
-   * @param string $header  Header to split
+   * @param string $header Header to split
+   *
+   * @return array
    */
   public function splitHttpAcceptHeader($header)
   {

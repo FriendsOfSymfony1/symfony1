@@ -68,6 +68,7 @@ abstract class sfPager implements Iterator, Countable
    *
    * Used internally by {@link getCurrent()}.
    *
+   * @param int $offset
    * @return mixed
    */
   abstract protected function retrieveObject($offset);

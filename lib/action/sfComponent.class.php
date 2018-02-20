@@ -18,20 +18,31 @@
  */
 abstract class sfComponent
 {
-  protected
-    $moduleName             = '',
-    $actionName             = '',
-    $context                = null,
-    $dispatcher             = null,
-    $request                = null,
-    $response               = null,
-    $varHolder              = null,
-    $requestParameterHolder = null;
+  /** @var string */
+  protected $moduleName             = '';
+  /** @var string */
+  protected $actionName             = '';
+  /** @var sfContext */
+  protected $context                = null;
+  /** @var sfEventDispatcher */
+  protected $dispatcher             = null;
+  /** @var sfRequest */
+  protected $request                = null;
+  /** @var sfResponse */
+  protected $response               = null;
+  /** @var sfParameterHolder */
+  protected $varHolder              = null;
+  /** @var sfParameterHolder */
+  protected $requestParameterHolder = null;
 
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param sfContext $context
+   * @param string $moduleName
+   * @param string $actionName
    */
   public function __construct($context, $moduleName, $actionName)
   {
@@ -45,7 +56,7 @@ abstract class sfComponent
    * @param string    $moduleName The module name.
    * @param string    $actionName The action name.
    *
-   * @return boolean true, if initialization completes successfully, otherwise false
+   * @return void
    */
   public function initialize($context, $moduleName, $actionName)
   {
@@ -251,9 +262,9 @@ abstract class sfComponent
    *
    * <code>$this->getContext()->getRouting()->generate(...)</code>
    *
-   * @param string  The route name
-   * @param array   An array of parameters for the route
-   * @param Boolean Whether to generate an absolute URL or not
+   * @param string  $route    The route name
+   * @param array   $params   An array of parameters for the route
+   * @param Boolean $absolute Whether to generate an absolute URL or not
    *
    * @return string  The URL
    */

@@ -33,6 +33,7 @@ class sfSQLiteCache extends sfCache
    * * see sfCache for options available for all drivers
    *
    * @see sfCache
+   * @inheritdoc
    */
   public function initialize($options = array())
   {
@@ -53,6 +54,8 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdo
+   * @return SQLiteDatabase|SQLite3
    */
   public function getBackend()
   {
@@ -61,6 +64,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function get($key, $default = null)
   {
@@ -78,6 +82,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function has($key)
   {
@@ -91,6 +96,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function set($key, $data, $lifetime = null)
   {
@@ -109,6 +115,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
@@ -122,6 +129,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {
@@ -135,6 +143,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = sfCache::ALL)
   {
@@ -155,6 +164,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {
@@ -172,6 +182,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {
@@ -191,6 +202,8 @@ class sfSQLiteCache extends sfCache
    * Sets the database name.
    *
    * @param string $database The database name where to store the cache
+   *
+   * @throws sfCacheException
    */
   protected function setDatabase($database)
   {
@@ -243,6 +256,9 @@ class sfSQLiteCache extends sfCache
 
   /**
    * Callback used when deleting keys from cache.
+   * @param string $regexp
+   * @param string $key
+   * @return int
    */
   public function removePatternRegexpCallback($regexp, $key)
   {
@@ -251,6 +267,7 @@ class sfSQLiteCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getMany($keys)
   {

@@ -253,6 +253,7 @@ EOF;
    * Creates a list of add$Type PHP statements for the given type and config.
    *
    * @param string $type of asset. Requires an sfWebResponse->add$Type(string, string, array) method
+   * @param array  $assets
    *
    * @return array ist of add$Type PHP statements
    */
@@ -317,6 +318,7 @@ EOF;
 
   /**
    * @see sfConfigHandler
+   * @inheritdoc
    */
   static public function getConfiguration(array $configFiles)
   {

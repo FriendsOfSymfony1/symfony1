@@ -4,7 +4,7 @@
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
  * (c) 2004-2006 Sean Kerr <sean@code-box.org>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -43,9 +43,11 @@ class sfSessionStorage extends sfStorage
    *
    * The default values for all 'session_cookie_*' options are those returned by the session_get_cookie_params() function
    *
-   * @param array $options  An associative array of options
+   * @param array $options An associative array of options
    *
    * @see sfStorage
+   *
+   * @return void
    */
   public function initialize($options = null)
   {
@@ -157,7 +159,7 @@ class sfSessionStorage extends sfStorage
    *
    * @param  boolean $destroy Destroy session when regenerating?
    *
-   * @return boolean True if session regenerated, false if error
+   * @return bool|void
    *
    */
   public function regenerate($destroy = false)

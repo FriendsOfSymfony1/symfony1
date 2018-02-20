@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ class sfVarLogger extends sfLogger
    * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
    * @param  array             $options     An array of options.
    *
-   * @return Boolean           true, if initialization completes successfully, otherwise false.
+   * @return void
    */
   public function initialize(sfEventDispatcher $dispatcher, $options = array())
   {
@@ -44,7 +44,7 @@ class sfVarLogger extends sfLogger
       $this->xdebugLogging = false;
     }
 
-    return parent::initialize($dispatcher, $options);
+    parent::initialize($dispatcher, $options);
   }
 
   /**
@@ -53,7 +53,7 @@ class sfVarLogger extends sfLogger
    * Each log entry has the following attributes:
    *
    *  * priority
-   *  * time   
+   *  * time
    *  * message
    *  * type
    *  * debugStack
@@ -130,7 +130,7 @@ class sfVarLogger extends sfLogger
    * Logs a message.
    *
    * @param string $message   Message
-   * @param string $priority  Message priority
+   * @param int    $priority  Message priority
    */
   protected function doLog($message, $priority)
   {
@@ -156,7 +156,7 @@ class sfVarLogger extends sfLogger
    * Returns the debug stack.
    *
    * @return array
-   * 
+   *
    * @see debug_backtrace()
    */
   protected function getDebugBacktrace()

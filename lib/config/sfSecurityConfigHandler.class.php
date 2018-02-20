@@ -45,6 +45,7 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
 
   /**
    * @see sfConfigHandler
+   * @inheritdoc
    */
   static public function getConfiguration(array $configFiles)
   {

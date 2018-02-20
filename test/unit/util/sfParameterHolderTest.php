@@ -3,14 +3,14 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(24);
+$t = new lime_test(28);
 
 // ->clear()
 $t->diag('->clear()');
@@ -30,12 +30,20 @@ $t->is($ph->get('foo'), 'bar', '->get() returns the parameter value for the give
 $t->is($ph->get('bar'), null, '->get() returns null if the key does not exist');
 
 // checks that get returns reference
-$ref = 'foobar';
-$ph->set('ref', $ref);
+$ph->set('ref', 'foobar');
+
+$ref1 = null;
+$ref1 = & $ph->get('ref');
+$t->is($ref1, 'foobar');
+
 $ref2 = null;
-$ref2 &= $ph->get('ref'); // obtain the very same reference and modify it
-$ref2 &= 'barfoo';
-$t->is($ref2 , $ref, '->get() returns a reference for the given key');
+$ref2 = & $ph->get('ref'); // obtain the very same reference and modify it
+$ref2 = 'barfoo';
+
+$t->is($ref1, 'barfoo');
+$t->is($ref2, 'barfoo');
+$t->is($ph->get('ref'), 'barfoo');
+$t->is($ref2 , $ref1, '->get() returns a reference for the given key');
 
 $ph = new sfParameterHolder();
 $t->is('default_value', $ph->get('foo1', 'default_value'), '->get() takes the default value as its second argument');

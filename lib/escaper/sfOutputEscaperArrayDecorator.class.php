@@ -30,6 +30,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    * Constructor.
    *
    * @see sfOutputEscaper
+   * @inheritdoc
    */
   public function __construct($escapingMethod, $value)
   {

@@ -70,7 +70,7 @@ catch (sfValidatorError $e)
 {
   $t->pass('->clean() throws an sfValidatorError exception if one of the validators fails');
   $t->is($e[0]->getCode(), 'max_length', '->clean() throws a sfValidatorSchemaError');
-  $t->is($e instanceof sfValidatorErrorSchema, 'max_length', '->clean() throws a sfValidatorSchemaError');
+  $t->ok($e instanceof sfValidatorErrorSchema, '->clean() throws a sfValidatorSchemaError');
 }
 
 $v1->setOption('max_length', 2);
@@ -86,7 +86,7 @@ catch (sfValidatorError $e)
   $t->is(count($e), 2, '->clean() throws an error for every error');
   $t->is($e[0]->getCode(), 'max_length', '->clean() throws a sfValidatorSchemaError');
   $t->is($e[1]->getCode(), 'max_length', '->clean() throws a sfValidatorSchemaError');
-  $t->is($e instanceof sfValidatorErrorSchema, 'max_length', '->clean() throws a sfValidatorSchemaError');
+  $t->ok($e instanceof sfValidatorErrorSchema, '->clean() throws a sfValidatorSchemaError');
 }
 
 $v->setOption('halt_on_error', true);
@@ -101,7 +101,7 @@ catch (sfValidatorError $e)
   $t->pass('->clean() throws an sfValidatorError exception if one of the validators fails');
   $t->is(count($e), 1, '->clean() only returns the first error if halt_on_error option is true');
   $t->is($e[0]->getCode(), 'max_length', '->clean() throws a sfValidatorSchemaError');
-  $t->is($e instanceof sfValidatorErrorSchema, 'max_length', '->clean() throws a sfValidatorSchemaError');
+  $t->ok($e instanceof sfValidatorErrorSchema, '->clean() throws a sfValidatorSchemaError');
 }
 
 try
@@ -115,7 +115,7 @@ catch (sfValidatorError $e)
 {
   $t->pass('->clean() throws an sfValidatorError exception if one of the validators fails');
   $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError if invalid message is not empty');
-  $t->is(!$e instanceof sfValidatorErrorSchema, 'max_length', '->clean() throws a sfValidatorError if invalid message is not empty');
+  $t->ok(!$e instanceof sfValidatorErrorSchema, '->clean() throws a sfValidatorError if invalid message is not empty');
 }
 
 // ->asString()
@@ -127,5 +127,5 @@ $t->is($v->asString(), "(\n  String({ max_length: 3 })\n  and\n  String({ min_le
 , '->asString() returns a string representation of the validator');
 
 $v = new sfValidatorAnd(array($v1, $v2), array(), array('required' => 'This is required.'));
-$t->is($v->asString(), "(\n  String({ max_length: 3 })\n  and({}, { required: 'This is required.' })\n  String({ min_length: 3 })\n)" 
+$t->is($v->asString(), "(\n  String({ max_length: 3 })\n  and({}, { required: 'This is required.' })\n  String({ min_length: 3 })\n)"
 , '->asString() returns a string representation of the validator');
