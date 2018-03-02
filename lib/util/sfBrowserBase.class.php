@@ -272,7 +272,7 @@ abstract class sfBrowserBase
 
     // request parameters
     $_GET = $_POST = array();
-    if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT')))
+    if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT', 'PATCH')))
     {
       if (isset($parameters['_with_csrf']) && $parameters['_with_csrf'])
       {
