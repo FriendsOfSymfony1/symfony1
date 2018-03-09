@@ -164,7 +164,7 @@ class sfDoctrineFormGenerator extends sfGenerator
           {
             $parent = new ReflectionClass('Doctrine_Record');
             $reflection = new ReflectionClass($modelName);
-            if ($reflection->isSubClassOf($parent))
+            if ($reflection->isSubclassOf($parent))
             {
               $this->pluginModels[$modelName] = $pluginName;
 
