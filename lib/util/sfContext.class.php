@@ -460,13 +460,47 @@ class sfContext implements ArrayAccess
     if (!isset($this->factories['serviceContainer']))
     {
       $this->factories['serviceContainer'] = new $this->serviceContainerConfiguration['class']();
-      $this->factories['serviceContainer']->setService('sf_event_dispatcher', $this->configuration->getEventDispatcher());
-      $this->factories['serviceContainer']->setService('sf_formatter', new sfFormatter());
-      $this->factories['serviceContainer']->setService('sf_user', $this->getUser());
-      $this->factories['serviceContainer']->setService('sf_routing', $this->getRouting());
+      $this->factories['serviceContainer']->setService('sf_context', $this);
     }
 
     return $this->factories['serviceContainer'];
+  }
+
+
+  /**
+   * This is to be use via the service.yml with the constructor configuration.
+   *
+   * @param sfContext $context
+   * @param $factoryName
+   * @return mixed
+   */
+  public static function factoryAsService(sfContext $context, $factoryName)
+  {
+    switch ($factoryName)
+    {
+      case 'controller':
+        return $context->getController();
+      case 'request':
+        return $context->getRequest();
+      case 'response':
+        return $context->getResponse();
+      case 'storage':
+        return $context->getStorage();
+      case 'user':
+        return $context->getUser();
+      case 'view_cache':
+        return $context->getViewCacheManager();
+      case 'i18n':
+        return $context->getI18n();
+      case 'routing':
+        return $context->getRouting();
+      case 'logger':
+        return $context->getLogger();
+      case 'mailer':
+        return $context->getMailer();
+      case 'event_dispatcher':
+        return $context->configuration->getEventDispatcher();
+    }
   }
 
   /**
