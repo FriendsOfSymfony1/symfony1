@@ -16,17 +16,18 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfValidatorEmail extends sfValidatorRegex
+class sfValidatorEmail extends sfValidatorBase
 {
-  const REGEX_EMAIL = '/^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i';
-
   /**
-   * @see sfValidatorRegex
+   * @see sfValidatorBase
    */
-  protected function configure($options = array(), $messages = array())
+  protected function doClean($value)
   {
-    parent::configure($options, $messages);
-
-    $this->setOption('pattern', self::REGEX_EMAIL);
+    $clean = filter_var($value, FILTER_VALIDATE_EMAIL);
+    if (!$clean)
+    {
+      throw new sfValidatorError($this, 'invalid', array('value' => $value));
+    }
+    return $clean;
   }
 }
