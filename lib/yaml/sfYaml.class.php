@@ -165,13 +165,3 @@ class sfYaml
     return $convertedResult;
   }
 }
-
-/**
- * Wraps echo to automatically provide a newline.
- *
- * @param string $string The string to echo with new line
- */
-function echoln($string)
-{
-    echo $string."\n";
-}
