@@ -11,7 +11,7 @@
 /**
  * sfWebResponse class.
  *
- * This class manages web reponses. It supports cookies and headers management.
+ * This class manages web responses. It supports cookies and headers management.
  *
  * @package    symfony
  * @subpackage response
