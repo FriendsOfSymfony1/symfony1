@@ -25,6 +25,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
   /**
    * @see sfTask
+   * @inheritdoc
    */
   protected function doRun(sfCommandManager $commandManager, $options)
   {
@@ -109,6 +110,8 @@ abstract class sfBaseTask extends sfCommandApplicationTask
    * Checks if the current directory is a symfony project directory.
    *
    * @return true if the current directory is a symfony project directory, false otherwise
+   *
+   * @throws sfException
    */
   public function checkProjectExists()
   {
@@ -121,9 +124,11 @@ abstract class sfBaseTask extends sfCommandApplicationTask
   /**
    * Checks if an application exists.
    *
-   * @param  string $app  The application name
+   * @param  string $app The application name
    *
    * @return bool true if the application exists, false otherwise
+   *
+   * @throws sfException
    */
   public function checkAppExists($app)
   {
@@ -136,10 +141,12 @@ abstract class sfBaseTask extends sfCommandApplicationTask
   /**
    * Checks if a module exists.
    *
-   * @param  string $app     The application name
-   * @param  string $module  The module name
+   * @param  string $app    The application name
+   * @param  string $module The module name
    *
    * @return bool true if the module exists, false otherwise
+   *
+   * @throws sfException
    */
   public function checkModuleExists($app, $module)
   {

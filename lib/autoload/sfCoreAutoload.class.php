@@ -11,7 +11,7 @@
 /**
  * The current symfony version.
  */
-define('SYMFONY_VERSION', '1.5.8-dev');
+define('SYMFONY_VERSION', '1.5.12-dev');
 
 /**
  * sfCoreAutoload class.
@@ -58,6 +58,8 @@ class sfCoreAutoload
    * Register sfCoreAutoload in spl autoloader.
    *
    * @return void
+   *
+   * @throws sfException If unable to register SPL autoload function
    */
   static public function register()
   {

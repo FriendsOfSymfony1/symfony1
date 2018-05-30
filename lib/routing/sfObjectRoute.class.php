@@ -20,9 +20,10 @@
  */
 class sfObjectRoute extends sfRequestRoute
 {
-  protected
-    $object  = false,
-    $objects = false;
+  /** @var bool|object */
+  protected $object = false;
+  /** @var bool|array */
+  protected $objects = false;
 
   /**
    * Constructor.
@@ -87,6 +88,8 @@ class sfObjectRoute extends sfRequestRoute
    * This method is only accessible if the route is bound and of type "object".
    *
    * @return Object The related object
+   *
+   * @throws sfError404Exception
    */
   public function getObject()
   {
@@ -120,6 +123,8 @@ class sfObjectRoute extends sfRequestRoute
    * This method is only accessible if the route is bound and of type "list".
    *
    * @return array And array of related objects
+   *
+   * @throws sfError404Exception
    */
   public function getObjects()
   {

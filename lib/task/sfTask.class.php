@@ -18,16 +18,17 @@
  */
 abstract class sfTask
 {
-  protected
-    $namespace           = '',
-    $name                = null,
-    $aliases             = array(),
-    $briefDescription    = '',
-    $detailedDescription = '',
-    $arguments           = array(),
-    $options             = array(),
-    $dispatcher          = null,
-    $formatter           = null;
+  protected $namespace = '';
+  protected $name = null;
+  protected $aliases = array();
+  protected $briefDescription = '';
+  protected $detailedDescription = '';
+  protected $arguments = array();
+  protected $options = array();
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var sfFormatter */
+  protected $formatter = null;
 
   /**
    * Constructor.
@@ -74,7 +75,7 @@ abstract class sfTask
   /**
    * Sets the formatter instance.
    *
-   * @param sfFormatter The formatter instance
+   * @param sfFormatter $formatter The formatter instance
    */
   public function setFormatter(sfFormatter $formatter)
   {
@@ -176,7 +177,7 @@ abstract class sfTask
   /**
    * Returns the argument objects.
    *
-   * @return sfCommandArgument An array of sfCommandArgument objects.
+   * @return sfCommandArgument[] An array of sfCommandArgument objects.
    */
   public function getArguments()
   {
@@ -186,7 +187,7 @@ abstract class sfTask
   /**
    * Adds an array of argument objects.
    *
-   * @param array $arguments  An array of arguments
+   * @param sfCommandArgument[] $arguments  An array of arguments
    */
   public function addArguments($arguments)
   {
@@ -199,6 +200,10 @@ abstract class sfTask
    * This method always use the sfCommandArgument class to create an option.
    *
    * @see sfCommandArgument::__construct()
+   * @param string $name
+   * @param int    $mode
+   * @param string $help
+   * @param mixed  $default
    */
   public function addArgument($name, $mode = null, $help = '', $default = null)
   {
@@ -208,7 +213,7 @@ abstract class sfTask
   /**
    * Returns the options objects.
    *
-   * @return sfCommandOption An array of sfCommandOption objects.
+   * @return sfCommandOption[] An array of sfCommandOption objects.
    */
   public function getOptions()
   {
@@ -231,6 +236,12 @@ abstract class sfTask
    * This method always use the sfCommandOption class to create an option.
    *
    * @see sfCommandOption::__construct()
+   *
+   * @param string $name
+   * @param string $shortcut
+   * @param int    $mode
+   * @param string $help
+   * @param mixed  $default
    */
   public function addOption($name, $shortcut = null, $mode = null, $help = '', $default = null)
   {
@@ -453,7 +464,7 @@ abstract class sfTask
    * @param string       $style    The style to use (QUESTION by default)
    * @param string       $default  The default answer if none is given by the user
    *
-   * @param string       The user answer
+   * @return string      The user answer
    */
   public function ask($question, $style = 'QUESTION', $default = null)
   {
@@ -480,7 +491,7 @@ abstract class sfTask
    * @param string       $style    The style to use (QUESTION by default)
    * @param Boolean      $default  The default answer if the user enters nothing
    *
-   * @param Boolean      true if the user has confirmed, false otherwise
+   * @return Boolean     true if the user has confirmed, false otherwise
    */
   public function askConfirmation($question, $style = 'QUESTION', $default = true)
   {
@@ -513,7 +524,9 @@ abstract class sfTask
    * @param   sfValidatorBase $validator
    * @param   array           $options
    *
-   * @return  mixed
+   * @return mixed
+   *
+   * @throws sfValidatorError
    */
   public function askAndValidate($question, sfValidatorBase $validator, array $options = array())
   {
@@ -541,6 +554,7 @@ abstract class sfTask
     }
 
     // no, ask the user for a valid user
+    /** @var sfValidatorError|null $error */
     $error = null;
     while (false === $options['attempts'] || $options['attempts']--)
     {

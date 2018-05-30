@@ -67,7 +67,7 @@ class sfInflector
    * @param string $class_name                Class name.
    * @param bool   $separate_with_underscore  Separate with underscore.
    *
-   * @return strong Foreign key
+   * @return string Foreign key
    */
   public static function foreign_key($class_name, $separate_with_underscore = true)
   {

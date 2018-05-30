@@ -272,7 +272,7 @@ abstract class sfBrowserBase
 
     // request parameters
     $_GET = $_POST = array();
-    if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT')))
+    if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT', 'PATCH')))
     {
       if (isset($parameters['_with_csrf']) && $parameters['_with_csrf'])
       {
@@ -927,7 +927,7 @@ abstract class sfBrowserBase
     if (false !== $pos = strpos($name, '['))
     {
       $var = &$vars;
-      $tmps = array_filter(preg_split('/(\[ | \[\] | \])/x', $name), create_function('$s', 'return $s !== "";'));
+      $tmps = array_filter(preg_split('/(\[ | \[\] | \])/x', $name), function($s) { return $s !== ''; });
       foreach ($tmps as $tmp)
       {
         $var = &$var[$tmp];

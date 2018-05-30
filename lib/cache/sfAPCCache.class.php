@@ -28,6 +28,7 @@ class sfAPCCache extends sfCache
    * * see sfCache for options available for all drivers
    *
    * @see sfCache
+   * @inheritdoc
    */
   public function initialize($options = array())
   {
@@ -36,9 +37,10 @@ class sfAPCCache extends sfCache
     $this->enabled = function_exists('apc_store') && ini_get('apc.enabled');
   }
 
- /**
-  * @see sfCache
-  */
+  /**
+   * @see sfCache
+   * @inheritdoc
+   */
   public function get($key, $default = null)
   {
     if (!$this->enabled)
@@ -53,6 +55,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function has($key)
   {
@@ -86,6 +89,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function set($key, $data, $lifetime = null)
   {
@@ -99,6 +103,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
@@ -112,6 +117,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = sfCache::ALL)
   {
@@ -128,6 +134,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {
@@ -141,6 +148,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {
@@ -154,6 +162,7 @@ class sfAPCCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {

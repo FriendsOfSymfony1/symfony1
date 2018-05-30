@@ -25,10 +25,11 @@ abstract class sfFormDoctrine extends sfFormObject
   /**
    * Constructor.
    *
-   * @param mixed  A object used to initialize default values
-   * @param array  An array of options
-   * @param string A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
+   * @param mixed  $object     A object used to initialize default values
+   * @param array  $options    An array of options
+   * @param string $CSRFSecret A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
    *
+   * @throws sfException
    * @see sfForm
    */
   public function __construct($object = null, $options = array(), $CSRFSecret = null)
@@ -66,8 +67,10 @@ abstract class sfFormDoctrine extends sfFormObject
   /**
    * Embeds i18n objects into the current form.
    *
-   * @param array   $cultures   An array of cultures
-   * @param string  $decorator  A HTML decorator for the embedded form
+   * @param array  $cultures  An array of cultures
+   * @param string $decorator A HTML decorator for the embedded form
+   *
+   * @throws sfException
    */
   public function embedI18n($cultures, $decorator = null)
   {
@@ -98,11 +101,11 @@ abstract class sfFormDoctrine extends sfFormObject
    *     $userForm = new UserForm($user);
    *     $userForm->embedRelation('Groups AS groups');
    *
-   * @param  string $relationName  The name of the relation and an optional alias
-   * @param  string $formClass     The name of the form class to use
-   * @param  array  $formArguments Arguments to pass to the constructor (related object will be shifted onto the front)
-   * @param string  $innerDecorator A HTML decorator for each embedded form
-   * @param string  $decorator      A HTML decorator for the main embedded form
+   * @param string $relationName   The name of the relation and an optional alias
+   * @param string $formClass      The name of the form class to use
+   * @param array  $formArgs       Arguments to pass to the constructor (related object will be shifted onto the front)
+   * @param string $innerDecorator A HTML decorator for each embedded form
+   * @param string $decorator      A HTML decorator for the main embedded form
    *
    * @throws InvalidArgumentException If the relationship is not a collection
    */
@@ -161,6 +164,10 @@ abstract class sfFormDoctrine extends sfFormObject
    * from the array of cleaned up values.
    *
    * @see sfFormObject
+   *
+   * @param array $values
+   *
+   * @return array
    */
   public function processValues($values)
   {
@@ -228,6 +235,7 @@ abstract class sfFormDoctrine extends sfFormObject
    * Returns the primary key name of the i18n model.
    *
    * @return string The primary key name of the i18n model
+   * @throws sfException
    */
   public function getI18nModelPrimaryKeyName()
   {

@@ -18,18 +18,25 @@
  */
 class sfProjectConfiguration
 {
-  protected
-    $rootDir               = null,
-    $symfonyLibDir         = null,
-    $dispatcher            = null,
-    $plugins               = array(),
-    $pluginPaths           = array(),
-    $overriddenPluginPaths = array(),
-    $pluginConfigurations  = array(),
-    $pluginsLoaded         = false;
+  /** @var string */
+  protected $rootDir = null;
+  /** @var string */
+  protected $symfonyLibDir = null;
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var array */
+  protected $plugins = array();
+  /** @var array */
+  protected $pluginPaths = array();
+  /** @var array */
+  protected $overriddenPluginPaths = array();
+  /** @var sfPluginConfiguration[] */
+  protected $pluginConfigurations = array();
+  /** @var bool */
+  protected $pluginsLoaded = false;
 
-  static protected
-    $active = null;
+  /** @var sfApplicationConfiguration */
+  static protected $active = null;
 
   /**
    * Constructor.
@@ -551,7 +558,7 @@ class sfProjectConfiguration
   /**
    * Returns the active configuration.
    *
-   * @return sfProjectConfiguration The current sfProjectConfiguration instance
+   * @return sfApplicationConfiguration The current sfProjectConfiguration instance
    */
   static public function getActive()
   {
@@ -618,10 +625,12 @@ class sfProjectConfiguration
   /**
    * Calls methods defined via sfEventDispatcher.
    *
-   * @param string $method The method name
+   * @param string $method    The method name
    * @param array  $arguments The method arguments
    *
    * @return mixed The returned value of the called method
+   *
+   * @throws sfException
    */
   public function __call($method, $arguments)
   {

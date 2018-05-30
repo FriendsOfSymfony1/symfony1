@@ -18,17 +18,19 @@
  */
 abstract class sfGenerator
 {
-  protected
-    $generatorClass      = '',
-    $generatorManager    = null,
-    $generatedModuleName = '',
-    $theme               = 'default',
-    $moduleName          = '';
-
+  protected $generatorClass = '';
+  /** @var sfGeneratorManager */
+  protected $generatorManager = null;
+  protected $generatedModuleName = '';
+  protected $theme = 'default';
+  protected $moduleName = '';
+  
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param sfGeneratorManager $generatorManager
    */
   public function __construct(sfGeneratorManager $generatorManager)
   {
@@ -135,7 +137,7 @@ abstract class sfGenerator
   /**
    * Gets the sfGeneratorManager instance.
    *
-   * @return string The sfGeneratorManager instance
+   * @return sfGeneratorManager The sfGeneratorManager instance
    */
   protected function getGeneratorManager()
   {

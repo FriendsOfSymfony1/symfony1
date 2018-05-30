@@ -1,6 +1,44 @@
 CHANGELOG
 =========
 
+17/03/2018: Version 1.5.11
+--------------------------
+
+* Fix a bug in the lime unit-testing lib #168
+* Fix error 'A non well formed numeric value' on sfValidatorFile #181
+* Fix usage of octet in recent patch #182
+* Allow PATCH as an option in functional tests #185
+* Fix case for isSubclassOf method #189
+* Remove typehint from exception handler #188
+* Fix counting of non-countable var for PHP 7.2 #178
+
+02/08/2017: Version 1.5.10
+--------------------------
+
+* Add support of Throwables #144
+* Fixed return type in PHPDoc #151
+* Fix `sfEventLogger`: add priority and event.name overriding #160
+* Don't try to autoload a trait if it's already been declared #162
+* Fix/php 7.2 deprecation warnings #163
+
+09/02/2017: Version 1.5.9
+-------------------------
+
+* Fix notice in sfValidatorSchema::getBytes" PHP 7.1 #148
+* Fix dumpArray() for PHP 7.1 #146
+* Fix some bugs with new PHP versions #143
+* Fix yaml dumpArray() for PHP 7.1 #142
+
+06/10/2016: Version 1.5.8
+-------------------------
+
+* PHP7 compatibility by @timmipetit #121
+* sfMemcacheCache fix #124
+* sfAutoload include fix for HHVM support #127
+* sfAutoload include: eval only if forced on HHVM #130
+* Fix phpdoc for sfDoctrineRecord::setDateTimeObject() #136
+* Fix session data losing under certain situation #139
+
 02/02/2016: Version 1.5.7
 -------------------------
 

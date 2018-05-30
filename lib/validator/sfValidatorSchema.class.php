@@ -355,7 +355,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
   /**
    * Returns an array of fields.
    *
-   * @return sfValidatorBase An array of sfValidatorBase instances
+   * @return sfValidatorBase[] An array of sfValidatorBase instances
    */
   public function getFields()
   {
@@ -390,18 +390,21 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 
   protected function getBytes($value)
   {
-    $value = trim($value);
-    switch (strtolower($value[strlen($value) - 1]))
-    {
-      // The 'G' modifier is available since PHP 5.1.0
-      case 'g':
-        $value *= 1024;
-      case 'm':
-        $value *= 1024;
-      case 'k':
-        $value *= 1024;
+    $value    = trim($value);
+    $number   = (float) $value;
+    $modifier = strtolower($value[strlen($value) - 1]);
+
+    $exp_by_modifier = array(
+      'k' => 1,
+      'm' => 2,
+      'g' => 3,
+    );
+
+    if (array_key_exists($modifier, $exp_by_modifier)) {
+      $exp    = $exp_by_modifier[$modifier];
+      $number = $number * pow(1024, $exp);
     }
 
-    return $value;
+    return $number;
   }
 }

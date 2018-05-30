@@ -46,6 +46,8 @@ class sfFilesystem
    * @param string $originFile  The original filename
    * @param string $targetFile  The target filename
    * @param array  $options     An array of options
+   *
+   * @return bool
    */
   public function copy($originFile, $targetFile, $options = array())
   {
@@ -179,6 +181,10 @@ class sfFilesystem
    *
    * @param string $origin  The origin filename
    * @param string $target  The new filename
+   *
+   * @return bool
+   *
+   * @throws sfException
    */
   public function rename($origin, $target)
   {
@@ -253,6 +259,8 @@ class sfFilesystem
    * @param string   $targetDir  The target directory
    * @param sfFinder $finder     An sfFinder instance
    * @param array    $options    An array of options (see copy())
+   *
+   * @throws sfException
    */
   public function mirror($originDir, $targetDir, $finder, $options = array())
   {
@@ -453,7 +461,7 @@ class sfFilesystem
   }
 
   /**
-   * @param string A filesystem path
+   * @param string $path A filesystem path
    *
    * @return string
    */

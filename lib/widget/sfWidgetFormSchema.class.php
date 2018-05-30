@@ -611,6 +611,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     // errors for hidden fields
     foreach ($this->positions as $name)
     {
+      /** @var $this sfWidgetForm[] */
       if ($this[$name] instanceof sfWidgetForm && $this[$name]->isHidden())
       {
         if (isset($errors[$name]))
@@ -723,7 +724,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Returns an array of fields.
    *
-   * @return sfWidget An array of sfWidget instance
+   * @return sfWidget[] An array of sfWidget instance
    */
   public function getFields()
   {
@@ -789,7 +790,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *  * sfWidgetFormSchema::FIRST
    *
    * @param string   $field  The field name to move
-   * @param constant $action The action (see above for all possible actions)
+   * @param string   $action The action (see above for all possible actions)
    * @param string   $pivot  The field name used for AFTER and BEFORE actions
    *
    * @throws InvalidArgumentException when field not exist

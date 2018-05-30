@@ -15,17 +15,21 @@
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
+ *
+ * @property sfApplicationConfiguration $configuration
  */
 abstract class sfCommandApplicationTask extends sfTask
 {
-  protected
-    $commandApplication;
+  /** @var sfSymfonyCommandApplication */
+  protected $commandApplication;
 
-  private
-    $mailer,
-    $routing,
-    $serviceContainer,
-    $factoryConfiguration;
+  /** @var sfMailer */
+  private $mailer;
+  /** @var sfRouting */
+  private $routing;
+  /** @var sfServiceContainer */
+  private $serviceContainer;
+  private $factoryConfiguration;
 
   /**
    * Sets the command application instance for this task.
@@ -39,6 +43,7 @@ abstract class sfCommandApplicationTask extends sfTask
 
   /**
    * @see sfTask
+   * @inheritdoc
    */
   public function log($messages)
   {
@@ -50,6 +55,7 @@ abstract class sfCommandApplicationTask extends sfTask
 
   /**
    * @see sfTask
+   * @inheritdoc
    */
   public function logSection($section, $message, $size = null, $style = 'INFO')
   {
@@ -172,6 +178,7 @@ abstract class sfCommandApplicationTask extends sfTask
     $handler = new sfRoutingConfigHandler();
     $routes = $handler->evaluate($this->configuration->getConfigPaths('config/routing.yml'));
 
+    /** @var sfRouting $routing */
     $routing = new $config['routing']['class']($this->dispatcher, null, $params);
     $routing->setRoutes($routes);
 

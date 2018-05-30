@@ -10,9 +10,9 @@
  */
 
 /**
- * sfException is the base class for all symfony related exceptions and
+ * sfException is the base class for all symfony related throwables and
  * provides an additional method for printing up a detailed view of an
- * exception.
+ * throwable.
  *
  * @package    symfony
  * @subpackage exception
@@ -22,6 +22,7 @@
  */
 class sfException extends Exception
 {
+  /** @var Exception|Throwable|null */
   protected
     $wrappedException = null;
 
@@ -29,13 +30,13 @@ class sfException extends Exception
     $lastException = null;
 
   /**
-   * Wraps an Exception.
+   * Wraps an Throwable.
    *
-   * @param Exception $e An Exception instance
+   * @param Exception|Throwable $e An Throwable instance
    *
-   * @return sfException An sfException instance that wraps the given Exception object
+   * @return sfException An sfException instance that wraps the given Throwable object
    */
-  static public function createFromException(Exception $e)
+  static public function createFromException($e)
   {
     $exception = new sfException(sprintf('Wrapped %s: %s', get_class($e), $e->getMessage()));
     $exception->setWrappedException($e);
@@ -47,9 +48,9 @@ class sfException extends Exception
   /**
    * Sets the wrapped exception.
    *
-   * @param Exception $e An Exception instance
+   * @param Exception|Throwable $e A Throwable instance
    */
-  public function setWrappedException(Exception $e)
+  public function setWrappedException($e)
   {
     $this->wrappedException = $e;
 
@@ -57,9 +58,9 @@ class sfException extends Exception
   }
 
   /**
-   * Gets the last wrapped exception.
+   * Gets the last wrapped throwable.
    *
-   * @return Exception An Exception instance
+   * @return Exception|Throwable An Throwable instance
    */
   static public function getLastException()
   {
@@ -71,7 +72,7 @@ class sfException extends Exception
    */
   static public function clearLastException()
   {
-  	self::$lastException = null;
+    self::$lastException = null;
   }
 
   /**
@@ -101,18 +102,31 @@ class sfException extends Exception
       }
 
       if (sfConfig::get('sf_compressed')) {
-          ob_start('ob_gzhandler');
+        ob_start('ob_gzhandler');
       }
 
       header('HTTP/1.0 500 Internal Server Error');
     }
 
-    try
+    if (version_compare(PHP_VERSION, '7.0.0') >= 0)
     {
-      $this->outputStackTrace($exception);
+      try
+      {
+        $this->outputStackTrace($exception);
+      }
+      catch (Throwable $e)
+      {
+      }
     }
-    catch (Exception $e)
+    else
     {
+      try
+      {
+        $this->outputStackTrace($exception);
+      }
+      catch (Exception $e)
+      {
+      }
     }
 
     if (!sfConfig::get('sf_test'))
@@ -123,8 +137,9 @@ class sfException extends Exception
 
   /**
    * Gets the stack trace for this exception.
+   * @param Exception|Throwable $exception
    */
-  static protected function outputStackTrace(Exception $exception)
+  static protected function outputStackTrace($exception)
   {
     $format = 'html';
     $code   = '500';
@@ -133,6 +148,9 @@ class sfException extends Exception
     $response = null;
     if (class_exists('sfContext', false) && sfContext::hasInstance() && is_object($request = sfContext::getInstance()->getRequest()) && is_object($response = sfContext::getInstance()->getResponse()))
     {
+      /** @var $request sfWebRequest */
+      /** @var $response sfWebResponse */
+
       $dispatcher = sfContext::getInstance()->getEventDispatcher();
 
       if (sfConfig::get('sf_logging_enabled'))
@@ -244,6 +262,7 @@ class sfException extends Exception
 
       return;
     }
+
   }
 
   /**
@@ -278,8 +297,8 @@ class sfException extends Exception
   /**
    * Returns an array of exception traces.
    *
-   * @param Exception $exception  An Exception implementation instance
-   * @param string    $format     The trace format (txt or html)
+   * @param Exception|Throwable $exception  An Throwable implementation instance
+   * @param string              $format     The trace format (txt or html)
    *
    * @return array An array of traces
    */

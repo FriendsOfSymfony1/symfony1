@@ -137,6 +137,7 @@ class sfWebDebug
    * Gets an option value by name.
    *
    * @param string $name The option name
+   * @param mixed  $default
    *
    * @return mixed The option value
    */
@@ -269,7 +270,7 @@ class sfWebDebug
   /**
    * Gets the javascript code to inject in the head tag.
    *
-   * @param string The javascript code
+   * @return string The javascript code
    */
   public function getJavascript()
   {
@@ -423,7 +424,7 @@ EOF;
   /**
    * Gets the stylesheet code to inject in the head tag.
    *
-   * @param string The stylesheet code
+   * @return string The stylesheet code
    */
   public function getStylesheet()
   {

@@ -20,10 +20,11 @@
  */
 abstract class sfDatabaseSessionStorage extends sfSessionStorage
 {
-  protected
-    $db = null,
-    $con = null;
-
+  /** @var sfDatabase */
+  protected $db = null;
+  /** @var PDO */
+  protected $con = null;
+  
   /**
    * Available options:
    *
@@ -33,7 +34,10 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
    *   * db_data_col: The database column in which the session data will be stored (sess_data by default)
    *   * db_time_col: The database column in which the session timestamp will be stored (sess_time by default)
    *
-   * @param  array $options  An associative array of options
+   * @param  array $options An associative array of options
+   * @return bool|void
+   *
+   * @throws sfInitializationException
    *
    * @see sfSessionStorage
    */
@@ -97,6 +101,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
   public function sessionOpen($path = null, $name = null)
   {
     // what database are we using?
+    /** @var sfDatabase $database */
     $database = $this->options['database'];
 
     // get the database and connection
@@ -174,7 +179,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
    *
    * @param  boolean $destroy Destroy session when regenerating?
    *
-   * @return boolean True if session regenerated, false if error
+   * @return boolean|void True if session regenerated, false if error
    *
    */
   public function regenerate($destroy = false)

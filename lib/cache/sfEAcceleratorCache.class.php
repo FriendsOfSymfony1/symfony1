@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -26,6 +26,10 @@ class sfEAcceleratorCache extends sfCache
    * * see sfCache for options available for all drivers
    *
    * @see sfCache
+   *
+   * @param  array $options
+   *
+   * @throws sfInitializationException
    */
   public function initialize($options = array())
   {
@@ -37,9 +41,14 @@ class sfEAcceleratorCache extends sfCache
     }
   }
 
- /**
-  * @see sfCache
-  */
+  /**
+   * @see sfCache
+   *
+   * @param string $key
+   * @param mixed  $default
+   *
+   * @return null|string
+   */
   public function get($key, $default = null)
   {
     $value = eaccelerator_get($this->getOption('prefix').$key);
@@ -49,6 +58,10 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   *
+   * @param string $key
+   *
+   * @return bool
    */
   public function has($key)
   {
@@ -57,6 +70,12 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   *
+   * @param  string   $key
+   * @param  string   $data
+   * @param  int|null $lifetime
+   *
+   * @return bool
    */
   public function set($key, $data, $lifetime = null)
   {
@@ -65,6 +84,7 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function remove($key)
   {
@@ -73,6 +93,7 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function removePattern($pattern)
   {
@@ -94,6 +115,7 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function clean($mode = sfCache::ALL)
   {
@@ -124,6 +146,7 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getLastModified($key)
   {
@@ -137,6 +160,7 @@ class sfEAcceleratorCache extends sfCache
 
   /**
    * @see sfCache
+   * @inheritdoc
    */
   public function getTimeout($key)
   {

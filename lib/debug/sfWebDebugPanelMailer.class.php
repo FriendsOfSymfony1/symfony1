@@ -18,6 +18,7 @@
  */
 class sfWebDebugPanelMailer extends sfWebDebugPanel
 {
+  /** @var sfMailer */
   protected $mailer = null;
 
   /**

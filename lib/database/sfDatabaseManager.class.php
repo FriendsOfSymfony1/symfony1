@@ -22,14 +22,17 @@
  */
 class sfDatabaseManager
 {
-  protected
-    $configuration = null,
-    $databases     = array();
+  /** @var sfProjectConfiguration */
+  protected $configuration = null;
+  protected $databases = array();
 
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param sfProjectConfiguration $configuration
+   * @param array                  $options
    */
   public function __construct(sfProjectConfiguration $configuration, $options = array())
   {
@@ -46,7 +49,7 @@ class sfDatabaseManager
    *
    * @param sfProjectConfiguration $configuration A sfProjectConfiguration instance
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabaseManager object
    */

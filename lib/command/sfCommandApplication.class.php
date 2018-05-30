@@ -18,20 +18,32 @@
  */
 abstract class sfCommandApplication
 {
-  protected
-    $commandManager = null,
-    $trace          = false,
-    $verbose        = true,
-    $debug          = true,
-    $nowrite        = false,
-    $name           = 'UNKNOWN',
-    $version        = 'UNKNOWN',
-    $tasks          = array(),
-    $currentTask    = null,
-    $dispatcher     = null,
-    $options        = array(),
-    $formatter      = null;
-
+  /** @var sfCommandManager */
+  protected $commandManager = null;
+  /** @var bool */
+  protected $trace = false;
+  /** @var bool */
+  protected $verbose = true;
+  /** @var bool */
+  protected $debug = true;
+  /** @var bool */
+  protected $nowrite = false;
+  /** @var string */
+  protected $name = 'UNKNOWN';
+  /** @var string */
+  protected $version = 'UNKNOWN';
+  /** @var array */
+  protected $tasks = array();
+  /** @var sfTask */
+  protected $currentTask = null;
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var array */
+  protected $options = array();
+  /** @var sfFormatter */
+  protected $formatter = null;
+  /** @var mixed */
+  protected $commandOptions;
   /**
    * Constructor.
    *
@@ -95,7 +107,7 @@ abstract class sfCommandApplication
   /**
    * Sets the formatter instance.
    *
-   * @param sfFormatter The formatter instance
+   * @param sfFormatter $formatter The formatter instance
    */
   public function setFormatter(sfFormatter $formatter)
   {
@@ -136,6 +148,8 @@ abstract class sfCommandApplication
    * Registers a task object.
    *
    * @param sfTask $task An sfTask object
+   *
+   * @throws sfCommandException
    */
   public function registerTask(sfTask $task)
   {
@@ -194,6 +208,8 @@ abstract class sfCommandApplication
    * @param string $name The task name or alias
    *
    * @return sfTask An sfTask object
+   *
+   * @throws sfCommandException
    */
   public function getTask($name)
   {
@@ -451,9 +467,11 @@ abstract class sfCommandApplication
   /**
    * Gets a task from a task name or a shortcut.
    *
-   * @param  string  $name  The task name or a task shortcut
+   * @param  string $name The task name or a task shortcut
    *
    * @return sfTask A sfTask object
+   *
+   * @throws sfCommandException
    */
   public function getTaskToExecute($name)
   {
@@ -587,13 +605,22 @@ abstract class sfCommandApplication
     }
 
     // close the streams on script termination
-    register_shutdown_function(create_function('', 'fclose(STDIN); fclose(STDOUT); fclose(STDERR); return true;'));
+    register_shutdown_function(function() {
+        fclose(STDIN);
+        fclose(STDOUT);
+        fclose(STDERR);
+        return true;
+    });
   }
 
   /**
    * Returns an array of possible abbreviations given a set of names.
    *
    * @see Text::Abbrev perl module for the algorithm
+   *
+   * @param string[] $names
+   *
+   * @return string[]
    */
   protected function getAbbreviations($names)
   {

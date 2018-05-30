@@ -32,22 +32,27 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $CSRFFieldName     = '_csrf_token',
     $toStringException = null;
 
-  protected
-    $widgetSchema    = null,
-    $validatorSchema = null,
-    $errorSchema     = null,
-    $formFieldSchema = null,
-    $formFields      = array(),
-    $isBound         = false,
-    $taintedValues   = array(),
-    $taintedFiles    = array(),
-    $values          = null,
-    $defaults        = array(),
-    $fieldNames      = array(),
-    $options         = array(),
-    $count           = 0,
-    $localCSRFSecret = null,
-    $embeddedForms   = array();
+  /** @var sfWidgetFormSchema|sfWidget[]|sfWidgetFormSchemaDecorator[] */
+  protected $widgetSchema    = null;
+  /** @var sfValidatorSchema|sfValidatorBase[] */
+  protected $validatorSchema = null;
+  /** @var sfValidatorErrorSchema|sfValidatorError[] */
+  protected $errorSchema     = null;
+  /** @var sfFormFieldSchema|null */
+  protected $formFieldSchema = null;
+  /** @var sfFormField[] */
+  protected $formFields      = array();
+  protected $isBound         = false;
+  protected $taintedValues   = array();
+  protected $taintedFiles    = array();
+  protected $values          = null;
+  protected $defaults        = array();
+  protected $fieldNames      = array();
+  protected $options         = array();
+  protected $count           = 0;
+  protected $localCSRFSecret = null;
+  /** @var sfForm[] */
+  protected $embeddedForms   = array();
 
   /**
    * Constructor.
@@ -319,7 +324,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Directly updates embedded form values
    *
-   * @param array $values®
+   * @param array $values
    */
   public function updateValuesEmbeddedForms(array $values)
   {
@@ -471,7 +476,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Gets the list of embedded forms.
    *
-   * @return array An array of embedded forms
+   * @return sfForm[] An array of embedded forms
    */
   public function getEmbeddedForms()
   {
@@ -795,7 +800,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    * @param string $name    The option name
    * @param mixed  $default The default value (null by default)
    *
-   * @param mixed  The default value
+   * @return mixed
    */
   public function getOption($name, $default = null)
   {
@@ -824,7 +829,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @param string $name The field name
    *
-   * @param mixed  The default value
+   * @return mixed The default value
    */
   public function getDefault($name)
   {
@@ -834,9 +839,9 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Returns true if the form has a default value for a form field.
    *
-   * @param string $name The field name
+   * @param string $name   The field name
    *
-   * @param Boolean true if the form has a default value for this field, false otherwise
+   * @return Boolean true if the form has a default value for this field, false otherwise
    */
   public function hasDefault($name)
   {
@@ -1069,7 +1074,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @param  string $name  The offset of the value to get
    *
-   * @return sfFormField   A form field instance
+   * @return sfFormField|sfFormFieldSchema A form field instance
    */
   public function offsetGet($name)
   {
@@ -1408,6 +1413,8 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Checks that the $_POST values do not contain something that
    * looks like a file upload (coming from $_FILE).
+   *
+   * @param array $values
    */
   protected function checkTaintedValues($values)
   {

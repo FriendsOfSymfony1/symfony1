@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -46,7 +46,7 @@ class sfPearFrontendPlugin extends PEAR_Frontend_CLI
 
   protected function splitLongLine($text)
   {
-    $lines = '';
+    $lines = array();
     foreach (explode("\n", $text) as $longline)
     {
       foreach (explode("\n", wordwrap($longline, 62)) as $line)

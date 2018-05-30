@@ -30,18 +30,27 @@ abstract class sfRequest implements ArrayAccess
   const HEAD   = 'HEAD';
   const OPTIONS = 'OPTIONS';
 
-  protected
-    $dispatcher      = null,
-    $content         = null,
-    $method          = null,
-    $options         = array(),
-    $parameterHolder = null,
-    $attributeHolder = null;
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var string|null */
+  protected $content = null;
+  /** @var string */
+  protected $method = null;
+  protected $options = array();
+  /** @var sfParameterHolder */
+  protected $parameterHolder = null;
+  /** @var sfParameterHolder */
+  protected $attributeHolder = null;
 
   /**
    * Class constructor.
    *
    * @see initialize()
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param array             $parameters
+   * @param array             $attributes
+   * @param array             $options
    */
   public function __construct(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
   {
@@ -60,7 +69,7 @@ abstract class sfRequest implements ArrayAccess
    * @param  array             $attributes  An associative array of initialization attributes
    * @param  array             $options     An associative array of options
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfRequest
    */
@@ -262,9 +271,10 @@ abstract class sfRequest implements ArrayAccess
   /**
    * Retrieves a parameter for the current request.
    *
-   * @param string $name     Parameter name
-   * @param string $default  Parameter default value
+   * @param string $name    Parameter name
+   * @param string $default Parameter default value
    *
+   * @return mixed
    */
   public function getParameter($name, $default = null)
   {

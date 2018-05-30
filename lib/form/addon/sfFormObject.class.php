@@ -78,9 +78,9 @@ abstract class sfFormObject extends BaseForm
   /**
    * Binds the current form and saves the object to the database in one step.
    *
-   * @param  array An array of tainted values to use to bind the form
-   * @param  array An array of uploaded files (in the $_FILES or $_GET format)
-   * @param  mixed An optional connection object
+   * @param  array $taintedValues An array of tainted values to use to bind the form
+   * @param  array $taintedFiles An array of uploaded files (in the $_FILES or $_GET format)
+   * @param  mixed $con An optional connection object
    *
    * @return Boolean true if the form is valid, false otherwise
    */
@@ -107,9 +107,10 @@ abstract class sfFormObject extends BaseForm
    *
    * @return mixed The current saved object
    *
-   * @see doSave()
+   * @throws Exception
+   * @throws sfValidatorErrorSchema
    *
-   * @throws sfValidatorError If the form is not valid
+   * @see doSave()
    */
   public function save($con = null)
   {

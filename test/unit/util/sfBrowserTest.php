@@ -342,7 +342,7 @@ file_put_contents($existentFilename, 'test');
 list($method, $uri, $parameters) = $b->click('submit', array('myfile'=>$unexistentFilename));
 $files = $b->getFiles();
 $t->is($method, 'post', 'file upload is using right method');
-$t->is(!isset($parameters['myfile']), 'file upload key is removed from the main request');
+$t->ok(!isset($parameters['myfile']), 'file upload key is removed from the main request');
 $t->is(isset($files['myfile'])&&is_array($files['myfile']), true, 'file upload set up a _FILE entry for our test file');
 $t->is(array_keys($files['myfile']), array('name','type','tmp_name','error','size'), 'file upload returns correctly formatted array');
 $t->is($files['myfile']['error'], UPLOAD_ERR_NO_FILE, 'unexistent file does not exists (UPLOAD_ERR_NO_FILE)');

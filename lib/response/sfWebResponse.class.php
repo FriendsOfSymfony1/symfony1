@@ -11,7 +11,7 @@
 /**
  * sfWebResponse class.
  *
- * This class manages web reponses. It supports cookies and headers management.
+ * This class manages web responses. It supports cookies and headers management.
  *
  * @package    symfony
  * @subpackage response
@@ -97,7 +97,7 @@ class sfWebResponse extends sfResponse
    * @param  sfEventDispatcher $dispatcher  An sfEventDispatcher instance
    * @param  array             $options     An array of options
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfResponse
    *
@@ -398,6 +398,7 @@ class sfWebResponse extends sfResponse
 
     if (function_exists('fastcgi_finish_request'))
     {
+      $this->dispatcher->notify(new sfEvent($this, 'response.fastcgi_finish_request'));
       fastcgi_finish_request();
     }
   }
@@ -679,7 +680,7 @@ class sfWebResponse extends sfResponse
    *
    * @param string $file      The stylesheet file
    * @param string $position  Position
-   * @param string $options   Stylesheet options
+   * @param array  $options   Stylesheet options
    */
   public function addStylesheet($file, $position = '', $options = array())
   {
@@ -752,7 +753,7 @@ class sfWebResponse extends sfResponse
    *
    * @param string $file      The JavaScript file
    * @param string $position  Position
-   * @param string $options   Javascript options
+   * @param array  $options   Javascript options
    */
   public function addJavascript($file, $position = '', $options = array())
   {
@@ -880,6 +881,7 @@ class sfWebResponse extends sfResponse
 
   /**
    * @see sfResponse
+   * @inheritdoc
    */
   public function unserialize($serialized)
   {

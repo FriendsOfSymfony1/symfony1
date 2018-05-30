@@ -15,6 +15,9 @@
  * @subpackage routing
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
+ *
+ * @property $firstOptional int
+ * @property $segments array
  */
 class sfRoute implements Serializable
 {
@@ -89,7 +92,7 @@ class sfRoute implements Serializable
    * @param  string  $url     The URL
    * @param  array   $context The context
    *
-   * @return array   An array of parameters
+   * @return array|bool   An array of parameters or false if not matching
    */
   public function matchesUrl($url, $context = array())
   {
@@ -268,6 +271,8 @@ class sfRoute implements Serializable
    * Generates a URL for the given parameters by using the route tokens.
    *
    * @param array $parameters An array of parameters
+   *
+   * @return string
    */
   protected function generateWithTokens($parameters)
   {
@@ -581,7 +586,7 @@ class sfRoute implements Serializable
         throw new InvalidArgumentException(sprintf('Unable to parse "%s" route near "%s".', $this->pattern, $buffer));
       }
     }
-    
+
     // check for suffix
     if ($this->suffix)
     {
@@ -691,7 +696,7 @@ class sfRoute implements Serializable
       'extra_parameters_as_query_string' => true,
     ), $this->getDefaultOptions(), $this->options);
 
-    $preg_quote_hash = create_function('$a', 'return preg_quote($a, \'#\');');
+    $preg_quote_hash = function($a) { return preg_quote($a, '#'); };
 
     // compute some regexes
     $this->options['variable_prefix_regex'] = '(?:'.implode('|', array_map($preg_quote_hash, $this->options['variable_prefixes'])).')';
@@ -701,7 +706,7 @@ class sfRoute implements Serializable
       $this->options['segment_separators_regex'] = '(?:'.implode('|', array_map($preg_quote_hash, $this->options['segment_separators'])).')';
 
       // as of PHP 5.3.0, preg_quote automatically quotes dashes "-" (see http://bugs.php.net/bug.php?id=47229)
-      $preg_quote_hash_53 = create_function('$a', 'return str_replace(\'-\', \'\-\', preg_quote($a, \'#\'));');
+      $preg_quote_hash_53 = function($a) { return str_replace('-', '\-', preg_quote($a, '#')); };
       $this->options['variable_content_regex'] = '[^'.implode('',
           array_map(version_compare(PHP_VERSION, '5.3.0RC4', '>=') ? $preg_quote_hash : $preg_quote_hash_53, $this->options['segment_separators'])
         ).']+';
