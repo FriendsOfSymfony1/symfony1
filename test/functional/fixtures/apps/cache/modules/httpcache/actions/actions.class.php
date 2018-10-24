@@ -1,6 +1,6 @@
 <?php
 
-class httpcacheActions extends sfActions
+class httpcacheActions extends CacheAppActions
 {
   public function executePage1(sfWebRequest $request)
   {

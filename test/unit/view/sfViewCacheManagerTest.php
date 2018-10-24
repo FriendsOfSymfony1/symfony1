@@ -66,6 +66,11 @@ class myRequest
   {
     return $this->getParameters;
   }
+
+  public function getMethod()
+  {
+    return sfRequest::GET;
+  }
 }
 
 class myCache extends sfCache
