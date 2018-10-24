@@ -29,8 +29,22 @@ class sfRenderingFilter extends sfFilter
    */
   public function execute($filterChain)
   {
+    $controller = $this->context->getController();
+    $exception = null;
+
     // execute next filter
-    $filterChain->execute();
+    try
+    {
+      $filterChain->execute();
+    }
+    catch (sfStopException $exception)
+    {
+      // Send the response when stop the execution for a redirection.
+      if (sfView::RENDER_REDIRECTION !== $controller->getRenderMode())
+      {
+        throw $exception;
+      }
+    }
 
     // get response object
     $response = $this->context->getResponse();
@@ -46,9 +60,15 @@ class sfRenderingFilter extends sfFilter
     }
 
     // send headers + content
-    if (sfView::RENDER_VAR != $this->context->getController()->getRenderMode())
+    if (sfView::RENDER_VAR != $controller->getRenderMode())
     {
-        $response->send();
+      $response->send();
+    }
+
+    // Re-throw the exception to keep the encapsulation.
+    if (null !== $exception)
+    {
+      throw $exception;
     }
   }
 }

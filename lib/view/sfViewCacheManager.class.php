@@ -182,6 +182,12 @@ class sfViewCacheManager
       $cacheKey = '/'.$hostNamePart.'/'.ltrim($cacheKey, '/');
     }
 
+    // BC layer to avoid invalidate all cache.
+    if (sfRequest::GET !== $method = $this->request->getMethod())
+    {
+      $cacheKey = '/'.$this->request->getMethod().'/'.ltrim($cacheKey, '/');
+    }
+
     // normalize to a leading slash
     if (0 !== strpos($cacheKey, '/'))
     {
@@ -447,30 +453,14 @@ class sfViewCacheManager
    */
   public function isCacheable($internalUri)
   {
-    if ($this->request instanceof sfWebRequest && !$this->request->isMethod(sfRequest::GET))
-    {
-      return false;
-    }
-
     list($route_name, $params) = $this->controller->convertUrlStringToParameters($internalUri);
 
-    if (!isset($params['module']))
+    if (!isset($params['module']) || !isset($params['action']))
     {
         return false;
     }
 
-    $this->registerConfiguration($params['module']);
-
-    if (isset($this->cacheConfig[$params['module']][$params['action']]))
-    {
-      return ($this->cacheConfig[$params['module']][$params['action']]['lifeTime'] > 0);
-    }
-    else if (isset($this->cacheConfig[$params['module']]['DEFAULT']))
-    {
-      return ($this->cacheConfig[$params['module']]['DEFAULT']['lifeTime'] > 0);
-    }
-
-    return false;
+    return $this->isActionCacheable($params['module'], $params['action']);
   }
 
   /**
@@ -485,7 +475,16 @@ class sfViewCacheManager
    */
   public function isActionCacheable($moduleName, $actionName)
   {
-    if ($this->request instanceof sfWebRequest && !$this->request->isMethod(sfRequest::GET))
+    if (
+      $this->request instanceof sfWebRequest
+      && !in_array(strtoupper($this->request->getMethod()), array(sfRequest::GET, sfRequest::HEAD), true)
+    ) {
+      return false;
+    }
+
+    $response = $this->context->getResponse();
+
+    if ($response instanceof sfWebResponse && $response->isPrivate())
     {
       return false;
     }
@@ -936,9 +935,13 @@ class sfViewCacheManager
    */
   public function setPageCache($uri)
   {
-    if (sfView::RENDER_CLIENT != $this->controller->getRenderMode())
+    switch ($this->controller->getRenderMode())
     {
-      return;
+      case sfView::RENDER_CLIENT:
+      case sfView::RENDER_REDIRECTION:
+        break;
+      default:
+        return;
     }
 
     // save content in cache

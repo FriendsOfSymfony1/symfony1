@@ -106,21 +106,26 @@ class sfTesterViewCache extends sfTester
       // check that the content is ok in cache
       if ($boolean)
       {
+        $fullContent = $this->response->getContent();
+        $withContent = !$this->response->isHeaderOnly() || '' !== $fullContent;
+
         if (!$ret)
         {
           $this->tester->fail('content in cache is ok');
         }
-        else if ($with_layout)
+        else if ($with_layout && $withContent)
         {
           $response = unserialize($cacheManager->get($uri));
           $content = $response->getContent();
-          $this->tester->ok($content == $this->response->getContent(), 'content in cache is ok');
+
+          $this->tester->is($content, $fullContent, 'content in cache with layout is ok');
         }
-        else
+        else if ($withContent)
         {
           $ret = unserialize($cacheManager->get($uri));
           $content = $ret['content'];
-          $this->tester->ok(false !== strpos($this->response->getContent(), $content), 'content in cache is ok');
+
+          $this->tester->ok(false !== strpos($fullContent, $content), 'content in cache without layout is ok');
         }
       }
     }

@@ -162,8 +162,28 @@ class sfFakeRenderingFilter extends sfFilter
 {
   public function execute($filterChain)
   {
-    $filterChain->execute();
+    $controller = $this->context->getController();
+    $exception = null;
+
+    try
+    {
+      $filterChain->execute();
+    }
+    catch (sfStopException $exception)
+    {
+      // Send the response when stop the execution for a redirection.
+      if (sfView::RENDER_REDIRECTION !== $controller->getRenderMode())
+      {
+        throw $exception;
+      }
+    }
 
     $this->context->getResponse()->sendContent();
+
+    // Re-throw the exception to keep the encapsulation.
+    if (null !== $exception)
+    {
+      throw $exception;
+    }
   }
 }
