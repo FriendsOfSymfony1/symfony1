@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/LExpress/symfony1.png?branch=master)](http://travis-ci.org/LExpress/symfony1)
+[![Build Status](https://secure.travis-ci.org/FriendsOfSymfony1/symfony1.png?branch=master)](http://travis-ci.org/FriendsOfSymfony1/symfony1)
 
 About this version
 ------------------
@@ -7,9 +7,9 @@ This is a community driven fork of symfony 1, as official support has been [inte
 
 **Do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony4](http://symfony.com/) is the way to go today.**
 
-All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.com/LExpress/symfony1/blob/master/WHATS_NEW.md) file, this include:
+All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.com/FriendsOfSymfony1/symfony1/blob/master/WHATS_NEW.md) file, this include:
 
-- [DIC](https://github.com/LExpress/symfony1/wiki/ServiceContainer)
+- [DIC](https://github.com/FriendsOfSymfony1/symfony1/wiki/ServiceContainer)
 - Composer support
 - PHP 7.2 support
 - performance boost
@@ -51,7 +51,7 @@ Note: On windows, if your project is a few directories down from the drive root,
 Option 2: Using Git submodules:
   
     git init # your project
-    git submodule add https://github.com/LExpress/symfony1.git lib/vendor/symfony
+    git submodule add https://github.com/FriendsOfSymfony1/symfony1.git lib/vendor/symfony
     git submodule update --init --recursive
 
 Documentation
