@@ -26,7 +26,7 @@ class sfMemcachedCache extends sfCache
    *
    * Available options:
    *
-   * * memcache: A memcached object (optional)
+   * * memcached: A memcached object (optional)
    *
    * * host:       The default host (default to localhost)
    * * port:       The port for the default server (default to 11211)
