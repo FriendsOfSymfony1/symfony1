@@ -282,7 +282,7 @@ class sfMailer extends Swift_Mailer
    *
    * @return int|false The number of sent emails
    */
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
   {
     if ($this->force)
     {
