@@ -315,31 +315,27 @@ function link_to_unless()
  * @param   bool    $absolute If true, an absolute path is returned (optional)
  * @return  The web URL root
  */
-function public_path($path, $absolute = false)
-{
-  $request = sfContext::getInstance()->getRequest();
-  $root = $request->getRelativeUrlRoot();
+if (! function_exists('public_path')) {
+    function public_path($path, $absolute = false) {
+        $request = sfContext::getInstance()->getRequest();
+        $root = $request->getRelativeUrlRoot();
 
-  if ($absolute)
-  {
-    $source = 'http';
-    if ($request->isSecure())
-    {
-      $source .= 's';
+        if ($absolute) {
+            $source = 'http';
+            if ($request->isSecure()) {
+                $source .= 's';
+            }
+            $source .= '://' . $request->getHost() . $root;
+        } else {
+            $source = $root;
+        }
+
+        if (substr($path, 0, 1) != '/') {
+            $path = '/' . $path;
+        }
+
+        return $source . $path;
     }
-    $source .='://'.$request->getHost().$root;
-  }
-  else
-  {
-    $source = $root;
-  }
-
-  if (substr($path, 0, 1) != '/')
-  {
-    $path = '/'.$path;
-  }
-
-  return $source.$path;
 }
 
 /**
