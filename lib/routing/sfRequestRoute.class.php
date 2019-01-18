@@ -31,11 +31,12 @@ class sfRequestRoute extends sfRoute
   {
     if (!isset($requirements['sf_method']))
     {
-      $requirements['sf_method'] = array('get', 'head');
+      $requirements['sf_method'] = array('get', 'head', 'options');
     }
     else
     {
       $requirements['sf_method'] = array_map('strtolower', (array) $requirements['sf_method']);
+      $requirements['sf_method'] = array_merge($requirements['sf_method'], array('options'));
     }
 
     parent::__construct($pattern, $defaults, $requirements, $options);

@@ -494,6 +494,10 @@ class sfPatternRouting extends sfRouting
     return 'parse_'.$url.'_'.md5(serialize($this->options['context']));
   }
 
+  public function setHost($host){
+    $this->options['context']['host'] = $host;
+  }
+
   static public function flattenRoutes($routes)
   {
     $flattenRoutes = array();
