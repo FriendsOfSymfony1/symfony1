@@ -239,12 +239,11 @@ class sfMailer extends Swift_Mailer
    */
   public function compose($from = null, $to = null, $subject = null, $body = null)
   {
-    return Swift_Message::newInstance()
-      ->setFrom($from)
-      ->setTo($to)
-      ->setSubject($subject)
-      ->setBody($body)
-    ;
+      return (new Swift_Message())
+          ->setFrom($from)
+          ->setTo($to)
+          ->setSubject($subject)
+          ->setBody($body);
   }
 
   /**
