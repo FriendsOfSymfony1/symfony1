@@ -16,6 +16,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
+if(!function_exists('__')){
 
 function __($text, $args = array(), $catalogue = 'messages')
 {
@@ -41,6 +42,7 @@ function __($text, $args = array(), $catalogue = 'messages')
 
     return strtr($text, $args);
   }
+}
 }
 
 /**
