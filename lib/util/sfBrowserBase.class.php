@@ -271,7 +271,7 @@ abstract class sfBrowserBase
     $this->headers = array();
 
     // request parameters
-    $_GET = $_POST = $_REQUEST = array();
+    $_GET = $_POST = array();
     if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT', 'PATCH')))
     {
       if (isset($parameters['_with_csrf']) && $parameters['_with_csrf'])
@@ -287,7 +287,6 @@ abstract class sfBrowserBase
     {
       $_GET = $parameters;
     }
-    $_REQUEST = $parameters;
 
     // handle input type="file" fields
     $_FILES = array();
