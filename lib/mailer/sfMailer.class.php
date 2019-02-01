@@ -294,25 +294,8 @@ class sfMailer extends Swift_Mailer
 
       return $this->realtimeTransport->send($message, $failedRecipients);
     }
-    try {
-      $result = parent::send($message, $failedRecipients);
-    } finally {
-      $this->forceReconnection();
-    }
-    return $result;
 
-  }
-
-  /**
-   * Force the transport to re-connect.
-   *
-   * This will prevent errors in daemon queue situations.
-   *
-   * @return void
-   */
-  protected function forceReconnection()
-  {
-      $this->getRealtimeTransport()->stop();
+    return parent::send($message, $failedRecipients);
   }
 
   /**
