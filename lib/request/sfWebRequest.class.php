@@ -465,7 +465,7 @@ class sfWebRequest extends sfRequest
       return $this->languages;
     }
 
-    if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+    if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
     {
       return array();
     }
