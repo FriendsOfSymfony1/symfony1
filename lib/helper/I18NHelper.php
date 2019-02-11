@@ -16,33 +16,27 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-if(!function_exists('__')){
 
-function __($text, $args = array(), $catalogue = 'messages')
-{
-  if (sfConfig::get('sf_i18n'))
-  {
-    return sfContext::getInstance()->getI18N()->__($text, $args, $catalogue);
-  }
-  else
-  {
-    if (empty($args))
-    {
-      $args = array();
+if (!function_exists('__')) {
+
+    function __($text, $args = array(), $catalogue = 'messages') {
+        if (sfConfig::get('sf_i18n')) {
+            return sfContext::getInstance()->getI18N()->__($text, $args, $catalogue);
+        } else {
+            if (empty($args)) {
+                $args = array();
+            }
+
+            // replace object with strings
+            foreach ($args as $key => $value) {
+                if (is_object($value) && method_exists($value, '__toString')) {
+                    $args[$key] = $value->__toString();
+                }
+            }
+
+            return strtr($text, $args);
+        }
     }
-
-    // replace object with strings
-    foreach ($args as $key => $value)
-    {
-      if (is_object($value) && method_exists($value, '__toString'))
-      {
-        $args[$key] = $value->__toString();
-      }
-    }
-
-    return strtr($text, $args);
-  }
-}
 }
 
 /**
@@ -55,41 +49,44 @@ function __($text, $args = array(), $catalogue = 'messages')
  *
  * * [0]Nobody is logged|[1]There is 1 person logged|(1,+Inf]There are %number persons logged
  *
- * @param string $text      Text used for different number values
- * @param array  $args      Arguments to replace in the string
- * @param int    $number    Number to use to determine the string to use
+ * @param string $text Text used for different number values
+ * @param array $args Arguments to replace in the string
+ * @param int $number Number to use to determine the string to use
  * @param string $catalogue Catalogue for translation
  *
  * @return string Result of the translation
  */
-function format_number_choice($text, $args = array(), $number, $catalogue = 'messages')
-{
-  $translated = __($text, $args, $catalogue);
+if (!function_exists('format_number_choice')) {
 
-  $choice = new sfChoiceFormat();
+    function format_number_choice($text, $args = array(), $number, $catalogue = 'messages') {
+        $translated = __($text, $args, $catalogue);
 
-  $retval = $choice->format($translated, $number);
+        $choice = new sfChoiceFormat();
 
-  if ($retval === false)
-  {
-    throw new sfException(sprintf('Unable to parse your choice "%s".', $translated));
-  }
+        $retval = $choice->format($translated, $number);
 
-  return $retval;
+        if ($retval === false) {
+            throw new sfException(sprintf('Unable to parse your choice "%s".', $translated));
+        }
+
+        return $retval;
+    }
 }
+if (!function_exists('format_country')) {
 
-function format_country($country_iso, $culture = null)
-{
-  $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
-  $countries = $c->getCountries();
+    function format_country($country_iso, $culture = null) {
+        $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+        $countries = $c->getCountries();
 
-  return isset($countries[$country_iso]) ? $countries[$country_iso] : '';
+        return isset($countries[$country_iso]) ? $countries[$country_iso] : '';
+    }
 }
+if (!function_exists('format_language')) {
 
-function format_language($language_iso, $culture = null)
-{
-  $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
-  $languages = $c->getLanguages();
+    function format_language($language_iso, $culture = null) {
+        $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+        $languages = $c->getLanguages();
 
-  return isset($languages[$language_iso]) ? $languages[$language_iso] : '';
+        return isset($languages[$language_iso]) ? $languages[$language_iso] : '';
+    }
 }
