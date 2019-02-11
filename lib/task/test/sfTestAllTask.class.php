@@ -106,8 +106,12 @@ EOF;
     else
     {
       // filter and register all tests
-      $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
-      $h->register($this->filterTestFiles($finder->in($h->base_dir), $arguments, $options));
+    $files = collect(sfFinder::type('file')->follow_link()->name('*Test.php')->in($h->base_dir))
+    ->filter(function ($filename) {
+        return !str_contains($filename, 'phpunit');
+    })->toArray();
+
+      $h->register($this->filterTestFiles($files, $arguments, $options));
     }
 
     $ret = $h->run() ? 0 : 1;
