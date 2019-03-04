@@ -406,6 +406,10 @@ abstract class sfWidget
    */
   protected function attributesToHtmlCallback($k, $v)
   {
+      if($k == 'v-validate'){
+          // Should not escape values then..
+          return false === $v || null === $v || ('' === $v && 'value' != $k) ? $k : sprintf(' %s="%s"', $k, $v);
+      }
     return false === $v || null === $v || ('' === $v && 'value' != $k) ? '' : sprintf(' %s="%s"', $k, $this->escapeOnce($v));
   }
 }
