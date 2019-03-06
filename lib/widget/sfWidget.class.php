@@ -351,7 +351,14 @@ abstract class sfWidget
       return '';
     }
 
-    return sprintf('<%s%s>%s</%s>', $tag, $this->attributesToHtml($attributes), $content, $tag);
+    $originalAttributes = $this->attributes;
+    if(in_array($tag, ['ul','li','label'])){
+        unset($this->attributes['v-model']);
+        unset($this->attributes['v-validate']);
+    }
+    $contentTag = sprintf('<%s%s>%s</%s>', $tag, $this->attributesToHtml($attributes), $content, $tag);
+    $this->attributes = $originalAttributes ;
+    return $contentTag;
   }
 
   /**
@@ -406,10 +413,10 @@ abstract class sfWidget
    */
   protected function attributesToHtmlCallback($k, $v)
   {
-      if($k == 'v-validate'){
-          // Should not escape values then..
-          return false === $v || null === $v || ('' === $v && 'value' != $k) ? $k : sprintf(' %s="%s"', $k, $v);
-      }
+    if ($k == 'v-validate') {
+      // Should not escape values then..
+      return false === $v || null === $v || ('' === $v && 'value' != $k) ? $k : sprintf(' %s="%s"', $k, $v);
+    }
     return false === $v || null === $v || ('' === $v && 'value' != $k) ? '' : sprintf(' %s="%s"', $k, $this->escapeOnce($v));
   }
 }
