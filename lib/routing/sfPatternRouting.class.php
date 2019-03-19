@@ -28,6 +28,8 @@ class sfPatternRouting extends sfRouting
   protected $cacheData = array();
   protected $cacheChanged = false;
 
+  protected $absolute = null;
+
   /**
    * Initializes this Routing.
    *
@@ -334,6 +336,12 @@ class sfPatternRouting extends sfRouting
    */
   public function generate($name, $params = array(), $absolute = false)
   {
+    // Override $absolute
+
+    if ($this->absolute != null){
+      $absolute = $this->absolute;
+    }
+
     // fetch from cache
     if (null !== $this->cache)
     {
@@ -496,6 +504,10 @@ class sfPatternRouting extends sfRouting
 
   public function setHost($host){
     $this->options['context']['host'] = $host;
+  }
+
+  public function setAbsoluteHost($value){
+    $this->absolute = $value;
   }
 
   static public function flattenRoutes($routes)
