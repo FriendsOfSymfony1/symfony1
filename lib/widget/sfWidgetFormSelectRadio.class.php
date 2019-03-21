@@ -96,6 +96,10 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
         'value' => self::escapeOnce($key),
         'id'    => $id = $this->generateId($name, self::escapeOnce($key)),
       );
+      if (isset($attributes['v-model'])) {
+        unset($baseAttributes['id']);
+        unset($baseAttributes['name']);
+      }
 
       if ((string) $key == (string) ($value === false ? 0 : $value))
       {
