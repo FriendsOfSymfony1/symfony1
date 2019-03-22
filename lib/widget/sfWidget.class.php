@@ -331,7 +331,7 @@ abstract class sfWidget
     {
       return '';
     }
-
+    $attributes = $this->removeNameAttributeIfDynamicName($attributes);
     return sprintf('<%s%s%s', $tag, $this->attributesToHtml($attributes), self::$xhtml ? ' />' : (strtolower($tag) == 'input' ? '>' : sprintf('></%s>', $tag)));
   }
 
@@ -413,10 +413,22 @@ abstract class sfWidget
    */
   protected function attributesToHtmlCallback($k, $v)
   {
-    if ($k == 'v-validate') {
+    if ($k == 'v-validate' || starts_with($k, ['v-'])) {
       // Should not escape values then..
       return false === $v || null === $v || ('' === $v && 'value' != $k) ? $k : sprintf(' %s="%s"', $k, $v);
     }
     return false === $v || null === $v || ('' === $v && 'value' != $k) ? '' : sprintf(' %s="%s"', $k, $this->escapeOnce($v));
   }
+
+    /**
+     * If dynamic name from Vue, then remove static name.
+     * @param $attributes
+     * @return array
+     */
+    public function removeNameAttributeIfDynamicName($attributes) {
+        if (isset($attributes['v-bind:name'])) {
+            unset($attributes['name']);
+        }
+        return $attributes;
+    }
 }
