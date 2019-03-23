@@ -73,7 +73,7 @@ class sfValidatorFile extends sfValidatorBase
         'image/gif',
     )));
     $this->addOption('validated_file_class', 'sfValidatedFile');
-    $this->addOption('path', null);
+    $this->addOption('path', sfConfig::get('sf_upload_dir'));
 
     $this->addMessage('max_size', 'File is too large (maximum is %max_size% kilobytes).');
     $this->addMessage('mime_types', 'Invalid mime type (%mime_type%).');
