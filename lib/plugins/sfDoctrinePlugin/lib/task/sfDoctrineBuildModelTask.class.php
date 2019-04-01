@@ -77,7 +77,7 @@ EOF;
       $code = file_get_contents($file);
 
       // introspect the model without loading the class
-      if (preg_match_all('/@property ([\w|\[\]]+) \$(\w+)/', $code, $matches, PREG_SET_ORDER))
+      if (preg_match_all('/@property (\w+) \$(\w+)/', $code, $matches, PREG_SET_ORDER))
       {
         $properties = array();
         foreach ($matches as $match)
@@ -93,14 +93,10 @@ EOF;
         foreach ($properties as $name => $type)
         {
           $camelized = sfInflector::camelize($name);
-          $collection = strpos($type, 'Doctrine_Collection', 0) === 0;// == $type;
+          $collection = 'Doctrine_Collection' == $type;
 
-          // Adjust padding for new docblock:
-          // + 2 and +1: +2 for Paranthesis () and +1 for $
-          $setMethodNameLength = $namePad + 2 + $namePad + 1;
-
-          $getters[] = sprintf('@method %-'.$typePad.'s %s%-'.$setMethodNameLength.'s Returns the current record\'s "%s" %s', $type, 'get', $camelized.'()', $name, $collection ? 'collection' : 'value');
-          $setters[] = sprintf('@method %-'.$typePad.'s %s%-'.$setMethodNameLength.'s Sets the current record\'s "%s" %s', $model, 'set', $camelized.'($'.lcfirst($camelized).')', $name, $collection ? 'collection' : 'value');
+          $getters[] = sprintf('@method %-'.$typePad.'s %s%-'.($namePad + 2).'s Returns the current record\'s "%s" %s', $type, 'get', $camelized.'()', $name, $collection ? 'collection' : 'value');
+          $setters[] = sprintf('@method %-'.$typePad.'s %s%-'.($namePad + 2).'s Sets the current record\'s "%s" %s', $model, 'set', $camelized.'()', $name, $collection ? 'collection' : 'value');
         }
 
         // use the last match as a search string
