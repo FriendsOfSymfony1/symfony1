@@ -239,10 +239,17 @@ class sfMailer extends Swift_Mailer
    */
   public function compose($from = null, $to = null, $subject = null, $body = null)
   {
-    return Swift_Message::newInstance()
+    $msg = null;
+
+    if(version_compare(Swift::VERSION, '6.0.0') >= 0) {
+      $msg = new Swift_Message($subject);
+    } else {
+      $msg = Swift_Message::newInstance($subject);
+    }
+
+    return $msg
       ->setFrom($from)
       ->setTo($to)
-      ->setSubject($subject)
       ->setBody($body)
     ;
   }
@@ -277,12 +284,12 @@ class sfMailer extends Swift_Mailer
   /**
    * Sends the given message.
    *
-   * @param Swift_Transport $transport         A transport instance
+   * @param Swift_Message   $message         A transport instance
    * @param string[]        &$failedRecipients An array of failures by-reference
    *
    * @return int|false The number of sent emails
    */
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send(Swift_Message $message, &$failedRecipients = null)
   {
     if ($this->force)
     {
