@@ -361,7 +361,7 @@ class sfConfigCache
       }
     }
 
-    chmod($cache, 0666);
+    @chmod($cache, 0666);
     umask($current_umask);
   }
 
