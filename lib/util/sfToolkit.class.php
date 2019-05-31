@@ -510,7 +510,7 @@ class sfToolkit
   {
     $path = getenv('PATH') ?: getenv('Path');
     $suffixes = DIRECTORY_SEPARATOR == '\\' ? (getenv('PATHEXT') ? explode(PATH_SEPARATOR, getenv('PATHEXT')) : array('.exe', '.bat', '.cmd', '.com')) : array('');
-    foreach (array('php5', 'php') as $phpCli)
+    foreach (array('php', 'php5') as $phpCli)
     {
       foreach ($suffixes as $suffix)
       {
