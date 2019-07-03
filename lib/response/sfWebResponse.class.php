@@ -151,17 +151,18 @@ class sfWebResponse extends sfResponse
   /**
    * Sets a cookie.
    *
-   * @param  string  $name      HTTP header name
-   * @param  string  $value     Value for the cookie
-   * @param  string  $expire    Cookie expiration period
-   * @param  string  $path      Path
-   * @param  string  $domain    Domain name
-   * @param  bool    $secure    If secure
-   * @param  bool    $httpOnly  If uses only HTTP
+   * @param  string       $name      HTTP header name
+   * @param  string       $value     Value for the cookie
+   * @param  string       $expire    Cookie expiration period
+   * @param  string       $path      Path
+   * @param  string       $domain    Domain name
+   * @param  bool         $secure    If secure
+   * @param  bool         $httpOnly  If uses only HTTP
+   * @param  string|bool  $sameSite  If non-false, also set the SameSite cookie parameter
    *
    * @throws <b>sfException</b> If fails to set the cookie
    */
-  public function setCookie($name, $value, $expire = null, $path = '/', $domain = '', $secure = false, $httpOnly = false)
+  public function setCookie($name, $value, $expire = null, $path = '/', $domain = '', $secure = false, $httpOnly = false, $sameSite = false)
   {
     if ($expire !== null)
     {
@@ -187,6 +188,7 @@ class sfWebResponse extends sfResponse
       'domain'   => $domain,
       'secure'   => $secure ? true : false,
       'httpOnly' => $httpOnly,
+      'sameSite' => $sameSite,
     );
   }
 
@@ -365,7 +367,17 @@ class sfWebResponse extends sfResponse
     // cookies
     foreach ($this->cookies as $cookie)
     {
-      setrawcookie($cookie['name'], $cookie['value'], $cookie['expire'], $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httpOnly']);
+      $cookieOptions = [
+        'expires'  => $cookie['expire'], 
+        'path'     => $cookie['path'], 
+        'domain'   => $cookie['domain'], 
+        'secure'   => $cookie['secure'], 
+        'httponly' => $cookie['httpOnly'],
+      ];
+      if (isset($cookie['sameSite']) && $cookie['sameSite'] !== false) {
+        $cookieOptions['samesite'] = $cookie['sameSite'];
+      }
+      setrawcookie($cookie['name'], $cookie['value'], $cookieOptions);
 
       if ($this->options['logging'])
       {
