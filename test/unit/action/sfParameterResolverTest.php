@@ -12,7 +12,7 @@ require_once(__DIR__.'/../../bootstrap/unit.php');
 require_once($_test_dir.'/unit/sfContextMock.class.php');
 require_once($_test_dir.'/unit/sfNoRouting.class.php');
 
-$t = new lime_test(2);
+$t = new lime_test(3);
 
 class MyService {
   public function execute()
@@ -29,6 +29,10 @@ class myComponent extends sfComponent
 
   function executeNamed($request, MyService $service) {
     return $service->execute();
+  }
+
+  function executeFoo($request, $options = "foo") {
+    return $options;
   }
 }
 
@@ -47,10 +51,8 @@ $resolver
   ->setRequest($context->getRequest())
   ->setComponent($component);
 
-// ->execute()
+
 $t->diag('execute()');
 $t->is($resolver->execute(), "success", 'without arguments executes default ->execute() method and resolves required dependencies');
-
-// ->executeNamed()
-$t->diag('execute(\'withMethodName\')');
 $t->is($resolver->execute('executeNamed'), "success", 'can execute an arbitrary method and resolves required dependencies');
+$t->is($resolver->execute('executeFoo'), "foo", 'uses default value if no type hint is present');

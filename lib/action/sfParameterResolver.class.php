@@ -39,14 +39,18 @@ class sfParameterResolver
     foreach ($method->getParameters() as $i => $param) {
       $type = $param->getClass();
 
-      // handle case where request parameter was not type hinted
-      if (null === $type && $i === 0) {
-        $parameters[] = $this->request;
-        continue;
-      }
-
       if (null === $type) {
-        throw new \Exception("Additional parameters must be type hinted");
+        if ($i === 0) {
+          // first parameter is always the request
+          $parameters[] = $this->request;
+          continue;
+        } elseif ($param->getDefaultValue()) {
+          // additional params with default values may have been added
+          $params[] = $param->getDefaultValue();
+          continue;
+        } else {
+          throw new \Exception("Additional parameters must be type hinted or provide a default value");
+        }
       }
 
       if ($type->getName() == "sfWebRequest") {
