@@ -62,6 +62,7 @@ class sfSessionStorage extends sfStorage
       'session_cookie_domain'   => $cookieDefaults['domain'],
       'session_cookie_secure'   => $cookieDefaults['secure'],
       'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
+      'session_cookie_samesite' => isset($cookieDefaults['samesite']) ? $cookieDefaults['samesite'] : '',
       'session_cache_limiter'   => null,
     ), $options);
 
@@ -83,7 +84,19 @@ class sfSessionStorage extends sfStorage
     $domain   = $this->options['session_cookie_domain'];
     $secure   = $this->options['session_cookie_secure'];
     $httpOnly = $this->options['session_cookie_httponly'];
-    session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
+    $samesite = $this->options['session_cookie_samesite'];
+    if (PHP_VERSION_ID < 70300) {
+      session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
+    } else {
+      session_set_cookie_params(array(
+        'lifetime' => $lifetime,
+        'path'     => $path,
+        'domain'   => $domain,
+        'secure'   => $secure,
+        'httponly' => $httpOnly,
+        'samesite' => $samesite
+      ));
+    }
 
     if (null !== $this->options['session_cache_limiter'])
     {
