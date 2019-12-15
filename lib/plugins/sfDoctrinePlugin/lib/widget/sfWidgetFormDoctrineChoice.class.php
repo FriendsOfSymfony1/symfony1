@@ -53,6 +53,7 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
   {
     $this->addRequiredOption('model');
     $this->addOption('add_empty', false);
+    $this->addOption('add_extra_choices', false);
     $this->addOption('method', '__toString');
     $this->addOption('key_method', 'getPrimaryKey');
     $this->addOption('order_by', null);
@@ -74,6 +75,12 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
     if (false !== $this->getOption('add_empty'))
     {
       $choices[''] = true === $this->getOption('add_empty') ? '' : $this->translate($this->getOption('add_empty'));
+    }
+    if (false !== $this->getOption('add_extra_choices'))
+    {
+      foreach ($this->getOption('add_extra_choices') as $key => $value) {
+        $choices[$key] = $this->translate($value);
+      }
     }
 
     if (null === $this->getOption('table_method'))
