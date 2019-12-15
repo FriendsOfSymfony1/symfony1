@@ -1,6 +1,8 @@
 {
-    "name": "lexpress/symfony1",
+    "name": "james-and-james-fulfilment/symfony1",
+    "type": "library",
     "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
+    "keywords": ["framework", "symfony1", "doctrine1"],
     "license": "MIT",
     "require": {
         "swiftmailer/swiftmailer": "~5.2"
@@ -8,13 +10,15 @@
     "require-dev": {
         "psr/log": "*"
     },
-    "type": "library",
+    "support": {
+        "issues": "https://github.com/JamesAndJamesFulfilment/symfony1/issues",
+        "source": "https://github.com/JamesAndJamesFulfilment/symfony1"
+    },
     "autoload": {
         "files": ["autoload.php"]
     },
     "suggest": {
-        "lexpress/doctrine1": "Doctrine plugin",
-        "propel/sf-propel-o-r-m-plugin": "Propel plugin",
+        "james-and-james-fulfilment/doctrine1": "Doctrine plugin",
         "psr/log": "Psr logger"
     },
     "extra": {
