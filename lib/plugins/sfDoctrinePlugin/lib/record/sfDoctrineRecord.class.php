@@ -10,7 +10,7 @@
  */
 
 /**
- * Base sfDoctrineRecord extends the base Doctrine_Record in Doctrine to provide some
+ * Base sfDoctrineRecord extends the base sfDoctrineRecord in Doctrine to provide some
  * symfony specific functionality to Doctrine_Records
  *
  * @package    symfony
@@ -19,7 +19,7 @@
  * @author     Jonathan H. Wage <jonwage@gmail.com>
  * @version    SVN: $Id$
  */
-abstract class sfDoctrineRecord extends Doctrine_Record
+abstract class sfDoctrineRecord extends DoctrineLaravelModel
 {
   static protected
     $_defaultCulture = 'en';
@@ -27,7 +27,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
   /**
    * Initializes internationalization.
    *
-   * @see Doctrine_Record
+   * @see sfDoctrineRecord
    */
   public function construct()
   {
@@ -82,7 +82,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
   /**
    * Returns the current record's primary key.
    *
-   * This a proxy method to {@link Doctrine_Record::identifier()} for
+   * This a proxy method to {@link sfDoctrineRecord::identifier()} for
    * compatibility with a Propel-style API.
    *
    * @return mixed The value of the current model's last identifier column

@@ -72,6 +72,7 @@ EOF;
   {
     $app = $arguments['application'];
 
+
     if (count($arguments['controller']))
     {
       $files = array();

@@ -40,7 +40,7 @@ class sfDoctrineRoute extends sfObjectRoute
     $results = $this->getObjectsForParameters($parameters);
 
     // If query returned Doctrine_Collection with results inside then we
-    // need to return the first Doctrine_Record
+    // need to return the first sfDoctrineRecord
     if ($results instanceof Doctrine_Collection)
     {
       if (count($results))
@@ -105,10 +105,10 @@ class sfDoctrineRoute extends sfObjectRoute
       $results = $tableModel->$method($this->filterParameters($parameters));
     }
 
-    // If query returned a Doctrine_Record instance instead of a 
+    // If query returned a sfDoctrineRecord instance instead of a
     // Doctrine_Collection then we need to create a new Doctrine_Collection with
     // one element inside and return that
-    if ($results instanceof Doctrine_Record)
+    if ($results instanceof sfDoctrineRecord)
     {
       $obj = $results;
       $results = new Doctrine_Collection($obj->getTable());

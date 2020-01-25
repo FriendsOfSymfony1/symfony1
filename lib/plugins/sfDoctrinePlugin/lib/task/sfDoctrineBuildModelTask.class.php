@@ -69,6 +69,7 @@ EOF;
     $import = new Doctrine_Import_Schema();
     $import->setOptions($builderOptions);
     $import->importSchema($schema, 'yml', $config['models_path']);
+//    dd($import);
 
     // markup base classes with magic methods
     foreach (sfYaml::load($schema) as $model => $definition)

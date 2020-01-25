@@ -77,14 +77,14 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
   {
     $object = new $this->model;
 
-    if (!$object instanceof Doctrine_Record)
+    if (!$object instanceof sfDoctrineRecord)
     {
-      throw new InvalidArgumentException('The mailer message object must be a Doctrine_Record object.');
+      throw new InvalidArgumentException('The mailer message object must be a sfDoctrineRecord object.');
     }
 
     $object->{$this->column} = serialize($message);
     $object->save();
-    
+
     $object->free(true);
   }
 

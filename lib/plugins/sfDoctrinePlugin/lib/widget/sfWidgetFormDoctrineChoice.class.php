@@ -98,7 +98,7 @@ class sfWidgetFormDoctrineChoice extends sfWidgetFormChoice
       {
         $objects = $results;
       }
-      else if ($results instanceof Doctrine_Record)
+      else if ($results instanceof sfDoctrineRecord)
       {
         $objects = new Doctrine_Collection($this->getOption('model'));
         $objects[] = $results;

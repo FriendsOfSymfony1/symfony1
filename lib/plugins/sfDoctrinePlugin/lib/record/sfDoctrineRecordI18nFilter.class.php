@@ -31,11 +31,11 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
    *
    * Allows manipulation of I18n properties from the main object.
    *
-   * @param Doctrine_Record $record
+   * @param sfDoctrineRecord $record
    * @param string          $name   Name of the property
    * @param string          $value  Value of the property
    */
-  public function filterSet(Doctrine_Record $record, $name, $value)
+  public function filterSet(sfDoctrineRecord $record, $name, $value)
   {
     return $record['Translation'][sfDoctrineRecord::getDefaultCulture()][$name] = $value;
   }
@@ -45,10 +45,10 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
    *
    * Allow access to I18n properties from the main object.
    *
-   * @param Doctrine_Record $record
+   * @param sfDoctrineRecord $record
    * @param string          $name   Name of the property
    */
-  public function filterGet(Doctrine_Record $record, $name)
+  public function filterGet(sfDoctrineRecord $record, $name)
   {
     $culture = sfDoctrineRecord::getDefaultCulture();
     if (isset($record['Translation'][$culture]) && '' != $record['Translation'][$culture][$name])

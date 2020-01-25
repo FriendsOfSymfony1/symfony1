@@ -56,7 +56,7 @@ $article = new Article();
 try {
 $article->setAuthor(new stdClass());
 } catch (Exception $e) {
-  $t->is($e->getMessage(), 'Couldn\'t call Doctrine_Core::set(), second argument should be an instance of Doctrine_Record or Doctrine_Null when setting one-to-one references.', 'Making sure proper exception message is thrown');
+  $t->is($e->getMessage(), 'Couldn\'t call Doctrine_Core::set(), second argument should be an instance of sfDoctrineRecord or Doctrine_Null when setting one-to-one references.', 'Making sure proper exception message is thrown');
 }
 
 $article = new Article();

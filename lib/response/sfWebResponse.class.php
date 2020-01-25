@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+
 /**
  * sfWebResponse class.
  *
@@ -352,6 +353,7 @@ class sfWebResponse extends sfResponse
     {
       $this->setContentType($this->options['content_type']);
     }
+
     foreach ($this->headers as $name => $value)
     {
       header($name.': '.$value);
@@ -372,6 +374,8 @@ class sfWebResponse extends sfResponse
         $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send cookie "%s": "%s"', $cookie['name'], $cookie['value']))));
       }
     }
+
+
     // prevent resending the headers
     $this->options['send_http_headers'] = false;
   }

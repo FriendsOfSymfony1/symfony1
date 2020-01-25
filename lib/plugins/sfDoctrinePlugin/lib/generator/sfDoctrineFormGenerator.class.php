@@ -162,7 +162,7 @@ class sfDoctrineFormGenerator extends sfGenerator
 
           if (class_exists($e[0]) && class_exists($modelName))
           {
-            $parent = new ReflectionClass('Doctrine_Record');
+            $parent = new ReflectionClass('sfDoctrineRecord');
             $reflection = new ReflectionClass($modelName);
             if ($reflection->isSubclassOf($parent))
             {
@@ -689,7 +689,6 @@ class sfDoctrineFormGenerator extends sfGenerator
   public function getParentModel()
   {
     $baseClasses = array(
-      'Doctrine_Record',
       'sfDoctrineRecord',
     );
 

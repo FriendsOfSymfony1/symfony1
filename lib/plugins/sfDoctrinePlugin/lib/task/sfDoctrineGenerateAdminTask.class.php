@@ -92,7 +92,7 @@ EOF;
     }
 
     $r = new ReflectionClass($arguments['route_or_model']);
-    if (!$r->isSubclassOf('Doctrine_Record'))
+    if (!$r->isSubclassOf('sfDoctrineRecord'))
     {
       throw new sfCommandException(sprintf('"%s" is not a Doctrine class.', $arguments['route_or_model']));
     }

@@ -943,6 +943,7 @@ function lime_shutdown()
   file_put_contents('$result_file', serialize(lime_test::to_array()));
 }
 register_shutdown_function('lime_shutdown');
+putenv ('APP_ENV=testing');
 include('$file');
 EOF
       );

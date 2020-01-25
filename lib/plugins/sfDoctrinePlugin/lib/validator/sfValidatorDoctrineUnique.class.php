@@ -127,7 +127,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
    *
    * @param Boolean     true if the object is being updated, false otherwise
    */
-  protected function isUpdate(Doctrine_Record $object, $values)
+  protected function isUpdate(sfDoctrineRecord $object, $values)
   {
     // check each primary key column
     foreach ($this->getPrimaryKeys() as $column)

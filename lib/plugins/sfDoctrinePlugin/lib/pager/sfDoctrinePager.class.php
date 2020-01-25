@@ -71,7 +71,7 @@ class sfDoctrinePager extends sfPager implements Serializable
       $this->$name = $values;
     }
 
-    $this->tableMethodCalled = false; 
+    $this->tableMethodCalled = false;
   }
 
   /**
@@ -161,7 +161,7 @@ class sfDoctrinePager extends sfPager implements Serializable
    *
    * @param integer $offset
    *
-   * @return Doctrine_Record
+   * @return sfDoctrineRecord
    */
   protected function retrieveObject($offset)
   {
