@@ -40,27 +40,24 @@ class sfParameterHolder implements Serializable
     $this->parameters = array();
   }
 
-  /**
-   * Retrieves a parameter.
-   *
-   * @param  string $name     A parameter name
-   * @param  mixed  $default  A default parameter value
-   *
-   * @return mixed A parameter value, if the parameter exists, otherwise null
-   */
-  public function & get($name, $default = null)
-  {
-    if (array_key_exists($name, $this->parameters))
+    /**
+     * Retrieves a parameter.
+     *
+     * @param  string $name     A parameter name
+     * @param  mixed  $default  A default parameter value
+     *
+     * @return mixed A parameter value, if the parameter exists, otherwise null
+     */
+    public function & get($name, $default = null)
     {
-      $value = & $this->parameters[$name];
-    }
-    else
-    {
-      $value = $default;
-    }
+        if (isset($this->parameters[$name]) && $this->parameters[$name] !== '') {
+            $value = & $this->parameters[$name];
+        } else {
+            $value = $default;
+        }
 
-    return $value;
-  }
+        return $value;
+    }
 
   /**
    * Retrieves an array of parameter names.
