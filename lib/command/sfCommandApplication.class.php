@@ -68,6 +68,7 @@ abstract class sfCommandApplication
       new sfCommandOption('--trace',   '-t', sfCommandOption::PARAMETER_NONE, 'Turn on invoke/execute tracing, enable full backtrace.'),
       new sfCommandOption('--version', '-V', sfCommandOption::PARAMETER_NONE, 'Display the program version.'),
       new sfCommandOption('--color',   '',   sfCommandOption::PARAMETER_NONE, 'Forces ANSI color output.'),
+      new sfCommandOption('--no-color','',   sfCommandOption::PARAMETER_NONE, 'Restricts output from including color, even when possible'),
       new sfCommandOption('--no-debug','',   sfCommandOption::PARAMETER_NONE, 'Disable debug'),
     ));
     $this->commandManager = new sfCommandManager($argumentSet, $optionSet);
@@ -356,8 +357,11 @@ abstract class sfCommandApplication
     $this->commandOptions = $options;
 
     // the order of option processing matters
-
-    if ($this->commandManager->getOptionSet()->hasOption('color') && false !== $this->commandManager->getOptionValue('color'))
+    if( $this->commandManager->getOptionSet()->hasOption('no-color') && false !== $this->commandManager->getOptionValue('no-color') )
+    {
+      $this->setFormatter(new sfFormatter());
+    }
+    elseif ($this->commandManager->getOptionSet()->hasOption('color') && false !== $this->commandManager->getOptionValue('color'))
     {
       $this->setFormatter(new sfAnsiColorFormatter());
     }
