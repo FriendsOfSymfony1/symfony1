@@ -30,9 +30,9 @@ class sfException extends Exception
     $lastException = null;
 
   /**
-   * Wraps an Throwable.
+   * Wraps a Throwable.
    *
-   * @param Exception|Throwable $e An Throwable instance
+   * @param Exception|Throwable $e A Throwable instance
    *
    * @return sfException An sfException instance that wraps the given Throwable object
    */
@@ -60,7 +60,7 @@ class sfException extends Exception
   /**
    * Gets the last wrapped throwable.
    *
-   * @return Exception|Throwable An Throwable instance
+   * @return Exception|Throwable A Throwable instance
    */
   static public function getLastException()
   {
@@ -297,7 +297,7 @@ class sfException extends Exception
   /**
    * Returns an array of exception traces.
    *
-   * @param Exception|Throwable $exception  An Throwable implementation instance
+   * @param Exception|Throwable $exception  A Throwable implementation instance
    * @param string              $format     The trace format (txt or html)
    *
    * @return array An array of traces
