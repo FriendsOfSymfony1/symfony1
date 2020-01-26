@@ -411,8 +411,8 @@ class sfWebRequest extends sfRequest
   public function getScriptName()
   {
     $pathArray = $this->getPathInfoArray();
-
-    return isset($pathArray['SCRIPT_NAME']) ? $pathArray['SCRIPT_NAME'] : (isset($pathArray['ORIG_SCRIPT_NAME']) ? $pathArray['ORIG_SCRIPT_NAME'] : '');
+    $scriptName = isset($pathArray['SCRIPT_NAME']) ? $pathArray['SCRIPT_NAME'] : (isset($pathArray['ORIG_SCRIPT_NAME']) ? $pathArray['ORIG_SCRIPT_NAME'] : '');
+    return preg_replace('#^/([a-zA-Z0-9_\-]*?\.php)(.*)#', '/$1', $scriptName);
   }
 
   /**
