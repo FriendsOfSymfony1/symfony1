@@ -206,8 +206,8 @@ function simple_format_text($text, $options = array())
 {
   $css = (isset($options['class'])) ? ' class="'.$options['class'].'"' : '';
 
-  $text = sfToolkit::pregtr($text, array("/(\r\n|\r)/"        => "\n",               // lets make them newlines crossplatform
-                                         "/\n{2,}/"           => "</p><p$css>"));    // turn two and more newlines into paragraph
+  $text = preg_replace( '/(\r\n|\r)/', "\n", $text );               // lets make them newlines crossplatform
+  $text = preg_replace( '/\n{2,}/', '</p><p' . $css . '>', $text ); // turn two and more newlines into paragraph
 
   // turn single newline into <br/>
   $text = str_replace("\n", "\n<br />", $text);

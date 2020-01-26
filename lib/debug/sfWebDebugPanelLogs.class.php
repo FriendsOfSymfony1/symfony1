@@ -128,10 +128,9 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
 
     // replace constants value with constant name
     $logLine = str_replace(array_keys($constants), array_values($constants), $logLine);
-
-    $logLine = sfToolkit::pregtr($logLine, array('/&quot;(.+?)&quot;/s' => '"<span class="sfWebDebugLogInfo">\\1</span>"',
-                                                   '/^(.+?)\(\)\:/S'      => '<span class="sfWebDebugLogInfo">\\1()</span>:',
-                                                   '/line (\d+)$/'        => 'line <span class="sfWebDebugLogInfo">\\1</span>'));
+    $logLine = preg_replace('/&quot;(.+?)&quot;/s', "<span class=\"sfWebDebugLogInfo\">\\1</span>", $logLine);
+    $logLine = preg_replace('/^(.+?)\(\)\:/S', "<span class=\"sfWebDebugLogInfo\">\\1()</span>:", $logLine);
+    $logLine = preg_replace('/line (\d+)$/', "line <span class=\"sfWebDebugLogInfo\">\\1</span>", $logLine);
 
     // special formatting for SQL lines
     $logLine = $this->formatSql($logLine);
