@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__).'/../lib/##MODULE_NAME##GeneratorConfiguration.class.php';
-require_once dirname(__FILE__).'/../lib/##MODULE_NAME##GeneratorHelper.class.php';
+require_once __DIR__.'/../lib/##MODULE_NAME##GeneratorConfiguration.class.php';
+require_once __DIR__.'/../lib/##MODULE_NAME##GeneratorHelper.class.php';
 
 /**
  * ##MODULE_NAME## actions.

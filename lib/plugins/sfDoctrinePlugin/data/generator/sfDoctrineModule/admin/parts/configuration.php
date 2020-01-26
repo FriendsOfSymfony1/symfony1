@@ -10,9 +10,9 @@
  */
 abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfiguration extends sfModelGeneratorConfiguration
 {
-<?php include dirname(__FILE__).'/actionsConfiguration.php' ?>
+<?php include __DIR__.'/actionsConfiguration.php' ?>
 
-<?php include dirname(__FILE__).'/fieldsConfiguration.php' ?>
+<?php include __DIR__.'/fieldsConfiguration.php' ?>
 
   /**
    * Gets the form class name.
@@ -41,9 +41,9 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 <?php unset($this->config['filter']['class']) ?>
   }
 
-<?php include dirname(__FILE__).'/paginationConfiguration.php' ?>
+<?php include __DIR__.'/paginationConfiguration.php' ?>
 
-<?php include dirname(__FILE__).'/sortingConfiguration.php' ?>
+<?php include __DIR__.'/sortingConfiguration.php' ?>
 
   public function getTableMethod()
   {

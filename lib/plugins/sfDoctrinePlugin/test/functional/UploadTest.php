@@ -9,7 +9,7 @@
  */
 
 $app = 'frontend';
-require_once dirname(__FILE__).'/../bootstrap/functional.php';
+require_once __DIR__.'/../bootstrap/functional.php';
 
 $browser = new sfTestFunctional(new sfBrowser(), null, array(
   'doctrine' => 'sfTesterDoctrine',

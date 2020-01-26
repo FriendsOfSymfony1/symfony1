@@ -10,7 +10,7 @@
 
 $app = 'frontend';
 $fixtures = 'fixtures/fixtures.yml';
-require_once(dirname(__FILE__).'/../bootstrap/functional.php');
+require_once(__DIR__.'/../bootstrap/functional.php');
 
 $t = new lime_test(22);
 

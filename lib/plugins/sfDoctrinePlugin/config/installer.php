@@ -1,5 +1,5 @@
 <?php
 
-$this->installDir(dirname(__FILE__).'/skeleton');
+$this->installDir(__DIR__.'/skeleton');
 $this->enablePlugin('sfDoctrinePlugin');
 $this->reloadTasks();

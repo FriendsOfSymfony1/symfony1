@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/sfDoctrineBaseTask.class.php');
+require_once(__DIR__.'/sfDoctrineBaseTask.class.php');
 
 /**
  * Delete all generated model classes for models which no longer exist in your YAML schema

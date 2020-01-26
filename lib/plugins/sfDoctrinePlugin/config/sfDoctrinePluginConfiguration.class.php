@@ -32,14 +32,14 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
 
     if (sfConfig::get('sf_web_debug'))
     {
-      require_once dirname(__FILE__).'/../lib/debug/sfWebDebugPanelDoctrine.class.php';
+      require_once __DIR__.'/../lib/debug/sfWebDebugPanelDoctrine.class.php';
 
       $this->dispatcher->connect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
     }
 
     if (!class_exists('Doctrine_Core'))
     {
-      require_once sfConfig::get('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine/lib')).'/Doctrine/Core.php';
+      require_once sfConfig::get('sf_doctrine_dir', realpath(__DIR__.'/../lib/vendor/doctrine/lib')).'/Doctrine/Core.php';
       spl_autoload_register(array('Doctrine_Core', 'autoload'));
     }
 

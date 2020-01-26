@@ -2,7 +2,7 @@
 
 $app = 'frontend';
 $fixtures = 'fixtures/pager.yml';
-include dirname(__FILE__).'/../../bootstrap/functional.php';
+include __DIR__.'/../../bootstrap/functional.php';
 
 $t = new lime_test(6);
 

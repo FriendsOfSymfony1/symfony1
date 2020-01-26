@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-include(dirname(__FILE__).'/../../../../../test/bootstrap/unit.php');
+include(__DIR__.'/../../../../../test/bootstrap/unit.php');
 
 if (!isset($root_dir))
 {
-  $root_dir = realpath(dirname(__FILE__).sprintf('/../%s/fixtures', isset($type) ? $type : 'functional'));
+  $root_dir = realpath(__DIR__.sprintf('/../%s/fixtures', isset($type) ? $type : 'functional'));
 }
 
 include $root_dir.'/config/ProjectConfiguration.class.php';

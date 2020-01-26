@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-include(dirname(__FILE__).'/../bootstrap/unit.php');
+include(__DIR__.'/../bootstrap/unit.php');
 
 $t = new lime_test(23);
 

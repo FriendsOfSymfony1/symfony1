@@ -10,8 +10,8 @@
 
 $app = 'backend';
 $fixtures = 'fixtures';
-require_once(dirname(__FILE__).'/../bootstrap/functional.php');
-require_once(dirname(__FILE__).'/AdminGenBrowser.class.php');
+require_once(__DIR__.'/../bootstrap/functional.php');
+require_once(__DIR__.'/AdminGenBrowser.class.php');
 
 $b = new AdminGenBrowser();
 $b->runTests();
