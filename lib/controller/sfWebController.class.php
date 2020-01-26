@@ -185,6 +185,12 @@ abstract class sfWebController extends sfController
     $url = $this->genUrl($url, true);
     // see #8083
     $url = str_replace('&amp;', '&', $url);
+    // JS Added - make commas unencoded
+    $url = str_replace('%2C', ',', $url);
+    // see http://stackoverflow.com/questions/21046623/http-build-query-functions-excessive-urlencoding
+    $url = preg_replace_callback('#%5[bd](?=[^&]*=)#i', function($match) {
+        return urldecode($match[0]);
+      }, $url );
 
     if (sfConfig::get('sf_logging_enabled'))
     {
