@@ -36,7 +36,7 @@ class sfToolkit
       $filename = basename($filename);
     }
 
-    $pattern = '/(.*?)\.(class|interface)\.php/i';
+    $pattern = '/(.*?)\.(class|interface|trait)\.php/i';
 
     if (preg_match($pattern, $filename, $match))
     {
