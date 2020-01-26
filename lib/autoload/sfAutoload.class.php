@@ -126,14 +126,15 @@ class sfAutoload
     }
 
     self::$freshCache = true;
-    if (is_file($configuration->getConfigCache()->getCacheName('config/autoload.yml')))
+    $path = $configuration->getConfigCache()->getCacheName('config/autoload.yml');
+    if (is_file($path))
     {
       self::$freshCache = false;
       if ($force)
       {
-        if (file_exists($configuration->getConfigCache()->getCacheName('config/autoload.yml')))
+        if (file_exists($path))
         {
-          unlink($configuration->getConfigCache()->getCacheName('config/autoload.yml'));
+          unlink($path);
         }
       }
     }
