@@ -145,7 +145,7 @@ class sfVarLogger extends sfLogger
     $this->logs[] = array(
       'priority'        => $priority,
       'priority_name'   => $this->getPriorityName($priority),
-      'time'            => time(),
+      'time'            => microtime(true),
       'message'         => $message,
       'type'            => $type,
       'debug_backtrace' => $this->getDebugBacktrace(),

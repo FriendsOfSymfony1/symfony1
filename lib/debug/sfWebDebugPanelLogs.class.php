@@ -36,12 +36,32 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
     $html = '<table class="sfWebDebugLogs">
       <tr>
         <th>#</th>
+        <th>time (s)</th>
         <th>type</th>
         <th>message</th>
       </tr>'."\n";
     $line_nb = 0;
-    foreach ($logs as $log)
+    $numlogs = count($logs);
+    for ($i = 0; $i < $numlogs; $i++)
     {
+      $log = $logs[$i];
+
+      if ($i < $numlogs - 1) {
+        $time = $logs[$i + 1]['time'] - $log['time'];
+      } else {
+        $time = microtime(true) - $log['time'];
+      }
+      if ($time > 2) {
+        $colour = '#FF5555';
+      } elseif ($time > 1) {
+        $colour = 'orange';
+      } elseif ($time > 0.3) {
+        $colour = 'yellow';
+      } else {
+        $colour = '#AAFFAA';
+      }
+      $time = number_format($time, 3);
+
       $priority = $this->webDebug->getPriority($log['priority']);
 
       // increase status
@@ -51,10 +71,12 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
       }
 
       ++$line_nb;
-      $html .= sprintf("<tr class='sfWebDebugLogLine sfWebDebug%s %s'><td class=\"sfWebDebugLogNumber\">%s</td><td class=\"sfWebDebugLogType\">%s&nbsp;%s</td><td>%s %s</td></tr>\n",
+      $html .= sprintf("<tr class='sfWebDebugLogLine sfWebDebug%s %s'><td class=\"sfWebDebugLogNumber\">%s</td><td style=\"background-color:%s\">%s</td><td class=\"sfWebDebugLogType\">%s&nbsp;%s</td><td>%s %s</td></tr>\n",
         ucfirst($priority),
         $log['type'],
         $line_nb,
+        $colour,
+        $time,
         '<img src="'.$this->webDebug->getOption('image_root_path').'/'.$priority.'.png" alt="'.ucfirst($priority).'"/>',
         class_exists($log['type'], false) ? $this->formatFileLink($log['type']) : $log['type'],
         $this->formatLogLine($log['message']),

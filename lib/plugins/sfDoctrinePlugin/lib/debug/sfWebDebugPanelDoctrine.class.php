@@ -152,7 +152,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
         </li>',
         $event->slowQuery ? ' class="sfWebDebugWarning"' : '',
         $query,
-        number_format($event->getElapsedSecs(), 2),
+        number_format($event->getElapsedSecs(), 5),
         $conn->getName(),
         $backtrace
       );
