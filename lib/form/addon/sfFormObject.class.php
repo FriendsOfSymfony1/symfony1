@@ -167,7 +167,7 @@ abstract class sfFormObject extends BaseForm
       $con = $this->getConnection();
     }
 
-    $this->getObject()->save($con);
+    $this->getObject()->saveUsingDoctrine($con);
 
     // embedded forms
     $this->saveObjectEmbeddedForms($con);
