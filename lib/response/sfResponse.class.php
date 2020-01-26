@@ -99,13 +99,16 @@ abstract class sfResponse implements Serializable
    */
   public function sendContent()
   {
-    $event = $this->dispatcher->filter(new sfEvent($this, 'response.filter_content'), $this->getContent());
+    $content = $this->getContent();
+    if (!$this->options['logging']) {
+      echo $content;
+      return;
+    }
+
+    $event   = $this->dispatcher->filter(new sfEvent($this, 'response.filter_content'), $content);
     $content = $event->getReturnValue();
 
-    if ($this->options['logging'])
-    {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send content (%s o)', strlen($content)))));
-    }
+    $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send content (%s o)', strlen($content))]));
 
     echo $content;
   }
