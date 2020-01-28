@@ -195,7 +195,8 @@ abstract class sfDoctrineRecord extends DoctrineLaravelModel
       try
       {
         return parent::__call($method, $arguments);
-      } catch (Doctrine_Record_UnknownPropertyException $e2) {}
+      } catch (Doctrine_Record_UnknownPropertyException $e2) {
+      } catch (BadMethodCallException $e2) {}
 
       if (isset($e) && $e)
       {
