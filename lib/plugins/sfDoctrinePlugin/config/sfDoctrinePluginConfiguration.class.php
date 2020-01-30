@@ -44,6 +44,10 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
     }
 
     $manager = Doctrine_Manager::getInstance();
+    // Must use the same null object across laravel and symfony
+    $doctrine_null = Doctrine_Locator_Injectable::getNullObject();
+    sfDoctrineRecord::initNullObject($doctrine_null);
+
     $manager->setAttribute(Doctrine_Core::ATTR_EXPORT, Doctrine_Core::EXPORT_ALL);
     $manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_NONE);
     $manager->setAttribute(Doctrine_Core::ATTR_RECURSIVE_MERGE_FIXTURES, true);
