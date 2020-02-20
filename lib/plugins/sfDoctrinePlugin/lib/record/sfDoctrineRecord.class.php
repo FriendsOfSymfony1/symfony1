@@ -146,7 +146,22 @@ abstract class sfDoctrineRecord extends DoctrineLaravelModel
         $name = substr($method, 3);
 
         $table = $this->getTable();
-        if ($table->hasRelation($name))
+        $underScored = $table->getFieldName(sfInflector::underscore($name));
+        if(method_exists($this, $underScored) ){
+          // then we should have an eloquentrelationship
+          if($verb == 'get'){
+//            $value =  $this->getEloquentRelationFromDoctrineDescription($underScored);
+            if ($this->relationLoaded($underScored)) {
+              $value = $this->relations[$underScored];
+              if(!is_null($value))
+//                $this->setRelationBothFrameworks($underScored, $value);
+                return $value;
+            }
+          }
+
+        }
+
+        if ( $table->hasRelation($name))
         {
           $entityName = $name;
         }
@@ -162,7 +177,6 @@ abstract class sfDoctrineRecord extends DoctrineLaravelModel
         }
         else
         {
-          $underScored = $table->getFieldName(sfInflector::underscore($name));
           if ($table->hasField($underScored) || $table->hasRelation($underScored))
           {
             $entityName = $underScored;
