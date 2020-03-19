@@ -33,8 +33,8 @@ class sfValidatorBoolean extends sfValidatorBase
    */
   protected function configure($options = array(), $messages = array())
   {
-    $this->addOption('true_values', array('true', 't', 'yes', 'y', 'on', '1'));
-    $this->addOption('false_values', array('false', 'f', 'no', 'n', 'off', '0'));
+    $this->addOption('true_values', array('true', 't', 'yes', 'y', 'on', '1', true, 1));
+    $this->addOption('false_values', array('false', 'f', 'no', 'n', 'off', '0', false, 0));
 
     $this->setOption('required', false);
     $this->setOption('empty_value', false);
@@ -45,12 +45,12 @@ class sfValidatorBoolean extends sfValidatorBase
    */
   protected function doClean($value)
   {
-    if (in_array($value, $this->getOption('true_values')))
+    if (in_array($value, $this->getOption('true_values'), true))
     {
       return true;
     }
 
-    if (in_array($value, $this->getOption('false_values')))
+    if (in_array($value, $this->getOption('false_values'), true))
     {
       return false;
     }
