@@ -1,7 +1,6 @@
 language: php
 
 php:
-    - 5.5
     - 5.6
     - 7.0
     - 7.1
@@ -21,6 +20,9 @@ matrix:
           sudo: required
         - php: 5.4
           dist: precise
+          sudo: required
+        - php: 5.5
+          dist: trusty
           sudo: required
 
 # faster builds on new travis setup not using sudo
