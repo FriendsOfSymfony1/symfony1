@@ -75,7 +75,7 @@ class sfWebRequest extends sfRequest
     parent::initialize($dispatcher, $parameters, $attributes, $options);
 
     // GET parameters
-    if (version_compare(PHP_VERSION, '5.4', '<') && get_magic_quotes_gpc())
+    if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc())
     {
       $this->getParameters = sfToolkit::stripslashesDeep($_GET);
     }
@@ -155,7 +155,7 @@ class sfWebRequest extends sfRequest
       $this->setMethod(self::GET);
     }
 
-    if (version_compare(PHP_VERSION, '5.4', '<') && get_magic_quotes_gpc())
+    if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc())
     {
       $this->postParameters = sfToolkit::stripslashesDeep($postParameters);
     }
@@ -615,7 +615,7 @@ class sfWebRequest extends sfRequest
 
     if (isset($_COOKIE[$name]))
     {
-      if (version_compare(PHP_VERSION, '5.4', '<') && get_magic_quotes_gpc())
+      if (version_compare(PHP_VERSION, '5.4.0-dev', '<') && get_magic_quotes_gpc())
       {
         $retval = sfToolkit::stripslashesDeep($_COOKIE[$name]);
       }
