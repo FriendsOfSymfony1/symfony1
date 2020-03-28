@@ -21,6 +21,7 @@ abstract class sfTask
   protected $namespace = '';
   protected $name = null;
   protected $aliases = array();
+  protected $start_time = null;
   protected $briefDescription = '';
   protected $detailedDescription = '';
   protected $arguments = array();
@@ -53,6 +54,7 @@ abstract class sfTask
   {
     $this->dispatcher = $dispatcher;
     $this->formatter  = $formatter;
+    $this->start_time = microtime(true);
   }
 
   /**
@@ -415,6 +417,53 @@ abstract class sfTask
   public function logSection($section, $message, $size = null, $style = 'INFO')
   {
     $this->dispatcher->notify(new sfEvent($this, 'command.log', array($this->formatter->formatSection($section, $message, $size, $style))));
+  }
+
+  /**
+   * Returns the elapsed time that the task has been running
+   */
+  protected function getElapsedTime()
+  {
+      return round(microtime(true) - $this->start_time);
+  }
+  /**
+   * Sibling to the logSection method, without the first parameter
+   * Log title shows elapsed time, used and peak memory
+   * It receives an extra parameter, by default 100 Megabytes
+   * Log changes COLOR when memory left is less than said parameter
+   */
+  protected function logSectionMemory($message, $size = null, $style = null, $warning_when_remaining = '100M')
+  {
+      $usage = memory_get_usage();
+      $memory = $this->convertIntToUnit($usage, 'mb');
+      $memory_peak = $this->convertIntToUnit(memory_get_peak_usage(), 'mb');
+      $style = $this->usageCloseToLimit($usage, $warning_when_remaining) ? 'COMMENT' : $style;
+      $title = sprintf('%4ss Memory usage: %9s Peak: %9s', $this->getElapsedTime(), $memory, $memory_peak);
+      $this->logSection($title, $message, $size, $style);
+  }
+  protected function usageCloseToLimit($usage, $warning_when_remaining)
+  {
+      if (!isset($this->memory_limit)) {
+          $this->memory_limit = $this->convertUnitToInt(ini_get('memory_limit'));
+      }
+      return $this->memory_limit - $usage < $this->convertUnitToInt($warning_when_remaining);
+  }
+  protected function convertIntToUnit($size)
+  {
+      $unit= ['b' ,'kb' ,'mb' ,'gb' ,'tb' ,'pb'];
+      $i = floor(log($size, 1024));
+      return @round($size / pow(1024, $i), 2) . " {$unit[$i]}";
+  }
+  public function convertUnitToInt($memory)
+  {
+      if (preg_match('/^(\d+)(.)$/', $memory, $matches)) {
+          if ($matches[2] == 'M') {
+              $memory = $matches[1] * 1024 * 1024; // nnnM -> nnn MB
+          } elseif ($matches[2] == 'K') {
+              $memory = $matches[1] * 1024; // nnnK -> nnn KB
+          }
+      }
+      return $memory;
   }
 
   /**
