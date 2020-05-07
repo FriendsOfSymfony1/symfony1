@@ -1,7 +1,7 @@
 <?php
 
 /**
- * sfMessageSource_MySQL class file.
+ * sfMessageSource_MySQLi class file.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the BSD License.
@@ -19,7 +19,7 @@
  */
 
 /**
- * sfMessageSource_MySQL class.
+ * sfMessageSource_MySQLi class.
  *
  * Retrieve the message translation from a MySQL database.
  *
@@ -89,7 +89,7 @@
  * @package    symfony
  * @subpackage i18n
  */
-class sfMessageSource_MySQL extends sfMessageSource_Database
+class sfMessageSource_MySQLi extends sfMessageSource_Database
 {
   /**
    * The datasource string, full DSN to the database.
@@ -128,7 +128,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
    */
   function __destruct()
   {
-    @mysql_close($this->db);
+    @mysqli_close($this->db);
   }
 
   /**
@@ -156,7 +156,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     $user = $dsninfo['username'];
     $pw = $dsninfo['password'];
 
-    $connect_function = 'mysql_connect';
+    $connect_function = 'mysqli_connect';
 
     if (!function_exists($connect_function))
     {
@@ -187,7 +187,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
     if ($dsninfo['database'])
     {
-      if (!@mysql_select_db($dsninfo['database'], $conn))
+      if (!@mysqli_select_db($conn, $dsninfo['database']))
       {
         throw new sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
       }
@@ -218,7 +218,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
    */
   public function &loadData($variant)
   {
-    $variant = mysql_real_escape_string($variant, $this->db);
+    $variant = mysqli_real_escape_string($this->db, $variant);
 
     $statement =
       "SELECT t.id, t.source, t.target, t.comments
@@ -227,11 +227,11 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
           AND c.name = '{$variant}'
         ORDER BY id ASC";
 
-    $rs = mysql_query($statement, $this->db);
+    $rs = mysqli_query($this->db, $statement);
 
     $result = array();
 
-    while ($row = mysql_fetch_array($rs, MYSQL_NUM))
+    while ($row = mysqli_fetch_array($rs, MYSQLI_NUM))
     {
       $source = $row[1];
       $result[$source][] = $row[2]; //target
@@ -251,11 +251,11 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
    */
   protected function getLastModified($source)
   {
-    $source = mysql_real_escape_string($source, $this->db);
+    $source = mysqli_real_escape_string($this->db, $source);
 
-    $rs = mysql_query("SELECT date_modified FROM catalogue WHERE name = '{$source}'", $this->db);
+    $rs = mysqli_query($this->db, "SELECT date_modified FROM catalogue WHERE name = '{$source}'");
 
-    return $rs ? (int)mysql_result($rs, 0) : 0;
+    return $rs ? (int)mysqli_fetch_row($rs)['date_modified'] : 0;
   }
 
   /**
@@ -266,11 +266,11 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
    */
   public function isValidSource($variant)
   {
-    $variant = mysql_real_escape_string ($variant, $this->db);
+    $variant = mysqli_real_escape_string($this->db, $variant);
 
-    $rs = mysql_query("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'", $this->db);
+    $rs = mysqli_query($this->db, "SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'");
 
-    $row = mysql_fetch_array($rs, MYSQL_NUM);
+    $row = mysqli_fetch_array($rs, MYSQLI_NUM);
 
     return $row && $row[0] == '1';
   }
@@ -290,21 +290,21 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
     $variant = $catalogue.'.'.$this->culture;
 
-    $name = mysql_real_escape_string($this->getSource($variant), $this->db);
+    $name = mysqli_real_escape_string($this->db, $this->getSource($variant));
 
-    $rs = mysql_query("SELECT cat_id FROM catalogue WHERE name = '{$name}'", $this->db);
+    $rs = mysqli_query($this->db, "SELECT cat_id FROM catalogue WHERE name = '{$name}'");
 
-    if (mysql_num_rows($rs) != 1)
+    if (mysqli_num_rows($rs) != 1)
     {
       return false;
     }
 
-    $cat_id = (int) mysql_result($rs, 0);
+    $cat_id = (int) mysqli_fetch_row($rs)['cat_id'];
 
     // first get the catalogue ID
-    $rs = mysql_query("SELECT COUNT(*) FROM trans_unit WHERE cat_id = {$cat_id}", $this->db);
+    $rs = mysqli_query($this->db, "SELECT COUNT(*) AS count FROM trans_unit WHERE cat_id = {$cat_id}");
 
-    $count = (int) mysql_result($rs, 0);
+    $count = (int) mysqli_fetch_row($rs)['count'];
 
     return array($cat_id, $variant, $count);
   }
@@ -318,7 +318,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
   {
     $time = time();
 
-    $result = mysql_query("UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}", $this->db);
+    $result = mysqli_query($this->db, "UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}");
 
     if ($this->cache)
     {
@@ -368,11 +368,11 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     {
       $count++;
       $inserted++;
-      $message = mysql_real_escape_string($message, $this->db);
+      $message = mysqli_real_escape_string($this->db, $message);
       $statement = "INSERT INTO trans_unit
         (cat_id,id,source,date_added) VALUES
         ({$cat_id}, {$count},'{$message}',$time)";
-      mysql_query($statement, $this->db);
+      mysqli_query($this->db, $statement);
     }
     if ($inserted > 0)
     {
@@ -401,14 +401,14 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
       return false;
     }
 
-    $text = mysql_real_escape_string($message, $this->db);
+    $text = mysqli_real_escape_string($this->db, $message);
 
     $statement = "DELETE FROM trans_unit WHERE cat_id = {$cat_id} AND source = '{$message}'";
     $deleted = false;
 
-    mysql_query($statement, $this->db);
+    mysqli_query($this->db, $statement);
 
-    if (mysql_affected_rows($this->db) == 1)
+    if (mysqli_affected_rows($this->db) == 1)
     {
       $deleted = $this->updateCatalogueTime($cat_id, $variant);
     }
@@ -437,9 +437,9 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
       return false;
     }
 
-    $comments = mysql_real_escape_string($comments, $this->db);
-    $target = mysql_real_escape_string($target, $this->db);
-    $text = mysql_real_escape_string($text, $this->db);
+    $comments = mysqli_real_escape_string($this->db, $comments);
+    $target = mysqli_real_escape_string($this->db, $target);
+    $text = mysqli_real_escape_string($this->db, $text);
 
     $time = time();
 
@@ -447,8 +447,8 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
     $updated = false;
 
-    mysql_query($statement, $this->db);
-    if (mysql_affected_rows($this->db) == 1)
+    mysqli_query($this->db, $statement);
+    if (mysqli_affected_rows($this->db) == 1)
     {
       $updated = $this->updateCatalogueTime($cat_id, $variant);
     }
@@ -464,9 +464,9 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
   function catalogues()
   {
     $statement = 'SELECT name FROM catalogue ORDER BY name';
-    $rs = mysql_query($statement, $this->db);
+    $rs = mysqli_query($this->db, $statement);
     $result = array();
-    while($row = mysql_fetch_array($rs, MYSQL_NUM))
+    while($row = mysqli_fetch_array($rs, MYSQLI_NUM))
     {
       $details = explode('.', $row[0]);
       if (!isset($details[1]))
