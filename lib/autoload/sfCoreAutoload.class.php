@@ -241,7 +241,6 @@ class sfCoreAutoload
     'sfwebcontroller' => 'controller/sfWebController.class.php',
     'sfdatabase' => 'database/sfDatabase.class.php',
     'sfdatabasemanager' => 'database/sfDatabaseManager.class.php',
-    'sfmysqldatabase' => 'database/sfMySQLDatabase.class.php',
     'sfmysqlidatabase' => 'database/sfMySQLiDatabase.class.php',
     'sfpdodatabase' => 'database/sfPDODatabase.class.php',
     'sfpostgresqldatabase' => 'database/sfPostgreSQLDatabase.class.php',

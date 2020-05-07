@@ -11,25 +11,65 @@
 
 /**
  * sfMySQLiDatabase provides connectivity for the MySQL brand database.
- * @see sfMySQLDatabase
  *
  * @property $connection mysqli
  */
-class sfMySQLiDatabase extends sfMySQLDatabase
+class sfMySQLiDatabase extends sfDatabase
 {
-
   /**
-   * Returns the appropriate connect method.
+   * Connects to the database.
    *
-   * @param bool $persistent Whether persistent connections are use or not
-   *                         The MySQLi driver does not support persistent
-   *                         connections so this argument is ignored.
-   *
-   * @return string name of connect method
+   * @throws <b>sfDatabaseException</b> If a connection could not be created
    */
-  protected function getConnectMethod($persistent)
+  public function connect()
   {
-    return 'mysqli_connect';
+    $database = $this->getParameter('database');
+    $host     = $this->getParameter('host', 'localhost');
+    $password = $this->getParameter('password');
+    $username = $this->getParameter('username');
+    $encoding = $this->getParameter('encoding');
+
+    // let's see if we need a persistent connection
+    $connect = 'mysqli_connect';
+    if ($password == null)
+    {
+      if ($username == null)
+      {
+        $this->connection = @$connect($host);
+      }
+      else
+      {
+        $this->connection = @$connect($host, $username);
+      }
+    }
+    else
+    {
+      $this->connection = @$connect($host, $username, $password);
+    }
+
+    // make sure the connection went through
+    if ($this->connection === false)
+    {
+      // the connection's foobar'd
+      throw new sfDatabaseException('Failed to create a MySQLiDatabase connection.');
+    }
+
+    // select our database
+    if ($this->selectDatabase($database))
+    {
+      // can't select the database
+      throw new sfDatabaseException(sprintf('Failed to select MySQLiDatabase "%s".', $database));
+    }
+
+    // set encoding if specified
+    if ($encoding)
+    {
+      @mysqli_query($this->connection, "SET NAMES '{$encoding}'");
+    }
+
+    // since we're not an abstraction layer, we copy the connection
+    // to the resource
+    $this->resource = $this->connection;
   }
 
   /**
