@@ -69,8 +69,8 @@ $storage = new sfMySQLiSessionStorage(array(
   'database'   => $database)
 );
 
-$t->ok($storage instanceof sfStorage, 'sfMySQLSessionStorage is an instance of sfStorage');
-$t->ok($storage instanceof sfDatabaseSessionStorage, 'sfMySQLSessionStorage is an instance of sfDatabaseSessionStorage');
+$t->ok($storage instanceof sfStorage, 'sfMySQLiSessionStorage is an instance of sfStorage');
+$t->ok($storage instanceof sfDatabaseSessionStorage, 'sfMySQLiSessionStorage is an instance of sfDatabaseSessionStorage');
 
 // regenerate()
 $storage->regenerate(false);

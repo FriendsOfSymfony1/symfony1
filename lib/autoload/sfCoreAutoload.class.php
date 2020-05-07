@@ -383,7 +383,6 @@ class sfCoreAutoload
     'sfservicereference' => 'service/sfServiceReference.class.php',
     'sfcachesessionstorage' => 'storage/sfCacheSessionStorage.class.php',
     'sfdatabasesessionstorage' => 'storage/sfDatabaseSessionStorage.class.php',
-    'sfmysqlsessionstorage' => 'storage/sfMySQLSessionStorage.class.php',
     'sfmysqlisessionstorage' => 'storage/sfMySQLiSessionStorage.class.php',
     'sfnostorage' => 'storage/sfNoStorage.class.php',
     'sfpdosessionstorage' => 'storage/sfPDOSessionStorage.class.php',
