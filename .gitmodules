@@ -4,4 +4,4 @@
 	branch = 5.x
 [submodule "lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine"]
 	path = lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine
-	url = https://github.com/LExpress/doctrine1.git
+	url = git@github.com:braindata/doctrine1.git
