@@ -1,12 +1,13 @@
 CHANGELOG
 =========
 
-xx/xx/xxxx: Version 1.5.13
+08/06/2020: Version 1.5.13
 --------------------------
 
 * Fix for `Warning: ini_set(): A session is active...` #229
-
-=========
+* Php 7.4 Incompatibility Fixes #228
+* Remove notice appeared on php 7.4 #230
+* Rename package to `friendsofsymfony1/symfony1` #231
 
 03/04/2020: Version 1.5.12
 --------------------------
