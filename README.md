@@ -29,7 +29,7 @@ The end result of these advantages means there is no need to reinvent the wheel 
 Symfony was written entirely in PHP 5.
 It has been thoroughly tested in various real-world projects, and is actually in use for high-demand e-business websites.
 It is compatible with most of the available databases engines, including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server.
-It runs on *nix and Windows platforms.
+It runs on *nix and Windows platforms*.
 
 Requirements
 ------------

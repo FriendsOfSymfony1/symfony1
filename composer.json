@@ -1,19 +1,20 @@
 {
-    "name": "lexpress/symfony1",
+    "name": "friendsofsymfony1/symfony1",
     "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
+    "type": "library",
     "license": "MIT",
     "require": {
+        "php" : ">=5.3.0",
         "swiftmailer/swiftmailer": "~5.2"
     },
     "require-dev": {
         "psr/log": "*"
     },
-    "type": "library",
     "autoload": {
         "files": ["autoload.php"]
     },
     "suggest": {
-        "lexpress/doctrine1": "Doctrine plugin",
+        "friendsofsymfony1/doctrine1": "Doctrine plugin",
         "propel/sf-propel-o-r-m-plugin": "Propel plugin",
         "psr/log": "Psr logger"
     },

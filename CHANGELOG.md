@@ -1,6 +1,21 @@
 CHANGELOG
 =========
 
+xx/xx/xxxx: Version 1.5.13
+--------------------------
+
+* Fix for `Warning: ini_set(): A session is active...` #229
+
+=========
+
+03/04/2020: Version 1.5.12
+--------------------------
+
+* Move project from @LExpress to @FriendsOfSymfony1
+* Some doc & readme update
+* Fixes for PHP 7.3 & 7.4 (thanks @W0rma for the code and @alquerci for the review) #224
+* Backport fix for cve-2019-18888 by @adrienperonnet #218
+
 17/03/2018: Version 1.5.11
 --------------------------
 
