@@ -109,6 +109,10 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
             unset($parameters['database']);
           }
 
+          if (isset($config['user']['param']['timeout'])) {
+            $defaultParameters[] = sprintf("'gc_maxlifetime' => %d,", $config['user']['param']['timeout']);
+          }
+
           $instances[] = sprintf("  \$class = sfConfig::get('sf_factory_storage', '%s');\n  \$this->factories['storage'] = new \$class(array_merge(array(\n%s\n), sfConfig::get('sf_factory_storage_parameters', %s)));", $class, implode("\n", $defaultParameters), var_export($parameters, true));
           break;
 
