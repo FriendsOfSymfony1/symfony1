@@ -236,7 +236,7 @@ class sfViewCacheManager
       {
         $varys[] = $header . '-' . preg_replace('/\W+/', '_', $request->getHttpHeader($header));
       }
-      $vary = implode($varys, '-');
+      $vary = implode('-', $varys);
     }
 
     return $vary;
