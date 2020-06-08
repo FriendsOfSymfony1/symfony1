@@ -4,7 +4,10 @@ CHANGELOG
 xx/xx/xxxx: Version 1.5.13
 --------------------------
 
+* Rename package to `friendsofsymfony1/symfony1` #231
+* Remove notice appeared on php 7.4 #230
 * Fix for `Warning: ini_set(): A session is active...` #229
+* Php 7.4 Incompatibility Fixes #228
 
 =========
 
