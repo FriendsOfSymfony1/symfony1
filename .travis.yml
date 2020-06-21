@@ -1,47 +1,45 @@
+os: linux
+dist: xenial
 language: php
 
 php:
-    - 5.5
-    - 5.6
     - 7.0
     - 7.1
     - 7.2
+    - 7.3
+    - 7.4
     - nightly
 
 # run build against nightly but allow them to fail
-matrix:
+jobs:
     fast_finish: true
     allow_failures:
         - php: nightly
     include:
         - php: 5.3
           dist: precise
-          sudo: required
         - php: 5.4
           dist: precise
-          sudo: required
-
-# faster builds on new travis setup not using sudo
-sudo: false
+        - php: 5.5
+          dist: trusty
+        - php: 5.6
+          dist: trusty
 
 services:
     - memcached
 
-# cache vendor dirs
 cache:
     directories:
-        - lib/vendor/swiftmailer
         - $HOME/.composer/cache
 
-install:
-    - composer self-update
-
-before_script:
-    # by default, --remote is not used on travis
-    - git submodule update --remote --force
+before_install:
     - sh -c 'if [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ] && [ $(php -r "echo PHP_MAJOR_VERSION;") -le 5 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
     - sh -c 'if [ $(php -r "echo PHP_RELEASE_VERSION;") -le 98 ] && [ $(php -r "echo PHP_MAJOR_VERSION;") -le 5 ]; then echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - composer install
+
+install:
+    # by default, --remote is not used on travis
+    - git submodule update --remote --force
+    - composer install --prefer-dist --no-progress --no-suggest -o
 
 script:
     - php data/bin/check_configuration.php

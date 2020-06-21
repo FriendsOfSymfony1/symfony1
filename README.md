@@ -5,7 +5,7 @@ About this version
 
 This is a community driven fork of symfony 1, as official support has been [interrupted in November 2012](http://symfony.com/blog/symfony-1-4-end-of-maintenance-what-does-it-mean).
 
-**Do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony4](http://symfony.com/) is the way to go today.**
+**Do not use it for new projects: this version is great to improve existing symfony1 applications, but [Symfony5](http://symfony.com/) is the way to go today.**
 
 All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.com/FriendsOfSymfony1/symfony1/blob/master/WHATS_NEW.md) file, this include:
 
@@ -29,7 +29,7 @@ The end result of these advantages means there is no need to reinvent the wheel 
 Symfony was written entirely in PHP 5.
 It has been thoroughly tested in various real-world projects, and is actually in use for high-demand e-business websites.
 It is compatible with most of the available databases engines, including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server.
-It runs on *nix and Windows platforms.
+It runs on *nix and Windows platforms*.
 
 Requirements
 ------------
@@ -43,7 +43,7 @@ See http://symfony.com/legacy/doc/getting-started/1_4/en/03-Symfony-Installation
 
 Option 1: Using [Composer](http://getcomposer.org/doc/00-intro.md) as dependency management:
 
-    composer require lexpress/symfony1 "1.5.*"
+    composer require friendsofsymfony1/symfony1 "1.5.*"
     composer install
     
 Note: On windows, if your project is a few directories down from the drive root, composer can throw an error  relating to ZipArchive::extractTo(), this can be because pathnames are too long. There currently appears to be no proper solution but a workaround is to move your project to the drive root, run the commands from there, where they will run happily, and then move your project back. 

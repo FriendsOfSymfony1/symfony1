@@ -5,7 +5,8 @@
     "keywords": ["framework", "symfony1", "doctrine1"],
     "license": "MIT",
     "require": {
-        "swiftmailer/swiftmailer": "~6.2"
+        "swiftmailer/swiftmailer": "~6.2",
+        "php" : ">=5.3.0",
     },
     "require-dev": {
         "psr/log": "*"
