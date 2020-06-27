@@ -45,13 +45,13 @@ class sfValidatorBoolean extends sfValidatorBase
    */
   protected function doClean($value)
   {
-    $stringValue = $value !== false ? (string) $value : '0';
-    if (in_array($stringValue, $this->getOption('true_values')))
+    $checkValue = $value === 0 ? '0' : $value;
+    if (in_array($checkValue, $this->getOption('true_values')))
     {
       return true;
     }
 
-    if (in_array($stringValue, $this->getOption('false_values')))
+    if (in_array($checkValue, $this->getOption('false_values')))
     {
       return false;
     }
