@@ -1,26 +1,29 @@
 <?php
 
 /**
- * sfMailer is the main entry point for the mailer system.
+ * sfMailerSwiftmailer6 is the main entry point for the mailer system.
  *
- * This class is instanciated by sfContext on demand and compatible to swiftmailer ~5.2
+ * This class is instanciated by sfContext on demand and compatible to swiftmailer ~6.0. It will be
+ * set automagically if swiftmailer 6 is loaded.
+ *
+ * @see autoload.php
  *
  * @package    symfony
  * @subpackage mailer
  * @author     Thomas A. Hirsch <thomas.hirsch@vema-eg.de>
  * @version    SVN: $Id$
  */
-class sfMailer extends sfMailerBase
+class sfMailerSwiftmailer6 extends sfMailerBase
 {
   /**
    * Sends the given message.
    *
-   * @param Swift_Mime_Message $message         A transport instance
-   * @param string[]           &$failedRecipients An array of failures by-reference
+   * @param Swift_Mime_SimpleMessage   $message         A transport instance
+   * @param string[]        &$failedRecipients An array of failures by-reference
    *
    * @return int|false The number of sent emails
    */
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
   {
     if ($this->force)
     {
@@ -37,13 +40,12 @@ class sfMailer extends sfMailerBase
     return parent::send($message, $failedRecipients);
   }
 
-
   /**
    * @inheritDoc
    */
   public function compose($from = null, $to = null, $subject = null, $body = null)
   {
-    $msg = Swift_Message::newInstance($subject);
+    $msg = new Swift_Message($subject);
 
     return $msg
       ->setFrom($from)
