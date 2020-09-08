@@ -146,14 +146,14 @@ class sfMailer extends sfMailerBase
       ),
     ), $options);
 
-    $constantName = 'sfMailerBase::'.strtoupper($options['delivery_strategy']);
+    $constantName = 'sfMailer::'.strtoupper($options['delivery_strategy']);
     $this->strategy = defined($constantName) ? constant($constantName) : false;
     if (!$this->strategy)
     {
       throw new InvalidArgumentException(sprintf('Unknown mail delivery strategy "%s" (should be one of realtime, spool, single_address, or none)', $options['delivery_strategy']));
     }
 
-    if (static::NONE == $this->strategy)
+    if (sfMailer::NONE == $this->strategy)
     {
       $options['transport']['class'] = 'Swift_NullTransport';
     }
@@ -184,7 +184,7 @@ class sfMailer extends sfMailerBase
     }
     $this->realtimeTransport = $transport;
 
-    if (static::SPOOL == $this->strategy)
+    if (sfMailer::SPOOL == $this->strategy)
     {
       if (!isset($options['spool_class']))
       {
@@ -204,7 +204,7 @@ class sfMailer extends sfMailerBase
 
       $transport = new Swift_SpoolTransport($this->spool);
     }
-    elseif (static::SINGLE_ADDRESS == $this->strategy)
+    elseif (sfMailer::SINGLE_ADDRESS == $this->strategy)
     {
       if (!isset($options['delivery_address']))
       {
@@ -301,7 +301,7 @@ class sfMailer extends sfMailerBase
   {
     $this->address = $address;
 
-    if (static::SINGLE_ADDRESS == $this->strategy)
+    if (sfMailer::SINGLE_ADDRESS == $this->strategy)
     {
       $this->redirectingPlugin->setRecipient($address);
     }
