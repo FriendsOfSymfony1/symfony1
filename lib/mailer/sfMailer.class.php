@@ -91,11 +91,11 @@ if(class_exists('Swift') && version_compare(Swift::VERSION, '6.0.0') >= 0) {
 /**
  * sfMailer is the main entry point for the mailer system.
  *
- * This class is instanciated by sfContext on demand and compatible to swiftmailer ~5.2
+ * This class is instanciated by sfContext on demand.
  *
  * @package    symfony
  * @subpackage mailer
- * @author     Thomas A. Hirsch <thomas.hirsch@vema-eg.de>
+ * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
 class sfMailer extends sfMailerBase
@@ -325,7 +325,7 @@ class sfMailer extends sfMailerBase
   /**
    * Forces the next call to send() to use the realtime strategy.
    *
-   * @return static The current sfMailer instance
+   * @return sfMailer The current sfMailer instance
    */
   public function sendNextImmediately()
   {
