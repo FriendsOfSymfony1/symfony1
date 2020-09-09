@@ -239,7 +239,8 @@ class sfMailer extends Swift_Mailer
    */
   public function compose($from = null, $to = null, $subject = null, $body = null)
   {
-    return Swift_Message::newInstance()
+    $msg = new Swift_Message();
+    return $msg
       ->setFrom($from)
       ->setTo($to)
       ->setSubject($subject)
@@ -282,7 +283,7 @@ class sfMailer extends Swift_Mailer
    *
    * @return int|false The number of sent emails
    */
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send($message, &$failedRecipients = null)
   {
     if ($this->force)
     {
