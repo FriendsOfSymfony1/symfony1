@@ -75,7 +75,7 @@ class sfWebRequest extends sfRequest
     parent::initialize($dispatcher, $parameters, $attributes, $options);
 
     // GET parameters
-    $this->getParameters = get_magic_quotes_gpc() ? sfToolkit::stripslashesDeep($_GET) : $_GET;
+    $this->getParameters = $_GET;
     $this->parameterHolder->add($this->getParameters);
 
     $postParameters = $_POST;
