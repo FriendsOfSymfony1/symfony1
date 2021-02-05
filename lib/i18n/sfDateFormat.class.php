@@ -266,9 +266,9 @@ class sfDateFormat
    */
   protected function getFunctionName($token)
   {
-    if (isset($this->tokens[$token{0}]))
+    if (isset($this->tokens[$token[0]]))
     {
-      return $this->tokens[$token{0}];
+      return $this->tokens[$token[0]];
     }
   }
 
