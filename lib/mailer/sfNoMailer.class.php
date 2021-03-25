@@ -56,7 +56,7 @@ class sfNoMailer
     return null;
   }
 
-  public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+  public function send($message, &$failedRecipients = null)
   {
     return null;
   }
