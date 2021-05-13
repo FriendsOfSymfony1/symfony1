@@ -361,7 +361,9 @@ class sfConfigCache
       }
     }
 
-    chmod($cache, 0666);
+    if (file_exists($cache) && is_writeable($cache)) {
+      chmod($cache, 0666);
+    }
     umask($current_umask);
   }
 

@@ -132,7 +132,7 @@ class sfAutoload
       self::$freshCache = false;
       if ($force)
       {
-        if (file_exists($path))
+        if (file_exists($path) && is_writeable($path))
         {
           unlink($path);
         }
