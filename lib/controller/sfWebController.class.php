@@ -168,7 +168,7 @@ abstract class sfWebController extends sfController
   /**
    * Redirects the request to another URL.
    *
-   * @param mixed $url         An associative array of URL parameters or an internal URI as a string
+   * @param string|array $url         An associative array of URL parameters or an internal URI as a string
    * @param int    $delay      A delay in seconds before redirecting. This is only needed on
    *                           browsers that do not support HTTP headers
    * @param int    $statusCode The status code
