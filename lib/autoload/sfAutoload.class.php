@@ -130,12 +130,9 @@ class sfAutoload
     if (is_file($path))
     {
       self::$freshCache = false;
-      if ($force)
+      if ($force && file_exists($path) && is_writeable($path))
       {
-        if (file_exists($path) && is_writeable($path))
-        {
-          unlink($path);
-        }
+        unlink($path);
       }
     }
 
@@ -146,7 +143,7 @@ class sfAutoload
       // workaround for https://github.com/facebook/hhvm/issues/1447
       $this->classes = eval(str_replace('<?php', '', file_get_contents($file)));
     }
-    else
+    elseif (file_exists($path) && is_readable($path))
     {
       $this->classes = include $file;
     }
