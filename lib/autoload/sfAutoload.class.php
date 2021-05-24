@@ -143,7 +143,7 @@ class sfAutoload
       // workaround for https://github.com/facebook/hhvm/issues/1447
       $this->classes = eval(str_replace('<?php', '', file_get_contents($file)));
     }
-    elseif (file_exists($path) && is_readable($path))
+    elseif (file_exists($file) && is_readable($file))
     {
       $this->classes = include $file;
     }
