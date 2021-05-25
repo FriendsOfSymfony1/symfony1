@@ -46,6 +46,7 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
 
     $this->addMessage('min', 'At least %min% values must be selected (%count% values selected).');
     $this->addMessage('max', 'At most %max% values must be selected (%count% values selected).');
+    $this->addMessage('invalid_keys', 'Array keys must be numeric and consecutive');
   }
 
   /**
@@ -75,6 +76,11 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
       }
 
       $count = count($value);
+
+      if (array_keys($value) !== range(0, $count-1))
+      {
+        throw new sfValidatorError($this, 'invalid_keys', array('keys' => array_keys($value)));
+      }
 
       if ($this->hasOption('min') && $count < $this->getOption('min'))
       {
