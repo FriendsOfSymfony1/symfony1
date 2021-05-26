@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(17);
+$t = new lime_test(23);
 
 $v = new sfValidatorBoolean();
 
@@ -30,6 +30,22 @@ foreach ($v->getOption('false_values') as $false_value)
 {
   $t->is($v->clean($false_value), false, '->clean() returns false if the value is in the false_values option');
 }
+
+// other special test cases
+$t->is($v->clean(0), false, '->clean() returns false if the value is 0');
+$t->is($v->clean(false), false, '->clean() returns false if the value is false');
+$t->is($v->clean(1), true, '->clean() returns true if the value is 1');
+$t->is($v->clean(true), true, '->clean() returns true if the value is true');
+$t->is($v->clean(''), false, '->clean() returns false if the value is empty string as empty_value is false by default');
+
+class MyFalseClass
+{
+  public function __toString()
+  {
+    return 'false';
+  }
+}
+$t->is($v->clean(new MyFalseClass()), false, '->clean() returns false if the value is false');
 
 // required is false by default
 $t->is($v->clean(null), false, '->clean() returns false if the value is null');
