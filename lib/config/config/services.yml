@@ -17,3 +17,8 @@ all:
       arguments:
         - '@sf_event_dispatcher'
         - '@sf_formatter'
+
+    sf_parameter_resolver:
+      class: sfParameterResolver
+      arguments:
+       - '@service_container'

@@ -7,6 +7,10 @@ all:
       class: sfOutputEscaperSafe
       arguments: [%my_project_param%]
 
+    MyService:
+      class: MyService
+
+
 test:
   parameters:
     my_app_test_param: foo

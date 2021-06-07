@@ -90,7 +90,11 @@ class sfExecutionFilter extends sfFilter
   {
     // execute the action
     $actionInstance->preExecute();
-    $viewName = $actionInstance->execute($this->context->getRequest());
+    $viewName = $this->context->getService('sf_parameter_resolver')
+      ->setRequest($this->context->getRequest())
+      ->setComponent($actionInstance)
+      ->execute();
+
     $actionInstance->postExecute();
 
     return null === $viewName ? sfView::SUCCESS : $viewName;

@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,6 +35,7 @@ class sfContext
       self::$instance->storage = new sfSessionTestStorage(array('session_path' => self::$instance->sessionPath));
 
       self::$instance->dispatcher = new sfEventDispatcher();
+      self::$instance->serviceContainer = new sfServiceContainer();
 
       foreach ($factories as $type => $class)
       {
@@ -58,6 +59,16 @@ class sfContext
   public function getEventDispatcher()
   {
     return self::$instance->dispatcher;
+  }
+
+  public function getServiceContainer()
+  {
+    return self::$instance->serviceContainer;
+  }
+
+  public function getService($service_id)
+  {
+    return $this->getServiceContainer()->getService($service_id);
   }
 
   public function getModuleName()
