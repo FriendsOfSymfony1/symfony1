@@ -116,7 +116,9 @@ class sfCoreAutoload
    */
   public function getClassPath($class)
   {
+    $old = setlocale(LC_ALL, 'C');
     $class = strtolower($class);
+    setlocale(LC_ALL, $old);
 
     if (!isset($this->classes[$class]))
     {
@@ -169,7 +171,9 @@ class sfCoreAutoload
           || false !== stripos($contents, 'interface '.$class)
           || false !== stripos($contents, 'trait '.$class))
       {
+        $old = setlocale(LC_ALL, 'C');
         $classes .= sprintf("    '%s' => '%s',\n", strtolower($class), substr(str_replace($libDir, '', $file), 1));
+        setlocale(LC_ALL, $old);
       }
     }
 
