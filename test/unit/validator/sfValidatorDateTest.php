@@ -10,7 +10,7 @@
 
 require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(52);
+$t = new lime_test(56);
 
 $v = new sfValidatorDate();
 
@@ -244,3 +244,35 @@ $clean = $v->clean($date->format(DATE_ATOM));
 // did it convert from the other timezone to the default timezone?
 $date->setTimezone($defaultTimezone);
 $t->is($clean, $date->format('Y-m-d H:i:s'), '->clean() respects incoming and default timezones');
+
+// 'min' and 'max' options should be normalized to the default timezone
+$v = new sfValidatorDateTime(array(
+  'min' => '2018-12-06T09:00:00Z'
+), array(
+  'min' => 'min',
+));
+try
+{
+  $v->clean('2018-12-06T09:59:59+01:00');
+  $t->fail('->clean() throws an exception if the normalized date is before normalized min-option');
+}
+catch (sfValidatorError $e)
+{
+  $t->pass('->clean() throws an exception if the normalized date is before normalized min-option');
+  $t->is($e->getMessage(), 'min', '->clean() adds correct min-message');
+}
+$v = new sfValidatorDateTime(array(
+  'max' => '2018-12-06T09:00:00Z'
+), array(
+  'max' => 'max',
+));
+try
+{
+  $v->clean('2018-12-06T10:00:01+01:00');
+  $t->fail('->clean() throws an exception if the normalized date is after normalized max-option');
+}
+catch (sfValidatorError $e)
+{
+  $t->pass('->clean() throws an exception if the normalized date is after normalized max-option');
+  $t->is($e->getMessage(), 'max', '->clean() adds correct max-message');
+}
