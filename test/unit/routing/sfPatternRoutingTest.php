@@ -639,8 +639,8 @@ $t->diag('load_configuration with serialized routes');
 // see fixtures/config_routing.yml.php
 $r = new sfPatternRoutingTest(new sfEventDispatcher(), new sfNoCache(), array('load_configuration' => true));
 $t->ok($r->hasRouteName('test1'), '->loadConfiguration() Config file is loaded');
-$routes = $r->getRoutes();
-$t->ok(is_string($routes['test1']), '->loadConfiguration() Route objects are not serialized in cache');
 $route = $r->getRoute('test1');
 $t->ok(is_object($route), '->loadConfiguration() Route objects are unserialized on demand');
+$routes = $r->getRoutes();
+$t->ok(is_object($routes['test1']), '->loadConfiguration() Route objects are not serialized in cache');
 $t->is_deeply($r->parse('/'), array('module' => 'default', 'action' => 'index'), '->parse() Default parameters are applied to serialized routes');
