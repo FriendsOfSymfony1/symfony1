@@ -63,6 +63,11 @@ abstract class sfView
   const RENDER_VAR = 4;
 
   /**
+   * Render the presentation as redirection.
+   */
+  const RENDER_REDIRECTION = 16;
+
+  /**
    * Skip view rendering but output http headers
    */
   const HEADER_ONLY = 8;

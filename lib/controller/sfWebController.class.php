@@ -205,6 +205,7 @@ abstract class sfWebController extends sfController
     }
 
     $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlspecialchars($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
-    $response->send();
+
+    $this->setRenderMode(sfView::RENDER_REDIRECTION);
   }
 }

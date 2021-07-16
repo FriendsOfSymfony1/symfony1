@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-$app = 'cache';
+$app = isset($app) ? $app : 'cache';
+$successStatusCode = isset($successStatusCode) ? $successStatusCode : 200;
+
 if (!include(__DIR__.'/../bootstrap/functional.php'))
 {
   return;
@@ -16,6 +18,13 @@ if (!include(__DIR__.'/../bootstrap/functional.php'))
 
 class myTestBrowser extends sfTestBrowser
 {
+  private $successStatusCode = 200;
+
+  function setSuccessStatusCode($statusCode)
+  {
+    $this->successStatusCode = $statusCode;
+  }
+
   function checkResponseContent($content, $message)
   {
     $this->test()->ok($this->getResponse()->getContent() == $content, $message);
@@ -33,7 +42,7 @@ class myTestBrowser extends sfTestBrowser
       end()->
 
       with('response')->begin()->
-        isStatusCode(200)->
+        isStatusCode($this->successStatusCode)->
 
         // partials
         checkElement('#partial .partial')->
@@ -102,6 +111,22 @@ class myTestBrowser extends sfTestBrowser
 
     // default page is in cache (without layout)
     $b->
+      call('/', sfRequest::HEAD)->
+      with('request')->begin()->
+        isParameter('module', 'default')->
+        isParameter('action', 'index')->
+      end()->
+      with('response')->begin()->
+        isStatusCode($this->successStatusCode)->
+        matches('/^$/')-> // Response content is empty.
+      end()->
+      with('view_cache')->begin()->
+        isCached(true)->
+      end()
+    ;
+    $b->test()->ok($b->getResponse()->isHeaderOnly(), 'response send only headers');
+
+    $b->
       get('/')->
       with('request')->begin()->
         isParameter('module', 'default')->
@@ -109,12 +134,13 @@ class myTestBrowser extends sfTestBrowser
       end()->
 
       with('response')->begin()->
-        isStatusCode(200)->
+        isStatusCode($this->successStatusCode)->
         checkElement('body', '/congratulations/i')->
       end()->
 
       with('view_cache')->isCached(true)
     ;
+    $b->test()->ok(!$b->getResponse()->isHeaderOnly(), 'send response with content');
 
     $b->
       get('/nocache')->
@@ -123,11 +149,25 @@ class myTestBrowser extends sfTestBrowser
         isParameter('action', 'index')->
       end()->
       with('response')->begin()->
-        isStatusCode(200)->
+        isStatusCode($this->successStatusCode)->
         checkElement('body', '/nocache/i')->
       end()->
       with('view_cache')->isCached(false)
     ;
+
+    $b->
+      call('/cache/page', sfRequest::HEAD)->
+      with('request')->begin()->
+        isParameter('module', 'cache')->
+        isParameter('action', 'page')->
+      end()->
+      with('response')->begin()->
+        isStatusCode($this->successStatusCode)->
+        matches('/^$/')-> // Response content is empty.
+      end()->
+      with('view_cache')->isCached(true, true)
+    ;
+    $b->test()->ok($b->getResponse()->isHeaderOnly(), 'send response only with headers');
 
     $b->
       get('/cache/page')->
@@ -136,11 +176,12 @@ class myTestBrowser extends sfTestBrowser
         isParameter('action', 'page')->
       end()->
       with('response')->begin()->
-        isStatusCode(200)->
+        isStatusCode($this->successStatusCode)->
         checkElement('body', '/page in cache/')->
       end()->
       with('view_cache')->isCached(true, true)
     ;
+    $b->test()->ok(!$b->getResponse()->isHeaderOnly(), 'send response with content');
 
     $b->
       get('/cache/forward')->
@@ -149,7 +190,7 @@ class myTestBrowser extends sfTestBrowser
         isParameter('action', 'forward')->
       end()->
       with('response')->begin()->
-        isStatusCode(200)->
+        isStatusCode($this->successStatusCode)->
         checkElement('body', '/page in cache/')->
       end()->
       with('view_cache')->isCached(true)
@@ -213,7 +254,7 @@ class myTestBrowser extends sfTestBrowser
       end()->
 
       with('response')->begin()->
-        isStatusCode(200)->
+        isStatusCode($this->successStatusCode)->
 
         // partials
         checkElement('#cacheablePartial .cacheablePartial__requestParam')->
@@ -255,8 +296,8 @@ class myTestBrowser extends sfTestBrowser
         isParameter('action', 'specificCacheKey')->
       end()->
 
-      with('response')->isStatusCode(200)->
-      with('view_cache')->begin(200)->
+      with('response')->isStatusCode($this->successStatusCode)->
+      with('view_cache')->begin()->
         isCached(false)->
 
         // partial cache
@@ -284,7 +325,7 @@ class myTestBrowser extends sfTestBrowser
         isParameter('module', 'cache')->
         isParameter('action', 'action')->
       end()->
-      with('response')->isStatusCode(200)->
+      with('response')->isStatusCode($this->successStatusCode)->
       with('view_cache')->isCached(true)
     ;
 
@@ -295,6 +336,7 @@ class myTestBrowser extends sfTestBrowser
     $content1 = $response->getContent();
     $contentType1 = $response->getContentType();
     $headers1 = $response->getHttpHeaders();
+    $statusText1 = $response->getStatusText();
 
     $b->
       get('/cache/action')->
@@ -302,7 +344,7 @@ class myTestBrowser extends sfTestBrowser
         isParameter('module', 'cache')->
         isParameter('action', 'action')->
       end()->
-      with('response')->isStatusCode(200)->
+      with('response')->isStatusCode($this->successStatusCode)->
       with('view_cache')->isCached(true)
     ;
 
@@ -312,14 +354,17 @@ class myTestBrowser extends sfTestBrowser
     $content2 = $response->getContent();
     $contentType2 = $response->getContentType();
     $headers2 = $response->getHttpHeaders();
+    $statusText2 = $response->getStatusText();
 
     $b->test()->is($content1, $content2, 'response content is the same');
     $b->test()->is($contentType1, $contentType2, 'response content type is the same');
     $b->test()->is($headers1, $headers2, 'response http headers are the same');
+    $b->test()->is($statusText1, $statusText2, 'response status text are the same');
   }
 }
 
 $b = new myTestBrowser();
+$b->setSuccessStatusCode($successStatusCode);
 
 // non HTML cache
 $image = file_get_contents(__DIR__.'/fixtures/apps/cache/modules/cache/data/ok48.png');
@@ -362,7 +407,7 @@ $b->
   end()->
 
   with('response')->begin()->
-    isStatusCode(200)->
+    isStatusCode($successStatusCode)->
 
     // the first time (no cache)
     checkElement('link[href*="/main_css"]')->
@@ -406,7 +451,7 @@ $b->
   end()->
 
   with('response')->begin()->
-    isStatusCode(200)->
+    isStatusCode($successStatusCode)->
 
     // only partial specific css and js are included
     checkElement('link[href*="/main_css"]', false)->
@@ -430,7 +475,7 @@ $b->
   end()->
 
   with('response')->begin()->
-    isStatusCode(200)->
+    isStatusCode($successStatusCode)->
 
     // only partial specific css and js are included
     checkElement('link[href*="/main_css"]', false)->
@@ -454,7 +499,7 @@ $b->
   end()->
 
   with('response')->begin()->
-    isStatusCode(200)->
+    isStatusCode($successStatusCode)->
 
     // only partial specific css and js are included
     checkElement('link[href*="/main_css"]', false)->
@@ -493,13 +538,240 @@ $b->get('/')
 // check for 304 response
 sfConfig::set('LAST_MODIFIED', strtotime('2010-01-01'));
 $b->get('/cache/lastModifiedResponse')
-  ->with('response')->isStatusCode(200)
+  ->with('response')->isStatusCode($successStatusCode)
 ;
 
 $b->setHttpHeader('If-Modified-Since', sfWebResponse::getDate(sfConfig::get('LAST_MODIFIED')))
   ->get('/cache/lastModifiedResponse')
   ->with('response')->isStatusCode(304)
 ;
+
+// Test for redirection support with layout
+$b->
+  restart()->
+  get('/cache/redirection')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'redirection')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(302)->
+    isRedirected()->
+    checkElement('head meta[http-equiv="refresh"]')->
+    isHeader('Location', '/cache/page')->
+    isHeader('ETag', '"836b2af97c73d4cec6e194bea1d557d4"')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(true, true)->
+  end()->
+
+  restart()->
+  setHttpHeader('IF-NONE-MATCH', '"836b2af97c73d4cec6e194bea1d557d4"')->
+  get('/cache/redirection')->
+  with('response')->begin()->
+    isStatusCode(304)->
+    matches('/^$/')-> // Response content is empty.
+    isHeader('ETag', '"836b2af97c73d4cec6e194bea1d557d4"')->
+  end()->
+
+  restart()->
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/redirection')->
+  with('response')->begin()->
+    isStatusCode(304)->
+    matches('/^$/')-> // Response content is empty.
+    isHeader('ETag', '"836b2af97c73d4cec6e194bea1d557d4"')->
+  end()
+;
+
+// Test for redirection support
+$b->
+  restart()->
+  get('/cache/redirectionWithoutLayout')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'redirectionWithoutLayout')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(302)->
+    isRedirected()->
+    checkElement('head meta[http-equiv="refresh"]')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(true)->
+  end()->
+
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/redirectionWithoutLayout')->
+  with('response')->begin()->
+    isStatusCode(302)->
+  end()
+;
+
+// Test for redirection support on preExecute method
+$b->
+  restart()->
+  get('/cache/redirectionOnPre')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'redirectionOnPre')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(302)->
+    isRedirected()->
+    checkElement('head meta[http-equiv="refresh"]')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(true)->
+  end()->
+
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/redirectionOnPre')->
+  with('response')->begin()->
+    isStatusCode(302)->
+  end()
+;
+
+// Test for redirection support on postExecute method
+$b->
+  restart()->
+  get('/cache/redirectionOnPost')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'redirectionOnPost')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(302)->
+    isRedirected()->
+    checkElement('head meta[http-equiv="refresh"]')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(true)->
+  end()->
+
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/redirectionOnPost')->
+  with('response')->begin()->
+    isStatusCode(302)->
+  end()
+;
+
+// Test for redirection support on component
+$b->
+  restart()->
+  get('/cache/redirectionComponent')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'redirectionComponent')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(302)->
+    isRedirected()->
+    checkElement('head meta[http-equiv="refresh"]')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(true)->
+  end()->
+
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/redirectionComponent')->
+  with('response')->begin()->
+    isStatusCode(302)->
+    isRedirected()->
+    checkElement('head meta[http-equiv="refresh"]')->
+  end()
+;
+
+// Test for 404 support
+$b->
+  restart()->
+  get('/cache/error404')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'error404')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(404)->
+    checkElement('body', '/404 | Not Found | sfError404Exception/')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(false, true)->
+  end()->
+
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/error404')->
+  with('response')->begin()->
+    isStatusCode(404)->
+  end()
+;
+
+// Test for 404 support without layout
+$b->
+  restart()->
+  get('/cache/error404WithoutLayout')->
+  with('request')->begin()->
+    isParameter('module', 'cache')->
+    isParameter('action', 'error404WithoutLayout')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(404)->
+    checkElement('body', '/404 | Not Found | sfError404Exception/')->
+  end()->
+  with('view_cache')->begin()->
+    isCached(false)->
+  end()->
+
+  setHttpHeader('If-Modified-Since', $b->getResponse()->getHttpHeader('Last-Modified'))->
+
+  get('/cache/error404')->
+  with('response')->begin()->
+    isStatusCode(404)->
+  end()
+;
+
+// Test for response with cache control no-cache
+foreach (array('no-store', 'private') as $privateDirective) {
+  $b->
+    restart()->
+    get('/cache/cacheControlWithNoStoreDirective?directive='.$privateDirective)->
+    with('request')->begin()->
+      isParameter('module', 'cache')->
+      isParameter('action', 'cacheControlWithNoStoreDirective')->
+    end()->
+    with('response')->begin()->
+      isStatusCode($successStatusCode)->
+      isHeader('Cache-Control', $privateDirective)->
+    end()->
+    with('view_cache')->begin()->
+      isCached(false, true)->
+    end()
+  ;
+}
+
+// Test for response with cache control no-cache without layout
+foreach (array('no-store', 'private') as $privateDirective) {
+  $b->
+    restart()->
+    get('/cache/cacheControlWithNoStoreDirectiveCacheNoLayout?directive='.$privateDirective)->
+    with('request')->begin()->
+      isParameter('module', 'cache')->
+      isParameter('action', 'cacheControlWithNoStoreDirectiveCacheNoLayout')->
+    end()->
+    with('response')->begin()->
+      isStatusCode($successStatusCode)->
+      isHeader('Cache-Control', $privateDirective)->
+    end()->
+    with('view_cache')->begin()->
+      isCached(false)->
+    end()
+  ;
+}
 
 // test with sfFileCache class (default)
 $b->launch();

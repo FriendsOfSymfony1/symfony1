@@ -26,6 +26,23 @@ class sfCacheFilter extends sfFilter
     $cache        = array();
 
   /**
+   * Responses with its status codes may safely be kept in a shared (surrogate) cache.
+   *
+   * Put status codes as key in ordder to be able to use `isset()`.
+   *
+   * @var array
+   */
+  private $cacheableStatusCodes = array(
+    200 => true,
+    203 => true,
+    300 => true,
+    301 => true,
+    302 => true,
+    404 => true,
+    410 => true,
+  );
+
+  /**
    * Initializes this Filter.
    *
    * @param sfContext $context    The current application context
@@ -60,12 +77,30 @@ class sfCacheFilter extends sfFilter
       return;
     }
 
+    $exception = null;
+
     if ($this->executeBeforeExecution())
     {
-      $filterChain->execute();
+      try
+      {
+        // execute next filter
+        $filterChain->execute();
+      }
+      catch (sfStopException $exception)
+      {
+        if (sfView::RENDER_REDIRECTION !== $this->context->getController()->getRenderMode())
+        {
+          throw $exception;
+        }
+      }
     }
 
     $this->executeBeforeRendering();
+
+    if (null !== $exception)
+    {
+      throw $exception;
+    }
   }
 
   public function executeBeforeExecution()
@@ -102,8 +137,7 @@ class sfCacheFilter extends sfFilter
    */
   public function executeBeforeRendering()
   {
-    // cache only 200 HTTP status
-    if (200 != $this->response->getStatusCode())
+    if (!$this->isCacheableResponse($this->response))
     {
       return;
     }
@@ -223,5 +257,47 @@ class sfCacheFilter extends sfFilter
         }
       }
     }
+  }
+
+  /**
+   * Returns true if the response may safely be kept in a shared (surrogate) cache.
+   *
+   * Responses marked "private" with an explicit Cache-Control directive are
+   * considered uncacheable.
+   *
+   * Responses with neither a freshness lifetime (Expires, max-age) nor cache
+   * validator (Last-Modified, ETag) are considered uncacheable because there is
+   * no way to tell when or how to remove them from the cache.
+   *
+   * Note that RFC 7231 and RFC 7234 possibly allow for a more permissive implementation,
+   * for example "status codes that are defined as cacheable by default [...]
+   * can be reused by a cache with heuristic expiration unless otherwise indicated"
+   * (https://tools.ietf.org/html/rfc7231#section-6.1)
+   *
+   * @param sfWebResponse $response
+   *
+   * @return bool
+   *
+   * @see https://github.com/symfony/symfony/blob/v4.1.6/src/Symfony/Component/HttpFoundation/Response.php#L523
+   */
+  protected function isCacheableResponse($response)
+  {
+    if (!$response instanceof sfWebResponse)
+    {
+      return false;
+    }
+
+    if (!isset($this->cacheableStatusCodes[$response->getStatusCode()]))
+    {
+      return false;
+    }
+
+    if ($response->isPrivate())
+    {
+      return false;
+    }
+
+    // Cache validation and expiration headers are always sets before save on cache.
+    return true /* $this->isValidateable() || $this->isFresh() */;
   }
 }
