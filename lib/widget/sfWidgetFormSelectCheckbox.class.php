@@ -40,11 +40,20 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
   {
     parent::configure($options, $attributes);
 
+    $template = '
+    <ul>
+        <li><label class="checkbox_list_group_label">%group%</label></li>
+        <li>
+           %options%
+        </li>
+    </ul>
+    ';
+
     $this->addOption('class', 'checkbox_list');
     $this->addOption('label_separator', '&nbsp;');
     $this->addOption('separator', "\n");
     $this->addOption('formatter', array($this, 'formatter'));
-    $this->addOption('template', '%group% %options%');
+    $this->addOption('template', $template);
   }
 
   /**
@@ -72,25 +81,29 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
     }
 
     $choices = $this->getChoices();
+    return $this->groupChoices($name, $value, $choices, $attributes, 1);
+  }
 
+  protected function groupChoices($name, $value, $choices, $attributes, $level = 0){
     // with groups?
     if (count($choices) && is_array(current($choices)))
     {
       $parts = array();
       foreach ($choices as $key => $option)
       {
-        $parts[] = strtr($this->getOption('template'), array('%group%' => $key, '%options%' => $this->formatChoices($name, $value, $option, $attributes)));
+        $group = sprintf("%s %s", str_repeat("&mdash;", $level), $key);
+        $parts[] = strtr($this->getOption('template'), array('%group%' => $group, '%options%' => $this->groupChoices($name, $value, $option, $attributes, $level + 1)));
       }
 
       return implode("\n", $parts);
     }
     else
     {
-      return $this->formatChoices($name, $value, $choices, $attributes);
+      return $this->formatChoices($name, $value, $choices, $attributes, $level);
     }
   }
 
-  protected function formatChoices($name, $value, $choices, $attributes)
+  protected function formatChoices($name, $value, $choices, $attributes, $level)
   {
     $inputs = array();
     foreach ($choices as $key => $option)
@@ -107,8 +120,10 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
         $baseAttributes['checked'] = 'checked';
       }
 
+      $pre = str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;", $level);
+
       $inputs[$id] = array(
-        'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
+        'input' => $pre.$this->renderTag('input', array_merge($baseAttributes, $attributes)),
         'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
       );
     }
