@@ -1,9 +1,0 @@
-all:
-  parameters:
-    my_project_param: foo
-    other_param: quz
-
-  services:
-    my_project_service:
-      class: sfOutputEscaperSafe
-      arguments: [%my_project_param%, %sf_cache_dir%]
