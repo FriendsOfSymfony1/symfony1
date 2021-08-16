@@ -1,8 +1,0 @@
-/test/functional/fixtures/cache
-/test/functional/fixtures/log
-/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/*/doctrine/base/
-/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/*/doctrine/*/base/
-/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/cache/
-lib/plugins/sfDoctrinePlugin/test/functional/fixtures/log/
-/vendor
-/composer.lock
