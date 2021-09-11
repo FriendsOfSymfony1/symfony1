@@ -54,6 +54,37 @@ Option 2: Using Git submodules:
     git submodule add https://github.com/FriendsOfSymfony1/symfony1.git lib/vendor/symfony
     git submodule update --init --recursive
 
+
+Tests
+-----
+
+### Prerequisites
+
+  * docker-engine version 17.12.0+
+  * docker-compose version 1.20.0+
+
+### How to execute all tests on all supported PHP versions and dependencies?
+
+    test/bin/test
+
+### For PHP 7.3 and for lowest dependencies versions?
+
+    test/bin/test php73 lowest
+
+### For PHP 7.3 and for highest dependencies versions?
+
+    test/bin/test php73 highest
+
+### For executing a dedicated test file?
+
+    test/bin/test php73 highest test/unit/cache/sfAPCCacheTest.php
+
+
+### When you finish your work day, do not forget to clean up your desk
+
+    docker-compose down
+
+
 Documentation
 -------------
 

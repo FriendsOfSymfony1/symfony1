@@ -28,7 +28,15 @@ sfConfig::set('sf_logging_enabled', false);
 $t->diag('->initialize()');
 try
 {
-  $cache = new sfMemcacheCache(array('storeCacheInfo' => true));
+  $memcachedHost = getenv('MEMCACHED_HOST');
+  if (!$memcachedHost) {
+    $memcachedHost = null;
+  }
+
+  $cache = new sfMemcacheCache(array(
+    'storeCacheInfo' => true,
+    'host' => $memcachedHost,
+  ));
 }
 catch (sfInitializationException $e)
 {

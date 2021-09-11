@@ -1,0 +1,176 @@
+version: '3.5'
+
+volumes:
+  db_socket:
+
+services:
+  composer:
+    image: composer
+    working_dir: /app
+    volumes:
+      - .:/app
+    entrypoint:
+      - sh
+      - -c
+      - |
+        exec tail -f /dev/null
+
+  php53:
+    build: .docker/php53
+    working_dir: /app
+    volumes:
+      - .:/app
+      - db_socket:/var/run/mysqld
+    entrypoint:
+      - sh
+      - -c
+      - |
+        {
+          echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
+          echo 'memory_limit = -1'
+          echo 'short_open_tag = off'
+          echo 'magic_quotes_gpc = off'
+          echo 'date.timezone = "UTC"'
+          echo 'apc.enable_cli = ${APC_ENABLE_CLI-off}'
+          echo 'apc.use_request_time = 0'
+        } | tee -a /usr/local/lib/php.ini
+
+        exec tail -f /dev/null
+    depends_on:
+      - db
+
+  php54: &services_php54
+    build:
+      context: .docker/php54
+      args:
+        MEMCACHE_VERSION: '3.0.8'
+    environment:
+      MEMCACHED_HOST: memcached
+    working_dir: /app
+    volumes:
+      - .:/app
+      - db_socket:/var/run/mysqld
+    entrypoint:
+      - sh
+      - -c
+      - |
+        {
+          echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
+          echo 'memory_limit = -1'
+          echo 'short_open_tag = off'
+          echo 'magic_quotes_gpc = off'
+          echo 'date.timezone = "UTC"'
+          echo 'apc.enable_cli = ${APC_ENABLE_CLI-off}'
+          echo 'apc.use_request_time = 0'
+        } | tee -a /usr/local/etc/php/php.ini
+
+        exec tail -f /dev/null
+    depends_on:
+      - db
+      - memcached
+
+  php55:
+    <<: *services_php54
+    build:
+      context: .docker/php55_71
+      args:
+        PHP_TAG: '5.5-cli'
+        MEMCACHE_VERSION: '3.0.8'
+        APCU_VERSION: '4.0.11'
+
+  php56:
+    <<: *services_php54
+    build:
+      context: .docker/php55_71
+      args:
+        PHP_TAG: '5.6-cli-jessie'
+        MEMCACHE_VERSION: '3.0.8'
+        APCU_VERSION: '4.0.11'
+
+  php70:
+    <<: *services_php54
+    build:
+      context: .docker/php55_71
+      args:
+        PHP_TAG: '7.0-cli-jessie'
+        MEMCACHE_VERSION: '4.0.5.2'
+        APCU_VERSION: ''
+
+  php71:
+    <<: *services_php54
+    build:
+      context: .docker/php55_71
+      args:
+        PHP_TAG: '7.1-cli-jessie'
+        MEMCACHE_VERSION: '4.0.5.2'
+        APCU_VERSION: ''
+
+
+  php72:
+    <<: *services_php54
+    build:
+      context: .docker/php72_73
+      args:
+        PHP_VERSION: '7.2'
+        MEMCACHE_VERSION: '4.0.5.2'
+        APCU_VERSION: ''
+
+
+  php73:
+    <<: *services_php54
+    build:
+      context: .docker/php72_73
+      args:
+        PHP_VERSION: '7.3'
+        MEMCACHE_VERSION: '4.0.5.2'
+        APCU_VERSION: ''
+
+
+  php74:
+    <<: *services_php54
+    build:
+      context: .docker/php74_81
+      args:
+        PHP_VERSION: '7.4'
+        MEMCACHE_VERSION: '4.0.5.2'
+        APCU_VERSION: ''
+
+
+  php80:
+    <<: *services_php54
+    build:
+      context: .docker/php74_81
+      args:
+        PHP_VERSION: '8.0'
+        MEMCACHE_VERSION: '8.0'
+        APCU_VERSION: ''
+
+
+  php81:
+    <<: *services_php54
+    build:
+      context: .docker/php74_81
+      args:
+        PHP_VERSION: '8.1'
+        MEMCACHE_VERSION: '8.0'
+        APCU_VERSION: ''
+
+
+  db:
+    image: mysql:5.5.62
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - db_socket:/tmp
+    entrypoint:
+      - bash
+      - -c
+      - |
+        {
+            echo "CREATE DATABASE IF NOT EXISTS test;"
+        } | tee /docker-entrypoint-initdb.d/init.sql
+
+        exec /usr/local/bin/docker-entrypoint.sh mysqld
+
+  memcached:
+    image: memcached:1.6.13-alpine3.15
