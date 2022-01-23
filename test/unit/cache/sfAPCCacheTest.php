@@ -39,4 +39,8 @@ $t->diag('->initialize()');
 $cache = new sfAPCCache();
 $cache->initialize();
 
+// make sure expired keys are dropped
+// see https://github.com/krakjoe/apcu/issues/391
+ini_set('apc.use_request_time', 0);
+
 sfCacheDriverTests::launch($t, $cache);
