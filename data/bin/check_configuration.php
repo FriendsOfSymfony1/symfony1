@@ -77,7 +77,7 @@ check(function_exists('utf8_decode'), 'The utf8_decode() is available', 'Install
 check(function_exists('posix_isatty'), 'The posix_isatty() is available', 'Install and enable the php_posix extension (used to colorized the CLI output)', false);
 
 $accelerator =
-  (function_exists('apc_store') && ini_get('apc.enabled'))
+  ((function_exists('apc_store') || function_exists('apcu_store')) && ini_get('apc.enabled'))
   || function_exists('eaccelerator_put') && ini_get('eaccelerator.enable')
   || function_exists('xcache_set');
 check($accelerator, 'A PHP accelerator is installed', 'Install a PHP accelerator like APC (highly recommended)', false);
