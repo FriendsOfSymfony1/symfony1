@@ -18,7 +18,8 @@ class sfCacheDriverTests
         $t->is($cache->get('test'), $data, '->get() retrieves data form the cache');
         $t->is($cache->has('test'), true, '->has() returns true if the cache exists');
 
-        $t->ok($cache->set('test', $data, -10), '->set() takes a lifetime as its third argument');
+        $t->ok($cache->set('test', $data, 1), '->set() takes a lifetime as its third argument');
+        sleep(2);
         $t->is($cache->get('test', 'default'), 'default', '->get() returns the default value if cache has expired');
         $t->is($cache->has('test'), false, '->has() returns true if the cache exists');
 
@@ -47,21 +48,24 @@ class sfCacheDriverTests
         // ->clean()
         $t->diag('->clean()');
         $data = 'some random data to store in the cache system...';
-        $cache->set('foo', $data, -10);
+        $cache->set('foo', $data, 1);
         $cache->set('bar', $data, 86400);
+        sleep(2);
 
         $cache->clean(sfCache::OLD);
         $t->is($cache->has('foo'), false, '->clean() cleans old cache key if given the sfCache::OLD argument');
         $t->is($cache->has('bar'), true, '->clean() cleans old cache key if given the sfCache::OLD argument');
 
-        $cache->set('foo', $data, -10);
+        $cache->set('foo', $data, -1);
+        sleep(2);
         $cache->set('bar', $data, 86400);
 
         $cache->clean(sfCache::ALL);
         $t->is($cache->has('foo'), false, '->clean() cleans all cache key if given the sfCache::ALL argument');
         $t->is($cache->has('bar'), false, '->clean() cleans all cache key if given the sfCache::ALL argument');
 
-        $cache->set('foo', $data, -10);
+        $cache->set('foo', $data, 1);
+        sleep(2);
         $cache->set('bar', $data, 86400);
 
         $cache->clean();
@@ -126,7 +130,8 @@ class sfCacheDriverTests
             $t->ok($delta >= $lifetime - 1 && $delta <= $lifetime, '->getTimeout() returns the timeout time for a given cache key');
         }
 
-        $cache->set('bar', 'foo', -10);
+        $cache->set('bar', 'foo', 1);
+        sleep(2);
         $t->is($cache->getTimeout('bar'), 0, '->getTimeout() returns the timeout time for a given cache key');
 
         foreach (array(86400, 10) as $lifetime) {
@@ -148,7 +153,8 @@ class sfCacheDriverTests
             $t->ok($lastModified >= time() - 1 && $lastModified <= time(), '->getLastModified() returns the last modified time for a given cache key');
         }
 
-        $cache->set('bar', 'foo', -10);
+        $cache->set('bar', 'foo', 1);
+        sleep(2);
         $t->is($cache->getLastModified('bar'), 0, '->getLastModified() returns the last modified time for a given cache key');
 
         foreach (array(86400, 10) as $lifetime) {
