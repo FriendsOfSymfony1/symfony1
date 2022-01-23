@@ -94,7 +94,7 @@ services:
       args:
         PHP_TAG: '7.0-cli-jessie'
         MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
   php71:
     <<: *services_php54
@@ -103,7 +103,7 @@ services:
       args:
         PHP_TAG: '7.1-cli-jessie'
         MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
 
   php72:
@@ -113,7 +113,7 @@ services:
       args:
         PHP_VERSION: '7.2'
         MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
 
   php73:
@@ -123,7 +123,7 @@ services:
       args:
         PHP_VERSION: '7.3'
         MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
 
   php74:
@@ -133,7 +133,7 @@ services:
       args:
         PHP_VERSION: '7.4'
         MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
 
   php80:
@@ -143,7 +143,7 @@ services:
       args:
         PHP_VERSION: '8.0'
         MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
 
   php81:
@@ -153,7 +153,7 @@ services:
       args:
         PHP_VERSION: '8.1'
         MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
   php82:
     <<: *services_php54
@@ -162,7 +162,7 @@ services:
       args:
         PHP_VERSION: '8.2'
         MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
   php83:
     <<: *services_php54
@@ -171,7 +171,7 @@ services:
       args:
         PHP_VERSION: '8.3'
         MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: ''
+        APCU_VERSION: '5.1.23'
 
 
   db:

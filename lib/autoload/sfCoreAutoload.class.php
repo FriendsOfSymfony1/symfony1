@@ -44,6 +44,7 @@ class sfCoreAutoload
         'sfcoreautoload' => 'autoload/sfCoreAutoload.class.php',
         'sfsimpleautoload' => 'autoload/sfSimpleAutoload.class.php',
         'sfapccache' => 'cache/sfAPCCache.class.php',
+        'sfapcucache' => 'cache/sfAPCuCache.class.php',
         'sfcache' => 'cache/sfCache.class.php',
         'sfeacceleratorcache' => 'cache/sfEAcceleratorCache.class.php',
         'sffilecache' => 'cache/sfFileCache.class.php',

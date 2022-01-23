@@ -13,8 +13,23 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 $plan = 64;
 $t = new lime_test($plan);
 
+if (extension_loaded('apc')) {
+    $cacheClass = 'sfAPCCache';
+} elseif (extension_loaded('apcu')) {
+    if ('5.1.22' === phpversion('apcu')) {
+        $t->skip('APCu 5.1.22 has a regression and shouldn\'t be used', $plan);
+
+        return;
+    }
+    $cacheClass = 'sfAPCuCache';
+} else {
+    $t->skip('APC or APCu must be loaded to run these tests', $plan);
+
+    return;
+}
+
 try {
-    new sfAPCCache();
+    new $cacheClass();
 } catch (sfInitializationException $e) {
     $t->skip($e->getMessage(), $plan);
 
@@ -34,7 +49,7 @@ sfConfig::set('sf_logging_enabled', false);
 
 // ->initialize()
 $t->diag('->initialize()');
-$cache = new sfAPCCache();
+$cache = new $cacheClass();
 $cache->initialize();
 
 // make sure expired keys are dropped
