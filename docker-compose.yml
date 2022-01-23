@@ -31,7 +31,7 @@ services:
           echo 'short_open_tag = off'
           echo 'magic_quotes_gpc = off'
           echo 'date.timezone = "UTC"'
-          echo 'apc.enable_cli = ${APC_ENABLE_CLI-off}'
+          echo 'apc.enable_cli = on'
           echo 'apc.use_request_time = 0'
         } | tee -a /usr/local/lib/php.ini
 
@@ -60,7 +60,7 @@ services:
           echo 'short_open_tag = off'
           echo 'magic_quotes_gpc = off'
           echo 'date.timezone = "UTC"'
-          echo 'apc.enable_cli = ${APC_ENABLE_CLI-off}'
+          echo 'apc.enable_cli = on'
           echo 'apc.use_request_time = 0'
         } | tee -a /usr/local/etc/php/php.ini
 
