@@ -12,6 +12,8 @@ $app = 'frontend';
 
 require_once(__DIR__.'/../../bootstrap/functional.php');
 
+ob_start();
+
 $_test_dir = realpath(__DIR__.'/../../');
 require_once($_test_dir.'/../lib/vendor/lime/lime.php');
 
