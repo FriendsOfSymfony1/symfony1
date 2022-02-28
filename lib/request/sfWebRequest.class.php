@@ -872,7 +872,11 @@ class sfWebRequest extends sfRequest
    */
   static protected function fixPhpFilesArray(array $data)
   {
-    $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    if (version_compare(PHP_VERSION, '8.1.0-dev', '<')) {
+      $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    } else {
+      $fileKeys = array('error', 'full_path', 'name', 'size', 'tmp_name', 'type');
+    }
     $keys = array_keys($data);
     sort($keys);
 
@@ -889,11 +893,12 @@ class sfWebRequest extends sfRequest
     foreach (array_keys($data['name']) as $key)
     {
       $files[$key] = self::fixPhpFilesArray(array(
-        'error'    => $data['error'][$key],
-        'name'     => $data['name'][$key],
-        'type'     => $data['type'][$key],
-        'tmp_name' => $data['tmp_name'][$key],
-        'size'     => $data['size'][$key],
+        'error'     => $data['error'][$key],
+        'full_path' => $data['full_path'][$key],
+        'name'      => $data['name'][$key],
+        'type'      => $data['type'][$key],
+        'tmp_name'  => $data['tmp_name'][$key],
+        'size'      => $data['size'][$key],
       ));
     }
 
