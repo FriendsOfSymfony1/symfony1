@@ -74,7 +74,7 @@ class Foo
 
 class FooCountable implements Countable
 {
-  public function count()
+  public function count(): int
   {
     return 2;
   }

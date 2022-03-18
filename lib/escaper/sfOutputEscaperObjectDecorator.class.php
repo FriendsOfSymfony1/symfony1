@@ -115,7 +115,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
    *
    * @return int The size of the object
    */
-  public function count()
+  public function count(): int
   {
     return count($this->value);
   }

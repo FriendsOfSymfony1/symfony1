@@ -1227,7 +1227,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Resets the field names array to the beginning (implements the Iterator interface).
    */
-  public function rewind()
+  public function rewind(): void
   {
     $this->fieldNames = $this->widgetSchema->getPositions();
 
@@ -1240,7 +1240,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @return string The key
    */
-  public function key()
+  public function key(): mixed
   {
     return current($this->fieldNames);
   }
@@ -1250,7 +1250,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @return mixed The escaped value
    */
-  public function current()
+  public function current(): mixed
   {
     return $this[current($this->fieldNames)];
   }
@@ -1258,7 +1258,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Moves to the next form field (implements the Iterator interface).
    */
-  public function next()
+  public function next(): void
   {
     next($this->fieldNames);
     --$this->count;
@@ -1269,7 +1269,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @return boolean The validity of the current element; true if it is valid
    */
-  public function valid()
+  public function valid(): bool
   {
     return $this->count > 0;
   }
@@ -1279,7 +1279,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
    *
    * @return integer The number of embedded form fields
    */
-  public function count()
+  public function count(): int
   {
     return count($this->getFormFieldSchema());
   }
