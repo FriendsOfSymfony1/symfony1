@@ -100,7 +100,7 @@ class sfFileLogger extends sfLogger
     fwrite($this->fp, strtr($this->format, array(
       '%type%'     => $this->type,
       '%message%'  => $message,
-      '%time%'     => strftime($this->timeFormat),
+      '%time%'     => date($this->timeFormat, time()),
       '%priority%' => $this->getPriority($priority),
       '%EOL%'      => PHP_EOL,
     )));
