@@ -178,12 +178,22 @@ $t->diag('implements Serializable');
 
 class NotSerializable implements Serializable
 {
-  public function serialize()
+  public function serialize(): string
   {
     throw new Exception('Not serializable');
   }
 
-  public function unserialize($serialized)
+  public function __serialize(): array
+  {
+    throw new Exception('Not serializable');
+  }
+
+  public function unserialize(string $serialized)
+  {
+    throw new Exception('Not serializable');
+  }
+
+  public function __unserialize(array $unserialized)
   {
     throw new Exception('Not serializable');
   }
