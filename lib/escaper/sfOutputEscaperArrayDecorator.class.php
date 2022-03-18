@@ -103,7 +103,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    *
    * @return bool true if the offset isset; false otherwise
    */
-  public function offsetExists($offset)
+  public function offsetExists(mixed $offset): bool
   {
     return isset($this->value[$offset]);
   }
@@ -115,7 +115,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    *
    * @return mixed The escaped value
    */
-  public function offsetGet($offset)
+  public function offsetGet(mixed $offset): mixed
   {
     return sfOutputEscaper::escape($this->escapingMethod, $this->value[$offset]);
   }
@@ -132,7 +132,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    *
    * @throws sfException
    */
-  public function offsetSet($offset, $value)
+  public function offsetSet(mixed $offset, mixed $value): void
   {
     throw new sfException('Cannot set values.');
   }
@@ -148,7 +148,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
    *
    * @throws sfException
    */
-  public function offsetUnset($offset)
+  public function offsetUnset(mixed $offset): void
   {
     throw new sfException('Cannot unset values.');
   }

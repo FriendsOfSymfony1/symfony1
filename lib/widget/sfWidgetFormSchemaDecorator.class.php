@@ -346,16 +346,16 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
    * @see sfWidgetFormSchema
    * @inheritdoc
    */
-  public function offsetExists($name)
+  public function offsetExists(mixed $offset): bool
   {
-    return isset($this->widget[$name]);
+    return isset($this->widget[$offset]);
   }
 
   /**
    * @see sfWidgetFormSchema
    * @inheritdoc
    */
-  public function offsetGet($name)
+  public function offsetGet(mixed $name): mixed
   {
     return $this->widget[$name];
   }
@@ -364,7 +364,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
    * @see sfWidgetFormSchema
    * @inheritdoc
    */
-  public function offsetSet($name, $widget)
+  public function offsetSet(mixed $name, mixed $widget): void
   {
     $this->widget[$name] = $widget;
   }
@@ -373,7 +373,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
    * @see sfWidgetFormSchema
    * @inheritdoc
    */
-  public function offsetUnset($name)
+  public function offsetUnset(mixed $name): void
   {
     unset($this->widget[$name]);
   }

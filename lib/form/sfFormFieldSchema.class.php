@@ -91,9 +91,9 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
    *
    * @return Boolean true if the widget exists, false otherwise
    */
-  public function offsetExists($name)
+  public function offsetExists(mixed $offset): bool
   {
-    return isset($this->widget[$name]);
+    return isset($this->widget[$offset]);
   }
 
   /**
@@ -103,7 +103,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
    *
    * @return sfFormField A form field instance
    */
-  public function offsetGet($name)
+  public function offsetGet(mixed $name): mixed
   {
     if (!isset($this->fields[$name]))
     {
@@ -144,7 +144,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
    *
    * @throws LogicException
    */
-  public function offsetSet($offset, $value)
+  public function offsetSet(mixed $offset, mixed $value): void
   {
     throw new LogicException('Cannot update form fields (read-only).');
   }
@@ -156,7 +156,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
    *
    * @throws LogicException
    */
-  public function offsetUnset($offset)
+  public function offsetUnset(mixed $offset): void
   {
     throw new LogicException('Cannot remove form fields (read-only).');
   }

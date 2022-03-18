@@ -659,9 +659,9 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * @return bool true if the schema has a field with the given name, false otherwise
    */
-  public function offsetExists($name)
+  public function offsetExists(mixed $offset): bool
   {
-    return isset($this->fields[$name]);
+    return isset($this->fields[$offset]);
   }
 
   /**
@@ -671,7 +671,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * @return sfWidget|null The sfWidget instance associated with the given name, null if it does not exist
    */
-  public function offsetGet($name)
+  public function offsetGet(mixed $name): mixed
   {
     return isset($this->fields[$name]) ? $this->fields[$name] : null;
   }
@@ -684,7 +684,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * @throws InvalidArgumentException when the field is not instance of sfWidget
    */
-  public function offsetSet($name, $widget)
+  public function offsetSet(mixed $name, mixed $widget): void
   {
     if (!$widget instanceof sfWidget)
     {
@@ -710,7 +710,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * @param string $name field name
    */
-  public function offsetUnset($name)
+  public function offsetUnset(mixed $name): void
   {
     unset($this->fields[$name]);
     if (false !== $position = array_search((string) $name, $this->positions))
