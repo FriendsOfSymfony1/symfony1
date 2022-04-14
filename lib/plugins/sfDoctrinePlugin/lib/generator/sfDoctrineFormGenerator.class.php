@@ -565,9 +565,11 @@ class sfDoctrineFormGenerator extends sfGenerator
     $parentColumns = $parentModel ? array_keys(Doctrine_Core::getTable($parentModel)->getColumns()) : array();
 
     $columns = array();
+    $names   = array();
     foreach (array_diff(array_keys($this->table->getColumns()), $parentColumns) as $name)
     {
       $columns[] = new sfDoctrineColumn($name, $this->table);
+      $names[]   = $name;
     }
 
     // add relations to columns for inherited classes
@@ -575,16 +577,15 @@ class sfDoctrineFormGenerator extends sfGenerator
     {
       $parentRelationNames = array_keys(Doctrine_Core::getTable($parentModel)->getRelations());
       $relations = $this->table->getRelations();
-      $relationColumns = array();
       foreach (array_diff(array_keys($relations), $parentRelationNames) as $relationName)
       {
         if (Doctrine_Relation::ONE == $relations[$relationName]->getType())
         {
           $columnName = $relations[$relationName]->getLocal();
-          if (!in_array($columnName, $relationColumns))
+          if (!in_array($columnName, $names))
           {
-            $relationColumns[] = $columnName;
             $columns[] = new sfDoctrineColumn($columnName, $this->table);
+            $names[]   = $columnName;
           }
         }
       }
