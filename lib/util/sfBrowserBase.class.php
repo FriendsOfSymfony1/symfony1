@@ -363,7 +363,10 @@ abstract class sfBrowserBase
       }
       else
       {
-        @$this->dom->loadHTML($response->getContent());
+        if ($response->getContent())
+        {
+          @$this->dom->loadHTML($response->getContent());
+        }
       }
       $this->domCssSelector = new sfDomCssSelector($this->dom);
     }
@@ -908,7 +911,7 @@ abstract class sfBrowserBase
     }
     else
     {
-      $queryString = http_build_query($arguments, null, '&');
+      $queryString = (is_array($arguments)) ? http_build_query($arguments, null, '&') : '';
       $sep = false === strpos($url, '?') ? '?' : '&';
 
       return array($url.($queryString ? $sep.$queryString : ''), 'get', array());

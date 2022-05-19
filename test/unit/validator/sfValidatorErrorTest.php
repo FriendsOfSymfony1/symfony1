@@ -65,6 +65,16 @@ class NotSerializable implements Serializable
   {
     throw new Exception('Not serializable');
   }
+
+  public function __serialize()
+  {
+    throw new Exception('Not serializable');
+  }
+
+  public function __unserialize($data)
+  {
+    throw new Exception('Not serializable');
+  }
 }
 
 function will_crash($a)

@@ -26,6 +26,7 @@ try
 {
   $storage = new sfSessionStorage();
   $t->pass('->__construct() does not throw an exception when not provided with options');
+  $storage->shutdown();
 }
 catch (InvalidArgumentException $e)
 {

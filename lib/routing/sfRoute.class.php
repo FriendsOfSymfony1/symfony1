@@ -264,7 +264,7 @@ class sfRoute implements Serializable
 
   static private function generateCompareVarsByStrlen($a, $b)
   {
-    return strlen($a) < strlen($b);
+    return (strlen($a) < strlen($b)) ? 1 : -1;
   }
 
   /**
@@ -285,7 +285,7 @@ class sfRoute implements Serializable
       switch ($token[0])
       {
         case 'variable':
-          if (!$optional || !isset($this->defaults[$token[3]]) || $parameters[$token[3]] != $this->defaults[$token[3]])
+          if (!$optional || !isset($this->defaults[$token[3]]) || (isset($parameters[$token[3]]) && $parameters[$token[3]] != $this->defaults[$token[3]]))
           {
             $url[] = urlencode($parameters[$token[3]]);
             $optional = false;
@@ -791,7 +791,7 @@ class sfRoute implements Serializable
       }
       else
       {
-        $this->defaults[$key] = urldecode($value);
+        $this->defaults[$key] = urldecode((string) $value);
       }
     }
   }
@@ -847,15 +847,37 @@ class sfRoute implements Serializable
 
   public function serialize()
   {
+    return serialize($this->__serialize());
+  }
+
+  public function unserialize($serialized)
+  {
+    $array = unserialize($serialized);
+
+    $this->__unserialize($array);
+  }
+
+  /**
+   * Serializes the current instance for php 7.4+
+   *
+   * @return array
+   */
+  public function __serialize() {
     // always serialize compiled routes
     $this->compile();
     // sfPatternRouting will always re-set defaultParameters, so no need to serialize them
-    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken));
+    return array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken);
   }
 
-  public function unserialize($data)
+  /**
+   * Unserializes a sfRoute instance for php 7.4+
+   *
+   * @param array $data
+   */
+  public function __unserialize($data)
   {
-    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = unserialize($data);
+    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = $data;
+
     $this->compiled = true;
   }
 }

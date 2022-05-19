@@ -478,7 +478,7 @@ abstract class sfTestFunctionalBase
   /**
    * Exception handler for the current test browser instance.
    *
-   * @param Exception $exception The exception
+   * @param Throwable $exception The exception
    */
   function handleException($exception)
   {

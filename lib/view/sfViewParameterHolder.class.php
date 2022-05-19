@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -165,11 +165,11 @@ class sfViewParameterHolder extends sfParameterHolder
   /**
    * Serializes the current instance.
    *
-   * @return array Objects instance
+   * @return string Objects instance
    */
   public function serialize()
   {
-    return serialize(array($this->getAll(), $this->escapingMethod, $this->escaping));
+    return serialize($this->__serialize());
   }
 
   /**
@@ -179,8 +179,27 @@ class sfViewParameterHolder extends sfParameterHolder
    */
   public function unserialize($serialized)
   {
-    list($this->parameters, $escapingMethod, $escaping) = unserialize($serialized);
+    $this->__unserialize(unserialize($serialized));
+  }
 
+  /**
+   * Serializes the current instance for PHP 7.4+
+   *
+   * @return array
+   */
+  public function __serialize()
+  {
+    return array($this->getAll(), $this->escapingMethod, $this->escaping);
+  }
+
+  /**
+   * Unserializes a sfParameterHolder instance. for PHP 7.4
+   *
+   * @param array $data
+   */
+  public function __unserialize($data)
+  {
+    list($this->parameters, $escapingMethod, $escaping) = $data;
     $this->initialize(sfContext::hasInstance() ? sfContext::getInstance()->getEventDispatcher() : new sfEventDispatcher());
 
     $this->setEscapingMethod($escapingMethod);
