@@ -17,7 +17,7 @@
  * @version    SVN: $Id$
  */
 
-function format_daterange($start_date, $end_date, $format = 'd', $full_text, $start_text, $end_text, $culture = null, $charset = null)
+function format_daterange($start_date, $end_date, $format = 'd', $full_text = '', $start_text = '', $end_text = '', $culture = null, $charset = null)
 {
   if ($start_date != '' && $end_date != '')
   {
