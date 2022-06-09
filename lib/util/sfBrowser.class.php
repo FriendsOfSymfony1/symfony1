@@ -28,10 +28,11 @@ class sfBrowser extends sfBrowserBase
    */
   protected function doCall()
   {
+    // Before getContext, it can trigger some
+    sfConfig::set('sf_test', true);
+
     // recycle our context object
     $this->context = $this->getContext(true);
-
-    sfConfig::set('sf_test', true);
 
     // we register a fake rendering filter
     sfConfig::set('sf_rendering_filter', array('sfFakeRenderingFilter', null));
