@@ -312,7 +312,7 @@ class sfWebResponse extends sfResponse
   /**
    * Gets response content type.
    *
-   * @return array
+   * @return string
    */
   public function getContentType()
   {
