@@ -474,7 +474,7 @@ class sfYamlParser
 
       if (preg_match('#^(?P<indent> {'.strlen($textIndent).',})(?P<text>.+)$#u', $this->currentLine, $matches))
       {
-        if (' ' == $separator && $previousIndent != $matches['indent'])
+        if (' ' == $separator && ($previousIndent && $previousIndent != $matches['indent']))
         {
           $text = substr($text, 0, -1)."\n";
         }
