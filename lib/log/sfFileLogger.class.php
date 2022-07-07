@@ -136,7 +136,8 @@ class sfFileLogger extends sfLogger
    */
   public static function strftime($format)
   {
-    if (version_compare(PHP_VERSION, '8.1.0') < 0) {
+    if (version_compare(PHP_VERSION, '8.1.0') < 0)
+    {
       return strftime($format);
     }
     return date(self::_strftimeFormatToDateFormat($format));
@@ -160,8 +161,8 @@ class sfFileLogger extends sfLogger
    *
    * @return array|string|string[]
    */
-  private static function _strftimeFormatToDateFormat($strftimeFormat) {
-
+  private static function _strftimeFormatToDateFormat($strftimeFormat)
+  {
     // Missing %V %C %g %G
     $search = array(
       '%a', '%A', '%d', '%e', '%u',

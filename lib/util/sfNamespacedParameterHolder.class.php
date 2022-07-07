@@ -395,7 +395,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
   }
 
   /**
-   * Unserializes a sfParameterHolder instance. for PHP 7.4
+   * Unserializes a sfParameterHolder instance for PHP 7.4+
    *
    * @param array $data
    */

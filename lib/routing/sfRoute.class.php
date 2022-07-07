@@ -862,7 +862,8 @@ class sfRoute implements Serializable
    *
    * @return array
    */
-  public function __serialize() {
+  public function __serialize()
+  {
     // always serialize compiled routes
     $this->compile();
     // sfPatternRouting will always re-set defaultParameters, so no need to serialize them

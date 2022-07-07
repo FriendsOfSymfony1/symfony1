@@ -83,7 +83,7 @@ class sfEvent implements ArrayAccess
   /**
    * Sets the processed flag.
    *
-   * @param boolean $processed The processed flag value
+   * @param bool $processed The processed flag value
    */
   public function setProcessed($processed)
   {

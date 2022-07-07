@@ -272,14 +272,8 @@ class sfI18N
     list($hour, $minute) = $this->getTimeForCulture($dateTime, null === $culture ? $this->culture : $culture);
 
     // mktime behavior change with php8
-    // $hour become not nullable
-    if (!$hour) {
-      $hour = 0;
-    }
-    // Before 8.0, $minutes value to null, was casted as (int)0
-    if (!$minute) {
-      $minute = 0;
-    }
+    $hour = null !== $hour ? $hour : 0;
+    $minute = null !== $minute ? $minute : 0;
     return null === $day ? null : mktime($hour, $minute, 0, $month, $day, $year);
   }
 

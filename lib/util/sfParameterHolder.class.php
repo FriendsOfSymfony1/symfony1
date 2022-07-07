@@ -203,13 +203,13 @@ class sfParameterHolder implements Serializable
    *
    * @return Array
    */
-  public function __serialize() {
-
+  public function __serialize()
+  {
       return $this->parameters;
   }
 
   /**
-   * Unserializes a sfParameterHolder instance. for PHP 7.4
+   * Unserializes a sfParameterHolder instance for PHP 7.4+
    *
    * @param array $data
    */
