@@ -19,6 +19,18 @@ class sfMySQLiDatabase extends sfMySQLDatabase
 {
 
   /**
+   * @return void
+   * @throws sfDatabaseException
+   */
+  public function connect()
+  {
+    // PHP 8.1 Activate Exception per default, revert behavior to "return false"
+    mysqli_report(MYSQLI_REPORT_OFF);
+
+    parent::connect();
+  }
+
+  /**
    * Returns the appropriate connect method.
    *
    * @param bool $persistent Whether persistent connections are use or not
@@ -29,9 +41,6 @@ class sfMySQLiDatabase extends sfMySQLDatabase
    */
   protected function getConnectMethod($persistent)
   {
-    // PHP 8.1 Activate Exception per default, revert behavior to "return false"
-    mysqli_report(MYSQLI_REPORT_OFF);
-
     return 'mysqli_connect';
   }
 
