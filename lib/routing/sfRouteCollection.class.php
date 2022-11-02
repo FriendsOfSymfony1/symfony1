@@ -58,53 +58,53 @@ class sfRouteCollection implements Iterator
     return $this->options;
   }
 
-  /**
-   * Reset the error array to the beginning (implements the Iterator interface).
-   */
-  public function rewind()
-  {
-    reset($this->routes);
+    /**
+     * Reset the error array to the beginning (implements the Iterator interface).
+     */
+    public function rewind(): void
+    {
+        reset($this->routes);
 
-    $this->count = count($this->routes);
-  }
+        $this->count = count($this->routes);
+    }
 
-  /**
-   * Get the name of the current route (implements the Iterator interface).
-   *
-   * @return string The key
-   */
-  public function key()
-  {
-    return key($this->routes);
-  }
+    /**
+     * Get the name of the current route (implements the Iterator interface).
+     *
+     * @return string The key
+     */
+    public function key(): mixed
+    {
+        return key($this->routes);
+    }
 
-  /**
-   * Returns the current route (implements the Iterator interface).
-   *
-   * @return mixed The escaped value
-   */
-  public function current()
-  {
-    return current($this->routes);
-  }
+    /**
+     * Returns the current route (implements the Iterator interface).
+     *
+     * @return mixed The escaped value
+     */
+    public function current(): mixed
+    {
+        return current($this->routes);
+    }
 
-  /**
-   * Moves to the next route (implements the Iterator interface).
-   */
-  public function next()
-  {
-    next($this->routes);
+    /**
+     * Moves to the next route (implements the Iterator interface).
+     */
+    public function next(): void
+    {
+        next($this->routes);
 
-    --$this->count;
-  }
+        --$this->count;
+    }
 
   /**
    * Returns true if the current route is valid (implements the Iterator interface).
    *
    * @return boolean The validity of the current route; true if it is valid
    */
-  public function valid()
-  {
-    return $this->count > 0;
-  }
+    public function valid(): bool
+    {
+        return $this->count > 0;
+    }
 }

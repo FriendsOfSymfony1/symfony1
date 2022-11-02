@@ -16,7 +16,7 @@
  * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id$
+ * @author     James and James Fulfilment
  */
 abstract class sfDoctrineBaseTask extends sfBaseTask
 {
@@ -108,91 +108,90 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
     return $databases;
   }
 
-  /**
-   * Merges all project and plugin schema files into one.
-   *
-   * Schema files are merged similar to how other configuration files are in
-   * symfony, utilizing a configuration cascade. Files later in the cascade
-   * can change values from earlier in the cascade.
-   *
-   * The order in which schema files are processed is like so:
-   *
-   *  1. Plugin schema files
-   *    * Plugins are processed in the order which they were enabled in ProjectConfiguration
-   *    * Each plugin's schema files are processed in alphabetical order
-   *  2. Project schema files
-   *    * Project schema files are processed in alphabetical order
-   *
-   * A schema file is any file saved in a plugin or project's config/doctrine/
-   * directory that matches the "*.yml" glob.
-   *
-   * @return string Absolute path to the consolidated schema file
-   */
-  protected function prepareSchemaFile($yamlSchemaPath)
-  {
-    $models = array();
-    $finder = sfFinder::type('file')->name('*.yml')->sort_by_name()->follow_link();
-
-    // plugin models
-    foreach ($this->configuration->getPlugins() as $name)
+    /**
+     * Merges all project and plugin schema files into one.
+     *
+     * Schema files are merged similar to how other configuration files are in
+     * symfony, utilizing a configuration cascade. Files later in the cascade
+     * can change values from earlier in the cascade.
+     *
+     * The order in which schema files are processed is like so:
+     *
+     *  1. Plugin schema files
+     *    * Plugins are processed in the order which they were enabled in ProjectConfiguration
+     *    * Each plugin's schema files are processed in alphabetical order
+     *  2. Project schema files
+     *    * Project schema files are processed in alphabetical order
+     *
+     * A schema file is any file saved in a plugin or project's config/doctrine/
+     * directory that matches the "*.yml" glob.
+     *
+     * @return string Absolute path to the consolidated schema file
+     */
+    protected function prepareSchemaFile($yamlSchemaPath)
     {
-      $plugin = $this->configuration->getPluginConfiguration($name);
-      foreach ($finder->in($plugin->getRootDir().'/config/doctrine') as $schema)
-      {
-        $pluginModels = (array) sfYaml::load($schema);
-        $globals = $this->filterSchemaGlobals($pluginModels);
+        $models = [];
+        $finder = sfFinder::type('file')
+            ->name('*.yml')
+            ->sort_by_name()
+            ->follow_link();
 
-        foreach ($pluginModels as $model => $definition)
-        {
-          // canonicalize this definition
-          $definition = $this->canonicalizeModelDefinition($model, $definition);
+        // plugin models
+        foreach ($this->configuration->getPlugins() as $name) {
+            $plugin = $this->configuration->getPluginConfiguration($name);
+            foreach ($finder->in("{$plugin->getRootDir()}/config/doctrine") as $schema) {
+                $pluginModels = (array) sfYaml::load($schema);
+                $globals = $this->filterSchemaGlobals($pluginModels);
 
-          // merge in the globals
-          $definition = array_merge($globals, $definition);
+                foreach ($pluginModels as $model => $definition) {
+                    // canonicalize this definition
+                    $definition = $this->canonicalizeModelDefinition($model, $definition);
 
-          // merge this model into the schema
-          $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
+                    // merge in the globals
+                    $definition = array_merge($globals, $definition);
 
-          // the first plugin to define this model gets the package
-          if (!isset($models[$model]['package']))
-          {
-            $models[$model]['package'] = $plugin->getName().'.lib.model.doctrine';
-          }
+                    // merge this model into the schema
+                    $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
 
-          if (!isset($models[$model]['package_custom_path']) && 0 === strpos($models[$model]['package'], $plugin->getName()))
-          {
-            $models[$model]['package_custom_path'] = $plugin->getRootDir().'/lib/model/doctrine';
-          }
+                    // the first plugin to define this model gets the package
+                    if (!isset($models[$model]['package'])) {
+                        $models[$model]['package'] = "{$plugin->getName()}.lib.model.doctrine";
+                    }
+
+                    if (!isset($models[$model]['package_custom_path']) && 0 === strpos($models[$model]['package'], $plugin->getName())) {
+                        $models[$model]['package_custom_path'] = "{$plugin->getRootDir()}/lib/model/doctrine";
+                    }
+                }
+            }
         }
-      }
+
+        // project models
+        foreach ($finder->in($yamlSchemaPath) as $schema) {
+            $projectModels = (array) sfYaml::load($schema);
+            $globals = $this->filterSchemaGlobals($projectModels);
+
+            foreach ($projectModels as $model => $definition) {
+                // canonicalize this definition
+                $definition = $this->canonicalizeModelDefinition($model, $definition);
+
+                // merge in the globals
+                $definition = array_merge($globals, $definition);
+
+                // merge this model into the schema
+                $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
+            }
+        }
+
+        // create one consolidated schema file
+        $file = realpath(sys_get_temp_dir()) . '/doctrine_schema_' . rand(11111, 99999) . '.yml';
+        $this->logSection('file+', $file);
+        file_put_contents($file, sfYaml::dump($models, 4));
+
+        $this->logSection('chmod 666', $file);
+        chmod($file, 0666);
+
+        return $file;
     }
-
-    // project models
-    foreach ($finder->in($yamlSchemaPath) as $schema)
-    {
-      $projectModels = (array) sfYaml::load($schema);
-      $globals = $this->filterSchemaGlobals($projectModels);
-
-      foreach ($projectModels as $model => $definition)
-      {
-        // canonicalize this definition
-        $definition = $this->canonicalizeModelDefinition($model, $definition);
-
-        // merge in the globals
-        $definition = array_merge($globals, $definition);
-
-        // merge this model into the schema
-        $models[$model] = isset($models[$model]) ? sfToolkit::arrayDeepMerge($models[$model], $definition) : $definition;
-      }
-    }
-
-    // create one consolidated schema file
-    $file = realpath(sys_get_temp_dir()).'/doctrine_schema_'.rand(11111, 99999).'.yml';
-    $this->logSection('file+', $file);
-    file_put_contents($file, sfYaml::dump($models, 4));
-
-    return $file;
-  }
 
   /**
    * Removes and returns globals from the supplied array of models.

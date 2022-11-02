@@ -299,7 +299,10 @@ abstract class sfController
     $classSuffix = ucfirst(strtolower($extension));
     if (!isset($this->controllerClasses[$moduleName.'_'.$controllerName.'_'.$classSuffix]))
     {
-      $this->controllerExists($moduleName, $controllerName, $extension, true);
+      if (!$this->controllerExists($moduleName, $controllerName, $extension, true))
+      {
+        return null;
+      }
     }
 
     $class = $this->controllerClasses[$moduleName.'_'.$controllerName.'_'.$classSuffix];

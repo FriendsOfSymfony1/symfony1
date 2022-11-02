@@ -99,16 +99,13 @@ abstract class sfResponse implements Serializable
    */
   public function sendContent()
   {
-    $content = $this->getContent();
-    if (!$this->options['logging']) {
-      echo $content;
-      return;
-    }
-
-    $event   = $this->dispatcher->filter(new sfEvent($this, 'response.filter_content'), $content);
+    $event = $this->dispatcher->filter(new sfEvent($this, 'response.filter_content'), $this->getContent());
     $content = $event->getReturnValue();
 
-    $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send content (%s o)', strlen($content))]));
+    if ($this->options['logging'])
+    {
+      $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send content (%s o)', strlen($content)))));
+    }
 
     echo $content;
   }
@@ -155,7 +152,7 @@ abstract class sfResponse implements Serializable
   /**
    * Serializes the current instance.
    *
-   * @return array Objects instance
+   * @return string Objects instance
    */
   public function serialize()
   {
@@ -173,5 +170,25 @@ abstract class sfResponse implements Serializable
   public function unserialize($serialized)
   {
     $this->content = unserialize($serialized);
+  }
+
+  /**
+   * Serializes the current instance for php 7.4+
+   *
+   * @return array
+   */
+  public function __serialize()
+  {
+    return array('content' => $this->content);
+  }
+
+  /**
+   * Unserializes a sfResponse instance for php 7.4+
+   *
+   * @param array $data
+  */
+  public function __unserialize($data)
+  {
+    $this->content = $data['content'];
   }
 }

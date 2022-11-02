@@ -366,6 +366,12 @@ class sfException extends Exception
    */
   static protected function fileExcerpt($file, $line)
   {
+    // $file can be null for RuntimeException
+    if (null === $file)
+    {
+      return '';
+    }
+
     if (is_readable($file))
     {
       $content = preg_split('#<br />#', preg_replace('/^<code>(.*)<\/code>$/s', '$1', highlight_file($file, true)));

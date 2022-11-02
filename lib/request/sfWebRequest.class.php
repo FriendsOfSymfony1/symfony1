@@ -192,7 +192,7 @@ class sfWebRequest extends sfRequest
   {
     $contentType = $this->getHttpHeader('Content-Type', null);
 
-    if ($trim && false !== $pos = strpos($contentType, ';'))
+    if ($trim && false !== $pos = strpos($contentType !== null ? $contentType : '', ';'))
     {
       $contentType = substr($contentType, 0, $pos);
     }
@@ -863,42 +863,44 @@ class sfWebRequest extends sfRequest
     return $files;
   }
 
-  /**
-   * Fixes PHP files array
-   *
-   * @param array $data The PHP files
-   *
-   * @return array The fixed PHP files array
-   */
-  static protected function fixPhpFilesArray(array $data)
-  {
-    $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
-    $keys = array_keys($data);
-    sort($keys);
-
-    if ($fileKeys != $keys || !isset($data['name']) || !is_array($data['name']))
+    /**
+     * Fixes PHP files array
+     *
+     * @param array $data The PHP files
+     *
+     * @return array The fixed PHP files array
+     */
+    protected static function fixPhpFilesArray(array $data)
     {
-      return $data;
-    }
+        // remove full_path added on php8.1
+        unset($data['full_path']);
 
-    $files = $data;
-    foreach ($fileKeys as $k)
-    {
-      unset($files[$k]);
-    }
-    foreach (array_keys($data['name']) as $key)
-    {
-      $files[$key] = self::fixPhpFilesArray(array(
-        'error'    => $data['error'][$key],
-        'name'     => $data['name'][$key],
-        'type'     => $data['type'][$key],
-        'tmp_name' => $data['tmp_name'][$key],
-        'size'     => $data['size'][$key],
-      ));
-    }
+        $fileKeys = ['error', 'name', 'size', 'tmp_name', 'type'];
 
-    return $files;
-  }
+        $keys = array_keys($data);
+        sort($keys);
+
+        if ($fileKeys != $keys || !isset($data['name']) || !is_array($data['name'])) {
+            return $data;
+        }
+
+        $files = $data;
+        foreach ($fileKeys as $k) {
+            unset($files[$k]);
+        }
+
+        foreach (array_keys($data['name']) as $key) {
+            $files[$key] = self::fixPhpFilesArray([
+                'error'    => $data['error'][$key],
+                'name'     => $data['name'][$key],
+                'type'     => $data['type'][$key],
+                'tmp_name' => $data['tmp_name'][$key],
+                'size'     => $data['size'][$key],
+            ]);
+        }
+
+        return $files;
+    }
 
   /**
    * Returns the value of a GET parameter.

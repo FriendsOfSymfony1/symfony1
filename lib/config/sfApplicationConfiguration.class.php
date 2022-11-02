@@ -143,7 +143,8 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     }
 
     // error settings
-    ini_set('display_errors', $this->isDebug() ? 'on' : 'off');
+    // PHP >= 5.2.4 supports stdout/stderr instead of bool here: https://www.php.net/manual/en/errorfunc.configuration.php#ini.display-errors
+    ini_set('display_errors', $this->isDebug() ? sfConfig::get('sf_display_errors', 'stdout') : '');
     error_reporting(sfConfig::get('sf_error_reporting'));
 
     // initialize plugin configuration objects

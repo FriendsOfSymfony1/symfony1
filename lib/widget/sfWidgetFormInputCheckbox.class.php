@@ -69,7 +69,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    if (null !== $value && $value !== false)
+    if (null !== $value && $value !== false && $value !== '0' && $value !== 0)
     {
       $attributes['checked'] = 'checked';
     }

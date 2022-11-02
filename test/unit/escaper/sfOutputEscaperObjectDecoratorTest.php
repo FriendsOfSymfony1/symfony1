@@ -74,6 +74,7 @@ class Foo
 
 class FooCountable implements Countable
 {
+  #[\ReturnTypeWillChange]
   public function count()
   {
     return 2;

@@ -1,12 +1,92 @@
 <?php
 
-/*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+// Defining a base class for sfMailer to handle both, Swiftmailer 5 and Swiftmailer 6.
+if (class_exists('Swift') && version_compare(Swift::VERSION, '6.0.0') >= 0) {
+  class sfMailerBase extends Swift_Mailer
+  {
+    /**
+     * Sends the given message.
+     *
+     * @param Swift_Mime_SimpleMessage   $message         A transport instance
+     * @param string[]        &$failedRecipients An array of failures by-reference
+     *
+     * @return int|false The number of sent emails
+     */
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
+    {
+      if ($this->force)
+      {
+        $this->force = false;
+
+        if (!$this->realtimeTransport->isStarted())
+        {
+          $this->realtimeTransport->start();
+        }
+
+        return $this->realtimeTransport->send($message, $failedRecipients);
+      }
+
+      return parent::send($message, $failedRecipients);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function compose($from = null, $to = null, $subject = null, $body = null)
+    {
+      $msg = new Swift_Message($subject);
+
+      return $msg
+        ->setFrom($from)
+        ->setTo($to)
+        ->setBody($body)
+        ;
+    }
+  }
+} else {
+  class sfMailerBase extends Swift_Mailer
+  {
+    /**
+     * Sends the given message.
+     *
+     * @param Swift_Mime_Message $message         A transport instance
+     * @param string[]           &$failedRecipients An array of failures by-reference
+     *
+     * @return int|false The number of sent emails
+     */
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
+      if ($this->force)
+      {
+        $this->force = false;
+
+        if (!$this->realtimeTransport->isStarted())
+        {
+          $this->realtimeTransport->start();
+        }
+
+        return $this->realtimeTransport->send($message, $failedRecipients);
+      }
+
+      return parent::send($message, $failedRecipients);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function compose($from = null, $to = null, $subject = null, $body = null)
+    {
+      $msg = Swift_Message::newInstance($subject);
+
+      return $msg
+        ->setFrom($from)
+        ->setTo($to)
+        ->setBody($body)
+        ;
+    }
+  }
+}
 
 /**
  * sfMailer is the main entry point for the mailer system.
@@ -18,7 +98,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class sfMailer extends Swift_Mailer
+class sfMailer extends sfMailerBase
 {
   const
     REALTIME       = 'realtime',
@@ -63,7 +143,7 @@ class sfMailer extends Swift_Mailer
       'transport' => array(
         'class' => 'Swift_MailTransport',
         'param' => array(),
-       ),
+      ),
     ), $options);
 
     $constantName = 'sfMailer::'.strtoupper($options['delivery_strategy']);

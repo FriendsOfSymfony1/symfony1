@@ -70,7 +70,7 @@ class sfWidgetFormDate extends sfWidgetForm
     }
     else
     {
-      $value = (string) $value == (string) (integer) $value ? (integer) $value : strtotime($value);
+      $value = (string) $value == (string) (integer) $value ? (integer) $value : strtotime((string) $value);
       if (false === $value)
       {
         $value = $default;

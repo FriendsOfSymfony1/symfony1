@@ -264,64 +264,69 @@ class sfRoute implements Serializable
 
   static private function generateCompareVarsByStrlen($a, $b)
   {
-    return strlen($a) < strlen($b);
+    return (strlen($a) < strlen($b)) ? 1 : -1;
   }
 
-  /**
-   * Generates a URL for the given parameters by using the route tokens.
-   *
-   * @param array $parameters An array of parameters
-   *
-   * @return string
-   */
-  protected function generateWithTokens($parameters)
-  {
-    $url = array();
-    $optional = $this->options['generate_shortest_url'];
-    $first = true;
-    $tokens = array_reverse($this->tokens);
-    foreach ($tokens as $token)
+    /**
+     * Generates a URL for the given parameters by using the route tokens.
+     *
+     * @param array $parameters An array of parameters
+     *
+     * @return string
+     */
+    protected function generateWithTokens($parameters)
     {
-      switch ($token[0])
-      {
-        case 'variable':
-          if (!$optional || !isset($this->defaults[$token[3]]) || $parameters[$token[3]] != $this->defaults[$token[3]])
-          {
-            $url[] = urlencode($parameters[$token[3]]);
-            $optional = false;
-          }
-          break;
-        case 'text':
-          $url[] = $token[2];
-          $optional = false;
-          break;
-        case 'separator':
-          if (false === $optional || $first)
-          {
-            $url[] = $token[2];
-          }
-          break;
-        default:
-          // handle custom tokens
-          if ($segment = call_user_func_array(array($this, 'generateFor'.ucfirst(array_shift($token))), array_merge(array($optional, $parameters), $token)))
-          {
-            $url[] = $segment;
-            $optional = false;
-          }
-          break;
-      }
+        $url      = [];
+        $optional = $this->options['generate_shortest_url'];
+        $first    = true;
+        $tokens   = array_reverse($this->tokens);
 
-      $first = false;
+        foreach ($tokens as $token) {
+            switch ($token[0]) {
+                case 'variable':
+                    if (!$optional || !isset($this->defaults[$token[3]]) || (isset($parameters[$token[3]]) && $parameters[$token[3]] != $this->defaults[$token[3]])) {
+                        $url[]    = urlencode($parameters[$token[3]]);
+                        $optional = false;
+                    }
+                    break;
+
+                case 'text':
+                    $url[] = $token[2];
+                    $optional = false;
+                    break;
+
+                case 'separator':
+                    if (false === $optional || $first) {
+                        $url[] = $token[2];
+                    }
+                    break;
+
+                default:
+                    // handle custom tokens
+                    $segment = call_user_func_array(
+                        [
+                            $this,
+                            'generateFor' . ucfirst(array_shift($token))
+                        ],
+                        array_merge([$optional, $parameters], $token)
+                    );
+                    if ($segment) {
+                        $url[] = $segment;
+                        $optional = false;
+                    }
+                    break;
+            }
+
+            $first = false;
+        }
+
+        $url = implode('', array_reverse($url));
+        if (!$url) {
+            $url = '/';
+        }
+
+        return $url;
     }
-
-    $url = implode('', array_reverse($url));
-    if (!$url)
-    {
-      $url = '/';
-    }
-
-    return $url;
-  }
 
   /**
    * Returns the route parameters.
@@ -759,7 +764,7 @@ class sfRoute implements Serializable
       }
       else
       {
-        $tmp[] = urlencode($key).'/'.urlencode($value);
+        $tmp[] = urlencode($key) . '/' . urlencode($value ?: '');
       }
     }
     $tmp = implode('/', $tmp);
@@ -781,20 +786,16 @@ class sfRoute implements Serializable
     return $arr1;
   }
 
-  protected function fixDefaults()
-  {
-    foreach ($this->defaults as $key => $value)
+    protected function fixDefaults()
     {
-      if (ctype_digit($key))
-      {
-        $this->defaults[$value] = true;
-      }
-      else
-      {
-        $this->defaults[$key] = urldecode($value);
-      }
+        foreach ($this->defaults as $key => $value) {
+            if (ctype_digit($key)) {
+                $this->defaults[$value] = true;
+            } else {
+                $this->defaults[$key] = urldecode((string) $value);
+            }
+        }
     }
-  }
 
   protected function fixRequirements()
   {
@@ -847,15 +848,39 @@ class sfRoute implements Serializable
 
   public function serialize()
   {
+    return serialize($this->__serialize());
+  }
+
+  public function unserialize($serialized)
+  {
+    $array = unserialize($serialized);
+
+    $this->__unserialize($array);
+  }
+
+  /**
+   * Serializes the current instance for php 7.4+
+   *
+   * @return array
+   */
+  public function __serialize()
+  {
     // always serialize compiled routes
     $this->compile();
     // sfPatternRouting will always re-set defaultParameters, so no need to serialize them
-    return serialize(array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken));
+    return array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken);
   }
 
-  public function unserialize($data)
+  /**
+   * Unserializes a sfRoute instance for php 7.4+
+   *
+   * @param array $data
+   */
+  public function __unserialize($data)
   {
-    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = unserialize($data);
+    list($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken) = $data;
+
     $this->compiled = true;
   }
+
 }

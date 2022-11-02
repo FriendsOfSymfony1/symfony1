@@ -508,6 +508,7 @@ class sfContext implements ArrayAccess
    *
    * @return Boolean true if the context object exists, false otherwise
    */
+  #[\ReturnTypeWillChange]
   public function offsetExists($name)
   {
     return $this->has($name);
@@ -520,6 +521,7 @@ class sfContext implements ArrayAccess
    *
    * @return mixed The context object if exists, null otherwise
    */
+  #[\ReturnTypeWillChange]
   public function offsetGet($name)
   {
     return $this->get($name);
@@ -531,6 +533,7 @@ class sfContext implements ArrayAccess
    * @param string $offset Service name
    * @param mixed  $value Service
    */
+  #[\ReturnTypeWillChange]
   public function offsetSet($offset, $value)
   {
     $this->set($offset, $value);
@@ -541,6 +544,7 @@ class sfContext implements ArrayAccess
    *
    * @param string $offset The parameter name
    */
+  #[\ReturnTypeWillChange]
   public function offsetUnset($offset)
   {
     unset($this->factories[$offset]);
@@ -668,7 +672,7 @@ class sfContext implements ArrayAccess
 
     if ($this->has('routing'))
     {
-    	$this->getRouting()->shutdown();
+        $this->getRouting()->shutdown();
     }
 
     if (sfConfig::get('sf_use_database'))

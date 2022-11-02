@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -60,20 +60,19 @@ function __($text, $args = array(), $catalogue = 'messages')
  *
  * @return string Result of the translation
  */
-function format_number_choice($text, $args = array(), $number, $catalogue = 'messages')
+function format_number_choice($text, $args = [], $number = 0, $catalogue = 'messages')
 {
-  $translated = __($text, $args, $catalogue);
+    $translated = __($text, $args, $catalogue);
 
-  $choice = new sfChoiceFormat();
+    $choice = new sfChoiceFormat();
 
-  $retval = $choice->format($translated, $number);
+    $retval = $choice->format($translated, $number);
 
-  if ($retval === false)
-  {
-    throw new sfException(sprintf('Unable to parse your choice "%s".', $translated));
-  }
+    if ($retval === false) {
+        throw new sfException(sprintf('Unable to parse your choice "%s".', $translated));
+    }
 
-  return $retval;
+    return $retval;
 }
 
 function format_country($country_iso, $culture = null)

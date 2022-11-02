@@ -11,65 +11,37 @@
 
 /**
  * sfMySQLiDatabase provides connectivity for the MySQL brand database.
+ * @see sfMySQLDatabase
  *
  * @property $connection mysqli
  */
-class sfMySQLiDatabase extends sfDatabase
+class sfMySQLiDatabase extends sfMySQLDatabase
 {
+
   /**
-   * Connects to the database.
-   *
-   * @throws <b>sfDatabaseException</b> If a connection could not be created
+   * @return void
+   * @throws sfDatabaseException
    */
   public function connect()
   {
-    $database = $this->getParameter('database');
-    $host     = $this->getParameter('host', 'localhost');
-    $password = $this->getParameter('password');
-    $username = $this->getParameter('username');
-    $encoding = $this->getParameter('encoding');
+    // PHP 8.1 Activate Exception per default, revert behavior to "return false"
+    mysqli_report(MYSQLI_REPORT_OFF);
 
-    // let's see if we need a persistent connection
-    $connect = 'mysqli_connect';
-    if ($password == null)
-    {
-      if ($username == null)
-      {
-        $this->connection = @$connect($host);
-      }
-      else
-      {
-        $this->connection = @$connect($host, $username);
-      }
-    }
-    else
-    {
-      $this->connection = @$connect($host, $username, $password);
-    }
+    parent::connect();
+  }
 
-    // make sure the connection went through
-    if ($this->connection === false)
-    {
-      // the connection's foobar'd
-      throw new sfDatabaseException('Failed to create a MySQLiDatabase connection.');
-    }
-
-    // select our database
-    if ($this->selectDatabase($database))
-    {
-      // can't select the database
-      throw new sfDatabaseException(sprintf('Failed to select MySQLiDatabase "%s".', $database));
-    }
-
-    // set encoding if specified
-    if ($encoding)
-    {
-      @mysqli_query($this->connection, "SET NAMES '{$encoding}'");
-    }
-
-    // since we're not an abstraction layer, we copy the connection
-    // to the resource
-    $this->resource = $this->connection;
+  /**
+   * Returns the appropriate connect method.
+   *
+   * @param bool $persistent Whether persistent connections are use or not
+   *                         The MySQLi driver does not support persistent
+   *                         connections so this argument is ignored.
+   *
+   * @return string name of connect method
+   */
+  protected function getConnectMethod($persistent)
+  {
+    return 'mysqli_connect';
   }
 
   /**

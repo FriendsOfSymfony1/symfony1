@@ -29,140 +29,126 @@ class sfCacheSessionStorage extends sfStorage
   /** @var bool */
   protected $dataChanged = false;
 
-  /**
-   * Initialize this Storage.
-   *
-   * @param array $options  An associative array of initialization parameters.
-   *                        session_name [required] name of session to use
-   *                        session_cookie_path [required] cookie path
-   *                        session_cookie_domain [required] cookie domain
-   *                        session_cookie_lifetime [required] liftime of cookie
-   *                        session_cookie_secure [required] send only if secure connection
-   *                        session_cookie_http_only [required] accessible only via http protocol
-   *
-   * @return bool true, when initialization completes successfully.
-   *
-   * @throws <b>sfInitializationException</b> If an error occurs while initializing this Storage.
-   */
-  public function initialize($options = array())
-  {
-    // initialize parent
-
-    // bc with a slightly different name formerly used here, let's be
-    // compatible with the base class name for it from here on out
-    if (isset($options['session_cookie_http_only']))
+    /**
+     * Initialize this Storage.
+     *
+     * @param array $options  An associative array of initialization parameters.
+     *                        session_name [required] name of session to use
+     *                        session_cookie_path [required] cookie path
+     *                        session_cookie_domain [required] cookie domain
+     *                        session_cookie_lifetime [required] liftime of cookie
+     *                        session_cookie_secure [required] send only if secure connection
+     *                        session_cookie_http_only [required] accessible only via http protocol
+     *
+     * @return bool true, when initialization completes successfully.
+     *
+     * @throws <b>sfInitializationException</b> If an error occurs while initializing this Storage.
+     */
+    public function initialize($options = [])
     {
-      $options['session_cookie_httponly'] = $options['session_cookie_http_only'];
-    }
+        // initialize parent
 
-    parent::initialize(array_merge(array('session_name' => 'sfproject',
-                                         'session_cookie_lifetime' => '+30 days',
-                                         'session_cookie_path' => '/',
-                                         'session_cookie_domain' => null,
-                                         'session_cookie_secure' => false,
-                                         'session_cookie_httponly' => true,
-                                         'session_cookie_secret' => 'sf$ecret'), $options));
-
-    // create cache instance
-    if (isset($this->options['cache']) && $this->options['cache']['class'])
-    {
-      $this->cache = new $this->options['cache']['class'](is_array($this->options['cache']['param']) ? $this->options['cache']['param'] : array());
-    }
-    else
-    {
-      throw new InvalidArgumentException('sfCacheSessionStorage requires cache option.');
-    }
-
-    $this->context     = sfContext::getInstance();
-
-    $this->dispatcher  = $this->context->getEventDispatcher();
-    $this->request     = $this->context->getRequest();
-    $this->response    = $this->context->getResponse();
-
-    $cookie = $this->request->getCookie($this->options['session_name']);
-
-    if(strpos($cookie, ':') !== false)
-    {
-      // split cookie data id:signature(id+secret)
-      list($id, $signature) = explode(':', $cookie, 2);
-
-      if($signature == sha1($id.':'.$this->options['session_cookie_secret']))
-      {
-        // cookie is valid
-        $this->id = $id;
-      }
-      else
-      {
-        // cookie signature broken
-        $this->id = null;
-      }
-    }
-    else
-    {
-      // cookie format wrong
-      $this->id = null;
-    }
-
-    if(empty($this->id))
-    {
-       $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'localhost';
-       $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
-
-       // generate new id based on random # / ip / user agent / secret
-       $this->id = md5(mt_rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
-
-       if(sfConfig::get('sf_logging_enabled'))
-       {
-         $this->dispatcher->notify(new sfEvent($this, 'application.log', array('New session created')));
-       }
-
-       // only send cookie when id is issued
-       $this->response->setCookie($this->options['session_name'],
-                                  $this->id.':'.sha1($this->id.':'.$this->options['session_cookie_secret']),
-                                  $this->options['session_cookie_lifetime'],
-                                  $this->options['session_cookie_path'],
-                                  $this->options['session_cookie_domain'],
-                                  $this->options['session_cookie_secure'],
-                                  $this->options['session_cookie_httponly']);
-
-       $this->data = array();
-    }
-    else
-    {
-      // load data from cache. Watch out for the default case. We could
-      // serialize(array()) as the default to the call but that would be a performance hit
-      $raw = $this->cache->get($this->id, null);
-      if (null === $raw)
-      {
-        $this->data = array();
-      }
-      else
-      {
-        $data = @unserialize($raw);
-        // We test 'b:0' special case, because such a string would result
-        // in $data being === false, while raw is serialized
-        // see http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
-        if ( $raw === 'b:0;' || $data !== false)
-        {
-          $this->data = $data;
+        // bc with a slightly different name formerly used here, let's be
+        // compatible with the base class name for it from here on out
+        if (isset($options['session_cookie_http_only'])) {
+            $options['session_cookie_httponly'] = $options['session_cookie_http_only'];
         }
-        else
-        {
-          // Probably an old cached value (BC)
-          $this->data = $raw;
+
+        parent::initialize(array_merge(
+            [
+                'session_name' => 'sfproject',
+                'session_cookie_lifetime' => '+30 days',
+                'session_cookie_path' => '/',
+                'session_cookie_domain' => null,
+                'session_cookie_secure' => false,
+                'session_cookie_httponly' => true,
+                'session_cookie_secret' => 'sf$ecret'
+            ],
+            $options
+        ));
+
+        // create cache instance
+        if (isset($this->options['cache']) && $this->options['cache']['class']) {
+            $this->cache = new $this->options['cache']['class'](is_array($this->options['cache']['param']) ? $this->options['cache']['param'] : []);
+        } else {
+            throw new InvalidArgumentException('sfCacheSessionStorage requires cache option.');
         }
-      }
 
-      if(sfConfig::get('sf_logging_enabled'))
-      {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Restored previous session')));
-      }
+        $this->context     = sfContext::getInstance();
+
+        $this->dispatcher  = $this->context->getEventDispatcher();
+        $this->request     = $this->context->getRequest();
+        $this->response    = $this->context->getResponse();
+
+        $cookie = $this->request->getCookie($this->options['session_name']);
+
+        if (empty($cookie) || strpos($cookie, ':') === false) {
+            $this->id = null;
+        } else {
+            // split cookie data id:signature(id+secret)
+            list($id, $signature) = explode(':', $cookie, 2);
+
+            if ($signature == sha1("{$id}:{$this->options['session_cookie_secret']}")) {
+                // cookie is valid
+                $this->id = $id;
+            } else {
+                // cookie signature broken
+                $this->id = null;
+            }
+        }
+
+        if (empty($this->id)) {
+            $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'localhost';
+            $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
+
+            // generate new id based on random # / ip / user agent / secret
+            $this->id = md5(mt_rand(0, 999999) . $ip . $ua . $this->options['session_cookie_secret']);
+
+            if (sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['New session created']));
+            }
+
+            // only send cookie when id is issued
+            $this->response->setCookie(
+                $this->options['session_name'],
+                "{$this->id}:" . sha1("{$this->id}:{$this->options['session_cookie_secret']}"),
+                $this->options['session_cookie_lifetime'],
+                $this->options['session_cookie_path'],
+                $this->options['session_cookie_domain'],
+                $this->options['session_cookie_secure'],
+                $this->options['session_cookie_httponly']
+            );
+
+            $this->data = [];
+        } else {
+            // load data from cache. Watch out for the default case. We could
+            // serialize([]) as the default to the call but that would be a performance hit
+            $raw = $this->cache->get($this->id, null);
+            if (null === $raw) {
+                $this->data = [];
+            } else {
+                $data = @unserialize($raw);
+
+                // We test 'b:0' special case, because such a string would result
+                // in $data being === false, while raw is serialized
+                // see http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
+                if ($raw === 'b:0;' || $data !== false) {
+                    $this->data = $data;
+                } else {
+                    // Probably an old cached value (BC)
+                    $this->data = $raw;
+                }
+            }
+
+            if (sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Restored previous session']));
+            }
+        }
+        session_id($this->id);
+        $this->response->addCacheControlHttpHeader('private');
+
+        return true;
     }
-    session_id($this->id);
-    $this->response->addCacheControlHttpHeader('private');
-
-    return true;
-  }
 
   /**
    * Write data to this storage.
