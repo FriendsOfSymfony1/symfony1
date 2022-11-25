@@ -1,6 +1,10 @@
 name: "Continuous Integration"
 
-on: [push]
+on:
+    push:
+      branches:
+        - master
+    pull_request:
 
 env:
     fail-fast: true
@@ -14,8 +18,8 @@ jobs:
             matrix:
                 php-version:
                     - "7.4"
-                    # - "8.0"
-                    # - "8.1"
+                    - "8.0"
+                    - "8.1"
                 memcached-version:
                     - "1.6"
 

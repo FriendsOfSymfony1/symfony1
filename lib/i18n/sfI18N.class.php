@@ -271,6 +271,9 @@ class sfI18N
     list($day, $month, $year) = $this->getDateForCulture($dateTime, null === $culture ? $this->culture : $culture);
     list($hour, $minute) = $this->getTimeForCulture($dateTime, null === $culture ? $this->culture : $culture);
 
+    // mktime behavior change with php8
+    $hour = null !== $hour ? $hour : 0;
+    $minute = null !== $minute ? $minute : 0;
     return null === $day ? null : mktime($hour, $minute, 0, $month, $day, $year);
   }
 

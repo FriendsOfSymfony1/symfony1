@@ -872,6 +872,9 @@ class sfWebRequest extends sfRequest
    */
   static protected function fixPhpFilesArray(array $data)
   {
+    // remove full_path added on php8.1
+    unset($data['full_path']);
+
     $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
     $keys = array_keys($data);
     sort($keys);

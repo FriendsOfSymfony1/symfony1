@@ -152,7 +152,7 @@ class AdminGenBrowser extends sfTestBrowser
     $this->
       get('/subscriptions/new')->
         with('response')->begin()->
-          checkElement('select', 'NewActivePendingExpired')->
+          checkElement('select', '/^New\R?Active\R?Pending\R?Expired\R?$/m')->
         end()
     ;
   }
@@ -237,7 +237,7 @@ class AdminGenBrowser extends sfTestBrowser
   }
 
   protected function _generateAdminGenModule($model, $module)
-  {    
+  {
     $this->info('Generating admin gen module "' . $module . '"');
     $task = new sfDoctrineGenerateAdminTask($this->getContext()->getEventDispatcher(), new sfFormatter());
     $task->run(array('application' => 'backend', 'route_or_model' => $model));

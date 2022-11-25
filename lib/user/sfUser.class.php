@@ -227,6 +227,7 @@ class sfUser implements ArrayAccess
    *
    * @return Boolean true if the user attribute exists, false otherwise
    */
+  #[\ReturnTypeWillChange]
   public function offsetExists($name)
   {
     return $this->hasAttribute($name);
@@ -239,6 +240,7 @@ class sfUser implements ArrayAccess
    *
    * @return mixed The user attribute if exists, null otherwise
    */
+  #[\ReturnTypeWillChange]
   public function offsetGet($name)
   {
     return $this->getAttribute($name, false);
@@ -250,6 +252,7 @@ class sfUser implements ArrayAccess
    * @param string $offset The parameter name
    * @param string $value The parameter value
    */
+  #[\ReturnTypeWillChange]
   public function offsetSet($offset, $value)
   {
     $this->setAttribute($offset, $value);
@@ -260,6 +263,7 @@ class sfUser implements ArrayAccess
    *
    * @param string $offset The parameter name
    */
+  #[\ReturnTypeWillChange]
   public function offsetUnset($offset)
   {
     $this->getAttributeHolder()->remove($offset);
