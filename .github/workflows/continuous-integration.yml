@@ -1,0 +1,44 @@
+name: "Continuous Integration"
+
+on: [push]
+
+env:
+    fail-fast: true
+
+jobs:
+    tests:
+        name: "Symfony1 Tests"
+        runs-on: "ubuntu-22.04"
+
+        strategy:
+            matrix:
+                php-version:
+                    - "7.4"
+                    # - "8.0"
+                    # - "8.1"
+                memcached-version:
+                    - "1.6"
+
+        services:
+            memcached:
+              image: "memcached:${{ matrix.memcached-version }}"
+
+        steps:
+            - name: "Checkout"
+              uses: "actions/checkout@v3"
+              with:
+                submodules: "true"
+
+            - name: "Install PHP"
+              uses: "shivammathur/setup-php@v2"
+              with:
+                  php-version: "${{ matrix.php-version }}"
+
+            - name: "Install dependencies with Composer"
+              uses: "ramsey/composer-install@v2"
+
+            - name: "Run Check configuration"
+              run: "php data/bin/check_configuration.php"
+
+            - name: "Run Tests"
+              run: "php data/bin/symfony symfony:test --trace"
