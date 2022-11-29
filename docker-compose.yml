@@ -4,23 +4,14 @@ volumes:
   db_socket:
 
 services:
-  composer:
-    image: composer
-    working_dir: /app
-    volumes:
-      - .:/app
-    entrypoint:
-      - sh
-      - -c
-      - |
-        exec tail -f /dev/null
-
   php53:
     build: .docker/php53
     working_dir: /app
     volumes:
       - .:/app
       - db_socket:/var/run/mysqld
+    environment:
+      COMPOSER_HOME: /app/var/cache/composer
     entrypoint:
       - sh
       - -c
@@ -46,6 +37,7 @@ services:
         MEMCACHE_VERSION: '3.0.8'
     environment:
       MEMCACHED_HOST: memcached
+      COMPOSER_HOME: /app/var/cache/composer
     working_dir: /app
     volumes:
       - .:/app
@@ -105,7 +97,6 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php72:
     <<: *services_php54
     build:
@@ -114,7 +105,6 @@ services:
         PHP_VERSION: '7.2'
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
-
 
   php73:
     <<: *services_php54
@@ -125,7 +115,6 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php74:
     <<: *services_php54
     build:
@@ -135,7 +124,6 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php80:
     <<: *services_php54
     build:
@@ -144,7 +132,6 @@ services:
         PHP_VERSION: '8.0'
         MEMCACHE_VERSION: '8.0'
         APCU_VERSION: '5.1.23'
-
 
   php81:
     <<: *services_php54

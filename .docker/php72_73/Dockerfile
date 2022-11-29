@@ -25,7 +25,7 @@ RUN set -eux; \
     libzip-dev \
   '; \
   apt-get update; \
-  apt-get install -y --no-upgrade --no-install-recommends \
+  apt-get install -y --force-yes --no-upgrade --no-install-recommends \
     $buildDeps \
   ; \
   \
@@ -53,4 +53,44 @@ RUN set -eux; \
   chmod +x ${distFilePath}; \
   \
   file /bin/ls --mime | grep application/x-executable; \
+  :;
+
+# Install composer
+#
+RUN set -eux; \
+  composerVersion='1.10.27'; \
+  installerUrl='https://raw.githubusercontent.com/composer/getcomposer.org/a19025d6c0a1ff9fc1fac341128b2823193be462/web/installer'; \
+  \
+  curl --insecure -sSLf "${installerUrl}" -o /usr/local/bin/composer-installer.php; \
+  echo '203196aedb1a3b0f563363796bbf6f647a4f8c2419bc1dfc5aa45adc1725025d  /usr/local/bin/composer-installer.php' \
+    | sha256sum -cw --status; \
+  \
+  { \
+    echo '#! /usr/bin/env php'; \
+    cat /usr/local/bin/composer-installer.php; \
+  } > /usr/local/bin/composer-installer; \
+  rm /usr/local/bin/composer-installer.php; \
+  chmod +x /usr/local/bin/composer-installer; \
+  \
+  composer-installer \
+    --disable-tls \
+    --version="${composerVersion}" \
+    --filename=composer \
+    --install-dir=/usr/local/bin \
+  ; \
+  \
+  echo '230d28fb29f3c6c07ab2382390bef313e36de17868b2bd23b2e070554cae23d2  /usr/local/bin/composer' \
+    | sha256sum -cw --status; \
+  \
+  composer --version; \
+  \
+  apt-get update; \
+  apt-get install -y --force-yes --no-upgrade --no-install-recommends \
+    git \
+    libzip-dev \
+    unzip \
+  ; \
+  rm -r /var/lib/apt/lists/*; \
+  \
+  docker-php-ext-install zip; \
   :;
