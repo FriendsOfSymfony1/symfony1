@@ -129,7 +129,7 @@ services:
   php74:
     <<: *services_php54
     build:
-      context: .docker/php74_81
+      context: .docker/php74_82
       args:
         PHP_VERSION: '7.4'
         MEMCACHE_VERSION: '4.0.5.2'
@@ -139,7 +139,7 @@ services:
   php80:
     <<: *services_php54
     build:
-      context: .docker/php74_81
+      context: .docker/php74_82
       args:
         PHP_VERSION: '8.0'
         MEMCACHE_VERSION: '8.0'
@@ -149,9 +149,18 @@ services:
   php81:
     <<: *services_php54
     build:
-      context: .docker/php74_81
+      context: .docker/php74_82
       args:
         PHP_VERSION: '8.1'
+        MEMCACHE_VERSION: '8.0'
+        APCU_VERSION: ''
+
+  php82:
+    <<: *services_php54
+    build:
+      context: .docker/php74_82
+      args:
+        PHP_VERSION: '8.2'
         MEMCACHE_VERSION: '8.0'
         APCU_VERSION: ''
 
