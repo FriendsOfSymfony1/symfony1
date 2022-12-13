@@ -96,7 +96,7 @@ EOF;
       foreach ($task->getArguments() as $argument)
       {
         $default = null !== $argument->getDefault() && (!is_array($argument->getDefault()) || count($argument->getDefault())) ? $this->formatter->format(sprintf(' (default: %s)', is_array($argument->getDefault()) ? str_replace("\n", '', print_r($argument->getDefault(), true)): $argument->getDefault()), 'COMMENT') : '';
-        $messages[] = sprintf(" %-${max}s %s%s", $this->formatter->format($argument->getName(), 'INFO'), $argument->getHelp(), $default);
+        $messages[] = sprintf(" %-{$max}s %s%s", $this->formatter->format($argument->getName(), 'INFO'), $argument->getHelp(), $default);
       }
 
       $messages[] = '';
