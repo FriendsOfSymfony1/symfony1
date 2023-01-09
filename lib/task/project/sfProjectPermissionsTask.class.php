@@ -112,7 +112,7 @@ EOF;
    *
    * @see http://www.php.net/set_error_handler
    */
-  public function handleError($no, $string, $file, $line, $context)
+  public function handleError($no, $string, $file, $line, $context = null)
   {
     $this->failed[] = $this->current;
   }

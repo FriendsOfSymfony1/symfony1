@@ -168,7 +168,7 @@ class sfYamlInline
    */
   static public function parseScalar($scalar, $delimiters = null, $stringDelimiters = array('"', "'"), &$i = 0, $evaluate = true)
   {
-    if (in_array($scalar[$i], $stringDelimiters))
+    if (is_string($scalar) && in_array($scalar[$i], $stringDelimiters))
     {
       // quoted scalar
       $output = self::parseQuotedScalar($scalar, $i);
@@ -272,7 +272,7 @@ class sfYamlInline
           $isQuoted = in_array($sequence[$i], array('"', "'"));
           $value = self::parseScalar($sequence, array(',', ']'), array('"', "'"), $i);
 
-          if (!$isQuoted && false !== strpos($value, ': '))
+          if (!$isQuoted && false !== strpos((string) $value, ': '))
           {
             // embedded mapping?
             try

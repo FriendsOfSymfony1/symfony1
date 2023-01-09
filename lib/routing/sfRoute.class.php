@@ -15,9 +15,6 @@
  * @subpackage routing
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
- *
- * @property $firstOptional int
- * @property $segments array
  */
 class sfRoute implements Serializable
 {
@@ -37,7 +34,9 @@ class sfRoute implements Serializable
     $defaults          = array(),
     $requirements      = array(),
     $tokens            = array(),
-    $customToken       = false;
+    $customToken       = false,
+    $firstOptional     = null,
+    $segments          = array();
 
   /**
    * Constructor.
