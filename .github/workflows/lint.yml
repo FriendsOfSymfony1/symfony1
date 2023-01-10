@@ -1,0 +1,44 @@
+on: [push, pull_request]
+name: Main
+jobs:
+  php-cs-fixer:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Changed Files @ all
+        id: all-changes
+        uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            lib/**
+            tests/**
+
+      - name: List all changed files (DEBUG)
+        if: ${{ steps.all-changes.outputs.all_changed_files }}
+        run: |
+          for file in ${{ steps.all-changes.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - uses: actions/cache@v3
+        if: ${{ steps.all-changes.outputs.all_changed_files }}
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-
+
+      - name: PHP-CS-Fixer
+        uses: docker://oskarstark/php-cs-fixer-ga
+        if: ${{ steps.all-changes.outputs.all_changed_files }}
+        env:
+          CHANGED_FILES: "${{ join(steps.all-changes.outputs.all_changed_files, '\n') }}"
+        with:
+          args: --config=.php-cs-fixer.base.php --diff --dry-run ${{ join(steps.all-changes.outputs.all_changed_files, ' ') }}
