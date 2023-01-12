@@ -11,7 +11,7 @@ All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.
 
 - [DIC](https://github.com/FriendsOfSymfony1/symfony1/wiki/ServiceContainer)
 - Composer support
-- PHP 8.1 support
+- PHP 8.2 support
 - performance boost
 - new widgets & validators
 - some tickets fixed from the symfony trac
