@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-??/01/2023: Version 1.5.15
+12/01/2023: Version 1.5.15
 --------------------------
 
 * Add support for PHP 8.2 by @thirsch in #274
