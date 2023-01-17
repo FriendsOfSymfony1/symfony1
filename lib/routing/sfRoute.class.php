@@ -745,36 +745,36 @@ class sfRoute implements Serializable
     return false !== strpos($this->regex, '<_star>');
   }
 
-  protected function generateStarParameter($url, $defaults, $parameters)
-  {
-    if (false === strpos($this->regex, '<_star>'))
+    protected function generateStarParameter($url, $defaults, $parameters)
     {
-      return $url;
-    }
-
-    $tmp = array();
-    foreach (array_diff_key($parameters, $this->variables, $defaults) as $key => $value)
-    {
-      if (is_array($value))
-      {
-        foreach ($value as $v)
-        {
-          $tmp[] = $key.'='.urlencode($v);
+        if (false === strpos($this->regex, '<_star>')) {
+            return $url;
         }
-      }
-      else
-      {
-        $tmp[] = urlencode($key) . '/' . urlencode($value ?: '');
-      }
-    }
-    $tmp = implode('/', $tmp);
-    if ($tmp)
-    {
-      $tmp = '/'.$tmp;
-    }
 
-    return preg_replace('#'.$this->options['segment_separators_regex'].'\*('.$this->options['segment_separators_regex'].'|$)#', "$tmp$1", $url);
-  }
+        $tmp = [];
+        foreach (array_diff_key($parameters, $this->variables, $defaults) as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $v) {
+                    $v = is_null($v) ? '' : $v;
+                    $tmp[] = "{$key}=" . urlencode($v);
+                }
+            } else {
+                $value = is_null($value) ? '' : $value;
+                $tmp[] = urlencode($key) . '/' . urlencode($value);
+            }
+        }
+        $tmp = implode('/', $tmp);
+        if ($tmp) {
+            $tmp = "/{$tmp}";
+        }
+
+        $separator = $this->options['segment_separators_regex'];
+        return preg_replace(
+            '#' . $separator . '\*(' . $separator . '|$)#',
+            "$tmp$1",
+            $url
+        );
+    }
 
   protected function mergeArrays($arr1, $arr2)
   {
