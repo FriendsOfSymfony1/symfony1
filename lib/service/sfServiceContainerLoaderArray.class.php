@@ -31,7 +31,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
     {
       foreach ($content['parameters'] as $key => $value)
       {
-        $parameters[strtolower($key)] = $this->resolveServices($value);
+        $parameters[strtolower((string) $key)] = $this->resolveServices($value);
       }
     }
 

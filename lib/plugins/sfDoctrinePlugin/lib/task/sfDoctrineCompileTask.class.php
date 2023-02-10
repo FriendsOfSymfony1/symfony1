@@ -66,7 +66,7 @@ EOF;
     $drivers = array();
     foreach ($databaseManager->getNames() as $name)
     {
-      $drivers[] = strtolower($databaseManager->getDatabase($name)->getDoctrineConnection()->getDriverName());
+      $drivers[] = strtolower((string) $databaseManager->getDatabase($name)->getDoctrineConnection()->getDriverName());
     }
     $drivers = array_unique($drivers);
 

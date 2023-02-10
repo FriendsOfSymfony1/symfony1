@@ -109,7 +109,7 @@ class sfSimpleAutoload
    */
   public function autoload($class)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     // class already exists
     if (class_exists($class, false) || interface_exists($class, false))
@@ -291,7 +291,7 @@ class sfSimpleAutoload
     preg_match_all('~^\s*(?:abstract\s+|final\s+)?(?:class|interface|trait)\s+(\w+)~mi', file_get_contents($file), $classes);
     foreach ($classes[1] as $class)
     {
-      $this->classes[strtolower($class)] = $file;
+      $this->classes[strtolower((string) $class)] = $file;
     }
   }
 
@@ -303,7 +303,7 @@ class sfSimpleAutoload
    */
   public function setClassPath($class, $path)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     $this->overriden[$class] = $path;
 
@@ -319,7 +319,7 @@ class sfSimpleAutoload
    */
   public function getClassPath($class)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     return isset($this->classes[$class]) ? $this->classes[$class] : null;
   }

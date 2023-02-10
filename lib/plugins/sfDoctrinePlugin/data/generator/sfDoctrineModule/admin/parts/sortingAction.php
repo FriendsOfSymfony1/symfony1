@@ -5,7 +5,7 @@
       return;
     }
 
-    if (!in_array(strtolower($sort[1]), array('asc', 'desc')))
+    if (!in_array(strtolower((string) $sort[1]), array('asc', 'desc')))
     {
       $sort[1] = 'asc';
     }

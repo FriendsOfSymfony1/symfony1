@@ -116,7 +116,7 @@ class sfNumberFormat
   {
     $this->setPattern($pattern);
 
-    if (strtolower($pattern) == 'p')
+    if (strtolower((string) $pattern) == 'p')
     {
       $number *= 100;
     }

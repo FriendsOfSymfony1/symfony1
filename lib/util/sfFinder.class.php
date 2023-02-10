@@ -97,7 +97,7 @@ class sfFinder
    */
   public function setType($name)
   {
-    $name = strtolower($name);
+    $name = strtolower((string) $name);
 
     if (substr($name, 0, 3) === 'dir')
     {
@@ -759,12 +759,12 @@ class sfNumberCompare
 
     $target = array_key_exists(2, $matches) ? $matches[2] : '';
     $magnitude = array_key_exists(3, $matches) ? $matches[3] : '';
-    if (strtolower($magnitude) === 'k')  $target *=           1000;
-    if (strtolower($magnitude) === 'ki') $target *=           1024;
-    if (strtolower($magnitude) === 'm')  $target *=        1000000;
-    if (strtolower($magnitude) === 'mi') $target *=      1024*1024;
-    if (strtolower($magnitude) === 'g')  $target *=     1000000000;
-    if (strtolower($magnitude) === 'gi') $target *= 1024*1024*1024;
+    if (strtolower((string) $magnitude) === 'k')  $target *=           1000;
+    if (strtolower((string) $magnitude) === 'ki') $target *=           1024;
+    if (strtolower((string) $magnitude) === 'm')  $target *=        1000000;
+    if (strtolower((string) $magnitude) === 'mi') $target *=      1024*1024;
+    if (strtolower((string) $magnitude) === 'g')  $target *=     1000000000;
+    if (strtolower((string) $magnitude) === 'gi') $target *= 1024*1024*1024;
 
     $comparison = array_key_exists(1, $matches) ? $matches[1] : '==';
     if ($comparison === '==' || $comparison == '')

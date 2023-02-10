@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -86,7 +86,7 @@ class sfPearRestPlugin extends sfPearRest11
 
     if (PEAR::isError($info))
     {
-      throw new sfPluginRestException(sprintf('Unable to get plugin licence information for plugin "%s": %s', $plugin, $info->getMessage())); 
+      throw new sfPluginRestException(sprintf('Unable to get plugin licence information for plugin "%s": %s', $plugin, $info->getMessage()));
     }
 
     if (null === $info)
@@ -113,7 +113,7 @@ class sfPearRestPlugin extends sfPearRest11
    */
   public function getPluginVersions($plugin, $stability = null)
   {
-    $allreleases = $this->_rest->retrieveData($this->restBase.'r/'.strtolower($plugin).'/allreleases.xml');
+    $allreleases = $this->_rest->retrieveData($this->restBase.'r/'.strtolower((string) $plugin).'/allreleases.xml');
     if (PEAR::isError($allreleases))
     {
       throw new sfPluginRestException(sprintf('Unable to get information for plugin "%s": %s', $plugin, $allreleases->getMessage()));
@@ -159,7 +159,7 @@ class sfPearRestPlugin extends sfPearRest11
    */
   public function getPluginDependencies($plugin, $version)
   {
-    $dependencies = $this->_rest->retrieveData($this->restBase.'r/'.strtolower($plugin).'/deps.'.$version.'.txt');
+    $dependencies = $this->_rest->retrieveData($this->restBase.'r/'.strtolower((string) $plugin).'/deps.'.$version.'.txt');
     if (PEAR::isError($dependencies))
     {
       throw new sfPluginRestException(sprintf('Unable to get dependencies information for plugin "%s": %s', $plugin, $dependencies->getMessage()));

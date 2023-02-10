@@ -45,7 +45,7 @@ class sfInflector
     $tmp = sfToolkit::pregtr($tmp, array('/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
                                          '/([a-z\d])([A-Z])/'     => '\\1_\\2'));
 
-    return strtolower($tmp);
+    return strtolower((string) $tmp);
   }
 
   /**

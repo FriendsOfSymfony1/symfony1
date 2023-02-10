@@ -404,7 +404,7 @@ abstract class sfAction extends sfComponent
    */
   public function getSecurityValue($name, $default = null)
   {
-    $actionName = strtolower($this->getActionName());
+    $actionName = strtolower((string) $this->getActionName());
 
     if (isset($this->security[$actionName][$name]))
     {
@@ -517,7 +517,7 @@ abstract class sfAction extends sfComponent
    */
   public function setViewClass($class)
   {
-    sfConfig::set('mod_'.strtolower($this->getModuleName()).'_view_class', $class);
+    sfConfig::set('mod_'.strtolower((string) $this->getModuleName()).'_view_class', $class);
   }
 
   /**

@@ -396,7 +396,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
   {
     $value    = trim($value);
     $number   = (float) $value;
-    $modifier = strtolower($value[strlen($value) - 1]);
+    $modifier = strtolower((string) $value[strlen($value) - 1]);
 
     $exp_by_modifier = array(
       'k' => 1,

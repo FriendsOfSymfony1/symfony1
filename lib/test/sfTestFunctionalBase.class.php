@@ -236,7 +236,7 @@ abstract class sfTestFunctionalBase
 
     $uri = $this->browser->fixUri($uri);
 
-    $this->test()->comment(sprintf('%s %s', strtolower($method), $uri));
+    $this->test()->comment(sprintf('%s %s', strtolower((string) $method), $uri));
 
     foreach ($this->testers as $tester)
     {

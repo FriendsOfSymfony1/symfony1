@@ -1035,7 +1035,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
   public function renderFormTag($url, array $attributes = array())
   {
     $attributes['action'] = $url;
-    $attributes['method'] = isset($attributes['method']) ? strtolower($attributes['method']) : 'post';
+    $attributes['method'] = isset($attributes['method']) ? strtolower((string) $attributes['method']) : 'post';
     if ($this->isMultipart())
     {
       $attributes['enctype'] = 'multipart/form-data';

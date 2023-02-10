@@ -108,8 +108,8 @@ abstract class sfController
       $this->context->getConfigCache()->import('modules/'.$moduleName.'/config/generator.yml', false, true);
 
       // one action per file or one file for all actions
-      $classFile   = strtolower($extension);
-      $classSuffix = ucfirst(strtolower($extension));
+      $classFile   = strtolower((string) $extension);
+      $classSuffix = ucfirst(strtolower((string) $extension));
       $file        = $dir.'/'.$controllerName.$classSuffix.'.class.php';
       if (is_readable($file))
       {
@@ -208,15 +208,15 @@ abstract class sfController
     $this->getActionStack()->addEntry($moduleName, $actionName, $actionInstance);
 
     // include module configuration
-    $viewClass = sfConfig::get('mod_'.strtolower($moduleName).'_view_class', false);
+    $viewClass = sfConfig::get('mod_'.strtolower((string) $moduleName).'_view_class', false);
     require($this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/module.yml'));
     if (false !== $viewClass)
     {
-      sfConfig::set('mod_'.strtolower($moduleName).'_view_class', $viewClass);
+      sfConfig::set('mod_'.strtolower((string) $moduleName).'_view_class', $viewClass);
     }
 
     // module enabled?
-    if (sfConfig::get('mod_'.strtolower($moduleName).'_enabled'))
+    if (sfConfig::get('mod_'.strtolower((string) $moduleName).'_enabled'))
     {
       // check for a module config.php
       $moduleConfig = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/config/config.php';
@@ -296,7 +296,7 @@ abstract class sfController
    */
   protected function getController($moduleName, $controllerName, $extension)
   {
-    $classSuffix = ucfirst(strtolower($extension));
+    $classSuffix = ucfirst(strtolower((string) $extension));
     if (!isset($this->controllerClasses[$moduleName.'_'.$controllerName.'_'.$classSuffix]))
     {
       if (!$this->controllerExists($moduleName, $controllerName, $extension, true))
@@ -371,7 +371,7 @@ abstract class sfController
     else
     {
       // view class (as configured in module.yml or defined in action)
-      $class = sfConfig::get('mod_'.strtolower($moduleName).'_view_class', 'sfPHP').'View';
+      $class = sfConfig::get('mod_'.strtolower((string) $moduleName).'_view_class', 'sfPHP').'View';
     }
 
     return new $class($this->context, $moduleName, $actionName, $viewName);
@@ -411,8 +411,8 @@ abstract class sfController
     // set viewName if needed
     if ($viewName)
     {
-      $currentViewName = sfConfig::get('mod_'.strtolower($module).'_view_class');
-      sfConfig::set('mod_'.strtolower($module).'_view_class', $viewName);
+      $currentViewName = sfConfig::get('mod_'.strtolower((string) $module).'_view_class');
+      sfConfig::set('mod_'.strtolower((string) $module).'_view_class', $viewName);
     }
 
     try
@@ -428,7 +428,7 @@ abstract class sfController
       // remove viewName
       if ($viewName)
       {
-        sfConfig::set('mod_'.strtolower($module).'_view_class', $currentViewName);
+        sfConfig::set('mod_'.strtolower((string) $module).'_view_class', $currentViewName);
       }
 
       throw $e;
@@ -462,7 +462,7 @@ abstract class sfController
     // remove viewName
     if ($viewName)
     {
-      sfConfig::set('mod_'.strtolower($module).'_view_class', $currentViewName);
+      sfConfig::set('mod_'.strtolower((string) $module).'_view_class', $currentViewName);
     }
 
     return $presentation;

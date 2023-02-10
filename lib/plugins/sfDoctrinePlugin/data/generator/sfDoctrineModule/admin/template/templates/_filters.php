@@ -27,7 +27,7 @@
             'help'       => $field->getConfig('help'),
             'form'       => $form,
             'field'      => $field,
-            'class'      => 'sf_admin_form_row sf_admin_'.strtolower($field->getType()).' sf_admin_filter_field_'.$name,
+            'class'      => 'sf_admin_form_row sf_admin_'.strtolower((string) $field->getType()).' sf_admin_filter_field_'.$name,
           )) ?]
         [?php endforeach; ?]
       </tbody>

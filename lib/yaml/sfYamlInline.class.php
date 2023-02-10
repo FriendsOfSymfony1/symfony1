@@ -109,11 +109,11 @@ class sfYamlInline
         return "''";
       case preg_match(self::getTimestampRegex(), $value):
         return "'$value'";
-      case in_array(strtolower($value), $trueValues):
+      case in_array(strtolower((string) $value), $trueValues):
         return "'$value'";
-      case in_array(strtolower($value), $falseValues):
+      case in_array(strtolower((string) $value), $falseValues):
         return "'$value'";
-      case in_array(strtolower($value), array('null', '~')):
+      case in_array(strtolower((string) $value), array('null', '~')):
         return "'$value'";
       default:
         return $value;
@@ -387,7 +387,7 @@ class sfYamlInline
 
     switch (true)
     {
-      case 'null' == strtolower($scalar):
+      case 'null' == strtolower((string) $scalar):
       case '' == $scalar:
       case '~' == $scalar:
         return null;
@@ -401,9 +401,9 @@ class sfYamlInline
         $raw = $scalar;
         $cast = (int) $scalar;
         return '0' == $scalar[0] ? octdec($scalar) : (((string) $raw == (string) $cast) ? $cast : $raw);
-      case in_array(strtolower($scalar), $trueValues):
+      case in_array(strtolower((string) $scalar), $trueValues):
         return true;
-      case in_array(strtolower($scalar), $falseValues):
+      case in_array(strtolower((string) $scalar), $falseValues):
         return false;
       case 0 === strpos($scalar, '0x'):
         return hexdec($scalar);

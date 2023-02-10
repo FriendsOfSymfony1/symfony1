@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -111,7 +111,7 @@ EOF;
 
       if (false !== $license)
       {
-        $temp = trim(str_replace('license', '', strtolower($license)));
+        $temp = trim(str_replace('license', '', strtolower((string) $license)));
         if (null !== $license && !in_array($temp, array('mit', 'bsd', 'lgpl', 'php', 'apache')))
         {
           throw new sfCommandException(sprintf('The license of this plugin "%s" is not MIT like (use --force-license to force installation).', $license));

@@ -116,7 +116,7 @@ class sfCoreAutoload
    */
   public function getClassPath($class)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     if (!isset($this->classes[$class]))
     {
@@ -169,7 +169,7 @@ class sfCoreAutoload
           || false !== stripos($contents, 'interface '.$class)
           || false !== stripos($contents, 'trait '.$class))
       {
-        $classes .= sprintf("    '%s' => '%s',\n", strtolower($class), substr(str_replace($libDir, '', $file), 1));
+        $classes .= sprintf("    '%s' => '%s',\n", strtolower((string) $class), substr(str_replace($libDir, '', $file), 1));
       }
     }
 

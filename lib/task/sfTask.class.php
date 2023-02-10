@@ -496,18 +496,18 @@ abstract class sfTask
   public function askConfirmation($question, $style = 'QUESTION', $default = true)
   {
     $answer = 'z';
-    while ($answer && !in_array(strtolower($answer[0]), array('y', 'n')))
+    while ($answer && !in_array(strtolower((string) $answer[0]), array('y', 'n')))
     {
       $answer = $this->ask($question, $style);
     }
 
     if (false === $default)
     {
-      return $answer && 'y' == strtolower($answer[0]);
+      return $answer && 'y' == strtolower((string) $answer[0]);
     }
     else
     {
-      return !$answer || 'y' == strtolower($answer[0]);
+      return !$answer || 'y' == strtolower((string) $answer[0]);
     }
   }
 

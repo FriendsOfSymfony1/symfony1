@@ -413,7 +413,7 @@ class sfWebResponse extends sfResponse
    */
   protected function normalizeHeaderName($name)
   {
-    return strtr(ucwords(strtr(strtolower($name), array('_' => ' ', '-' => ' '))), array(' ' => '-'));
+    return strtr(ucwords(strtr(strtolower((string) $name), array('_' => ' ', '-' => ' '))), array(' ' => '-'));
   }
 
   /**
@@ -426,7 +426,7 @@ class sfWebResponse extends sfResponse
    */
   static public function getDate($timestamp, $type = 'rfc1123')
   {
-    $type = strtolower($type);
+    $type = strtolower((string) $type);
 
     if ($type == 'rfc1123')
     {
@@ -486,7 +486,7 @@ class sfWebResponse extends sfResponse
         $currentHeaders[$tmp[0]] = isset($tmp[1]) ? $tmp[1] : null;
       }
     }
-    $currentHeaders[str_replace('_', '-', strtolower($name))] = $value;
+    $currentHeaders[str_replace('_', '-', strtolower((string) $name))] = $value;
 
     $headers = array();
     foreach ($currentHeaders as $key => $value)
@@ -561,7 +561,7 @@ class sfWebResponse extends sfResponse
    */
   public function addMeta($key, $value, $replace = true, $escape = true)
   {
-    $key = strtolower($key);
+    $key = strtolower((string) $key);
 
     if (null === $value)
     {

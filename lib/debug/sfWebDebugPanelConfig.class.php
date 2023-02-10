@@ -71,7 +71,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
    */
   protected function formatArrayAsHtml($id, $values)
   {
-    $id = ucfirst(strtolower($id));
+    $id = ucfirst(strtolower((string) $id));
 
     return '
     <h2>'.$id.' '.$this->getToggler('sfWebDebug'.$id).'</h2>

@@ -132,7 +132,7 @@ class sfValidatorFile extends sfValidatorBase
           $max = min($max, $this->getOption('max_size'));
         }
         throw new sfValidatorError($this, 'max_size', array(
-          'max_size' => round($max / 1024, 0), 
+          'max_size' => round($max / 1024, 0),
           'size' => (int) $value['size']
         ));
       case UPLOAD_ERR_FORM_SIZE:
@@ -154,7 +154,7 @@ class sfValidatorFile extends sfValidatorBase
     if ($this->hasOption('max_size') && $this->getOption('max_size') < (int) $value['size'])
     {
       throw new sfValidatorError($this, 'max_size', array(
-        'max_size' => round($this->getOption('max_size') / 1024, 0), 
+        'max_size' => round($this->getOption('max_size') / 1024, 0),
         'size' => (int) $value['size']
       ));
     }
@@ -198,11 +198,11 @@ class sfValidatorFile extends sfValidatorBase
 
       if (null !== $type && $type !== false)
       {
-        return strtolower($type);
+        return strtolower((string) $type);
       }
     }
 
-    return strtolower($fallback);
+    return strtolower((string) $fallback);
   }
 
   /**

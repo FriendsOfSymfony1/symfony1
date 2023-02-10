@@ -438,7 +438,7 @@ function form_tag($url_for_options = '', $options = array())
 
   $html_options = $options;
 
-  $html_options['method'] = isset($html_options['method']) ? strtolower($html_options['method']) : 'post';
+  $html_options['method'] = isset($html_options['method']) ? strtolower((string) $html_options['method']) : 'post';
 
   if (_get_option($html_options, 'multipart'))
   {
@@ -496,7 +496,7 @@ function mail_to($email, $name = '', $options = array(), $default_value = array(
   $default = array();
   foreach ($default_tmp as $key => $value)
   {
-    $default[] = urlencode($key).'='.urlencode($value);
+    $default[] = urlencode((string) $key).'='.urlencode((string) $value);
   }
   $options = count($default) ? '?'.implode('&', $default) : '';
 
@@ -605,10 +605,10 @@ function _method_javascript_function($method)
 {
   $function = "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'post'; f.action = this.href;";
 
-  if ('post' != strtolower($method))
+  if ('post' != strtolower((string) $method))
   {
     $function .= "var m = document.createElement('input'); m.setAttribute('type', 'hidden'); ";
-    $function .= sprintf("m.setAttribute('name', 'sf_method'); m.setAttribute('value', '%s'); f.appendChild(m);", strtolower($method));
+    $function .= sprintf("m.setAttribute('name', 'sf_method'); m.setAttribute('value', '%s'); f.appendChild(m);", strtolower((string) $method));
   }
 
   // CSRF protection

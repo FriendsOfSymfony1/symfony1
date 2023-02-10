@@ -118,7 +118,7 @@ class sfDomCssSelector implements Countable, Iterator
           $id = substr($token, $pos + 1);
           $xpath = new DomXPath($root_node);
           $element = $xpath->query(sprintf("//*[@id = '%s']", $id))->item(0);
-          if (!$element || ($tagName && strtolower($element->nodeName) != $tagName))
+          if (!$element || ($tagName && strtolower((string) $element->nodeName) != $tagName))
           {
             // tag with that ID not found
             return array();

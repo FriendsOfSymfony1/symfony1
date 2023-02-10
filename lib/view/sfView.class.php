@@ -117,7 +117,7 @@ abstract class sfView
     $this->attributeHolder = $this->initializeAttributeHolder();
 
     $this->parameterHolder = new sfParameterHolder();
-    $this->parameterHolder->add(sfConfig::get('mod_'.strtolower($moduleName).'_view_param', array()));
+    $this->parameterHolder->add(sfConfig::get('mod_'.strtolower((string) $moduleName).'_view_param', array()));
 
     $request = $context->getRequest();
 

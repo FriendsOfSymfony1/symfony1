@@ -507,7 +507,7 @@ class sfWebRequest extends sfRequest
           {
             if ($i == 0)
             {
-              $lang = strtolower($codes[0]);
+              $lang = strtolower((string) $codes[0]);
             }
             else
             {
@@ -638,9 +638,9 @@ class sfWebRequest extends sfRequest
     $pathArray = $this->getPathInfoArray();
 
     return
-      (isset($pathArray['HTTPS']) && (('on' == strtolower($pathArray['HTTPS']) || 1 == $pathArray['HTTPS'])))
+      (isset($pathArray['HTTPS']) && (('on' == strtolower((string) $pathArray['HTTPS']) || 1 == $pathArray['HTTPS'])))
       ||
-      ($this->getOption('trust_proxy') && isset($pathArray['HTTP_SSL_HTTPS']) && (('on' == strtolower($pathArray['HTTP_SSL_HTTPS']) || 1 == $pathArray['HTTP_SSL_HTTPS'])))
+      ($this->getOption('trust_proxy') && isset($pathArray['HTTP_SSL_HTTPS']) && (('on' == strtolower((string) $pathArray['HTTP_SSL_HTTPS']) || 1 == $pathArray['HTTP_SSL_HTTPS'])))
       ||
       ($this->getOption('trust_proxy') && $this->isForwardedSecure())
     ;
@@ -655,7 +655,7 @@ class sfWebRequest extends sfRequest
   {
     $pathArray = $this->getPathInfoArray();
 
-    return isset($pathArray['HTTP_X_FORWARDED_PROTO']) && 'https' == strtolower($pathArray['HTTP_X_FORWARDED_PROTO']);
+    return isset($pathArray['HTTP_X_FORWARDED_PROTO']) && 'https' == strtolower((string) $pathArray['HTTP_X_FORWARDED_PROTO']);
   }
 
   /**

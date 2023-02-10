@@ -70,7 +70,7 @@ class sfServiceContainer implements sfServiceContainerInterface
     $this->parameters = array();
     foreach ($parameters as $key => $value)
     {
-      $this->parameters[strtolower($key)] = $value;
+      $this->parameters[strtolower((string) $key)] = $value;
     }
   }
 
@@ -107,7 +107,7 @@ class sfServiceContainer implements sfServiceContainerInterface
   {
     if ($this->hasParameter($name))
     {
-      return $this->parameters[strtolower($name)];
+      return $this->parameters[strtolower((string) $name)];
     }
 
     if (sfConfig::has($name))
@@ -126,7 +126,7 @@ class sfServiceContainer implements sfServiceContainerInterface
    */
   public function setParameter($name, $value)
   {
-    $this->parameters[strtolower($name)] = $value;
+    $this->parameters[strtolower((string) $name)] = $value;
   }
 
   /**
@@ -138,7 +138,7 @@ class sfServiceContainer implements sfServiceContainerInterface
    */
   public function hasParameter($name)
   {
-    return array_key_exists(strtolower($name), $this->parameters);
+    return array_key_exists(strtolower((string) $name), $this->parameters);
   }
 
   /**

@@ -203,7 +203,7 @@ class sfDoctrineColumn implements ArrayAccess
     {
       $local = (array) $relation['local'];
       $local = array_map('strtolower', $local);
-      if (in_array(strtolower($this->name), $local))
+      if (in_array(strtolower((string) $this->name), $local))
       {
         return $relation[$key];
       }
@@ -268,7 +268,7 @@ class sfDoctrineColumn implements ArrayAccess
     {
       $local = (array) $relation['local'];
       $local = array_map('strtolower', $local);
-      if (in_array(strtolower($this->name), $local))
+      if (in_array(strtolower((string) $this->name), $local))
       {
         $this->foreignClassName = $relation['class'];
         if ($relation->getType() === Doctrine_Relation::ONE)

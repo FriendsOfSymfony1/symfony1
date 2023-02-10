@@ -5,5 +5,5 @@
 </td>
 
 EOF
-, strtolower($field->getType()), $name, $this->renderField($field)), $field->getConfig()) ?>
+, strtolower((string) $field->getType()), $name, $this->renderField($field)), $field->getConfig()) ?>
 <?php endforeach; ?>

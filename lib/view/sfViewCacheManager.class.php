@@ -263,7 +263,7 @@ class sfViewCacheManager
     $hostName = preg_replace('/[^a-z0-9\*]/i', '_', $hostName);
     $hostName = preg_replace('/_+/', '_', $hostName);
 
-    return strtolower($hostName);
+    return strtolower((string) $hostName);
   }
 
   /**
@@ -307,7 +307,7 @@ class sfViewCacheManager
     {
       foreach ($options['vary'] as $key => $name)
       {
-        $options['vary'][$key] = str_replace('_', '-', strtolower($name));
+        $options['vary'][$key] = str_replace('_', '-', strtolower((string) $name));
       }
     }
 

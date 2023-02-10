@@ -83,7 +83,7 @@ class sfAutoload
    */
   public function setClassPath($class, $path)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     $this->overriden[$class] = $path;
 
@@ -99,7 +99,7 @@ class sfAutoload
    */
   public function getClassPath($class)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     return isset($this->classes[$class]) ? $this->classes[$class] : null;
   }
@@ -185,7 +185,7 @@ class sfAutoload
    */
   public function loadClass($class)
   {
-    $class = strtolower($class);
+    $class = strtolower((string) $class);
 
     // class already exists
     if (class_exists($class, false) || interface_exists($class, false) || (function_exists('trait_exists') && trait_exists($class, false)))

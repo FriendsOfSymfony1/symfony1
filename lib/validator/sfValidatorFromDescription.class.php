@@ -104,7 +104,7 @@ class sfValidatorFromDescription extends sfValidatorDecorator
         // arguments (optional)
         $arguments = $this->parseArguments($string, $i);
 
-        $tokens[] = new sfValidatorFDTokenOperator(strtolower($match[1]), $arguments);
+        $tokens[] = new sfValidatorFDTokenOperator(strtolower((string) $match[1]), $arguments);
       }
       else if (preg_match('/^(?:([a-z0-9_\-]+)\:)?([a-z0-9_\-]+)/i', substr($string, $i), $match))
       {

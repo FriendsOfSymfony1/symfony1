@@ -155,7 +155,7 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
   $strtolower = ($mbstring) ? 'mb_strtolower' : 'strtolower';
   $substr = ($mbstring) ? 'mb_substr' : 'substr';
 
-  $found_pos = $strpos($strtolower($text), $strtolower($phrase));
+  $found_pos = $strpos($strtolower((string) $text), $strtolower((string) $phrase));
   $return_string = '';
   if ($found_pos !== false)
   {

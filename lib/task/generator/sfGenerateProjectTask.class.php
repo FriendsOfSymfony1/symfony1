@@ -87,7 +87,7 @@ EOF;
       throw new sfCommandException(sprintf('A symfony project already exists in this directory (%s).', getcwd()));
     }
 
-    if (!in_array(strtolower($options['orm']), array('doctrine', 'none')))
+    if (!in_array(strtolower((string) $options['orm']), array('doctrine', 'none')))
     {
       throw new InvalidArgumentException(sprintf('Invalid ORM name "%s".', $options['orm']));
     }
@@ -98,7 +98,7 @@ EOF;
     }
 
     // clean orm option
-    $options['orm'] = ucfirst(strtolower($options['orm']));
+    $options['orm'] = ucfirst(strtolower((string) $options['orm']));
 
     $this->arguments = $arguments;
     $this->options = $options;

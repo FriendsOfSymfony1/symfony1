@@ -305,7 +305,7 @@ class sfToolkit
   {
     // lowercase our value for comparison
     $value  = trim($value);
-    $lvalue = strtolower($value);
+    $lvalue = strtolower((string) $value);
 
     if (in_array($lvalue, array('null', '~', '')))
     {
@@ -354,7 +354,7 @@ class sfToolkit
     }
 
     return preg_replace_callback('/%(.+?)%/', function ($v) {
-      return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : '%'.$v[1].'%';
+      return sfConfig::has(strtolower((string) $v[1])) ? sfConfig::get(strtolower((string) $v[1])) : '%'.$v[1].'%';
     }, $value);
   }
 

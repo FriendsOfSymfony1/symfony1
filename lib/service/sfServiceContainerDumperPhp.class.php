@@ -339,7 +339,7 @@ EOF;
     }
     elseif (is_object($value) && $value instanceof sfServiceParameter)
     {
-      return sprintf("\$this->getParameter('%s')", strtolower($value));
+      return sprintf("\$this->getParameter('%s')", strtolower((string) $value));
     }
     elseif (is_string($value))
     {
@@ -347,7 +347,7 @@ EOF;
       {
         // we do this to deal with non string values (boolean, integer, ...)
         // the preg_replace_callback converts them to strings
-        return sprintf("\$this->getParameter('%s')", strtolower($match[1]));
+        return sprintf("\$this->getParameter('%s')", strtolower((string) $match[1]));
       }
       else
       {
@@ -371,7 +371,7 @@ EOF;
 
   public function replaceParameter($match)
   {
-    return sprintf("'.\$this->getParameter('%s').'", strtolower($match[2]));
+    return sprintf("'.\$this->getParameter('%s').'", strtolower((string) $match[2]));
   }
 
   protected function getServiceCall($id)
