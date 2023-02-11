@@ -23,7 +23,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class Swift_DoctrineSpool extends Swift_ConfigurableSpool
+class Swift_DoctrineSpool extends Swift_DoctrineSpoolAdapter
 {
   protected
     $model = null,
@@ -71,9 +71,9 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
   /**
    * Stores a message in the queue.
    *
-   * @param Swift_Mime_Message $message The message to store
+   * @param $message The message to store
    */
-  public function queueMessage(Swift_Mime_Message $message)
+  protected function internalQueueMessage($message)
   {
     $object = new $this->model;
 
@@ -84,7 +84,7 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
 
     $object->{$this->column} = serialize($message);
     $object->save();
-    
+
     $object->free(true);
   }
 
