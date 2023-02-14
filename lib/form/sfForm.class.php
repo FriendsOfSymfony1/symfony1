@@ -47,7 +47,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
     protected $isBound = false;
     protected $taintedValues = array();
     protected $taintedFiles = array();
-    protected $values;
+    protected $values = array();
     protected $defaults = array();
     protected $fieldNames = array();
     protected $options = array();
