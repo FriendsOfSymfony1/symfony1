@@ -84,7 +84,7 @@ function has_component_slot($name)
   {
     return false;
   }
-  
+
   // check to see if component slot is empty (null)
   if ($viewInstance->getComponentSlot($name))
   {
@@ -385,7 +385,10 @@ function _call_component($moduleName, $componentName, $vars)
     $timer = sfTimerManager::getTimer(sprintf('Component "%s/%s"', $moduleName, $componentName));
   }
 
-  $retval = $componentInstance->$componentToRun($context->getRequest());
+  $retval = $context->getService('sf_parameter_resolver')
+    ->setRequest($context->getRequest())
+    ->setComponent($componentInstance)
+    ->execute($componentToRun);
 
   if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled'))
   {
