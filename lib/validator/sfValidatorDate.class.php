@@ -117,6 +117,7 @@ class sfValidatorDate extends sfValidatorBase
       else
       {
         $dateMax  = new DateTime($max);
+        $dateMax->setTimezone(new DateTimeZone(date_default_timezone_get()));
         $max      = $dateMax->format('YmdHis');
         $maxError = $dateMax->format($this->getOption('date_format_range_error'));
       }
@@ -140,6 +141,7 @@ class sfValidatorDate extends sfValidatorBase
       else
       {
         $dateMin  = new DateTime($min);
+        $dateMin->setTimezone(new DateTimeZone(date_default_timezone_get()));
         $min      = $dateMin->format('YmdHis');
         $minError = $dateMin->format($this->getOption('date_format_range_error'));
       }
