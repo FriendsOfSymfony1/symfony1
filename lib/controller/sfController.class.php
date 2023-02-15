@@ -334,6 +334,8 @@ abstract class sfController
    * @return int One of the following:
    *             - sfView::RENDER_CLIENT
    *             - sfView::RENDER_VAR
+   *             - sfView::RENDER_NONE
+   *             - sfView::RENDER_REDIRECTION
    */
   public function getRenderMode()
   {
@@ -475,6 +477,7 @@ abstract class sfController
    *                  - sfView::RENDER_CLIENT
    *                  - sfView::RENDER_VAR
    *                  - sfView::RENDER_NONE
+   *                  - sfView::RENDER_REDIRECTION
    *
    * @return void
    *
@@ -482,11 +485,17 @@ abstract class sfController
    */
   public function setRenderMode($mode)
   {
-    if ($mode == sfView::RENDER_CLIENT || $mode == sfView::RENDER_VAR || $mode == sfView::RENDER_NONE)
+    switch ($mode)
     {
-      $this->renderMode = $mode;
+      case sfView::RENDER_CLIENT:
+      case sfView::RENDER_VAR:
+      case sfView::RENDER_NONE:
+      case sfView::RENDER_REDIRECTION:
+        $this->renderMode = $mode;
 
-      return;
+        return;
+      default:
+        break;
     }
 
     // invalid rendering mode type

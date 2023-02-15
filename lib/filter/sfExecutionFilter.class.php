@@ -31,6 +31,39 @@ class sfExecutionFilter extends sfFilter
    */
   public function execute($filterChain)
   {
+    try {
+      return $this->doExecute($filterChain);
+    } catch (sfStopException $e) {
+      if (
+        !sfConfig::get('sf_cache')
+        || sfView::RENDER_REDIRECTION !== $this->context->getController()->getRenderMode()
+      ) {
+        throw $e;
+      }
+
+      $viewCache = $this->context->getViewCacheManager();
+      $response = $this->context->getResponse();
+      $uri = $viewCache->getCurrentCacheKey();
+
+      if (null !== $uri)
+      {
+        $viewCache->setActionCache($uri, $response->getContent(), false);
+      }
+
+      throw $e;
+    }
+  }
+
+  /**
+   * Handles the action and the view.
+   *
+   * @param sfFilterChain $filterChain The filter chain
+   *
+   * @throws <b>sfInitializeException</b> If an error occurs during view initialization.
+   * @throws <b>sfViewException</b>       If an error occurs while executing the view.
+   */
+  protected function doExecute($filterChain)
+  {
     // get the current action instance
     /** @var sfAction $actionInstance */
     $actionInstance = $this->context->getController()->getActionStack()->getLastEntry()->getActionInstance();

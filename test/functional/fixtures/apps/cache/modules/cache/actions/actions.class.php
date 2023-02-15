@@ -8,7 +8,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id$
  */
-class cacheActions extends sfActions
+class cacheActions extends CacheAppActions
 {
   public function executeIndex()
   {
@@ -26,6 +26,26 @@ class cacheActions extends sfActions
   public function executeForward()
   {
     $this->forward('cache', 'page');
+  }
+
+  public function executeRedirection()
+  {
+    $this->redirect('/cache/page');
+  }
+
+  public function executeRedirectionWithoutLayout()
+  {
+    $this->redirect('/cache/page');
+  }
+
+  public function executeError404()
+  {
+    $this->forward404();
+  }
+
+  public function executeError404WithoutLayout()
+  {
+    $this->forward404();
   }
 
   public function executeMulti()
@@ -100,5 +120,22 @@ class cacheActions extends sfActions
   {
     $this->getResponse()->setHttpHeader('Last-Modified', $this->getResponse()->getDate(sfConfig::get('LAST_MODIFIED')));
     $this->setTemplate('action');
+  }
+
+  public function executeCacheControlWithNoStoreDirective(sfWebRequest $request)
+  {
+    $directive = $request->getParameter('directive', 'private');
+
+    $this->getResponse()->setHttpHeader('Cache-Control', $directive, false);
+
+    // To support more than one directive.
+    $this->getResponse()->setHttpHeader('Cache-Control', 'foo', false);
+
+    $this->setTemplate('action');
+  }
+
+  public function executeCacheControlWithNoStoreDirectiveCacheNoLayout(sfWebRequest $request)
+  {
+    $this->executeCacheControlWithNoStoreDirective($request);
   }
 }

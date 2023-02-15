@@ -85,6 +85,16 @@ class sfWebResponse extends sfResponse
   );
 
   /**
+   * A list of cache control private directives.
+   *
+   * @var array
+   */
+  protected $cacheControlPrivateDirectives = array(
+    'no-store',
+    'private',
+  );
+
+  /**
    * Initializes this sfWebResponse.
    *
    * Available options:
@@ -844,6 +854,9 @@ class sfWebResponse extends sfResponse
   public function copyProperties(sfWebResponse $response)
   {
     $this->options     = $response->getOptions();
+    $this->statusCode  = $response->getStatusCode();
+    $this->statusText  = $response->getStatusText();
+    $this->headerOnly  = $response->isHeaderOnly();
     $this->headers     = $response->getHttpHeaders();
     $this->metas       = $response->getMetas();
     $this->httpMetas   = $response->getHttpMetas();
@@ -905,6 +918,21 @@ class sfWebResponse extends sfResponse
   public function __unserialize($data)
   {
     list($this->content, $this->statusCode, $this->statusText, $this->options, $this->headerOnly, $this->headers, $this->metas, $this->httpMetas, $this->stylesheets, $this->javascripts, $this->slots) = $data;
+  }
+
+  /**
+   * Checks whether the response contains a private drective on cache control.
+   *
+   * @return bool
+   */
+  public function isPrivate()
+  {
+    $privateDirectives = $this->cacheControlPrivateDirectives;
+    $cacheControl = $this->getHttpHeader('Cache-Control', '');
+
+    $cacheControlDirectives = explode(', ', $cacheControl);
+
+    return $privateDirectives !== array_diff($privateDirectives, $cacheControlDirectives);
   }
 
   /**

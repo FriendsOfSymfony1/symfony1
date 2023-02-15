@@ -60,3 +60,25 @@ list:
 lastModifiedResponse:
   enabled:     true
   with_layout: true
+
+redirection:
+  with_layout: true
+  client_lifetime: 0
+
+redirectionWithoutLayout:
+  with_layout: false
+  client_lifetime: 0
+
+error404:
+  with_layout: true
+  client_lifetime: 0
+
+error404WithoutLayout:
+  with_layout: false
+  client_lifetime: 0
+
+cacheControlWithNoStoreDirective:
+  with_layout: true
+
+cacheControlWithNoStoreDirectiveCacheNoLayout:
+  with_layout: false
