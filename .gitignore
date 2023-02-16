@@ -7,3 +7,6 @@ lib/plugins/sfDoctrinePlugin/test/functional/fixtures/log/
 /vendor
 /composer.lock
 .php-cs-fixer.cache
+.phpunit.result.cache
+phpunit.xml
+/tests/fixtures/symfony/log
