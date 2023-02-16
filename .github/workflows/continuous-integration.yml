@@ -58,5 +58,8 @@ jobs:
       - name: Run Check configuration
         run: php data/bin/check_configuration.php
 
-      - name: Run Tests
+      - name: Run Lime Tests
         run: php data/bin/symfony symfony:test --trace
+
+      - name: Run PHPUnit Tests
+        run: php vendor/bin/phpunit
