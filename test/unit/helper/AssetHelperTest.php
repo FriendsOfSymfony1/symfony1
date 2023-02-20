@@ -3,55 +3,58 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
-require_once(__DIR__.'/../../../lib/helper/TagHelper.php');
-require_once(__DIR__.'/../../../lib/helper/UrlHelper.php');
-require_once(__DIR__.'/../../../lib/helper/AssetHelper.php');
+require_once $_test_dir.'/unit/sfContextMock.class.php';
+
+require_once __DIR__.'/../../../lib/helper/TagHelper.php';
+
+require_once __DIR__.'/../../../lib/helper/UrlHelper.php';
+
+require_once __DIR__.'/../../../lib/helper/AssetHelper.php';
 
 $t = new lime_test(68);
 
 class myRequest
 {
-  public $relativeUrlRoot = '';
+    public $relativeUrlRoot = '';
 
-  public function getRelativeUrlRoot()
-  {
-    return $this->relativeUrlRoot;
-  }
+    public function getRelativeUrlRoot()
+    {
+        return $this->relativeUrlRoot;
+    }
 
-  public function isSecure()
-  {
-    return false;
-  }
+    public function isSecure()
+    {
+        return false;
+    }
 
-  public function getHost()
-  {
-    return 'localhost';
-  }
+    public function getHost()
+    {
+        return 'localhost';
+    }
 }
 
 class myResponse extends sfWebResponse
 {
-  public function resetAssets()
-  {
-    $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
-    $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), array()));
-  }
+    public function resetAssets()
+    {
+        $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+        $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+    }
 }
 
 class myController
 {
-  public function genUrl($parameters = array(), $absolute = false)
-  {
-    return ($absolute ? '/' : '').$parameters;
-  }
+    public function genUrl($parameters = array(), $absolute = false)
+    {
+        return ($absolute ? '/' : '').$parameters;
+    }
 }
 
 $context = sfContext::getInstance(array('request' => 'myRequest', 'response' => 'myResponse', 'controller' => 'myController'));
@@ -84,47 +87,71 @@ $t->is(image_tag('test', array('alt_title' => 'Foo', 'title' => 'Bar')), '<img t
 
 // stylesheet_tag()
 $t->diag('stylesheet_tag()');
-$t->is(stylesheet_tag('style'), 
-  '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n", 
-  'stylesheet_tag() takes a stylesheet name as its first argument');
-$t->is(stylesheet_tag('random.styles', '/css/stylish'),
-  '<link rel="stylesheet" type="text/css" media="screen" href="/css/random.styles" />'."\n".
-  '<link rel="stylesheet" type="text/css" media="screen" href="/css/stylish.css" />'."\n", 
-  'stylesheet_tag() can takes n stylesheet names as its arguments');
-$t->is(stylesheet_tag('style', array('media' => 'all')), 
-  '<link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />'."\n", 
-  'stylesheet_tag() can take a media option');
-$t->is(stylesheet_tag('style', array('absolute' => true)), 
-  '<link rel="stylesheet" type="text/css" media="screen" href="http://localhost/css/style.css" />'."\n", 
-  'stylesheet_tag() can take an absolute option to output an absolute file name');
-$t->is(stylesheet_tag('style', array('raw_name' => true)), 
-  '<link rel="stylesheet" type="text/css" media="screen" href="style" />'."\n", 
-  'stylesheet_tag() can take a raw_name option to bypass file name decoration');
-$t->is(stylesheet_tag('style', array('condition' => 'IE 6')),
-  '<!--[if IE 6]><link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" /><![endif]-->'."\n",
-  'stylesheet_tag() can take a condition option');
+$t->is(
+    stylesheet_tag('style'),
+    '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n",
+    'stylesheet_tag() takes a stylesheet name as its first argument'
+);
+$t->is(
+    stylesheet_tag('random.styles', '/css/stylish'),
+    '<link rel="stylesheet" type="text/css" media="screen" href="/css/random.styles" />'."\n".
+    '<link rel="stylesheet" type="text/css" media="screen" href="/css/stylish.css" />'."\n",
+    'stylesheet_tag() can takes n stylesheet names as its arguments'
+);
+$t->is(
+    stylesheet_tag('style', array('media' => 'all')),
+    '<link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />'."\n",
+    'stylesheet_tag() can take a media option'
+);
+$t->is(
+    stylesheet_tag('style', array('absolute' => true)),
+    '<link rel="stylesheet" type="text/css" media="screen" href="http://localhost/css/style.css" />'."\n",
+    'stylesheet_tag() can take an absolute option to output an absolute file name'
+);
+$t->is(
+    stylesheet_tag('style', array('raw_name' => true)),
+    '<link rel="stylesheet" type="text/css" media="screen" href="style" />'."\n",
+    'stylesheet_tag() can take a raw_name option to bypass file name decoration'
+);
+$t->is(
+    stylesheet_tag('style', array('condition' => 'IE 6')),
+    '<!--[if IE 6]><link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" /><![endif]-->'."\n",
+    'stylesheet_tag() can take a condition option'
+);
 
 // javascript_include_tag()
 $t->diag('javascript_include_tag()');
-$t->is(javascript_include_tag('xmlhr'),
-  '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n", 
-  'javascript_include_tag() takes a javascript name as its first argument');
-$t->is(javascript_include_tag('common.javascript', '/elsewhere/cools'),
-  '<script type="text/javascript" src="/js/common.javascript"></script>'."\n".
-  '<script type="text/javascript" src="/elsewhere/cools.js"></script>'."\n",
-  'javascript_include_tag() can takes n javascript file names as its arguments');
-$t->is(javascript_include_tag('xmlhr', array('absolute' => true)),
-  '<script type="text/javascript" src="http://localhost/js/xmlhr.js"></script>'."\n", 
-  'javascript_include_tag() can take an absolute option to output an absolute file name');
-$t->is(javascript_include_tag('xmlhr', array('raw_name' => true)),
-  '<script type="text/javascript" src="xmlhr"></script>'."\n", 
-  'javascript_include_tag() can take a raw_name option to bypass file name decoration');
-$t->is(javascript_include_tag('xmlhr', array('defer' => 'defer')),
-  '<script type="text/javascript" src="/js/xmlhr.js" defer="defer"></script>'."\n", 
-  'javascript_include_tag() can take additional html options like defer');
-$t->is(javascript_include_tag('xmlhr', array('condition' => 'IE 6')),
-  '<!--[if IE 6]><script type="text/javascript" src="/js/xmlhr.js"></script><![endif]-->'."\n",
-  'javascript_include_tag() can take a condition option');
+$t->is(
+    javascript_include_tag('xmlhr'),
+    '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n",
+    'javascript_include_tag() takes a javascript name as its first argument'
+);
+$t->is(
+    javascript_include_tag('common.javascript', '/elsewhere/cools'),
+    '<script type="text/javascript" src="/js/common.javascript"></script>'."\n".
+    '<script type="text/javascript" src="/elsewhere/cools.js"></script>'."\n",
+    'javascript_include_tag() can takes n javascript file names as its arguments'
+);
+$t->is(
+    javascript_include_tag('xmlhr', array('absolute' => true)),
+    '<script type="text/javascript" src="http://localhost/js/xmlhr.js"></script>'."\n",
+    'javascript_include_tag() can take an absolute option to output an absolute file name'
+);
+$t->is(
+    javascript_include_tag('xmlhr', array('raw_name' => true)),
+    '<script type="text/javascript" src="xmlhr"></script>'."\n",
+    'javascript_include_tag() can take a raw_name option to bypass file name decoration'
+);
+$t->is(
+    javascript_include_tag('xmlhr', array('defer' => 'defer')),
+    '<script type="text/javascript" src="/js/xmlhr.js" defer="defer"></script>'."\n",
+    'javascript_include_tag() can take additional html options like defer'
+);
+$t->is(
+    javascript_include_tag('xmlhr', array('condition' => 'IE 6')),
+    '<!--[if IE 6]><script type="text/javascript" src="/js/xmlhr.js"></script><![endif]-->'."\n",
+    'javascript_include_tag() can take a condition option'
+);
 
 // javascript_path()
 $t->diag('javascript_path()');
@@ -150,42 +177,58 @@ $t->is(image_path('img.jpg', true), 'http://localhost/images/img.jpg', 'image_pa
 // use_javascript() get_javascripts()
 $t->diag('use_javascript() get_javascripts()');
 use_javascript('xmlhr');
-$t->is(get_javascripts(),
-  '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n", 
-  'get_javascripts() returns a javascript previously added by use_javascript()');
+$t->is(
+    get_javascripts(),
+    '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n",
+    'get_javascripts() returns a javascript previously added by use_javascript()'
+);
 use_javascript('xmlhr', '', array('raw_name' => true));
-$t->is(get_javascripts(),
-  '<script type="text/javascript" src="xmlhr"></script>'."\n", 
-  'use_javascript() accepts an array of options as a third parameter');
+$t->is(
+    get_javascripts(),
+    '<script type="text/javascript" src="xmlhr"></script>'."\n",
+    'use_javascript() accepts an array of options as a third parameter'
+);
 use_javascript('xmlhr', '', array('absolute' => true));
-$t->is(get_javascripts(),
-  '<script type="text/javascript" src="http://localhost/js/xmlhr.js"></script>'."\n", 
-  'use_javascript() accepts an array of options as a third parameter');
+$t->is(
+    get_javascripts(),
+    '<script type="text/javascript" src="http://localhost/js/xmlhr.js"></script>'."\n",
+    'use_javascript() accepts an array of options as a third parameter'
+);
 use_javascript('xmlhr');
 use_javascript('xmlhr2');
-$t->is(get_javascripts(),
-  '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n".'<script type="text/javascript" src="/js/xmlhr2.js"></script>'."\n", 
-  'get_javascripts() returns all the javascripts previously added by use_javascript()');
+$t->is(
+    get_javascripts(),
+    '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n".'<script type="text/javascript" src="/js/xmlhr2.js"></script>'."\n",
+    'get_javascripts() returns all the javascripts previously added by use_javascript()'
+);
 
 // use_stylesheet() get_stylesheets()
 $t->diag('use_stylesheet() get_stylesheets()');
 use_stylesheet('style');
-$t->is(get_stylesheets(),
-  '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n", 
-  'get_stylesheets() returns a stylesheet previously added by use_stylesheet()');
+$t->is(
+    get_stylesheets(),
+    '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n",
+    'get_stylesheets() returns a stylesheet previously added by use_stylesheet()'
+);
 use_stylesheet('style', '', array('raw_name' => true));
-$t->is(get_stylesheets(),
-  '<link rel="stylesheet" type="text/css" media="screen" href="style" />'."\n", 
-  'use_stylesheet() accepts an array of options as a third parameter');
+$t->is(
+    get_stylesheets(),
+    '<link rel="stylesheet" type="text/css" media="screen" href="style" />'."\n",
+    'use_stylesheet() accepts an array of options as a third parameter'
+);
 use_stylesheet('style', '', array('absolute' => true));
-$t->is(get_stylesheets(),
-  '<link rel="stylesheet" type="text/css" media="screen" href="http://localhost/css/style.css" />'."\n", 
-  'use_stylesheet() accepts an array of options as a third parameter');
+$t->is(
+    get_stylesheets(),
+    '<link rel="stylesheet" type="text/css" media="screen" href="http://localhost/css/style.css" />'."\n",
+    'use_stylesheet() accepts an array of options as a third parameter'
+);
 use_stylesheet('style');
 use_stylesheet('style2');
-$t->is(get_stylesheets(),
-  '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n".'<link rel="stylesheet" type="text/css" media="screen" href="/css/style2.css" />'."\n",
-  'get_stylesheets() returns all the stylesheets previously added by use_stylesheet()');
+$t->is(
+    get_stylesheets(),
+    '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n".'<link rel="stylesheet" type="text/css" media="screen" href="/css/style2.css" />'."\n",
+    'get_stylesheets() returns all the stylesheets previously added by use_stylesheet()'
+);
 
 // _dynamic_path()
 $t->diag('_dynamic_path()');
@@ -204,42 +247,44 @@ $context->response = new myResponse($context->getEventDispatcher());
 // use_dynamic_javascript()
 $t->diag('use_dynamic_javascript()');
 use_dynamic_javascript('module/action');
-$t->is(get_javascripts(),
-  '<script type="text/javascript" src="module/action?sf_format=js"></script>'."\n",
-  'use_dynamic_javascript() register a dynamic javascript in the response'
+$t->is(
+    get_javascripts(),
+    '<script type="text/javascript" src="module/action?sf_format=js"></script>'."\n",
+    'use_dynamic_javascript() register a dynamic javascript in the response'
 );
 
 // use_dynamic_stylesheet()
 $t->diag('use_dynamic_stylesheet()');
 use_dynamic_stylesheet('module/action');
-$t->is(get_stylesheets(),
-  '<link rel="stylesheet" type="text/css" media="screen" href="module/action?sf_format=css" />'."\n", 
-  'use_dynamic_stylesheet() register a dynamic stylesheet in the response'
+$t->is(
+    get_stylesheets(),
+    '<link rel="stylesheet" type="text/css" media="screen" href="module/action?sf_format=css" />'."\n",
+    'use_dynamic_stylesheet() register a dynamic stylesheet in the response'
 );
 
 class MyForm extends sfForm
 {
-  public function getStylesheets()
-  {
-    return array('/path/to/a/foo.css' => 'all', '/path/to/a/bar.css' => 'print');
-  }
+    public function getStylesheets()
+    {
+        return array('/path/to/a/foo.css' => 'all', '/path/to/a/bar.css' => 'print');
+    }
 
-  public function getJavaScripts()
-  {
-    return array('/path/to/a/foo.js', '/path/to/a/bar.js');
-  }
+    public function getJavaScripts()
+    {
+        return array('/path/to/a/foo.js', '/path/to/a/bar.js');
+    }
 }
 
 // get_javascripts_for_form() get_stylesheets_for_form()
 $t->diag('get_javascripts_for_form() get_stylesheets_for_form()');
 $form = new MyForm();
-$output = <<<EOF
+$output = <<<'EOF'
 <script type="text/javascript" src="/path/to/a/foo.js"></script>
 <script type="text/javascript" src="/path/to/a/bar.js"></script>
 
 EOF;
 $t->is(get_javascripts_for_form($form), fix_linebreaks($output), 'get_javascripts_for_form() returns script tags');
-$output = <<<EOF
+$output = <<<'EOF'
 <link rel="stylesheet" type="text/css" media="all" href="/path/to/a/foo.css" />
 <link rel="stylesheet" type="text/css" media="print" href="/path/to/a/bar.css" />
 
@@ -265,15 +310,19 @@ $t->diag('Custom asset path handling');
 
 sfConfig::set('sf_web_js_dir_name', 'static/js');
 $t->is(javascript_path('xmlhr'), '/static/js/xmlhr.js', 'javascript_path() decorates a relative filename with js dir name and extension with custom js dir');
-$t->is(javascript_include_tag('xmlhr'),
-  '<script type="text/javascript" src="/static/js/xmlhr.js"></script>'."\n", 
-  'javascript_include_tag() takes a javascript name as its first argument');
+$t->is(
+    javascript_include_tag('xmlhr'),
+    '<script type="text/javascript" src="/static/js/xmlhr.js"></script>'."\n",
+    'javascript_include_tag() takes a javascript name as its first argument'
+);
 
 sfConfig::set('sf_web_css_dir_name', 'static/css');
 $t->is(stylesheet_path('style'), '/static/css/style.css', 'stylesheet_path() decorates a relative filename with css dir name and extension with custom css dir');
-$t->is(stylesheet_tag('style'), 
-  '<link rel="stylesheet" type="text/css" media="screen" href="/static/css/style.css" />'."\n", 
-  'stylesheet_tag() takes a stylesheet name as its first argument');
+$t->is(
+    stylesheet_tag('style'),
+    '<link rel="stylesheet" type="text/css" media="screen" href="/static/css/style.css" />'."\n",
+    'stylesheet_tag() takes a stylesheet name as its first argument'
+);
 
 sfConfig::set('sf_web_images_dir_name', 'static/img');
 $t->is(image_path('img'), '/static/img/img.png', 'image_path() decorates a relative filename with images dir name and png extension with custom images dir');

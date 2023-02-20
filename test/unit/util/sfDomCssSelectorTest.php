@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(72);
 
-$html = <<<EOF
+$html = <<<'EOF'
 <html>
   <head>
   </head>
@@ -78,7 +78,7 @@ $html = <<<EOF
 </html>
 EOF;
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 $dom->loadHTML($html);
 
@@ -188,19 +188,21 @@ $t->is($c->matchAll('#adjacent_bug > p + p > a')->getValues(), array('paragraph'
 
 // Iterator interface
 $t->diag('Iterator interface');
-foreach ($c->matchAll('h2') as $key => $value)
-{
-  switch ($key)
-  {
-    case 0:
-      $t->is($value->nodeValue, 'Title 1', 'The object is an iterator');
-      break;
-    case 1:
-      $t->is($value->nodeValue, 'Title 2', 'The object is an iterator');
-      break;
-    default:
-      $t->fail('The object is an iterator');
-  }
+foreach ($c->matchAll('h2') as $key => $value) {
+    switch ($key) {
+        case 0:
+            $t->is($value->nodeValue, 'Title 1', 'The object is an iterator');
+
+            break;
+
+        case 1:
+            $t->is($value->nodeValue, 'Title 2', 'The object is an iterator');
+
+            break;
+
+        default:
+            $t->fail('The object is an iterator');
+    }
 }
 
 // Countable interface

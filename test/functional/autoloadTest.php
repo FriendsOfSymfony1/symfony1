@@ -9,9 +9,8 @@
  */
 
 $app = 'frontend';
-if (!include(__DIR__.'/../bootstrap/functional.php'))
-{
-  return;
+if (!include(__DIR__.'/../bootstrap/functional.php')) {
+    return;
 }
 
 $b = new sfTestBrowser();

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $year = date('Y');
 
@@ -16,25 +16,24 @@ $t = new lime_test(43);
 
 $w = new sfWidgetFormDate();
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->render()
 $t->diag('->render()');
 
 foreach (array(
-  $year.'-10-15' => array('year' => $year, 'month' => 10, 'day' => 15),
-  time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d')),
-  'tomorrow' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400)),
-) as $date => $values)
-{
-  $dom->loadHTML($w->render('foo', $date));
-  $css = new sfDomCssSelector($dom);
+    $year.'-10-15' => array('year' => $year, 'month' => 10, 'day' => 15),
+    time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d')),
+    'tomorrow' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400)),
+) as $date => $values) {
+    $dom->loadHTML($w->render('foo', $date));
+    $css = new sfDomCssSelector($dom);
 
-  // selected date
-  $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
-  $t->is($css->matchSingle('#foo_month option[value="'.$values['month'].'"][selected="selected"]')->getValue(), $values['month'], '->render() renders a select tag for the month');
-  $t->is($css->matchSingle('#foo_day option[value="'.$values['day'].'"][selected="selected"]')->getValue(), $values['day'], '->render() renders a select tag for the day');
+    // selected date
+    $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
+    $t->is($css->matchSingle('#foo_month option[value="'.$values['month'].'"][selected="selected"]')->getValue(), $values['month'], '->render() renders a select tag for the month');
+    $t->is($css->matchSingle('#foo_day option[value="'.$values['day'].'"][selected="selected"]')->getValue(), $values['day'], '->render() renders a select tag for the day');
 }
 
 // pre-epoch date

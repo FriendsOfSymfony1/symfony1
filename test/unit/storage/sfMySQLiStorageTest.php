@@ -9,44 +9,39 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 ob_start();
 $plan = 12;
 $t = new lime_test($plan);
 
-if (!extension_loaded('mysqli'))
-{
-  $t->skip('Mysqli extension must be loaded', $plan);
+if (!extension_loaded('mysqli')) {
+    $t->skip('Mysqli extension must be loaded', $plan);
 
-  return;
+    return;
 }
 
 // Configure your database with the settings below in order to run the test
 $mysqli_config = array(
-  'host'     => 'localhost',
-  'username' => 'root', 
-  'password' => '', 
-);
+    'host' => 'localhost',
+    'username' => 'root',
+    'password' => '', );
 
-if (!isset($mysqli_config))
-{
-  $t->skip('Mysql credentials needed to run these tests', $plan);
+if (!isset($mysqli_config)) {
+    $t->skip('Mysql credentials needed to run these tests', $plan);
 
-  return;
+    return;
 }
 
-try
-{
-  // Creating mysql database connection
-  $database = new sfMySQLiDatabase($mysqli_config);
-  $connection = $database->getResource();
-}
-catch (sfDatabaseException $e)
-{
-  $t->diag($e->getMessage());
-  $t->skip('Unable to connect to MySQL database, skipping', $plan);
-  return;
+try {
+    // Creating mysql database connection
+    $database = new sfMySQLiDatabase($mysqli_config);
+    $connection = $database->getResource();
+} catch (sfDatabaseException $e) {
+    $t->diag($e->getMessage());
+    $t->skip('Unable to connect to MySQL database, skipping', $plan);
+
+    return;
 }
 
 // Creates test database
@@ -57,16 +52,17 @@ mysqli_query($connection, "CREATE TABLE `session` (
   `sess_id` varchar(40) NOT NULL PRIMARY KEY,
   `sess_time` int(10) unsigned NOT NULL default '0',
   `sess_data` text collate utf8_unicode_ci
-) ENGINE=MyISAM") 
+) ENGINE=MyISAM")
   or $t->fail('Can not create table session');
 
 ini_set('session.use_cookies', 0);
-$session_id = "1";
+$session_id = '1';
 
-$storage = new sfMySQLiSessionStorage(array(
-  'db_table'   => 'session',
-  'session_id' => $session_id,
-  'database'   => $database)
+$storage = new sfMySQLiSessionStorage(
+    array(
+        'db_table' => 'session',
+        'session_id' => $session_id,
+        'database' => $database)
 );
 
 $t->ok($storage instanceof sfStorage, 'sfMySQLSessionStorage is an instance of sfStorage');
@@ -96,42 +92,34 @@ mysqli_free_result($result);
 unset($thisSessData, $result);
 
 // sessionRead()
-try
-{
-  $retrieved_data = $storage->sessionRead($session_id);
-  $t->pass('sessionRead() does not throw an exception');
-}
-catch (Exception $e)
-{
-  $t->fail('sessionRead() does not throw an exception');
+try {
+    $retrieved_data = $storage->sessionRead($session_id);
+    $t->pass('sessionRead() does not throw an exception');
+} catch (Exception $e) {
+    $t->fail('sessionRead() does not throw an exception');
 }
 $t->is($retrieved_data, $session_data, 'sessionRead() reads session data');
 
 // sessionWrite()
 $_SESSION['baz'] = 'woo';
 $session_data = session_encode();
-try
-{
-  $write = $storage->sessionWrite($session_id, $session_data);
-  $t->pass('sessionWrite() does not throw an exception');
-}
-catch (Exception $e)
-{
-  $t->fail('sessionWrite() does not throw an exception');
+
+try {
+    $write = $storage->sessionWrite($session_id, $session_data);
+    $t->pass('sessionWrite() does not throw an exception');
+} catch (Exception $e) {
+    $t->fail('sessionWrite() does not throw an exception');
 }
 
 $t->ok($write, 'sessionWrite() returns true');
 $t->is($storage->sessionRead($session_id), $session_data, 'sessionWrite() wrote session data');
 
 // sessionDestroy()
-try
-{
-  $storage->sessionDestroy($session_id);
-  $t->pass('sessionDestroy() does not throw an exception');
-}
-catch (Exception $e)
-{
-  $t->fail('sessionDestroy() does not throw an exception');
+try {
+    $storage->sessionDestroy($session_id);
+    $t->pass('sessionDestroy() does not throw an exception');
+} catch (Exception $e) {
+    $t->fail('sessionDestroy() does not throw an exception');
 }
 
 $result = mysqli_query($connection, sprintf('SELECT COUNT(sess_id) FROM session WHERE sess_id = "%s"', $session_id));

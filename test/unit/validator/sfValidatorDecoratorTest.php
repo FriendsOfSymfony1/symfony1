@@ -8,16 +8,16 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(20);
 
 class MyValidator extends sfValidatorDecorator
 {
-  public function getValidator()
-  {
-    return new sfValidatorString(array('min_length' => 2, 'trim' => true), array('required' => 'This string is required.'));
-  }
+    public function getValidator()
+    {
+        return new sfValidatorString(array('min_length' => 2, 'trim' => true), array('required' => 'This string is required.'));
+    }
 }
 
 // __construct()
@@ -25,16 +25,14 @@ $t->diag('__construct()');
 $v = new MyValidator(array('required' => false));
 $t->is($v->clean(null), null, '__construct() options override the embedded validator options');
 $v = new MyValidator(array(), array('required' => 'This is required.'));
-try
-{
-  $v->clean(null);
-  $t->fail('->clean() throws a sfValidatorError if the value is required');
-  $t->skip('', 1);
-}
-catch (sfValidatorError $e)
-{
-  $t->pass('->clean() throws a sfValidatorError if the value is required');
-  $t->is($e->getMessage(), 'This is required.', '__construct() messages override the embedded validator messages');
+
+try {
+    $v->clean(null);
+    $t->fail('->clean() throws a sfValidatorError if the value is required');
+    $t->skip('', 1);
+} catch (sfValidatorError $e) {
+    $t->pass('->clean() throws a sfValidatorError if the value is required');
+    $t->is($e->getMessage(), 'This is required.', '__construct() messages override the embedded validator messages');
 }
 
 $v = new MyValidator();
@@ -77,46 +75,38 @@ $v = new MyValidator();
 
 // ->clean()
 $t->diag('->clean()');
-try
-{
-  $v->clean(null);
-  $t->fail('->clean() throws a sfValidatorError if the value is required');
-  $t->skip('', 1);
-}
-catch (sfValidatorError $e)
-{
-  $t->pass('->clean() throws a sfValidatorError if the value is required');
-  $t->is($e->getCode(), 'required', '->clean() throws a sfValidatorError');
+
+try {
+    $v->clean(null);
+    $t->fail('->clean() throws a sfValidatorError if the value is required');
+    $t->skip('', 1);
+} catch (sfValidatorError $e) {
+    $t->pass('->clean() throws a sfValidatorError if the value is required');
+    $t->is($e->getCode(), 'required', '->clean() throws a sfValidatorError');
 }
 
-try
-{
-  $v->clean('f');
-  $t->fail('->clean() throws a sfValidatorError if the wrapped validator failed');
-  $t->skip('', 1);
-}
-catch (sfValidatorError $e)
-{
-  $t->pass('->clean() throws a sfValidatorError if the wrapped validator failed');
-  $t->is($e->getCode(), 'min_length', '->clean() throws a sfValidatorError');
+try {
+    $v->clean('f');
+    $t->fail('->clean() throws a sfValidatorError if the wrapped validator failed');
+    $t->skip('', 1);
+} catch (sfValidatorError $e) {
+    $t->pass('->clean() throws a sfValidatorError if the wrapped validator failed');
+    $t->is($e->getCode(), 'min_length', '->clean() throws a sfValidatorError');
 }
 
 $t->is($v->clean('  foo  '), 'foo', '->clean() cleans the value by executing the clean() method from the wrapped validator');
 
 class FakeValidator extends sfValidatorDecorator
 {
-  protected function getValidator()
-  {
-    return 'foo';
-  }
+    protected function getValidator()
+    {
+        return 'foo';
+    }
 }
 
-try
-{
-  $v = new FakeValidator();
-  $t->fail('->clean() throws a RuntimeException if getValidator() does not return a sfValidator instance');
-}
-catch (RuntimeException $e)
-{
-  $t->pass('->clean() throws a RuntimeException if getValidator() does not return a sfValidator instance');
+try {
+    $v = new FakeValidator();
+    $t->fail('->clean() throws a RuntimeException if getValidator() does not return a sfValidator instance');
+} catch (RuntimeException $e) {
+    $t->pass('->clean() throws a RuntimeException if getValidator() does not return a sfValidator instance');
 }

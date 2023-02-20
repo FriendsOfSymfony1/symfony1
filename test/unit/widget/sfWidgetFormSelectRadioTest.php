@@ -8,21 +8,23 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 class FormFormatterStub extends sfWidgetFormSchemaFormatter
 {
-  public function __construct() {}
+    public function __construct()
+    {
+    }
 
-  public function translate($subject, $parameters = array())
-  {
-    return sprintf('translation[%s]', $subject);
-  }
+    public function translate($subject, $parameters = array())
+    {
+        return sprintf('translation[%s]', $subject);
+    }
 }
 
 $t = new lime_test(12);
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->render()
@@ -44,14 +46,14 @@ $onChange = '<ul class="radio_list">'.
 $t->is($w->render('foo', 'foobar', array('onChange' => 'alert(42)')), $onChange, '->render() renders a radio tag using extra attributes');
 
 $w = new sfWidgetFormSelectRadio(array('choices' => array('0' => 'bar', '1' => 'foo')));
-$output = <<< EOF
+$output = <<< 'EOF'
 <ul class="radio_list"><li><input name="myname" type="radio" value="0" id="myname_0" checked="checked" />&nbsp;<label for="myname_0">bar</label></li>
 <li><input name="myname" type="radio" value="1" id="myname_1" />&nbsp;<label for="myname_1">foo</label></li></ul>
 EOF;
 $t->is($w->render('myname', false), fix_linebreaks($output), '->render() considers false to be an integer 0');
 
 $w = new sfWidgetFormSelectRadio(array('choices' => array('0' => 'bar', '1' => 'foo')));
-$output = <<< EOF
+$output = <<< 'EOF'
 <ul class="radio_list"><li><input name="myname" type="radio" value="0" id="myname_0" />&nbsp;<label for="myname_0">bar</label></li>
 <li><input name="myname" type="radio" value="1" id="myname_1" checked="checked" />&nbsp;<label for="myname_1">foo</label></li></ul>
 EOF;
@@ -63,21 +65,18 @@ $t->is($w->render('myname', array()), '', '->render() returns an empty HTML stri
 // group support
 $t->diag('group support');
 $w = new sfWidgetFormSelectRadio(array('choices' => array('foo' => array('foo' => 'bar', 'bar' => 'foo'), 'bar' => array('foobar' => 'barfoo'))));
-$output = <<<EOF
+$output = <<<'EOF'
 foo <ul class="radio_list"><li><input name="foo" type="radio" value="foo" id="foo_foo" checked="checked" />&nbsp;<label for="foo_foo">bar</label></li>
 <li><input name="foo" type="radio" value="bar" id="foo_bar" />&nbsp;<label for="foo_bar">foo</label></li></ul>
 bar <ul class="radio_list"><li><input name="foo" type="radio" value="foobar" id="foo_foobar" />&nbsp;<label for="foo_foobar">barfoo</label></li></ul>
 EOF;
 $t->is($w->render('foo', 'foo'), fix_linebreaks($output), '->render() has support for groups');
 
-try
-{
-  $w = new sfWidgetFormSelectRadio();
-  $t->fail('__construct() throws an RuntimeException if you don\'t pass a choices option');
-}
-catch (RuntimeException $e)
-{
-  $t->pass('__construct() throws an RuntimeException if you don\'t pass a choices option');
+try {
+    $w = new sfWidgetFormSelectRadio();
+    $t->fail('__construct() throws an RuntimeException if you don\'t pass a choices option');
+} catch (RuntimeException $e) {
+    $t->pass('__construct() throws an RuntimeException if you don\'t pass a choices option');
 }
 
 // choices as a callable
@@ -85,7 +84,7 @@ $t->diag('choices as a callable');
 
 function choice_callable()
 {
-  return array(1, 2, 3);
+    return array(1, 2, 3);
 }
 $w = new sfWidgetFormSelectRadio(array('choices' => new sfCallable('choice_callable')));
 $dom->loadHTML($w->render('foo'));

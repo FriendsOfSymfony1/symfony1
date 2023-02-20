@@ -8,23 +8,21 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../bootstrap/unit.php');
+require_once __DIR__.'/../../../bootstrap/unit.php';
 
 $t = new lime_test(8);
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->configure()
 $t->diag('->configure()');
-try
-{
-  new sfWidgetFormI18nChoiceCountry(array('culture' => 'en', 'countries' => array('EN')));
-  $t->fail('->configure() throws an InvalidArgumentException if a country does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->configure() throws an InvalidArgumentException if a country does not exist');
+
+try {
+    new sfWidgetFormI18nChoiceCountry(array('culture' => 'en', 'countries' => array('EN')));
+    $t->fail('->configure() throws an InvalidArgumentException if a country does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->configure() throws an InvalidArgumentException if a country does not exist');
 }
 
 $v = new sfWidgetFormI18nChoiceCountry(array('culture' => 'en', 'countries' => array('FR', 'GB')));

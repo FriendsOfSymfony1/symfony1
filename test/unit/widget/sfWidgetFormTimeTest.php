@@ -8,30 +8,29 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(43);
 
 $w = new sfWidgetFormTime(array('with_seconds' => true));
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->render()
 $t->diag('->render()');
 
 foreach (array(
-  '12:30:35',
-  mktime(12, 30, 35, 15, 10, 2005),
-) as $date)
-{
-  $dom->loadHTML($w->render('foo', $date));
-  $css = new sfDomCssSelector($dom);
+    '12:30:35',
+    mktime(12, 30, 35, 15, 10, 2005),
+) as $date) {
+    $dom->loadHTML($w->render('foo', $date));
+    $css = new sfDomCssSelector($dom);
 
-  // selected date
-  $t->is($css->matchSingle('#foo_hour option[value="12"][selected="selected"]')->getValue(), 12, '->render() renders a select tag for the hour');
-  $t->is($css->matchSingle('#foo_minute option[value="30"][selected="selected"]')->getValue(), 30, '->render() renders a select tag for the minute');
-  $t->is($css->matchSingle('#foo_second option[value="35"][selected="selected"]')->getValue(), 35, '->render() renders a select tag for the second');
+    // selected date
+    $t->is($css->matchSingle('#foo_hour option[value="12"][selected="selected"]')->getValue(), 12, '->render() renders a select tag for the hour');
+    $t->is($css->matchSingle('#foo_minute option[value="30"][selected="selected"]')->getValue(), 30, '->render() renders a select tag for the minute');
+    $t->is($css->matchSingle('#foo_second option[value="35"][selected="selected"]')->getValue(), 35, '->render() renders a select tag for the second');
 }
 
 // time as an array

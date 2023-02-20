@@ -3,31 +3,31 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(2);
 
 class myLogger implements sfLoggerInterface
 {
-  public $log = '';
+    public $log = '';
 
-  public function log($message, $priority = null)
-  {
-    $this->log = $message;
-  }
+    public function log($message, $priority = null)
+    {
+        $this->log = $message;
+    }
 }
 
 class myLoggerWrapper extends sfLoggerWrapper
 {
-  public function getLogger()
-  {
-    return $this->logger;
-  }
+    public function getLogger()
+    {
+        return $this->logger;
+    }
 }
 
 $myLogger = new myLogger();

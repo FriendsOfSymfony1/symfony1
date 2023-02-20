@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 class myRequest extends sfRequest
 {
-  public function getEventDispatcher()
-  {
-    return $this->dispatcher;
-  }
+    public function getEventDispatcher()
+    {
+        return $this->dispatcher;
+    }
 }
 
 class fakeRequest
@@ -41,14 +41,11 @@ $t->diag('->getMethod() ->setMethod()');
 $request->setMethod(sfRequest::GET);
 $t->is($request->getMethod(), sfRequest::GET, '->getMethod() returns the current request method');
 
-try
-{
-  $request->setMethod('foo');
-  $t->fail('->setMethod() throws a sfException if the method is not valid');
-}
-catch (sfException $e)
-{
-  $t->pass('->setMethod() throws a sfException if the method is not valid');
+try {
+    $request->setMethod('foo');
+    $t->fail('->setMethod() throws a sfException if the method is not valid');
+} catch (sfException $e) {
+    $t->pass('->setMethod() throws a sfException if the method is not valid');
 }
 
 // ->extractParameters()
@@ -88,7 +85,7 @@ $t->ok($request->getAttributeHolder() !== $requestClone->getAttributeHolder(), '
 $request = new myRequest($dispatcher);
 
 // parameter holder proxy
-require_once($_test_dir.'/unit/sfParameterHolderTest.class.php');
+require_once $_test_dir.'/unit/sfParameterHolderTest.class.php';
 $pht = new sfParameterHolderProxyTest($t);
 $pht->launchTests($request, 'parameter');
 
@@ -97,6 +94,6 @@ $pht = new sfParameterHolderProxyTest($t);
 $pht->launchTests($request, 'attribute');
 
 // new methods via sfEventDispatcher
-require_once($_test_dir.'/unit/sfEventDispatcherTest.class.php');
+require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
 $dispatcherTest = new sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($dispatcher, $request, 'request');

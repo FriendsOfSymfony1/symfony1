@@ -1,6 +1,7 @@
 <?php
 
 $app = 'frontend';
+
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
 $t = new lime_test(9);
@@ -10,7 +11,7 @@ $t->diag('->__construct()');
 
 function is_symfony_i18n_filter($filter)
 {
-  return $filter instanceof sfDoctrineRecordI18nFilter;
+    return $filter instanceof sfDoctrineRecordI18nFilter;
 }
 
 $table = Doctrine_Core::getTable('Article');
@@ -53,10 +54,11 @@ $after = unserialize($serialized);
 $t->is($after->title, 'test', '->unserialize() maintains field values on I18n records upon reset');
 
 $article = new Article();
+
 try {
-$article->setAuthor(new stdClass());
+    $article->setAuthor(new stdClass());
 } catch (Exception $e) {
-  $t->is($e->getMessage(), 'Couldn\'t call Doctrine_Core::set(), second argument should be an instance of Doctrine_Record or Doctrine_Null when setting one-to-one references.', 'Making sure proper exception message is thrown');
+    $t->is($e->getMessage(), 'Couldn\'t call Doctrine_Core::set(), second argument should be an instance of Doctrine_Record or Doctrine_Null when setting one-to-one references.', 'Making sure proper exception message is thrown');
 }
 
 $article = new Article();
@@ -67,11 +69,11 @@ $article = unserialize($serialized);
 $t->is($article->getTitle(), 'testing this out', 'Making sure getTitle() is still accessible after unserializing');
 
 try {
-  $test = new ModelWithNumberInColumn();
-  $test->getColumn_1();
-  $test->getColumn_2();
-  $test->getColumn__3();
-  $t->pass('Make sure __call() handles fields with *_(n) in the field name');
+    $test = new ModelWithNumberInColumn();
+    $test->getColumn_1();
+    $test->getColumn_2();
+    $test->getColumn__3();
+    $t->pass('Make sure __call() handles fields with *_(n) in the field name');
 } catch (Exception $e) {
-  $t->fail('__call() failed in sfDoctrineRecord');
+    $t->fail('__call() failed in sfDoctrineRecord');
 }

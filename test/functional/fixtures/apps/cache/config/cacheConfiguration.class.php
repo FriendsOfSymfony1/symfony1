@@ -2,7 +2,7 @@
 
 class cacheConfiguration extends sfApplicationConfiguration
 {
-  public function configure()
-  {
-  }
+    public function configure()
+    {
+    }
 }

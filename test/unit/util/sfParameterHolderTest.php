@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(28);
 
@@ -33,17 +33,17 @@ $t->is($ph->get('bar'), null, '->get() returns null if the key does not exist');
 $ph->set('ref', 'foobar');
 
 $ref1 = null;
-$ref1 = & $ph->get('ref');
+$ref1 = &$ph->get('ref');
 $t->is($ref1, 'foobar');
 
 $ref2 = null;
-$ref2 = & $ph->get('ref'); // obtain the very same reference and modify it
+$ref2 = &$ph->get('ref'); // obtain the very same reference and modify it
 $ref2 = 'barfoo';
 
 $t->is($ref1, 'barfoo');
 $t->is($ref2, 'barfoo');
 $t->is($ph->get('ref'), 'barfoo');
-$t->is($ref2 , $ref1, '->get() returns a reference for the given key');
+$t->is($ref2, $ref1, '->get() returns a reference for the given key');
 
 $ph = new sfParameterHolder();
 $t->is('default_value', $ph->get('foo1', 'default_value'), '->get() takes the default value as its second argument');

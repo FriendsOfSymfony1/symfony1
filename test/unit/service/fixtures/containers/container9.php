@@ -26,9 +26,9 @@ $container->
 ;
 $container->register('foo_bar', 'FooClass');
 $container->setParameters(array(
-  'baz_class' => 'BazClass',
-  'foo' => 'bar',
-  'foo_bar' => new sfServiceReference('foo_bar'),
+    'baz_class' => 'BazClass',
+    'foo' => 'bar',
+    'foo_bar' => new sfServiceReference('foo_bar'),
 ));
 $container->setAlias('alias_for_foo', 'foo');
 

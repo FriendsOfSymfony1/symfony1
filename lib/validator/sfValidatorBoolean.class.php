@@ -11,51 +11,50 @@
 /**
  * sfValidatorBoolean validates a boolean. It also converts the input value to a valid boolean.
  *
- * @package    symfony
- * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
  * @version    SVN: $Id$
  */
 class sfValidatorBoolean extends sfValidatorBase
 {
-  /**
-   * Configures the current validator.
-   *
-   * Available options:
-   *
-   *  * true_values:  The list of true values
-   *  * false_values: The list of false values
-   *
-   * @param array $options    An array of options
-   * @param array $messages   An array of error messages
-   *
-   * @see sfValidatorBase
-   */
-  protected function configure($options = array(), $messages = array())
-  {
-    $this->addOption('true_values', array('true', 't', 'yes', 'y', 'on', '1'));
-    $this->addOption('false_values', array('false', 'f', 'no', 'n', 'off', '0'));
-
-    $this->setOption('required', false);
-    $this->setOption('empty_value', false);
-  }
-
-  /**
-   * @see sfValidatorBase
-   */
-  protected function doClean($value)
-  {
-    $checkValue = $value === 0 ? '0' : $value;
-    if (in_array($checkValue, $this->getOption('true_values')))
+    /**
+     * Configures the current validator.
+     *
+     * Available options:
+     *
+     *  * true_values:  The list of true values
+     *  * false_values: The list of false values
+     *
+     * @param array $options  An array of options
+     * @param array $messages An array of error messages
+     *
+     * @see sfValidatorBase
+     */
+    protected function configure($options = array(), $messages = array())
     {
-      return true;
+        $this->addOption('true_values', array('true', 't', 'yes', 'y', 'on', '1'));
+        $this->addOption('false_values', array('false', 'f', 'no', 'n', 'off', '0'));
+
+        $this->setOption('required', false);
+        $this->setOption('empty_value', false);
     }
 
-    if (in_array($checkValue, $this->getOption('false_values')))
+    /**
+     * @see sfValidatorBase
+     *
+     * @param mixed $value
+     */
+    protected function doClean($value)
     {
-      return false;
-    }
+        $checkValue = 0 === $value ? '0' : $value;
+        if (in_array($checkValue, $this->getOption('true_values'))) {
+            return true;
+        }
 
-    throw new sfValidatorError($this, 'invalid', array('value' => $value));
-  }
+        if (in_array($checkValue, $this->getOption('false_values'))) {
+            return false;
+        }
+
+        throw new sfValidatorError($this, 'invalid', array('value' => $value));
+    }
 }

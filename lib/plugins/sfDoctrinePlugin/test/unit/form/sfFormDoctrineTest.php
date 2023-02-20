@@ -1,6 +1,7 @@
 <?php
 
 $app = 'frontend';
+
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
 $t = new lime_test(13);
@@ -10,12 +11,12 @@ $t->diag('->__construct()');
 
 class NumericFieldForm extends ArticleForm
 {
-  public function configure()
-  {
-    $this->widgetSchema[1] = new sfWidgetFormInputText();
-    $this->validatorSchema[1] = new sfValidatorPass();
-    $this->setDefault(1, '==DEFAULT_VALUE==');
-  }
+    public function configure()
+    {
+        $this->widgetSchema[1] = new sfWidgetFormInputText();
+        $this->validatorSchema[1] = new sfValidatorPass();
+        $this->setDefault(1, '==DEFAULT_VALUE==');
+    }
 }
 
 $form = new NumericFieldForm();
@@ -24,10 +25,10 @@ $t->is($defaults[1], '==DEFAULT_VALUE==', '->__construct() allows ->configure() 
 
 class DefaultValuesForm extends AuthorForm
 {
-  public function configure()
-  {
-    $this->setDefault('name', 'John Doe');
-  }
+    public function configure()
+    {
+        $this->setDefault('name', 'John Doe');
+    }
 }
 
 $author = new Author();
@@ -50,11 +51,11 @@ class myArticleForm extends ArticleForm
 
 $table = Doctrine_Core::getTable('Author');
 $form = new AuthorForm($table->create(array(
-  'Articles' => array(
-    array('title' => 'Article 1'),
-    array('title' => 'Article 2'),
-    array('title' => 'Article 3'),
-  ),
+    'Articles' => array(
+        array('title' => 'Article 1'),
+        array('title' => 'Article 2'),
+        array('title' => 'Article 3'),
+    ),
 )));
 
 $form->embedRelation('Articles');
@@ -70,26 +71,26 @@ $t->isa_ok($moreEmbeddedForms[0], 'myArticleForm', '->embedRelation() accepts a 
 $t->ok($moreEmbeddedForms[0]->getOption('test'), '->embedRelation() accepts a form arguments argument');
 
 $form = new AuthorForm($table->create(array(
-  'Articles' => array(
-    array('title' => 'Article 1'),
-    array('title' => 'Article 2'),
-  ),
+    'Articles' => array(
+        array('title' => 'Article 1'),
+        array('title' => 'Article 2'),
+    ),
 )));
 $form->embedRelation('Articles as author_articles');
 $t->is(isset($form['author_articles']), true, '->embedRelation() embeds using an alias');
 $t->is(count($form['author_articles']), 2, '->embedRelation() embeds one form for each related object using an alias');
 
 $form = new AuthorForm($table->create(array(
-  'Articles' => array(
-    array('title' => 'Article 1'),
-    array('title' => 'Article 2'),
-  ),
+    'Articles' => array(
+        array('title' => 'Article 1'),
+        array('title' => 'Article 2'),
+    ),
 )));
 $form->embedRelation('Articles AS author_articles');
 $t->is(isset($form['author_articles']), true, '->embedRelation() embeds using an alias with a case insensitive separator');
 
 $form = new ArticleForm(Doctrine_Core::getTable('Article')->create(array(
-  'Author' => array('name' => 'John Doe'),
+    'Author' => array('name' => 'John Doe'),
 )));
 $form->embedRelation('Author');
 $t->is(isset($form['Author']), true, '->embedRelation() embeds a ONE type relation');

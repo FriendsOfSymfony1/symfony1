@@ -8,31 +8,30 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(95);
 
 // ::stringToArray()
 $t->diag('::stringToArray()');
 $tests = array(
-  'foo=bar' => array('foo' => 'bar'),
-  'foo1=bar1 foo=bar   ' => array('foo1' => 'bar1', 'foo' => 'bar'),
-  'foo1="bar1 foo1"' => array('foo1' => 'bar1 foo1'),
-  'foo1="bar1 foo1" foo=bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
-  'foo1 = "bar1=foo1" foo=bar' => array('foo1' => 'bar1=foo1', 'foo' => 'bar'),
-  'foo1= \'bar1 foo1\'    foo  =     bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
-  'foo1=\'bar1=foo1\' foo = bar' => array('foo1' => 'bar1=foo1', 'foo' => 'bar'),
-  'foo1=  bar1 foo1 foo=bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
-  'foo1="l\'autre" foo=bar' => array('foo1' => 'l\'autre', 'foo' => 'bar'),
-  'foo1="l"autre" foo=bar' => array('foo1' => 'l"autre', 'foo' => 'bar'),
-  'foo_1=bar_1' => array('foo_1' => 'bar_1'),
-  'data-foo=bar' => array('data-foo' => 'bar'),
-  'data-foo-bar=baz' => array('data-foo-bar' => 'baz'),
+    'foo=bar' => array('foo' => 'bar'),
+    'foo1=bar1 foo=bar   ' => array('foo1' => 'bar1', 'foo' => 'bar'),
+    'foo1="bar1 foo1"' => array('foo1' => 'bar1 foo1'),
+    'foo1="bar1 foo1" foo=bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
+    'foo1 = "bar1=foo1" foo=bar' => array('foo1' => 'bar1=foo1', 'foo' => 'bar'),
+    'foo1= \'bar1 foo1\'    foo  =     bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
+    'foo1=\'bar1=foo1\' foo = bar' => array('foo1' => 'bar1=foo1', 'foo' => 'bar'),
+    'foo1=  bar1 foo1 foo=bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
+    'foo1="l\'autre" foo=bar' => array('foo1' => 'l\'autre', 'foo' => 'bar'),
+    'foo1="l"autre" foo=bar' => array('foo1' => 'l"autre', 'foo' => 'bar'),
+    'foo_1=bar_1' => array('foo_1' => 'bar_1'),
+    'data-foo=bar' => array('data-foo' => 'bar'),
+    'data-foo-bar=baz' => array('data-foo-bar' => 'baz'),
 );
 
-foreach ($tests as $string => $attributes)
-{
-  $t->is(sfToolkit::stringToArray($string), $attributes, '->stringToArray()');
+foreach ($tests as $string => $attributes) {
+    $t->is(sfToolkit::stringToArray($string), $attributes, '->stringToArray()');
 }
 
 // ::isUTF8()
@@ -46,34 +45,28 @@ $t->is(sfToolkit::isUTF8($string), true, '::isUTF8() can operate on very large s
 
 // ::literalize()
 $t->diag('::literalize()');
-foreach (array('true', 'on', '+', 'yes') as $param)
-{
-  $t->is(sfToolkit::literalize($param), true, sprintf('::literalize() returns true with "%s"', $param));
-  if (strtoupper($param) != $param)
-  {
-    $t->is(sfToolkit::literalize(strtoupper($param)), true, sprintf('::literalize() returns true with "%s"', strtoupper($param)));
-  }
-  $t->is(sfToolkit::literalize(' '.$param.' '), true, sprintf('::literalize() returns true with "%s"', ' '.$param.' '));
+foreach (array('true', 'on', '+', 'yes') as $param) {
+    $t->is(sfToolkit::literalize($param), true, sprintf('::literalize() returns true with "%s"', $param));
+    if (strtoupper($param) != $param) {
+        $t->is(sfToolkit::literalize(strtoupper($param)), true, sprintf('::literalize() returns true with "%s"', strtoupper($param)));
+    }
+    $t->is(sfToolkit::literalize(' '.$param.' '), true, sprintf('::literalize() returns true with "%s"', ' '.$param.' '));
 }
 
-foreach (array('false', 'off', '-', 'no') as $param)
-{
-  $t->is(sfToolkit::literalize($param), false, sprintf('::literalize() returns false with "%s"', $param));
-  if (strtoupper($param) != $param)
-  {
-    $t->is(sfToolkit::literalize(strtoupper($param)), false, sprintf('::literalize() returns false with "%s"', strtoupper($param)));
-  }
-  $t->is(sfToolkit::literalize(' '.$param.' '), false, sprintf('::literalize() returns false with "%s"', ' '.$param.' '));
+foreach (array('false', 'off', '-', 'no') as $param) {
+    $t->is(sfToolkit::literalize($param), false, sprintf('::literalize() returns false with "%s"', $param));
+    if (strtoupper($param) != $param) {
+        $t->is(sfToolkit::literalize(strtoupper($param)), false, sprintf('::literalize() returns false with "%s"', strtoupper($param)));
+    }
+    $t->is(sfToolkit::literalize(' '.$param.' '), false, sprintf('::literalize() returns false with "%s"', ' '.$param.' '));
 }
 
-foreach (array('null', '~', '') as $param)
-{
-  $t->is(sfToolkit::literalize($param), null, sprintf('::literalize() returns null with "%s"', $param));
-  if (strtoupper($param) != $param)
-  {
-    $t->is(sfToolkit::literalize(strtoupper($param)), null, sprintf('::literalize() returns null with "%s"', strtoupper($param)));
-  }
-  $t->is(sfToolkit::literalize(' '.$param.' '), null, sprintf('::literalize() returns null with "%s"', ' '.$param.' '));
+foreach (array('null', '~', '') as $param) {
+    $t->is(sfToolkit::literalize($param), null, sprintf('::literalize() returns null with "%s"', $param));
+    if (strtoupper($param) != $param) {
+        $t->is(sfToolkit::literalize(strtoupper($param)), null, sprintf('::literalize() returns null with "%s"', strtoupper($param)));
+    }
+    $t->is(sfToolkit::literalize(' '.$param.' '), null, sprintf('::literalize() returns null with "%s"', ' '.$param.' '));
 }
 
 // ::replaceConstants()
@@ -100,7 +93,7 @@ $t->is(sfToolkit::isPathAbsolute('..\\test'), false, '::isPathAbsolute() returns
 // ::stripComments()
 $t->diag('::stripComments()');
 
-$php = <<<EOF
+$php = <<<'EOF'
 <?php
 
 # A perl like comment
@@ -110,22 +103,21 @@ comment
 on several lines
 */
 
-\$i = 1; // A comment on a PHP line
+$i = 1; // A comment on a PHP line
 EOF;
 
 $stripped_php = '<?php $i = 1; ';
 
 $t->is(preg_replace('/\s*(\r?\n)+/', ' ', sfToolkit::stripComments($php)), $stripped_php, '::stripComments() strip all comments from a php string');
 
-$php = <<<EOF
+$php = <<<'EOF'
 <?php
-  \$pluginDirs = '/*/modules/lib/helper';
-  \$pluginDirs = '/*/lib/helper';
+  $pluginDirs = '/*/modules/lib/helper';
+  $pluginDirs = '/*/lib/helper';
 
 EOF;
 
 $t->is(sfToolkit::stripComments($php), $php, '::stripComments() correctly handles comments within strings');
-
 
 // ::stripslashesDeep()
 $t->diag('::stripslashesDeep()');
@@ -166,38 +158,38 @@ rmdir($tmp_dir);
 // ::arrayDeepMerge()
 $t->diag('::arrayDeepMerge()');
 $t->is(
-  sfToolkit::arrayDeepMerge(array('d' => 'due', 't' => 'tre'), array('d' => 'bis', 'q' => 'quattro')),
-  array('d' => 'bis', 't' => 'tre', 'q' => 'quattro'),
-  '::arrayDeepMerge() merges linear arrays preserving literal keys'
+    sfToolkit::arrayDeepMerge(array('d' => 'due', 't' => 'tre'), array('d' => 'bis', 'q' => 'quattro')),
+    array('d' => 'bis', 't' => 'tre', 'q' => 'quattro'),
+    '::arrayDeepMerge() merges linear arrays preserving literal keys'
 );
 $t->is(
-  sfToolkit::arrayDeepMerge(array('d' => 'due', 't' => 'tre', 'c' => array('c' => 'cinco')), array('d' => array('due', 'bis'), 'q' => 'quattro', 'c' => array('c' => 'cinque', 'c2' => 'cinco'))),
-  array('d' => array('due', 'bis'), 't' => 'tre', 'q' => 'quattro', 'c' => array('c' => 'cinque', 'c2' => 'cinco')),
-  '::arrayDeepMerge() recursively merges arrays preserving literal keys'
+    sfToolkit::arrayDeepMerge(array('d' => 'due', 't' => 'tre', 'c' => array('c' => 'cinco')), array('d' => array('due', 'bis'), 'q' => 'quattro', 'c' => array('c' => 'cinque', 'c2' => 'cinco'))),
+    array('d' => array('due', 'bis'), 't' => 'tre', 'q' => 'quattro', 'c' => array('c' => 'cinque', 'c2' => 'cinco')),
+    '::arrayDeepMerge() recursively merges arrays preserving literal keys'
 );
 $t->is(
-  sfToolkit::arrayDeepMerge(array(2 => 'due', 3 => 'tre'), array(2 => 'bis', 4 => 'quattro')),
-  array(2 => 'bis', 3 => 'tre', 4 => 'quattro'),
-  '::arrayDeepMerge() merges linear arrays preserving numerical keys'
+    sfToolkit::arrayDeepMerge(array(2 => 'due', 3 => 'tre'), array(2 => 'bis', 4 => 'quattro')),
+    array(2 => 'bis', 3 => 'tre', 4 => 'quattro'),
+    '::arrayDeepMerge() merges linear arrays preserving numerical keys'
 );
 $t->is(
-  sfToolkit::arrayDeepMerge(array(2 => array('due'), 3 => 'tre'), array(2 => array('bis', 'bes'), 4 => 'quattro')),
-  array(2 => array('bis', 'bes'), 3 => 'tre', 4 => 'quattro'),
-  '::arrayDeepMerge() recursively merges arrays preserving numerical keys'
+    sfToolkit::arrayDeepMerge(array(2 => array('due'), 3 => 'tre'), array(2 => array('bis', 'bes'), 4 => 'quattro')),
+    array(2 => array('bis', 'bes'), 3 => 'tre', 4 => 'quattro'),
+    '::arrayDeepMerge() recursively merges arrays preserving numerical keys'
 );
 
 $arr = array(
-  'foobar' => 'foo',
-  'foo' => array(
-    'bar' => array(
-      'baz' => 'foo bar',
+    'foobar' => 'foo',
+    'foo' => array(
+        'bar' => array(
+            'baz' => 'foo bar',
+        ),
     ),
-  ),
-  'bar' => array(
-    'foo',
-    'bar',
-  ),
-  'simple' => 'string',
+    'bar' => array(
+        'foo',
+        'bar',
+    ),
+    'simple' => 'string',
 );
 
 // ::getArrayValueForPath()
@@ -232,24 +224,20 @@ sfToolkit::addIncludePath(__DIR__, 'back');
 $t->is(get_include_path(), $path.PATH_SEPARATOR.__DIR__, '::addIncludePath() moves a path to the end of include_path');
 
 sfToolkit::addIncludePath(array(
-  __DIR__,
-  __DIR__.'/..',
+    __DIR__,
+    __DIR__.'/..',
 ));
 $t->is(get_include_path(), __DIR__.PATH_SEPARATOR.__DIR__.'/..'.PATH_SEPARATOR.$path, '::addIncludePath() adds multiple paths the the front of include_path');
 
 sfToolkit::addIncludePath(array(
-  __DIR__,
-  __DIR__.'/..',
+    __DIR__,
+    __DIR__.'/..',
 ), 'back');
 $t->is(get_include_path(), $path.PATH_SEPARATOR.__DIR__.PATH_SEPARATOR.__DIR__.'/..', '::addIncludePath() adds multiple paths the the back of include_path');
 
-try
-{
-  sfToolkit::addIncludePath(__DIR__, 'foobar');
-  $t->fail('::addIncludePath() throws an exception if position is not valid');
+try {
+    sfToolkit::addIncludePath(__DIR__, 'foobar');
+    $t->fail('::addIncludePath() throws an exception if position is not valid');
+} catch (Exception $e) {
+    $t->pass('::addIncludePath() throws an exception if position is not valid');
 }
-catch (Exception $e)
-{
-  $t->pass('::addIncludePath() throws an exception if position is not valid');
-}
-

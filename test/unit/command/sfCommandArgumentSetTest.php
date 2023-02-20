@@ -3,12 +3,12 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(21);
 
@@ -51,39 +51,32 @@ $argumentSet->addArgument($bar);
 $t->is($argumentSet->getArguments(), array('foo' => $foo, 'bar' => $bar), '->addArgument() adds a sfCommandArgument object');
 
 // arguments must have different names
-try
-{
-  $argumentSet->addArgument($foo1);
-  $t->fail('->addArgument() throws a sfCommandException if another argument is already registered with the same name');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->addArgument() throws a sfCommandException if another argument is already registered with the same name');
+try {
+    $argumentSet->addArgument($foo1);
+    $t->fail('->addArgument() throws a sfCommandException if another argument is already registered with the same name');
+} catch (sfCommandException $e) {
+    $t->pass('->addArgument() throws a sfCommandException if another argument is already registered with the same name');
 }
 
 // cannot add a parameter after an array parameter
 $argumentSet->addArgument(new sfCommandArgument('fooarray', sfCommandArgument::IS_ARRAY));
-try
-{
-  $argumentSet->addArgument(new sfCommandArgument('anotherbar'));
-  $t->fail('->addArgument() throws a sfCommandException if there is an array parameter already registered');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->addArgument() throws a sfCommandException if there is an array parameter already registered');
+
+try {
+    $argumentSet->addArgument(new sfCommandArgument('anotherbar'));
+    $t->fail('->addArgument() throws a sfCommandException if there is an array parameter already registered');
+} catch (sfCommandException $e) {
+    $t->pass('->addArgument() throws a sfCommandException if there is an array parameter already registered');
 }
 
 // cannot add a required argument after an optional one
 $argumentSet = new sfCommandArgumentSet();
 $argumentSet->addArgument($foo);
-try
-{
-  $argumentSet->addArgument($foo2);
-  $t->fail('->addArgument() throws an exception if you try to add a required argument after an optional one');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->addArgument() throws an exception if you try to add a required argument after an optional one');
+
+try {
+    $argumentSet->addArgument($foo2);
+    $t->fail('->addArgument() throws an exception if you try to add a required argument after an optional one');
+} catch (sfCommandException $e) {
+    $t->pass('->addArgument() throws an exception if you try to add a required argument after an optional one');
 }
 
 // ->getArgument()
@@ -91,14 +84,12 @@ $t->diag('->getArgument()');
 $argumentSet = new sfCommandArgumentSet();
 $argumentSet->addArguments(array($foo));
 $t->is($argumentSet->getArgument('foo'), $foo, '->getArgument() returns a sfCommandArgument by its name');
-try
-{
-  $argumentSet->getArgument('bar');
-  $t->fail('->getArgument() throws an exception if the Argument name does not exist');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->getArgument() throws an exception if the Argument name does not exist');
+
+try {
+    $argumentSet->getArgument('bar');
+    $t->fail('->getArgument() throws an exception if the Argument name does not exist');
+} catch (sfCommandException $e) {
+    $t->pass('->getArgument() throws an exception if the Argument name does not exist');
 }
 
 // ->hasArgument()
@@ -128,15 +119,15 @@ $t->is($argumentSet->getArgumentCount(), 2, '->getArgumentCount() returns the nu
 $t->diag('->getDefaults()');
 $argumentSet = new sfCommandArgumentSet();
 $argumentSet->addArguments(array(
-  new sfCommandArgument('foo1', sfCommandArgument::OPTIONAL),
-  new sfCommandArgument('foo2', sfCommandArgument::OPTIONAL, '', 'default'),
-  new sfCommandArgument('foo3', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
-//  new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', array(1, 2)),
+    new sfCommandArgument('foo1', sfCommandArgument::OPTIONAL),
+    new sfCommandArgument('foo2', sfCommandArgument::OPTIONAL, '', 'default'),
+    new sfCommandArgument('foo3', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
+    //  new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', array(1, 2)),
 ));
 $t->is($argumentSet->getDefaults(), array('foo1' => null, 'foo2' => 'default', 'foo3' => array()), '->getDefaults() return the default values for each argument');
 
 $argumentSet = new sfCommandArgumentSet();
 $argumentSet->addArguments(array(
-  new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', array(1, 2)),
+    new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', array(1, 2)),
 ));
 $t->is($argumentSet->getDefaults(), array('foo4' => array(1, 2)), '->getDefaults() return the default values for each argument');

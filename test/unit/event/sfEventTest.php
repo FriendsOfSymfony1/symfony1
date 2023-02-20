@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(11);
 
@@ -46,14 +46,11 @@ $t->is($event['foo'], 'bar', 'sfEvent implements the ArrayAccess interface');
 $event['foo'] = 'foo';
 $t->is($event['foo'], 'foo', 'sfEvent implements the ArrayAccess interface');
 
-try
-{
-  $event['foobar'];
-  $t->fail('::offsetGet() throws an InvalidArgumentException exception when the parameter does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('::offsetGet() throws an InvalidArgumentException exception when the parameter does not exist');
+try {
+    $event['foobar'];
+    $t->fail('::offsetGet() throws an InvalidArgumentException exception when the parameter does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('::offsetGet() throws an InvalidArgumentException exception when the parameter does not exist');
 }
 
 $t->ok(isset($event['foo']), 'sfEvent implements the ArrayAccess interface');

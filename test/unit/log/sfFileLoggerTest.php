@@ -8,29 +8,26 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(7);
 
-require_once(__DIR__.'/../../../lib/util/sfToolkit.class.php');
+require_once __DIR__.'/../../../lib/util/sfToolkit.class.php';
 $file = sys_get_temp_dir().DIRECTORY_SEPARATOR.'sf_log_file.txt';
-if (file_exists($file))
-{
-  unlink($file);
+if (file_exists($file)) {
+    unlink($file);
 }
 
 $dispatcher = new sfEventDispatcher();
 
 // ->initialize()
 $t->diag('->initialize()');
-try
-{
-  $logger = new sfFileLogger($dispatcher);
-  $t->fail('->initialize() parameters must contains a "file" parameter');
-}
-catch (sfConfigurationException $e)
-{
-  $t->pass('->initialize() parameters must contains a "file" parameter');
+
+try {
+    $logger = new sfFileLogger($dispatcher);
+    $t->fail('->initialize() parameters must contains a "file" parameter');
+} catch (sfConfigurationException $e) {
+    $t->pass('->initialize() parameters must contains a "file" parameter');
 }
 
 // ->log()
@@ -45,15 +42,15 @@ $t->like($lines[1], '/bar/', '->log() logs a message to the file');
 
 class TestLogger extends sfFileLogger
 {
-  public function getTimeFormat()
-  {
-    return $this->timeFormat;
-  }
+    public function getTimeFormat()
+    {
+        return $this->timeFormat;
+    }
 
-  protected function getPriority($priority)
-  {
-    return '*'.$priority.'*';
-  }
+    protected function getPriority($priority)
+    {
+        return '*'.$priority.'*';
+    }
 }
 
 // option: format

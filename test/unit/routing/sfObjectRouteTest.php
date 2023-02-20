@@ -8,34 +8,32 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(1);
 
 class Foo
 {
-  public function getid()
-  {
-    return 1;
-  }
+    public function getid()
+    {
+        return 1;
+    }
 }
 
 // simulate Doctrine route
 class ObjectRoute extends sfObjectRoute
 {
-  protected function doConvertObjectToArray($object)
-  {
-    $parameters = array();
-    foreach ($this->getRealVariables() as $variable)
+    protected function doConvertObjectToArray($object)
     {
-      if (method_exists($object, $method = 'get'.$variable))
-      {
-        $parameters[$variable] = $object->$method();
-      }
-    }
+        $parameters = array();
+        foreach ($this->getRealVariables() as $variable) {
+            if (method_exists($object, $method = 'get'.$variable)) {
+                $parameters[$variable] = $object->{$method}();
+            }
+        }
 
-    return $parameters;
-  }
+        return $parameters;
+    }
 }
 
 // ->generate()

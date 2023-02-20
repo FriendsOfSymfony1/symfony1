@@ -7,21 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
-//lazy constant, cause it is so often used in this test
-define("DS", DIRECTORY_SEPARATOR);
+// lazy constant, cause it is so often used in this test
+define('DS', DIRECTORY_SEPARATOR);
 
 class myFilesystem extends sfFilesystem
 {
-  public function calculateRelativeDir($from, $to)
-  {
-    return parent::calculateRelativeDir($from, $to);
-  }
-  public function canonicalizePath($path)
-  {
-    return parent::canonicalizePath($path);
-  }
+    public function calculateRelativeDir($from, $to)
+    {
+        return parent::calculateRelativeDir($from, $to);
+    }
+
+    public function canonicalizePath($path)
+    {
+        return parent::canonicalizePath($path);
+    }
 }
 
 $t = new lime_test(8);
@@ -62,4 +63,3 @@ $t->is($filesystem->calculateRelativeDir($source, $target), 'motherplugin'.DS.'s
 $source = $common.'..'.DS.'web'.DS.'myplugin';
 $target = $common.'lib'.DS.'vendor'.DS.'symfony'.DS.'plugins'.DS.'myplugin'.DS.'web';
 $t->is($filesystem->calculateRelativeDir($source, $target), '..'.DS.'sfproject'.DS.'lib'.DS.'vendor'.DS.'symfony'.DS.'plugins'.DS.'myplugin'.DS.'web', '->calculateRelativeDir() correctly calculates the relative path for dirs that share chars');
-

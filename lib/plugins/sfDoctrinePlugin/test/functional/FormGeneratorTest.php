@@ -3,25 +3,25 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 $app = 'backend';
 $fixtures = 'fixtures';
-require_once(dirname(__FILE__).'/../bootstrap/functional.php');
+
+require_once dirname(__FILE__).'/../bootstrap/functional.php';
 
 $t = new lime_test(41);
 
 $t->diag("Test that these models don't generate forms or filters classes");
 $noFormsOrFilters = array('UserGroup', 'UserPermission', 'GroupPermission');
-foreach ($noFormsOrFilters as $model)
-{
-  $t->is(file_exists(sfConfig::get('sf_lib_dir').'/form/doctrine/'.$model.'Form.class.php'), false);
-  $t->is(file_exists(sfConfig::get('sf_lib_dir').'/form/doctrine/base/Base'.$model.'Form.class.php'), false);
-  $t->is(file_exists(sfConfig::get('sf_lib_dir').'/filter/doctrine/'.$model.'FormFilter.class.php'), false);
-  $t->is(file_exists(sfConfig::get('sf_lib_dir').'/filter/doctrine/base/Base'.$model.'FormFilter.class.php'), false);
+foreach ($noFormsOrFilters as $model) {
+    $t->is(file_exists(sfConfig::get('sf_lib_dir').'/form/doctrine/'.$model.'Form.class.php'), false);
+    $t->is(file_exists(sfConfig::get('sf_lib_dir').'/form/doctrine/base/Base'.$model.'Form.class.php'), false);
+    $t->is(file_exists(sfConfig::get('sf_lib_dir').'/filter/doctrine/'.$model.'FormFilter.class.php'), false);
+    $t->is(file_exists(sfConfig::get('sf_lib_dir').'/filter/doctrine/base/Base'.$model.'FormFilter.class.php'), false);
 }
 
 $t->diag('FormGeneratorTest model should generate forms but not filters');
@@ -84,13 +84,11 @@ $t->is($test->getWidget('author_id')->getOption('model'), 'BlogAuthor');
 $t->is($test->getValidator('author_id')->getOption('model'), 'BlogAuthor');
 
 $t->diag('Check enum primary keys');
-try
-{
-  $test = new ResourceTypeForm();
-  $t->pass('enum primary key widgets work');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->fail('enum primary key widgets work');
-  $t->diag('    '.$e->getMessage());
+
+try {
+    $test = new ResourceTypeForm();
+    $t->pass('enum primary key widgets work');
+} catch (InvalidArgumentException $e) {
+    $t->fail('enum primary key widgets work');
+    $t->diag('    '.$e->getMessage());
 }

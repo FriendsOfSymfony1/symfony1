@@ -8,15 +8,21 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../lib/vendor/lime/lime.php');
-require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaper.class.php');
-require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperGetterDecorator.class.php');
-require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperArrayDecorator.class.php');
-require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperObjectDecorator.class.php');
-require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperIteratorDecorator.class.php');
+require_once __DIR__.'/../../../lib/vendor/lime/lime.php';
 
-require_once(__DIR__.'/../../../lib/helper/EscapingHelper.php');
-require_once(__DIR__.'/../../../lib/config/sfConfig.class.php');
+require_once __DIR__.'/../../../lib/escaper/sfOutputEscaper.class.php';
+
+require_once __DIR__.'/../../../lib/escaper/sfOutputEscaperGetterDecorator.class.php';
+
+require_once __DIR__.'/../../../lib/escaper/sfOutputEscaperArrayDecorator.class.php';
+
+require_once __DIR__.'/../../../lib/escaper/sfOutputEscaperObjectDecorator.class.php';
+
+require_once __DIR__.'/../../../lib/escaper/sfOutputEscaperIteratorDecorator.class.php';
+
+require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
+
+require_once __DIR__.'/../../../lib/config/sfConfig.class.php';
 
 class sfException extends Exception
 {
@@ -28,20 +34,20 @@ $t = new lime_test(8);
 
 class OutputEscaperTest
 {
-  public function __toString()
-  {
-    return $this->getTitle();
-  }
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
 
-  public function getTitle()
-  {
-    return '<strong>escaped!</strong>';
-  }
+    public function getTitle()
+    {
+        return '<strong>escaped!</strong>';
+    }
 
-  public function getTitles()
-  {
-    return array(1, 2, '<strong>escaped!</strong>');
-  }
+    public function getTitles()
+    {
+        return array(1, 2, '<strong>escaped!</strong>');
+    }
 }
 
 $object = new OutputEscaperTest();
@@ -57,15 +63,12 @@ $t->diag('__toString()');
 
 $t->is($escaped->__toString(), '&lt;strong&gt;escaped!&lt;/strong&gt;', 'The escaped object behaves like the real object');
 
-if (class_exists('SimpleXMLElement'))
-{
-  $element = new SimpleXMLElement('<foo>bar</foo>');
-  $escaped = sfOutputEscaper::escape('esc_entities', $element);
-  $t->is((string) $escaped, (string) $element, '->__toString() is compatible with SimpleXMLElement');
-}
-else
-{
-  $t->skip('->__toString() is compatible with SimpleXMLElement');
+if (class_exists('SimpleXMLElement')) {
+    $element = new SimpleXMLElement('<foo>bar</foo>');
+    $escaped = sfOutputEscaper::escape('esc_entities', $element);
+    $t->is((string) $escaped, (string) $element, '->__toString() is compatible with SimpleXMLElement');
+} else {
+    $t->skip('->__toString() is compatible with SimpleXMLElement');
 }
 
 class Foo
@@ -74,11 +77,11 @@ class Foo
 
 class FooCountable implements Countable
 {
-  #[\ReturnTypeWillChange]
-  public function count()
-  {
-    return 2;
-  }
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+        return 2;
+    }
 }
 
 // implements Countable

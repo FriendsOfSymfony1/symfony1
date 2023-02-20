@@ -10,15 +10,15 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach ($articleList as $article): ?>
+    <?php foreach ($articleList as $article) { ?>
     <tr>
-      <td><a href="<?php echo url_for('articles/edit?id='.$article->get('id')) ?>"><?php echo $article->getid() ?></a></td>
-      <td><?php echo $article->getAuthor() ?></td>
-      <td><?php echo $article->getcreated_at() ?></td>
-      <td><?php echo $article->getupdated_at() ?></td>
+      <td><a href="<?php echo url_for('articles/edit?id='.$article->get('id')); ?>"><?php echo $article->getid(); ?></a></td>
+      <td><?php echo $article->getAuthor(); ?></td>
+      <td><?php echo $article->getcreated_at(); ?></td>
+      <td><?php echo $article->getupdated_at(); ?></td>
     </tr>
-    <?php endforeach; ?>
+    <?php } ?>
   </tbody>
 </table>
 
-<a href="<?php echo url_for('articles/create') ?>">Create</a>
+<a href="<?php echo url_for('articles/create'); ?>">Create</a>

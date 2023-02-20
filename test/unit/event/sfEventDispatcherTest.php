@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(19);
 
@@ -26,7 +26,7 @@ $dispatcher->disconnect('bar', 'listenToBarBar');
 $t->is($dispatcher->getListeners('bar'), array('listenToBar'), '->disconnect() disconnects a listener for an event name');
 $t->is($dispatcher->getListeners('barbar'), array('listenToBarBar'), '->disconnect() disconnects a listener for an event name');
 
-$t->ok($dispatcher->disconnect('foobar', 'listen') === false, '->disconnect() returns false if the listener does not exist');
+$t->ok(false === $dispatcher->disconnect('foobar', 'listen'), '->disconnect() returns false if the listener does not exist');
 
 // ->getListeners() ->hasListeners()
 $t->diag('->getListeners() ->hasListeners()');
@@ -94,38 +94,37 @@ $t->is($e->getReturnValue(), '*-foo-*', '->filter() filters a value');
 
 class Listener
 {
-  protected
-    $value = '';
+    protected $value = '';
 
-  function filterFoo(sfEvent $event, $foo)
-  {
-    return "*$foo*";
-  }
+    public function filterFoo(sfEvent $event, $foo)
+    {
+        return "*{$foo}*";
+    }
 
-  function filterFooBis(sfEvent $event, $foo)
-  {
-    return "-$foo-";
-  }
+    public function filterFooBis(sfEvent $event, $foo)
+    {
+        return "-{$foo}-";
+    }
 
-  function listenToFoo(sfEvent $event)
-  {
-    $this->value .= 'listenToFoo';
-  }
+    public function listenToFoo(sfEvent $event)
+    {
+        $this->value .= 'listenToFoo';
+    }
 
-  function listenToFooBis(sfEvent $event)
-  {
-    $this->value .= 'listenToFooBis';
+    public function listenToFooBis(sfEvent $event)
+    {
+        $this->value .= 'listenToFooBis';
 
-    return true;
-  }
+        return true;
+    }
 
-  function getValue()
-  {
-    return $this->value;
-  }
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-  function reset()
-  {
-    $this->value = '';
-  }
+    public function reset()
+    {
+        $this->value = '';
+    }
 }

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(27);
 
@@ -50,14 +50,11 @@ $sc->setParameter('Foo', 'baz1');
 $t->is($sc->getParameter('foo'), 'baz1', '->setParameter() converts the key to lowercase');
 $t->is($sc->getParameter('FOO'), 'baz1', '->getParameter() converts the key to lowercase');
 
-try
-{
-  $sc->getParameter('baba');
-  $t->fail('->getParameter() thrown an InvalidArgumentException if the key does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getParameter() thrown an InvalidArgumentException if the key does not exist');
+try {
+    $sc->getParameter('baba');
+    $t->fail('->getParameter() thrown an InvalidArgumentException if the key does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getParameter() thrown an InvalidArgumentException if the key does not exist');
 }
 
 // ->hasParameter()
@@ -94,31 +91,33 @@ $t->is($sc->getServiceIds(), array('service_container', 'foo', 'bar'), '->getSer
 
 class ProjectServiceContainer extends sfServiceContainer
 {
-  public $__bar, $__foo_bar, $__foo_baz;
+    public $__bar;
+    public $__foo_bar;
+    public $__foo_baz;
 
-  public function __construct()
-  {
-    parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-    $this->__bar = new stdClass();
-    $this->__foo_bar = new stdClass();
-    $this->__foo_baz = new stdClass();
-  }
+        $this->__bar = new stdClass();
+        $this->__foo_bar = new stdClass();
+        $this->__foo_baz = new stdClass();
+    }
 
-  protected function getBarService()
-  {
-    return $this->__bar;
-  }
+    protected function getBarService()
+    {
+        return $this->__bar;
+    }
 
-  protected function getFooBarService()
-  {
-    return $this->__foo_bar;
-  }
+    protected function getFooBarService()
+    {
+        return $this->__foo_bar;
+    }
 
-  protected function getFoo_BazService()
-  {
-    return $this->__foo_baz;
-  }
+    protected function getFoo_BazService()
+    {
+        return $this->__foo_baz;
+    }
 }
 
 $sc = new ProjectServiceContainer();
@@ -128,14 +127,11 @@ $t->ok($sc->hasService('bar'), '->hasService() returns true if the service has b
 $sc->setService('bar', $bar = new stdClass());
 $t->is(spl_object_hash($sc->getService('bar')), spl_object_hash($bar), '->getService() prefers to return a service defined with setService() than one defined with a getXXXService() method');
 
-try
-{
-  $sc->getService('baba');
-  $t->fail('->getService() thrown an InvalidArgumentException if the service does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getService() thrown an InvalidArgumentException if the service does not exist');
+try {
+    $sc->getService('baba');
+    $t->fail('->getService() thrown an InvalidArgumentException if the service does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getService() thrown an InvalidArgumentException if the service does not exist');
 }
 
 $t->is(spl_object_hash($sc->getService('foo_bar')), spl_object_hash($sc->__foo_bar), '->getService() camelizes the service id when looking for a method');

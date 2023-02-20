@@ -3,34 +3,46 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 $t = new lime_test(19);
 
 class myView extends sfView
 {
-  function execute() {}
-  function configure() {}
-  function getEngine() {}
-  function render() {}
+    public function execute()
+    {
+    }
+
+    public function configure()
+    {
+    }
+
+    public function getEngine()
+    {
+    }
+
+    public function render()
+    {
+    }
 }
 
 class configuredView extends myView
 {
-  static public $isDecorated = false;
+    public static $isDecorated = false;
 
-  function initialize($context, $moduleName, $actionName, $viewName)
-  {
-    $this->setDecorator(self::$isDecorated);
+    public function initialize($context, $moduleName, $actionName, $viewName)
+    {
+        $this->setDecorator(self::$isDecorated);
 
-    parent::initialize($context, $moduleName, $actionName, $viewName);
-  }
+        parent::initialize($context, $moduleName, $actionName, $viewName);
+    }
 }
 
 $context = sfContext::getInstance(array('request' => 'sfWebRequest', 'response' => 'sfWebResponse'));
@@ -63,19 +75,19 @@ $t->is($view->isDecorator(), true, '->initialize() uses the format to configure 
 $t->is($context->getResponse()->getContentType(), 'application/javascript', '->initialize() uses the format to configure the view');
 
 // parameter holder proxy
-require_once($_test_dir.'/unit/sfParameterHolderTest.class.php');
+require_once $_test_dir.'/unit/sfParameterHolderTest.class.php';
 $pht = new sfParameterHolderProxyTest($t);
 $pht->launchTests($view, 'parameter');
 
 // new methods via sfEventDispatcher
-require_once($_test_dir.'/unit/sfEventDispatcherTest.class.php');
+require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
 $dispatcherTest = new sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($context->getEventDispatcher(), $view, 'view');
 
 function configure_format(sfEvent $event)
 {
-  $event->getSubject()->setDecorator(true);
-  $event['response']->setContentType('application/javascript');
+    $event->getSubject()->setDecorator(true);
+    $event['response']->setContentType('application/javascript');
 
-  return true;
+    return true;
 }

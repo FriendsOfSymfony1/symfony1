@@ -1,1 +1,1 @@
-<span id="page"><?php echo $page ?></span>
+<span id="page"><?php echo $page; ?></span>
