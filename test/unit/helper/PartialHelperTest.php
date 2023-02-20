@@ -3,14 +3,16 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
-require_once(__DIR__.'/../../../lib/helper/PartialHelper.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once $_test_dir.'/unit/sfContextMock.class.php';
+
+require_once __DIR__.'/../../../lib/helper/PartialHelper.php';
 
 // Fixme: make this test more beautiful and extend it
 
@@ -18,18 +20,18 @@ $t = new lime_test(9);
 
 class MyTestPartialView extends sfPartialView
 {
-  public function render()
-  {
-    return '==RENDERED==';
-  }
+    public function render()
+    {
+        return '==RENDERED==';
+    }
 
-  public function initialize($context, $moduleName, $actionName, $viewName)
-  {
-  }
+    public function initialize($context, $moduleName, $actionName, $viewName)
+    {
+    }
 
-  public function setPartialVars(array $partialVars)
-  {
-  }
+    public function setPartialVars(array $partialVars)
+    {
+    }
 }
 
 $t->diag('get_partial()');

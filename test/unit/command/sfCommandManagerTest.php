@@ -3,12 +3,12 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(41);
 
@@ -45,40 +45,40 @@ $t->is($manager->getOptionSet(), $optionSet, '->setOptionSet() sets the manager 
 // ->process()
 $t->diag('->process()');
 $argumentSet = new sfCommandArgumentSet(array(
-  new sfCommandArgument('foo1', sfCommandArgument::REQUIRED),
-  new sfCommandArgument('foo2', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
+    new sfCommandArgument('foo1', sfCommandArgument::REQUIRED),
+    new sfCommandArgument('foo2', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
 ));
 $optionSet = new sfCommandOptionSet(array(
-  new sfCommandOption('foo1', null, sfCommandOption::PARAMETER_NONE),
-  new sfCommandOption('foo2', 'f', sfCommandOption::PARAMETER_NONE),
-  new sfCommandOption('foo3', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default3'),
-  new sfCommandOption('foo4', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default4'),
-  new sfCommandOption('foo5', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default5'),
-  new sfCommandOption('foo6', 'r', sfCommandOption::PARAMETER_REQUIRED, '', 'default5'),
-  new sfCommandOption('foo7', 't', sfCommandOption::PARAMETER_REQUIRED, '', 'default7'),
-  new sfCommandOption('foo8', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY),
-  new sfCommandOption('foo9', 's', sfCommandOption::PARAMETER_OPTIONAL, '', 'default9'),
-  new sfCommandOption('foo10', 'u', sfCommandOption::PARAMETER_OPTIONAL, '', 'default10'),
-  new sfCommandOption('foo11', 'v', sfCommandOption::PARAMETER_OPTIONAL, '', 'default11'),
+    new sfCommandOption('foo1', null, sfCommandOption::PARAMETER_NONE),
+    new sfCommandOption('foo2', 'f', sfCommandOption::PARAMETER_NONE),
+    new sfCommandOption('foo3', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default3'),
+    new sfCommandOption('foo4', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default4'),
+    new sfCommandOption('foo5', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default5'),
+    new sfCommandOption('foo6', 'r', sfCommandOption::PARAMETER_REQUIRED, '', 'default5'),
+    new sfCommandOption('foo7', 't', sfCommandOption::PARAMETER_REQUIRED, '', 'default7'),
+    new sfCommandOption('foo8', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY),
+    new sfCommandOption('foo9', 's', sfCommandOption::PARAMETER_OPTIONAL, '', 'default9'),
+    new sfCommandOption('foo10', 'u', sfCommandOption::PARAMETER_OPTIONAL, '', 'default10'),
+    new sfCommandOption('foo11', 'v', sfCommandOption::PARAMETER_OPTIONAL, '', 'default11'),
 ));
 $manager = new sfCommandManager($argumentSet, $optionSet);
 $manager->process('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 foo1 foo2 foo3 foo4');
 $options = array(
-  'foo1' => true,
-  'foo2' => true,
-  'foo3' => 'default3',
-  'foo4' => 'foo4',
-  'foo5' => 'foo5',
-  'foo6' => 'foo6 foo6',
-  'foo7' => 'foo7',
-  'foo8' => array('foo', 'bar'),
-  'foo9' => 'default9',
-  'foo10' => 'foo10',
-  'foo11' => 'foo11',
+    'foo1' => true,
+    'foo2' => true,
+    'foo3' => 'default3',
+    'foo4' => 'foo4',
+    'foo5' => 'foo5',
+    'foo6' => 'foo6 foo6',
+    'foo7' => 'foo7',
+    'foo8' => array('foo', 'bar'),
+    'foo9' => 'default9',
+    'foo10' => 'foo10',
+    'foo11' => 'foo11',
 );
 $arguments = array(
-  'foo1' => 'foo1',
-  'foo2' => array('foo2', 'foo3', 'foo4')
+    'foo1' => 'foo1',
+    'foo2' => array('foo2', 'foo3', 'foo4'),
 );
 $t->ok($manager->isValid(), '->process() processes CLI options');
 $t->is($manager->getOptionValues(), $options, '->process() processes CLI options');
@@ -86,36 +86,28 @@ $t->is($manager->getArgumentValues(), $arguments, '->process() processes CLI opt
 
 // ->getOptionValue()
 $t->diag('->getOptionValue()');
-foreach ($options as $name => $value)
-{
-  $t->is($manager->getOptionValue($name), $value, '->getOptionValue() returns the value for the given option name');
+foreach ($options as $name => $value) {
+    $t->is($manager->getOptionValue($name), $value, '->getOptionValue() returns the value for the given option name');
 }
 
-try
-{
-  $manager->getOptionValue('nonexistant');
-  $t->fail('->getOptionValue() throws a sfCommandException if the option name does not exist');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->getOptionValue() throws a sfCommandException if the option name does not exist');
+try {
+    $manager->getOptionValue('nonexistant');
+    $t->fail('->getOptionValue() throws a sfCommandException if the option name does not exist');
+} catch (sfCommandException $e) {
+    $t->pass('->getOptionValue() throws a sfCommandException if the option name does not exist');
 }
 
 // ->getArgumentValue()
 $t->diag('->getArgumentValue()');
-foreach ($arguments as $name => $value)
-{
-  $t->is($manager->getArgumentValue($name), $value, '->getArgumentValue() returns the value for the given argument name');
+foreach ($arguments as $name => $value) {
+    $t->is($manager->getArgumentValue($name), $value, '->getArgumentValue() returns the value for the given argument name');
 }
 
-try
-{
-  $manager->getArgumentValue('nonexistant');
-  $t->fail('->getArgumentValue() throws a sfCommandException if the argument name does not exist');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->getArgumentValue() throws a sfCommandException if the argument name does not exist');
+try {
+    $manager->getArgumentValue('nonexistant');
+    $t->fail('->getArgumentValue() throws a sfCommandException if the argument name does not exist');
+} catch (sfCommandException $e) {
+    $t->pass('->getArgumentValue() throws a sfCommandException if the argument name does not exist');
 }
 
 // ->isValid() ->getErrors()

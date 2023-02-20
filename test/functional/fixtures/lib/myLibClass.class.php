@@ -2,8 +2,8 @@
 
 class myLibClass
 {
-  static public function ping()
-  {
-    return 'pong';
-  }
+    public static function ping()
+    {
+        return 'pong';
+    }
 }

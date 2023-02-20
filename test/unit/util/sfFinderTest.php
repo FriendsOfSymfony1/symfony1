@@ -8,92 +8,92 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 class my_lime_test extends lime_test
 {
-  public function arrays_are_equal($a, $b, $message)
-  {
-    sort($a);
-    sort($b);
+    public function arrays_are_equal($a, $b, $message)
+    {
+        sort($a);
+        sort($b);
 
-    return $this->is($a, $b, $message);
-  }
+        return $this->is($a, $b, $message);
+    }
 }
 $t = new my_lime_test(39);
 
-require_once($_test_dir.'/../lib/util/sfFinder.class.php');
+require_once $_test_dir.'/../lib/util/sfFinder.class.php';
 
 $fixtureDir = __DIR__.'/fixtures/finder';
 $phpFiles = array(
-  'dir1/dir2/file21.php',
-  'dir1/file12.php',
+    'dir1/dir2/file21.php',
+    'dir1/file12.php',
 );
 $txtFiles = array(
-  'FILE5.txt',
-  'file2.txt',
+    'FILE5.txt',
+    'file2.txt',
 );
 $regexpFiles = array(
-  'dir1/dir2/file21.php',
-  'dir1/dir2/file22',
-  'dir1/dir2/file23',
-  'dir1/dir2/file24',
-  'file2.txt',
+    'dir1/dir2/file21.php',
+    'dir1/dir2/file22',
+    'dir1/dir2/file23',
+    'dir1/dir2/file24',
+    'file2.txt',
 );
 $regexpWithModifierFiles = array(
-  'dir1/dir2/file21.php',
-  'dir1/dir2/file22',
-  'dir1/dir2/file23',
-  'dir1/dir2/file24',
-  'FILE5.txt',
-  'file2.txt',
+    'dir1/dir2/file21.php',
+    'dir1/dir2/file22',
+    'dir1/dir2/file23',
+    'dir1/dir2/file24',
+    'FILE5.txt',
+    'file2.txt',
 );
 $allFiles = array(
-  'dir1/dir2/dir3/file31',
-  'dir1/dir2/dir4/file41',
-  'dir1/dir2/file21.php',
-  'dir1/dir2/file22',
-  'dir1/dir2/file23',
-  'dir1/dir2/file24',
-  'dir1/file11',
-  'dir1/file12.php',
-  'dir1/file13',
-  'file1',
-  'FILE5.txt',
-  'file2.txt',
+    'dir1/dir2/dir3/file31',
+    'dir1/dir2/dir4/file41',
+    'dir1/dir2/file21.php',
+    'dir1/dir2/file22',
+    'dir1/dir2/file23',
+    'dir1/dir2/file24',
+    'dir1/file11',
+    'dir1/file12.php',
+    'dir1/file13',
+    'file1',
+    'FILE5.txt',
+    'file2.txt',
 );
 $minDepth1Files = array(
-  'dir1/dir2/dir3/file31',
-  'dir1/dir2/dir4/file41',
-  'dir1/dir2/file21.php',
-  'dir1/dir2/file22',
-  'dir1/dir2/file23',
-  'dir1/dir2/file24',
-  'dir1/file11',
-  'dir1/file12.php',
-  'dir1/file13',
+    'dir1/dir2/dir3/file31',
+    'dir1/dir2/dir4/file41',
+    'dir1/dir2/file21.php',
+    'dir1/dir2/file22',
+    'dir1/dir2/file23',
+    'dir1/dir2/file24',
+    'dir1/file11',
+    'dir1/file12.php',
+    'dir1/file13',
 );
 $maxDepth2Files = array(
-  'dir1/dir2/file21.php',
-  'dir1/dir2/file22',
-  'dir1/dir2/file23',
-  'dir1/dir2/file24',
-  'dir1/file11',
-  'dir1/file12.php',
-  'dir1/file13',
-  'file1',
-  'FILE5.txt',
-  'file2.txt',
+    'dir1/dir2/file21.php',
+    'dir1/dir2/file22',
+    'dir1/dir2/file23',
+    'dir1/dir2/file24',
+    'dir1/file11',
+    'dir1/file12.php',
+    'dir1/file13',
+    'file1',
+    'FILE5.txt',
+    'file2.txt',
 );
 $anyWithoutDir2 = array(
-  'dir1',
-  'dir1/dir2',
-  'dir1/file11',
-  'dir1/file12.php',
-  'dir1/file13',
-  'file1',
-  'FILE5.txt',
-  'file2.txt',
+    'dir1',
+    'dir1/dir2',
+    'dir1/file11',
+    'dir1/file12.php',
+    'dir1/file13',
+    'file1',
+    'FILE5.txt',
+    'file2.txt',
 );
 
 // ::type()

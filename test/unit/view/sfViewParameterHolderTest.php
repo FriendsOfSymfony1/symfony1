@@ -3,34 +3,35 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 $t = new lime_test(21);
 
 define('ESC_SPECIALCHARS', 'esc_specialchars');
 function esc_specialchars($value)
 {
-  return "-ESCAPED-$value-ESCAPED-";
+    return "-ESCAPED-{$value}-ESCAPED-";
 }
 
 define('ESC_RAW', 'esc_raw');
 function esc_raw($value)
 {
-  return $value;
+    return $value;
 }
 
 class myRequest
 {
-  public function getParameterHolder()
-  {
-    return new sfParameterHolder();
-  }
+    public function getParameterHolder()
+    {
+        return new sfParameterHolder();
+    }
 }
 
 $context = sfContext::getInstance();
@@ -69,15 +70,12 @@ $t->is($p->getEscapingMethod(), ESC_RAW, '->setEscapingMethod() changes the esca
 $p->setEscapingMethod('');
 $t->is($p->getEscapingMethod(), '', '->getEscapingMethod() returns an empty value if the method is empty');
 
-try
-{
-  $p->setEscapingMethod('nonexistant');
-  $p->getEscapingMethod();
-  $t->fail('->getEscapingMethod() throws an InvalidArgumentException if the escaping method does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getEscapingMethod() throws an InvalidArgumentException if the escaping method does not exist');
+try {
+    $p->setEscapingMethod('nonexistant');
+    $p->getEscapingMethod();
+    $t->fail('->getEscapingMethod() throws an InvalidArgumentException if the escaping method does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getEscapingMethod() throws an InvalidArgumentException if the escaping method does not exist');
 }
 
 // ->toArray()
@@ -89,15 +87,12 @@ $t->is($a['foo'], 'bar', '->toArray() returns an array representation of the par
 // escaping strategies
 $p = new sfViewParameterHolder(new sfEventDispatcher(), array('foo' => 'bar'));
 
-try
-{
-  $p->setEscaping('null');
-  $p->toArray();
-  $t->fail('->toArray() throws an InvalidArgumentException if the escaping strategy does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->toArray() throws an InvalidArgumentException if the escaping strategy does not exist');
+try {
+    $p->setEscaping('null');
+    $p->toArray();
+    $t->fail('->toArray() throws an InvalidArgumentException if the escaping strategy does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->toArray() throws an InvalidArgumentException if the escaping strategy does not exist');
 }
 
 $t->diag('Escaping strategy to on');

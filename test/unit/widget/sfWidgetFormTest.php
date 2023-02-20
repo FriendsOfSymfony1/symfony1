@@ -8,21 +8,21 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(35);
 
 class MyWidgetForm extends sfWidgetForm
 {
-  public function render($name, $value = null, $attributes = array(), $errors = array())
-  {
-    return $this->renderTag('input', array_merge(array('name' => $name), $attributes)).$this->renderContentTag('textarea', null, array_merge(array('name' => $name), $attributes));
-  }
+    public function render($name, $value = null, $attributes = array(), $errors = array())
+    {
+        return $this->renderTag('input', array_merge(array('name' => $name), $attributes)).$this->renderContentTag('textarea', null, array_merge(array('name' => $name), $attributes));
+    }
 
-  public function generateId($name, $value = null)
-  {
-    return parent::generateId($name, $value);
-  }
+    public function generateId($name, $value = null)
+    {
+        return parent::generateId($name, $value);
+    }
 }
 
 // __construct()

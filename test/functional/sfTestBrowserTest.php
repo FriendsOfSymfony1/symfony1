@@ -9,18 +9,18 @@
  */
 
 $app = 'frontend';
-if (!include(__DIR__.'/../bootstrap/functional.php'))
-{
-  return;
+if (!include(__DIR__.'/../bootstrap/functional.php')) {
+    return;
 }
 
 class TestBrowser extends sfTestBrowser
 {
-  public $events = array();
-  public function listen(sfEvent $event)
-  {
-    $this->events[] = $event;
-  }
+    public $events = array();
+
+    public function listen(sfEvent $event)
+    {
+        $this->events[] = $event;
+    }
 }
 
 $b = new TestBrowser();
@@ -105,14 +105,11 @@ $b->
   end()
 ;
 
-try
-{
-  $b->with('response')->checkElement('h1', 'text');
-  $b->test()->fail('The DOM is not accessible if the response content type is not HTML');
-}
-catch (LogicException $e)
-{
-  $b->test()->pass('The DOM is not accessible if the response content type is not HTML');
+try {
+    $b->with('response')->checkElement('h1', 'text');
+    $b->test()->fail('The DOM is not accessible if the response content type is not HTML');
+} catch (LogicException $e) {
+    $b->test()->pass('The DOM is not accessible if the response content type is not HTML');
 }
 
 // check response headers
@@ -239,25 +236,18 @@ $b->
 ;
 
 $b
-  ->getAndCheck('browser', 'redirect1', null, 302)
-
-  ->followRedirect()
-
-  ->with('request')->begin()
+    ->getAndCheck('browser', 'redirect1', null, 302)
+    ->followRedirect()
+    ->with('request')->begin()
     ->isParameter('module', 'browser')
     ->isParameter('action', 'redirectTarget1')
-  ->end()
-
-  ->with('response')->isStatusCode(200)
-
-  ->getAndCheck('browser', 'redirect2', null, 302)
-
-  ->followRedirect()
-
-  ->with('request')->begin()
+    ->end()
+    ->with('response')->isStatusCode(200)
+    ->getAndCheck('browser', 'redirect2', null, 302)
+    ->followRedirect()
+    ->with('request')->begin()
     ->isParameter('module', 'browser')
     ->isParameter('action', 'redirectTarget2')
-  ->end()
-
-  ->with('response')->isStatusCode(200)
+    ->end()
+    ->with('response')->isStatusCode(200)
 ;

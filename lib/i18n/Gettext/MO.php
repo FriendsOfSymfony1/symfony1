@@ -15,50 +15,46 @@
 // $Id$
 
 /**
- * File::Gettext::MO
+ * File::Gettext::MO.
  *
  * @author      Michael Wallner <mike@php.net>
  * @license     PHP License
  */
-
 require_once __DIR__.'/TGettext.class.php';
 
 /**
- * File_Gettext_MO
+ * File_Gettext_MO.
  *
  * GNU MO file reader and writer.
  *
  * @author      Michael Wallner <mike@php.net>
+ *
  * @version     $Revision: 9856 $
- * @access      public
- * @package System.I18N.core
  */
 class TGettext_MO extends TGettext
 {
     /**
-     * file handle
+     * file handle.
      *
-     * @access  private
-     * @var     resource
+     * @var resource
      */
-    protected $_handle = null;
+    protected $_handle;
 
     /**
-     * big endianess
+     * big endianess.
      *
      * Whether to write with big endian byte order.
      *
-     * @access  public
-     * @var     bool
+     * @var bool
      */
     protected $writeBigEndian = false;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @access  public
-     * @return  object      File_Gettext_MO
-     * @param   string      $file   path to GNU MO file
+     * @param string $file path to GNU MO file
+     *
+     * @return object File_Gettext_MO
      */
     public function __construct($file = '')
     {
@@ -66,92 +62,95 @@ class TGettext_MO extends TGettext
     }
 
     /**
-     * _read
+     * _read.
      *
-     * @access  private
-     * @return  mixed
-     * @param   int     $bytes
+     * @param int $bytes
+     *
+     * @return mixed
      */
-    function _read($bytes = 1)
+    public function _read($bytes = 1)
     {
         if (0 < $bytes = abs($bytes)) {
             return fread($this->_handle, $bytes);
         }
+
         return null;
     }
 
     /**
-     * _readInt
+     * _readInt.
      *
-     * @access  private
-     * @return  int
-     * @param   bool    $bigendian
+     * @param bool $bigendian
+     *
+     * @return int
      */
-    function _readInt($bigendian = false)
+    public function _readInt($bigendian = false)
     {
-		//unpack returns a reference????
-		$unpacked = unpack($bigendian ? 'N' : 'V', $this->_read(4));
+        // unpack returns a reference????
+        $unpacked = unpack($bigendian ? 'N' : 'V', $this->_read(4));
+
         return array_shift($unpacked);
     }
 
     /**
-     * _writeInt
+     * _writeInt.
      *
-     * @access  private
-     * @return  int
-     * @param   int     $int
+     * @param int $int
+     *
+     * @return int
      */
-    function _writeInt($int)
+    public function _writeInt($int)
     {
         return $this->_write(pack($this->writeBigEndian ? 'N' : 'V', (int) $int));
     }
 
     /**
-     * _write
+     * _write.
      *
-     * @access  private
-     * @return  int
-     * @param   string  $data
+     * @param string $data
+     *
+     * @return int
      */
-    function _write($data)
+    public function _write($data)
     {
         return fwrite($this->_handle, $data);
     }
 
     /**
-     * _writeStr
+     * _writeStr.
      *
-     * @access  private
-     * @return  int
-     * @param   string  $string
+     * @param string $string
+     *
+     * @return int
      */
-    function _writeStr($string)
+    public function _writeStr($string)
     {
-        return $this->_write($string . "\0");
+        return $this->_write($string."\0");
     }
 
     /**
-     * _readStr
+     * _readStr.
      *
-     * @access  private
-     * @return  string
-     * @param   array   $params     associative array with offset and length
-     *                              of the string
+     * @param array $params associative array with offset and length
+     *                      of the string
+     *
+     * @return string
      */
-    function _readStr($params)
+    public function _readStr($params)
     {
         fseek($this->_handle, $params['offset']);
+
         return $this->_read($params['length']);
     }
 
     /**
-     * Load MO file
+     * Load MO file.
      *
-     * @access   public
-     * @return   mixed   Returns true on success or PEAR_Error on failure.
-     * @param    string  $file
+     * @param string $file
+     *
+     * @return mixed returns true on success or PEAR_Error on failure
      */
-    function load($file = null)
+    public function load($file = null)
     {
         if (!isset($file)) {
             $file = $this->file;
@@ -164,22 +163,25 @@ class TGettext_MO extends TGettext
         // lock MO file shared
         if (!@flock($this->_handle, LOCK_SH)) {
             @fclose($this->_handle);
+
             return false;
         }
 
         // read (part of) magic number from MO file header and define endianess
 
-		//unpack returns a reference????
-		$unpacked = unpack('c', $this->_read(4));
-        switch ($magic = array_shift($unpacked))
-        {
+        // unpack returns a reference????
+        $unpacked = unpack('c', $this->_read(4));
+
+        switch ($magic = array_shift($unpacked)) {
             case -34:
                 $be = false;
-            break;
+
+                break;
 
             case -107:
                 $be = true;
-            break;
+
+                break;
 
             default:
                 return false;
@@ -202,10 +204,10 @@ class TGettext_MO extends TGettext
         fseek($this->_handle, $offset_original);
         // read lengths and offsets of msgids
         $original = array();
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $original[$i] = array(
                 'length' => $this->_readInt($be),
-                'offset' => $this->_readInt($be)
+                'offset' => $this->_readInt($be),
             );
         }
 
@@ -213,15 +215,15 @@ class TGettext_MO extends TGettext
         fseek($this->_handle, $offset_translat);
         // read lengths and offsets of msgstrs
         $translat = array();
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $translat[$i] = array(
                 'length' => $this->_readInt($be),
-                'offset' => $this->_readInt($be)
+                'offset' => $this->_readInt($be),
             );
         }
 
         // read all
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $this->strings[$this->_readStr($original[$i])] =
                 $this->_readStr($translat[$i]);
         }
@@ -241,13 +243,13 @@ class TGettext_MO extends TGettext
     }
 
     /**
-     * Save MO file
+     * Save MO file.
      *
-     * @access  public
-     * @return  mixed   Returns true on success or PEAR_Error on failure.
-     * @param   string  $file
+     * @param string $file
+     *
+     * @return mixed returns true on success or PEAR_Error on failure
      */
-    function save($file = null)
+    public function save($file = null)
     {
         if (!isset($file)) {
             $file = $this->file;
@@ -260,14 +262,15 @@ class TGettext_MO extends TGettext
         // lock MO file exclusively
         if (!@flock($this->_handle, LOCK_EX)) {
             @fclose($this->_handle);
+
             return false;
         }
 
         // write magic number
         if ($this->writeBigEndian) {
-            $this->_write(pack('c*', 0x95, 0x04, 0x12, 0xde));
+            $this->_write(pack('c*', 0x95, 0x04, 0x12, 0xDE));
         } else {
-            $this->_write(pack('c*', 0xde, 0x12, 0x04, 0x95));
+            $this->_write(pack('c*', 0xDE, 0x12, 0x04, 0x95));
         }
 
         // write file format revision
@@ -296,7 +299,7 @@ class TGettext_MO extends TGettext
         if ($meta) {
             $meta = '';
             foreach ($this->meta as $key => $val) {
-                $meta .= $key . ': ' . $val . "\n";
+                $meta .= $key.': '.$val."\n";
             }
             $strings = array('' => $meta) + $this->strings;
         } else {
@@ -332,6 +335,7 @@ class TGettext_MO extends TGettext
         // done
         @flock($this->_handle, LOCK_UN);
         @fclose($this->_handle);
+
         return true;
     }
 }

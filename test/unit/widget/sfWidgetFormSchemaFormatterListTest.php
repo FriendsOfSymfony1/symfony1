@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(2);
 
@@ -16,7 +16,7 @@ $f = new sfWidgetFormSchemaFormatterList(new sfWidgetFormSchema());
 
 // ->formatRow()
 $t->diag('->formatRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <li>
   label
   <input /><br />help
@@ -27,7 +27,7 @@ $t->is($f->formatRow('label', '<input />', array(), 'help', ''), fix_linebreaks(
 
 // ->formatErrorRow()
 $t->diag('->formatErrorRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <li>
   <ul class="error_list">
     <li>Global error</li>

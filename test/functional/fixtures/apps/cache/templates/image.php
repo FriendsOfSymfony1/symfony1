@@ -1,1 +1,3 @@
-<?php echo $sf_content ?>
+<?php
+
+echo $sf_content;

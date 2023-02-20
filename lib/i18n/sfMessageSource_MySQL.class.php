@@ -13,9 +13,8 @@
  * {@link http://prado.sourceforge.net/}
  *
  * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
+ *
  * @version    $Id$
- * @package    symfony
- * @subpackage i18n
  */
 
 /**
@@ -85,398 +84,374 @@
  *  </database>
  *
  * @author Xiang Wei Zhuo <weizhuo[at]gmail[dot]com>
+ *
  * @version v1.0, last update on Fri Dec 24 16:58:58 EST 2004
- * @package    symfony
- * @subpackage i18n
  */
 class sfMessageSource_MySQL extends sfMessageSource_Database
 {
-  /**
-   * The datasource string, full DSN to the database.
-   * @var string
-   */
-  protected $source;
+    /**
+     * The datasource string, full DSN to the database.
+     *
+     * @var string
+     */
+    protected $source;
 
-  /**
-   * The DSN array property, parsed by PEAR's DB DSN parser.
-   * @var array
-   */
-  protected $dsn;
+    /**
+     * The DSN array property, parsed by PEAR's DB DSN parser.
+     *
+     * @var array
+     */
+    protected $dsn;
 
-  /**
-   * A resource link to the database
-   * @var db
-   */
-  protected $db;
+    /**
+     * A resource link to the database.
+     *
+     * @var db
+     */
+    protected $db;
 
-  /**
-   * Constructor.
-   * Creates a new message source using MySQL.
-   *
-   * @param string $source  MySQL datasource, in PEAR's DB DSN format.
-   * @see MessageSource::factory();
-   */
-  function __construct($source)
-  {
-    $this->source = (string) $source;
-    $this->dsn = $this->parseDSN($this->source);
-    $this->db = $this->connect();
-  }
-
-  /**
-   * Destructor, closes the database connection.
-   */
-  function __destruct()
-  {
-    @mysql_close($this->db);
-  }
-
-  /**
-   * Connects to the MySQL datasource
-   *
-   * @return resource MySQL connection.
-   * @throws sfException, connection and database errors.
-   */
-  protected function connect()
-  {
-    $dsninfo = $this->dsn;
-
-    if (isset($dsninfo['protocol']) && $dsninfo['protocol'] == 'unix')
+    /**
+     * Constructor.
+     * Creates a new message source using MySQL.
+     *
+     * @param string $source mySQL datasource, in PEAR's DB DSN format
+     *
+     * @see MessageSource::factory();
+     */
+    public function __construct($source)
     {
-      $dbhost = ':'.$dsninfo['socket'];
-    }
-    else
-    {
-      $dbhost = $dsninfo['hostspec'] ?: 'localhost';
-      if (!empty($dsninfo['port']))
-      {
-        $dbhost .= ':'.$dsninfo['port'];
-      }
-    }
-    $user = $dsninfo['username'];
-    $pw = $dsninfo['password'];
-
-    $connect_function = 'mysql_connect';
-
-    if (!function_exists($connect_function))
-    {
-      throw new RuntimeException('The function mysql_connect() does not exist. Please confirm MySQL is enabled in php.ini');
+        $this->source = (string) $source;
+        $this->dsn = $this->parseDSN($this->source);
+        $this->db = $this->connect();
     }
 
-    if ($dbhost && $user && $pw)
+    /**
+     * Destructor, closes the database connection.
+     */
+    public function __destruct()
     {
-      $conn = @$connect_function($dbhost, $user, $pw);
-    }
-    elseif ($dbhost && $user)
-    {
-      $conn = @$connect_function($dbhost, $user);
-    }
-    elseif ($dbhost)
-    {
-      $conn = @$connect_function($dbhost);
-    }
-    else
-    {
-      $conn = false;
+        @mysql_close($this->db);
     }
 
-    if (empty($conn))
+    /**
+     * Gets the database connection.
+     *
+     * @return db database connection
+     */
+    public function connection()
     {
-      throw new sfException(sprintf('Error in connecting to %s.', $dsninfo));
+        return $this->db;
     }
 
-    if ($dsninfo['database'])
+    /**
+     * Gets an array of messages for a particular catalogue and cultural variant.
+     *
+     * @param string $variant the catalogue name + variant
+     *
+     * @return array translation messages
+     */
+    public function &loadData($variant)
     {
-      if (!@mysql_select_db($dsninfo['database'], $conn))
-      {
-        throw new sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
-      }
-    }
-    else
-    {
-      throw new sfException('Please provide a database for message translation.');
-    }
+        $variant = mysql_real_escape_string($variant, $this->db);
 
-    return $conn;
-  }
-
-  /**
-   * Gets the database connection.
-   *
-   * @return db database connection.
-   */
-  public function connection()
-  {
-    return $this->db;
-  }
-
-  /**
-   * Gets an array of messages for a particular catalogue and cultural variant.
-   *
-   * @param string $variant the catalogue name + variant
-   * @return array translation messages.
-   */
-  public function &loadData($variant)
-  {
-    $variant = mysql_real_escape_string($variant, $this->db);
-
-    $statement =
-      "SELECT t.id, t.source, t.target, t.comments
+        $statement =
+          "SELECT t.id, t.source, t.target, t.comments
         FROM trans_unit t, catalogue c
         WHERE c.cat_id =  t.cat_id
           AND c.name = '{$variant}'
         ORDER BY id ASC";
 
-    $rs = mysql_query($statement, $this->db);
+        $rs = mysql_query($statement, $this->db);
 
-    $result = array();
+        $result = array();
 
-    while ($row = mysql_fetch_array($rs, MYSQL_NUM))
-    {
-      $source = $row[1];
-      $result[$source][] = $row[2]; //target
-      $result[$source][] = $row[0]; //id
-      $result[$source][] = $row[3]; //comments
+        while ($row = mysql_fetch_array($rs, MYSQL_NUM)) {
+            $source = $row[1];
+            $result[$source][] = $row[2]; // target
+            $result[$source][] = $row[0]; // id
+            $result[$source][] = $row[3]; // comments
+        }
+
+        return $result;
     }
 
-    return $result;
-  }
-
-  /**
-   * Gets the last modified unix-time for this particular catalogue+variant.
-   * We need to query the database to get the date_modified.
-   *
-   * @param string $source catalogue+variant
-   * @return int last modified in unix-time format.
-   */
-  protected function getLastModified($source)
-  {
-    $source = mysql_real_escape_string($source, $this->db);
-
-    $rs = mysql_query("SELECT date_modified FROM catalogue WHERE name = '{$source}'", $this->db);
-
-    return $rs ? (int)mysql_result($rs, 0) : 0;
-  }
-
-  /**
-   * Checks if a particular catalogue+variant exists in the database.
-   *
-   * @param string $variant catalogue+variant
-   * @return boolean true if the catalogue+variant is in the database, false otherwise.
-   */
-  public function isValidSource($variant)
-  {
-    $variant = mysql_real_escape_string ($variant, $this->db);
-
-    $rs = mysql_query("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'", $this->db);
-
-    $row = mysql_fetch_array($rs, MYSQL_NUM);
-
-    return $row && $row[0] == '1';
-  }
-
-  /**
-   * Retrieves catalogue details, array($cat_id, $variant, $count).
-   *
-   * @param string $catalogue catalogue
-   * @return array catalogue details, array($cat_id, $variant, $count).
-   */
-  protected function getCatalogueDetails($catalogue = 'messages')
-  {
-    if (empty($catalogue))
+    /**
+     * Checks if a particular catalogue+variant exists in the database.
+     *
+     * @param string $variant catalogue+variant
+     *
+     * @return bool true if the catalogue+variant is in the database, false otherwise
+     */
+    public function isValidSource($variant)
     {
-      $catalogue = 'messages';
+        $variant = mysql_real_escape_string($variant, $this->db);
+
+        $rs = mysql_query("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'", $this->db);
+
+        $row = mysql_fetch_array($rs, MYSQL_NUM);
+
+        return $row && '1' == $row[0];
     }
 
-    $variant = $catalogue.'.'.$this->culture;
-
-    $name = mysql_real_escape_string($this->getSource($variant), $this->db);
-
-    $rs = mysql_query("SELECT cat_id FROM catalogue WHERE name = '{$name}'", $this->db);
-
-    if (mysql_num_rows($rs) != 1)
+    /**
+     * Saves the list of untranslated blocks to the translation source.
+     * If the translation was not found, you should add those
+     * strings to the translation source via the <b>append()</b> method.
+     *
+     * @param string $catalogue the catalogue to add to
+     *
+     * @return bool true if saved successfuly, false otherwise
+     */
+    public function save($catalogue = 'messages')
     {
-      return false;
-    }
+        $messages = $this->untranslated;
 
-    $cat_id = (int) mysql_result($rs, 0);
+        if (count($messages) <= 0) {
+            return false;
+        }
 
-    // first get the catalogue ID
-    $rs = mysql_query("SELECT COUNT(*) FROM trans_unit WHERE cat_id = {$cat_id}", $this->db);
+        $details = $this->getCatalogueDetails($catalogue);
 
-    $count = (int) mysql_result($rs, 0);
+        if ($details) {
+            list($cat_id, $variant, $count) = $details;
+        } else {
+            return false;
+        }
 
-    return array($cat_id, $variant, $count);
-  }
+        if ($cat_id <= 0) {
+            return false;
+        }
+        $inserted = 0;
 
-  /**
-   * Updates the catalogue last modified time.
-   *
-   * @return boolean true if updated, false otherwise.
-   */
-  protected function updateCatalogueTime($cat_id, $variant)
-  {
-    $time = time();
+        $time = time();
 
-    $result = mysql_query("UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}", $this->db);
-
-    if ($this->cache)
-    {
-      $this->cache->remove($variant.':'.$this->culture);
-    }
-
-    return $result;
-  }
-
-  /**
-   * Saves the list of untranslated blocks to the translation source.
-   * If the translation was not found, you should add those
-   * strings to the translation source via the <b>append()</b> method.
-   *
-   * @param string $catalogue the catalogue to add to
-   * @return boolean true if saved successfuly, false otherwise.
-   */
-  function save($catalogue = 'messages')
-  {
-    $messages = $this->untranslated;
-
-    if (count($messages) <= 0)
-    {
-      return false;
-    }
-
-    $details = $this->getCatalogueDetails($catalogue);
-
-    if ($details)
-    {
-      list($cat_id, $variant, $count) = $details;
-    }
-    else
-    {
-      return false;
-    }
-
-    if ($cat_id <= 0)
-    {
-      return false;
-    }
-    $inserted = 0;
-
-    $time = time();
-
-    foreach ($messages as $message)
-    {
-      $count++;
-      $inserted++;
-      $message = mysql_real_escape_string($message, $this->db);
-      $statement = "INSERT INTO trans_unit
+        foreach ($messages as $message) {
+            ++$count;
+            ++$inserted;
+            $message = mysql_real_escape_string($message, $this->db);
+            $statement = "INSERT INTO trans_unit
         (cat_id,id,source,date_added) VALUES
-        ({$cat_id}, {$count},'{$message}',$time)";
-      mysql_query($statement, $this->db);
+        ({$cat_id}, {$count},'{$message}',{$time})";
+            mysql_query($statement, $this->db);
+        }
+        if ($inserted > 0) {
+            $this->updateCatalogueTime($cat_id, $variant);
+        }
+
+        return $inserted > 0;
     }
-    if ($inserted > 0)
+
+    /**
+     * Deletes a particular message from the specified catalogue.
+     *
+     * @param string $message   the source message to delete
+     * @param string $catalogue the catalogue to delete from
+     *
+     * @return bool true if deleted, false otherwise
+     */
+    public function delete($message, $catalogue = 'messages')
     {
-      $this->updateCatalogueTime($cat_id, $variant);
+        $details = $this->getCatalogueDetails($catalogue);
+        if ($details) {
+            list($cat_id, $variant, $count) = $details;
+        } else {
+            return false;
+        }
+
+        $text = mysql_real_escape_string($message, $this->db);
+
+        $statement = "DELETE FROM trans_unit WHERE cat_id = {$cat_id} AND source = '{$message}'";
+        $deleted = false;
+
+        mysql_query($statement, $this->db);
+
+        if (1 == mysql_affected_rows($this->db)) {
+            $deleted = $this->updateCatalogueTime($cat_id, $variant);
+        }
+
+        return $deleted;
     }
 
-    return $inserted > 0;
-  }
-
-  /**
-   * Deletes a particular message from the specified catalogue.
-   *
-   * @param string $message   the source message to delete.
-   * @param string $catalogue the catalogue to delete from.
-   * @return boolean true if deleted, false otherwise.
-   */
-  function delete($message, $catalogue = 'messages')
-  {
-    $details = $this->getCatalogueDetails($catalogue);
-    if ($details)
+    /**
+     * Updates the translation.
+     *
+     * @param string $text      the source string
+     * @param string $target    the new translation string
+     * @param string $comments  comments
+     * @param string $catalogue the catalogue of the translation
+     *
+     * @return bool true if translation was updated, false otherwise
+     */
+    public function update($text, $target, $comments, $catalogue = 'messages')
     {
-      list($cat_id, $variant, $count) = $details;
+        $details = $this->getCatalogueDetails($catalogue);
+        if ($details) {
+            list($cat_id, $variant, $count) = $details;
+        } else {
+            return false;
+        }
+
+        $comments = mysql_real_escape_string($comments, $this->db);
+        $target = mysql_real_escape_string($target, $this->db);
+        $text = mysql_real_escape_string($text, $this->db);
+
+        $time = time();
+
+        $statement = "UPDATE trans_unit SET target = '{$target}', comments = '{$comments}', date_modified = '{$time}' WHERE cat_id = {$cat_id} AND source = '{$text}'";
+
+        $updated = false;
+
+        mysql_query($statement, $this->db);
+        if (1 == mysql_affected_rows($this->db)) {
+            $updated = $this->updateCatalogueTime($cat_id, $variant);
+        }
+
+        return $updated;
     }
-    else
+
+    /**
+     * Returns a list of catalogue as key and all it variants as value.
+     *
+     * @return array list of catalogues
+     */
+    public function catalogues()
     {
-      return false;
+        $statement = 'SELECT name FROM catalogue ORDER BY name';
+        $rs = mysql_query($statement, $this->db);
+        $result = array();
+        while ($row = mysql_fetch_array($rs, MYSQL_NUM)) {
+            $details = explode('.', $row[0]);
+            if (!isset($details[1])) {
+                $details[1] = null;
+            }
+
+            $result[] = $details;
+        }
+
+        return $result;
     }
 
-    $text = mysql_real_escape_string($message, $this->db);
-
-    $statement = "DELETE FROM trans_unit WHERE cat_id = {$cat_id} AND source = '{$message}'";
-    $deleted = false;
-
-    mysql_query($statement, $this->db);
-
-    if (mysql_affected_rows($this->db) == 1)
+    /**
+     * Connects to the MySQL datasource.
+     *
+     * @return resource mySQL connection
+     *
+     * @throws sfException, connection and database errors
+     */
+    protected function connect()
     {
-      $deleted = $this->updateCatalogueTime($cat_id, $variant);
+        $dsninfo = $this->dsn;
+
+        if (isset($dsninfo['protocol']) && 'unix' == $dsninfo['protocol']) {
+            $dbhost = ':'.$dsninfo['socket'];
+        } else {
+            $dbhost = $dsninfo['hostspec'] ?: 'localhost';
+            if (!empty($dsninfo['port'])) {
+                $dbhost .= ':'.$dsninfo['port'];
+            }
+        }
+        $user = $dsninfo['username'];
+        $pw = $dsninfo['password'];
+
+        $connect_function = 'mysql_connect';
+
+        if (!function_exists($connect_function)) {
+            throw new RuntimeException('The function mysql_connect() does not exist. Please confirm MySQL is enabled in php.ini');
+        }
+
+        if ($dbhost && $user && $pw) {
+            $conn = @$connect_function($dbhost, $user, $pw);
+        } elseif ($dbhost && $user) {
+            $conn = @$connect_function($dbhost, $user);
+        } elseif ($dbhost) {
+            $conn = @$connect_function($dbhost);
+        } else {
+            $conn = false;
+        }
+
+        if (empty($conn)) {
+            throw new sfException(sprintf('Error in connecting to %s.', $dsninfo));
+        }
+
+        if ($dsninfo['database']) {
+            if (!@mysql_select_db($dsninfo['database'], $conn)) {
+                throw new sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
+            }
+        } else {
+            throw new sfException('Please provide a database for message translation.');
+        }
+
+        return $conn;
     }
 
-    return $deleted;
-  }
-
-  /**
-   * Updates the translation.
-   *
-   * @param string $text      the source string.
-   * @param string $target    the new translation string.
-   * @param string $comments  comments
-   * @param string $catalogue the catalogue of the translation.
-   * @return boolean true if translation was updated, false otherwise.
-   */
-  function update($text, $target, $comments, $catalogue = 'messages')
-  {
-    $details = $this->getCatalogueDetails($catalogue);
-    if ($details)
+    /**
+     * Gets the last modified unix-time for this particular catalogue+variant.
+     * We need to query the database to get the date_modified.
+     *
+     * @param string $source catalogue+variant
+     *
+     * @return int last modified in unix-time format
+     */
+    protected function getLastModified($source)
     {
-      list($cat_id, $variant, $count) = $details;
+        $source = mysql_real_escape_string($source, $this->db);
+
+        $rs = mysql_query("SELECT date_modified FROM catalogue WHERE name = '{$source}'", $this->db);
+
+        return $rs ? (int) mysql_result($rs, 0) : 0;
     }
-    else
+
+    /**
+     * Retrieves catalogue details, array($cat_id, $variant, $count).
+     *
+     * @param string $catalogue catalogue
+     *
+     * @return array catalogue details, array($cat_id, $variant, $count)
+     */
+    protected function getCatalogueDetails($catalogue = 'messages')
     {
-      return false;
+        if (empty($catalogue)) {
+            $catalogue = 'messages';
+        }
+
+        $variant = $catalogue.'.'.$this->culture;
+
+        $name = mysql_real_escape_string($this->getSource($variant), $this->db);
+
+        $rs = mysql_query("SELECT cat_id FROM catalogue WHERE name = '{$name}'", $this->db);
+
+        if (1 != mysql_num_rows($rs)) {
+            return false;
+        }
+
+        $cat_id = (int) mysql_result($rs, 0);
+
+        // first get the catalogue ID
+        $rs = mysql_query("SELECT COUNT(*) FROM trans_unit WHERE cat_id = {$cat_id}", $this->db);
+
+        $count = (int) mysql_result($rs, 0);
+
+        return array($cat_id, $variant, $count);
     }
 
-    $comments = mysql_real_escape_string($comments, $this->db);
-    $target = mysql_real_escape_string($target, $this->db);
-    $text = mysql_real_escape_string($text, $this->db);
-
-    $time = time();
-
-    $statement = "UPDATE trans_unit SET target = '{$target}', comments = '{$comments}', date_modified = '{$time}' WHERE cat_id = {$cat_id} AND source = '{$text}'";
-
-    $updated = false;
-
-    mysql_query($statement, $this->db);
-    if (mysql_affected_rows($this->db) == 1)
+    /**
+     * Updates the catalogue last modified time.
+     *
+     * @param mixed $cat_id
+     * @param mixed $variant
+     *
+     * @return bool true if updated, false otherwise
+     */
+    protected function updateCatalogueTime($cat_id, $variant)
     {
-      $updated = $this->updateCatalogueTime($cat_id, $variant);
+        $time = time();
+
+        $result = mysql_query("UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}", $this->db);
+
+        if ($this->cache) {
+            $this->cache->remove($variant.':'.$this->culture);
+        }
+
+        return $result;
     }
-
-    return $updated;
-  }
-
-  /**
-   * Returns a list of catalogue as key and all it variants as value.
-   *
-   * @return array list of catalogues
-   */
-  function catalogues()
-  {
-    $statement = 'SELECT name FROM catalogue ORDER BY name';
-    $rs = mysql_query($statement, $this->db);
-    $result = array();
-    while($row = mysql_fetch_array($rs, MYSQL_NUM))
-    {
-      $details = explode('.', $row[0]);
-      if (!isset($details[1]))
-      {
-        $details[1] = null;
-      }
-
-      $result[] = $details;
-    }
-
-    return $result;
-  }
 }

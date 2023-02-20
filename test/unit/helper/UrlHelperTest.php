@@ -3,47 +3,49 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 class myController
 {
-  public function genUrl($parameters = array(), $absolute = false)
-  {
-    $url = is_array($parameters) && isset($parameters['sf_route']) ? $parameters['sf_route'] : 'module/action';
-    return ($absolute ? '/' : '').$url;
-  }
+    public function genUrl($parameters = array(), $absolute = false)
+    {
+        $url = is_array($parameters) && isset($parameters['sf_route']) ? $parameters['sf_route'] : 'module/action';
+
+        return ($absolute ? '/' : '').$url;
+    }
 }
 
 class myRequest
 {
-  public function getRelativeUrlRoot()
-  {
-    return '/public';
-  }
-  
-  public function isSecure()
-  {
-    return true;
-  }
+    public function getRelativeUrlRoot()
+    {
+        return '/public';
+    }
 
-  public function getHost()
-  {
-    return 'example.org';
-  }
+    public function isSecure()
+    {
+        return true;
+    }
+
+    public function getHost()
+    {
+        return 'example.org';
+    }
 }
 
 class BaseForm extends sfForm
 {
-  public function getCSRFToken($secret = null)
-  {
-    return '==TOKEN==';
-  }
+    public function getCSRFToken($secret = null)
+    {
+        return '==TOKEN==';
+    }
 }
 
 sfForm::enableCSRFProtection();
@@ -52,9 +54,11 @@ $t = new lime_test(44);
 
 $context = sfContext::getInstance(array('controller' => 'myController', 'request' => 'myRequest'));
 
-require_once(__DIR__.'/../../../lib/helper/AssetHelper.php');
-require_once(__DIR__.'/../../../lib/helper/UrlHelper.php');
-require_once(__DIR__.'/../../../lib/helper/TagHelper.php');
+require_once __DIR__.'/../../../lib/helper/AssetHelper.php';
+
+require_once __DIR__.'/../../../lib/helper/UrlHelper.php';
+
+require_once __DIR__.'/../../../lib/helper/TagHelper.php';
 
 // url_for()
 $t->diag('url_for()');
@@ -87,23 +91,20 @@ class testObject
 {
 }
 
-try
-{
-  $o1 = new testObject();
-  link_to($o1, '@homepage');
-  $t->fail('link_to() can take an object as its first argument if __toString() method is defined');
-}
-catch (sfException $e)
-{
-  $t->pass('link_to() can take an object as its first argument if __toString() method is defined');
+try {
+    $o1 = new testObject();
+    link_to($o1, '@homepage');
+    $t->fail('link_to() can take an object as its first argument if __toString() method is defined');
+} catch (sfException $e) {
+    $t->pass('link_to() can take an object as its first argument if __toString() method is defined');
 }
 
 class testObjectWithToString
 {
-  public function __toString()
-  {
-    return 'test';
-  }
+    public function __toString()
+    {
+        return 'test';
+    }
 }
 $o2 = new testObjectWithToString();
 $t->is(link_to($o2, '@homepage'), '<a href="module/action">test</a>', 'link_to() can take an object as its first argument');
@@ -140,10 +141,10 @@ preg_match('/href="(.+?)"/', mail_to('fabien.potencier@symfony-project.com', 'fa
 $t->is(html_entity_decode($matches[1], ENT_QUOTES, 'UTF-8'), 'mailto:fabien.potencier@symfony-project.com', 'mail_to() can encode the email address');
 
 $t->diag('mail_to test');
-$t->is(mail_to('webmaster@example.com'),'<a href="mailto:webmaster@example.com">webmaster@example.com</a>','mail_to with only given email works');
-$t->is(mail_to('webmaster@example.com', 'send us an email'),'<a href="mailto:webmaster@example.com">send us an email</a>','mail_to with given email and title works');
-$t->isnt(mail_to('webmaster@example.com', 'encoded', array('encode' => true)),'<a href="mailto:webmaster@example.com">encoded</a>','mail_to with encoding works');
+$t->is(mail_to('webmaster@example.com'), '<a href="mailto:webmaster@example.com">webmaster@example.com</a>', 'mail_to with only given email works');
+$t->is(mail_to('webmaster@example.com', 'send us an email'), '<a href="mailto:webmaster@example.com">send us an email</a>', 'mail_to with given email and title works');
+$t->isnt(mail_to('webmaster@example.com', 'encoded', array('encode' => true)), '<a href="mailto:webmaster@example.com">encoded</a>', 'mail_to with encoding works');
 
-$t->is(mail_to('webmaster@example.com', '', array(), array('subject' => 'test subject', 'body' => 'test body')),'<a href="mailto:webmaster@example.com?subject=test+subject&amp;body=test+body">webmaster@example.com</a>', 'mail_to() works with given default values in array form');
-$t->is(mail_to('webmaster@example.com', '', array(), 'subject=test subject body=test body'),'<a href="mailto:webmaster@example.com?subject=test+subject&amp;body=test+body">webmaster@example.com</a>', 'mail_to() works with given default values in string form');
-$t->is(mail_to('webmaster@example.com', '', array(), 'subject=Hello World and more'),'<a href="mailto:webmaster@example.com?subject=Hello+World+and+more">webmaster@example.com</a>', 'mail_to() works with given default value with spaces');
+$t->is(mail_to('webmaster@example.com', '', array(), array('subject' => 'test subject', 'body' => 'test body')), '<a href="mailto:webmaster@example.com?subject=test+subject&amp;body=test+body">webmaster@example.com</a>', 'mail_to() works with given default values in array form');
+$t->is(mail_to('webmaster@example.com', '', array(), 'subject=test subject body=test body'), '<a href="mailto:webmaster@example.com?subject=test+subject&amp;body=test+body">webmaster@example.com</a>', 'mail_to() works with given default values in string form');
+$t->is(mail_to('webmaster@example.com', '', array(), 'subject=Hello World and more'), '<a href="mailto:webmaster@example.com?subject=Hello+World+and+more">webmaster@example.com</a>', 'mail_to() works with given default value with spaces');

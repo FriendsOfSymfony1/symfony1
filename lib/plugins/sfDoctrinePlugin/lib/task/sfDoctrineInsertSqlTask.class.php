@@ -9,34 +9,33 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/sfDoctrineBaseTask.class.php');
+require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
 
 /**
  * Inserts SQL for current model.
  *
- * @package    symfony
- * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
+ *
  * @version    SVN: $Id$
  */
 class sfDoctrineInsertSqlTask extends sfDoctrineBaseTask
 {
-  /**
-   * @see sfTask
-   */
-  protected function configure()
-  {
-    $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-    ));
+    /**
+     * @see sfTask
+     */
+    protected function configure()
+    {
+        $this->addOptions(array(
+            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+        ));
 
-    $this->namespace = 'doctrine';
-    $this->name = 'insert-sql';
-    $this->briefDescription = 'Inserts SQL for current model';
+        $this->namespace = 'doctrine';
+        $this->name = 'insert-sql';
+        $this->briefDescription = 'Inserts SQL for current model';
 
-    $this->detailedDescription = <<<EOF
+        $this->detailedDescription = <<<'EOF'
 The [doctrine:insert-sql|INFO] task creates database tables:
 
   [./symfony doctrine:insert-sql|INFO]
@@ -44,21 +43,24 @@ The [doctrine:insert-sql|INFO] task creates database tables:
 The task connects to the database and creates tables for all the
 [lib/model/doctrine/*.class.php|COMMENT] files.
 EOF;
-  }
+    }
 
-  /**
-   * @see sfTask
-   */
-  protected function execute($arguments = array(), $options = array())
-  {
-    $this->logSection('doctrine', 'creating tables');
+    /**
+     * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
+     */
+    protected function execute($arguments = array(), $options = array())
+    {
+        $this->logSection('doctrine', 'creating tables');
 
-    $databaseManager = new sfDatabaseManager($this->configuration);
-    $config = $this->getCliConfig();
+        $databaseManager = new sfDatabaseManager($this->configuration);
+        $config = $this->getCliConfig();
 
-    Doctrine_Core::loadModels($config['models_path'], Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
-    Doctrine_Core::createTablesFromArray(Doctrine_Core::getLoadedModels());
+        Doctrine_Core::loadModels($config['models_path'], Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
+        Doctrine_Core::createTablesFromArray(Doctrine_Core::getLoadedModels());
 
-    $this->logSection('doctrine', 'created tables successfully');
-  }
+        $this->logSection('doctrine', 'created tables successfully');
+    }
 }

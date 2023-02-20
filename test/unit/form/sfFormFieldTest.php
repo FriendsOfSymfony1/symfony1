@@ -8,20 +8,20 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(31);
 
 // widgets
 $authorSchema = new sfWidgetFormSchema(array(
-  'id'   => new sfWidgetFormInputHidden(),
-  'name' => $nameWidget = new sfWidgetFormInputText(),
+    'id' => new sfWidgetFormInputHidden(),
+    'name' => $nameWidget = new sfWidgetFormInputText(),
 ));
 $authorSchema->setNameFormat('article[author][%s]');
 
 $schema = new sfWidgetFormSchema(array(
-  'title'  => $titleWidget = new sfWidgetFormInputText(),
-  'author' => $authorSchema,
+    'title' => $titleWidget = new sfWidgetFormInputText(),
+    'author' => $authorSchema,
 ));
 $schema->setNameFormat('article[%s]');
 $titleWidget->setParent($schema);
@@ -63,7 +63,7 @@ $t->is($f->render(array('class' => 'foo')), '<input type="text" name="article[ti
 
 // ->renderRow()
 $t->diag('->renderRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <tr>
   <th><label for="article_title">Title</label></th>
   <td>  <ul class="error_list">
@@ -75,7 +75,7 @@ $output = <<<EOF
 EOF;
 $t->is($f->renderRow(), fix_linebreaks($output), '->renderRow() renders a row');
 
-$output = <<<EOF
+$output = <<<'EOF'
 <tr>
   <th><label for="article_title">Title</label></th>
   <td>  <ul class="error_list">
@@ -87,7 +87,7 @@ $output = <<<EOF
 EOF;
 $t->is($f->renderRow(array('class' => 'foo', 'type' => 'password', 'id' => 'title')), fix_linebreaks($output), '->renderRow() can take an array of HTML attributes as its first argument');
 
-$output = <<<EOF
+$output = <<<'EOF'
 <tr>
   <th><label for="article_title">My title</label></th>
   <td>  <ul class="error_list">
@@ -99,7 +99,7 @@ $output = <<<EOF
 EOF;
 $t->is($f->renderRow(array(), 'My title'), fix_linebreaks($output), '->renderRow() can take a label name as its second argument');
 
-$output = <<<EOF
+$output = <<<'EOF'
 <tr>
   <th><label for="article_title">Title</label></th>
   <td>  <ul class="error_list">
@@ -111,7 +111,7 @@ $output = <<<EOF
 EOF;
 $t->is($f->renderRow(array(), null, 'help'), fix_linebreaks($output), '->renderRow() can take a help message as its third argument');
 
-$output = <<<EOF
+$output = <<<'EOF'
 <tr>
   <th><label for="article_author">Author</label></th>
   <td><tr>
@@ -127,41 +127,34 @@ $output = <<<EOF
 EOF;
 $t->is($child->renderRow(), fix_linebreaks($output), '->renderRow() renders a row when the widget has a parent');
 
-try
-{
-  $parent->renderRow();
-  $t->fail('->renderRow() throws an LogicException if the form field has no parent');
-}
-catch (LogicException $e)
-{
-  $t->pass('->renderRow() throws an LogicException if the form field has no parent');
+try {
+    $parent->renderRow();
+    $t->fail('->renderRow() throws an LogicException if the form field has no parent');
+} catch (LogicException $e) {
+    $t->pass('->renderRow() throws an LogicException if the form field has no parent');
 }
 
 // ->renderLabel()
 $t->diag('->renderLabel()');
 $t->is($f->renderLabel(), '<label for="article_title">Title</label>', '->renderLabel() renders the label as HTML');
 $t->is($f->renderLabel(null, array('class' => 'foo')), '<label class="foo" for="article_title">Title</label>', '->renderLabel() renders optional HTML attributes');
-try
-{
-  $parent->renderLabel();
-  $t->fail('->renderLabel() throws an LogicException if the form field has no parent');
-}
-catch (LogicException $e)
-{
-  $t->pass('->renderLabel() throws an LogicException if the form field has no parent');
+
+try {
+    $parent->renderLabel();
+    $t->fail('->renderLabel() throws an LogicException if the form field has no parent');
+} catch (LogicException $e) {
+    $t->pass('->renderLabel() throws an LogicException if the form field has no parent');
 }
 
 // ->renderLabelName()
 $t->diag('->renderLabelName()');
 $t->is($f->renderLabelName(), 'Title', '->renderLabelName() renders the label name');
-try
-{
-  $parent->renderLabelName();
-  $t->fail('->renderLabelName() throws an LogicException if the form field has no parent');
-}
-catch (LogicException $e)
-{
-  $t->pass('->renderLabelName() throws an LogicException if the form field has no parent');
+
+try {
+    $parent->renderLabelName();
+    $t->fail('->renderLabelName() throws an LogicException if the form field has no parent');
+} catch (LogicException $e) {
+    $t->pass('->renderLabelName() throws an LogicException if the form field has no parent');
 }
 
 // ->renderName()
@@ -180,7 +173,7 @@ $t->is($f->isHidden(), false, '->isHidden() is a proxy method to the isHidden() 
 
 // ->renderError();
 $t->diag('->renderError()');
-$output = <<<EOF
+$output = <<<'EOF'
   <ul class="error_list">
     <li>title error</li>
   </ul>
@@ -188,7 +181,7 @@ $output = <<<EOF
 EOF;
 $t->is($f->renderError(), fix_linebreaks($output), '->renderError() renders errors as HTML');
 $t->is($child->renderError(), '', '->renderRow() renders errors as HTML when the widget has a parent');
-$output = <<<EOF
+$output = <<<'EOF'
   <ul class="error_list">
     <li>name error</li>
   </ul>
@@ -196,14 +189,11 @@ $output = <<<EOF
 EOF;
 $t->is($child['name']->renderError(), fix_linebreaks($output), '->renderRow() renders errors as HTML when the widget has a parent');
 
-try
-{
-  $parent->renderError();
-  $t->fail('->renderError() throws an LogicException if the form field has no parent');
-}
-catch (LogicException $e)
-{
-  $t->pass('->renderError() throws an LogicException if the form field has no parent');
+try {
+    $parent->renderError();
+    $t->fail('->renderError() throws an LogicException if the form field has no parent');
+} catch (LogicException $e) {
+    $t->pass('->renderError() throws an LogicException if the form field has no parent');
 }
 
 // global errors
@@ -218,7 +208,7 @@ $articleErrorSchema->addError($authorErrorSchema, 'author');
 
 $parent = new sfFormFieldSchema($schema, null, 'article', array('title' => 'symfony', 'author' => array('name' => 'Fabien')), $articleErrorSchema);
 $child = $parent['author'];
-$output = <<<EOF
+$output = <<<'EOF'
   <ul class="error_list">
     <li>non existent field error</li>
     <li>Id: hidden field error</li>

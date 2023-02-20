@@ -2,6 +2,7 @@
 
 $app = 'frontend';
 $fixtures = 'fixtures/pager.yml';
+
 include dirname(__FILE__).'/../../bootstrap/functional.php';
 
 $t = new lime_test(6);
@@ -38,13 +39,11 @@ $pager = new sfDoctrinePager('Article', 10);
 $pager->init();
 $normal = 0;
 $iterated = 0;
-foreach ($pager->getResults() as $object)
-{
-  $normal++;
+foreach ($pager->getResults() as $object) {
+    ++$normal;
 }
-foreach ($pager as $object)
-{
-  $iterated++;
+foreach ($pager as $object) {
+    ++$iterated;
 }
 $t->is($iterated, $normal, '"Iterator" interface loops over objects in the current pager');
 

@@ -3,14 +3,14 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
-require_once(__DIR__.'/../../../lib/helper/EscapingHelper.php');
+require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
 
 $t = new lime_test(11);
 
@@ -36,7 +36,7 @@ $t->diag('esc_js_no_entities()');
 $t->is(esc_js_no_entities('alert(\'foo\' + "bar")'), 'alert(\\\'foo\\\' + \\"bar\\")', 'esc_js_no_entities() escapes javascripts');
 $t->is(esc_js_no_entities('alert("hi\\there")'), 'alert(\\"hi\\\\there\\")', 'esc_js_no_entities() handles slashes correctly');
 $t->is(esc_js_no_entities('alert("été")'), 'alert(\\"été\\")', 'esc_js_no_entities() preserves utf-8');
-$output = <<<EOF
+$output = <<<'EOF'
 alert('hello
 world')
 EOF;

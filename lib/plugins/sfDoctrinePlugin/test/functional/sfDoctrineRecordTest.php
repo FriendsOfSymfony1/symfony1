@@ -10,7 +10,8 @@
 
 $app = 'frontend';
 $fixtures = 'fixtures/fixtures.yml';
-require_once(dirname(__FILE__).'/../bootstrap/functional.php');
+
+require_once dirname(__FILE__).'/../bootstrap/functional.php';
 
 $t = new lime_test(22);
 
@@ -71,10 +72,10 @@ $dateTime = $article->getDateTimeObject('created_at');
 $t->is($dateTime, null);
 
 try {
-  $article->getDateTimeObject('author_id');
-  $t->fail();
+    $article->getDateTimeObject('author_id');
+    $t->fail();
 } catch (sfException $e) {
-  $t->pass();
+    $t->pass();
 }
 
 $article->setDateTimeObject('created_at', new DateTime('1985-09-01'));

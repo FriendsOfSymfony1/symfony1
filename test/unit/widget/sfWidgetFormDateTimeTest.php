@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $year = date('Y');
 
 $t = new lime_test(64);
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 $w = new sfWidgetFormDateTime(array('with_time' => true, 'time' => array('with_seconds' => true)));
@@ -23,21 +23,20 @@ $w = new sfWidgetFormDateTime(array('with_time' => true, 'time' => array('with_s
 $t->diag('->render()');
 
 foreach (array(
-  $year.'-10-15 12:30:35' => array('year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35),
-  time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'), 'hour' => date('G'), 'minute' => date('i'), 'second' => date('s')),
-  'tomorrow 12:30:35' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400), 'hour' => 12, 'minute' => 30, 'second' => 35),
-) as $date => $values)
-{
-  $dom->loadHTML($w->render('foo', $date));
-  $css = new sfDomCssSelector($dom);
+    $year.'-10-15 12:30:35' => array('year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35),
+    time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'), 'hour' => date('G'), 'minute' => date('i'), 'second' => date('s')),
+    'tomorrow 12:30:35' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400), 'hour' => 12, 'minute' => 30, 'second' => 35),
+) as $date => $values) {
+    $dom->loadHTML($w->render('foo', $date));
+    $css = new sfDomCssSelector($dom);
 
-  // selected date / time
-  $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
-  $t->is($css->matchSingle('#foo_month option[value="'.$values['month'].'"][selected="selected"]')->getValue(), $values['month'], '->render() renders a select tag for the month');
-  $t->is($css->matchSingle('#foo_day option[value="'.$values['day'].'"][selected="selected"]')->getValue(), $values['day'], '->render() renders a select tag for the day');
-  $t->is($css->matchSingle('#foo_hour option[value="'.$values['hour'].'"][selected="selected"]')->getValue(), $values['hour'], '->render() renders a select tag for the hour');
-  $t->is($css->matchSingle('#foo_minute option[value="'.$values['minute'].'"][selected="selected"]')->getValue(), $values['minute'], '->render() renders a select tag for the minute');
-  $t->is($css->matchSingle('#foo_second option[value="'.$values['second'].'"][selected="selected"]')->getValue(), $values['second'], '->render() renders a select tag for the second');
+    // selected date / time
+    $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
+    $t->is($css->matchSingle('#foo_month option[value="'.$values['month'].'"][selected="selected"]')->getValue(), $values['month'], '->render() renders a select tag for the month');
+    $t->is($css->matchSingle('#foo_day option[value="'.$values['day'].'"][selected="selected"]')->getValue(), $values['day'], '->render() renders a select tag for the day');
+    $t->is($css->matchSingle('#foo_hour option[value="'.$values['hour'].'"][selected="selected"]')->getValue(), $values['hour'], '->render() renders a select tag for the hour');
+    $t->is($css->matchSingle('#foo_minute option[value="'.$values['minute'].'"][selected="selected"]')->getValue(), $values['minute'], '->render() renders a select tag for the minute');
+    $t->is($css->matchSingle('#foo_second option[value="'.$values['second'].'"][selected="selected"]')->getValue(), $values['second'], '->render() renders a select tag for the second');
 }
 
 // selected date / time
@@ -112,14 +111,12 @@ $t->is(count($css->matchAll('#foo_hour')->getNodes()), 0, '->render() does not r
 // date and time options as array
 $t->diag('date and time options as array');
 $w = new sfWidgetFormDateTime(array('date' => 'a string'));
-try
-{
-  $w->render('foo');
-  $t->fail('__construct() throws a InvalidArgumentException if the date/time options is not an array');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('__construct() throws a InvalidArgumentException if the date/time options is not an array');
+
+try {
+    $w->render('foo');
+    $t->fail('__construct() throws a InvalidArgumentException if the date/time options is not an array');
+} catch (InvalidArgumentException $e) {
+    $t->pass('__construct() throws a InvalidArgumentException if the date/time options is not an array');
 }
 
 // attributes

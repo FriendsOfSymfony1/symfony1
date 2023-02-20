@@ -8,18 +8,18 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(11);
 
 class ProjectLoader extends sfServiceContainerLoader
 {
-  public $container;
+    public $container;
 
-  public function doLoad($resource)
-  {
-    return $resource;
-  }
+    public function doLoad($resource)
+    {
+        return $resource;
+    }
 }
 
 // __construct()
@@ -36,14 +36,12 @@ $t->is($loader->container, $container, '->setServiceContainer() sets the contain
 // ->load()
 $t->diag('->load()');
 $loader = new ProjectLoader();
-try
-{
-  $loader->load('foo');
-  $t->fail('->load() throws a LogicException if no container is attached to the loader');
-}
-catch (LogicException $e)
-{
-  $t->pass('->load() throws a LogicException if no container is attached to the loader');
+
+try {
+    $loader->load('foo');
+    $t->fail('->load() throws a LogicException if no container is attached to the loader');
+} catch (LogicException $e) {
+    $t->pass('->load() throws a LogicException if no container is attached to the loader');
 }
 
 $loader->setServiceContainer($container = new sfServiceContainerBuilder(array('bar' => 'foo')));

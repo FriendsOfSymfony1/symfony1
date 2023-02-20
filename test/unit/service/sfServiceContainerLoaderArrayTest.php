@@ -8,39 +8,33 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(20);
 
 class ProjectLoader extends sfServiceContainerLoaderArray
 {
-  public function validate($content)
-  {
-    return parent::validate($content);
-  }
+    public function validate($content)
+    {
+        return parent::validate($content);
+    }
 }
 
 $loader = new ProjectLoader(null);
 
 // ->validate()
-try
-{
-  $loader->validate(sfYaml::load(__DIR__.'/fixtures/yaml/nonvalid1.yml'));
-  $t->fail('->validate() throws an InvalidArgumentException if the loaded definition is not an array');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->validate() throws an InvalidArgumentException if the loaded definition is not an array');
+try {
+    $loader->validate(sfYaml::load(__DIR__.'/fixtures/yaml/nonvalid1.yml'));
+    $t->fail('->validate() throws an InvalidArgumentException if the loaded definition is not an array');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->validate() throws an InvalidArgumentException if the loaded definition is not an array');
 }
 
-try
-{
-  $loader->validate(sfYaml::load(__DIR__.'/fixtures/yaml/nonvalid2.yml'));
-  $t->fail('->validate() throws an InvalidArgumentException if the loaded definition is not a valid array');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->validate() throws an InvalidArgumentException if the loaded definition is not a valid array');
+try {
+    $loader->validate(sfYaml::load(__DIR__.'/fixtures/yaml/nonvalid2.yml'));
+    $t->fail('->validate() throws an InvalidArgumentException if the loaded definition is not a valid array');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->validate() throws an InvalidArgumentException if the loaded definition is not a valid array');
 }
 
 // ->load() # parameters

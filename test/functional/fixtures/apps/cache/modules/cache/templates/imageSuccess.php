@@ -1,1 +1,3 @@
-<?php echo $image ?>
+<?php
+
+echo $image;

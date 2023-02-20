@@ -13,21 +13,20 @@ $t = new lime_test(16);
 
 abstract class BaseTestTask extends sfTask
 {
-  public
-    $lastArguments = array(),
-    $lastOptions   = array();
+    public $lastArguments = array();
+    public $lastOptions = array();
 
-  public function __construct()
-  {
-    // lazy constructor
-    parent::__construct(new sfEventDispatcher(), new sfFormatter());
-  }
+    public function __construct()
+    {
+        // lazy constructor
+        parent::__construct(new sfEventDispatcher(), new sfFormatter());
+    }
 
-  protected function execute($arguments = array(), $options = array())
-  {
-    $this->lastArguments = $arguments;
-    $this->lastOptions = $options;
-  }
+    protected function execute($arguments = array(), $options = array())
+    {
+        $this->lastArguments = $arguments;
+        $this->lastOptions = $options;
+    }
 }
 
 // ->run()
@@ -35,13 +34,13 @@ $t->diag('->run()');
 
 class ArgumentsTest1Task extends BaseTestTask
 {
-  protected function configure()
-  {
-    $this->addArguments(array(
-      new sfCommandArgument('foo', sfCommandArgument::REQUIRED),
-      new sfCommandArgument('bar', sfCommandArgument::OPTIONAL),
-    ));
-  }
+    protected function configure()
+    {
+        $this->addArguments(array(
+            new sfCommandArgument('foo', sfCommandArgument::REQUIRED),
+            new sfCommandArgument('bar', sfCommandArgument::OPTIONAL),
+        ));
+    }
 }
 
 $task = new ArgumentsTest1Task();
@@ -65,12 +64,12 @@ $t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => null), '->run
 
 class ArgumentsTest2Task extends BaseTestTask
 {
-  protected function configure()
-  {
-    $this->addArguments(array(
-      new sfCommandArgument('foo', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
-    ));
-  }
+    protected function configure()
+    {
+        $this->addArguments(array(
+            new sfCommandArgument('foo', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
+        ));
+    }
 }
 
 $task = new ArgumentsTest2Task();
@@ -82,15 +81,15 @@ $t->is_deeply($task->lastArguments, array('foo' => array('arg1', 'arg2', 'arg3')
 
 class OptionsTest1Task extends BaseTestTask
 {
-  protected function configure()
-  {
-    $this->addOptions(array(
-      new sfCommandOption('none', null, sfCommandOption::PARAMETER_NONE),
-      new sfCommandOption('required', null, sfCommandOption::PARAMETER_REQUIRED),
-      new sfCommandOption('optional', null, sfCommandOption::PARAMETER_OPTIONAL),
-      new sfCommandOption('array', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY),
-    ));
-  }
+    protected function configure()
+    {
+        $this->addOptions(array(
+            new sfCommandOption('none', null, sfCommandOption::PARAMETER_NONE),
+            new sfCommandOption('required', null, sfCommandOption::PARAMETER_REQUIRED),
+            new sfCommandOption('optional', null, sfCommandOption::PARAMETER_OPTIONAL),
+            new sfCommandOption('array', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY),
+        ));
+    }
 }
 
 $task = new OptionsTest1Task();
@@ -120,13 +119,13 @@ $t->diag('->getDetailedDescription()');
 
 class DetailedDescriptionTestTask extends BaseTestTask
 {
-  protected function configure()
-  {
-    $this->detailedDescription = <<<EOF
+    protected function configure()
+    {
+        $this->detailedDescription = <<<'EOF'
 The [detailedDescription|INFO] formats special string like [...|COMMENT] or [--xml|COMMENT]
 EOF;
-  }
+    }
 }
 
 $task = new DetailedDescriptionTestTask();
-$t->is($task->getDetailedDescription(), "The detailedDescription formats special string like ... or --xml", "->getDetailedDescription() formats special string");
+$t->is($task->getDetailedDescription(), 'The detailedDescription formats special string like ... or --xml', '->getDetailedDescription() formats special string');

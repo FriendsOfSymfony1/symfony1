@@ -3,81 +3,82 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once(__DIR__.'/sfCacheDriverTests.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once __DIR__.'/sfCacheDriverTests.class.php';
 
 $t = new lime_test(15);
 
 class sfSimpleCache extends sfCache
 {
-  public $data = array();
+    public $data = array();
 
-  public function get($key, $default = null)
-  {
-    return isset($this->data[$key]) ? $this->data[$key] : $default;
-  }
+    public function get($key, $default = null)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : $default;
+    }
 
-  public function set($key, $data, $lifetime = null)
-  {
-    $this->data[$key] = $data;
-  }
+    public function set($key, $data, $lifetime = null)
+    {
+        $this->data[$key] = $data;
+    }
 
-  public function remove($key)
-  {
-    unset($this->data[$key]);
-  }
+    public function remove($key)
+    {
+        unset($this->data[$key]);
+    }
 
-  public function removePattern($pattern, $delimiter = ':')
-  {
-    $this->data = array();
-  }
+    public function removePattern($pattern, $delimiter = ':')
+    {
+        $this->data = array();
+    }
 
-  public function has($key)
-  {
-    return isset($this->data[$key]);
-  }
+    public function has($key)
+    {
+        return isset($this->data[$key]);
+    }
 
-  public function clean($mode = sfCache::ALL)
-  {
-    $this->data = array();
-  }
+    public function clean($mode = sfCache::ALL)
+    {
+        $this->data = array();
+    }
 
-  public function getLastModified($key)
-  {
-    return 0;
-  }
+    public function getLastModified($key)
+    {
+        return 0;
+    }
 
-  public function getTimeout($key)
-  {
-    return 0;
-  }
+    public function getTimeout($key)
+    {
+        return 0;
+    }
 }
 
 class testFunctionCache
 {
-  static $count = 0;
+    public static $count = 0;
 
-  static function test($arg1, $arg2)
-  {
-    ++self::$count;
+    public static function test($arg1, $arg2)
+    {
+        ++self::$count;
 
-    return $arg1.$arg2;
-  }
+        return $arg1.$arg2;
+    }
 }
 
 $count = 0;
 function testFunctionCache($arg1, $arg2)
 {
-  global $count;
+    global $count;
 
-  ++$count;
+    ++$count;
 
-  return $arg1.$arg2;
+    return $arg1.$arg2;
 }
 
 // ->call()

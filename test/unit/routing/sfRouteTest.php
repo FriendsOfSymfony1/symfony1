@@ -3,12 +3,12 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(65);
 
@@ -190,46 +190,40 @@ $t->diag('custom token');
 
 class MyRoute extends sfRoute
 {
-  protected function tokenizeBufferBefore(&$buffer, &$tokens, &$afterASeparator, &$currentSeparator)
-  {
-    if ($afterASeparator && preg_match('#^=('.$this->options['variable_regex'].')#', $buffer, $match))
+    protected function tokenizeBufferBefore(&$buffer, &$tokens, &$afterASeparator, &$currentSeparator)
     {
-      // a labelled variable
-      $this->tokens[] = array('label', $currentSeparator, $match[0], $match[1]);
+        if ($afterASeparator && preg_match('#^=('.$this->options['variable_regex'].')#', $buffer, $match)) {
+            // a labelled variable
+            $this->tokens[] = array('label', $currentSeparator, $match[0], $match[1]);
 
-      $currentSeparator = '';
-      $buffer = substr($buffer, strlen($match[0]));
-      $afterASeparator = false;
-    }
-    else
-    {
-      return false;
-    }
-  }
-
-  protected function compileForLabel($separator, $name, $variable)
-  {
-    if (!isset($this->requirements[$variable]))
-    {
-      $this->requirements[$variable] = $this->options['variable_content_regex'];
+            $currentSeparator = '';
+            $buffer = substr($buffer, strlen($match[0]));
+            $afterASeparator = false;
+        } else {
+            return false;
+        }
     }
 
-    $this->segments[] = preg_quote($separator, '#').$variable.$separator.'(?P<'.$variable.'>'.$this->requirements[$variable].')';
-    $this->variables[$variable] = $name;
-
-    if (!isset($this->defaults[$variable]))
+    protected function compileForLabel($separator, $name, $variable)
     {
-      $this->firstOptional = count($this->segments);
-    }
-  }
+        if (!isset($this->requirements[$variable])) {
+            $this->requirements[$variable] = $this->options['variable_content_regex'];
+        }
 
-  protected function generateForLabel($optional, $tparams, $separator, $name, $variable)
-  {
-    if (!empty($tparams[$variable]) && (!$optional || !isset($this->defaults[$variable]) || $tparams[$variable] != $this->defaults[$variable]))
-    {
-      return $variable . '/' . urlencode($tparams[$variable]);
+        $this->segments[] = preg_quote($separator, '#').$variable.$separator.'(?P<'.$variable.'>'.$this->requirements[$variable].')';
+        $this->variables[$variable] = $name;
+
+        if (!isset($this->defaults[$variable])) {
+            $this->firstOptional = count($this->segments);
+        }
     }
-  }
+
+    protected function generateForLabel($optional, $tparams, $separator, $name, $variable)
+    {
+        if (!empty($tparams[$variable]) && (!$optional || !isset($this->defaults[$variable]) || $tparams[$variable] != $this->defaults[$variable])) {
+            return $variable.'/'.urlencode($tparams[$variable]);
+        }
+    }
 }
 
 $route = new MyRoute('/=foo');
@@ -238,10 +232,10 @@ $t->is($route->generate(array('foo' => 'bar')), '/foo/bar', '->compileForLabel()
 
 class CompileCheckRoute extends sfRoute
 {
-  public function isCompiled()
-  {
-    return $this->compiled;
-  }
+    public function isCompiled()
+    {
+        return $this->compiled;
+    }
 }
 
 // state checking

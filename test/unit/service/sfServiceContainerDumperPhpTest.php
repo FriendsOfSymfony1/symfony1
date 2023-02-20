@@ -8,12 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(5);
 
 $dir = __DIR__.'/fixtures/php';
-
 
 // ->dump()
 $t->diag('->dump()');
@@ -39,12 +38,10 @@ $t->is($dumper->dump(), str_replace('%path%', __DIR__.'/fixtures/includes', file
 
 $dumper = new sfServiceContainerDumperPhp($container = new sfServiceContainerBuilder());
 $container->register('foo', 'FooClass')->addArgument(new stdClass());
-try
-{
-  $dumper->dump();
-  $t->fail('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
-}
-catch (RuntimeException $e)
-{
-  $t->pass('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
+
+try {
+    $dumper->dump();
+    $t->fail('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
+} catch (RuntimeException $e) {
+    $t->pass('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
 }

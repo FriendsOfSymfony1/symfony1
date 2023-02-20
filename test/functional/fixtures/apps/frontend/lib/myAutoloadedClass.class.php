@@ -2,8 +2,8 @@
 
 class myAutoloadedClass
 {
-  public function getFoo()
-  {
-    return 'foo';
-  }
+    public function getFoo()
+    {
+        return 'foo';
+    }
 }

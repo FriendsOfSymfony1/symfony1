@@ -8,30 +8,30 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../bootstrap/unit.php');
+require_once __DIR__.'/../../../bootstrap/unit.php';
 
 $t = new lime_test(8);
 
 class FormListener
 {
-  public $events = array();
+    public $events = array();
 
-  public function listen(sfEvent $event)
-  {
-    $this->events[] = func_get_args();
-  }
+    public function listen(sfEvent $event)
+    {
+        $this->events[] = func_get_args();
+    }
 
-  public function filter(sfEvent $event, $value)
-  {
-    $this->events[] = func_get_args();
+    public function filter(sfEvent $event, $value)
+    {
+        $this->events[] = func_get_args();
 
-    return $value;
-  }
+        return $value;
+    }
 
-  public function reset()
-  {
-    $this->events = array();
-  }
+    public function reset()
+    {
+        $this->events = array();
+    }
 }
 
 $listener = new FormListener();
@@ -45,13 +45,13 @@ sfFormSymfony::setEventDispatcher($dispatcher);
 
 class TestForm extends sfFormSymfony
 {
-  public function configure()
-  {
-    $this->setValidators(array(
-      'first_name' => new sfValidatorString(),
-      'last_name'  => new sfValidatorString(),
-    ));
-  }
+    public function configure()
+    {
+        $this->setValidators(array(
+            'first_name' => new sfValidatorString(),
+            'last_name' => new sfValidatorString(),
+        ));
+    }
 }
 
 // ->__construct()
@@ -68,8 +68,8 @@ $t->diag('->bind()');
 $form = new TestForm();
 $listener->reset();
 $form->bind(array(
-  'first_name' => 'John',
-  'last_name'  => 'Doe',
+    'first_name' => 'John',
+    'last_name' => 'Doe',
 ));
 
 $t->is(count($listener->events), 1, '->bind() notifies one event when validation is successful');

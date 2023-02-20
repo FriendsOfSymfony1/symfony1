@@ -8,26 +8,25 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(28);
 
 class MyFormatter extends sfWidgetFormSchemaFormatter
 {
-  protected
-    $rowFormat       = "<li>\n  %error%%label%\n  %field%%help%\n%hidden_fields%</li>\n",
-    $errorRowFormat  = "<li>\n%errors%</li>\n",
-    $decoratorFormat = "<ul>\n  %content%</ul>";
+    protected $rowFormat = "<li>\n  %error%%label%\n  %field%%help%\n%hidden_fields%</li>\n";
+    protected $errorRowFormat = "<li>\n%errors%</li>\n";
+    protected $decoratorFormat = "<ul>\n  %content%</ul>";
 
-  public function unnestErrors($errors, $prefix = '')
-  {
-    return parent::unnestErrors($errors, $prefix);
-  }
-  
-  static public function dropTranslationCallable()
-  {
-    self::$translationCallable = null;
-  }
+    public function unnestErrors($errors, $prefix = '')
+    {
+        return parent::unnestErrors($errors, $prefix);
+    }
+
+    public static function dropTranslationCallable()
+    {
+        self::$translationCallable = null;
+    }
 }
 
 $w1 = new sfWidgetFormInputText();
@@ -37,7 +36,7 @@ $f = new MyFormatter($w);
 
 // ->formatRow()
 $t->diag('->formatRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <li>
   <label>label</label>
   <input /><p>help</p>
@@ -48,7 +47,7 @@ $t->is($f->formatRow('<label>label</label>', '<input />', array(), '<p>help</p>'
 
 // ->formatErrorRow()
 $t->diag('->formatErrorRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <li>
   <ul class="error_list">
     <li>Global error</li>
@@ -62,34 +61,33 @@ $t->is($f->formatErrorRow(array('Global error', 'id' => 'required', array('sub_i
 
 // ->unnestErrors()
 $t->diag('->unnestErrors()');
-$f->setErrorRowFormatInARow("<li>%error%</li>");
-$f->setNamedErrorRowFormatInARow("<li>%name%: %error%</li>");
+$f->setErrorRowFormatInARow('<li>%error%</li>');
+$f->setNamedErrorRowFormatInARow('<li>%name%: %error%</li>');
 $errors = array('foo', 'bar', 'foobar' => 'foobar');
 $t->is($f->unnestErrors($errors), array('<li>foo</li>', '<li>bar</li>', '<li>foobar: foobar</li>'), '->unnestErrors() returns an array of formatted errors');
 $errors = array('foo', 'bar' => array('foo', 'foobar' => 'foobar'));
 $t->is($f->unnestErrors($errors), array('<li>foo</li>', '<li>foo</li>', '<li>bar > foobar: foobar</li>'), '->unnestErrors() unnests errors');
 
-foreach (array('RowFormat', 'ErrorRowFormat', 'ErrorListFormatInARow', 'ErrorRowFormatInARow', 'NamedErrorRowFormatInARow', 'DecoratorFormat') as $method)
-{
-  $getter = sprintf('get%s', $method);
-  $setter = sprintf('set%s', $method);
-  $t->diag(sprintf('->%s() ->%s()', $getter, $setter));
-  $f->$setter($value = rand(1, 99999));
-  $t->is($f->$getter(), $value, sprintf('->%s() ->%s()', $getter, $setter));
+foreach (array('RowFormat', 'ErrorRowFormat', 'ErrorListFormatInARow', 'ErrorRowFormatInARow', 'NamedErrorRowFormatInARow', 'DecoratorFormat') as $method) {
+    $getter = sprintf('get%s', $method);
+    $setter = sprintf('set%s', $method);
+    $t->diag(sprintf('->%s() ->%s()', $getter, $setter));
+    $f->{$setter}($value = rand(1, 99999));
+    $t->is($f->{$getter}(), $value, sprintf('->%s() ->%s()', $getter, $setter));
 }
 
 $t->diag('::setTranslationCallable() ::getTranslationCallable()');
 function my__($string)
 {
-  return sprintf('[%s]', $string);
+    return sprintf('[%s]', $string);
 }
 
 class myI18n
 {
-  static public function __($string)
-  {
-    return my__($string);
-  }
+    public static function __($string)
+    {
+        return my__($string);
+    }
 }
 MyFormatter::setTranslationCallable('my__');
 
@@ -98,18 +96,13 @@ $t->is(MyFormatter::getTranslationCallable(), 'my__', 'get18nCallable() retrieve
 MyFormatter::setTranslationCallable(new sfCallable('my__'));
 $t->isa_ok(MyFormatter::getTranslationCallable(), 'sfCallable', 'get18nCallable() retrieves i18n sfCallable correctly');
 
-try
-{
-  $f->setTranslationCallable('foo');
-  $t->fail('setTranslationCallable() does not throw InvalidException when i18n callable is invalid');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('setTranslationCallable() throws InvalidException if i18n callable is not a valid callable');
-}
-catch (Exception $e)
-{
-  $t->fail('setTranslationCallable() throws unexpected exception');
+try {
+    $f->setTranslationCallable('foo');
+    $t->fail('setTranslationCallable() does not throw InvalidException when i18n callable is invalid');
+} catch (InvalidArgumentException $e) {
+    $t->pass('setTranslationCallable() throws InvalidException if i18n callable is not a valid callable');
+} catch (Exception $e) {
+    $t->fail('setTranslationCallable() throws unexpected exception');
 }
 
 $t->diag('->translate()');
@@ -122,9 +115,9 @@ $t->is($f->translate('label'), '[label]', 'translate() call i18n callable as exp
 $t->diag('->generateLabel() ->generateLabelName() ->setLabel() ->setLabels()');
 MyFormatter::dropTranslationCallable();
 $w = new sfWidgetFormSchema(array(
-  'author_id'  => new sfWidgetFormInputText(),
-  'first_name' => new sfWidgetFormInputText(),
-  'last_name'  => new sfWidgetFormInputText(),
+    'author_id' => new sfWidgetFormInputText(),
+    'first_name' => new sfWidgetFormInputText(),
+    'last_name' => new sfWidgetFormInputText(),
 ));
 $f = new MyFormatter($w);
 $t->is($f->generateLabelName('first_name'), 'First name', '->generateLabelName() generates a label value from a label name');
@@ -152,26 +145,23 @@ $t->is($f->generateLabel('last_name'), '<label for="last_name">[Your Last Name]<
 // ->setTranslationCatalogue() ->getTranslationCatalogue()
 class MyFormatter2 extends sfWidgetFormSchemaFormatter
 {
-  
 }
 
 $f = new MyFormatter2(new sfWidgetFormSchema(array()));
 $f->setTranslationCatalogue('foo');
 $t->is($f->getTranslationCatalogue(), 'foo', 'setTranslationCatalogue() has set the i18n catalogue correctly');
 $t->diag('->setTranslationCatalogue() ->getTranslationCatalogue()');
-try
-{
-  $f->setTranslationCatalogue(array('foo'));
-  $t->fail('setTranslationCatalogue() does not throw an exception when catalogue name is incorrectly typed');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('setTranslationCatalogue() throws an exception when catalogue name is incorrectly typed');
+
+try {
+    $f->setTranslationCatalogue(array('foo'));
+    $t->fail('setTranslationCatalogue() does not throw an exception when catalogue name is incorrectly typed');
+} catch (InvalidArgumentException $e) {
+    $t->pass('setTranslationCatalogue() throws an exception when catalogue name is incorrectly typed');
 }
 
 function ___my($s, $p, $c)
 {
-  return $c;
+    return $c;
 }
 
 $f = new MyFormatter2(new sfWidgetFormSchema());

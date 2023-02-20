@@ -3,22 +3,21 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(6);
 
 $dispatcher = new sfEventDispatcher();
 
-require_once(__DIR__.'/../../../lib/util/sfToolkit.class.php');
+require_once __DIR__.'/../../../lib/util/sfToolkit.class.php';
 $file = sys_get_temp_dir().DIRECTORY_SEPARATOR.'sf_log_file.txt';
-if (file_exists($file))
-{
-  unlink($file);
+if (file_exists($file)) {
+    unlink($file);
 }
 $fileLogger = new sfFileLogger($dispatcher, array('file' => $file));
 $buffer = fopen('php://memory', 'rw');

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(48);
 
@@ -16,8 +16,8 @@ $t = new lime_test(48);
 $t->diag('->setServiceDefinitions() ->addServiceDefinitions() ->getServiceDefinitions() ->setServiceDefinition() ->getServiceDefinition() ->hasServiceDefinition()');
 $builder = new sfServiceContainerBuilder();
 $definitions = array(
-  'foo' => new sfServiceDefinition('FooClass'),
-  'bar' => new sfServiceDefinition('BarClass'),
+    'foo' => new sfServiceDefinition('FooClass'),
+    'bar' => new sfServiceDefinition('BarClass'),
 );
 $builder->setServiceDefinitions($definitions);
 $t->is($builder->getServiceDefinitions(), $definitions, '->setServiceDefinitions() sets the service definitions');
@@ -31,14 +31,11 @@ $t->ok($builder->setServiceDefinition('foobar', $foo = new sfServiceDefinition('
 $builder->addServiceDefinitions($defs = array('foobar' => new sfServiceDefinition('FooBarClass')));
 $t->is($builder->getServiceDefinitions(), array_merge($definitions, $defs), '->addServiceDefinitions() adds the service definitions');
 
-try
-{
-  $builder->getServiceDefinition('baz');
-  $t->fail('->getServiceDefinition() throws an InvalidArgumentException if the service definition does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getServiceDefinition() throws an InvalidArgumentException if the service definition does not exist');
+try {
+    $builder->getServiceDefinition('baz');
+    $t->fail('->getServiceDefinition() throws an InvalidArgumentException if the service definition does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getServiceDefinition() throws an InvalidArgumentException if the service definition does not exist');
 }
 
 // ->register()
@@ -83,14 +80,12 @@ $t->ok($builder->hasService('foobar2'), '->hasService() returns true if a servic
 // ->getService()
 $t->diag('->getService()');
 $builder = new sfServiceContainerBuilder();
-try
-{
-  $builder->getService('foo');
-  $t->fail('->getService() throws an InvalidArgumentException if the service does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getService() throws an InvalidArgumentException if the service does not exist');
+
+try {
+    $builder->getService('foo');
+    $t->fail('->getService() throws an InvalidArgumentException if the service does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getService() throws an InvalidArgumentException if the service does not exist');
 }
 $builder->register('foo', 'stdClass');
 $t->ok(is_object($builder->getService('foo')), '->getService() returns the service definition associated with the id');
@@ -100,14 +95,12 @@ $builder->register('bar', 'stdClass');
 $t->is($builder->getService('bar'), $bar, '->getService() returns the service associated with the id even if a definition has been defined');
 
 $builder->register('baz', 'stdClass')->setArguments(array(new sfServiceReference('baz')));
-try
-{
-  @$builder->getService('baz');
-  $t->fail('->getService() throws a LogicException if the service has a circular reference to itself');
-}
-catch (LogicException $e)
-{
-  $t->pass('->getService() throws a LogicException if the service has a circular reference to itself');
+
+try {
+    @$builder->getService('baz');
+    $t->fail('->getService() throws a LogicException if the service has a circular reference to itself');
+} catch (LogicException $e) {
+    $t->pass('->getService() throws a LogicException if the service has a circular reference to itself');
 }
 
 $builder->register('foobar', 'stdClass')->setShared(true);
@@ -178,14 +171,12 @@ $builder->register('foo3', 'FooClass')->setConfigurator(array(new sfServiceRefer
 $t->ok($builder->getService('foo3')->configured, '->createService() calls the configurator');
 
 $builder->register('foo4', 'FooClass')->setConfigurator('foo');
-try
-{
-  $builder->getService('foo4');
-  $t->fail('->createService() throws an InvalidArgumentException if the configure callable is not a valid callable');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->createService() throws an InvalidArgumentException if the configure callable is not a valid callable');
+
+try {
+    $builder->getService('foo4');
+    $t->fail('->createService() throws an InvalidArgumentException if the configure callable is not a valid callable');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->createService() throws an InvalidArgumentException if the configure callable is not a valid callable');
 }
 
 // ->resolveValue()
@@ -195,7 +186,7 @@ $t->is($builder->resolveValue('foo'), 'foo', '->resolveValue() returns its argum
 $builder->setParameter('foo', 'bar');
 $t->is($builder->resolveValue('I\'m a %foo%'), 'I\'m a bar', '->resolveValue() replaces placeholders by their values');
 $builder->setParameter('foo', true);
-$t->ok($builder->resolveValue('%foo%') === true, '->resolveValue() replaces arguments that are just a placeholder by their value without casting them to strings');
+$t->ok(true === $builder->resolveValue('%foo%'), '->resolveValue() replaces arguments that are just a placeholder by their value without casting them to strings');
 
 $builder->setParameter('foo', 'bar');
 $t->is($builder->resolveValue(array('%foo%' => '%foo%')), array('bar' => 'bar'), '->resolveValue() replaces placeholders in keys and values of arrays');
@@ -205,24 +196,18 @@ $t->is($builder->resolveValue(array('%foo%' => array('%foo%' => array('%foo%' =>
 $t->is($builder->resolveValue('I\'m a %%foo%%'), 'I\'m a %foo%', '->resolveValue() supports % escaping by doubling it');
 $t->is($builder->resolveValue('I\'m a %foo% %%foo %foo%'), 'I\'m a bar %foo bar', '->resolveValue() supports % escaping by doubling it');
 
-try
-{
-  $builder->resolveValue('%foobar%');
-  $t->fail('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
+try {
+    $builder->resolveValue('%foobar%');
+    $t->fail('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
 }
 
-try
-{
-  $builder->resolveValue('foo %foobar% bar');
-  $t->fail('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
+try {
+    $builder->resolveValue('foo %foobar% bar');
+    $t->fail('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->resolveValue() throws a InvalidArgumentException if a placeholder references a non-existant parameter');
 }
 
 // ->resolveServices()

@@ -8,48 +8,44 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(109);
 
 class myRequest extends sfWebRequest
 {
-  static protected $initialPathArrayKeys;
+    public $languages;
+    public $charsets;
+    public $acceptableContentTypes;
+    protected static $initialPathArrayKeys;
 
-  public $languages = null;
-  public $charsets = null;
-  public $acceptableContentTypes = null;
-
-  public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
-  {
-    if (isset($options['content_custom_only_for_test']))
+    public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
     {
-      $this->content = $options['content_custom_only_for_test'];
-      unset($options['content_custom_only_for_test']);
+        if (isset($options['content_custom_only_for_test'])) {
+            $this->content = $options['content_custom_only_for_test'];
+            unset($options['content_custom_only_for_test']);
+        }
+
+        parent::initialize($dispatcher, $parameters, $attributes, $options);
+
+        if (null === self::$initialPathArrayKeys) {
+            self::$initialPathArrayKeys = array_keys($this->getPathInfoArray());
+        }
+
+        $this->resetPathInfoArray();
     }
 
-    parent::initialize($dispatcher, $parameters, $attributes, $options);
-
-    if (null === self::$initialPathArrayKeys)
+    public function setOption($key, $value)
     {
-      self::$initialPathArrayKeys = array_keys($this->getPathInfoArray());
+        $this->options[$key] = $value;
     }
 
-    $this->resetPathInfoArray();
-  }
-
-  public function setOption($key, $value)
-  {
-    $this->options[$key] = $value;
-  }
-
-  public function resetPathInfoArray()
-  {
-    foreach (array_diff(array_keys($this->getPathInfoArray()), self::$initialPathArrayKeys) as $key)
+    public function resetPathInfoArray()
     {
-      unset($this->pathInfoArray[$key]);
+        foreach (array_diff(array_keys($this->getPathInfoArray()), self::$initialPathArrayKeys) as $key) {
+            unset($this->pathInfoArray[$key]);
+        }
     }
-  }
 }
 
 $dispatcher = new sfEventDispatcher();
@@ -71,7 +67,6 @@ $t->is($request->getLanguages(), array('en_US', 'en', 'fr'), '->getLanguages() r
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'i-cherokee';
 $t->is($request->getLanguages(), array('cherokee'), '->getLanguages() returns an array with all accepted languages');
-
 
 // ->getPreferredCulture()
 $t->diag('->getPreferredCulture()');
@@ -441,7 +436,7 @@ $t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url
 
 $request = new myRequest($dispatcher);
 $_SERVER['QUERY_STRING'] = 'test';
-$_SERVER['REQUEST_URI']  = '/frontend_test.php/test/klaus2?test';
+$_SERVER['REQUEST_URI'] = '/frontend_test.php/test/klaus2?test';
 $t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI without query');
 
 $request->resetPathInfoArray();
@@ -479,35 +474,31 @@ $t->diag('->checkCSRFProtection()');
 
 class BaseForm extends sfForm
 {
-  public function getCSRFToken($secret = null)
-  {
-    return '==TOKEN==';
-  }
+    public function getCSRFToken($secret = null)
+    {
+        return '==TOKEN==';
+    }
 }
 
 sfForm::enableCSRFProtection();
 
 $request = new myRequest($dispatcher);
-try
-{
-  $request->checkCSRFProtection();
-  $t->fail('->checkCSRFProtection() throws a validator error if CSRF protection fails');
-}
-catch (sfValidatorErrorSchema $error)
-{
-  $t->pass('->checkCSRFProtection() throws a validator error if CSRF protection fails');
+
+try {
+    $request->checkCSRFProtection();
+    $t->fail('->checkCSRFProtection() throws a validator error if CSRF protection fails');
+} catch (sfValidatorErrorSchema $error) {
+    $t->pass('->checkCSRFProtection() throws a validator error if CSRF protection fails');
 }
 
 $request = new myRequest($dispatcher);
 $request->setParameter('_csrf_token', '==TOKEN==');
-try
-{
-  $request->checkCSRFProtection();
-  $t->pass('->checkCSRFProtection() checks token from BaseForm');
-}
-catch (sfValidatorErrorSchema $error)
-{
-  $t->fail('->checkCSRFProtection() checks token from BaseForm');
+
+try {
+    $request->checkCSRFProtection();
+    $t->pass('->checkCSRFProtection() checks token from BaseForm');
+} catch (sfValidatorErrorSchema $error) {
+    $t->fail('->checkCSRFProtection() checks token from BaseForm');
 }
 
 // ->getContentType()
@@ -548,34 +539,33 @@ unset($_SERVER['HTTP_X_FORWARDED_HOST']);
 $t->diag('->getFiles()');
 
 $_FILES = array(
-  'article' => array(
-    'name' => array(
-      'media' => '1.png',
+    'article' => array(
+        'name' => array(
+            'media' => '1.png',
+        ),
+        'type' => array(
+            'media' => 'image/png',
+        ),
+        'tmp_name' => array(
+            'media' => '/private/var/tmp/phpnTrAJG',
+        ),
+        'error' => array(
+            'media' => 0,
+        ),
+        'size' => array(
+            'media' => 899,
+        ),
     ),
-    'type' => array(
-      'media' => 'image/png',
-    ),
-    'tmp_name' => array(
-      'media' => '/private/var/tmp/phpnTrAJG',
-    ),
-    'error' => array(
-      'media' => 0,
-    ),
-    'size' => array(
-      'media' => 899,
-    ),
-  ),
 );
 $taintedFiles = array(
-  'article' => array(
-    'media' => array (
-      'error'    => 0,
-      'name'     => '1.png',
-      'type'     => 'image/png',
-      'tmp_name' => '/private/var/tmp/phpnTrAJG',
-      'size'     => 899,
+    'article' => array(
+        'media' => array(
+            'error' => 0,
+            'name' => '1.png',
+            'type' => 'image/png',
+            'tmp_name' => '/private/var/tmp/phpnTrAJG',
+            'size' => 899,
+        ),
     ),
-  ),
 );
 $t->is_deeply($request->getFiles(), $taintedFiles, '->getFiles() return clean array extracted from $_FILES');
-
