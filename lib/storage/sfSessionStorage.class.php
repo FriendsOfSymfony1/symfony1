@@ -164,7 +164,7 @@ class sfSessionStorage extends sfStorage
         }
 
         // regenerate a new session id once per object
-        session_regenerate_id($destroy);
+        @session_regenerate_id($destroy);
 
         self::$sessionIdRegenerated = true;
     }
