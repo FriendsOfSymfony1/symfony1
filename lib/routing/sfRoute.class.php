@@ -200,67 +200,84 @@ class sfRoute implements Serializable
     return true;
   }
 
-  /**
-   * Generates a URL from the given parameters.
-   *
-   * @param  mixed   $params    The parameter values
-   * @param  array   $context   The context
-   * @param  Boolean $absolute  Whether to generate an absolute URL
-   *
-   * @return string The generated URL
-   */
-  public function generate($params, $context = array(), $absolute = false)
-  {
-    if (!$this->compiled)
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param  mixed   $params    The parameter values
+     * @param  array   $context   The context
+     * @param  Boolean $absolute  Whether to generate an absolute URL
+     *
+     * @return string The generated URL
+     */
+    public function generate($params, $context = [], $absolute = false)
     {
-      $this->compile();
+        if (!$this->compiled) {
+            $this->compile();
+        }
+
+        $url = $this->pattern;
+
+        $defaults = $this->mergeArrays($this->getDefaultParameters(), $this->defaults);
+        $tparams = $this->mergeArrays($defaults, $params);
+
+        // all params must be given
+        if ($diff = array_diff_key($this->variables, $tparams)) {
+            $message = sprintf(
+                'The "%s" route has some missing mandatory parameters (%s).',
+                $this->pattern,
+                implode(', ', $diff)
+            );
+            throw new InvalidArgumentException($message);
+        }
+
+        $elements = array_merge(
+            [SharedCacheHelper::ROUTING_NAMESPACE],
+            $tparams
+        );
+
+        if ($absolute) {
+            $elements[] = 'Absolute';
+        }
+
+        $cache_key = SharedCacheHelper::getNamespace($elements);
+        $cached    = SharedCacheHelper::getValue($cache_key);
+        if ($cached) {
+            return $cached;
+        }
+
+        if ($this->options['generate_shortest_url'] || $this->customToken) {
+            $url = $this->generateWithTokens($tparams);
+        } else {
+            // replace variables
+            $variables = $this->variables;
+            uasort($variables, ['sfRoute', 'generateCompareVarsByStrlen']);
+            foreach ($variables as $variable => $value) {
+                $url = str_replace($value, urlencode($tparams[$variable]), $url);
+            }
+
+            if (!in_array($this->suffix, $this->options['segment_separators'])) {
+                $url .= $this->suffix;
+            }
+        }
+
+        // replace extra parameters if the route contains *
+        $url = $this->generateStarParameter($url, $defaults, $tparams);
+
+        if ($this->options['extra_parameters_as_query_string'] && !$this->hasStarParameter()) {
+            // add a query string if needed
+            if ($extra = array_diff_key($params, $this->variables, $defaults)) {
+                $url .= '?' . http_build_query($extra);
+            }
+        }
+
+        SharedCacheHelper::setValue(
+            $cache_key,
+            $url,
+            SharedCacheHelper::THREE_MONTHS
+        );
+
+        return $url;
     }
-
-    $url = $this->pattern;
-
-    $defaults = $this->mergeArrays($this->getDefaultParameters(), $this->defaults);
-    $tparams = $this->mergeArrays($defaults, $params);
-
-    // all params must be given
-    if ($diff = array_diff_key($this->variables, $tparams))
-    {
-      throw new InvalidArgumentException(sprintf('The "%s" route has some missing mandatory parameters (%s).', $this->pattern, implode(', ', $diff)));
-    }
-
-    if ($this->options['generate_shortest_url'] || $this->customToken)
-    {
-      $url = $this->generateWithTokens($tparams);
-    }
-    else
-    {
-      // replace variables
-      $variables = $this->variables;
-      uasort($variables, array('sfRoute', 'generateCompareVarsByStrlen'));
-      foreach ($variables as $variable => $value)
-      {
-        $url = str_replace($value, urlencode($tparams[$variable]), $url);
-      }
-
-      if(!in_array($this->suffix, $this->options['segment_separators']))
-      {
-        $url .= $this->suffix;
-      }
-    }
-
-    // replace extra parameters if the route contains *
-    $url = $this->generateStarParameter($url, $defaults, $tparams);
-
-    if ($this->options['extra_parameters_as_query_string'] && !$this->hasStarParameter())
-    {
-      // add a query string if needed
-      if ($extra = array_diff_key($params, $this->variables, $defaults))
-      {
-        $url .= '?'.http_build_query($extra);
-      }
-    }
-
-    return $url;
-  }
 
   static private function generateCompareVarsByStrlen($a, $b)
   {
