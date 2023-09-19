@@ -230,16 +230,7 @@ class sfRoute implements Serializable
             throw new InvalidArgumentException($message);
         }
 
-        $elements = array_merge(
-            [SharedCacheHelper::ROUTING_NAMESPACE],
-            $tparams
-        );
-
-        if ($absolute) {
-            $elements[] = 'Absolute';
-        }
-
-        $cache_key = SharedCacheHelper::getNamespace($elements);
+        $cache_key = $this->generateCacheKey($tparams, $absolute);
         $cached    = SharedCacheHelper::getValue($cache_key);
         if ($cached) {
             return $cached;
@@ -277,6 +268,45 @@ class sfRoute implements Serializable
         );
 
         return $url;
+    }
+
+    /**
+     * Generates a consistent cache key for a route
+     */
+    protected function generateCacheKey(array $elements = [], bool $absolute = false): string
+    {
+        $elements = [
+            SharedCacheHelper::ROUTING_NAMESPACE,
+            $this->flattenArrayElements($elements),
+        ];
+
+        if ($absolute) {
+            $elements[] = 'Absolute';
+        }
+
+        return SharedCacheHelper::getNamespace($elements);
+    }
+
+    /**
+     * Recursive method to pack a key => value pair array down into a flat
+     * numerically-indexed array, with a consistent ordering of elements.
+     */
+    protected function flattenArrayElements(array $elements = []): array
+    {
+        $flattened = [];
+        ksort($elements);
+        foreach ($elements as $key => $value) {
+            $flattened[] = $key;
+
+            if (is_array($value)) {
+                $flattened[] = $this->flattenArrayElements($value);
+                continue;
+            }
+
+            $flattened[] = $value;
+        }
+
+        return $flattened;
     }
 
   static private function generateCompareVarsByStrlen($a, $b)
