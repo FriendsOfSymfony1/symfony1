@@ -299,7 +299,7 @@ class sfRoute implements Serializable
             $flattened[] = $key;
 
             if (is_array($value)) {
-                $flattened[] = $this->flattenArrayElements($value);
+                $flattened = array_merge($flattened, $this->flattenArrayElements($value));
                 continue;
             }
 
