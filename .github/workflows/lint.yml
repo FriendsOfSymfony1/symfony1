@@ -10,22 +10,22 @@ jobs:
     name: 'PHP-CS-Fixer'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v3'
+      - uses: actions/checkout@v3
 
-      - name: 'Setup PHP'
-        uses: 'shivammathur/setup-php@v2'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'
+          php-version: 8.2
           tools: php-cs-fixer, cs2pr
 
-      - uses: 'actions/cache@v3'
+      - uses: actions/cache@v3
         with:
           path: '.php-cs-fixer.cache'
-          key: '${{ github.repository }}-8.1-phpcsfixer-${{ github.ref_name }}'
+          key: ${{ github.repository }}-8.2-phpcsfixer-${{ github.ref_name }}
           restore-keys: |
-            ${{ github.repository }}-8.1-phpcsfixer-main
-            ${{ github.repository }}-8.1-phpcsfixer-
+            ${{ github.repository }}-8.2-phpcsfixer-master
+            ${{ github.repository }}-8.2-phpcsfixer-
 
-      - name: 'Run PHP-CS-Fixer'
+      - name: Run PHP-CS-Fixer
         # Using cs2pr settings, see: https://github.com/shivammathur/setup-php#tools-with-checkstyle-support
         run: 'php-cs-fixer fix --dry-run --format checkstyle | cs2pr'
