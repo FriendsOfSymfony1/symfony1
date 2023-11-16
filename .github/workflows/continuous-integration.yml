@@ -1,49 +1,60 @@
 name: "Continuous Integration"
 
 on:
-    push:
-      branches:
-        - master
-    pull_request:
+  push:
+    branches:
+      - master
+  pull_request:
 
 env:
-    fail-fast: true
+  fail-fast: true
 
 jobs:
-    tests:
-        name: "Symfony1 Tests"
-        runs-on: "ubuntu-22.04"
+  tests:
+    name: "Symfony1 Tests"
+    runs-on: "ubuntu-latest"
 
-        strategy:
-            matrix:
-                php-version:
-                    - "7.4"
-                    - "8.0"
-                    - "8.1"
-                    - "8.2"
-                memcached-version:
-                    - "1.6"
+    strategy:
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+        memcached-version:
+          - "1.6"
 
-        services:
-            memcached:
-              image: "memcached:${{ matrix.memcached-version }}"
+    services:
+      memcached:
+        image: "memcached:${{ matrix.memcached-version }}"
 
-        steps:
-            - name: "Checkout"
-              uses: "actions/checkout@v3"
-              with:
-                submodules: "true"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: "true"
 
-            - name: "Install PHP"
-              uses: "shivammathur/setup-php@v2"
-              with:
-                  php-version: "${{ matrix.php-version }}"
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "${{ matrix.php-version }}"
 
-            - name: "Install dependencies with Composer"
-              uses: "ramsey/composer-install@v2"
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-            - name: "Run Check configuration"
-              run: "php data/bin/check_configuration.php"
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-            - name: "Run Tests"
-              run: "php data/bin/symfony symfony:test --trace"
+      - name: Install dependencies
+        run: composer install --prefer-dist
+
+      - name: Run Check configuration
+        run: php data/bin/check_configuration.php
+
+      - name: Run Tests
+        run: php data/bin/symfony symfony:test --trace
