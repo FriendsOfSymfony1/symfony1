@@ -74,8 +74,6 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
     /**
      * Adds a credential.
-     *
-     * @param mixed $credential
      */
     public function addCredential($credential)
     {
@@ -116,8 +114,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
     /**
      * Returns true if user has credential.
      *
-     * @param mixed $credentials
-     * @param bool  $useAnd      specify the mode, either AND or OR
+     * @param bool $useAnd specify the mode, either AND or OR
      *
      * @return bool
      *

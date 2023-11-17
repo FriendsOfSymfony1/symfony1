@@ -7,7 +7,5 @@
  */
 class AuthorInheritanceForm extends BaseAuthorInheritanceForm
 {
-    public function configure()
-    {
-    }
+    public function configure() {}
 }

@@ -34,8 +34,7 @@ class myTestBrowser extends sfTestBrowser
             // messages in another module catalogue
             checkElement('#action_other_local', '/une autre phrase locale en français/i')->
             checkElement('#template_other_local', '/une autre phrase locale en français/i')->
-          end()
-        ;
+          end();
     }
 }
 
@@ -53,8 +52,7 @@ $b->
     checkElement('#action', '/an english sentence/i')->
     checkElement('#template', '/an english sentence/i')->
   end()->
-  with('user')->isCulture('en')
-;
+  with('user')->isCulture('en');
 
 $b->
   get('/fr/i18n/index')->
@@ -64,8 +62,7 @@ $b->
   end()->
   with('response')->isStatusCode(200)->
   with('user')->isCulture('fr')->
-  checkResponseForCulture('fr')
-;
+  checkResponseForCulture('fr');
 
 // change user culture in the action
 $b->
@@ -76,8 +73,7 @@ $b->
   end()->
   with('response')->isStatusCode(200)->
   with('user')->isCulture('fr')->
-  checkResponseForCulture('fr')
-;
+  checkResponseForCulture('fr');
 
 // messages for a module plugin
 $b->
@@ -99,5 +95,4 @@ $b->
     checkElement('#template_yetAnother', '/encore une autre phrase en français - from plugin but translation overridden in the application/i')->
     checkElement('#action_testForPluginI18N', '/une phrase en français depuis un plugin - global/i')->
     checkElement('#template_testForPluginI18N', '/une phrase en français depuis un plugin - global/i')->
-  end()
-;
+  end();

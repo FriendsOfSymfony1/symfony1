@@ -20,16 +20,12 @@ class sfTesterDoctrine extends sfTester
     /**
      * Prepares the tester.
      */
-    public function prepare()
-    {
-    }
+    public function prepare() {}
 
     /**
      * Initializes the tester.
      */
-    public function initialize()
-    {
-    }
+    public function initialize() {}
 
     /**
      * Tests a model.

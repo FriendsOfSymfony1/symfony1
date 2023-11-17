@@ -24,9 +24,7 @@ require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
 
 require_once __DIR__.'/../../../lib/config/sfConfig.class.php';
 
-class sfException extends Exception
-{
-}
+class sfException extends Exception {}
 
 sfConfig::set('sf_charset', 'UTF-8');
 

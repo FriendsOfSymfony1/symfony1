@@ -11,22 +11,16 @@ class TestSpool implements Swift_Spool
 {
     protected $messages = array();
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function isStarted()
     {
         return true;
     }
 
-    public function start()
-    {
-    }
+    public function start() {}
 
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     public function queueMessage(Swift_Mime_Message $message)
     {

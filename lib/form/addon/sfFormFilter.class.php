@@ -17,6 +17,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfFormFilter extends BaseForm
-{
-}
+class sfFormFilter extends BaseForm {}

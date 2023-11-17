@@ -7,6 +7,4 @@
  *
  * @version    SVN: $Id$
  */
-class BaseForm extends sfFormSymfony
-{
-}
+class BaseForm extends sfFormSymfony {}

@@ -18,6 +18,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfStorageException extends sfException
-{
-}
+class sfStorageException extends sfException {}

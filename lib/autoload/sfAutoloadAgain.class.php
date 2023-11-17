@@ -25,9 +25,7 @@ class sfAutoloadAgain
     /**
      * Constructor.
      */
-    protected function __construct()
-    {
-    }
+    protected function __construct() {}
 
     /**
      * Returns the singleton autoloader.

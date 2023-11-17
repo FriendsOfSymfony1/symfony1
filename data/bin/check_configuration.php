@@ -7,11 +7,6 @@ function is_cli()
 
 /**
  * Checks a configuration.
- *
- * @param mixed $boolean
- * @param mixed $message
- * @param mixed $help
- * @param mixed $fatal
  */
 function check($boolean, $message, $help = '', $fatal = false)
 {
@@ -84,8 +79,7 @@ check(function_exists('posix_isatty'), 'The posix_isatty() is available', 'Insta
 $accelerator =
   (function_exists('apc_store') && ini_get('apc.enabled'))
   || function_exists('eaccelerator_put') && ini_get('eaccelerator.enable')
-  || function_exists('xcache_set')
-;
+  || function_exists('xcache_set');
 check($accelerator, 'A PHP accelerator is installed', 'Install a PHP accelerator like APC (highly recommended)', false);
 
 check(!ini_get('short_open_tag'), 'php.ini has short_open_tag set to off', 'Set it to off in php.ini', false);

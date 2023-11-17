@@ -57,9 +57,6 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
     protected function execute($arguments = array(), $options = array())
     {
@@ -87,9 +84,8 @@ EOF;
     /**
      * Installs web content for a plugin.
      *
-     * @param string $plugin   The plugin name
-     * @param string $dir      The plugin directory
-     * @param mixed  $relative
+     * @param string $plugin The plugin name
+     * @param string $dir    The plugin directory
      */
     protected function installPluginAssets($plugin, $dir, $relative)
     {

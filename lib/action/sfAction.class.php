@@ -46,18 +46,14 @@ abstract class sfAction extends sfComponent
      *
      * By default, this method is empty.
      */
-    public function preExecute()
-    {
-    }
+    public function preExecute() {}
 
     /**
      * Execute an application defined process immediately after execution of this sfAction object.
      *
      * By default, this method is empty.
      */
-    public function postExecute()
-    {
-    }
+    public function postExecute() {}
 
     /**
      * Forwards current action to the default 404 error action.
@@ -385,8 +381,6 @@ abstract class sfAction extends sfComponent
      *
      * @param string $name    The name of the value to pull from security.yml
      * @param mixed  $default The default value to return if none is found in security.yml
-     *
-     * @return mixed
      */
     public function getSecurityValue($name, $default = null)
     {

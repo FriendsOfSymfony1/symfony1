@@ -86,8 +86,6 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
     /**
      * Adds a collection of errors.
      *
-     * @param sfValidatorErrorSchema $errorsAn sfValidatorErrorSchema instance
-     *
      * @return sfValidatorErrorSchema The current error schema instance
      */
     public function addErrors(sfValidatorErrorSchema $errors)
@@ -143,8 +141,6 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
 
     /**
      * @see sfValidatorError
-     *
-     * @param mixed $raw
      */
     public function getArguments($raw = false)
     {
@@ -271,9 +267,7 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
      * @param string $offset (ignored)
      */
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
-    {
-    }
+    public function offsetUnset($offset) {}
 
     /**
      * Serializes the current instance.

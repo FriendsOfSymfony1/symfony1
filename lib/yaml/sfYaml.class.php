@@ -55,8 +55,7 @@ class sfYaml
      *   print_r($array);
      *  </code>
      *
-     * @param string $input    Path of YAML file or string containing YAML
-     * @param mixed  $encoding
+     * @param string $input Path of YAML file or string containing YAML
      *
      * @return array The YAML converted to a PHP array
      *

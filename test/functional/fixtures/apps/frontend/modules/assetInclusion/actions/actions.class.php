@@ -9,7 +9,5 @@
  */
 class assetInclusionActions extends sfActions
 {
-    public function executeIndex()
-    {
-    }
+    public function executeIndex() {}
 }

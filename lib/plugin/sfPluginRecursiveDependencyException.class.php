@@ -15,6 +15,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfPluginRecursiveDependencyException extends sfPluginException
-{
-}
+class sfPluginRecursiveDependencyException extends sfPluginException {}

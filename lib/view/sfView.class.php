@@ -85,11 +85,6 @@ abstract class sfView
      * Class constructor.
      *
      * @see initialize()
-     *
-     * @param mixed $context
-     * @param mixed $moduleName
-     * @param mixed $actionName
-     * @param mixed $viewName
      */
     public function __construct($context, $moduleName, $actionName, $viewName)
     {

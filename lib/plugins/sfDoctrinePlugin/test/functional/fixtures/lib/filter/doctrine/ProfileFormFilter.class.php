@@ -7,7 +7,5 @@
  */
 class ProfileFormFilter extends BaseProfileFormFilter
 {
-    public function configure()
-    {
-    }
+    public function configure() {}
 }

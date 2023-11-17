@@ -232,8 +232,6 @@ abstract class sfFormDoctrine extends sfFormObject
 
     /**
      * @see sfFormObject
-     *
-     * @param mixed $values
      */
     protected function doUpdateObject($values)
     {
@@ -372,9 +370,7 @@ abstract class sfFormDoctrine extends sfFormObject
     /**
      * Used in generated forms when models use inheritance.
      */
-    protected function setupInheritance()
-    {
-    }
+    protected function setupInheritance() {}
 
     /**
      * Returns the name of the related model.

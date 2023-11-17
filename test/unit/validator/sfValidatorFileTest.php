@@ -124,9 +124,7 @@ $t->is($f->getOriginalName(), '', '->clean() returns a sfValidatedFile with an e
 $t->is($f->getSize(), strlen($content), '->clean() returns a sfValidatedFile with a computed file size if the size is not passed in the initial value');
 $t->is($f->getType(), 'text/plain', '->clean() returns a sfValidatedFile with a guessed content type');
 
-class myValidatedFile extends sfValidatedFile
-{
-}
+class myValidatedFile extends sfValidatedFile {}
 
 $v->setOption('validated_file_class', 'myValidatedFile');
 $f = $v->clean(array('tmp_name' => $tmpDir.'/test.txt'));

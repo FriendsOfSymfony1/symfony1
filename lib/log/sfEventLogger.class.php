@@ -8,9 +8,6 @@
  */
 class sfEventLogger extends sfLogger
 {
-    /**
-     * {@inheritDoc}
-     */
     public function initialize(sfEventDispatcher $dispatcher, $options = array())
     {
         $this->dispatcher = $dispatcher;
@@ -26,9 +23,6 @@ class sfEventLogger extends sfLogger
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     protected function doLog($message, $priority)
     {
         $this->dispatcher->notify(new sfEvent($this, $this->options['event_name'], array($message, 'priority' => $priority)));

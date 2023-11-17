@@ -7,6 +7,4 @@
  *
  * @version    SVN: $Id$
  */
-abstract class PluginSettingForm extends BaseSettingForm
-{
-}
+abstract class PluginSettingForm extends BaseSettingForm {}

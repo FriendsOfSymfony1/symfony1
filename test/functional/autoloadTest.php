@@ -24,8 +24,7 @@ $b->
   with('response')->begin()->
     isStatusCode(200)->
     checkElement('body div', 'foo')->
-  end()
-;
+  end();
 
 $t = $b->test();
 

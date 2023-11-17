@@ -44,8 +44,6 @@ class sfValidatorDateRange extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {

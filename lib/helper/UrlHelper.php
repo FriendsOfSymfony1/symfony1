@@ -14,11 +14,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * @version    SVN: $Id$
- *
- * @param mixed $name
- * @param mixed $routeName
- * @param mixed $params
- * @param mixed $options
  */
 
 /**
@@ -33,10 +28,6 @@ function link_to2($name, $routeName, $params, $options = array())
 
 /**
  * @ignore
- *
- * @param mixed $name
- * @param mixed $internal_uri
- * @param mixed $options
  */
 function link_to1($name, $internal_uri, $options = array())
 {
@@ -83,10 +74,6 @@ function link_to1($name, $internal_uri, $options = array())
 
 /**
  * @ignore
- *
- * @param mixed $routeName
- * @param mixed $params
- * @param mixed $absolute
  */
 function url_for2($routeName, $params = array(), $absolute = false)
 {
@@ -97,9 +84,6 @@ function url_for2($routeName, $params = array(), $absolute = false)
 
 /**
  * @ignore
- *
- * @param mixed $internal_uri
- * @param mixed $absolute
  */
 function url_for1($internal_uri, $absolute = false)
 {
@@ -119,9 +103,6 @@ function url_for1($internal_uri, $absolute = false)
  *  echo url_for('@my_rule', true);
  *    => http://myapp.example.com/path/to/my/action
  * </code>
- *
- * @param string $internal_uri 'module/action' or '@rule' of the action
- * @param bool   $absolute     return absolute path?
  *
  * @return string routed URL
  */
@@ -168,10 +149,6 @@ function url_for()
  *  echo link_to('Delete this page', 'my_module/my_action', array('id' => 'myid', 'confirm' => 'Are you sure?', 'absolute' => true));
  *    => <a href="http://myapp.example.com/path/to/my/action" id="myid" onclick="return confirm('Are you sure?');">Delete this page</a>
  * </code>
- *
- * @param string $name         name of the link, i.e. string to appear between the <a> tags
- * @param string $internal_uri 'module/action' or '@rule' of the action
- * @param array  $options      additional HTML compliant <a> tag parameters
  *
  * @return string XHTML compliant <a href> tag
  *
@@ -233,11 +210,6 @@ function form_tag_for(sfForm $form, $routePrefix, $attributes = array())
  *    => <span>Delete this page</span>
  * </code>
  *
- * @param bool   $condition    condition
- * @param string $name         name of the link, i.e. string to appear between the <a> tags
- * @param string $internal_uri 'module/action' or '@rule' of the action
- * @param array  $options      additional HTML compliant <a> tag parameters
- *
  * @return string XHTML compliant <a href> tag or name
  *
  * @see    link_to
@@ -288,11 +260,6 @@ function link_to_if()
  *  echo link_to_unless(!$user->isAdministrator(), 'Delete this page', 'my_module/my_action');
  *    => <a href="/path/to/my/action">Delete this page</a>
  * </code>
- *
- * @param bool   $condition    condition
- * @param string $name         name of the link, i.e. string to appear between the <a> tags
- * @param string $internal_uri 'module/action' or '@rule' of the action
- * @param array  $options      additional HTML compliant <a> tag parameters
  *
  * @return string XHTML compliant <a href> tag or name
  *

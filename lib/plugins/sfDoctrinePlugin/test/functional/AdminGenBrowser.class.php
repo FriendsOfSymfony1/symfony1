@@ -103,8 +103,7 @@ class AdminGenBrowser extends sfTestBrowser
     {
         $this->
           get('/my_articles')->
-          with('response')->isStatusCode('200')
-        ;
+          with('response')->isStatusCode('200');
     }
 
     protected function _testArticleI18nEmbedded()
@@ -137,8 +136,7 @@ class AdminGenBrowser extends sfTestBrowser
               check('Article', array('is_on_homepage' => $info['is_on_homepage']))->
               check('ArticleTranslation', array('lang' => 'fr', 'title' => 'Test French title'))->
               check('ArticleTranslation', array('lang' => 'en', 'title' => 'Test English title'))->
-            end()
-        ;
+            end();
     }
 
     protected function _testEnumDropdown()
@@ -149,8 +147,7 @@ class AdminGenBrowser extends sfTestBrowser
           get('/subscriptions/new')->
             with('response')->begin()->
               checkElement('select', '/^New\R?Active\R?Pending\R?Expired\R?$/m')->
-            end()
-        ;
+            end();
     }
 
     protected function _testUserEmbedsProfileForm()
@@ -163,8 +160,7 @@ class AdminGenBrowser extends sfTestBrowser
               matches('/Profile/')->
               matches('/First name/')->
               matches('/Last name/')->
-            end()
-        ;
+            end();
 
         $this->info('Test the Profile form saves and attached to user properly');
 
@@ -198,8 +194,7 @@ class AdminGenBrowser extends sfTestBrowser
               check('UserGroup', array('user_id' => $user->id, 'group_id' => $user->Groups[1]->id))->
               check('UserPermission', array('user_id' => $user->id, 'permission_id' => $user->Permissions[0]->id))->
               check('UserPermission', array('user_id' => $user->id, 'permission_id' => $user->Permissions[1]->id))->
-            end()
-        ;
+            end();
 
         unset($userInfo['user']['Profile']['user_id']);
         $tester = $this->get('/users/new')->

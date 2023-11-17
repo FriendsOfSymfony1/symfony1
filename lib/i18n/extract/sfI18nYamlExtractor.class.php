@@ -13,6 +13,4 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfI18nYamlExtractor implements sfI18nExtractorInterface
-{
-}
+abstract class sfI18nYamlExtractor implements sfI18nExtractorInterface {}

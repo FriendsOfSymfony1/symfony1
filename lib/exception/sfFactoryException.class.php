@@ -18,6 +18,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfFactoryException extends sfException
-{
-}
+class sfFactoryException extends sfException {}

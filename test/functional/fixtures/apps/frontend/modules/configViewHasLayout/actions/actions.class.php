@@ -9,7 +9,5 @@
  */
 class configViewHasLayoutActions extends sfActions
 {
-    public function executeWithoutLayout()
-    {
-    }
+    public function executeWithoutLayout() {}
 }

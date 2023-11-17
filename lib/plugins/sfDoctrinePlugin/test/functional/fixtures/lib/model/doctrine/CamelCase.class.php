@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id$
  */
-class CamelCase extends BaseCamelCase
-{
-}
+class CamelCase extends BaseCamelCase {}

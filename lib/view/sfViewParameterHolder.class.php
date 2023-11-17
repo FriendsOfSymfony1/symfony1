@@ -25,9 +25,6 @@ class sfViewParameterHolder extends sfParameterHolder
 
     /**
      * Constructor.
-     *
-     * @param mixed $parameters
-     * @param mixed $options
      */
     public function __construct(sfEventDispatcher $dispatcher, $parameters = array(), $options = array())
     {

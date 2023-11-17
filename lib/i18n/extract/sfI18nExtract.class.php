@@ -26,9 +26,6 @@ abstract class sfI18nExtract
      * Class constructor.
      *
      * @see initialize()
-     *
-     * @param mixed $culture
-     * @param mixed $parameters
      */
     public function __construct(sfI18N $i18n, $culture, $parameters = array())
     {
@@ -62,9 +59,7 @@ abstract class sfI18nExtract
     /**
      * Configures the current extract object.
      */
-    public function configure()
-    {
-    }
+    public function configure() {}
 
     /**
      * Extracts i18n strings.

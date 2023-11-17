@@ -30,8 +30,7 @@ abstract class sfRouting
      *
      * @see initialize()
      *
-     * @param sfCache $cache
-     * @param array   $options
+     * @param array $options
      */
     public function __construct(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
     {
@@ -262,9 +261,7 @@ abstract class sfRouting
     /**
      * Execute the shutdown procedure.
      */
-    public function shutdown()
-    {
-    }
+    public function shutdown() {}
 
     protected function fixGeneratedUrl($url, $absolute = false)
     {

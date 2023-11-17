@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id: Builder.php 6820 2009-11-30 17:27:49Z jwage $
  */
-class ModelWithNumberInColumn extends BaseModelWithNumberInColumn
-{
-}
+class ModelWithNumberInColumn extends BaseModelWithNumberInColumn {}

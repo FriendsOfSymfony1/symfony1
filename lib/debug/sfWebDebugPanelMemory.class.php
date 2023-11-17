@@ -24,11 +24,7 @@ class sfWebDebugPanelMemory extends sfWebDebugPanel
         return '<img src="'.$this->webDebug->getOption('image_root_path').'/memory.png" alt="Memory" /> '.$totalMemory.' KB';
     }
 
-    public function getPanelTitle()
-    {
-    }
+    public function getPanelTitle() {}
 
-    public function getPanelContent()
-    {
-    }
+    public function getPanelContent() {}
 }

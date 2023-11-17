@@ -14,10 +14,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * @version    SVN: $Id$
- *
- * @param mixed $text
- * @param mixed $args
- * @param mixed $catalogue
  */
 function __($text, $args = array(), $catalogue = 'messages')
 {

@@ -52,8 +52,6 @@ class sfValidatorRegex extends sfValidatorString
 
     /**
      * @see sfValidatorString
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {

@@ -87,9 +87,7 @@ $t->is(button_to('test', '@homepage', 'confirm=really?'), '<input value="test" t
 $t->is(button_to('test', '@homepage', 'popup=true confirm=really?'), '<input value="test" type="button" onclick="if (confirm(\'really?\')) { var w=window.open(\'module/action\');w.focus(); };return false;" />', 'button_to() works with confirm and popup option');
 $t->like(button_to('test', '@homepage', array('method' => 'post')), '/==TOKEN==/', 'button_to() includes CSRF token from BaseForm');
 
-class testObject
-{
-}
+class testObject {}
 
 try {
     $o1 = new testObject();

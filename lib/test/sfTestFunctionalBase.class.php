@@ -31,7 +31,6 @@ abstract class sfTestFunctionalBase
      *
      * @param sfBrowserBase $browser A sfBrowserBase instance
      * @param lime_test     $lime    A lime instance
-     * @param mixed         $testers
      */
     public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
     {
@@ -197,8 +196,7 @@ abstract class sfTestFunctionalBase
             isParameter('module', $module)->
             isParameter('action', $action)->
           end()->
-          with('response')->isStatusCode($code)
-        ;
+          with('response')->isStatusCode($code);
     }
 
     /**

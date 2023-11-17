@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id$
  */
-class FormGeneratorTest2 extends BaseFormGeneratorTest2
-{
-}
+class FormGeneratorTest2 extends BaseFormGeneratorTest2 {}

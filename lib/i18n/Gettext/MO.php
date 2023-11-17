@@ -65,8 +65,6 @@ class TGettext_MO extends TGettext
      * _read.
      *
      * @param int $bytes
-     *
-     * @return mixed
      */
     public function _read($bytes = 1)
     {

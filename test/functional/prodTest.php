@@ -26,8 +26,7 @@ $b->
   with('response')->begin()->
     isStatusCode(200)->
     checkElement('body', '/congratulations/i')->
-  end()
-;
+  end();
 
 // default main page (with cache)
 $b->
@@ -39,8 +38,7 @@ $b->
   with('response')->begin()->
     isStatusCode(200)->
     checkElement('body', '/congratulations/i')->
-  end()
-;
+  end();
 
 // 404
 $b->
@@ -52,8 +50,7 @@ $b->
     isStatusCode(404)->
     checkElement('body', '!/congratulations/i')->
     checkElement('link[href="/sf/sf_default/css/screen.css"]')->
-  end()
-;
+  end();
 
 $b->
   get('/nonexistant/')->
@@ -64,8 +61,7 @@ $b->
     isStatusCode(404)->
     checkElement('body', '!/congratulations/i')->
     checkElement('link[href="/sf/sf_default/css/screen.css"]')->
-  end()
-;
+  end();
 
 // unexistant action
 $b->
@@ -77,5 +73,4 @@ $b->
     isStatusCode(404)->
     checkElement('body', '!/congratulations/i')->
     checkElement('link[href="/sf/sf_default/css/screen.css"]')->
-  end()
-;
+  end();

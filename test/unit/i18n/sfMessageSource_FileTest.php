@@ -16,17 +16,11 @@ class sfMessageSource_Simple extends sfMessageSource_File
 {
     protected $dataExt = '.xml';
 
-    public function delete($message, $catalogue = 'messages')
-    {
-    }
+    public function delete($message, $catalogue = 'messages') {}
 
-    public function update($text, $target, $comments, $catalogue = 'messages')
-    {
-    }
+    public function update($text, $target, $comments, $catalogue = 'messages') {}
 
-    public function save($catalogue = 'messages')
-    {
-    }
+    public function save($catalogue = 'messages') {}
 
     public function getCatalogueByDir($catalogue)
     {

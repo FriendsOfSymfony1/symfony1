@@ -95,10 +95,6 @@ class sfNumberFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to retrieve the value.
-     *
-     * @param mixed $name
-     *
-     * @return mixed
      */
     public function __get($name)
     {
@@ -113,9 +109,6 @@ class sfNumberFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to set the value.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -154,8 +147,6 @@ class sfNumberFormatInfo
 
     /**
      * Gets the default sfNumberFormatInfo that is culture-independent (invariant).
-     *
-     * @param mixed $type
      *
      * @return sfNumberFormatInfo default sfNumberFormatInfo
      */
@@ -413,8 +404,6 @@ class sfNumberFormatInfo
 
     /**
      * Gets the string to use as the currency symbol.
-     *
-     * @param mixed $currency
      *
      * @return string $currency currency symbol
      */

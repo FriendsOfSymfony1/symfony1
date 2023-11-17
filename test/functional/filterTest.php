@@ -26,8 +26,7 @@ $b->
     isStatusCode(200)->
     checkElement('div[class="before"]', 1)->
     checkElement('div[class="after"]', 1)->
-  end()
-;
+  end();
 
 // filter with a forward in the same module
 $b->
@@ -40,5 +39,4 @@ $b->
     isStatusCode(200)->
     checkElement('div[class="before"]', 2)->
     checkElement('div[class="after"]', 1)->
-  end()
-;
+  end();

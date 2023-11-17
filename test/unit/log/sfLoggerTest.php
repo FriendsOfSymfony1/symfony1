@@ -22,9 +22,7 @@ class myLogger extends sfLogger
     }
 }
 
-class notaLogger
-{
-}
+class notaLogger {}
 
 $dispatcher = new sfEventDispatcher();
 $logger = new myLogger($dispatcher, array('log_dir_name' => '/tmp'));

@@ -381,9 +381,7 @@ abstract class sfWidget
      *
      * @see __construct()
      */
-    protected function configure($options = array(), $attributes = array())
-    {
-    }
+    protected function configure($options = array(), $attributes = array()) {}
 
     /**
      * Prepares an attribute key and value for HTML representation.

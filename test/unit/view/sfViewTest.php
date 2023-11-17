@@ -16,21 +16,13 @@ $t = new lime_test(19);
 
 class myView extends sfView
 {
-    public function execute()
-    {
-    }
+    public function execute() {}
 
-    public function configure()
-    {
-    }
+    public function configure() {}
 
-    public function getEngine()
-    {
-    }
+    public function getEngine() {}
 
-    public function render()
-    {
-    }
+    public function render() {}
 }
 
 class configuredView extends myView

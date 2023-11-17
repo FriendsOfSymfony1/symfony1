@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id$
  */
-class ModelFromLinkedSchema extends BaseModelFromLinkedSchema
-{
-}
+class ModelFromLinkedSchema extends BaseModelFromLinkedSchema {}

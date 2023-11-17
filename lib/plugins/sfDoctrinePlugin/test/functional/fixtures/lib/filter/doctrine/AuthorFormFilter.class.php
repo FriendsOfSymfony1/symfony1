@@ -7,7 +7,5 @@
  */
 class AuthorFormFilter extends BaseAuthorFormFilter
 {
-    public function configure()
-    {
-    }
+    public function configure() {}
 }

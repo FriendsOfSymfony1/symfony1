@@ -113,8 +113,6 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
      * A schema file is any file saved in a plugin or project's config/doctrine/
      * directory that matches the "*.yml" glob.
      *
-     * @param mixed $yamlSchemaPath
-     *
      * @return string Absolute path to the consolidated schema file
      */
     protected function prepareSchemaFile($yamlSchemaPath)

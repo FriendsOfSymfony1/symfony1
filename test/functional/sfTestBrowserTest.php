@@ -89,8 +89,7 @@ $b->
     isParameter('action', 'throwsSfException')->
   end()->
   with('response')->isStatusCode(500)->
-  throwsException('sfException', 'sfException message')
-;
+  throwsException('sfException', 'sfException message');
 
 $b->
   get('/browser')->
@@ -102,8 +101,7 @@ $b->
   get('/browser/text')->
   with('response')->begin()->
     matches('/text/')->
-  end()
-;
+  end();
 
 try {
     $b->with('response')->checkElement('h1', 'text');
@@ -122,8 +120,7 @@ $b->
     isHeader('content-type', '!#text/html#')->
     isHeader('foo', 'bar')->
     isHeader('foo', 'foobar')->
-  end()
-;
+  end();
 
 // cookies
 $b->
@@ -161,8 +158,7 @@ $b->
     hasCookie('foo', false)->
     hasCookie('bar', false)->
   end()->
-  with('response')->checkElement('p', '.-')
-;
+  with('response')->checkElement('p', '.-');
 
 $b->
   setCookie('foo', 'bar')->
@@ -211,8 +207,7 @@ $b->
     hasCookie('foo', false)->
     hasCookie('bar', false)->
   end()->
-  with('response')->checkElement('p', '.-')
-;
+  with('response')->checkElement('p', '.-');
 
 $b->
   get('/browser')->
@@ -220,8 +215,7 @@ $b->
   post('/browser')->
   with('request')->isMethod('post')->
   call('/browser', 'put')->
-  with('request')->isMethod('put')
-;
+  with('request')->isMethod('put');
 
 // sfBrowser: clean the custom view templates
 $b->
@@ -232,8 +226,7 @@ $b->
   with('response')->checkElement('#test', 'template 1')->
 
   get('/browser/templateCustom')->
-  with('response')->checkElement('#test', 'template')
-;
+  with('response')->checkElement('#test', 'template');
 
 $b
     ->getAndCheck('browser', 'redirect1', null, 302)

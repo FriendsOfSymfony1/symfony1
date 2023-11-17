@@ -1,5 +1,3 @@
 <?php
 
-class BlogAuthorTable extends AuthorTable
-{
-}
+class BlogAuthorTable extends AuthorTable {}

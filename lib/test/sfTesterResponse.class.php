@@ -24,9 +24,7 @@ class sfTesterResponse extends sfTester
     /**
      * Prepares the tester.
      */
-    public function prepare()
-    {
-    }
+    public function prepare() {}
 
     /**
      * Initializes the tester.
@@ -322,7 +320,6 @@ class sfTesterResponse extends sfTester
      * Tests the response content against a regex.
      *
      * @param string Regex
-     * @param mixed $regex
      *
      * @return sfTester|sfTestFunctionalBase
      */

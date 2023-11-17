@@ -1,5 +1,3 @@
 <?php
 
-class AuthorInheritanceTable extends AuthorTable
-{
-}
+class AuthorInheritanceTable extends AuthorTable {}

@@ -143,9 +143,7 @@ MyFormatter::setTranslationCallable('my__');
 $t->is($f->generateLabel('last_name'), '<label for="last_name">[Your Last Name]</label>', '->generateLabelName() returns a i18ned label tag');
 
 // ->setTranslationCatalogue() ->getTranslationCatalogue()
-class MyFormatter2 extends sfWidgetFormSchemaFormatter
-{
-}
+class MyFormatter2 extends sfWidgetFormSchemaFormatter {}
 
 $f = new MyFormatter2(new sfWidgetFormSchema(array()));
 $f->setTranslationCatalogue('foo');

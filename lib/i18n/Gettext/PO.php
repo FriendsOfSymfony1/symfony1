@@ -37,7 +37,6 @@ class TGettext_PO extends TGettext
      * Constructor.
      *
      * @param   string      path to GNU PO file
-     * @param mixed $file
      *
      * @return object File_Gettext_PO
      */

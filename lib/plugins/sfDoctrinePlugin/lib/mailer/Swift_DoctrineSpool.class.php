@@ -34,9 +34,6 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
      * @param string The Doctrine model to use to store the messages (MailMessage by default)
      * @param string The column name to use for message storage (message by default)
      * @param string The method to call to retrieve the query to execute (optional)
-     * @param mixed $model
-     * @param mixed $column
-     * @param mixed $method
      */
     public function __construct($model = 'MailMessage', $column = 'message', $method = 'createQuery')
     {
@@ -58,16 +55,12 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
     /**
      * Starts this Transport mechanism.
      */
-    public function start()
-    {
-    }
+    public function start() {}
 
     /**
      * Stops this Transport mechanism.
      */
-    public function stop()
-    {
-    }
+    public function stop() {}
 
     /**
      * Stores a message in the queue.

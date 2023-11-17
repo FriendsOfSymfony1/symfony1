@@ -11,19 +11,16 @@ $container->
   setShared(false)->
   addMethodCall('setBar', array('bar'))->
   addMethodCall('initialize')->
-  setConfigurator('sc_configure')
-;
+  setConfigurator('sc_configure');
 $container->
   register('bar', 'FooClass')->
   setArguments(array('foo', new sfServiceReference('foo.baz'), new sfServiceParameter('foo_bar')))->
   setShared(true)->
-  setConfigurator(array(new sfServiceReference('foo.baz'), 'configure'))
-;
+  setConfigurator(array(new sfServiceReference('foo.baz'), 'configure'));
 $container->
   register('foo.baz', '%baz_class%')->
   setConstructor('getInstance')->
-  setConfigurator(array('%baz_class%', 'configureStatic1'))
-;
+  setConfigurator(array('%baz_class%', 'configureStatic1'));
 $container->register('foo_bar', 'FooClass');
 $container->setParameters(array(
     'baz_class' => 'BazClass',

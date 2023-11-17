@@ -21,9 +21,6 @@ class sfValidatorEmail extends sfValidatorRegex
 
     /**
      * @see sfValidatorRegex
-     *
-     * @param mixed $options
-     * @param mixed $messages
      */
     protected function configure($options = array(), $messages = array())
     {

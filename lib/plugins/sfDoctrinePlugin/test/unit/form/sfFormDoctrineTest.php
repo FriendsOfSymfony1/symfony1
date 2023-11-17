@@ -45,9 +45,7 @@ $author->delete();
 // ->embedRelation()
 $t->diag('->embedRelation()');
 
-class myArticleForm extends ArticleForm
-{
-}
+class myArticleForm extends ArticleForm {}
 
 $table = Doctrine_Core::getTable('Author');
 $form = new AuthorForm($table->create(array(
