@@ -17,6 +17,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineException extends sfException
-{
-}
+class sfDoctrineException extends sfException {}

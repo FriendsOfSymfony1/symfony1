@@ -12,9 +12,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(34);
 
-class ProjectConfiguration extends sfProjectConfiguration
-{
-}
+class ProjectConfiguration extends sfProjectConfiguration {}
 
 class TestConfiguration extends sfApplicationConfiguration
 {

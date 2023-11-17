@@ -355,8 +355,6 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     /**
      * Filter out models that have disabled generation of form classes.
      *
-     * @param mixed $models
-     *
      * @return array $models Array of models to generate forms for
      */
     protected function filterModels($models)

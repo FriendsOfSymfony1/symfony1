@@ -22,10 +22,6 @@ class sfValidatorFromDescription extends sfValidatorDecorator
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $string
-     * @param mixed $options
-     * @param mixed $messages
      */
     public function __construct($string, $options = array(), $messages = array())
     {

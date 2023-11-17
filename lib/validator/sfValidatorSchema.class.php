@@ -67,8 +67,6 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $values
      */
     public function clean($values)
     {
@@ -232,8 +230,6 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $indent
      */
     public function asString($indent = 0)
     {
@@ -268,8 +264,6 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $values
      */
     protected function doClean($values)
     {

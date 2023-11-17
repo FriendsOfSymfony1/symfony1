@@ -7,7 +7,5 @@
  */
 class SubscriptionForm extends BaseSubscriptionForm
 {
-    public function configure()
-    {
-    }
+    public function configure() {}
 }

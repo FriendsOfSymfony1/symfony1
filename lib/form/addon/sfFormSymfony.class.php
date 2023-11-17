@@ -26,7 +26,8 @@ class sfFormSymfony extends sfForm
      * Notifies the 'form.post_configure' event.
      *
      * @see sfForm
-     * {@inheritdoc}
+     *
+     * @param mixed|null $CSRFSecret
      */
     public function __construct($defaults = array(), $options = array(), $CSRFSecret = null)
     {
@@ -61,8 +62,6 @@ class sfFormSymfony extends sfForm
 
     /**
      * Sets the event dispatcher to be used by all forms.
-     *
-     * @param sfEventDispatcher $dispatcher
      */
     public static function setEventDispatcher(sfEventDispatcher $dispatcher = null)
     {
@@ -83,7 +82,6 @@ class sfFormSymfony extends sfForm
      * Notifies the 'form.filter_values' and 'form.validation_error' events.
      *
      * @see sfForm
-     * {@inheritdoc}
      */
     protected function doBind(array $values)
     {

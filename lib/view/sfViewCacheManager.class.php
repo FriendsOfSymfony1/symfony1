@@ -36,9 +36,6 @@ class sfViewCacheManager
      * Class constructor.
      *
      * @see initialize()
-     *
-     * @param mixed $context
-     * @param mixed $options
      */
     public function __construct($context, sfCache $cache, $options = array())
     {
@@ -50,7 +47,6 @@ class sfViewCacheManager
      *
      * @param sfContext $context Current application context
      * @param sfCache   $cache   An sfCache instance
-     * @param mixed     $options
      */
     public function initialize($context, sfCache $cache, $options = array())
     {
@@ -850,7 +846,6 @@ class sfViewCacheManager
      * Gets the vary header part of view cache key.
      *
      * @param string $vary
-     * @param mixed  $internalUri
      *
      * @return string
      */

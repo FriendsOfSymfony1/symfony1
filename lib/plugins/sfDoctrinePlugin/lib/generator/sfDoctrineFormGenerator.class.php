@@ -52,7 +52,6 @@ class sfDoctrineFormGenerator extends sfGenerator
      * Generates classes and templates in cache.
      *
      * @param array The parameters
-     * @param mixed $params
      *
      * @return string The data to put in configuration cache
      */
@@ -650,8 +649,6 @@ class sfDoctrineFormGenerator extends sfGenerator
 
     /**
      * Filter out models that have disabled generation of form classes.
-     *
-     * @param mixed $models
      *
      * @return array $models Array of models to generate forms for
      */

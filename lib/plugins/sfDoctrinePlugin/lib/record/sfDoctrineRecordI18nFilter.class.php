@@ -21,9 +21,7 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
     /**
      * @see Doctrine_Table::unshiftFilter()
      */
-    public function init()
-    {
-    }
+    public function init() {}
 
     /**
      * Calls set on Translation relationship.

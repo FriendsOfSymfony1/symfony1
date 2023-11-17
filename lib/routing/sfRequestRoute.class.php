@@ -25,11 +25,6 @@ class sfRequestRoute extends sfRoute
      * Applies a default sf_method requirements of GET or HEAD.
      *
      * @see sfRoute
-     *
-     * @param mixed $pattern
-     * @param mixed $defaults
-     * @param mixed $requirements
-     * @param mixed $options
      */
     public function __construct($pattern, $defaults = array(), $requirements = array(), $options = array())
     {

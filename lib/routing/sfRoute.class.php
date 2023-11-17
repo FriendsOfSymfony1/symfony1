@@ -69,6 +69,7 @@ class sfRoute implements Serializable
     {
         // always serialize compiled routes
         $this->compile();
+
         // sfPatternRouting will always re-set defaultParameters, so no need to serialize them
         return array($this->tokens, $this->defaultOptions, $this->options, $this->pattern, $this->staticPrefix, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->suffix, $this->customToken);
     }
@@ -653,9 +654,7 @@ class sfRoute implements Serializable
         }
     }
 
-    protected function compileForSeparator($separator, $regexSeparator)
-    {
-    }
+    protected function compileForSeparator($separator, $regexSeparator) {}
 
     protected function initializeOptions()
     {

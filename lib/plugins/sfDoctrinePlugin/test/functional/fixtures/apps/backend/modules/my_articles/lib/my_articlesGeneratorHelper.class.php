@@ -7,6 +7,4 @@
  *
  * @version    SVN: $Id$
  */
-class my_articlesGeneratorHelper extends BaseMy_articlesGeneratorHelper
-{
-}
+class my_articlesGeneratorHelper extends BaseMy_articlesGeneratorHelper {}

@@ -8,7 +8,5 @@ class myPluginTask extends sfBaseTask
         $this->name = 'run';
     }
 
-    public function execute($arguments = array(), $options = array())
-    {
-    }
+    public function execute($arguments = array(), $options = array()) {}
 }

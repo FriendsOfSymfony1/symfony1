@@ -24,9 +24,7 @@ class sfTesterViewCache extends sfTester
     /**
      * Prepares the tester.
      */
-    public function prepare()
-    {
-    }
+    public function prepare() {}
 
     /**
      * Initializes the tester.

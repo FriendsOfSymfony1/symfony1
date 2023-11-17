@@ -827,7 +827,6 @@ class sfWebResponse extends sfResponse
 
     /**
      * @see sfResponse
-     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {

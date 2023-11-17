@@ -39,9 +39,7 @@ class sfFormatter
      * @param string $name    The style name
      * @param array  $options An array of options
      */
-    public function setStyle($name, $options = array())
-    {
-    }
+    public function setStyle($name, $options = array()) {}
 
     /**
      * Formats a text according to the given parameters.

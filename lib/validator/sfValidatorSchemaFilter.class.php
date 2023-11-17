@@ -37,8 +37,6 @@ class sfValidatorSchemaFilter extends sfValidatorSchema
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $indent
      */
     public function asString($indent = 0)
     {
@@ -47,8 +45,6 @@ class sfValidatorSchemaFilter extends sfValidatorSchema
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $values
      */
     protected function doClean($values)
     {

@@ -12,42 +12,24 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 class myCache extends sfCache
 {
-    public function get($key, $default = null)
-    {
-    }
+    public function get($key, $default = null) {}
 
-    public function has($key)
-    {
-    }
+    public function has($key) {}
 
-    public function set($key, $data, $lifetime = null)
-    {
-    }
+    public function set($key, $data, $lifetime = null) {}
 
-    public function remove($key)
-    {
-    }
+    public function remove($key) {}
 
-    public function clean($mode = sfCache::ALL)
-    {
-    }
+    public function clean($mode = sfCache::ALL) {}
 
-    public function getTimeout($key)
-    {
-    }
+    public function getTimeout($key) {}
 
-    public function getLastModified($key)
-    {
-    }
+    public function getLastModified($key) {}
 
-    public function removePattern($pattern, $delimiter = ':')
-    {
-    }
+    public function removePattern($pattern, $delimiter = ':') {}
 }
 
-class fakeCache
-{
-}
+class fakeCache {}
 
 $t = new lime_test(1);
 

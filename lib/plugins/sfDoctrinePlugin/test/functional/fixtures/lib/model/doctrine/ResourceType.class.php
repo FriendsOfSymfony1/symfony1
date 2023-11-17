@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id$
  */
-class ResourceType extends BaseResourceType
-{
-}
+class ResourceType extends BaseResourceType {}

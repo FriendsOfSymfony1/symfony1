@@ -20,8 +20,6 @@ abstract class sfComponents extends sfComponent
     /**
      * @param sfRequest $request
      *
-     * @return mixed
-     *
      * @throws sfInitializationException
      *
      * @see sfComponent

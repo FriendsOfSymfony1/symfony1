@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id$
  */
-class AuthorInheritanceConcrete extends BaseAuthorInheritanceConcrete
-{
-}
+class AuthorInheritanceConcrete extends BaseAuthorInheritanceConcrete {}

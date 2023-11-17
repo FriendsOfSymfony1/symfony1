@@ -298,8 +298,6 @@ abstract class sfRequest implements ArrayAccess
      *
      * @param string $name    Parameter name
      * @param string $default Parameter default value
-     *
-     * @return mixed
      */
     public function getParameter($name, $default = null)
     {

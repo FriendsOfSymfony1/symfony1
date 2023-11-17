@@ -24,9 +24,7 @@ class TestTask extends sfBaseTask
         parent::initializeAutoload($configuration, $reload);
     }
 
-    protected function execute($arguments = array(), $options = array())
-    {
-    }
+    protected function execute($arguments = array(), $options = array()) {}
 }
 
 $rootDir = __DIR__.'/../../functional/fixtures';

@@ -16,10 +16,6 @@
  * @author     David Heinemeier Hansson
  *
  * @version    SVN: $Id$
- *
- * @param mixed $type
- * @param mixed $url
- * @param mixed $tag_options
  */
 
 /**
@@ -236,10 +232,6 @@ function stylesheet_tag()
  * Adds a stylesheet to the response object.
  *
  * @see sfResponse->addStylesheet()
- *
- * @param mixed $css
- * @param mixed $position
- * @param mixed $options
  */
 function use_stylesheet($css, $position = '', $options = array())
 {
@@ -250,10 +242,6 @@ function use_stylesheet($css, $position = '', $options = array())
  * Adds a javascript to the response object.
  *
  * @see sfResponse->addJavascript()
- *
- * @param mixed $js
- * @param mixed $position
- * @param mixed $options
  */
 function use_javascript($js, $position = '', $options = array())
 {
@@ -577,10 +565,6 @@ function dynamic_javascript_include_tag($uri, $absolute = false, $options = arra
  * The helper automatically adds the sf_format to the internal URI, so you don't have to.
  *
  * @see sfResponse->addJavascript()
- *
- * @param mixed $js
- * @param mixed $position
- * @param mixed $options
  */
 function use_dynamic_javascript($js, $position = '', $options = array())
 {
@@ -596,10 +580,6 @@ function use_dynamic_javascript($js, $position = '', $options = array())
  * The helper automatically adds the sf_format to the internal URI, so you don't have to.
  *
  * @see sfResponse->addStylesheet()
- *
- * @param mixed $css
- * @param mixed $position
- * @param mixed $options
  */
 function use_dynamic_stylesheet($css, $position = '', $options = array())
 {

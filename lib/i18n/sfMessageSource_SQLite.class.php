@@ -370,10 +370,6 @@ class sfMessageSource_SQLite extends sfMessageSource_Database
     /**
      * Updates the catalogue last modified time.
      *
-     * @param mixed $cat_id
-     * @param mixed $variant
-     * @param mixed $db
-     *
      * @return bool true if updated, false otherwise
      */
     protected function updateCatalogueTime($cat_id, $variant, $db)

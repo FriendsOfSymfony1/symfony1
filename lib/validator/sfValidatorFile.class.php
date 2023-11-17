@@ -93,8 +93,6 @@ class sfValidatorFile extends sfValidatorBase
      *  * size:     The file size in bytes (optional)
      *
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {
@@ -270,8 +268,6 @@ class sfValidatorFile extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function isEmpty($value)
     {

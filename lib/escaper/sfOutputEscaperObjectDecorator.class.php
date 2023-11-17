@@ -73,8 +73,6 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
     /**
      * Asks the wrapped object whether a property is set.
      *
-     * @param mixed $key
-     *
      * @return bool
      */
     public function __isset($key)

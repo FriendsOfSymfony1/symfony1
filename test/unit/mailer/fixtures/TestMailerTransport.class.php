@@ -34,9 +34,7 @@ class TestMailerTransport implements Swift_Transport
         $this->started = false;
     }
 
-    public function registerPlugin(Swift_Events_EventListener $plugin)
-    {
-    }
+    public function registerPlugin(Swift_Events_EventListener $plugin) {}
 
     public function setFoo($foo)
     {

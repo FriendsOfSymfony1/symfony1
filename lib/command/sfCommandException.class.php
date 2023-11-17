@@ -15,6 +15,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfCommandException extends sfException
-{
-}
+class sfCommandException extends sfException {}

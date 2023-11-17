@@ -17,6 +17,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfDatabaseException extends sfException
-{
-}
+class sfDatabaseException extends sfException {}

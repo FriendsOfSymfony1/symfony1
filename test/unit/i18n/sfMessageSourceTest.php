@@ -14,29 +14,17 @@ $t = new lime_test(3);
 
 class sfMessageSource_Simple extends sfMessageSource
 {
-    public function __construct($source)
-    {
-    }
+    public function __construct($source) {}
 
-    public function delete($message, $catalogue = 'messages')
-    {
-    }
+    public function delete($message, $catalogue = 'messages') {}
 
-    public function update($text, $target, $comments, $catalogue = 'messages')
-    {
-    }
+    public function update($text, $target, $comments, $catalogue = 'messages') {}
 
-    public function catalogues()
-    {
-    }
+    public function catalogues() {}
 
-    public function save($catalogue = 'messages')
-    {
-    }
+    public function save($catalogue = 'messages') {}
 
-    public function getId()
-    {
-    }
+    public function getId() {}
 }
 
 // ::factory()

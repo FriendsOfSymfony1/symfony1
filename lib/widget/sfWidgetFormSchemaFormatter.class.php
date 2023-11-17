@@ -84,8 +84,6 @@ abstract class sfWidgetFormSchemaFormatter
 
     /**
      * Returns the current i18n callable.
-     *
-     * @return mixed
      */
     public static function getTranslationCallable()
     {
@@ -94,8 +92,6 @@ abstract class sfWidgetFormSchemaFormatter
 
     /**
      * Sets a callable which aims to translate form labels, errors and help messages.
-     *
-     * @param mixed $callable
      *
      * @throws InvalidArgumentException if an invalid php callable or sfCallable has been provided
      */

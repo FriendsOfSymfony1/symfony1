@@ -25,7 +25,6 @@ class sfXCacheCache extends sfCache
      * * see sfCache for options available for all drivers
      *
      * @see sfCache
-     * {@inheritdoc}
      */
     public function initialize($options = array())
     {
@@ -42,7 +41,8 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -57,7 +57,6 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -66,7 +65,8 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -83,7 +83,6 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -92,7 +91,6 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -113,7 +111,6 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getLastModified($key)
     {
@@ -128,7 +125,6 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getTimeout($key)
     {
@@ -153,7 +149,6 @@ class sfXCacheCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function removePattern($pattern)
     {

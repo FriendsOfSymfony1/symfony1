@@ -14,9 +14,7 @@ $t = new lime_test(8);
 
 class myConfigHandler extends sfConfigHandler
 {
-    public function execute($configFiles)
-    {
-    }
+    public function execute($configFiles) {}
 }
 
 $config = new myConfigHandler();

@@ -134,10 +134,8 @@ class sfYamlInline
      *
      * @param scalar $scalar
      * @param string $delimiters
-     * @param array  $stringDelimiter
      * @param int    $i
      * @param bool   $evaluate
-     * @param mixed  $stringDelimiters
      *
      * @return string A YAML string
      */

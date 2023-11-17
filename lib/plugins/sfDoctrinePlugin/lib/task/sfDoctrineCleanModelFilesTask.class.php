@@ -40,9 +40,6 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
     protected function execute($arguments = array(), $options = array())
     {
@@ -84,8 +81,6 @@ EOF;
     /**
      * Returns models defined in YAML.
      *
-     * @param mixed $yamlSchemaPath
-     *
      * @return array
      */
     protected function getYamlModels($yamlSchemaPath)
@@ -96,8 +91,6 @@ EOF;
     /**
      * Returns the schema as defined in YAML.
      *
-     * @param mixed $yamlSchemaPath
-     *
      * @return array
      */
     protected function getYamlSchema($yamlSchemaPath)
@@ -107,8 +100,6 @@ EOF;
 
     /**
      * Returns models that have class files.
-     *
-     * @param mixed $modelsPath
      *
      * @return array
      */

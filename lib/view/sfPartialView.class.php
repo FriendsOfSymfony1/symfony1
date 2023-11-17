@@ -26,11 +26,6 @@ class sfPartialView extends sfPHPView
      * Constructor.
      *
      * @see sfView
-     *
-     * @param mixed $context
-     * @param mixed $moduleName
-     * @param mixed $actionName
-     * @param mixed $viewName
      */
     public function initialize($context, $moduleName, $actionName, $viewName)
     {
@@ -48,9 +43,7 @@ class sfPartialView extends sfPHPView
     /**
      * Executes any presentation logic for this view.
      */
-    public function execute()
-    {
-    }
+    public function execute() {}
 
     public function setPartialVars(array $partialVars)
     {

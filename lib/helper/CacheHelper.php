@@ -14,9 +14,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * @version    SVN: $Id$
- *
- * @param mixed $name
- * @param mixed $lifeTime
  */
 
 /* Usage

@@ -184,10 +184,10 @@ abstract class sfTask
      *
      * @see sfCommandArgument::__construct()
      *
-     * @param string $name
-     * @param int    $mode
-     * @param string $help
-     * @param mixed  $default
+     * @param string     $name
+     * @param int        $mode
+     * @param string     $help
+     * @param mixed|null $default
      */
     public function addArgument($name, $mode = null, $help = '', $default = null)
     {
@@ -221,11 +221,11 @@ abstract class sfTask
      *
      * @see sfCommandOption::__construct()
      *
-     * @param string $name
-     * @param string $shortcut
-     * @param int    $mode
-     * @param string $help
-     * @param mixed  $default
+     * @param string     $name
+     * @param string     $shortcut
+     * @param int        $mode
+     * @param string     $help
+     * @param mixed|null $default
      */
     public function addOption($name, $shortcut = null, $mode = null, $help = '', $default = null)
     {
@@ -458,8 +458,6 @@ abstract class sfTask
      *
      * @param array|string $question
      *
-     * @return mixed
-     *
      * @throws sfValidatorError
      */
     public function askAndValidate($question, sfValidatorBase $validator, array $options = array())
@@ -577,9 +575,7 @@ abstract class sfTask
     /**
      * Configures the current task.
      */
-    protected function configure()
-    {
-    }
+    protected function configure() {}
 
     protected function process(sfCommandManager $commandManager, $options)
     {
@@ -609,15 +605,15 @@ abstract class sfTask
         return $ret;
     }
 
-     /**
-      * Executes the current task.
-      *
-      * @param array    $arguments  An array of arguments
-      * @param array    $options    An array of options
-      *
-      * @return int 0 if everything went fine, or an error code
-      */
-     abstract protected function execute($arguments = array(), $options = array());
+    /**
+     * Executes the current task.
+     *
+     * @param array $arguments An array of arguments
+     * @param array $options   An array of options
+     *
+     * @return int 0 if everything went fine, or an error code
+     */
+    abstract protected function execute($arguments = array(), $options = array());
 
     protected function strlen($string)
     {

@@ -25,8 +25,6 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
     /**
      * Sets the current task's configuration.
-     *
-     * @param sfProjectConfiguration $configuration
      */
     public function setConfiguration(sfProjectConfiguration $configuration = null)
     {
@@ -100,7 +98,6 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
     /**
      * @see sfTask
-     * {@inheritdoc}
      */
     protected function doRun(sfCommandManager $commandManager, $options)
     {
@@ -396,8 +393,6 @@ abstract class sfBaseTask extends sfCommandApplicationTask
 
     /**
      * @see sfCommandApplicationTask
-     *
-     * @param mixed $name
      */
     protected function createTask($name)
     {

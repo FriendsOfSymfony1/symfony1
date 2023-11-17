@@ -577,8 +577,7 @@ class sfWebRequest extends sfRequest
         return
           (isset($pathArray['HTTPS']) && ('on' == strtolower($pathArray['HTTPS']) || 1 == $pathArray['HTTPS']))
           || ($this->getOption('trust_proxy') && isset($pathArray['HTTP_SSL_HTTPS']) && ('on' == strtolower($pathArray['HTTP_SSL_HTTPS']) || 1 == $pathArray['HTTP_SSL_HTTPS']))
-          || ($this->getOption('trust_proxy') && $this->isForwardedSecure())
-        ;
+          || ($this->getOption('trust_proxy') && $this->isForwardedSecure());
     }
 
     /**

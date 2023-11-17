@@ -7,7 +7,5 @@
  */
 class AuthorForm extends BaseAuthorForm
 {
-    public function configure()
-    {
-    }
+    public function configure() {}
 }

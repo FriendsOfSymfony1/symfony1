@@ -21,9 +21,6 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
 {
     /**
      * @see sfWidget
-     *
-     * @param mixed $options
-     * @param mixed $attributes
      */
     public function __construct($options = array(), $attributes = array())
     {
@@ -69,9 +66,6 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
      *  * multiple:             true if the select tag must allow multiple selections (false by default)
      *
      * @see sfWidgetFormChoice
-     *
-     * @param mixed $options
-     * @param mixed $attributes
      */
     protected function configure($options = array(), $attributes = array())
     {

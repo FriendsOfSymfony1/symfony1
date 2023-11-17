@@ -31,7 +31,6 @@ class sfSQLiteCache extends sfCache
      * * see sfCache for options available for all drivers
      *
      * @see sfCache
-     * {@inheritdoc}
      */
     public function initialize($options = array())
     {
@@ -62,7 +61,8 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -77,7 +77,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -90,7 +89,8 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -107,7 +107,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -120,7 +119,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function removePattern($pattern)
     {
@@ -133,7 +131,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -152,7 +149,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getTimeout($key)
     {
@@ -169,7 +165,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getLastModified($key)
     {
@@ -199,7 +194,6 @@ class sfSQLiteCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getMany($keys)
     {

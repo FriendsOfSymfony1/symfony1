@@ -22,9 +22,7 @@ class sfPHPView extends sfView
     /**
      * Executes any presentation logic for this view.
      */
-    public function execute()
-    {
-    }
+    public function execute() {}
 
     /**
      * Retrieves the template engine associated with this view.

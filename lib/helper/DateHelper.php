@@ -15,12 +15,6 @@
  *
  * @version    SVN: $Id$
  *
- * @param mixed      $start_date
- * @param mixed      $end_date
- * @param mixed      $format
- * @param mixed      $full_text
- * @param mixed      $start_text
- * @param mixed      $end_text
  * @param mixed|null $culture
  * @param mixed|null $charset
  */

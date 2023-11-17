@@ -52,9 +52,7 @@ class sfPluginManager
     /**
      * Configures this plugin manager.
      */
-    public function configure()
-    {
-    }
+    public function configure() {}
 
     /**
      * Returns the sfPearEnvironment instance.
@@ -287,9 +285,6 @@ class sfPluginManager
      * Installs a plugin.
      *
      * @see installPlugin()
-     *
-     * @param mixed $plugin
-     * @param mixed $options
      */
     protected function doInstallPlugin($plugin, $options = array())
     {

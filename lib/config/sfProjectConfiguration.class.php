@@ -100,9 +100,7 @@ class sfProjectConfiguration
      *
      * Override this method if you want to customize your project configuration.
      */
-    public function setup()
-    {
-    }
+    public function setup() {}
 
     /**
      * Loads the project's plugin configurations.
@@ -133,9 +131,7 @@ class sfProjectConfiguration
      *
      * Override this method if you want to customize plugin configurations.
      */
-    public function setupPlugins()
-    {
-    }
+    public function setupPlugins() {}
 
     /**
      * Sets the project root directory.

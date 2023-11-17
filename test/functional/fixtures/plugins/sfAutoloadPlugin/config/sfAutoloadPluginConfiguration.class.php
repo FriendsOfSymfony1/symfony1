@@ -1,5 +1,3 @@
 <?php
 
-class sfAutoloadPluginConfiguration extends sfPluginConfiguration
-{
-}
+class sfAutoloadPluginConfiguration extends sfPluginConfiguration {}

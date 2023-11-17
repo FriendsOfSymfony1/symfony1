@@ -9,7 +9,5 @@
  */
 class BlogArticleTranslationForm extends BaseBlogArticleTranslationForm
 {
-    public function configure()
-    {
-    }
+    public function configure() {}
 }

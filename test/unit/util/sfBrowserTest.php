@@ -270,8 +270,7 @@ list($method, $uri, $parameters) = $b->
   setField('myarray[0]', 'value0')->
   setField('myarray[1]', 'value1')->
   setField('myarray[2]', 'value2')->
-  click('submit')
-;
+  click('submit');
 $t->is($parameters['text_default_value'], 'myvalue', '->setField() overrides default form field values');
 $t->is($parameters['text'], 'myothervalue', '->setField() overrides default form field values');
 $t->is($parameters['article']['title'], 'mytitle', '->setField() overrides default form field values');
@@ -280,8 +279,7 @@ $t->is($parameters['myarray'], array('value0', 'value1', 'value2'), '->setField(
 list($method, $uri, $parameters) = $b->
   setField('text_default_value', 'myvalue')->
   setField('text', 'myothervalue')->
-  click('submit', array('text_default_value' => 'yourvalue', 'text' => 'yourothervalue'))
-;
+  click('submit', array('text_default_value' => 'yourvalue', 'text' => 'yourothervalue'));
 $t->is($parameters['text_default_value'], 'yourvalue', '->setField() is overriden by parameters from click call');
 $t->is($parameters['text'], 'yourothervalue', '->setField() is overriden by parameters from click call');
 
@@ -291,15 +289,13 @@ list($method, $uri, $parameters) = $b->
   deselect('checkbox1')->
   select('checkbox3')->
   select('b-radio')->
-  click('submit')
-;
+  click('submit');
 $t->is(isset($parameters['checkbox1']), false, '->deselect() unckecks a checkbox');
 $t->is(isset($parameters['checkbox3']), true, '->select() ckecks a checkbox');
 $t->is($parameters['radio1'], 'b', '->select() selects a radiobutton');
 list($method, $uri, $parameters) = $b->
   select('a-radio')->
-  click('submit')
-;
+  click('submit');
 $t->is($parameters['radio1'], 'a', '->select() toggles radiobuttons');
 
 try {

@@ -1,5 +1,3 @@
 <?php
 
-class BaseExtendMe
-{
-}
+class BaseExtendMe {}

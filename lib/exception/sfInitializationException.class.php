@@ -17,6 +17,4 @@
  *
  * @version    SVN: $Id$
  */
-class sfInitializationException extends sfException
-{
-}
+class sfInitializationException extends sfException {}

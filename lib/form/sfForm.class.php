@@ -120,16 +120,12 @@ class sfForm implements ArrayAccess, Iterator, Countable
      *
      * @see configure()
      */
-    public function setup()
-    {
-    }
+    public function setup() {}
 
     /**
      * Configures the current form.
      */
-    public function configure()
-    {
-    }
+    public function configure() {}
 
     /**
      * Renders the widget schema associated with this form.
@@ -255,9 +251,6 @@ class sfForm implements ArrayAccess, Iterator, Countable
 
     /**
      * Bind embedded forms (recursivly).
-     *
-     * @param array $taintedValues
-     * @param array $taintedFiles
      */
     public function bindEmbeddedForms(array $taintedValues = null, array $taintedFiles = null)
     {
@@ -765,8 +758,6 @@ class sfForm implements ArrayAccess, Iterator, Countable
      *
      * @param string $name    The option name
      * @param mixed  $default The default value (null by default)
-     *
-     * @return mixed
      */
     public function getOption($name, $default = null)
     {

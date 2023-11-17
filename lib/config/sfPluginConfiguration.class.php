@@ -50,18 +50,14 @@ abstract class sfPluginConfiguration
      *
      * This method can be used when creating a base plugin configuration class for other plugins to extend.
      */
-    public function setup()
-    {
-    }
+    public function setup() {}
 
     /**
      * Configures the plugin.
      *
      * This method is called before the plugin's classes have been added to sfAutoload.
      */
-    public function configure()
-    {
-    }
+    public function configure() {}
 
     /**
      * Initializes the plugin.
@@ -70,9 +66,7 @@ abstract class sfPluginConfiguration
      *
      * @return bool|null If false sfApplicationConfiguration will look for a config.php (maintains BC with symfony < 1.2)
      */
-    public function initialize()
-    {
-    }
+    public function initialize() {}
 
     /**
      * Returns the plugin root directory.

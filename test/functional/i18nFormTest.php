@@ -35,8 +35,7 @@ $b->
   with('response')->begin()->
     checkElement('ul li', 'Required.', array('position' => 0))->
     checkElement('ul li', 'foo/bar is an invalid email address', array('position' => 2))->
-  end()
-;
+  end();
 
 // changed culture (fr)
 $b->
@@ -58,8 +57,7 @@ $b->
   with('response')->begin()->
     checkElement('ul li', 'Champ requis.', array('position' => 0))->
     checkElement('ul li', 'foo/bar est une adresse email invalide', array('position' => 2))->
-  end()
-;
+  end();
 
 // forms label custom catalogue test
 $b->
@@ -74,5 +72,4 @@ $b->
     checkElement('label', 'Prénom!!!', array('position' => 0))->
     checkElement('label', 'Nom!!!', array('position' => 1))->
     checkElement('label', 'Adresse email!!!', array('position' => 2))->
-  end()
-;
+  end();

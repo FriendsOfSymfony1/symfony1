@@ -42,8 +42,8 @@ class sfEAcceleratorCache extends sfCache
     /**
      * @see sfCache
      *
-     * @param string $key
-     * @param mixed  $default
+     * @param string     $key
+     * @param mixed|null $default
      *
      * @return string|null
      */
@@ -82,7 +82,6 @@ class sfEAcceleratorCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -91,7 +90,6 @@ class sfEAcceleratorCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function removePattern($pattern)
     {
@@ -110,7 +108,6 @@ class sfEAcceleratorCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -136,7 +133,6 @@ class sfEAcceleratorCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getLastModified($key)
     {
@@ -149,7 +145,6 @@ class sfEAcceleratorCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getTimeout($key)
     {

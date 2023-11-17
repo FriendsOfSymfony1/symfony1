@@ -12,9 +12,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 class FormFormatterStub extends sfWidgetFormSchemaFormatter
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function translate($subject, $parameters = array())
     {
@@ -24,9 +22,7 @@ class FormFormatterStub extends sfWidgetFormSchemaFormatter
 
 class WidgetFormStub extends sfWidget
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function render($name, $value = null, $attributes = array(), $errors = array())
     {

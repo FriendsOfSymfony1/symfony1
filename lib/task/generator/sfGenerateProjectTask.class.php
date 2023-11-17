@@ -21,8 +21,6 @@ class sfGenerateProjectTask extends sfGeneratorBaseTask
 {
     /**
      * @see sfTask
-     *
-     * @param mixed $options
      */
     protected function doRun(sfCommandManager $commandManager, $options)
     {
@@ -80,9 +78,6 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
     protected function execute($arguments = array(), $options = array())
     {

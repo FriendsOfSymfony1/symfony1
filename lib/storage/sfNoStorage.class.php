@@ -64,9 +64,7 @@ class sfNoStorage extends sfStorage
      *
      * @throws <b>sfStorageException</b> If an error occurs while writing to this storage
      */
-    public function write($key, $data)
-    {
-    }
+    public function write($key, $data) {}
 
     /**
      * Regenerates id that represents this storage.
@@ -85,7 +83,5 @@ class sfNoStorage extends sfStorage
      *
      * @throws <b>sfStorageException</b> If an error occurs while shutting down this storage
      */
-    public function shutdown()
-    {
-    }
+    public function shutdown() {}
 }

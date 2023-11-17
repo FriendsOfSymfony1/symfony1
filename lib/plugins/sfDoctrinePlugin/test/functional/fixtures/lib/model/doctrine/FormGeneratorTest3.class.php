@@ -9,6 +9,4 @@
  *
  * @version    SVN: $Id: Builder.php 6716 2009-11-12 19:26:28Z jwage $
  */
-class FormGeneratorTest3 extends BaseFormGeneratorTest3
-{
-}
+class FormGeneratorTest3 extends BaseFormGeneratorTest3 {}

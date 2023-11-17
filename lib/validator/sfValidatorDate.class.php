@@ -62,8 +62,6 @@ class sfValidatorDate extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {
@@ -166,8 +164,7 @@ class sfValidatorDate extends sfValidatorBase
         $empties =
           (!isset($value['year']) || !$value['year'] ? 1 : 0) +
           (!isset($value['month']) || !$value['month'] ? 1 : 0) +
-          (!isset($value['day']) || !$value['day'] ? 1 : 0)
-        ;
+          (!isset($value['day']) || !$value['day'] ? 1 : 0);
         if ($empties > 0 && $empties < 3) {
             throw new sfValidatorError($this, 'invalid', array('value' => $value));
         }
@@ -220,8 +217,6 @@ class sfValidatorDate extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function isEmpty($value)
     {

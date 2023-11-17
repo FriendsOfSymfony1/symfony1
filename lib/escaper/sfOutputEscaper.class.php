@@ -19,8 +19,6 @@ abstract class sfOutputEscaper
 {
     /**
      * The value that is to be escaped.
-     *
-     * @var mixed
      */
     protected $value;
 

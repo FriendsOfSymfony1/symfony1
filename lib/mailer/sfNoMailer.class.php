@@ -5,27 +5,21 @@
  */
 class sfNoMailer
 {
-    public function __construct(sfEventDispatcher $dispatcher, $options)
-    {
-    }
+    public function __construct(sfEventDispatcher $dispatcher, $options) {}
 
     public function getRealtimeTransport()
     {
         return null;
     }
 
-    public function setRealtimeTransport(Swift_Transport $transport)
-    {
-    }
+    public function setRealtimeTransport(Swift_Transport $transport) {}
 
     public function getLogger()
     {
         return null;
     }
 
-    public function setLogger($logger)
-    {
-    }
+    public function setLogger($logger) {}
 
     public function getDeliveryStrategy()
     {
@@ -37,9 +31,7 @@ class sfNoMailer
         return null;
     }
 
-    public function setDeliveryAddress($address)
-    {
-    }
+    public function setDeliveryAddress($address) {}
 
     public function compose($from = null, $to = null, $subject = null, $body = null)
     {
