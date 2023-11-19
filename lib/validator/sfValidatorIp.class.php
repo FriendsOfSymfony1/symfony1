@@ -15,24 +15,24 @@
  */
 class sfValidatorIp extends sfValidatorString
 {
-    public const IP_V4 = '4';
-    public const IP_V6 = '6';
-    public const IP_ALL = 'all';
+    const IP_V4 = '4';
+    const IP_V6 = '6';
+    const IP_ALL = 'all';
 
     // adds FILTER_FLAG_NO_PRIV_RANGE flag (skip private ranges)
-    public const IP_V4_NO_PRIV = '4_no_priv';
-    public const IP_V6_NO_PRIV = '6_no_priv';
-    public const IP_ALL_NO_PRIV = 'all_no_priv';
+    const IP_V4_NO_PRIV = '4_no_priv';
+    const IP_V6_NO_PRIV = '6_no_priv';
+    const IP_ALL_NO_PRIV = 'all_no_priv';
 
     // adds FILTER_FLAG_NO_RES_RANGE flag (skip reserved ranges)
-    public const IP_V4_NO_RES = '4_no_res';
-    public const IP_V6_NO_RES = '6_no_res';
-    public const IP_ALL_NO_RES = 'all_no_res';
+    const IP_V4_NO_RES = '4_no_res';
+    const IP_V6_NO_RES = '6_no_res';
+    const IP_ALL_NO_RES = 'all_no_res';
 
     // adds FILTER_FLAG_NO_PRIV_RANGE and FILTER_FLAG_NO_RES_RANGE flags (skip both)
-    public const IP_V4_ONLY_PUBLIC = '4_public';
-    public const IP_V6_ONLY_PUBLIC = '6_public';
-    public const IP_ALL_ONLY_PUBLIC = 'all_public';
+    const IP_V4_ONLY_PUBLIC = '4_public';
+    const IP_V6_ONLY_PUBLIC = '6_public';
+    const IP_ALL_ONLY_PUBLIC = 'all_public';
 
     public function configure($options = array(), $messages = array())
     {

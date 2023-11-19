@@ -41,10 +41,10 @@
  */
 class sfNumberFormatInfo
 {
-    public const DECIMAL = 0;
-    public const CURRENCY = 1;
-    public const PERCENTAGE = 2;
-    public const SCIENTIFIC = 3;
+    const DECIMAL = 0;
+    const CURRENCY = 1;
+    const PERCENTAGE = 2;
+    const SCIENTIFIC = 3;
 
     /**
      * ICU number formatting data.

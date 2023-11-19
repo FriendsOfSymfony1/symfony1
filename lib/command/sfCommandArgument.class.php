@@ -15,10 +15,10 @@
  */
 class sfCommandArgument
 {
-    public const REQUIRED = 1;
-    public const OPTIONAL = 2;
+    const REQUIRED = 1;
+    const OPTIONAL = 2;
 
-    public const IS_ARRAY = 4;
+    const IS_ARRAY = 4;
 
     protected $name;
     protected $mode;

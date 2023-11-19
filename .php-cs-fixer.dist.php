@@ -21,6 +21,9 @@ $config->setRules(array(
     'array_syntax' => array(
         'syntax' => 'long',
     ),
+    'visibility_required' => array(
+        'elements' => array('property', 'method'),
+    ),
 ))
     ->setCacheFile('.php-cs-fixer.cache')
     ->setFinder($finder)

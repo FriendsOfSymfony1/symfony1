@@ -22,47 +22,47 @@ abstract class sfView
     /**
      * Show an alert view.
      */
-    public const ALERT = 'Alert';
+    const ALERT = 'Alert';
 
     /**
      * Show an error view.
      */
-    public const ERROR = 'Error';
+    const ERROR = 'Error';
 
     /**
      * Show a form input view.
      */
-    public const INPUT = 'Input';
+    const INPUT = 'Input';
 
     /**
      * Skip view execution.
      */
-    public const NONE = 'None';
+    const NONE = 'None';
 
     /**
      * Show a success view.
      */
-    public const SUCCESS = 'Success';
+    const SUCCESS = 'Success';
 
     /**
      * Do not render the presentation.
      */
-    public const RENDER_NONE = 1;
+    const RENDER_NONE = 1;
 
     /**
      * Render the presentation to the client.
      */
-    public const RENDER_CLIENT = 2;
+    const RENDER_CLIENT = 2;
 
     /**
      * Render the presentation to a variable.
      */
-    public const RENDER_VAR = 4;
+    const RENDER_VAR = 4;
 
     /**
      * Skip view rendering but output http headers.
      */
-    public const HEADER_ONLY = 8;
+    const HEADER_ONLY = 8;
 
     protected $context;
     protected $dispatcher;

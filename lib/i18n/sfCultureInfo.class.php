@@ -56,7 +56,7 @@ class sfCultureInfo
      *
      * @var int
      */
-    public const ALL = 0;
+    const ALL = 0;
 
     /**
      * Culture type, neutral.
@@ -65,7 +65,7 @@ class sfCultureInfo
      *
      * @var int
      */
-    public const NEUTRAL = 1;
+    const NEUTRAL = 1;
 
     /**
      * Culture type, specific.
@@ -74,7 +74,7 @@ class sfCultureInfo
      *
      * @var int
      */
-    public const SPECIFIC = 2;
+    const SPECIFIC = 2;
 
     /**
      * ICU data filename extension.

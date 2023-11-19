@@ -17,11 +17,11 @@
  */
 class sfWebResponse extends sfResponse
 {
-    public const FIRST = 'first';
-    public const MIDDLE = '';
-    public const LAST = 'last';
-    public const ALL = 'ALL';
-    public const RAW = 'RAW';
+    const FIRST = 'first';
+    const MIDDLE = '';
+    const LAST = 'last';
+    const ALL = 'ALL';
+    const RAW = 'RAW';
 
     protected $cookies = array();
     protected $statusCode = 200;

@@ -17,10 +17,10 @@
  */
 class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 {
-    public const FIRST = 'first';
-    public const LAST = 'last';
-    public const BEFORE = 'before';
-    public const AFTER = 'after';
+    const FIRST = 'first';
+    const LAST = 'last';
+    const BEFORE = 'before';
+    const AFTER = 'after';
 
     protected static $defaultFormatterName = 'table';
 

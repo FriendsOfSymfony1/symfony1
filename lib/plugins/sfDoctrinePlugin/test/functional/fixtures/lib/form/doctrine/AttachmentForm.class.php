@@ -7,7 +7,7 @@
  */
 class AttachmentForm extends BaseAttachmentForm
 {
-    public const TEST_GENERATED_FILENAME = 'test123';
+    const TEST_GENERATED_FILENAME = 'test123';
 
     public function configure()
     {

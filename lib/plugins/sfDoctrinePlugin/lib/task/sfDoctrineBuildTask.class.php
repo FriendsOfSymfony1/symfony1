@@ -18,22 +18,22 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  */
 class sfDoctrineBuildTask extends sfDoctrineBaseTask
 {
-    public const BUILD_MODEL = 1;
-    public const BUILD_FORMS = 2;
-    public const BUILD_FILTERS = 4;
-    public const BUILD_SQL = 8;
-    public const BUILD_DB = 16;
-    public const OPTION_MODEL = 1;
-    public const OPTION_FORMS = 3;
-    public const // model, forms
+    const BUILD_MODEL = 1;
+    const BUILD_FORMS = 2;
+    const BUILD_FILTERS = 4;
+    const BUILD_SQL = 8;
+    const BUILD_DB = 16;
+    const OPTION_MODEL = 1;
+    const OPTION_FORMS = 3;
+    const // model, forms
       OPTION_FILTERS = 5;
-    public const // model, filters
+    const // model, filters
       OPTION_SQL = 9;
-    public const // model, sql
+    const // model, sql
       OPTION_DB = 25;
-    public const // model, sql, db
+    const // model, sql, db
       OPTION_ALL_CLASSES = 7;
-    public const // model, forms, filters
+    const // model, forms, filters
       OPTION_ALL = 31; // model, forms, filters, sql, db
 
     /**

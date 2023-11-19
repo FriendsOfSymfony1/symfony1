@@ -23,9 +23,9 @@ class sfUser implements ArrayAccess
     /**
      * The namespace under which attributes will be stored.
      */
-    public const ATTRIBUTE_NAMESPACE = 'symfony/user/sfUser/attributes';
+    const ATTRIBUTE_NAMESPACE = 'symfony/user/sfUser/attributes';
 
-    public const CULTURE_NAMESPACE = 'symfony/user/sfUser/culture';
+    const CULTURE_NAMESPACE = 'symfony/user/sfUser/culture';
 
     protected $options = array();
 

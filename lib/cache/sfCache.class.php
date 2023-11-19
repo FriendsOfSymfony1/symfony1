@@ -15,9 +15,9 @@
  */
 abstract class sfCache
 {
-    public const OLD = 1;
-    public const ALL = 2;
-    public const SEPARATOR = ':';
+    const OLD = 1;
+    const ALL = 2;
+    const SEPARATOR = ':';
 
     protected $options = array();
 

@@ -19,13 +19,13 @@
  */
 abstract class sfRequest implements ArrayAccess
 {
-    public const GET = 'GET';
-    public const POST = 'POST';
-    public const PUT = 'PUT';
-    public const PATCH = 'PATCH';
-    public const DELETE = 'DELETE';
-    public const HEAD = 'HEAD';
-    public const OPTIONS = 'OPTIONS';
+    const GET = 'GET';
+    const POST = 'POST';
+    const PUT = 'PUT';
+    const PATCH = 'PATCH';
+    const DELETE = 'DELETE';
+    const HEAD = 'HEAD';
+    const OPTIONS = 'OPTIONS';
 
     /** @var sfEventDispatcher */
     protected $dispatcher;

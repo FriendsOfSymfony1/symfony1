@@ -15,11 +15,11 @@
  */
 class sfCommandOption
 {
-    public const PARAMETER_NONE = 1;
-    public const PARAMETER_REQUIRED = 2;
-    public const PARAMETER_OPTIONAL = 4;
+    const PARAMETER_NONE = 1;
+    const PARAMETER_REQUIRED = 2;
+    const PARAMETER_OPTIONAL = 4;
 
-    public const IS_ARRAY = 8;
+    const IS_ARRAY = 8;
 
     protected $name;
     protected $shortcut;
