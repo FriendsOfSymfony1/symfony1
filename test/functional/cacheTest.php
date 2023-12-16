@@ -9,7 +9,7 @@
  */
 
 $app = 'cache';
-if (!include(__DIR__.'/../bootstrap/functional.php')) {
+if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
