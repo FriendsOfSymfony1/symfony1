@@ -16,7 +16,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          tools: php-cs-fixer, cs2pr
+          tools: connorhu/php-cs-checker, cs2pr
 
       - uses: actions/cache@v3
         with:
@@ -28,4 +28,4 @@ jobs:
 
       - name: Run PHP-CS-Fixer
         # Using cs2pr settings, see: https://github.com/shivammathur/setup-php#tools-with-checkstyle-support
-        run: 'php-cs-fixer fix --dry-run --format checkstyle | cs2pr'
+        run: 'php-cs-checker fix --dry-run --format github | cs2pr'
