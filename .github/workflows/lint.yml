@@ -28,4 +28,4 @@ jobs:
 
       - name: Run PHP-CS-Fixer
         # Using cs2pr settings, see: https://github.com/shivammathur/setup-php#tools-with-checkstyle-support
-        run: 'php-cs-checker fix  --format github | cs2pr'
+        run: 'php-cs-checker fix --diff --format github | cs2pr'
