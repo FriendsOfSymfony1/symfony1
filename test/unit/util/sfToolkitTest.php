@@ -10,11 +10,12 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(95);
+$t = new lime_test(96);
 
 // ::stringToArray()
 $t->diag('::stringToArray()');
 $tests = array(
+    null => array(),
     'foo=bar' => array('foo' => 'bar'),
     'foo1=bar1 foo=bar   ' => array('foo1' => 'bar1', 'foo' => 'bar'),
     'foo1="bar1 foo1"' => array('foo1' => 'bar1 foo1'),
