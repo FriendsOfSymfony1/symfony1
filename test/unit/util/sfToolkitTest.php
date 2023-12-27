@@ -15,7 +15,6 @@ $t = new lime_test(96);
 // ::stringToArray()
 $t->diag('::stringToArray()');
 $tests = array(
-    null => array(),
     'foo=bar' => array('foo' => 'bar'),
     'foo1=bar1 foo=bar   ' => array('foo1' => 'bar1', 'foo' => 'bar'),
     'foo1="bar1 foo1"' => array('foo1' => 'bar1 foo1'),
@@ -34,6 +33,8 @@ $tests = array(
 foreach ($tests as $string => $attributes) {
     $t->is(sfToolkit::stringToArray($string), $attributes, '->stringToArray()');
 }
+
+$t->is(sfToolkit::stringToArray(null), array(), '->stringToArray() can accept a null value');
 
 // ::isUTF8()
 $t->diag('::isUTF8()');
