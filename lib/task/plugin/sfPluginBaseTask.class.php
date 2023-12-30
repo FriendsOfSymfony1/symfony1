@@ -15,4 +15,6 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfPluginBaseTask extends sfBaseTask {}
+abstract class sfPluginBaseTask extends sfBaseTask
+{
+}

@@ -13,4 +13,6 @@
  *
  * @coversNothing
  */
-class FormGeneratorTest extends BaseFormGeneratorTest {}
+class FormGeneratorTest extends BaseFormGeneratorTest
+{
+}

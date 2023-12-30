@@ -7,5 +7,7 @@
  */
 class PermissionForm extends BasePermissionForm
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

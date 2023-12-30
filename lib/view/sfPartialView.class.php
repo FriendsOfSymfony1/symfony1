@@ -43,7 +43,9 @@ class sfPartialView extends sfPHPView
     /**
      * Executes any presentation logic for this view.
      */
-    public function execute() {}
+    public function execute()
+    {
+    }
 
     public function setPartialVars(array $partialVars)
     {

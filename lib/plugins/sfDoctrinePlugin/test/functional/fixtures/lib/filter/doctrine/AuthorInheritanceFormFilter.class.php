@@ -7,5 +7,7 @@
  */
 class AuthorInheritanceFormFilter extends BaseAuthorInheritanceFormFilter
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

@@ -15,4 +15,6 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfGeneratorBaseTask extends sfBaseTask {}
+abstract class sfGeneratorBaseTask extends sfBaseTask
+{
+}

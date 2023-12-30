@@ -27,7 +27,9 @@ class sfParameterHolder implements Serializable
     /**
      * The constructor for sfParameterHolder.
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     /**
      * Serializes the current instance for PHP 7.4+.

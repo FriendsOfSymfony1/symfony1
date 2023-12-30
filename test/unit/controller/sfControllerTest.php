@@ -16,7 +16,9 @@ $t = new lime_test(2);
 
 class myController extends sfController
 {
-    public function execute() {}
+    public function execute()
+    {
+    }
 }
 
 $context = sfContext::getInstance();

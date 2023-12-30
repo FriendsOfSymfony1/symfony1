@@ -1,3 +1,5 @@
 <?php
 
-class AttachmentTable extends Doctrine_Table {}
+class AttachmentTable extends Doctrine_Table
+{
+}

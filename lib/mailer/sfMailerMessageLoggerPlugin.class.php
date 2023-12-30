@@ -73,5 +73,7 @@ class sfMailerMessageLoggerPlugin implements Swift_Events_SendListener
     /**
      * Invoked immediately after the Message is sent.
      */
-    public function sendPerformed(Swift_Events_SendEvent $evt) {}
+    public function sendPerformed(Swift_Events_SendEvent $evt)
+    {
+    }
 }

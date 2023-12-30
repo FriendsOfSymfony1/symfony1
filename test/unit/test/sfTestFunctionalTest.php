@@ -25,7 +25,9 @@ class mockBrowser extends sfBrowser
 
 class mockLime extends lime_test
 {
-    public function __destruct() {}
+    public function __destruct()
+    {
+    }
 }
 
 class mockTestFunctional extends sfTestFunctional

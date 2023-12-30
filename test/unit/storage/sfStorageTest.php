@@ -14,15 +14,27 @@ $t = new lime_test(0);
 
 class myStorage extends sfStorage
 {
-    public function read($key) {}
+    public function read($key)
+    {
+    }
 
-    public function remove($key) {}
+    public function remove($key)
+    {
+    }
 
-    public function shutdown() {}
+    public function shutdown()
+    {
+    }
 
-    public function write($key, $data) {}
+    public function write($key, $data)
+    {
+    }
 
-    public function regenerate($destroy = false) {}
+    public function regenerate($destroy = false)
+    {
+    }
 }
 
-class fakeStorage {}
+class fakeStorage
+{
+}

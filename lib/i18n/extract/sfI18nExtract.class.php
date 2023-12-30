@@ -59,7 +59,9 @@ abstract class sfI18nExtract
     /**
      * Configures the current extract object.
      */
-    public function configure() {}
+    public function configure()
+    {
+    }
 
     /**
      * Extracts i18n strings.

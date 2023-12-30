@@ -55,12 +55,16 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
     /**
      * Starts this Transport mechanism.
      */
-    public function start() {}
+    public function start()
+    {
+    }
 
     /**
      * Stops this Transport mechanism.
      */
-    public function stop() {}
+    public function stop()
+    {
+    }
 
     /**
      * Stores a message in the queue.

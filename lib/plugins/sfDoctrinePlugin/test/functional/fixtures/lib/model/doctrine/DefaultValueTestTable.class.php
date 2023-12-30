@@ -1,3 +1,5 @@
 <?php
 
-class DefaultValueTestTable extends Doctrine_Table {}
+class DefaultValueTestTable extends Doctrine_Table
+{
+}

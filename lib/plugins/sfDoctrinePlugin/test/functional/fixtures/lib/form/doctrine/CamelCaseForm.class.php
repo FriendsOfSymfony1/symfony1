@@ -7,5 +7,7 @@
  */
 class CamelCaseForm extends BaseCamelCaseForm
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

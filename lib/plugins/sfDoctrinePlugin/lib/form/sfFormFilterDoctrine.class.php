@@ -251,7 +251,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
     /**
      * Used in generated forms when models use inheritance.
      */
-    protected function setupInheritance() {}
+    protected function setupInheritance()
+    {
+    }
 
     /**
      * Returns the name of the related model.

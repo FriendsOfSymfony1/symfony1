@@ -26,7 +26,9 @@ class sfAutoload
     protected $overriden = array();
     protected $classes = array();
 
-    protected function __construct() {}
+    protected function __construct()
+    {
+    }
 
     /**
      * Retrieves the singleton instance of this class.

@@ -575,7 +575,9 @@ abstract class sfTask
     /**
      * Configures the current task.
      */
-    protected function configure() {}
+    protected function configure()
+    {
+    }
 
     protected function process(sfCommandManager $commandManager, $options)
     {

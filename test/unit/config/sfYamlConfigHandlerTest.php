@@ -16,7 +16,9 @@ class myConfigHandler extends sfYamlConfigHandler
 {
     public $yamlConfig;
 
-    public function execute($configFiles) {}
+    public function execute($configFiles)
+    {
+    }
 
     public static function parseYamls($configFiles)
     {

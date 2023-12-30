@@ -12,7 +12,9 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(1);
 
-class ProjectDumper extends sfServiceContainerDumper {}
+class ProjectDumper extends sfServiceContainerDumper
+{
+}
 
 $builder = new sfServiceContainerBuilder();
 $dumper = new ProjectDumper($builder);

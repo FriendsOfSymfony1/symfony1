@@ -13,4 +13,6 @@
  *
  * @coversNothing
  */
-class DefaultValueTest extends BaseDefaultValueTest {}
+class DefaultValueTest extends BaseDefaultValueTest
+{
+}

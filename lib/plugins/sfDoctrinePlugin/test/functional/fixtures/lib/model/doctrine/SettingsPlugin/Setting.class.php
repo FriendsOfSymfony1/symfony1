@@ -9,4 +9,6 @@
  *
  * @version    SVN: $Id$
  */
-class Setting extends PluginSetting {}
+class Setting extends PluginSetting
+{
+}

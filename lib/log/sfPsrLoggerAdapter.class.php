@@ -26,7 +26,7 @@ class sfPsrLoggerAdapter extends sfLogger
     /**
      * The logger that will the log will be forward to.
      *
-     * @var \Psr\Log\LoggerInterface
+     * @var Psr\Log\LoggerInterface
      */
     private $logger;
 

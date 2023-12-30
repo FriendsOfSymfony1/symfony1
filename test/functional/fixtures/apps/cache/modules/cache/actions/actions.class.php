@@ -9,9 +9,13 @@
  */
 class cacheActions extends sfActions
 {
-    public function executeIndex() {}
+    public function executeIndex()
+    {
+    }
 
-    public function executePage() {}
+    public function executePage()
+    {
+    }
 
     public function executeList($request)
     {
@@ -28,15 +32,25 @@ class cacheActions extends sfActions
         $this->getResponse()->setTitle('Param: '.$this->getRequestParameter('param'));
     }
 
-    public function executeMultiBis() {}
+    public function executeMultiBis()
+    {
+    }
 
-    public function executePartial() {}
+    public function executePartial()
+    {
+    }
 
-    public function executeAnotherPartial() {}
+    public function executeAnotherPartial()
+    {
+    }
 
-    public function executeComponent() {}
+    public function executeComponent()
+    {
+    }
 
-    public function executeSpecificCacheKey() {}
+    public function executeSpecificCacheKey()
+    {
+    }
 
     public function executeAction()
     {

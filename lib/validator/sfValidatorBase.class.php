@@ -385,7 +385,9 @@ abstract class sfValidatorBase
      *
      * @see __construct()
      */
-    protected function configure($options = array(), $messages = array()) {}
+    protected function configure($options = array(), $messages = array())
+    {
+    }
 
     /**
      * Cleans the input value.

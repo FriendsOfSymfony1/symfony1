@@ -39,5 +39,7 @@ class sfWebDebugPanelCache extends sfWebDebugPanel
         return 'reload and ignore cache';
     }
 
-    public function getPanelContent() {}
+    public function getPanelContent()
+    {
+    }
 }

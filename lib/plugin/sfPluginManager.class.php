@@ -52,7 +52,9 @@ class sfPluginManager
     /**
      * Configures this plugin manager.
      */
-    public function configure() {}
+    public function configure()
+    {
+    }
 
     /**
      * Returns the sfPearEnvironment instance.

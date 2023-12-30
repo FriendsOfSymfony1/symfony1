@@ -34,10 +34,14 @@ function get_cache_config($contextual = false)
 
 class myViewCacheManager extends sfViewCacheManager
 {
-    public function registerConfiguration($moduleName) {}
+    public function registerConfiguration($moduleName)
+    {
+    }
 }
 
-class myController extends sfWebController {}
+class myController extends sfWebController
+{
+}
 
 class myRequest
 {
@@ -68,7 +72,9 @@ class myCache extends sfCache
 {
     public static $cache = array();
 
-    public function initialize($parameters = array()) {}
+    public function initialize($parameters = array())
+    {
+    }
 
     public function get($key, $default = null)
     {

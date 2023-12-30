@@ -44,7 +44,9 @@ class browserActions extends sfActions
         $this->redirect('browser/redirectTarget1');
     }
 
-    public function executeRedirectTarget1() {}
+    public function executeRedirectTarget1()
+    {
+    }
 
     public function executeRedirect2()
     {

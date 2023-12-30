@@ -94,7 +94,9 @@ class sfNoRouting extends sfRouting
     /**
      * @see sfRouting
      */
-    public function clearRoutes() {}
+    public function clearRoutes()
+    {
+    }
 
     protected function mergeArrays($arr1, $arr2)
     {

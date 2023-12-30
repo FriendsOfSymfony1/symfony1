@@ -654,7 +654,9 @@ class sfRoute implements Serializable
         }
     }
 
-    protected function compileForSeparator($separator, $regexSeparator) {}
+    protected function compileForSeparator($separator, $regexSeparator)
+    {
+    }
 
     protected function initializeOptions()
     {

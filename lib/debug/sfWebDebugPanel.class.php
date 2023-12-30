@@ -35,7 +35,9 @@ abstract class sfWebDebugPanel
      *
      * @return string The URL link
      */
-    public function getTitleUrl() {}
+    public function getTitleUrl()
+    {
+    }
 
     /**
      * Gets the text for the link.

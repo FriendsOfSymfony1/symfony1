@@ -17,4 +17,6 @@
  *
  * @version    SVN: $Id$
  */
-class sfCacheException extends sfException {}
+class sfCacheException extends sfException
+{
+}
