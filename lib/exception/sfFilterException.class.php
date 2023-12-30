@@ -18,4 +18,6 @@
  *
  * @version    SVN: $Id$
  */
-class sfFilterException extends sfException {}
+class sfFilterException extends sfException
+{
+}

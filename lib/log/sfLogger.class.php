@@ -252,7 +252,9 @@ abstract class sfLogger implements sfLoggerInterface
      *
      * Cleans up the current logger instance.
      */
-    public function shutdown() {}
+    public function shutdown()
+    {
+    }
 
     /**
      * Returns the priority name given a priority class constant.

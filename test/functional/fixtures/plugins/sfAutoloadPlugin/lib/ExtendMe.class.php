@@ -1,3 +1,5 @@
 <?php
 
-class ExtendMe extends BaseExtendMe {}
+class ExtendMe extends BaseExtendMe
+{
+}

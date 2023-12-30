@@ -9,4 +9,6 @@
  *
  * @version    SVN: $Id$
  */
-class AuthorInheritance extends BaseAuthorInheritance {}
+class AuthorInheritance extends BaseAuthorInheritance
+{
+}

@@ -66,14 +66,18 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      *
      * Override this method if you want to customize your application configuration.
      */
-    public function configure() {}
+    public function configure()
+    {
+    }
 
     /**
      * Initialized the current configuration.
      *
      * Override this method if you want to customize your application initialization.
      */
-    public function initialize() {}
+    public function initialize()
+    {
+    }
 
     public function activate()
     {

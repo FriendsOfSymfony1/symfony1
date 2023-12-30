@@ -7,5 +7,7 @@
  */
 class GroupFormFilter extends BaseGroupFormFilter
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

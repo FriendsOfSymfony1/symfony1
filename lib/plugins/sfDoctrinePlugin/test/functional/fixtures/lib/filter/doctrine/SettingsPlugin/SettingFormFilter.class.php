@@ -9,5 +9,7 @@
  */
 class SettingFormFilter extends PluginSettingFormFilter
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

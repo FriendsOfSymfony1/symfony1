@@ -9,5 +9,7 @@
  */
 class DefaultValueTestFormFilter extends BaseDefaultValueTestFormFilter
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

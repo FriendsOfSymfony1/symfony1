@@ -14,7 +14,9 @@ class FormFormatterMock extends sfWidgetFormSchemaFormatter
 {
     public $translateSubjects = array();
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function translate($subject, $parameters = array())
     {
@@ -26,7 +28,9 @@ class FormFormatterMock extends sfWidgetFormSchemaFormatter
 
 class WidgetFormStub extends sfWidget
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function render($name, $value = null, $attributes = array(), $errors = array())
     {

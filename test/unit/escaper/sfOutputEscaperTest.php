@@ -47,7 +47,9 @@ class OutputEscaperTestClass
     }
 }
 
-class OutputEscaperTestClassChild extends OutputEscaperTestClass {}
+class OutputEscaperTestClassChild extends OutputEscaperTestClass
+{
+}
 
 // ::escape()
 $t->diag('::escape()');

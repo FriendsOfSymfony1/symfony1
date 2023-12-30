@@ -120,12 +120,16 @@ class sfForm implements ArrayAccess, Iterator, Countable
      *
      * @see configure()
      */
-    public function setup() {}
+    public function setup()
+    {
+    }
 
     /**
      * Configures the current form.
      */
-    public function configure() {}
+    public function configure()
+    {
+    }
 
     /**
      * Renders the widget schema associated with this form.

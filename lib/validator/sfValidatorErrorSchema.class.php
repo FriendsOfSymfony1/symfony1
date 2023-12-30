@@ -267,7 +267,9 @@ class sfValidatorErrorSchema extends sfValidatorError implements ArrayAccess, It
      * @param string $offset (ignored)
      */
     #[\ReturnTypeWillChange]
-    public function offsetUnset($offset) {}
+    public function offsetUnset($offset)
+    {
+    }
 
     /**
      * Serializes the current instance.

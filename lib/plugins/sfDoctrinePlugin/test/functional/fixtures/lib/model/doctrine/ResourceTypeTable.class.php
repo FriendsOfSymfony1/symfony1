@@ -1,3 +1,5 @@
 <?php
 
-class ResourceTypeTable extends Doctrine_Table {}
+class ResourceTypeTable extends Doctrine_Table
+{
+}

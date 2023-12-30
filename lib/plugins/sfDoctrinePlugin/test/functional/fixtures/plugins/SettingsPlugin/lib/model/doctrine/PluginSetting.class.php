@@ -9,4 +9,6 @@
  *
  * @version    SVN: $Id$
  */
-abstract class PluginSetting extends BaseSetting {}
+abstract class PluginSetting extends BaseSetting
+{
+}

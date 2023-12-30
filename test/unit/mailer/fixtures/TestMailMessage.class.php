@@ -9,7 +9,11 @@
  */
 class TestMailMessage
 {
-    public function setMessage(Swift_Mime_Message $message) {}
+    public function setMessage(Swift_Mime_Message $message)
+    {
+    }
 
-    public function getMessage() {}
+    public function getMessage()
+    {
+    }
 }

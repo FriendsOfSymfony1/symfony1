@@ -261,7 +261,9 @@ abstract class sfRouting
     /**
      * Execute the shutdown procedure.
      */
-    public function shutdown() {}
+    public function shutdown()
+    {
+    }
 
     protected function fixGeneratedUrl($url, $absolute = false)
     {

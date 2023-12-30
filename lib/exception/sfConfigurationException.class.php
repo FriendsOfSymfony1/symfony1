@@ -18,4 +18,6 @@
  *
  * @version    SVN: $Id$
  */
-class sfConfigurationException extends sfException {}
+class sfConfigurationException extends sfException
+{
+}

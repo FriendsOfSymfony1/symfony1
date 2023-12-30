@@ -25,9 +25,13 @@ class MyTestPartialView extends sfPartialView
         return '==RENDERED==';
     }
 
-    public function initialize($context, $moduleName, $actionName, $viewName) {}
+    public function initialize($context, $moduleName, $actionName, $viewName)
+    {
+    }
 
-    public function setPartialVars(array $partialVars) {}
+    public function setPartialVars(array $partialVars)
+    {
+    }
 }
 
 $t->diag('get_partial()');

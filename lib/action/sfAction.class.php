@@ -46,14 +46,18 @@ abstract class sfAction extends sfComponent
      *
      * By default, this method is empty.
      */
-    public function preExecute() {}
+    public function preExecute()
+    {
+    }
 
     /**
      * Execute an application defined process immediately after execution of this sfAction object.
      *
      * By default, this method is empty.
      */
-    public function postExecute() {}
+    public function postExecute()
+    {
+    }
 
     /**
      * Forwards current action to the default 404 error action.

@@ -18,9 +18,13 @@ $t = new lime_test(21);
 
 class myWebResponse extends sfWebResponse
 {
-    public function sendHttpHeaders() {}
+    public function sendHttpHeaders()
+    {
+    }
 
-    public function send() {}
+    public function send()
+    {
+    }
 }
 
 $_SERVER['HTTP_HOST'] = 'localhost';

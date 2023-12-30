@@ -5,7 +5,9 @@ function sc_configure($instance)
     $instance->configure();
 }
 
-class BarClass {}
+class BarClass
+{
+}
 
 class BazClass
 {
@@ -24,5 +26,7 @@ class BazClass
         $instance->configure();
     }
 
-    public static function configureStatic1() {}
+    public static function configureStatic1()
+    {
+    }
 }

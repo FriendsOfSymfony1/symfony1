@@ -18,7 +18,9 @@ class myRequest extends sfRequest
     }
 }
 
-class fakeRequest {}
+class fakeRequest
+{
+}
 
 $t = new lime_test(41);
 

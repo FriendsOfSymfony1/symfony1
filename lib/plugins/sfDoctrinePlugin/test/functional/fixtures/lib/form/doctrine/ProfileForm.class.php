@@ -7,5 +7,7 @@
  */
 class ProfileForm extends BaseProfileForm
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }

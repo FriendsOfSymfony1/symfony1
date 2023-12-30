@@ -20,5 +20,7 @@ class sfStopException extends sfException
     /**
      * Stops the current action.
      */
-    public function printStackTrace() {}
+    public function printStackTrace()
+    {
+    }
 }

@@ -9,5 +9,7 @@
  */
 class ResourceTypeForm extends BaseResourceTypeForm
 {
-    public function configure() {}
+    public function configure()
+    {
+    }
 }
