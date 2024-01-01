@@ -24,9 +24,13 @@ class lime_test
   protected $options = array();
 
   static protected $all_results = array();
+  static private $instanceCount = 0;
+  static private $allExitCode = 0;
 
   public function __construct($plan = null, $options = array())
   {
+    ++self::$instanceCount;
+
     // for BC
     if (!is_array($options))
     {
@@ -130,6 +134,8 @@ class lime_test
 
   public function __destruct()
   {
+    --self::$instanceCount;
+
     $plan = $this->results['stats']['plan'];
     $passed = count($this->results['stats']['passed']);
     $failed = count($this->results['stats']['failed']);
@@ -155,6 +161,31 @@ class lime_test
     }
 
     flush();
+
+    self::$allExitCode |= $this->getExitCode();
+
+    if (0 === self::$instanceCount) {
+        exit(self::$allExitCode);
+    }
+  }
+
+  private function getExitCode()
+  {
+    $plan = $this->results['stats']['plan'];
+    $failed = count($this->results['stats']['failed']);
+    $total = $this->results['stats']['total'];
+    is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
+
+    if ($failed)
+    {
+      return 1;
+    }
+    else if ($total == $plan)
+    {
+      return 0;
+    }
+
+    return 1;
   }
 
   /**
