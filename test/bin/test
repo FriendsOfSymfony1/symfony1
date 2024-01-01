@@ -23,6 +23,7 @@ main ()
     populatePHPVersions
 
     tearDownRegisterFunction reset_submodules
+    tearDownRegisterFunction reset_composer_json
 
     runTests
 }
@@ -181,7 +182,24 @@ install_lowest ()
     reset_submodules
     ${INSTALL_GIT_SUB_MODULE}
 
-    ${DOCKER_COMPOSE_EXEC} ${c_service} ${COMPOSER_UPDATE} --prefer-lowest
+    cp "${ROOT_DIR}/composer.json" "${ROOT_DIR}/composer.json~"
+
+    if test 80 -le `echo "${c_service}" | sed 's/^php//'`; then
+        c_depFlags=`cat ${ROOT_DIR}/require_for_php8.txt`
+
+        ${DOCKER_COMPOSE_EXEC} ${c_service} ${COMPOSER_REQUIRE} ${c_depFlags} --prefer-lowest --update-with-all-dependencies
+    else
+        ${DOCKER_COMPOSE_EXEC} ${c_service} ${COMPOSER_UPDATE} --prefer-lowest
+    fi
+
+    reset_composer_json
+}
+
+reset_composer_json ()
+{
+    if test -f "${ROOT_DIR}/composer.json~"; then
+        mv "${ROOT_DIR}/composer.json~" "${ROOT_DIR}/composer.json"
+    else :; fi
 }
 
 reset_submodules ()
