@@ -94,8 +94,12 @@ class sfValidatorFile extends sfValidatorBase
      */
     protected function doClean($value)
     {
-        if (!is_array($value) || !isset($value['tmp_name'])) {
+        if (!is_array($value)) {
             throw new sfValidatorError($this, 'invalid', array('value' => (string) $value));
+        }
+
+        if (!isset($value['tmp_name'])) {
+            throw new sfValidatorError($this, 'invalid', array('value' => 'Array'));
         }
 
         if (!isset($value['name'])) {

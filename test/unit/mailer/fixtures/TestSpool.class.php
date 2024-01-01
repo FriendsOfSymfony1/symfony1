@@ -28,7 +28,7 @@ class TestSpool implements Swift_Spool
     {
     }
 
-    public function queueMessage(Swift_Mime_Message $message)
+    public function queueMessage(sfMailerSwiftMessage $message)
     {
         $this->messages[] = $message;
 

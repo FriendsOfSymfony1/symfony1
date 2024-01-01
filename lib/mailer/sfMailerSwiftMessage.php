@@ -7,13 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class TestMailMessage
-{
-    public function setMessage(sfMailerSwiftMessage $message)
-    {
-    }
 
-    public function getMessage()
-    {
-    }
+class_exists('Swift');
+
+if (version_compare(Swift::VERSION, '6.0.0') >= 0) {
+    class_alias('Swift_Mime_SimpleMessage', 'sfMailerSwiftMessage');
+} else {
+    class_alias('Swift_Mime_Message', 'sfMailerSwiftMessage');
 }

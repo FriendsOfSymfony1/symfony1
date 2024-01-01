@@ -87,7 +87,9 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      */
     public function preClean($values)
     {
-        if (null === $validator = $this->getPreValidator()) {
+        $validator = $this->getPreValidator();
+
+        if (null === $validator) {
             return $values;
         }
 
@@ -108,7 +110,9 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      */
     public function postClean($values)
     {
-        if (null === $validator = $this->getPostValidator()) {
+        $validator = $this->getPostValidator();
+
+        if (null === $validator) {
             return $values;
         }
 
@@ -353,8 +357,14 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     protected function getBytes($value)
     {
         $value = trim($value);
+        $length = strlen($value);
+
+        if (0 === $length) {
+            return 0.0;
+        }
+
         $number = (float) $value;
-        $modifier = strtolower($value[strlen($value) - 1]);
+        $modifier = strtolower($value[$length - 1]);
 
         $exp_by_modifier = array(
             'k' => 1,

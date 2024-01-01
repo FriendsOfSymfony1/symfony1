@@ -28,6 +28,9 @@ services:
         {
           echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
           echo 'memory_limit = -1'
+          echo 'error_reporting = '`
+            php -r 'echo (E_ALL | E_STRICT) ^ E_USER_DEPRECATED ^ E_DEPRECATED ^ E_STRICT ^ E_USER_NOTICE ^ E_NOTICE;'
+          `
           echo 'short_open_tag = off'
           echo 'magic_quotes_gpc = off'
           echo 'date.timezone = "UTC"'
@@ -57,6 +60,9 @@ services:
         {
           echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
           echo 'memory_limit = -1'
+          echo 'error_reporting = '`
+            php -r 'echo (E_ALL | E_STRICT) ^ E_USER_DEPRECATED ^ E_DEPRECATED ^ E_STRICT ^ E_USER_NOTICE ^ E_NOTICE;'
+          `
           echo 'short_open_tag = off'
           echo 'magic_quotes_gpc = off'
           echo 'date.timezone = "UTC"'

@@ -67,9 +67,9 @@ class Swift_DoctrineSpool extends Swift_ConfigurableSpool
     /**
      * Stores a message in the queue.
      *
-     * @param Swift_Mime_Message $message The message to store
+     * @param Swift_Mime_Message|Swift_Mime_SimpleMessage $message The message to store
      */
-    public function queueMessage(Swift_Mime_Message $message)
+    public function queueMessage(sfMailerSwiftMessage $message)
     {
         $object = new $this->model();
 

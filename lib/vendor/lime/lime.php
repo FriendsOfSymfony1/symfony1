@@ -41,7 +41,7 @@ class lime_test
       'force_colors'    => false,
       'output'          => null,
       'verbose'         => false,
-      'error_reporting' => false,
+      'error_reporting' => true,
     ), $options);
 
     $this->output = $this->options['output'] ? $this->options['output'] : new lime_output($this->options['force_colors']);
@@ -139,6 +139,7 @@ class lime_test
     $plan = $this->results['stats']['plan'];
     $passed = count($this->results['stats']['passed']);
     $failed = count($this->results['stats']['failed']);
+    $errors = count($this->results['stats']['errors']);
     $total = $this->results['stats']['total'];
     is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
 
@@ -154,6 +155,10 @@ class lime_test
     if ($failed)
     {
       $this->output->red_bar(sprintf("# Looks like you failed %d tests of %d.", $failed, $passed + $failed));
+    }
+    else if ($errors)
+    {
+      $this->output->red_bar(sprintf("# Looks like test pass but with %d errors.", $errors));
     }
     else if ($total == $plan)
     {
@@ -173,10 +178,11 @@ class lime_test
   {
     $plan = $this->results['stats']['plan'];
     $failed = count($this->results['stats']['failed']);
+    $errors = count($this->results['stats']['errors']);
     $total = $this->results['stats']['total'];
     is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
 
-    if ($failed)
+    if ($failed || $errors)
     {
       return 1;
     }
@@ -606,6 +612,12 @@ class lime_test
     {
       case E_WARNING:
         $type = 'Warning';
+        break;
+      case E_STRICT:
+        $type = 'Strict';
+        break;
+      case E_DEPRECATED:
+        $type = 'Deprecated';
         break;
       default:
         $type = 'Notice';
