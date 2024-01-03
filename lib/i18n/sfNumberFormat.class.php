@@ -141,7 +141,7 @@ class sfNumberFormat
             $symbol = $currency;
         }
 
-        $result = str_replace('¤', $symbol, $result);
+        $result = str_replace('¤', $symbol ?: '', $result);
 
         return sfToolkit::I18N_toEncoding($result, $charset);
     }
