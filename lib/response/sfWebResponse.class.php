@@ -359,7 +359,8 @@ class sfWebResponse extends sfResponse
         // cookies
         foreach ($this->cookies as $cookie) {
             $expire = isset($cookie['expire']) ? $cookie['expire'] : 0;
-            setrawcookie($cookie['name'], $cookie['value'], $expire, $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httpOnly']);
+            $domain = isset($cookie['domain']) ? $cookie['domain'] : '';
+            setrawcookie($cookie['name'], $cookie['value'], $expire, $cookie['path'], $domain, $cookie['secure'], $cookie['httpOnly']);
 
             if ($this->options['logging']) {
                 $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send cookie "%s": "%s"', $cookie['name'], $cookie['value']))));
