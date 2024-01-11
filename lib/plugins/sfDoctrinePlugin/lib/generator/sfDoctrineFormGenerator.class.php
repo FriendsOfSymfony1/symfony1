@@ -36,6 +36,13 @@ class sfDoctrineFormGenerator extends sfGenerator
     public $pluginModels = array();
 
     /**
+     * Array of all configuration params.
+     *
+     * @var array
+     */
+    public $params = array();
+
+    /**
      * Initializes the current sfGenerator instance.
      *
      * @param sfGeneratorManager A sfGeneratorManager instance
