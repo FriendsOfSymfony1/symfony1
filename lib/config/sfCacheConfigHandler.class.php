@@ -92,7 +92,7 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
         $lifeTime = !$enabled ? '0' : $this->getConfigValue('lifetime', $actionName, '0');
 
         // client_lifetime
-        $clientLifetime = !$enabled ? '0' : $this->getConfigValue('client_lifetime', $actionName, $lifeTime, '0');
+        $clientLifetime = !$enabled ? '0' : $this->getConfigValue('client_lifetime', $actionName, $lifeTime);
 
         // contextual
         $contextual = $this->getConfigValue('contextual', $actionName) ? 'true' : 'false';
