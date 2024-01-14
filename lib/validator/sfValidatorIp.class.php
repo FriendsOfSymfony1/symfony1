@@ -106,7 +106,7 @@ class sfValidatorIp extends sfValidatorString
                 break;
 
             default:
-                $flag = null;
+                $flag = 0;
 
                 break;
         }
