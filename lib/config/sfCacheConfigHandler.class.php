@@ -26,9 +26,9 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws <b>sfConfigurationException</b> If a requested configuration file does not exist or is not readable
-     * @throws <b>sfParseException</b> If a requested configuration file is improperly formatted
-     * @throws <b>sfInitializationException</b> If a cache.yml key check fails
+     * @throws sfConfigurationException  If a requested configuration file does not exist or is not readable
+     * @throws sfParseException          If a requested configuration file is improperly formatted
+     * @throws sfInitializationException If a cache.yml key check fails
      */
     public function execute($configFiles)
     {

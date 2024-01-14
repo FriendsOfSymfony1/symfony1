@@ -67,7 +67,7 @@ abstract class sfRequest implements ArrayAccess
      *
      * @return mixed The returned value of the called method
      *
-     * @throws <b>sfException</b> if call fails
+     * @throws sfException if call fails
      */
     public function __call($method, $arguments)
     {
@@ -97,7 +97,7 @@ abstract class sfRequest implements ArrayAccess
      * @param array             $attributes An associative array of initialization attributes
      * @param array             $options    An associative array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfRequest
+     * @throws sfInitializationException If an error occurs while initializing this sfRequest
      */
     public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
     {
@@ -177,7 +177,7 @@ abstract class sfRequest implements ArrayAccess
      *
      * @param string $method The request method
      *
-     * @throws <b>sfException</b> - If the specified request method is invalid
+     * @throws sfException - If the specified request method is invalid
      */
     public function setMethod($method)
     {

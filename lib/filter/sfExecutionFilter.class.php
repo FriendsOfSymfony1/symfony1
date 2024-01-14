@@ -25,8 +25,8 @@ class sfExecutionFilter extends sfFilter
      *
      * @param sfFilterChain $filterChain The filter chain
      *
-     * @throws <b>sfInitializeException</b> If an error occurs during view initialization
-     * @throws <b>sfViewException</b>       If an error occurs while executing the view
+     * @throws sfInitializeException If an error occurs during view initialization
+     * @throws sfViewException       If an error occurs while executing the view
      */
     public function execute($filterChain)
     {

@@ -50,7 +50,7 @@ abstract class sfCache
      *
      * * lifetime (optional): The default life time (default value: 86400)
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfCache instance
+     * @throws sfInitializationException If an error occurs while initializing this sfCache instance
      */
     public function initialize($options = array())
     {

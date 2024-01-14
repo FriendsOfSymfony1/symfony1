@@ -47,7 +47,7 @@ class sfCacheSessionStorage extends sfStorage
      *
      * @return bool true, when initialization completes successfully
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this Storage
+     * @throws sfInitializationException If an error occurs while initializing this Storage
      */
     public function initialize($options = array())
     {
@@ -215,7 +215,7 @@ class sfCacheSessionStorage extends sfStorage
      *
      * @return bool True if session regenerated, false if error
      *
-     * @throws <b>sfStorageException</b> If an error occurs while regenerating this storage
+     * @throws sfStorageException If an error occurs while regenerating this storage
      */
     public function regenerate($destroy = false)
     {
@@ -263,7 +263,7 @@ class sfCacheSessionStorage extends sfStorage
     /**
      * Executes the shutdown procedure.
      *
-     * @throws <b>sfStorageException</b> If an error occurs while shutting down this storage
+     * @throws sfStorageException If an error occurs while shutting down this storage
      */
     public function shutdown()
     {

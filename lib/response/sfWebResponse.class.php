@@ -114,7 +114,7 @@ class sfWebResponse extends sfResponse
      * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
      * @param array             $options    An array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfResponse
+     * @throws sfInitializationException If an error occurs while initializing this sfResponse
      *
      * @see sfResponse
      */
@@ -171,7 +171,7 @@ class sfWebResponse extends sfResponse
      * @param bool   $secure   If secure
      * @param bool   $httpOnly If uses only HTTP
      *
-     * @throws <b>sfException</b> If fails to set the cookie
+     * @throws sfException If fails to set the cookie
      */
     public function setCookie($name, $value, $expire = null, $path = '/', $domain = '', $secure = false, $httpOnly = false)
     {

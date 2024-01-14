@@ -1060,7 +1060,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
      * @param string $offset (ignored)
      * @param string $value  (ignored)
      *
-     * @throws <b>LogicException</b>
+     * @throws LogicException
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)

@@ -97,7 +97,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was opened, otherwise an exception is thrown
      *
-     * @throws <b>DatabaseException</b> If a connection with the database does not exist or cannot be created
+     * @throws DatabaseException If a connection with the database does not exist or cannot be created
      */
     public function sessionOpen($path = null, $name = null)
     {
@@ -131,7 +131,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was destroyed, otherwise an exception is thrown
      *
-     * @throws <b>DatabaseException</b> If the session cannot be destroyed
+     * @throws DatabaseException If the session cannot be destroyed
      */
     abstract public function sessionDestroy($id);
 
@@ -142,7 +142,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if old sessions have been cleaned, otherwise an exception is thrown
      *
-     * @throws <b>DatabaseException</b> If any old sessions cannot be cleaned
+     * @throws DatabaseException If any old sessions cannot be cleaned
      */
     abstract public function sessionGC($lifetime);
 
@@ -153,7 +153,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was read, otherwise an exception is thrown
      *
-     * @throws <b>DatabaseException</b> If the session cannot be read
+     * @throws DatabaseException If the session cannot be read
      */
     abstract public function sessionRead($id);
 
@@ -165,7 +165,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was written, otherwise an exception is thrown
      *
-     * @throws <b>DatabaseException</b> If the session data cannot be written
+     * @throws DatabaseException If the session data cannot be written
      */
     abstract public function sessionWrite($id, $data);
 

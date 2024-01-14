@@ -49,7 +49,7 @@ class sfConfigCache
      *
      * @return string An absolute filesystem path to the cache filename associated with this specified configuration file
      *
-     * @throws <b>sfConfigurationException</b> If a requested configuration file does not exist
+     * @throws sfConfigurationException If a requested configuration file does not exist
      *
      * @see sfConfiguration::getConfigPaths()
      */
@@ -175,7 +175,7 @@ class sfConfigCache
      * @param array  $configs An array of absolute filesystem paths to configuration files
      * @param string $cache   An absolute filesystem path to the cache file that will be written
      *
-     * @throws <b>sfConfigurationException</b> If a requested configuration file does not have an associated configuration handler
+     * @throws sfConfigurationException If a requested configuration file does not have an associated configuration handler
      */
     protected function callHandler($handler, $configs, $cache)
     {
@@ -251,7 +251,7 @@ class sfConfigCache
     /**
      * Loads all configuration application and module level handlers.
      *
-     * @throws <b>sfConfigurationException</b> If a configuration related error occurs
+     * @throws sfConfigurationException If a configuration related error occurs
      */
     protected function loadConfigHandlers()
     {

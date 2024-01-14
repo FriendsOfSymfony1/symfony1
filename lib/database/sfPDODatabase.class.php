@@ -35,7 +35,7 @@ class sfPDODatabase extends sfDatabase
     /**
      * Connects to the database.
      *
-     * @throws <b>sfDatabaseException</b> If a connection could not be created
+     * @throws sfDatabaseException If a connection could not be created
      */
     public function connect()
     {
