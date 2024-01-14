@@ -53,7 +53,7 @@ class sfWebRequest extends sfRequest
      * @param array             $attributes An associative array of initialization attributes
      * @param array             $options    An associative array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfRequest
+     * @throws sfInitializationException If an error occurs while initializing this sfRequest
      *
      * @see sfRequest
      */
@@ -886,7 +886,7 @@ class sfWebRequest extends sfRequest
     /**
      * Check CSRF protection.
      *
-     * @throws <b>sfValidatorErrorSchema</b> If an error occurs while validating the CRF protection for this sfRequest
+     * @throws sfValidatorErrorSchema If an error occurs while validating the CRF protection for this sfRequest
      */
     public function checkCSRFProtection()
     {

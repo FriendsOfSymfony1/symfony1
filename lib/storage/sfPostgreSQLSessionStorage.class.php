@@ -28,7 +28,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if the session was destroyed, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If the session cannot be destroyed
+     * @throws sfDatabaseException If the session cannot be destroyed
      */
     public function sessionDestroy($id)
     {
@@ -57,7 +57,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if old sessions have been cleaned, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If any old sessions cannot be cleaned
+     * @throws sfDatabaseException If any old sessions cannot be cleaned
      */
     public function sessionGC($lifetime)
     {
@@ -82,7 +82,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return string The session data if the session was read or created, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If the session cannot be read
+     * @throws sfDatabaseException If the session cannot be read
      */
     public function sessionRead($id)
     {
@@ -126,7 +126,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if the session was written, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If the session data cannot be written
+     * @throws sfDatabaseException If the session data cannot be written
      */
     public function sessionWrite($id, $data)
     {

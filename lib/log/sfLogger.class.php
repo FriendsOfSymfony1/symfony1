@@ -72,7 +72,7 @@ abstract class sfLogger implements sfLoggerInterface
      * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
      * @param array             $options    an array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfLogger
+     * @throws sfInitializationException If an error occurs while initializing this sfLogger
      */
     public function initialize(sfEventDispatcher $dispatcher, $options = array())
     {

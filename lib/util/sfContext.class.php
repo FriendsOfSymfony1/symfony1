@@ -45,7 +45,7 @@ class sfContext implements ArrayAccess
      *
      * @return mixed The returned value of the called method
      *
-     * @throws <b>sfException</b> if call fails
+     * @throws sfException if call fails
      */
     public function __call($method, $arguments)
     {

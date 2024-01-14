@@ -29,7 +29,7 @@ class sfCacheFilter extends sfFilter
      * @param sfContext $context    The current application context
      * @param array     $parameters An associative array of initialization parameters
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this Filter
+     * @throws sfInitializationException If an error occurs while initializing this Filter
      */
     public function initialize($context, $parameters = array())
     {
