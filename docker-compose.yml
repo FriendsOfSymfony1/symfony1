@@ -15,35 +15,13 @@ services:
       - |
         exec tail -f /dev/null
 
-  php53:
-    build: .docker/php53
-    working_dir: /app
-    volumes:
-      - .:/app
-      - db_socket:/var/run/mysqld
-    entrypoint:
-      - sh
-      - -c
-      - |
-        {
-          echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
-          echo 'memory_limit = -1'
-          echo 'short_open_tag = off'
-          echo 'magic_quotes_gpc = off'
-          echo 'date.timezone = "UTC"'
-          echo 'apc.enable_cli = on'
-          echo 'apc.use_request_time = 0'
-        } | tee -a /usr/local/lib/php.ini
-
-        exec tail -f /dev/null
-    depends_on:
-      - db
-
-  php54: &services_php54
+  php82: &services_php82
     build:
-      context: .docker/php54
+      context: .docker/php82_83
       args:
-        MEMCACHE_VERSION: '3.0.8'
+        PHP_VERSION: '8.2'
+        MEMCACHE_VERSION: '8.0'
+        APCU_VERSION: '5.1.23'
     environment:
       MEMCACHED_HOST: memcached
     working_dir: /app
@@ -69,105 +47,10 @@ services:
       - db
       - memcached
 
-  php55:
-    <<: *services_php54
-    build:
-      context: .docker/php55_71
-      args:
-        PHP_TAG: '5.5-cli'
-        MEMCACHE_VERSION: '3.0.8'
-        APCU_VERSION: '4.0.11'
-
-  php56:
-    <<: *services_php54
-    build:
-      context: .docker/php55_71
-      args:
-        PHP_TAG: '5.6-cli-jessie'
-        MEMCACHE_VERSION: '3.0.8'
-        APCU_VERSION: '4.0.11'
-
-  php70:
-    <<: *services_php54
-    build:
-      context: .docker/php55_71
-      args:
-        PHP_TAG: '7.0-cli-jessie'
-        MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: '5.1.23'
-
-  php71:
-    <<: *services_php54
-    build:
-      context: .docker/php55_71
-      args:
-        PHP_TAG: '7.1-cli-jessie'
-        MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: '5.1.23'
-
-
-  php72:
-    <<: *services_php54
-    build:
-      context: .docker/php72_73
-      args:
-        PHP_VERSION: '7.2'
-        MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: '5.1.23'
-
-
-  php73:
-    <<: *services_php54
-    build:
-      context: .docker/php72_73
-      args:
-        PHP_VERSION: '7.3'
-        MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: '5.1.23'
-
-
-  php74:
-    <<: *services_php54
-    build:
-      context: .docker/php74_83
-      args:
-        PHP_VERSION: '7.4'
-        MEMCACHE_VERSION: '4.0.5.2'
-        APCU_VERSION: '5.1.23'
-
-
-  php80:
-    <<: *services_php54
-    build:
-      context: .docker/php74_83
-      args:
-        PHP_VERSION: '8.0'
-        MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: '5.1.23'
-
-
-  php81:
-    <<: *services_php54
-    build:
-      context: .docker/php74_83
-      args:
-        PHP_VERSION: '8.1'
-        MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: '5.1.23'
-
-  php82:
-    <<: *services_php54
-    build:
-      context: .docker/php74_83
-      args:
-        PHP_VERSION: '8.2'
-        MEMCACHE_VERSION: '8.0'
-        APCU_VERSION: '5.1.23'
-
   php83:
-    <<: *services_php54
+    <<: *services_php82
     build:
-      context: .docker/php74_83
+      context: .docker/php82_83
       args:
         PHP_VERSION: '8.3'
         MEMCACHE_VERSION: '8.0'
