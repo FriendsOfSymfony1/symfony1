@@ -43,7 +43,7 @@ class sfDoctrineBuildTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
             new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database'),
@@ -57,7 +57,7 @@ class sfDoctrineBuildTask extends sfDoctrineBaseTask
             new sfCommandOption('and-migrate', null, sfCommandOption::PARAMETER_NONE, 'Migrate the database'),
             new sfCommandOption('and-load', null, sfCommandOption::PARAMETER_OPTIONAL | sfCommandOption::IS_ARRAY, 'Load fixture data'),
             new sfCommandOption('and-append', null, sfCommandOption::PARAMETER_OPTIONAL | sfCommandOption::IS_ARRAY, 'Append fixture data'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'build';
@@ -117,8 +117,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (!$mode = $this->calculateMode($options)) {
             throw new InvalidArgumentException(sprintf("You must include one or more of the following build options:\n--%s\n\nSee this task's help page for more information:\n\n  php symfony help doctrine:build", join(', --', array_keys($this->getBuildOptions()))));
@@ -128,7 +131,7 @@ EOF;
             $task = new sfDoctrineDropDbTask($this->dispatcher, $this->formatter);
             $task->setCommandApplication($this->commandApplication);
             $task->setConfiguration($this->configuration);
-            $ret = $task->run(array(), array('no-confirmation' => $options['no-confirmation']));
+            $ret = $task->run([], ['no-confirmation' => $options['no-confirmation']]);
 
             if ($ret) {
                 return $ret;
@@ -216,9 +219,9 @@ EOF;
             $task->setConfiguration($this->configuration);
 
             if (count($options['and-load'])) {
-                $ret = $task->run(array(
-                    'dir_or_file' => in_array(array(), $options['and-load'], true) ? null : $options['and-load'],
-                ));
+                $ret = $task->run([
+                    'dir_or_file' => in_array([], $options['and-load'], true) ? null : $options['and-load'],
+                ]);
 
                 if ($ret) {
                     return $ret;
@@ -226,11 +229,11 @@ EOF;
             }
 
             if (count($options['and-append'])) {
-                $ret = $task->run(array(
-                    'dir_or_file' => in_array(array(), $options['and-append'], true) ? null : $options['and-append'],
-                ), array(
+                $ret = $task->run([
+                    'dir_or_file' => in_array([], $options['and-append'], true) ? null : $options['and-append'],
+                ], [
                     'append' => true,
-                ));
+                ]);
 
                 if ($ret) {
                     return $ret;
@@ -246,7 +249,7 @@ EOF;
      *
      * @return int
      */
-    protected function calculateMode($options = array())
+    protected function calculateMode($options = [])
     {
         $mode = 0;
         foreach ($this->getBuildOptions() as $name => $value) {
@@ -265,7 +268,7 @@ EOF;
      */
     protected function getBuildOptions()
     {
-        $options = array();
+        $options = [];
         foreach ($this->options as $option) {
             if (defined($constant = __CLASS__.'::OPTION_'.str_replace('-', '_', strtoupper($option->getName())))) {
                 $options[$option->getName()] = constant($constant);

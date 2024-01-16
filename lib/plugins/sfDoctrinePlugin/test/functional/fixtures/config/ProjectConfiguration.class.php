@@ -9,9 +9,9 @@ class ProjectConfiguration extends sfProjectConfiguration
     {
         $this->enableAllPluginsExcept();
 
-        $this->dispatcher->connect('doctrine.configure', array($this, 'configureDoctrine'));
-        $this->dispatcher->connect('doctrine.configure_connection', array($this, 'configureDoctrineConnection'));
-        $this->dispatcher->connect('doctrine.filter_model_builder_options', array($this, 'configureDoctrineModelBuilder'));
+        $this->dispatcher->connect('doctrine.configure', [$this, 'configureDoctrine']);
+        $this->dispatcher->connect('doctrine.configure_connection', [$this, 'configureDoctrineConnection']);
+        $this->dispatcher->connect('doctrine.filter_model_builder_options', [$this, 'configureDoctrineModelBuilder']);
     }
 
     public function initializeDoctrine()
@@ -20,13 +20,13 @@ class ProjectConfiguration extends sfProjectConfiguration
 
         $task = new sfDoctrineBuildTask($this->dispatcher, new sfFormatter());
         $task->setConfiguration($this);
-        $task->run(array(), array(
+        $task->run([], [
             'no-confirmation' => true,
             'db' => true,
             'model' => true,
             'forms' => true,
             'filters' => true,
-        ));
+        ]);
     }
 
     public function loadFixtures($fixtures)
@@ -38,7 +38,7 @@ class ProjectConfiguration extends sfProjectConfiguration
         chdir(sfConfig::get('sf_root_dir'));
         $task = new sfDoctrineDataLoadTask($this->dispatcher, new sfFormatter());
         $task->setConfiguration($this);
-        $task->run(array($path));
+        $task->run([$path]);
     }
 
     public function configureDoctrine(sfEvent $event)

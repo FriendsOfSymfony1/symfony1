@@ -47,7 +47,7 @@ function sf_unit_test_shutdown()
     $sessions = glob(sys_get_temp_dir().'/sessions*');
     $tmp_files = glob(sys_get_temp_dir().'/sf*');
 
-    $files = array_merge(empty($sessions) ? array() : $sessions, empty($tmp_files) ? array() : $tmp_files);
+    $files = array_merge(empty($sessions) ? [] : $sessions, empty($tmp_files) ? [] : $tmp_files);
     foreach ($files as $file) {
         if (is_dir($file)) {
             sfToolkit::clearDirectory($file);
@@ -61,5 +61,5 @@ function sf_unit_test_shutdown()
 // Helper for cross platform testcases that validate output
 function fix_linebreaks($content)
 {
-    return str_replace(array("\r\n", "\n", "\r"), "\n", $content);
+    return str_replace(["\r\n", "\n", "\r"], "\n", $content);
 }

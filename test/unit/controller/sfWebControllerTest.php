@@ -30,128 +30,128 @@ class myWebResponse extends sfWebResponse
 $_SERVER['HTTP_HOST'] = 'localhost';
 $_SERVER['SCRIPT_NAME'] = '/index.php';
 sfConfig::set('sf_max_forwards', 10);
-$context = sfContext::getInstance(array(
+$context = sfContext::getInstance([
     'routing' => 'sfNoRouting',
     'request' => 'sfWebRequest',
     'response' => 'myWebResponse',
-));
+]);
 
 $controller = new sfFrontWebController($context, null);
 
-$tests = array(
-    'module/action' => array(
+$tests = [
+    'module/action' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
-        ),
-    ),
-    'module/action?id=12' => array(
+        ],
+    ],
+    'module/action?id=12' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'id' => 12,
-        ),
-    ),
-    'module/action?id=12&' => array(
+        ],
+    ],
+    'module/action?id=12&' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'id' => '12&',
-        ),
-    ),
-    'module/action?id=12&test=4&toto=9' => array(
+        ],
+    ],
+    'module/action?id=12&test=4&toto=9' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'id' => 12,
             'test' => 4,
             'toto' => 9,
-        ),
-    ),
-    'module/action?id=12&test=4&5&6&7&&toto=9' => array(
+        ],
+    ],
+    'module/action?id=12&test=4&5&6&7&&toto=9' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'id' => 12,
             'test' => '4&5&6&7&',
             'toto' => 9,
-        ),
-    ),
-    'module/action?test=value1&value2&toto=9' => array(
+        ],
+    ],
+    'module/action?test=value1&value2&toto=9' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'test' => 'value1&value2',
             'toto' => 9,
-        ),
-    ),
-    'module/action?test=value1&value2' => array(
+        ],
+    ],
+    'module/action?test=value1&value2' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'test' => 'value1&value2',
-        ),
-    ),
-    'module/action?test=value1=value2&toto=9' => array(
+        ],
+    ],
+    'module/action?test=value1=value2&toto=9' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'test' => 'value1=value2',
             'toto' => 9,
-        ),
-    ),
-    'module/action?test=value1=value2' => array(
+        ],
+    ],
+    'module/action?test=value1=value2' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'test' => 'value1=value2',
-        ),
-    ),
-    'module/action?test=4&5&6&7&&toto=9&id=' => array(
+        ],
+    ],
+    'module/action?test=4&5&6&7&&toto=9&id=' => [
         '',
-        array(
+        [
             'module' => 'module',
             'action' => 'action',
             'test' => '4&5&6&7&',
             'toto' => 9,
             'id' => '',
-        ),
-    ),
-    '@test?test=4' => array(
+        ],
+    ],
+    '@test?test=4' => [
         'test',
-        array(
+        [
             'test' => 4,
-        ),
-    ),
-    '@test' => array(
+        ],
+    ],
+    '@test' => [
         'test',
-        array(
-        ),
-    ),
-    '@test?id=12&foo=bar' => array(
+        [
+        ],
+    ],
+    '@test?id=12&foo=bar' => [
         'test',
-        array(
+        [
             'id' => 12,
             'foo' => 'bar',
-        ),
-    ),
-    '@test?id=foo%26bar&foo=bar%3Dfoo' => array(
+        ],
+    ],
+    '@test?id=foo%26bar&foo=bar%3Dfoo' => [
         'test',
-        array(
+        [
             'id' => 'foo&bar',
             'foo' => 'bar=foo',
-        ),
-    ),
-);
+        ],
+    ],
+];
 
 // ->convertUrlStringToParameters()
 $t->diag('->convertUrlStringToParameters()');
@@ -195,7 +195,7 @@ try {
 
 // ->genUrl()
 $t->diag('->genUrl()');
-$t->is($controller->genUrl('module/action?id=4'), $controller->genUrl(array('action' => 'action', 'module' => 'module', 'id' => 4)), '->genUrl() accepts a string or an array as its first argument');
+$t->is($controller->genUrl('module/action?id=4'), $controller->genUrl(['action' => 'action', 'module' => 'module', 'id' => 4]), '->genUrl() accepts a string or an array as its first argument');
 
 $lastError = error_get_last();
 $controller->genUrl('');

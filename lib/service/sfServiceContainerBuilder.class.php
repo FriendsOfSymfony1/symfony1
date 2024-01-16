@@ -17,9 +17,9 @@
  */
 class sfServiceContainerBuilder extends sfServiceContainer
 {
-    protected $definitions = array();
-    protected $aliases = array();
-    protected $loading = array();
+    protected $definitions = [];
+    protected $aliases = [];
+    protected $loading = [];
 
     /**
      * Sets a service.
@@ -151,7 +151,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
      */
     public function setServiceDefinitions(array $definitions)
     {
-        $this->definitions = array();
+        $this->definitions = [];
         $this->addServiceDefinitions($definitions);
     }
 
@@ -222,7 +222,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
     public function resolveValue($value)
     {
         if (is_array($value)) {
-            $args = array();
+            $args = [];
             foreach ($value as $k => $v) {
                 $args[$this->resolveValue($k)] = $this->resolveValue($v);
             }
@@ -232,7 +232,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
             if (preg_match('/^%([^%]+)%$/', $value, $match)) {
                 $value = $this->getParameter($match[1]);
             } else {
-                $value = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%]+)\1/', array($this, 'replaceParameter'), $value));
+                $value = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%]+)\1/', [$this, 'replaceParameter'], $value));
             }
         }
 
@@ -249,7 +249,7 @@ class sfServiceContainerBuilder extends sfServiceContainer
     public function resolveServices($value)
     {
         if (is_array($value)) {
-            $value = array_map(array($this, 'resolveServices'), $value);
+            $value = array_map([$this, 'resolveServices'], $value);
         } elseif (is_object($value) && $value instanceof sfServiceReference) {
             $value = $this->getService((string) $value);
         }
@@ -275,13 +275,13 @@ class sfServiceContainerBuilder extends sfServiceContainer
         $arguments = $this->resolveServices($this->resolveValue($definition->getArguments()));
 
         if (null !== $definition->getConstructor()) {
-            $service = call_user_func_array(array($this->resolveValue($definition->getClass()), $definition->getConstructor()), $arguments);
+            $service = call_user_func_array([$this->resolveValue($definition->getClass()), $definition->getConstructor()], $arguments);
         } else {
             $service = null === $r->getConstructor() ? $r->newInstance() : $r->newInstanceArgs($arguments);
         }
 
         foreach ($definition->getMethodCalls() as $call) {
-            call_user_func_array(array($service, $call[0]), $this->resolveServices($this->resolveValue($call[1])));
+            call_user_func_array([$service, $call[0]], $this->resolveServices($this->resolveValue($call[1])));
         }
 
         if ($callable = $definition->getConfigurator()) {

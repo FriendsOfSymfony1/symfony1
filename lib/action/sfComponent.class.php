@@ -64,7 +64,7 @@ abstract class sfComponent
      *
      * @return string The translated string
      */
-    public function __($string, $args = array(), $catalogue = 'messages')
+    public function __($string, $args = [], $catalogue = 'messages')
     {
         return $this->context->getI18N()->__($string, $args, $catalogue);
     }
@@ -130,7 +130,7 @@ abstract class sfComponent
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'component.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'component.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
             throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
@@ -249,7 +249,7 @@ abstract class sfComponent
     public function logMessage($message, $priority = 'info')
     {
         if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array($message, 'priority' => constant('sfLogger::'.strtoupper($priority)))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [$message, 'priority' => constant('sfLogger::'.strtoupper($priority))]));
         }
     }
 
@@ -341,7 +341,7 @@ abstract class sfComponent
      *
      * @return string The URL
      */
-    public function generateUrl($route, $params = array(), $absolute = false)
+    public function generateUrl($route, $params = [], $absolute = false)
     {
         return $this->context->getRouting()->generate($route, $params, $absolute);
     }

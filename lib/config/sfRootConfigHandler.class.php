@@ -42,8 +42,8 @@ class sfRootConfigHandler extends sfYamlConfigHandler
         }
 
         // init our data and includes arrays
-        $data = array();
-        $includes = array();
+        $data = [];
+        $includes = [];
 
         // let's do our fancy work
         foreach ($config as $category => $keys) {

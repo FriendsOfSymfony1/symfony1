@@ -24,7 +24,7 @@ $config->initialize();
 
 // ->initialize()
 $t->diag('->initialize()');
-$config->initialize(array('foo' => 'bar'));
+$config->initialize(['foo' => 'bar']);
 $t->is($config->getParameterHolder()->get('foo'), 'bar', '->initialize() takes an array of parameters as its first argument');
 
 // ::replaceConstants()
@@ -35,12 +35,12 @@ $t->is(sfConfigHandler::replaceConstants('my value with a %foo% constant'), 'my 
 $t->is(sfConfigHandler::replaceConstants('%Y/%m/%d %H:%M'), '%Y/%m/%d %H:%M', '::replaceConstants() does not replace unknown constants');
 
 sfConfig::set('foo', 'bar');
-$value = array(
+$value = [
     'foo' => 'my value with a %foo% constant',
-    'bar' => array(
+    'bar' => [
         'foo' => 'my value with a %foo% constant',
-    ),
-);
+    ],
+];
 $value = sfConfigHandler::replaceConstants($value);
 $t->is($value['foo'], 'my value with a bar constant', '::replaceConstants() replaces constants in arrays recursively');
 $t->is($value['bar']['foo'], 'my value with a bar constant', '::replaceConstants() replaces constants in arrays recursively');

@@ -42,9 +42,9 @@
  */
 class sfServiceContainer implements sfServiceContainerInterface
 {
-    protected $serviceIds = array();
-    protected $parameters = array();
-    protected $services = array();
+    protected $serviceIds = [];
+    protected $parameters = [];
+    protected $services = [];
     protected $count = 0;
 
     /**
@@ -52,7 +52,7 @@ class sfServiceContainer implements sfServiceContainerInterface
      *
      * @param array $parameters An array of parameters
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         $this->setParameters($parameters);
         $this->setService('service_container', $this);
@@ -65,7 +65,7 @@ class sfServiceContainer implements sfServiceContainerInterface
      */
     public function setParameters(array $parameters)
     {
-        $this->parameters = array();
+        $this->parameters = [];
         foreach ($parameters as $key => $value) {
             $this->parameters[strtolower($key)] = $value;
         }
@@ -191,7 +191,7 @@ class sfServiceContainer implements sfServiceContainerInterface
      */
     public function getServiceIds()
     {
-        $ids = array();
+        $ids = [];
         $r = new ReflectionClass($this);
         foreach ($r->getMethods() as $method) {
             if (preg_match('/^get(.+)Service$/', $name = $method->getName(), $match)) {
@@ -204,11 +204,11 @@ class sfServiceContainer implements sfServiceContainerInterface
 
     public static function camelize($id)
     {
-        return strtr(ucwords(strtr($id, array('_' => ' ', '-' => ' ', '.' => '_ '))), array(' ' => ''));
+        return strtr(ucwords(strtr($id, ['_' => ' ', '-' => ' ', '.' => '_ '])), [' ' => '']);
     }
 
     public static function underscore($id)
     {
-        return strtolower(preg_replace(array('/_/', '/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('.', '\\1_\\2', '\\1_\\2'), $id));
+        return strtolower(preg_replace(['/_/', '/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], ['.', '\\1_\\2', '\\1_\\2'], $id));
     }
 }

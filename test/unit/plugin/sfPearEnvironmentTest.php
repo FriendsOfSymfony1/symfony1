@@ -34,20 +34,20 @@ mkdir($temp, 0777, true);
 
 define('SF_PLUGIN_TEST_DIR', $temp);
 
-$options = array(
+$options = [
     'plugin_dir' => $temp.'/plugins',
     'cache_dir' => $temp.'/cache',
     'preferred_state' => 'stable',
     'rest_base_class' => 'sfPearRestTest',
     'downloader_base_class' => 'sfPearDownloaderTest',
-);
+];
 
 $dispatcher = new sfEventDispatcher();
 
 // ->initialize()
 $t->diag('->initialize()');
 
-foreach (array('plugin_dir', 'cache_dir') as $option) {
+foreach (['plugin_dir', 'cache_dir'] as $option) {
     try {
         $localOptions = $options;
         unset($localOptions[$option]);

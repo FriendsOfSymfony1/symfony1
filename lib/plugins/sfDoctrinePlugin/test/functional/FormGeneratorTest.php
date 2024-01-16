@@ -16,7 +16,7 @@ require_once dirname(__FILE__).'/../bootstrap/functional.php';
 $t = new lime_test(41);
 
 $t->diag("Test that these models don't generate forms or filters classes");
-$noFormsOrFilters = array('UserGroup', 'UserPermission', 'GroupPermission');
+$noFormsOrFilters = ['UserGroup', 'UserPermission', 'GroupPermission'];
 foreach ($noFormsOrFilters as $model) {
     $t->is(file_exists(sfConfig::get('sf_lib_dir').'/form/doctrine/'.$model.'Form.class.php'), false);
     $t->is(file_exists(sfConfig::get('sf_lib_dir').'/form/doctrine/base/Base'.$model.'Form.class.php'), false);

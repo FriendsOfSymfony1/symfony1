@@ -22,13 +22,13 @@ class sfTestPluginTask extends sfTestBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('plugin', sfCommandArgument::REQUIRED, 'The plugin name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('only', null, sfCommandOption::PARAMETER_REQUIRED, 'Only run "unit" or "functional" tests'),
-        ));
+        ]);
 
         $this->namespace = 'test';
         $this->name = 'plugin';
@@ -48,14 +48,17 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (false === $this->checkPluginExists($arguments['plugin'])) {
             throw new sfCommandException(sprintf('The plugin "%s" does not exists', $arguments['plugin']));
         }
 
-        if ($options['only'] && !in_array($options['only'], array('unit', 'functional'))) {
+        if ($options['only'] && !in_array($options['only'], ['unit', 'functional'])) {
             throw new sfCommandException(sprintf('The --only option must be either "unit" or "functional" ("%s" given)', $options['only']));
         }
 

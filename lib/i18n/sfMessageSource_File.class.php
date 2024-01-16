@@ -96,7 +96,7 @@ abstract class sfMessageSource_File extends sfMessageSource
         $variants = explode('_', $this->culture);
         $source = $catalogue.$this->dataExt;
 
-        $catalogues = array($source);
+        $catalogues = [$source];
 
         $variant = null;
 
@@ -143,7 +143,7 @@ abstract class sfMessageSource_File extends sfMessageSource
     protected function getCatalogueByDir($catalogue)
     {
         $variants = explode('_', $this->culture);
-        $catalogues = array();
+        $catalogues = [];
 
         $variant = null;
 
@@ -172,7 +172,7 @@ abstract class sfMessageSource_File extends sfMessageSource
         $dir = $dir ?: $this->getSource($variant);
         $files = scandir($dir);
 
-        $catalogue = array();
+        $catalogue = [];
 
         foreach ($files as $file) {
             if (is_dir($dir.'/'.$file) && preg_match('/^[a-z]{2}(_[A-Z]{2,3})?$/', $file)) {

@@ -49,7 +49,7 @@ class sfValidatorFile extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         if (!ini_get('file_uploads')) {
             throw new LogicException(sprintf('Unable to use a file validator as "file_uploads" is disabled in your php.ini file (%s)', get_cfg_var('cfg_file_path')));
@@ -57,19 +57,19 @@ class sfValidatorFile extends sfValidatorBase
 
         $this->addOption('max_size');
         $this->addOption('mime_types');
-        $this->addOption('mime_type_guessers', array(
-            array($this, 'guessFromFileinfo'),
-            array($this, 'guessFromMimeContentType'),
-            array($this, 'guessFromFileBinary'),
-        ));
-        $this->addOption('mime_categories', array(
-            'web_images' => array(
+        $this->addOption('mime_type_guessers', [
+            [$this, 'guessFromFileinfo'],
+            [$this, 'guessFromMimeContentType'],
+            [$this, 'guessFromFileBinary'],
+        ]);
+        $this->addOption('mime_categories', [
+            'web_images' => [
                 'image/jpeg',
                 'image/pjpeg',
                 'image/png',
                 'image/x-png',
                 'image/gif',
-            )));
+            ]]);
         $this->addOption('validated_file_class', 'sfValidatedFile');
         $this->addOption('path', null);
 
@@ -93,11 +93,13 @@ class sfValidatorFile extends sfValidatorBase
      *  * size:     The file size in bytes (optional)
      *
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     protected function doClean($value)
     {
         if (!is_array($value) || !isset($value['tmp_name'])) {
-            throw new sfValidatorError($this, 'invalid', array('value' => (string) $value));
+            throw new sfValidatorError($this, 'invalid', ['value' => (string) $value]);
         }
 
         if (!isset($value['name'])) {
@@ -123,9 +125,9 @@ class sfValidatorFile extends sfValidatorBase
                     $max = min($max, $this->getOption('max_size'));
                 }
 
-                throw new sfValidatorError($this, 'max_size', array('max_size' => round($max / 1024, 0), 'size' => (int) $value['size']));
+                throw new sfValidatorError($this, 'max_size', ['max_size' => round($max / 1024, 0), 'size' => (int) $value['size']]);
             case UPLOAD_ERR_FORM_SIZE:
-                throw new sfValidatorError($this, 'max_size', array('max_size' => 0, 'size' => (int) $value['size']));
+                throw new sfValidatorError($this, 'max_size', ['max_size' => 0, 'size' => (int) $value['size']]);
             case UPLOAD_ERR_PARTIAL:
                 throw new sfValidatorError($this, 'partial');
             case UPLOAD_ERR_NO_TMP_DIR:
@@ -138,7 +140,7 @@ class sfValidatorFile extends sfValidatorBase
 
         // check file size
         if ($this->hasOption('max_size') && $this->getOption('max_size') < (int) $value['size']) {
-            throw new sfValidatorError($this, 'max_size', array('max_size' => round($this->getOption('max_size') / 1024, 0), 'size' => (int) $value['size']));
+            throw new sfValidatorError($this, 'max_size', ['max_size' => round($this->getOption('max_size') / 1024, 0), 'size' => (int) $value['size']]);
         }
 
         $mimeType = $this->getMimeType((string) $value['tmp_name'], (string) $value['type']);
@@ -147,7 +149,7 @@ class sfValidatorFile extends sfValidatorBase
         if ($this->hasOption('mime_types')) {
             $mimeTypes = is_array($this->getOption('mime_types')) ? $this->getOption('mime_types') : $this->getMimeTypesFromCategory($this->getOption('mime_types'));
             if (!in_array($mimeType, array_map('strtolower', $mimeTypes))) {
-                throw new sfValidatorError($this, 'mime_types', array('mime_types' => $mimeTypes, 'mime_type' => $mimeType));
+                throw new sfValidatorError($this, 'mime_types', ['mime_types' => $mimeTypes, 'mime_type' => $mimeType]);
             }
         }
 
@@ -268,6 +270,8 @@ class sfValidatorFile extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     protected function isEmpty($value)
     {

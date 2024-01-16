@@ -31,12 +31,12 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
         if (sfConfig::get('sf_web_debug')) {
             require_once dirname(__FILE__).'/../lib/debug/sfWebDebugPanelDoctrine.class.php';
 
-            $this->dispatcher->connect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
+            $this->dispatcher->connect('debug.web.load_panels', ['sfWebDebugPanelDoctrine', 'listenToAddPanelEvent']);
         }
 
         if (!class_exists('Doctrine_Core')) {
             require_once sfConfig::get('sf_doctrine_dir', realpath(dirname(__FILE__).'/../lib/vendor/doctrine/lib')).'/Doctrine/Core.php';
-            spl_autoload_register(array('Doctrine_Core', 'autoload'));
+            spl_autoload_register(['Doctrine_Core', 'autoload']);
         }
 
         $manager = Doctrine_Manager::getInstance();
@@ -53,7 +53,7 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
         $this->dispatcher->notify(new sfEvent($manager, 'doctrine.configure'));
 
         // make sure the culture is intercepted
-        $this->dispatcher->connect('user.change_culture', array('sfDoctrineRecord', 'listenToChangeCultureEvent'));
+        $this->dispatcher->connect('user.change_culture', ['sfDoctrineRecord', 'listenToChangeCultureEvent']);
     }
 
     /**
@@ -63,14 +63,14 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
      */
     public function getModelBuilderOptions()
     {
-        $options = array(
+        $options = [
             'generateBaseClasses' => true,
             'generateTableClasses' => true,
             'packagesPrefix' => 'Plugin',
             'suffix' => '.class.php',
             'baseClassesDirectory' => 'base',
             'baseClassName' => 'sfDoctrineRecord',
-        );
+        ];
 
         // filter options through the dispatcher
         return $this->dispatcher
@@ -86,13 +86,13 @@ class sfDoctrinePluginConfiguration extends sfPluginConfiguration
      */
     public function getCliConfig()
     {
-        $config = array(
-            'data_fixtures_path' => array_merge(array(sfConfig::get('sf_data_dir').'/fixtures'), $this->configuration->getPluginSubPaths('/data/fixtures')),
+        $config = [
+            'data_fixtures_path' => array_merge([sfConfig::get('sf_data_dir').'/fixtures'], $this->configuration->getPluginSubPaths('/data/fixtures')),
             'models_path' => sfConfig::get('sf_lib_dir').'/model/doctrine',
             'migrations_path' => sfConfig::get('sf_lib_dir').'/migration/doctrine',
             'sql_path' => sfConfig::get('sf_data_dir').'/sql',
             'yaml_schema_path' => sfConfig::get('sf_config_dir').'/doctrine',
-        );
+        ];
 
         // filter config through the dispatcher
         return $this->dispatcher->filter(new sfEvent($this, 'doctrine.filter_cli_config'), $config)->getReturnValue();

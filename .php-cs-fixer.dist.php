@@ -5,7 +5,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/lib')
     ->in(__DIR__.'/data/bin')
     ->in(__DIR__.'/test')
-    ->append(array(__FILE__))
+    ->append([__FILE__])
     // Exclude PHP classes templates/generators, which are not valid PHP files
     ->exclude('task/generator/skeleton/')
     ->exclude('plugins/sfDoctrinePlugin/data/generator/')
@@ -15,13 +15,13 @@ $finder = PhpCsFixer\Finder::create()
 ;
 
 $config = new PhpCsFixer\Config();
-$config->setRules(array(
+$config->setRules([
     '@PhpCsFixer' => true,
     '@Symfony' => true,
-    'array_syntax' => array(
-        'syntax' => 'long',
-    ),
-))
+    'array_syntax' => [
+        'syntax' => 'short',
+    ],
+])
     ->setCacheFile('.php-cs-fixer.cache')
     ->setFinder($finder)
 ;

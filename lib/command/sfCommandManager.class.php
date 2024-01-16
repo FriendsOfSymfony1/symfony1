@@ -21,22 +21,22 @@ class sfCommandManager
     protected $arguments = '';
 
     /** @var string[] */
-    protected $errors = array();
+    protected $errors = [];
 
     /** @var sfCommandOptionSet */
     protected $optionSet;
 
     /** @var sfCommandArgumentSet */
-    protected $argumentSet = array();
+    protected $argumentSet = [];
 
     /** @var array */
-    protected $optionValues = array();
+    protected $optionValues = [];
 
     /** @var array */
-    protected $argumentValues = array();
+    protected $argumentValues = [];
 
     /** @var array */
-    protected $parsedArgumentValues = array();
+    protected $parsedArgumentValues = [];
 
     /**
      * Constructor.
@@ -123,10 +123,10 @@ class sfCommandManager
         $this->arguments = $arguments;
         $this->optionValues = $this->optionSet->getDefaults();
         $this->argumentValues = $this->argumentSet->getDefaults();
-        $this->parsedArgumentValues = array();
-        $this->errors = array();
+        $this->parsedArgumentValues = [];
+        $this->errors = [];
 
-        while (!in_array($argument = array_shift($this->arguments), array('', null))) {
+        while (!in_array($argument = array_shift($this->arguments), ['', null])) {
             if ('--' == $argument) {
                 // stop options parsing
                 $this->parsedArgumentValues = array_merge($this->parsedArgumentValues, $this->arguments);

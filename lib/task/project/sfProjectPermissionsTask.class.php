@@ -18,7 +18,7 @@
 class sfProjectPermissionsTask extends sfBaseTask
 {
     protected $current;
-    protected $failed = array();
+    protected $failed = [];
 
     /**
      * Captures those chmod commands that fail.
@@ -26,6 +26,10 @@ class sfProjectPermissionsTask extends sfBaseTask
      * @see http://www.php.net/set_error_handler
      *
      * @param mixed|null $context
+     * @param mixed      $no
+     * @param mixed      $string
+     * @param mixed      $file
+     * @param mixed      $line
      */
     public function handleError($no, $string, $file, $line, $context = null)
     {
@@ -50,8 +54,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (file_exists(sfConfig::get('sf_upload_dir'))) {
             $this->chmod(sfConfig::get('sf_upload_dir'), 0777);
@@ -61,11 +68,11 @@ EOF;
         $this->chmod(sfConfig::get('sf_log_dir'), 0777);
         $this->chmod(sfConfig::get('sf_root_dir').'/symfony', 0777);
 
-        $dirs = array(
+        $dirs = [
             sfConfig::get('sf_cache_dir'),
             sfConfig::get('sf_log_dir'),
             sfConfig::get('sf_upload_dir'),
-        );
+        ];
 
         $dirFinder = sfFinder::type('dir');
         $fileFinder = sfFinder::type('file');
@@ -78,7 +85,7 @@ EOF;
         // note those files that failed
         if (count($this->failed)) {
             $this->logBlock(array_merge(
-                array('Permissions on the following file(s) could not be fixed:', ''),
+                ['Permissions on the following file(s) could not be fixed:', ''],
                 array_map(function ($f) { return ' - '.sfDebug::shortenFilePath($f); }, $this->failed)
             ), 'ERROR_LARGE');
         }
@@ -100,7 +107,7 @@ EOF;
                 $this->chmod($f, $mode, $umask);
             }
         } else {
-            set_error_handler(array($this, 'handleError'));
+            set_error_handler([$this, 'handleError']);
 
             $this->current = $file;
             @$this->getFilesystem()->chmod($file, $mode, $umask);

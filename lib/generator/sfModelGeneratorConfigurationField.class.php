@@ -178,18 +178,18 @@ class sfModelGeneratorConfigurationField
      */
     public function getRendererArguments()
     {
-        return isset($this->config['renderer_arguments']) ? $this->config['renderer_arguments'] : array();
+        return isset($this->config['renderer_arguments']) ? $this->config['renderer_arguments'] : [];
     }
 
     public static function splitFieldWithFlag($field)
     {
-        if (in_array($flag = $field[0], array('=', '_', '~'))) {
+        if (in_array($flag = $field[0], ['=', '_', '~'])) {
             $field = substr($field, 1);
         } else {
             $flag = null;
         }
 
-        return array($field, $flag);
+        return [$field, $flag];
     }
 
     /**

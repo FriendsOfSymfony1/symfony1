@@ -27,8 +27,10 @@ class sfAPCCache extends sfCache
      * * see sfCache for options available for all drivers
      *
      * @see sfCache
+     *
+     * @param mixed $options
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
@@ -39,6 +41,7 @@ class sfAPCCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $default
+     * @param mixed      $key
      */
     public function get($key, $default = null)
     {
@@ -53,6 +56,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function has($key)
     {
@@ -69,6 +74,8 @@ class sfAPCCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $lifetime
+     * @param mixed      $key
+     * @param mixed      $data
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -81,6 +88,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function remove($key)
     {
@@ -93,6 +102,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $mode
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -107,6 +118,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function getLastModified($key)
     {
@@ -119,6 +132,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function getTimeout($key)
     {
@@ -131,6 +146,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $pattern
      */
     public function removePattern($pattern)
     {

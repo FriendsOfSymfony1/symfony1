@@ -22,7 +22,7 @@ try {
     $t->pass('__construct() throws an RuntimeException if you don\'t pass a token option');
 }
 
-$v = new sfValidatorCSRFToken(array('token' => 'symfony'));
+$v = new sfValidatorCSRFToken(['token' => 'symfony']);
 
 // ->clean()
 $t->diag('->clean()');

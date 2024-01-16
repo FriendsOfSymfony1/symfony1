@@ -21,8 +21,8 @@ class sfServiceDefinition
     protected $file;
     protected $constructor;
     protected $shared = true;
-    protected $arguments = array();
-    protected $calls = array();
+    protected $arguments = [];
+    protected $calls = [];
     protected $configurator;
 
     /**
@@ -31,7 +31,7 @@ class sfServiceDefinition
      * @param string $class     The service class
      * @param array  $arguments An array of arguments to pass to the service constructor
      */
-    public function __construct($class, array $arguments = array())
+    public function __construct($class, array $arguments = [])
     {
         $this->class = $class;
         $this->arguments = $arguments;
@@ -130,9 +130,9 @@ class sfServiceDefinition
      *
      * @return sfServiceDefinition The current instance
      */
-    public function setMethodCalls(array $calls = array())
+    public function setMethodCalls(array $calls = [])
     {
-        $this->calls = array();
+        $this->calls = [];
         foreach ($calls as $call) {
             $this->addMethodCall($call[0], $call[1]);
         }
@@ -148,9 +148,9 @@ class sfServiceDefinition
      *
      * @return sfServiceDefinition The current instance
      */
-    public function addMethodCall($method, array $arguments = array())
+    public function addMethodCall($method, array $arguments = [])
     {
-        $this->calls[] = array($method, $arguments);
+        $this->calls[] = [$method, $arguments];
 
         return $this;
     }

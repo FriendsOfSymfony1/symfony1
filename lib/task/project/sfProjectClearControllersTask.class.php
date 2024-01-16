@@ -56,8 +56,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $finder = sfFinder::type('file')->maxdepth(1)->name('*.php');
         foreach ($finder->in(sfConfig::get('sf_web_dir')) as $controller) {

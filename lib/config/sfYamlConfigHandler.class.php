@@ -30,10 +30,10 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
      */
     public static function parseYamls($configFiles)
     {
-        $config = array();
+        $config = [];
         foreach ($configFiles as $configFile) {
             // the first level is an environment and its value must be an array
-            $values = array();
+            $values = [];
             foreach (static::parseYaml($configFile) as $env => $value) {
                 if (null !== $value) {
                     $values[$env] = $value;
@@ -71,14 +71,14 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
             throw new sfParseException(sprintf('Configuration file "%s" could not be parsed', $configFile));
         }
 
-        return null === $config ? array() : $config;
+        return null === $config ? [] : $config;
     }
 
     public static function flattenConfiguration($config)
     {
         $config['all'] = sfToolkit::arrayDeepMerge(
-            isset($config['default']) && is_array($config['default']) ? $config['default'] : array(),
-            isset($config['all']) && is_array($config['all']) ? $config['all'] : array()
+            isset($config['default']) && is_array($config['default']) ? $config['default'] : [],
+            isset($config['all']) && is_array($config['all']) ? $config['all'] : []
         );
 
         unset($config['default']);
@@ -96,9 +96,9 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
     public static function flattenConfigurationWithEnvironment($config)
     {
         return sfToolkit::arrayDeepMerge(
-            isset($config['default']) && is_array($config['default']) ? $config['default'] : array(),
-            isset($config['all']) && is_array($config['all']) ? $config['all'] : array(),
-            isset($config[sfConfig::get('sf_environment')]) && is_array($config[sfConfig::get('sf_environment')]) ? $config[sfConfig::get('sf_environment')] : array()
+            isset($config['default']) && is_array($config['default']) ? $config['default'] : [],
+            isset($config['all']) && is_array($config['all']) ? $config['all'] : [],
+            isset($config[sfConfig::get('sf_environment')]) && is_array($config[sfConfig::get('sf_environment')]) ? $config[sfConfig::get('sf_environment')] : []
         );
     }
 
@@ -112,7 +112,7 @@ abstract class sfYamlConfigHandler extends sfConfigHandler
      */
     protected function mergeConfigValue($keyName, $category)
     {
-        $values = array();
+        $values = [];
 
         if (isset($this->yamlConfig['all'][$keyName]) && is_array($this->yamlConfig['all'][$keyName])) {
             $values = $this->yamlConfig['all'][$keyName];

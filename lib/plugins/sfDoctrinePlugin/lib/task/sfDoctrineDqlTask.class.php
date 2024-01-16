@@ -26,17 +26,17 @@ class sfDoctrineDqlTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('dql_query', sfCommandArgument::REQUIRED, 'The DQL query to execute', null),
             new sfCommandArgument('parameter', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Query parameter'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
             new sfCommandOption('show-sql', null, sfCommandOption::PARAMETER_NONE, 'Show the sql that would be executed'),
             new sfCommandOption('table', null, sfCommandOption::PARAMETER_NONE, 'Return results in table format'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'dql';
@@ -60,8 +60,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
 
@@ -84,14 +87,14 @@ EOF;
             if (!$options['table']) {
                 $results = $q->fetchArray($arguments['parameter']);
 
-                $this->log(array(
+                $this->log([
                     sprintf('found %s results', number_format($count)),
                     sfYaml::dump($results, 4),
-                ));
+                ]);
             } else {
                 $results = $q->execute($arguments['parameter'], Doctrine_Core::HYDRATE_SCALAR);
 
-                $headers = array();
+                $headers = [];
 
                 // calculate lengths
                 foreach ($results as $result) {
@@ -117,7 +120,7 @@ EOF;
                     $div .= str_repeat('-', $length + 2).'+';
                 }
 
-                $this->log(array($div, $hdr, $div));
+                $this->log([$div, $hdr, $div]);
 
                 // print results
                 foreach ($results as $result) {

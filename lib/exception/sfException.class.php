@@ -129,11 +129,11 @@ class sfException extends Exception
      */
     public static function getTemplatePathForError($format, $debug)
     {
-        $templatePaths = array(
+        $templatePaths = [
             sfConfig::get('sf_app_config_dir').'/error',
             sfConfig::get('sf_config_dir').'/error',
             __DIR__.'/data',
-        );
+        ];
 
         $template = sprintf('%s.%s.php', $debug ? 'exception' : 'error', $format);
         foreach ($templatePaths as $path) {
@@ -164,7 +164,7 @@ class sfException extends Exception
 
             if (sfConfig::get('sf_logging_enabled')) {
                 $priority = $exception instanceof sfError404Exception ? sfLogger::ERR : sfLogger::CRIT;
-                $dispatcher->notify(new sfEvent($exception, 'application.log', array($exception->getMessage(), 'priority' => $priority)));
+                $dispatcher->notify(new sfEvent($exception, 'application.log', [$exception->getMessage(), 'priority' => $priority]));
             }
 
             $event = $dispatcher->notifyUntil(new sfEvent($exception, 'application.throw_exception'));
@@ -267,14 +267,14 @@ class sfException extends Exception
     protected static function getTraces($exception, $format = 'txt')
     {
         $traceData = $exception->getTrace();
-        array_unshift($traceData, array(
+        array_unshift($traceData, [
             'function' => '',
             'file' => null != $exception->getFile() ? $exception->getFile() : null,
             'line' => null != $exception->getLine() ? $exception->getLine() : null,
-            'args' => array(),
-        ));
+            'args' => [],
+        ]);
 
-        $traces = array();
+        $traces = [];
         if ('html' == $format) {
             $lineFormat = 'at <strong>%s%s%s</strong>(%s)<br />in <em>%s</em> line %s <a href="#" onclick="toggle(\'%s\'); return false;">...</a><br /><ul class="code" id="%s" style="display: %s">%s</ul>';
         } else {
@@ -284,7 +284,7 @@ class sfException extends Exception
         for ($i = 0, $count = count($traceData); $i < $count; ++$i) {
             $line = isset($traceData[$i]['line']) ? $traceData[$i]['line'] : null;
             $file = isset($traceData[$i]['file']) ? $traceData[$i]['file'] : null;
-            $args = isset($traceData[$i]['args']) ? $traceData[$i]['args'] : array();
+            $args = isset($traceData[$i]['args']) ? $traceData[$i]['args'] : [];
             $traces[] = sprintf(
                 $lineFormat,
                 isset($traceData[$i]['class']) ? $traceData[$i]['class'] : '',
@@ -333,7 +333,7 @@ class sfException extends Exception
         if (is_readable($file)) {
             $content = preg_split('#<br />#', preg_replace('/^<code>(.*)<\/code>$/s', '$1', highlight_file($file, true)));
 
-            $lines = array();
+            $lines = [];
             for ($i = max($line - 3, 1), $max = min($line + 3, count($content)); $i <= $max; ++$i) {
                 $lines[] = '<li'.($i == $line ? ' class="selected"' : '').'>'.$content[$i - 1].'</li>';
             }
@@ -353,9 +353,9 @@ class sfException extends Exception
      */
     protected static function formatArgs($args, $single = false, $format = 'html')
     {
-        $result = array();
+        $result = [];
 
-        $single and $args = array($args);
+        $single and $args = [$args];
 
         foreach ($args as $key => $value) {
             if (is_object($value)) {
@@ -393,7 +393,7 @@ class sfException extends Exception
         }
 
         if ('html' == $format && $file && $line && $linkFormat = sfConfig::get('sf_file_link_format', ini_get('xdebug.file_link_format'))) {
-            $link = strtr($linkFormat, array('%f' => $file, '%l' => $line));
+            $link = strtr($linkFormat, ['%f' => $file, '%l' => $line]);
             $text = sprintf('<a href="%s" title="Click to open this file" class="file_link">%s</a>', $link, $text);
         }
 

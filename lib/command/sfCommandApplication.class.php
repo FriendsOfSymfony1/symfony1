@@ -39,7 +39,7 @@ abstract class sfCommandApplication
     protected $version = 'UNKNOWN';
 
     /** @var array */
-    protected $tasks = array();
+    protected $tasks = [];
 
     /** @var sfTask */
     protected $currentTask;
@@ -48,7 +48,7 @@ abstract class sfCommandApplication
     protected $dispatcher;
 
     /** @var array */
-    protected $options = array();
+    protected $options = [];
 
     /** @var sfFormatter */
     protected $formatter;
@@ -62,7 +62,7 @@ abstract class sfCommandApplication
      * @param sfFormatter       $formatter  A sfFormatter instance
      * @param array             $options    An array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null, $options = array())
+    public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = null === $formatter ? $this->guessBestFormatter(STDOUT) : $formatter;
@@ -70,17 +70,17 @@ abstract class sfCommandApplication
 
         $this->fixCgi();
 
-        $argumentSet = new sfCommandArgumentSet(array(
+        $argumentSet = new sfCommandArgumentSet([
             new sfCommandArgument('task', sfCommandArgument::REQUIRED, 'The task to execute'),
-        ));
-        $optionSet = new sfCommandOptionSet(array(
+        ]);
+        $optionSet = new sfCommandOptionSet([
             new sfCommandOption('--help', '-H', sfCommandOption::PARAMETER_NONE, 'Display this help message.'),
             new sfCommandOption('--quiet', '-q', sfCommandOption::PARAMETER_NONE, 'Do not log messages to standard output.'),
             new sfCommandOption('--trace', '-t', sfCommandOption::PARAMETER_NONE, 'Turn on invoke/execute tracing, enable full backtrace.'),
             new sfCommandOption('--version', '-V', sfCommandOption::PARAMETER_NONE, 'Display the program version.'),
             new sfCommandOption('--color', '', sfCommandOption::PARAMETER_NONE, 'Forces ANSI color output.'),
             new sfCommandOption('--no-debug', '', sfCommandOption::PARAMETER_NONE, 'Disable debug'),
-        ));
+        ]);
         $this->commandManager = new sfCommandManager($argumentSet, $optionSet);
 
         $this->configure();
@@ -131,7 +131,7 @@ abstract class sfCommandApplication
 
     public function clearTasks()
     {
-        $this->tasks = array();
+        $this->tasks = [];
     }
 
     /**
@@ -183,7 +183,7 @@ abstract class sfCommandApplication
      */
     public function autodiscoverTasks()
     {
-        $tasks = array();
+        $tasks = [];
         foreach (get_declared_classes() as $class) {
             $r = new ReflectionClass($class);
 
@@ -329,11 +329,11 @@ abstract class sfCommandApplication
      */
     public function help()
     {
-        $messages = array(
+        $messages = [
             $this->formatter->format('Usage:', 'COMMENT'),
             sprintf("  %s [options] task_name [arguments]\n", $this->getName()),
             $this->formatter->format('Options:', 'COMMENT'),
-        );
+        ];
 
         foreach ($this->commandManager->getOptionSet()->getOptions() as $option) {
             $messages[] = sprintf(
@@ -356,13 +356,13 @@ abstract class sfCommandApplication
     {
         $title = sprintf('  [%s]  ', get_class($e));
         $len = $this->strlen($title);
-        $lines = array();
+        $lines = [];
         foreach (explode("\n", $e->getMessage()) as $line) {
             $lines[] = sprintf('  %s  ', $line);
             $len = max($this->strlen($line) + 4, $len);
         }
 
-        $messages = array(str_repeat(' ', $len));
+        $messages = [str_repeat(' ', $len)];
 
         if ($this->trace) {
             $messages[] = $title.str_repeat(' ', $len - $this->strlen($title));
@@ -390,12 +390,12 @@ abstract class sfCommandApplication
 
             // exception related properties
             $trace = $e->getTrace();
-            array_unshift($trace, array(
+            array_unshift($trace, [
                 'function' => '',
                 'file' => null != $e->getFile() ? $e->getFile() : 'n/a',
                 'line' => null != $e->getLine() ? $e->getLine() : 'n/a',
-                'args' => array(),
-            ));
+                'args' => [],
+            ]);
 
             for ($i = 0, $count = count($trace); $i < $count; ++$i) {
                 $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
@@ -429,7 +429,7 @@ abstract class sfCommandApplication
             $namespace = substr($name, 0, $pos);
             $name = substr($name, $pos + 1);
 
-            $namespaces = array();
+            $namespaces = [];
             foreach ($this->tasks as $task) {
                 if ($task->getNamespace() && !in_array($task->getNamespace(), $namespaces)) {
                     $namespaces[] = $task->getNamespace();
@@ -450,7 +450,7 @@ abstract class sfCommandApplication
         }
 
         // name
-        $tasks = array();
+        $tasks = [];
         foreach ($this->tasks as $taskName => $task) {
             if ($taskName == $task->getFullName() && $task->getNamespace() == $namespace) {
                 $tasks[] = $task->getName();
@@ -463,7 +463,7 @@ abstract class sfCommandApplication
         }
 
         // aliases
-        $aliases = array();
+        $aliases = [];
         foreach ($this->tasks as $taskName => $task) {
             if ($taskName == $task->getFullName()) {
                 foreach ($task->getAliases() as $alias) {
@@ -594,8 +594,8 @@ abstract class sfCommandApplication
      */
     protected function getAbbreviations($names)
     {
-        $abbrevs = array();
-        $table = array();
+        $abbrevs = [];
+        $table = [];
 
         foreach ($names as $name) {
             for ($len = strlen($name) - 1; $len > 0; --$len) {
@@ -609,7 +609,7 @@ abstract class sfCommandApplication
                 $seen = $table[$abbrev];
                 if (1 == $seen) {
                     // We're the first word so far to have this abbreviation.
-                    $abbrevs[$abbrev] = array($name);
+                    $abbrevs[$abbrev] = [$name];
                 } elseif (2 == $seen) {
                     // We're the second word to have this abbreviation, so we can't use it.
                     // unset($abbrevs[$abbrev]);
@@ -623,7 +623,7 @@ abstract class sfCommandApplication
 
         // Non-abbreviations always get entered, even if they aren't unique
         foreach ($names as $name) {
-            $abbrevs[$name] = array($name);
+            $abbrevs[$name] = [$name];
         }
 
         return $abbrevs;

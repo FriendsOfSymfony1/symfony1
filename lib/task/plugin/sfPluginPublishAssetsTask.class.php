@@ -24,17 +24,17 @@ class sfPluginPublishAssetsTask extends sfPluginBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('plugins', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Publish this plugin\'s assets'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('relative', '', sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
-        ));
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'publish-assets';
@@ -57,8 +57,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $enabledPlugins = $this->configuration->getPlugins();
 
@@ -84,8 +87,9 @@ EOF;
     /**
      * Installs web content for a plugin.
      *
-     * @param string $plugin The plugin name
-     * @param string $dir    The plugin directory
+     * @param string $plugin   The plugin name
+     * @param string $dir      The plugin directory
+     * @param mixed  $relative
      */
     protected function installPluginAssets($plugin, $dir, $relative)
     {

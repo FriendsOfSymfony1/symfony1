@@ -25,7 +25,7 @@ class sfWidgetFormInputFile extends sfWidgetFormInput
      *
      * @see sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

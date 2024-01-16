@@ -19,8 +19,11 @@ class sfValidatorDateTime extends sfValidatorDate
 {
     /**
      * @see sfValidatorDate
+     *
+     * @param mixed $options
+     * @param mixed $messages
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 

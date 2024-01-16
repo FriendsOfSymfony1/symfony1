@@ -24,7 +24,7 @@ class sfDeprecatedSettingsValidation extends sfValidation
 
     public function getExplanation()
     {
-        return array(
+        return [
             '',
             '  The files above use deprecated settings',
             '  that have been removed in symfony 1.4.',
@@ -34,29 +34,29 @@ class sfDeprecatedSettingsValidation extends sfValidation
             '',
             '  http://www.symfony-project.org/tutorial/1_4/en/deprecated',
             '',
-        );
+        ];
     }
 
     public function validate()
     {
-        $settings = array(
+        $settings = [
             'sf_check_symfony_version', 'sf_max_forwards', 'sf_lazy_cache_key', 'sf_strip_comments',
             'sf_lazy_routes_deserialize', 'sf_calendar_web_dir', 'sf_rich_text_js_dir', 'sf_validation_error_prefix',
             'sf_validation_error_suffix', 'sf_validation_error_class', 'sf_validation_error_id_prefix',
             '_is_internal', 'sf_doc_dir',
-        );
+        ];
 
-        $found = array();
-        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in(array(
+        $found = [];
+        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in([
             sfConfig::get('sf_apps_dir'),
             sfConfig::get('sf_lib_dir'),
             sfConfig::get('sf_test_dir'),
             sfConfig::get('sf_plugins_dir'),
-        ));
+        ]);
         foreach ($files as $file) {
             $content = sfToolkit::stripComments(file_get_contents($file));
 
-            $matches = array();
+            $matches = [];
             foreach ($settings as $setting) {
                 if (false !== stripos($content, $setting)) {
                     $matches[] = $setting;

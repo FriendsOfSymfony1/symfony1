@@ -61,8 +61,8 @@ $t->is(sfNumberFormatInfo::getPercentageInstance()->getPattern(), sfNumberFormat
 $t->diag('::getScientificInstance()');
 $t->is(sfNumberFormatInfo::getScientificInstance()->getPattern(), sfNumberFormatInfo::getInstance(null, sfNumberFormatInfo::SCIENTIFIC)->getPattern(), '::getScientificInstance() is a shortcut for ::getInstance() and type sfNumberFormatInfo::SCIENTIFIC');
 
-$tests = array(
-    'fr' => array(
+$tests = [
+    'fr' => [
         'DecimalDigits' => -1,
         'DecimalSeparator' => ',',
         'GroupSeparator' => ' ',
@@ -74,8 +74,8 @@ $tests = array(
         'NaNSymbol' => 'NaN',
         'PercentSymbol' => '%',
         'PerMilleSymbol' => '‰',
-    ),
-    'en' => array(
+    ],
+    'en' => [
         'DecimalDigits' => -1,
         'DecimalSeparator' => '.',
         'GroupSeparator' => ',',
@@ -87,8 +87,8 @@ $tests = array(
         'NaNSymbol' => 'NaN',
         'PercentSymbol' => '%',
         'PerMilleSymbol' => '‰',
-    ),
-);
+    ],
+];
 
 foreach ($tests as $culture => $fixtures) {
     $n = sfNumberFormatInfo::getInstance($culture);
@@ -100,11 +100,11 @@ foreach ($tests as $culture => $fixtures) {
 }
 
 // setters/getters
-foreach (array(
+foreach ([
     'DecimalDigits', 'DecimalSeparator', 'GroupSeparator',
     'CurrencySymbol', 'NegativeInfinitySymbol', 'PositiveInfinitySymbol',
     'NegativeSign', 'PositiveSign', 'NaNSymbol', 'PercentSymbol', 'PerMilleSymbol',
-) as $method) {
+] as $method) {
     $t->diag(sprintf('->get%s() ->set%s()', $method, $method));
     $n = sfNumberFormatInfo::getInstance();
     $setter = 'set'.$method;
@@ -116,14 +116,14 @@ foreach (array(
     $t->is($n->{$getter}(), 'bar', sprintf('->%s() is equivalent to ->%s = ', $setter, $method));
 }
 
-foreach (array('GroupSizes', 'NegativePattern', 'PositivePattern') as $method) {
+foreach (['GroupSizes', 'NegativePattern', 'PositivePattern'] as $method) {
     $t->diag(sprintf('->get%s() ->set%s()', $method, $method));
     $n = sfNumberFormatInfo::getInstance();
     $setter = 'set'.$method;
     $getter = 'get'.$method;
-    $n->{$setter}(array('foo', 'foo'));
-    $t->is($n->{$getter}(), array('foo', 'foo'), sprintf('->%s() sets the current decimal digits', $setter));
+    $n->{$setter}(['foo', 'foo']);
+    $t->is($n->{$getter}(), ['foo', 'foo'], sprintf('->%s() sets the current decimal digits', $setter));
     $t->is($n->{$method}, $n->{$getter}(), sprintf('->%s() is equivalent to ->%s', $getter, $method));
-    $n->{$method} = array('bar', 'bar');
-    $t->is($n->{$getter}(), array('bar', 'bar'), sprintf('->%s() is equivalent to ->%s = ', $setter, $method));
+    $n->{$method} = ['bar', 'bar'];
+    $t->is($n->{$getter}(), ['bar', 'bar'], sprintf('->%s() is equivalent to ->%s = ', $setter, $method));
 }

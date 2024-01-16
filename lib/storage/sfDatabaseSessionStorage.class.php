@@ -42,13 +42,13 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @see sfSessionStorage
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'db_id_col' => 'sess_id',
             'db_data_col' => 'sess_data',
             'db_time_col' => 'sess_time',
-        ), $options);
+        ], $options);
 
         // disable auto_start
         $options['auto_start'] = false;
@@ -66,12 +66,12 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
 
         // use this object as the session handler
         session_set_save_handler(
-            array($this, 'sessionOpen'),
-            array($this, 'sessionClose'),
-            array($this, 'sessionRead'),
-            array($this, 'sessionWrite'),
-            array($this, 'sessionDestroy'),
-            array($this, 'sessionGC')
+            [$this, 'sessionOpen'],
+            [$this, 'sessionClose'],
+            [$this, 'sessionRead'],
+            [$this, 'sessionWrite'],
+            [$this, 'sessionDestroy'],
+            [$this, 'sessionGC']
         );
 
         // start our session

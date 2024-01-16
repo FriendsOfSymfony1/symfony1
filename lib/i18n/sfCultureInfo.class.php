@@ -88,7 +88,7 @@ class sfCultureInfo
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * The current culture.
@@ -109,7 +109,7 @@ class sfCultureInfo
      *
      * @var array
      */
-    protected $dataFiles = array();
+    protected $dataFiles = [];
 
     /**
      * The current date time format info.
@@ -130,7 +130,7 @@ class sfCultureInfo
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * Initializes a new instance of the sfCultureInfo class based on the
@@ -213,7 +213,7 @@ class sfCultureInfo
      */
     public static function getInstance($culture = 'en')
     {
-        static $instances = array();
+        static $instances = [];
 
         if (!isset($instances[$culture])) {
             $instances[$culture] = new sfCultureInfo($culture);
@@ -373,7 +373,7 @@ class sfCultureInfo
             $elements = $this->findInfo('NumberElements');
             $patterns = $this->findInfo('NumberPatterns');
             $currencies = $this->getCurrencies(null, true);
-            $data = array('NumberElements' => $elements, 'NumberPatterns' => $patterns, 'Currencies' => $currencies);
+            $data = ['NumberElements' => $elements, 'NumberPatterns' => $patterns, 'Currencies' => $currencies];
 
             $this->setNumberFormat(new sfNumberFormatInfo($data));
         }
@@ -423,8 +423,8 @@ class sfCultureInfo
         $dataExt = sfCultureInfo::fileExt();
         $dir = dir($dataDir);
 
-        $neutral = array();
-        $specific = array();
+        $neutral = [];
+        $specific = [];
 
         while (false !== ($entry = $dir->read())) {
             if (is_file($dataDir.$entry) && substr($entry, -4) == $dataExt && $entry != 'root'.$dataExt) {
@@ -523,7 +523,7 @@ class sfCultureInfo
     public function getCountries($countries = null)
     {
         // remove integer keys as they do not represent countries
-        $allCountries = array();
+        $allCountries = [];
         foreach ($this->findInfo('Countries', true) as $key => $value) {
             if (!is_int($key)) {
                 $allCountries[$key] = $value;
@@ -565,7 +565,7 @@ class sfCultureInfo
             $allCurrencies = array_intersect_key($allCurrencies, array_flip($currencies));
         }
 
-        $tmp = array();
+        $tmp = [];
         foreach ($allCurrencies as $key => $value) {
             $allCurrencies[$key] = $value[1];
             $tmp[$key] = $value[0];
@@ -575,7 +575,7 @@ class sfCultureInfo
 
         if ($full) {
             foreach ($allCurrencies as $key => $value) {
-                $allCurrencies[$key] = array($tmp[$key], $value);
+                $allCurrencies[$key] = [$tmp[$key], $value];
             }
         }
 
@@ -642,6 +642,7 @@ class sfCultureInfo
      * sorts the passed array according to the locale of this sfCultureInfo class.
      *
      * @param  array the array to be sorted with "asort" and this locale
+     * @param mixed $array
      */
     public function sortArray(&$array)
     {
@@ -699,7 +700,7 @@ class sfCultureInfo
         $file_parts = explode('_', $culture);
         $current_part = $file_parts[0];
 
-        $files = array($current_part);
+        $files = [$current_part];
 
         for ($i = 1, $max = count($file_parts); $i < $max; ++$i) {
             $current_part .= '_'.$file_parts[$i];
@@ -738,8 +739,8 @@ class sfCultureInfo
      */
     protected function &getData($filename)
     {
-        static $data = array();
-        static $files = array();
+        static $data = [];
+        static $files = [];
 
         if (!in_array($filename, $files)) {
             $data[$filename] = unserialize(file_get_contents($filename));
@@ -767,7 +768,7 @@ class sfCultureInfo
      */
     protected function findInfo($path = '/', $merge = false)
     {
-        $result = array();
+        $result = [];
         foreach ($this->dataFiles as $section) {
             $info = $this->searchArray($this->data[$section], $path);
 
@@ -813,6 +814,9 @@ class sfCultureInfo
      * Adds an array to an already existing array.
      * If an element is already existing in array1 it is not overwritten.
      * If this element is an array this logic will be applied recursively.
+     *
+     * @param mixed $array1
+     * @param mixed $array2
      */
     private function array_add($array1, $array2)
     {

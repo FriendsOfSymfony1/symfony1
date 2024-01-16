@@ -30,7 +30,7 @@ class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         $input = parent::render($name, $value, $attributes, $errors);
 
@@ -41,15 +41,15 @@ class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
         if ($this->getOption('with_delete')) {
             $deleteName = ']' == substr($name, -1) ? substr($name, 0, -1).'_delete]' : $name.'_delete';
 
-            $delete = $this->renderTag('input', array_merge(array('type' => 'checkbox', 'name' => $deleteName), $attributes));
+            $delete = $this->renderTag('input', array_merge(['type' => 'checkbox', 'name' => $deleteName], $attributes));
             $deleteLabel = $this->translate($this->getOption('delete_label'));
-            $deleteLabel = $this->renderContentTag('label', $deleteLabel, array_merge(array('for' => $this->generateId($deleteName))));
+            $deleteLabel = $this->renderContentTag('label', $deleteLabel, array_merge(['for' => $this->generateId($deleteName)]));
         } else {
             $delete = '';
             $deleteLabel = '';
         }
 
-        return strtr($this->getOption('template'), array('%input%' => $input, '%delete%' => $delete, '%delete_label%' => $deleteLabel, '%file%' => $this->getFileAsTag($attributes)));
+        return strtr($this->getOption('template'), ['%input%' => $input, '%delete%' => $delete, '%delete_label%' => $deleteLabel, '%file%' => $this->getFileAsTag($attributes)]);
     }
 
     /**
@@ -78,7 +78,7 @@ class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
      *
      * @see sfWidgetFormInputFile
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -96,7 +96,7 @@ class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
     protected function getFileAsTag($attributes)
     {
         if ($this->getOption('is_image')) {
-            return false !== $this->getOption('file_src') ? $this->renderTag('img', array_merge(array('src' => $this->getOption('file_src')), $attributes)) : '';
+            return false !== $this->getOption('file_src') ? $this->renderTag('img', array_merge(['src' => $this->getOption('file_src')], $attributes)) : '';
         }
 
         return $this->getOption('file_src');

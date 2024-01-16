@@ -25,8 +25,11 @@ class sfViewParameterHolder extends sfParameterHolder
 
     /**
      * Constructor.
+     *
+     * @param mixed $parameters
+     * @param mixed $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $parameters = array(), $options = array())
+    public function __construct(sfEventDispatcher $dispatcher, $parameters = [], $options = [])
     {
         $this->initialize($dispatcher, $parameters, $options);
     }
@@ -38,7 +41,7 @@ class sfViewParameterHolder extends sfParameterHolder
      */
     public function __serialize()
     {
-        return array($this->getAll(), $this->escapingMethod, $this->escaping);
+        return [$this->getAll(), $this->escapingMethod, $this->escaping];
     }
 
     /**
@@ -71,7 +74,7 @@ class sfViewParameterHolder extends sfParameterHolder
      *
      * @throws sfInitializationException if an error occurs while initializing this view parameter holder
      */
-    public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $parameters = [], $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -88,7 +91,7 @@ class sfViewParameterHolder extends sfParameterHolder
      */
     public function isEscaped()
     {
-        return in_array($this->getEscaping(), array('on', 'true', true), true);
+        return in_array($this->getEscaping(), ['on', 'true', true], true);
     }
 
     /**
@@ -102,14 +105,14 @@ class sfViewParameterHolder extends sfParameterHolder
     {
         $event = $this->dispatcher->filter(new sfEvent($this, 'template.filter_parameters'), $this->getAll());
         $parameters = $event->getReturnValue();
-        $attributes = array();
+        $attributes = [];
 
         if ($this->isEscaped()) {
             $attributes['sf_data'] = sfOutputEscaper::escape($this->getEscapingMethod(), $parameters);
             foreach ($attributes['sf_data'] as $key => $value) {
                 $attributes[$key] = $value;
             }
-        } elseif (in_array($this->getEscaping(), array('off', false), true)) {
+        } elseif (in_array($this->getEscaping(), ['off', false], true)) {
             $attributes = $parameters;
             $attributes['sf_data'] = sfOutputEscaper::escape(ESC_RAW, $parameters);
         } else {

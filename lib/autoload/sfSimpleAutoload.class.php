@@ -26,10 +26,10 @@ class sfSimpleAutoload
     protected $cacheFile;
     protected $cacheLoaded = false;
     protected $cacheChanged = false;
-    protected $dirs = array();
-    protected $files = array();
-    protected $classes = array();
-    protected $overriden = array();
+    protected $dirs = [];
+    protected $files = [];
+    protected $classes = [];
+    protected $overriden = [];
 
     protected function __construct($cacheFile = null)
     {
@@ -68,12 +68,12 @@ class sfSimpleAutoload
         }
 
         ini_set('unserialize_callback_func', 'spl_autoload_call');
-        if (false === spl_autoload_register(array(self::getInstance(), 'autoload'))) {
+        if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
             throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
 
         if (self::getInstance()->cacheFile) {
-            register_shutdown_function(array(self::getInstance(), 'saveCache'));
+            register_shutdown_function([self::getInstance(), 'saveCache']);
         }
 
         self::$registered = true;
@@ -84,7 +84,7 @@ class sfSimpleAutoload
      */
     public static function unregister()
     {
-        spl_autoload_unregister(array(self::getInstance(), 'autoload'));
+        spl_autoload_unregister([self::getInstance(), 'autoload']);
         self::$registered = false;
     }
 
@@ -142,7 +142,7 @@ class sfSimpleAutoload
     {
         if ($this->cacheChanged) {
             if (is_writable(dirname($this->cacheFile))) {
-                file_put_contents($this->cacheFile, serialize(array($this->classes, $this->dirs, $this->files)));
+                file_put_contents($this->cacheFile, serialize([$this->classes, $this->dirs, $this->files]));
             }
 
             $this->cacheChanged = false;
@@ -154,7 +154,7 @@ class sfSimpleAutoload
      */
     public function reload()
     {
-        $this->classes = array();
+        $this->classes = [];
         $this->cacheLoaded = false;
 
         foreach ($this->dirs as $dir) {

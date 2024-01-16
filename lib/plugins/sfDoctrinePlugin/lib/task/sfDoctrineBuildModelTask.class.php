@@ -26,10 +26,10 @@ class sfDoctrineBuildModelTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'build-model';
@@ -52,8 +52,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('doctrine', 'generating model classes');
 
@@ -76,15 +79,15 @@ EOF;
 
             // introspect the model without loading the class
             if (preg_match_all('/@property (\w+) \$(\w+)/', $code, $matches, PREG_SET_ORDER)) {
-                $properties = array();
+                $properties = [];
                 foreach ($matches as $match) {
                     $properties[$match[2]] = $match[1];
                 }
 
-                $typePad = max(array_map('strlen', array_merge(array_values($properties), array($model))));
-                $namePad = max(array_map('strlen', array_keys(array_map(array('sfInflector', 'camelize'), $properties))));
-                $setters = array();
-                $getters = array();
+                $typePad = max(array_map('strlen', array_merge(array_values($properties), [$model])));
+                $namePad = max(array_map('strlen', array_keys(array_map(['sfInflector', 'camelize'], $properties))));
+                $setters = [];
+                $getters = [];
 
                 foreach ($properties as $name => $type) {
                     $camelized = sfInflector::camelize($name);
@@ -101,13 +104,13 @@ EOF;
         }
 
         $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
-        $tokens = array(
+        $tokens = [
             '##PACKAGE##' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
             '##SUBPACKAGE##' => 'model',
             '##NAME##' => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
             ' <##EMAIL##>' => '',
             "{\n\n}" => "{\n}\n",
-        );
+        ];
 
         // cleanup new stub classes
         $after = $stubFinder->in($config['models_path']);

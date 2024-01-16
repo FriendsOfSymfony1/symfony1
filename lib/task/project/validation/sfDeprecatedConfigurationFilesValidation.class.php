@@ -24,20 +24,20 @@ class sfDeprecatedConfigurationFilesValidation extends sfValidation
 
     public function getExplanation()
     {
-        return array(
+        return [
             '',
             '  The project uses deprecated configuration files',
             '  that have been removed in symfony 1.4 (mailer.yml, validate/*.yml)',
             '  or for which the format changed (generator.yml)',
             '',
-        );
+        ];
     }
 
     public function validate()
     {
         // mailer.yml
         $files = sfFinder::type('file')->name('mailer.yml')->in($this->getProjectConfigDirectories());
-        $found = array();
+        $found = [];
         foreach ($files as $file) {
             $found[$file] = true;
         }
@@ -52,10 +52,10 @@ class sfDeprecatedConfigurationFilesValidation extends sfValidation
         }
 
         // old generator.yml
-        $files = sfFinder::type('file')->name('generator.yml')->in(array(
+        $files = sfFinder::type('file')->name('generator.yml')->in([
             sfConfig::get('sf_apps_dir'),
             sfConfig::get('sf_plugins_dir'),
-        ));
+        ]);
         foreach ($files as $file) {
             $content = file_get_contents($file);
 

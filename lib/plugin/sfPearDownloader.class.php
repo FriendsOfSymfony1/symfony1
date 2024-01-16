@@ -24,6 +24,11 @@ class sfPearDownloader extends PEAR_Downloader
      *
      * @param mixed|null $callback
      * @param mixed|null $lastmodified
+     * @param mixed      $url
+     * @param mixed      $ui
+     * @param mixed      $save_dir
+     * @param mixed      $accept
+     * @param mixed      $channel
      */
     public function downloadHttp($url, &$ui, $save_dir = '.', $callback = null, $lastmodified = null, $accept = false, $channel = false)
     {

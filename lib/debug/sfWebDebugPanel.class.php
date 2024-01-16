@@ -166,7 +166,7 @@ abstract class sfWebDebugPanel
             // return a link
             return sprintf(
                 '<a href="%s" class="sfWebDebugFileLink" title="%s">%s</a>',
-                htmlspecialchars(strtr($linkFormat, array('%f' => $file, '%l' => $line)), ENT_QUOTES, sfConfig::get('sf_charset')),
+                htmlspecialchars(strtr($linkFormat, ['%f' => $file, '%l' => $line]), ENT_QUOTES, sfConfig::get('sf_charset')),
                 htmlspecialchars($shortFile, ENT_QUOTES, sfConfig::get('sf_charset')),
                 null === $text ? $shortFile : $text
             );

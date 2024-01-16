@@ -113,15 +113,15 @@ class sfLogRotateTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
             new sfCommandArgument('env', sfCommandArgument::REQUIRED, 'The environment name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('history', null, sfCommandOption::PARAMETER_REQUIRED, 'The maximum number of old log files to keep', self::DEF_HISTORY),
             new sfCommandOption('period', null, sfCommandOption::PARAMETER_REQUIRED, 'The period in days', self::DEF_PERIOD),
-        ));
+        ]);
 
         $this->namespace = 'log';
         $this->name = 'rotate';
@@ -141,8 +141,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->rotate($arguments['application'], $arguments['env'], $options['period'], $options['history'], true);
     }

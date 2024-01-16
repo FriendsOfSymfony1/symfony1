@@ -23,7 +23,7 @@ class sfDatabaseManager
 {
     /** @var sfProjectConfiguration */
     protected $configuration;
-    protected $databases = array();
+    protected $databases = [];
 
     /**
      * Class constructor.
@@ -32,12 +32,12 @@ class sfDatabaseManager
      *
      * @param array $options
      */
-    public function __construct(sfProjectConfiguration $configuration, $options = array())
+    public function __construct(sfProjectConfiguration $configuration, $options = [])
     {
         $this->initialize($configuration);
 
         if (!isset($options['auto_shutdown']) || $options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
@@ -64,7 +64,7 @@ class sfDatabaseManager
             $databases = include $this->configuration->getConfigCache()->checkConfig('config/databases.yml');
         } else {
             $configHandler = new sfDatabaseConfigHandler();
-            $databases = $configHandler->evaluate(array($this->configuration->getRootDir().'/config/databases.yml'));
+            $databases = $configHandler->evaluate([$this->configuration->getRootDir().'/config/databases.yml']);
         }
 
         foreach ($databases as $name => $database) {

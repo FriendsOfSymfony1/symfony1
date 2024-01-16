@@ -40,7 +40,7 @@ class sfFileLogger extends sfLogger
      * @throws sfConfigurationException
      * @throws sfFileException
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         if (!isset($options['file'])) {
             throw new sfConfigurationException('You must provide a "file" parameter for this logger.');
@@ -88,6 +88,8 @@ class sfFileLogger extends sfLogger
     }
 
     /**
+     * @param mixed $format
+     *
      * @return false|string
      */
     public static function strftime($format)
@@ -108,13 +110,13 @@ class sfFileLogger extends sfLogger
     protected function doLog($message, $priority)
     {
         flock($this->fp, LOCK_EX);
-        fwrite($this->fp, strtr($this->format, array(
+        fwrite($this->fp, strtr($this->format, [
             '%type%' => $this->type,
             '%message%' => $message,
             '%time%' => self::strftime($this->timeFormat),
             '%priority%' => $this->getPriority($priority),
             '%EOL%' => PHP_EOL,
-        )));
+        ]));
         flock($this->fp, LOCK_UN);
     }
 
@@ -146,12 +148,14 @@ class sfFileLogger extends sfLogger
      *
      * A better solution is to use : IntlDateFormatter, but it will require to load a new php extension, which could break some setup.
      *
+     * @param mixed $strftimeFormat
+     *
      * @return array|string|string[]
      */
     private static function _strftimeFormatToDateFormat($strftimeFormat)
     {
         // Missing %V %C %g %G
-        $search = array(
+        $search = [
             '%a', '%A', '%d', '%e', '%u',
             '%w', '%W', '%b', '%h', '%B',
             '%m', '%y', '%Y', '%D', '%F',
@@ -159,9 +163,9 @@ class sfFileLogger extends sfLogger
             '%I', '%l', '%M', '%p', '%P',
             '%r' /* %I:%M:%S %p */, '%R' /* %H:%M */, '%S', '%T' /* %H:%M:%S */, '%X', '%z', '%Z',
             '%c', '%s', '%j',
-            '%%');
+            '%%'];
 
-        $replace = array(
+        $replace = [
             'D', 'l', 'd', 'j', 'N',
             'w', 'W', 'M', 'M', 'F',
             'm', 'y', 'Y', 'm/d/y', 'Y-m-d',
@@ -169,7 +173,7 @@ class sfFileLogger extends sfLogger
             'h', 'g', 'i', 'A', 'a',
             'h:i:s A', 'H:i', 's', 'H:i:s', 'H:i:s', 'O', 'T',
             'D M j H:i:s Y' /* Tue Feb 5 00:45:10 2009 */, 'U', 'z',
-            '%');
+            '%'];
 
         return str_replace($search, $replace, $strftimeFormat);
     }

@@ -13,12 +13,12 @@ abstract class sfModelGeneratorHelper
 
     public function linkToNew($params)
     {
-        return '<li class="sf_admin_action_new">'.link_to(__($params['label'], array(), 'sf_admin'), '@'.$this->getUrlForAction('new')).'</li>';
+        return '<li class="sf_admin_action_new">'.link_to(__($params['label'], [], 'sf_admin'), '@'.$this->getUrlForAction('new')).'</li>';
     }
 
     public function linkToEdit($object, $params)
     {
-        return '<li class="sf_admin_action_edit">'.link_to(__($params['label'], array(), 'sf_admin'), $this->getUrlForAction('edit'), $object).'</li>';
+        return '<li class="sf_admin_action_edit">'.link_to(__($params['label'], [], 'sf_admin'), $this->getUrlForAction('edit'), $object).'</li>';
     }
 
     /**
@@ -33,17 +33,17 @@ abstract class sfModelGeneratorHelper
             return '';
         }
 
-        return '<li class="sf_admin_action_delete">'.link_to(__($params['label'], array(), 'sf_admin'), $this->getUrlForAction('delete'), $object, array('method' => 'delete', 'confirm' => !empty($params['confirm']) ? __($params['confirm'], array(), 'sf_admin') : $params['confirm'])).'</li>';
+        return '<li class="sf_admin_action_delete">'.link_to(__($params['label'], [], 'sf_admin'), $this->getUrlForAction('delete'), $object, ['method' => 'delete', 'confirm' => !empty($params['confirm']) ? __($params['confirm'], [], 'sf_admin') : $params['confirm']]).'</li>';
     }
 
     public function linkToList($params)
     {
-        return '<li class="sf_admin_action_list">'.link_to(__($params['label'], array(), 'sf_admin'), '@'.$this->getUrlForAction('list')).'</li>';
+        return '<li class="sf_admin_action_list">'.link_to(__($params['label'], [], 'sf_admin'), '@'.$this->getUrlForAction('list')).'</li>';
     }
 
     public function linkToSave($object, $params)
     {
-        return '<li class="sf_admin_action_save"><input type="submit" value="'.__($params['label'], array(), 'sf_admin').'" /></li>';
+        return '<li class="sf_admin_action_save"><input type="submit" value="'.__($params['label'], [], 'sf_admin').'" /></li>';
     }
 
     /**
@@ -58,6 +58,6 @@ abstract class sfModelGeneratorHelper
             return '';
         }
 
-        return '<li class="sf_admin_action_save_and_add"><input type="submit" value="'.__($params['label'], array(), 'sf_admin').'" name="_save_and_add" /></li>';
+        return '<li class="sf_admin_action_save_and_add"><input type="submit" value="'.__($params['label'], [], 'sf_admin').'" name="_save_and_add" /></li>';
     }
 }

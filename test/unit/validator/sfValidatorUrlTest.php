@@ -16,7 +16,7 @@ $v = new sfValidatorUrl();
 
 // ->clean()
 $t->diag('->clean()');
-foreach (array(
+foreach ([
     'http://www.google.com',
     'https://google.com/',
     'https://google.com:80/',
@@ -24,15 +24,15 @@ foreach (array(
     'http://127.0.0.1/',
     'http://127.0.0.1:80/',
     'ftp://google.com/foo.tgz',
-    'ftps://google.com/foo.tgz', ) as $url) {
+    'ftps://google.com/foo.tgz', ] as $url) {
     $t->is($v->clean($url), $url, '->clean() checks that the value is a valid URL');
 }
 
-foreach (array(
+foreach ([
     'google.com',
     'http:/google.com',
     'http://google.com::aa',
-) as $nonUrl) {
+] as $nonUrl) {
     try {
         $v->clean($nonUrl);
         $t->fail('->clean() throws an sfValidatorError if the value is not a valid URL');
@@ -43,7 +43,7 @@ foreach (array(
     }
 }
 
-$v = new sfValidatorUrl(array('protocols' => array('http', 'https')));
+$v = new sfValidatorUrl(['protocols' => ['http', 'https']]);
 
 try {
     $v->clean('ftp://google.com/foo.tgz');

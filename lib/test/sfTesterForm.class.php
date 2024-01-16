@@ -29,7 +29,7 @@ class sfTesterForm extends sfTester
     {
         parent::__construct($browser, $tester);
 
-        $this->browser->addListener('template.filter_parameters', array($this, 'filterTemplateParameters'));
+        $this->browser->addListener('template.filter_parameters', [$this, 'filterTemplateParameters']);
     }
 
     /**

@@ -29,7 +29,7 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if ('[]' != substr($name, -2)) {
             $name .= '[]';
@@ -39,9 +39,9 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
 
         // with groups?
         if (count($choices) && is_array(next($choices))) {
-            $parts = array();
+            $parts = [];
             foreach ($choices as $key => $option) {
-                $parts[] = strtr($this->getOption('template'), array('%group%' => $key, '%options%' => $this->formatChoices($name, $value, $option, $attributes)));
+                $parts[] = strtr($this->getOption('template'), ['%group%' => $key, '%options%' => $this->formatChoices($name, $value, $option, $attributes)]);
             }
 
             return implode("\n", $parts);
@@ -52,12 +52,12 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
 
     public function formatter($widget, $inputs)
     {
-        $rows = array();
+        $rows = [];
         foreach ($inputs as $input) {
             $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
         }
 
-        return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
+        return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), ['class' => $this->getOption('class')]);
     }
 
     /**
@@ -78,36 +78,36 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
      *
      * @see sfWidgetFormChoiceBase
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
         $this->addOption('class', 'radio_list');
         $this->addOption('label_separator', '&nbsp;');
         $this->addOption('separator', "\n");
-        $this->addOption('formatter', array($this, 'formatter'));
+        $this->addOption('formatter', [$this, 'formatter']);
         $this->addOption('template', '%group% %options%');
     }
 
     protected function formatChoices($name, $value, $choices, $attributes)
     {
-        $inputs = array();
+        $inputs = [];
         foreach ($choices as $key => $option) {
-            $baseAttributes = array(
+            $baseAttributes = [
                 'name' => substr($name, 0, -2),
                 'type' => 'radio',
                 'value' => self::escapeOnce($key),
                 'id' => $id = $this->generateId($name, self::escapeOnce($key)),
-            );
+            ];
 
             if ((string) $key == (string) (false === $value ? 0 : $value)) {
                 $baseAttributes['checked'] = 'checked';
             }
 
-            $inputs[$id] = array(
+            $inputs[$id] = [
                 'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
-                'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
-            );
+                'label' => $this->renderContentTag('label', self::escapeOnce($option), ['for' => $id]),
+            ];
         }
 
         return call_user_func($this->getOption('formatter'), $this, $inputs);

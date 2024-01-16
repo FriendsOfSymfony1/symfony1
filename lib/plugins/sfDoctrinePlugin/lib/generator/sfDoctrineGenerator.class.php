@@ -51,7 +51,7 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     public function getManyToManyTables()
     {
-        $relations = array();
+        $relations = [];
         foreach ($this->table->getRelations() as $relation) {
             if (Doctrine_Relation::MANY === $relation->getType() && isset($relation['refTable'])) {
                 $relations[] = $relation;
@@ -119,30 +119,30 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     public function getDefaultFieldsConfiguration()
     {
-        $fields = array();
+        $fields = [];
 
-        $names = array();
+        $names = [];
         foreach ($this->getColumns() as $name => $column) {
             $names[] = $name;
-            $fields[$name] = array_merge(array(
+            $fields[$name] = array_merge([
                 'is_link' => (bool) $column->isPrimaryKey(),
                 'is_real' => true,
                 'is_partial' => false,
                 'is_component' => false,
                 'type' => $this->getType($column),
-            ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+            ], isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : []);
         }
 
         foreach ($this->getManyToManyTables() as $tables) {
             $name = sfInflector::underscore($tables['alias']).'_list';
             $names[] = $name;
-            $fields[$name] = array_merge(array(
+            $fields[$name] = array_merge([
                 'is_link' => false,
                 'is_real' => false,
                 'is_partial' => false,
                 'is_component' => false,
                 'type' => 'Text',
-            ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+            ], isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : []);
         }
 
         if (isset($this->config['fields'])) {
@@ -151,13 +151,13 @@ class sfDoctrineGenerator extends sfModelGenerator
                     continue;
                 }
 
-                $fields[$name] = array_merge(array(
+                $fields[$name] = array_merge([
                     'is_link' => false,
                     'is_real' => false,
                     'is_partial' => false,
                     'is_component' => false,
                     'type' => 'Text',
-                ), is_array($params) ? $params : array());
+                ], is_array($params) ? $params : []);
             }
         }
 
@@ -175,18 +175,18 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     public function getFieldsConfiguration($context)
     {
-        $fields = array();
+        $fields = [];
 
-        $names = array();
+        $names = [];
         foreach ($this->getColumns() as $name => $column) {
             $names[] = $name;
-            $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : array();
+            $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : [];
         }
 
         foreach ($this->getManyToManyTables() as $tables) {
             $name = sfInflector::underscore($tables['alias']).'_list';
             $names[] = $name;
-            $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : array();
+            $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : [];
         }
 
         if (isset($this->config[$context]['fields'])) {
@@ -195,7 +195,7 @@ class sfDoctrineGenerator extends sfModelGenerator
                     continue;
                 }
 
-                $fields[$name] = is_array($params) ? $params : array();
+                $fields[$name] = is_array($params) ? $params : [];
             }
         }
 
@@ -213,7 +213,7 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     public function getAllFieldNames($withM2M = true)
     {
-        $names = array();
+        $names = [];
         foreach ($this->getColumns() as $name => $column) {
             $names[] = $name;
         }
@@ -249,7 +249,7 @@ class sfDoctrineGenerator extends sfModelGenerator
      */
     protected function loadPrimaryKeys()
     {
-        $this->primaryKey = array();
+        $this->primaryKey = [];
         foreach ($this->getColumns() as $name => $column) {
             if ($column->isPrimaryKey()) {
                 $this->primaryKey[] = $name;

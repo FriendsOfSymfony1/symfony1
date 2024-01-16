@@ -33,8 +33,10 @@ class sfFileCache extends sfCache
      * * see sfCache for options available for all drivers
      *
      * @see sfCache
+     *
+     * @param mixed $options
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
@@ -49,6 +51,7 @@ class sfFileCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $default
+     * @param mixed      $key
      */
     public function get($key, $default = null)
     {
@@ -68,6 +71,8 @@ class sfFileCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function has($key)
     {
@@ -80,6 +85,8 @@ class sfFileCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $lifetime
+     * @param mixed      $key
+     * @param mixed      $data
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -92,6 +99,8 @@ class sfFileCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function remove($key)
     {
@@ -100,6 +109,8 @@ class sfFileCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $pattern
      */
     public function removePattern($pattern)
     {
@@ -107,7 +118,7 @@ class sfFileCache extends sfCache
             $pattern = str_replace(sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION;
 
             $regexp = self::patternToRegexp($pattern);
-            $paths = array();
+            $paths = [];
             foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $path) {
                 if (preg_match($regexp, str_replace($this->getOption('cache_dir').DIRECTORY_SEPARATOR, '', $path))) {
                     $paths[] = $path;
@@ -128,6 +139,8 @@ class sfFileCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $mode
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -147,6 +160,8 @@ class sfFileCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function getTimeout($key)
     {
@@ -163,6 +178,8 @@ class sfFileCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function getLastModified($key)
     {

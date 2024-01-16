@@ -24,7 +24,7 @@ class sfDeprecatedMethodsValidation extends sfValidation
 
     public function getExplanation()
     {
-        return array(
+        return [
             '',
             '  The files above use deprecated functions and/or methods',
             '  that have been removed in symfony 1.4.',
@@ -34,13 +34,13 @@ class sfDeprecatedMethodsValidation extends sfValidation
             '',
             '  http://www.symfony-project.org/tutorial/1_4/en/deprecated',
             '',
-        );
+        ];
     }
 
     public function validate()
     {
         return array_merge(
-            $this->doValidate(array(
+            $this->doValidate([
                 'sfToolkit::getTmpDir',
                 'sfToolkit::removeArrayValueForPath',
                 'sfToolkit::hasArrayValueForPath',
@@ -52,30 +52,30 @@ class sfDeprecatedMethodsValidation extends sfValidation
                 'getXDebugStack',
                 'checkSymfonyVersion',
                 'sh',
-            ), array(
+            ], [
                 sfConfig::get('sf_apps_dir'),
                 sfConfig::get('sf_lib_dir'),
                 sfConfig::get('sf_test_dir'),
                 sfConfig::get('sf_plugins_dir'),
-            )),
-            $this->doValidate(array(
+            ]),
+            $this->doValidate([
                 'contains', 'responseContains', 'isRequestParameter', 'isResponseHeader',
                 'isUserCulture', 'isRequestFormat', 'checkResponseElement',
-            ), sfConfig::get('sf_test_dir')),
-            $this->doValidate(array(
+            ], sfConfig::get('sf_test_dir')),
+            $this->doValidate([
                 'getDefaultView', 'handleError', 'validate', 'debugMessage', 'getController()->sendEmail',
-            ), $this->getProjectActionDirectories())
+            ], $this->getProjectActionDirectories())
         );
     }
 
     public function doValidate($methods, $dir)
     {
-        $found = array();
+        $found = [];
         $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in($dir);
         foreach ($files as $file) {
             $content = sfToolkit::stripComments(file_get_contents($file));
 
-            $matches = array();
+            $matches = [];
             foreach ($methods as $method) {
                 if (preg_match('#\b'.preg_quote($method, '#').'\b#', $content)) {
                     $matches[] = $method;

@@ -14,22 +14,31 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
  * @version    SVN: $Id$
+ *
+ * @param mixed $name
+ * @param mixed $routeName
+ * @param mixed $params
+ * @param mixed $options
  */
 
 /**
  * @ignore
  */
-function link_to2($name, $routeName, $params, $options = array())
+function link_to2($name, $routeName, $params, $options = [])
 {
-    $params = array_merge(array('sf_route' => $routeName), is_object($params) ? array('sf_subject' => $params) : $params);
+    $params = array_merge(['sf_route' => $routeName], is_object($params) ? ['sf_subject' => $params] : $params);
 
     return link_to1($name, $params, $options);
 }
 
 /**
  * @ignore
+ *
+ * @param mixed $name
+ * @param mixed $internal_uri
+ * @param mixed $options
  */
-function link_to1($name, $internal_uri, $options = array())
+function link_to1($name, $internal_uri, $options = [])
 {
     $html_options = _parse_attributes($options);
 
@@ -74,16 +83,23 @@ function link_to1($name, $internal_uri, $options = array())
 
 /**
  * @ignore
+ *
+ * @param mixed $routeName
+ * @param mixed $params
+ * @param mixed $absolute
  */
-function url_for2($routeName, $params = array(), $absolute = false)
+function url_for2($routeName, $params = [], $absolute = false)
 {
-    $params = array_merge(array('sf_route' => $routeName), is_object($params) ? array('sf_subject' => $params) : $params);
+    $params = array_merge(['sf_route' => $routeName], is_object($params) ? ['sf_subject' => $params] : $params);
 
     return url_for1($params, $absolute);
 }
 
 /**
  * @ignore
+ *
+ * @param mixed $internal_uri
+ * @param mixed $absolute
  */
 function url_for1($internal_uri, $absolute = false)
 {
@@ -163,7 +179,7 @@ function link_to()
     }
 
     if (!array_key_exists(2, $arguments)) {
-        $arguments[2] = array();
+        $arguments[2] = [];
     }
 
     return call_user_func_array('link_to2', $arguments);
@@ -182,7 +198,7 @@ function url_for_form(sfFormObject $form, $routePrefix)
     return url_for($uri, $form->getObject());
 }
 
-function form_tag_for(sfForm $form, $routePrefix, $attributes = array())
+function form_tag_for(sfForm $form, $routePrefix, $attributes = [])
 {
     return $form->renderFormTag(url_for_form($form, $routePrefix), $attributes);
 }
@@ -221,7 +237,7 @@ function link_to_if()
         list($condition, $name, $params, $options) = array_pad($arguments, 4, null);
     } else {
         list($condition, $name, $routeName, $params, $options) = array_pad($arguments, 5, null);
-        $params = array_merge(array('sf_route' => $routeName), is_object($params) ? array('sf_subject' => $params) : (array) $params);
+        $params = array_merge(['sf_route' => $routeName], is_object($params) ? ['sf_subject' => $params] : (array) $params);
     }
 
     $html_options = _parse_attributes($options);
@@ -330,7 +346,7 @@ function public_path($path, $absolute = false)
  *
  * @see    url_for, link_to
  */
-function button_to($name, $internal_uri, $options = array())
+function button_to($name, $internal_uri, $options = [])
 {
     $html_options = _parse_attributes($options);
     $html_options['value'] = $name;
@@ -343,7 +359,7 @@ function button_to($name, $internal_uri, $options = array())
         unset($html_options['post']);
         $html_options = _convert_options_to_javascript($html_options);
 
-        return form_tag($internal_uri, array('method' => 'post', 'class' => 'button_to')).content_tag('div', tag('input', $html_options)).'</form>';
+        return form_tag($internal_uri, ['method' => 'post', 'class' => 'button_to']).content_tag('div', tag('input', $html_options)).'</form>';
     }
 
     $url = url_for($internal_uri);
@@ -388,7 +404,7 @@ function button_to($name, $internal_uri, $options = array())
  *
  * @return string opening HTML <form> tag with options
  */
-function form_tag($url_for_options = '', $options = array())
+function form_tag($url_for_options = '', $options = [])
 {
     $options = _parse_attributes($options);
 
@@ -403,8 +419,8 @@ function form_tag($url_for_options = '', $options = array())
     $html_options['action'] = url_for($url_for_options);
 
     $html = '';
-    if (!in_array($html_options['method'], array('get', 'post'))) {
-        $html = tag('input', array('type' => 'hidden', 'name' => 'sf_method', 'value' => $html_options['method']));
+    if (!in_array($html_options['method'], ['get', 'post'])) {
+        $html = tag('input', ['type' => 'hidden', 'name' => 'sf_method', 'value' => $html_options['method']]);
         $html_options['method'] = 'post';
     }
 
@@ -442,14 +458,14 @@ function form_tag($url_for_options = '', $options = array())
  *
  * @see    link_to
  */
-function mail_to($email, $name = '', $options = array(), $default_value = array())
+function mail_to($email, $name = '', $options = [], $default_value = [])
 {
     $html_options = _parse_attributes($options);
 
     $html_options = _convert_options_to_javascript($html_options);
 
     $default_tmp = _parse_attributes($default_value);
-    $default = array();
+    $default = [];
     foreach ($default_tmp as $key => $value) {
         $default[] = urlencode($key).'='.urlencode($value);
     }

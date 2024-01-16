@@ -29,15 +29,15 @@ class sfWidgetFormFilterInput extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
-        $values = array_merge(array('text' => '', 'is_empty' => false), is_array($value) ? $value : array());
+        $values = array_merge(['text' => '', 'is_empty' => false], is_array($value) ? $value : []);
 
-        return strtr($this->getOption('template'), array(
-            '%input%' => $this->renderTag('input', array_merge(array('type' => 'text', 'id' => $this->generateId($name), 'name' => $name.'[text]', 'value' => $values['text']), $attributes)),
-            '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderTag('input', array('type' => 'checkbox', 'name' => $name.'[is_empty]', 'checked' => $values['is_empty'] ? 'checked' : '')) : '',
-            '%empty_label%' => $this->getOption('with_empty') ? $this->renderContentTag('label', $this->translate($this->getOption('empty_label')), array('for' => $this->generateId($name.'[is_empty]'))) : '',
-        ));
+        return strtr($this->getOption('template'), [
+            '%input%' => $this->renderTag('input', array_merge(['type' => 'text', 'id' => $this->generateId($name), 'name' => $name.'[text]', 'value' => $values['text']], $attributes)),
+            '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderTag('input', ['type' => 'checkbox', 'name' => $name.'[is_empty]', 'checked' => $values['is_empty'] ? 'checked' : '']) : '',
+            '%empty_label%' => $this->getOption('with_empty') ? $this->renderContentTag('label', $this->translate($this->getOption('empty_label')), ['for' => $this->generateId($name.'[is_empty]')]) : '',
+        ]);
     }
 
     /**
@@ -55,7 +55,7 @@ class sfWidgetFormFilterInput extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addOption('with_empty', true);
         $this->addOption('empty_label', 'is empty');

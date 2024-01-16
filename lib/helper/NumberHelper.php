@@ -16,6 +16,7 @@
  * @version    SVN: $Id$
  *
  * @param mixed|null $culture
+ * @param mixed      $number
  */
 function format_number($number, $culture = null)
 {

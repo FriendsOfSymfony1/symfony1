@@ -30,7 +30,7 @@ class sfWidgetFormI18nDate extends sfWidgetFormDate
      *
      * @see sfWidgetFormDate
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -72,10 +72,10 @@ class sfWidgetFormI18nDate extends sfWidgetFormDate
             return $this->getOption('format');
         }
 
-        return strtr($dateFormat, array(
+        return strtr($dateFormat, [
             substr($dateFormat, $dayPos, strripos($dateFormat, 'd') - $dayPos + 1) => '%day%',
             substr($dateFormat, $monthPos, strripos($dateFormat, 'm') - $monthPos + 1) => '%month%',
             substr($dateFormat, $yearPos, strripos($dateFormat, 'y') - $yearPos + 1) => '%year%',
-        ));
+        ]);
     }
 }

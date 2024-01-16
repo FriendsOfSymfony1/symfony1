@@ -32,7 +32,7 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
      *
      * @see sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -47,7 +47,7 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $countries = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $countries);
+            $countries = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $countries);
         }
 
         $this->setOption('choices', $countries);

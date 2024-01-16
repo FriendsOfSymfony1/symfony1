@@ -29,9 +29,9 @@ class sfWidgetFormInput extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
-        return $this->renderTag('input', array_merge(array('type' => $this->getOption('type'), 'name' => $name, 'value' => $value), $attributes));
+        return $this->renderTag('input', array_merge(['type' => $this->getOption('type'), 'name' => $name, 'value' => $value], $attributes));
     }
 
     /**
@@ -46,7 +46,7 @@ class sfWidgetFormInput extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addRequiredOption('type');
 

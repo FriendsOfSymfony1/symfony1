@@ -7,6 +7,11 @@ function is_cli()
 
 /**
  * Checks a configuration.
+ *
+ * @param mixed $boolean
+ * @param mixed $message
+ * @param mixed $help
+ * @param mixed $fatal
  */
 function check($boolean, $message, $help = '', $fatal = false)
 {

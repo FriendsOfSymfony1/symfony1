@@ -14,12 +14,12 @@ $t = new lime_test(33);
 
 class MyWidget extends sfWidget
 {
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         return $this->attributesToHtml(array_merge($this->attributes, $attributes));
     }
 
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addOption('foo');
     }
@@ -27,7 +27,7 @@ class MyWidget extends sfWidget
 
 class MyWidgetWithRequired extends MyWidget
 {
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addRequiredOption('foo');
     }
@@ -36,12 +36,12 @@ class MyWidgetWithRequired extends MyWidget
 // __construct()
 $t->diag('__construct()');
 $w = new MyWidget();
-$t->is($w->getAttributes(), array(), '->__construct() can take no argument');
-$w = new MyWidget(array(), array('class' => 'foo'));
-$t->is($w->getAttributes(), array('class' => 'foo'), '->__construct() can take an array of default HTML attributes');
+$t->is($w->getAttributes(), [], '->__construct() can take no argument');
+$w = new MyWidget([], ['class' => 'foo']);
+$t->is($w->getAttributes(), ['class' => 'foo'], '->__construct() can take an array of default HTML attributes');
 
 try {
-    new MyWidget(array('nonexistant' => false));
+    new MyWidget(['nonexistant' => false]);
     $t->fail('__construct() throws an InvalidArgumentException if you pass some non existant options');
     $t->skip();
 } catch (InvalidArgumentException $e) {
@@ -50,8 +50,8 @@ try {
 }
 
 $t->diag('getRequiredOptions');
-$w = new MyWidgetWithRequired(array('foo' => 'bar'));
-$t->is($w->getRequiredOptions(), array('foo'), '->getRequiredOptions() returns an array of required option names');
+$w = new MyWidgetWithRequired(['foo' => 'bar']);
+$t->is($w->getRequiredOptions(), ['foo'], '->getRequiredOptions() returns an array of required option names');
 
 try {
     new MyWidgetWithRequired();
@@ -85,8 +85,8 @@ $w->setOption('foobar', 'bar');
 $t->is($w->getOption('foobar'), 'bar', '->addOption() adds a new option');
 
 $w = new MyWidget();
-$w->setOptions(array('foo' => 'bar'));
-$t->is($w->getOptions(), array('foo' => 'bar'), '->getOptions() returns an array of all options');
+$w->setOptions(['foo' => 'bar']);
+$t->is($w->getOptions(), ['foo' => 'bar'], '->getOptions() returns an array of all options');
 
 $w = new MyWidget();
 
@@ -97,28 +97,28 @@ $t->is($w->getAttribute('foo'), 'bar', '->setAttribute() sets a new default attr
 
 // ->getAttributes()
 $t->diag('->getAttributes()');
-$t->is($w->getAttributes(), array('foo' => 'bar'), '->getAttributes() returns an array of attributes');
+$t->is($w->getAttributes(), ['foo' => 'bar'], '->getAttributes() returns an array of attributes');
 
 // ->setAttributes()
 $t->diag('->setAttributes()');
-$w->setAttributes(array('foo' => 'bar'));
-$t->is($w->getAttributes(), array('foo' => 'bar'), '->setAttributes() sets attributes');
+$w->setAttributes(['foo' => 'bar']);
+$t->is($w->getAttributes(), ['foo' => 'bar'], '->setAttributes() sets attributes');
 
 // ->attributesToHtml()
 $t->diag('->attributesToHtml()');
-$w = new MyWidget(array(), array('foo' => 'bar', 'foobar' => '<strong>été</strong>'));
+$w = new MyWidget([], ['foo' => 'bar', 'foobar' => '<strong>été</strong>']);
 $t->is($w->render('foo', 'bar'), ' foo="bar" foobar="&lt;strong&gt;été&lt;/strong&gt;"', '->attributesToHtml() converts an attribute array to an HTML attribute string');
 
 // ->renderTag()
 $t->diag('->renderTag()');
-$w = new MyWidget(array(), array('foo' => 'bar'));
-$t->is($w->renderTag('input', array('bar' => 'foo')), '<input foo="bar" bar="foo" />', '->renderTag() renders a HTML tag with attributes');
+$w = new MyWidget([], ['foo' => 'bar']);
+$t->is($w->renderTag('input', ['bar' => 'foo']), '<input foo="bar" bar="foo" />', '->renderTag() renders a HTML tag with attributes');
 $t->is($w->renderTag(''), '', '->renderTag() renders an empty string if the tag name is empty');
 
 // ->renderContentTag()
 $t->diag('->renderContentTag()');
-$w = new MyWidget(array(), array('foo' => 'bar'));
-$t->is($w->renderContentTag('textarea', 'content', array('bar' => 'foo')), '<textarea foo="bar" bar="foo">content</textarea>', '->renderContentTag() renders a HTML tag with content and attributes');
+$w = new MyWidget([], ['foo' => 'bar']);
+$t->is($w->renderContentTag('textarea', 'content', ['bar' => 'foo']), '<textarea foo="bar" bar="foo">content</textarea>', '->renderContentTag() renders a HTML tag with content and attributes');
 $t->is($w->renderContentTag(''), '', '->renderContentTag() renders an empty string if the tag name is empty');
 
 // ::escapeOnce()
@@ -151,10 +151,10 @@ $t->diag('::setXhtml() ::isXhtml()');
 $w = new MyWidget();
 $t->is(sfWidget::isXhtml(), true, '::isXhtml() return true if the widget must returns XHTML tags');
 sfWidget::setXhtml(false);
-$t->is($w->renderTag('input', array('value' => 'Test')), '<input value="Test">', '::setXhtml() changes the value of the XHTML tag');
+$t->is($w->renderTag('input', ['value' => 'Test']), '<input value="Test">', '::setXhtml() changes the value of the XHTML tag');
 
 // ->getJavaScripts() ->getStylesheets()
 $t->diag('->getJavaScripts() ->getStylesheets()');
 $w = new MyWidget();
-$t->is($w->getJavaScripts(), array(), '->getJavaScripts() returns an array of stylesheets');
-$t->is($w->getStylesheets(), array(), '->getStylesheets() returns an array of JavaScripts');
+$t->is($w->getJavaScripts(), [], '->getJavaScripts() returns an array of stylesheets');
+$t->is($w->getStylesheets(), [], '->getStylesheets() returns an array of JavaScripts');

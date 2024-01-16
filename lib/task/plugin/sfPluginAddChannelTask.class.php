@@ -24,9 +24,9 @@ class sfPluginAddChannelTask extends sfPluginBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The channel name'),
-        ));
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'add-channel';
@@ -42,8 +42,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('add channel "%s"', $arguments['name']));
 

@@ -17,5 +17,5 @@
  */
 interface sfServiceContainerDumperInterface
 {
-    public function dump(array $options = array());
+    public function dump(array $options = []);
 }

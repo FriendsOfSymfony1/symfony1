@@ -84,7 +84,7 @@ $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED);
 $t->ok(null === $option->getDefault(), '->getDefault() returns null if no default value is configured');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::IS_ARRAY);
-$t->is($option->getDefault(), array(), '->getDefault() returns an empty array if option is an array');
+$t->is($option->getDefault(), [], '->getDefault() returns an empty array if option is an array');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_NONE);
 $t->ok(false === $option->getDefault(), '->getDefault() returns false if the option does not take a parameter');
@@ -98,8 +98,8 @@ $option->setDefault('another');
 $t->is($option->getDefault(), 'another', '->setDefault() changes the default value');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY);
-$option->setDefault(array(1, 2));
-$t->is($option->getDefault(), array(1, 2), '->setDefault() changes the default value');
+$option->setDefault([1, 2]);
+$t->is($option->getDefault(), [1, 2], '->setDefault() changes the default value');
 
 try {
     $option = new sfCommandOption('foo', 'f', sfCommandOption::PARAMETER_NONE);

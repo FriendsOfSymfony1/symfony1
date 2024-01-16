@@ -29,9 +29,9 @@ class sfWidgetFormTextarea extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
-        return $this->renderContentTag('textarea', self::escapeOnce($value), array_merge(array('name' => $name), $attributes));
+        return $this->renderContentTag('textarea', self::escapeOnce($value), array_merge(['name' => $name], $attributes));
     }
 
     /**
@@ -42,7 +42,7 @@ class sfWidgetFormTextarea extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->setAttribute('rows', 4);
         $this->setAttribute('cols', 30);

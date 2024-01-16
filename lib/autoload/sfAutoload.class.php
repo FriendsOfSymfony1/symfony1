@@ -23,8 +23,8 @@ class sfAutoload
     protected static $freshCache = false;
     protected static $instance;
 
-    protected $overriden = array();
-    protected $classes = array();
+    protected $overriden = [];
+    protected $classes = [];
 
     protected function __construct()
     {
@@ -53,7 +53,7 @@ class sfAutoload
     {
         ini_set('unserialize_callback_func', 'spl_autoload_call');
 
-        if (false === spl_autoload_register(array(self::getInstance(), 'autoload'))) {
+        if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
             throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
     }
@@ -63,7 +63,7 @@ class sfAutoload
      */
     public static function unregister()
     {
-        spl_autoload_unregister(array(self::getInstance(), 'autoload'));
+        spl_autoload_unregister([self::getInstance(), 'autoload']);
     }
 
     /**

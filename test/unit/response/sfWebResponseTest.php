@@ -29,9 +29,9 @@ $dispatcher = new sfEventDispatcher();
 
 // ->initialize()
 $t->diag('->initialize()');
-$response = new myWebResponse($dispatcher, array('charset' => 'ISO-8859-1'));
+$response = new myWebResponse($dispatcher, ['charset' => 'ISO-8859-1']);
 $t->is($response->getContentType(), 'text/html; charset=ISO-8859-1', '->initialize() takes a "charset" option');
-$response = new myWebResponse($dispatcher, array('content_type' => 'text/plain'));
+$response = new myWebResponse($dispatcher, ['content_type' => 'text/plain']);
 $t->is($response->getContentType(), 'text/plain; charset=utf-8', '->initialize() takes a "content_type" option');
 
 $response = new myWebResponse($dispatcher);
@@ -84,21 +84,21 @@ $response->clearHttpHeaders();
 $response->setHttpHeader('my-header', 'foo');
 $response->setHttpHeader('my-header', 'bar', false);
 $response->setHttpHeader('another', 'foo');
-$t->is($response->getHttpHeaders(), array('My-Header' => 'foo, bar', 'Another' => 'foo'), '->getHttpHeaders() return all current response http headers');
+$t->is($response->getHttpHeaders(), ['My-Header' => 'foo, bar', 'Another' => 'foo'], '->getHttpHeaders() return all current response http headers');
 
 // ->normalizeHeaderName()
 $t->diag('->normalizeHeaderName()');
-foreach (array(
-    array('header', 'Header'),
-    array('HEADER', 'Header'),
-    array('hEaDeR', 'Header'),
-    array('my-header', 'My-Header'),
-    array('my_header', 'My-Header'),
-    array('MY_HEADER', 'My-Header'),
-    array('my-header_is_very-long', 'My-Header-Is-Very-Long'),
-    array('Content-Type', 'Content-Type'),
-    array('content-type', 'Content-Type'),
-) as $test) {
+foreach ([
+    ['header', 'Header'],
+    ['HEADER', 'Header'],
+    ['hEaDeR', 'Header'],
+    ['my-header', 'My-Header'],
+    ['my_header', 'My-Header'],
+    ['MY_HEADER', 'My-Header'],
+    ['my-header_is_very-long', 'My-Header-Is-Very-Long'],
+    ['Content-Type', 'Content-Type'],
+    ['content-type', 'Content-Type'],
+] as $test) {
     $t->is($response->normalizeHeaderName($test[0]), $test[1], '->normalizeHeaderName() normalizes http header name');
 }
 
@@ -210,9 +210,9 @@ $response->addStylesheet('first', 'first');
 $t->ok(array_key_exists('first', $response->getStylesheets('first')), '->addStylesheet() takes a position as its second argument');
 $response->addStylesheet('last', 'last');
 $t->ok(array_key_exists('last', $response->getStylesheets('last')), '->addStylesheet() takes a position as its second argument');
-$response->addStylesheet('bar', '', array('media' => 'print'));
+$response->addStylesheet('bar', '', ['media' => 'print']);
 $stylesheets = $response->getStylesheets();
-$t->is($stylesheets['bar'], array('media' => 'print'), '->addStylesheet() takes an array of parameters as its third argument');
+$t->is($stylesheets['bar'], ['media' => 'print'], '->addStylesheet() takes an array of parameters as its third argument');
 
 try {
     $response->addStylesheet('last', 'none');
@@ -223,29 +223,29 @@ try {
 
 // ->getStylesheets()
 $t->diag('->getStylesheets()');
-$t->is(array_keys($response->getStylesheets()), array('first', 'test', 'foo', 'bar', 'last'), '->getStylesheets() returns all current registered stylesheets ordered by position');
-$t->is($response->getStylesheets(''), array('test' => array(), 'foo' => array(), 'bar' => array('media' => 'print')), '->getStylesheets() takes a position as its first argument');
-$t->is($response->getStylesheets('first'), array('first' => array()), '->getStylesheets() takes a position as its first argument');
-$t->is($response->getStylesheets('last'), array('last' => array()), '->getStylesheets() takes a position as its first argument');
+$t->is(array_keys($response->getStylesheets()), ['first', 'test', 'foo', 'bar', 'last'], '->getStylesheets() returns all current registered stylesheets ordered by position');
+$t->is($response->getStylesheets(''), ['test' => [], 'foo' => [], 'bar' => ['media' => 'print']], '->getStylesheets() takes a position as its first argument');
+$t->is($response->getStylesheets('first'), ['first' => []], '->getStylesheets() takes a position as its first argument');
+$t->is($response->getStylesheets('last'), ['last' => []], '->getStylesheets() takes a position as its first argument');
 
 // ->removeStylesheet()
 $t->diag('->removeStylesheet()');
 $response->removeStylesheet('foo');
-$t->is(array_keys($response->getStylesheets()), array('first', 'test', 'bar', 'last'), '->removeStylesheet() removes a stylesheet from the response');
+$t->is(array_keys($response->getStylesheets()), ['first', 'test', 'bar', 'last'], '->removeStylesheet() removes a stylesheet from the response');
 $response->removeStylesheet('first');
-$t->is(array_keys($response->getStylesheets()), array('test', 'bar', 'last'), '->removeStylesheet() removes a stylesheet from the response');
+$t->is(array_keys($response->getStylesheets()), ['test', 'bar', 'last'], '->removeStylesheet() removes a stylesheet from the response');
 
 // ->clearStylesheets()
 $t->diag('->clearStylesheets()');
 $response->clearStylesheets();
-$t->is($response->getStylesheets(), array(), '->clearStylesheets() removes all stylesheets from the response');
+$t->is($response->getStylesheets(), [], '->clearStylesheets() removes all stylesheets from the response');
 
 // ->addJavascript()
 $t->diag('->addJavascript()');
 $response = new myWebResponse($dispatcher);
 $response->addJavascript('test');
 $t->ok(array_key_exists('test', $response->getJavascripts()), '->addJavascript() adds a new javascript for the response');
-$response->addJavascript('foo', '', array('raw_name' => true));
+$response->addJavascript('foo', '', ['raw_name' => true]);
 $t->ok(array_key_exists('foo', $response->getJavascripts()), '->addJavascript() adds a new javascript for the response');
 $response->addJavascript('first_js', 'first');
 $t->ok(array_key_exists('first_js', $response->getJavascripts('first')), '->addJavascript() takes a position as its second argument');
@@ -261,27 +261,27 @@ try {
 
 // ->getJavascripts()
 $t->diag('->getJavascripts()');
-$t->is(array_keys($response->getJavascripts()), array('first_js', 'test', 'foo', 'last_js'), '->getJavascripts() returns all current registered javascripts ordered by position');
-$t->is($response->getJavascripts(''), array('test' => array(), 'foo' => array('raw_name' => true)), '->getJavascripts() takes a position as its first argument');
-$t->is($response->getJavascripts('first'), array('first_js' => array()), '->getJavascripts() takes a position as its first argument');
-$t->is($response->getJavascripts('last'), array('last_js' => array()), '->getJavascripts() takes a position as its first argument');
+$t->is(array_keys($response->getJavascripts()), ['first_js', 'test', 'foo', 'last_js'], '->getJavascripts() returns all current registered javascripts ordered by position');
+$t->is($response->getJavascripts(''), ['test' => [], 'foo' => ['raw_name' => true]], '->getJavascripts() takes a position as its first argument');
+$t->is($response->getJavascripts('first'), ['first_js' => []], '->getJavascripts() takes a position as its first argument');
+$t->is($response->getJavascripts('last'), ['last_js' => []], '->getJavascripts() takes a position as its first argument');
 
 // ->removeJavascript()
 $t->diag('->removeJavascript()');
 $response->removeJavascript('test');
-$t->is(array_keys($response->getJavascripts()), array('first_js', 'foo', 'last_js'), '->removeJavascripts() removes a javascript file');
+$t->is(array_keys($response->getJavascripts()), ['first_js', 'foo', 'last_js'], '->removeJavascripts() removes a javascript file');
 $response->removeJavascript('first_js');
-$t->is(array_keys($response->getJavascripts()), array('foo', 'last_js'), '->removeJavascripts() removes a javascript file');
+$t->is(array_keys($response->getJavascripts()), ['foo', 'last_js'], '->removeJavascripts() removes a javascript file');
 
 // ->clearJavascripts()
 $t->diag('->clearJavascripts()');
 $response->clearJavascripts();
-$t->is($response->clearJavascripts(), array(), '->clearJavascripts() removes all javascripts from the response');
+$t->is($response->clearJavascripts(), [], '->clearJavascripts() removes all javascripts from the response');
 
 // ->setCookie() ->getCookies()
 $t->diag('->setCookie() ->getCookies()');
 $response->setCookie('foo', 'bar');
-$t->is($response->getCookies(), array('foo' => array('name' => 'foo', 'value' => 'bar', 'expire' => null, 'path' => '/', 'domain' => '', 'secure' => false, 'httpOnly' => false)), '->setCookie() adds a cookie for the response');
+$t->is($response->getCookies(), ['foo' => ['name' => 'foo', 'value' => 'bar', 'expire' => null, 'path' => '/', 'domain' => '', 'secure' => false, 'httpOnly' => false]], '->setCookie() adds a cookie for the response');
 
 // ->setHeaderOnly() ->getHeaderOnly()
 $t->diag('->setHeaderOnly() ->isHeaderOnly()');

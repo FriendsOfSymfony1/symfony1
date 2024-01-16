@@ -21,10 +21,13 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
 {
     /**
      * @see sfWidget
+     *
+     * @param mixed $options
+     * @param mixed $attributes
      */
-    public function __construct($options = array(), $attributes = array())
+    public function __construct($options = [], $attributes = [])
     {
-        $options['choices'] = array();
+        $options['choices'] = [];
 
         parent::__construct($options, $attributes);
     }
@@ -36,7 +39,7 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
      */
     public function getChoices()
     {
-        $choices = array();
+        $choices = [];
         if (false !== $this->getOption('add_empty')) {
             $choices[''] = true === $this->getOption('add_empty') ? '' : $this->translate($this->getOption('add_empty'));
         }
@@ -45,7 +48,7 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
         $table = Doctrine_Core::getTable($this->getOption('model'));
 
         if (null !== $params = $this->getOption('table_method_params')) {
-            $choices += call_user_func_array(array($table, $tableMethod), (array) $params);
+            $choices += call_user_func_array([$table, $tableMethod], (array) $params);
         } else {
             $choices += $table->{$tableMethod}();
         }
@@ -66,8 +69,11 @@ class sfWidgetFormDoctrineArrayChoice extends sfWidgetFormChoice
      *  * multiple:             true if the select tag must allow multiple selections (false by default)
      *
      * @see sfWidgetFormChoice
+     *
+     * @param mixed $options
+     * @param mixed $attributes
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addRequiredOption('model');
         $this->addRequiredOption('table_method');

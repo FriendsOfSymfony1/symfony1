@@ -24,7 +24,7 @@ class sfDeprecatedHelpersValidation extends sfValidation
 
     public function getExplanation()
     {
-        return array(
+        return [
             '',
             '  The files above use deprecated helpers',
             '  that have been removed in symfony 1.4.',
@@ -34,12 +34,12 @@ class sfDeprecatedHelpersValidation extends sfValidation
             '',
             '  http://www.symfony-project.org/tutorial/1_4/en/deprecated',
             '',
-        );
+        ];
     }
 
     public function validate()
     {
-        $helpers = array(
+        $helpers = [
             'select_day_tag', 'select_month_tag', 'select_year_tag', 'select_date_tag', 'select_second_tag',
             'select_minute_tag', 'select_hour_tag', 'select_ampm_tag', 'select_time_tag', 'select_datetime_tag',
             'select_number_tag', 'select_timezone_tag', 'options_for_select', 'select_tag', 'select_country_tag',
@@ -54,19 +54,19 @@ class sfDeprecatedHelpersValidation extends sfValidation
             'submit_to_remote', 'submit_image_to_remote', 'update_element_function', 'evaluate_remote_response',
             'remote_function', 'observe_field', 'observe_form', 'visual_effect', 'sortable_element',
             'draggable_element', 'drop_receiving_element', 'input_auto_complete_tag', 'input_in_place_editor_tag',
-        );
+        ];
 
-        $found = array();
-        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in(array(
+        $found = [];
+        $files = sfFinder::type('file')->name('*.php')->prune('vendor')->in([
             sfConfig::get('sf_apps_dir'),
             sfConfig::get('sf_lib_dir'),
             sfConfig::get('sf_test_dir'),
             sfConfig::get('sf_plugins_dir'),
-        ));
+        ]);
         foreach ($files as $file) {
             $content = sfToolkit::stripComments(file_get_contents($file));
 
-            $matches = array();
+            $matches = [];
             foreach ($helpers as $helper) {
                 if (preg_match('#\b'.preg_quote($helper, '#').'\b#', $content)) {
                     $matches[] = $helper;

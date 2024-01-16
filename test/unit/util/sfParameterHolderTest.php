@@ -54,11 +54,11 @@ $ph = new sfParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('yourfoo', 'bar');
 
-$t->is($ph->getNames(), array('foo', 'yourfoo'), '->getNames() returns all key names');
+$t->is($ph->getNames(), ['foo', 'yourfoo'], '->getNames() returns all key names');
 
 // ->getAll()
 $t->diag('->getAll()');
-$parameters = array('foo' => 'bar', 'myfoo' => 'bar');
+$parameters = ['foo' => 'bar', 'myfoo' => 'bar'];
 $ph = new sfParameterHolder();
 $ph->add($parameters);
 $t->is($ph->getAll(), $parameters, '->getAll() returns all parameters');
@@ -113,8 +113,8 @@ $t->is($ph->get('foo'), $foo, '->setByRef() sets the value for a key as a refere
 // ->add()
 $t->diag('->add()');
 $foo = 'bar';
-$parameters = array('foo' => $foo, 'bar' => 'bar');
-$myparameters = array('myfoo' => 'bar', 'mybar' => 'bar');
+$parameters = ['foo' => $foo, 'bar' => 'bar'];
+$myparameters = ['myfoo' => 'bar', 'mybar' => 'bar'];
 
 $ph = new sfParameterHolder();
 $ph->add($parameters);
@@ -127,8 +127,8 @@ $t->is($ph->getAll(), $parameters, '->add() adds an array of parameters, not a r
 // ->addByRef()
 $t->diag('->addByRef()');
 $foo = 'bar';
-$parameters = array('foo' => &$foo, 'bar' => 'bar');
-$myparameters = array('myfoo' => 'bar', 'mybar' => 'bar');
+$parameters = ['foo' => &$foo, 'bar' => 'bar'];
+$myparameters = ['myfoo' => 'bar', 'mybar' => 'bar'];
 
 $ph = new sfParameterHolder();
 $ph->addByRef($parameters);

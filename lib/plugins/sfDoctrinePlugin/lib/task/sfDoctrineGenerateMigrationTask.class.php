@@ -26,15 +26,15 @@ class sfDoctrineGenerateMigrationTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The name of the migration'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
             new sfCommandOption('editor-cmd', null, sfCommandOption::PARAMETER_REQUIRED, 'Open script with this command upon creation'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-migration';
@@ -54,8 +54,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
@@ -66,18 +69,18 @@ EOF;
             $this->getFilesystem()->mkdirs($config['migrations_path']);
         }
 
-        $this->callDoctrineCli('generate-migration', array('name' => $arguments['name']));
+        $this->callDoctrineCli('generate-migration', ['name' => $arguments['name']]);
 
         $finder = sfFinder::type('file')->sort_by_name()->name('*.php');
         if ($files = $finder->in($config['migrations_path'])) {
             $file = array_pop($files);
 
             $contents = file_get_contents($file);
-            $contents = strtr(sfToolkit::stripComments($contents), array(
+            $contents = strtr(sfToolkit::stripComments($contents), [
                 "{\n\n" => "{\n",
                 "\n}" => "\n}\n",
                 '    ' => '  ',
-            ));
+            ]);
             file_put_contents($file, $contents);
 
             if (isset($options['editor-cmd'])) {

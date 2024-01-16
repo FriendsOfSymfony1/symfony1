@@ -36,7 +36,7 @@ abstract class sfDatabase
      *
      * @param array $parameters An associative array of initialization parameters
      */
-    public function __construct($parameters = array())
+    public function __construct($parameters = [])
     {
         $this->initialize($parameters);
     }
@@ -48,7 +48,7 @@ abstract class sfDatabase
      *
      * @throws sfInitializationException If an error occurs while initializing this sfDatabase object
      */
-    public function initialize($parameters = array())
+    public function initialize($parameters = [])
     {
         $this->parameterHolder = new sfParameterHolder();
         $this->parameterHolder->add($parameters);

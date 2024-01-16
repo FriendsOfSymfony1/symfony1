@@ -61,8 +61,8 @@ try {
 }
 $categories = $v->getOption('mime_categories');
 $t->is($v->getMimeTypesFromCategory('web_images'), $categories['web_images'], '->getMimeTypesFromCategory() returns an array of mime types for a given category');
-$v->setOption('mime_categories', array_merge($v->getOption('mime_categories'), array('text' => array('text/plain'))));
-$t->is($v->getMimeTypesFromCategory('text'), array('text/plain'), '->getMimeTypesFromCategory() returns an array of mime types for a given category');
+$v->setOption('mime_categories', array_merge($v->getOption('mime_categories'), ['text' => ['text/plain']]));
+$t->is($v->getMimeTypesFromCategory('text'), ['text/plain'], '->getMimeTypesFromCategory() returns an array of mime types for a given category');
 
 // ->guessFromFileinfo()
 $t->diag('->guessFromFileinfo()');
@@ -103,7 +103,7 @@ $v = new testValidatorFile();
 $t->is($v->getMimeType($tmpDir.'/test.txt', 'image/png'), 'text/plain', '->getMimeType() guesses the type of a given file');
 $t->is($v->getMimeType($tmpDir.'/foo.txt', 'text/plain'), 'text/plain', '->getMimeType() returns the default type if the file type is not guessable');
 
-$v->setOption('mime_type_guessers', array_merge(array(array($v, 'guessFromNothing')), $v->getOption('mime_type_guessers')));
+$v->setOption('mime_type_guessers', array_merge([[$v, 'guessFromNothing']], $v->getOption('mime_type_guessers')));
 $t->is($v->getMimeType($tmpDir.'/test.txt', 'image/png'), 'nothing/plain', '->getMimeType() takes all guessers from the mime_type_guessers option');
 
 // ->clean()
@@ -111,14 +111,14 @@ $t->diag('->clean()');
 $v = new testValidatorFile();
 
 try {
-    $v->clean(array('test' => true));
+    $v->clean(['test' => true]);
     $t->fail('->clean() throws an sfValidatorError if the given value is not well formatted');
     $t->skip('', 1);
 } catch (sfValidatorError $e) {
     $t->pass('->clean() throws an sfValidatorError if the given value is not well formatted');
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
-$f = $v->clean(array('tmp_name' => $tmpDir.'/test.txt'));
+$f = $v->clean(['tmp_name' => $tmpDir.'/test.txt']);
 $t->ok($f instanceof sfValidatedFile, '->clean() returns a sfValidatedFile instance');
 $t->is($f->getOriginalName(), '', '->clean() returns a sfValidatedFile with an empty original name if the name is not passed in the initial value');
 $t->is($f->getSize(), strlen($content), '->clean() returns a sfValidatedFile with a computed file size if the size is not passed in the initial value');
@@ -129,12 +129,12 @@ class myValidatedFile extends sfValidatedFile
 }
 
 $v->setOption('validated_file_class', 'myValidatedFile');
-$f = $v->clean(array('tmp_name' => $tmpDir.'/test.txt'));
+$f = $v->clean(['tmp_name' => $tmpDir.'/test.txt']);
 $t->ok($f instanceof myValidatedFile, '->clean() can take a "validated_file_class" option');
 
-foreach (array(UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE, UPLOAD_ERR_PARTIAL, UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_CANT_WRITE, UPLOAD_ERR_EXTENSION) as $error) {
+foreach ([UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE, UPLOAD_ERR_PARTIAL, UPLOAD_ERR_NO_TMP_DIR, UPLOAD_ERR_CANT_WRITE, UPLOAD_ERR_EXTENSION] as $error) {
     try {
-        $v->clean(array('tmp_name' => $tmpDir.'/test.txt', 'error' => $error));
+        $v->clean(['tmp_name' => $tmpDir.'/test.txt', 'error' => $error]);
         $t->fail('->clean() throws an sfValidatorError if the error code is not UPLOAD_ERR_OK (0)');
         $t->skip('', 1);
     } catch (sfValidatorError $e) {
@@ -148,7 +148,7 @@ $t->diag('max file size');
 $v->setOption('max_size', 4);
 
 try {
-    $v->clean(array('tmp_name' => $tmpDir.'/test.txt'));
+    $v->clean(['tmp_name' => $tmpDir.'/test.txt']);
     $t->skip();
 } catch (sfValidatorError $e) {
     $t->pass('->clean() throws an sfValidatorError if the file size is too large');
@@ -161,7 +161,7 @@ $t->diag('mime types');
 $v->setOption('mime_types', 'web_images');
 
 try {
-    $v->clean(array('tmp_name' => $tmpDir.'/test.txt'));
+    $v->clean(['tmp_name' => $tmpDir.'/test.txt']);
     $t->skip();
 } catch (sfValidatorError $e) {
     $t->pass('->clean() throws an sfValidatorError if the file mime type is not in mime_types option');
@@ -173,7 +173,7 @@ $v->setOption('mime_types', null);
 $v = new testValidatorFile();
 
 try {
-    $v->clean(array('tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'name' => '', 'size' => 0, 'type' => ''));
+    $v->clean(['tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'name' => '', 'size' => 0, 'type' => '']);
     $t->fail('->clean() throws an sfValidatorError if the file is required and no file is uploaded');
     $t->skip();
 } catch (sfValidatorError $e) {
@@ -189,8 +189,8 @@ try {
     $t->pass('->clean() throws an sfValidatorError if the file is required and no file is uploaded');
     $t->is($e->getCode(), 'required', '->clean() throws an error code of required');
 }
-$v = new testValidatorFile(array('required' => false));
-$t->is($v->clean(array('tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'name' => '', 'size' => 0, 'type' => '')), null, '->clean() handles the required option correctly');
+$v = new testValidatorFile(['required' => false]);
+$t->is($v->clean(['tmp_name' => '', 'error' => UPLOAD_ERR_NO_FILE, 'name' => '', 'size' => 0, 'type' => '']), null, '->clean() handles the required option correctly');
 
 // sfValidatedFile
 

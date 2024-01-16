@@ -22,13 +22,13 @@ class sfTestUnitTask extends sfTestBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('name', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The test name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
-        ));
+        ]);
 
         $this->namespace = 'test';
         $this->name = 'unit';
@@ -63,11 +63,14 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (count($arguments['name'])) {
-            $files = array();
+            $files = [];
 
             foreach ($arguments['name'] as $name) {
                 $finder = sfFinder::type('file')->follow_link()->name(basename($name).'Test.php');
@@ -84,12 +87,12 @@ EOF;
         } else {
             require_once __DIR__.'/sfLimeHarness.class.php';
 
-            $h = new sfLimeHarness(array(
+            $h = new sfLimeHarness([
                 'force_colors' => isset($options['color']) && $options['color'],
                 'verbose' => isset($options['trace']) && $options['trace'],
                 'test_path' => sfConfig::get('sf_cache_dir').'/lime',
-            ));
-            $h->addPlugins(array_map(array($this->configuration, 'getPluginConfiguration'), $this->configuration->getPlugins()));
+            ]);
+            $h->addPlugins(array_map([$this->configuration, 'getPluginConfiguration'], $this->configuration->getPlugins()));
             $h->base_dir = sfConfig::get('sf_test_dir').'/unit';
 
             // filter and register unit tests

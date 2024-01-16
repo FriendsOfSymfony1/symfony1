@@ -21,7 +21,7 @@
 class sfActionStack
 {
     /** @var sfActionStackEntry[] */
-    protected $stack = array();
+    protected $stack = [];
 
     /**
      * Adds an entry to the action stack.

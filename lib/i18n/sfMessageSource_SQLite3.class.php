@@ -130,7 +130,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
         $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
         $rs = $db->query($statement);
 
-        $result = array();
+        $result = [];
 
         while ($row = $rs->fetchArray(SQLITE3_NUM)) {
             $source = $row[1];
@@ -298,7 +298,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
         $statement = 'SELECT name FROM catalogue ORDER BY name';
         $rs = $db->query($statement);
 
-        $result = array();
+        $result = [];
         while ($row = $rs->fetchArray(SQLITE3_NUM)) {
             $details = explode('.', $row[0]);
             if (!isset($details[1])) {
@@ -374,11 +374,14 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
 
         $db->close();
 
-        return array($cat_id, $variant, $count);
+        return [$cat_id, $variant, $count];
     }
 
     /**
      * Updates the catalogue last modified time.
+     *
+     * @param mixed $cat_id
+     * @param mixed $variant
      *
      * @return bool true if updated, false otherwise
      */

@@ -52,7 +52,7 @@ abstract class sfGenerator
      *
      * @return string The cache for the configuration file
      */
-    abstract public function generate($params = array());
+    abstract public function generate($params = []);
 
     /**
      * Gets the generator class.
@@ -140,7 +140,7 @@ abstract class sfGenerator
      * @param string $generatedModuleName The name of module name to generate
      * @param array  $files               A list of template files to generate
      */
-    protected function generatePhpFiles($generatedModuleName, $files = array())
+    protected function generatePhpFiles($generatedModuleName, $files = [])
     {
         foreach ($files as $file) {
             $this->getGeneratorManager()->save($generatedModuleName.'/'.$file, $this->evalTemplate($file));
@@ -178,7 +178,7 @@ abstract class sfGenerator
     protected function replacePhpMarks($text)
     {
         // replace [?php and ?]
-        return str_replace(array('[?php', '[?=', '?]'), array('<?php', '<?php echo', '?>'), $text);
+        return str_replace(['[?php', '[?=', '?]'], ['<?php', '<?php echo', '?>'], $text);
     }
 
     /**

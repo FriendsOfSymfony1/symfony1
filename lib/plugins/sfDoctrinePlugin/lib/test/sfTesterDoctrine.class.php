@@ -100,7 +100,7 @@ class sfTesterDoctrine extends sfTester
             throw new LogicConnection('The current context does not include a database manager.');
         }
 
-        $events = array();
+        $events = [];
         foreach ($databaseManager->getNames() as $name) {
             $database = $databaseManager->getDatabase($name);
             if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler()) {

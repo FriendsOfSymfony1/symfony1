@@ -24,7 +24,7 @@ class AuthorTable extends Doctrine_Table
         if (null !== $limit) {
             $q->limit($limit);
         }
-        $choices = array();
+        $choices = [];
 
         foreach ($q->fetchArray() as $author) {
             $choices[$author['id']] = $author['name'];

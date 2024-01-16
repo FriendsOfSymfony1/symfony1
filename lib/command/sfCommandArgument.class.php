@@ -97,7 +97,7 @@ class sfCommandArgument
 
         if ($this->isArray()) {
             if (null === $default) {
-                $default = array();
+                $default = [];
             } elseif (!is_array($default)) {
                 throw new sfCommandException('A default value for an array argument must be an array.');
             }

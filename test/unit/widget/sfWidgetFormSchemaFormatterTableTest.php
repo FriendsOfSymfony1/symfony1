@@ -23,7 +23,7 @@ $output = <<<'EOF'
 </tr>
 
 EOF;
-$t->is($f->formatRow('label', '<input />', array(), 'help', ''), fix_linebreaks($output), '->formatRow() formats a field in a row');
+$t->is($f->formatRow('label', '<input />', [], 'help', ''), fix_linebreaks($output), '->formatRow() formats a field in a row');
 
 // ->formatErrorRow()
 $t->diag('->formatErrorRow()');
@@ -37,4 +37,4 @@ $output = <<<'EOF'
 </td></tr>
 
 EOF;
-$t->is($f->formatErrorRow(array('Global error', 'id' => 'required', array('sub_id' => 'required'))), fix_linebreaks($output), '->formatErrorRow() formats an array of errors in a row');
+$t->is($f->formatErrorRow(['Global error', 'id' => 'required', ['sub_id' => 'required']]), fix_linebreaks($output), '->formatErrorRow() formats an array of errors in a row');

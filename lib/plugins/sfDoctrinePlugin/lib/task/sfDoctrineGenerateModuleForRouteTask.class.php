@@ -24,19 +24,19 @@ class sfDoctrineGenerateModuleForRouteTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
             new sfCommandArgument('route', sfCommandArgument::REQUIRED, 'The route name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('theme', null, sfCommandOption::PARAMETER_REQUIRED, 'The theme name', 'default'),
             new sfCommandOption('non-verbose-templates', null, sfCommandOption::PARAMETER_NONE, 'Generate non verbose templates'),
             new sfCommandOption('singular', null, sfCommandOption::PARAMETER_REQUIRED, 'The singular name', null),
             new sfCommandOption('plural', null, sfCommandOption::PARAMETER_REQUIRED, 'The plural name', null),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
             new sfCommandOption('actions-base-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The base class for the actions', 'sfActions'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-module-for-route';
@@ -54,8 +54,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         // get configuration for the given route
         $config = new sfRoutingConfigHandler();
@@ -81,7 +84,7 @@ EOF;
 
         $this->logSection('app', sprintf('Generating module "%s" for model "%s"', $module, $model));
 
-        return $task->run(array($arguments['application'], $module, $model), array(
+        return $task->run([$arguments['application'], $module, $model], [
             'theme' => $options['theme'],
             'route-prefix' => $routeOptions['name'],
             'with-doctrine-route' => true,
@@ -90,6 +93,6 @@ EOF;
             'singular' => $options['singular'],
             'plural' => $options['plural'],
             'actions-base-class' => $options['actions-base-class'],
-        ));
+        ]);
     }
 }

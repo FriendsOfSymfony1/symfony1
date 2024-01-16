@@ -47,7 +47,7 @@ class sfFilesystem
      *
      * @return bool
      */
-    public function copy($originFile, $targetFile, $options = array())
+    public function copy($originFile, $targetFile, $options = [])
     {
         if (!array_key_exists('override', $options)) {
             $options['override'] = false;
@@ -101,7 +101,7 @@ class sfFilesystem
     public function touch($files)
     {
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         foreach ($files as $file) {
@@ -119,7 +119,7 @@ class sfFilesystem
     public function remove($files)
     {
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         $files = array_reverse($files);
@@ -149,7 +149,7 @@ class sfFilesystem
         umask($umask);
 
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         foreach ($files as $file) {
@@ -239,7 +239,7 @@ class sfFilesystem
      *
      * @throws sfException
      */
-    public function mirror($originDir, $targetDir, $finder, $options = array())
+    public function mirror($originDir, $targetDir, $finder, $options = [])
     {
         foreach ($finder->relative()->in($originDir) as $file) {
             if (is_dir($originDir.DIRECTORY_SEPARATOR.$file)) {
@@ -267,10 +267,10 @@ class sfFilesystem
     {
         $this->logSection('exec ', $cmd);
 
-        $descriptorspec = array(
-            1 => array('pipe', 'w'), // stdout
-            2 => array('pipe', 'w'), // stderr
-        );
+        $descriptorspec = [
+            1 => ['pipe', 'w'], // stdout
+            2 => ['pipe', 'w'], // stderr
+        ];
 
         $process = proc_open($cmd, $descriptorspec, $pipes);
         if (!is_resource($process)) {
@@ -313,7 +313,7 @@ class sfFilesystem
             throw new RuntimeException('Problem executing command.', $return);
         }
 
-        return array($output, $err);
+        return [$output, $err];
     }
 
     /**
@@ -327,7 +327,7 @@ class sfFilesystem
     public function replaceTokens($files, $beginToken, $endToken, $tokens)
     {
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         foreach ($files as $file) {
@@ -357,7 +357,7 @@ class sfFilesystem
 
         $message = $this->formatter ? $this->formatter->formatSection($section, $message, $size) : $section.' '.$message."\n";
 
-        $this->dispatcher->notify(new sfEvent($this, 'command.log', array($message)));
+        $this->dispatcher->notify(new sfEvent($this, 'command.log', [$message]));
     }
 
     /**
@@ -419,7 +419,7 @@ class sfFilesystem
             return '';
         }
 
-        $out = array();
+        $out = [];
         foreach (explode(DIRECTORY_SEPARATOR, $path) as $i => $fold) {
             if ('' == $fold || '.' == $fold) {
                 continue;

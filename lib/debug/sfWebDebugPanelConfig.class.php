@@ -29,7 +29,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
 
     public function getPanelContent()
     {
-        $config = array(
+        $config = [
             'debug' => sfConfig::get('sf_debug') ? 'on' : 'off',
             'xdebug' => extension_loaded('xdebug') ? 'on' : 'off',
             'logging' => sfConfig::get('sf_logging_enabled') ? 'on' : 'off',
@@ -39,7 +39,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
             'eaccelerator' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable') ? 'on' : 'off',
             'apc' => extension_loaded('apc') && ini_get('apc.enabled') ? 'on' : 'off',
             'xcache' => extension_loaded('xcache') && ini_get('xcache.cacher') ? 'on' : 'off',
-        );
+        ];
 
         $html = '<ul id="sfWebDebugConfigSummary">';
         foreach ($config as $key => $value) {

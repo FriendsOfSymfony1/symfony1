@@ -33,7 +33,7 @@ sfConfig::clear();
 
 sfConfig::set('foo', 'bar');
 sfConfig::set('foo1', 'foo1');
-sfConfig::add(array('foo' => 'foo', 'bar' => 'bar'));
+sfConfig::add(['foo' => 'foo', 'bar' => 'bar']);
 
 $t->is(sfConfig::get('foo'), 'foo', '::add() adds an array of config parameters');
 $t->is(sfConfig::get('bar'), 'bar', '::add() adds an array of config parameters');
@@ -45,7 +45,7 @@ sfConfig::clear();
 sfConfig::set('foo', 'bar');
 sfConfig::set('foo1', 'foo1');
 
-$t->is(sfConfig::getAll(), array('foo' => 'bar', 'foo1' => 'foo1'), '::getAll() returns all config parameters');
+$t->is(sfConfig::getAll(), ['foo' => 'bar', 'foo1' => 'foo1'], '::getAll() returns all config parameters');
 
 // ::clear()
 $t->diag('::clear()');

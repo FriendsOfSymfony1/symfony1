@@ -25,6 +25,9 @@ class sfPearRestTest extends sfPearRest
      * @see PEAR_REST::downloadHttp()
      *
      * @param mixed|null $lastmodified
+     * @param mixed      $url
+     * @param mixed      $accept
+     * @param mixed      $channel
      */
     public function downloadHttp($url, $lastmodified = null, $accept = false, $channel = false)
     {
@@ -34,11 +37,11 @@ class sfPearRestTest extends sfPearRest
             return PEAR::raiseError($e->getMessage());
         }
 
-        $headers = array(
+        $headers = [
             'content-type' => preg_match('/\.xml$/', $file) ? 'text/xml' : 'text/plain',
-        );
+        ];
 
-        return array(file_get_contents($file), 0, $headers);
+        return [file_get_contents($file), 0, $headers];
     }
 
     // Disable caching for testing

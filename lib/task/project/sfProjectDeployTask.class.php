@@ -47,15 +47,15 @@ class sfProjectDeployTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('server', sfCommandArgument::REQUIRED, 'The server name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('go', null, sfCommandOption::PARAMETER_NONE, 'Do the deployment'),
             new sfCommandOption('rsync-dir', null, sfCommandOption::PARAMETER_REQUIRED, 'The directory where to look for rsync*.txt files', 'config'),
             new sfCommandOption('rsync-options', null, sfCommandOption::PARAMETER_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress'),
-        ));
+        ]);
 
         $this->namespace = 'project';
         $this->name = 'deploy';
@@ -108,8 +108,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $env = $arguments['server'];
 
@@ -169,7 +172,7 @@ EOF;
         $dryRun = $options['go'] ? '' : '--dry-run';
         $command = "rsync {$dryRun} {$parameters} -e {$ssh} ./ {$user}{$host}:{$dir}";
 
-        $this->getFilesystem()->execute($command, $options['trace'] ? array($this, 'logOutput') : null, array($this, 'logErrors'));
+        $this->getFilesystem()->execute($command, $options['trace'] ? [$this, 'logOutput'] : null, [$this, 'logErrors']);
 
         $this->clearBuffers();
     }

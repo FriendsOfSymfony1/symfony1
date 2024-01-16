@@ -45,7 +45,7 @@ class sfDoctrineDatabase extends sfDatabase
      *
      * @param array $parameters Array of parameters used to initialize the database connection
      */
-    public function initialize($parameters = array())
+    public function initialize($parameters = [])
     {
         parent::initialize($parameters);
 
@@ -58,7 +58,7 @@ class sfDoctrineDatabase extends sfDatabase
 
         // Make sure we pass non-PEAR style DSNs as an array
         if (!strpos($dsn, '://')) {
-            $dsn = array($dsn, $this->getParameter('username'), $this->getParameter('password'));
+            $dsn = [$dsn, $this->getParameter('username'), $this->getParameter('password')];
         }
 
         // Make the Doctrine connection for $dsn and $name
@@ -68,7 +68,7 @@ class sfDoctrineDatabase extends sfDatabase
 
         $this->_doctrineConnection = $manager->openConnection($dsn, $name);
 
-        $attributes = $this->getParameter('attributes', array());
+        $attributes = $this->getParameter('attributes', []);
         foreach ($attributes as $name => $value) {
             if (is_string($name)) {
                 $stringName = $name;
@@ -89,13 +89,13 @@ class sfDoctrineDatabase extends sfDatabase
 
         // Load Query Profiler
         if ($this->getParameter('profiler', sfConfig::get('sf_debug'))) {
-            $this->profiler = new sfDoctrineConnectionProfiler($dispatcher, array(
+            $this->profiler = new sfDoctrineConnectionProfiler($dispatcher, [
                 'logging' => $this->getParameter('logging', sfConfig::get('sf_logging_enabled')),
-            ));
+            ]);
             $this->_doctrineConnection->addListener($this->profiler, 'symfony_profiler');
         }
 
-        $dispatcher->notify(new sfEvent($manager, 'doctrine.configure_connection', array('connection' => $this->_doctrineConnection, 'database' => $this)));
+        $dispatcher->notify(new sfEvent($manager, 'doctrine.configure_connection', ['connection' => $this->_doctrineConnection, 'database' => $this]));
     }
 
     /**

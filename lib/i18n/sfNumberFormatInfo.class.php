@@ -51,21 +51,21 @@ class sfNumberFormatInfo
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * A list of properties that are accessable/writable.
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * The number pattern.
      *
      * @var array
      */
-    protected $pattern = array();
+    protected $pattern = [];
 
     /**
      * Initializes a new writable instance of the sfNumberFormatInfo class
@@ -79,7 +79,7 @@ class sfNumberFormatInfo
      *
      * @see getInstance()
      */
-    public function __construct($data = array(), $type = sfNumberFormatInfo::DECIMAL)
+    public function __construct($data = [], $type = sfNumberFormatInfo::DECIMAL)
     {
         $this->properties = get_class_methods($this);
 
@@ -95,6 +95,8 @@ class sfNumberFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to retrieve the value.
+     *
+     * @param mixed $name
      */
     public function __get($name)
     {
@@ -109,6 +111,9 @@ class sfNumberFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to set the value.
+     *
+     * @param mixed $name
+     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -147,6 +152,8 @@ class sfNumberFormatInfo
 
     /**
      * Gets the default sfNumberFormatInfo that is culture-independent (invariant).
+     *
+     * @param mixed $type
      *
      * @return sfNumberFormatInfo default sfNumberFormatInfo
      */
@@ -329,7 +336,7 @@ class sfNumberFormatInfo
         $group1 = $this->pattern['groupSize1'];
         $group2 = $this->pattern['groupSize2'];
 
-        return array($group1, $group2);
+        return [$group1, $group2];
     }
 
     /**
@@ -358,7 +365,7 @@ class sfNumberFormatInfo
         $prefix = $this->pattern['negPref'];
         $postfix = $this->pattern['negPost'];
 
-        return array($prefix, $postfix);
+        return [$prefix, $postfix];
     }
 
     /**
@@ -386,7 +393,7 @@ class sfNumberFormatInfo
         $prefix = $this->pattern['posPref'];
         $postfix = $this->pattern['posPost'];
 
-        return array($prefix, $postfix);
+        return [$prefix, $postfix];
     }
 
     /**
@@ -404,6 +411,8 @@ class sfNumberFormatInfo
 
     /**
      * Gets the string to use as the currency symbol.
+     *
+     * @param mixed $currency
      *
      * @return string $currency currency symbol
      */
@@ -681,6 +690,6 @@ class sfNumberFormatInfo
         $regexp = '/[#,\.0]+/';
         $result = preg_split($regexp, $pattern);
 
-        return array($result[0], $result[1]);
+        return [$result[0], $result[1]];
     }
 }

@@ -20,9 +20,9 @@ $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfCompileConf
 $t->diag('execute');
 
 sfConfig::set('sf_debug', true);
-$data = $handler->execute(array($dir.'simple.yml'));
+$data = $handler->execute([$dir.'simple.yml']);
 $t->ok(false !== strpos($data, "class sfInflector\n{\n    /**"), '->execute() return complete classe codes');
 
 sfConfig::set('sf_debug', false);
-$data = $handler->execute(array($dir.'simple.yml'));
+$data = $handler->execute([$dir.'simple.yml']);
 $t->ok(false !== strpos($data, "class sfInflector\n{\n    public"), '->execute() return minified classe codes');

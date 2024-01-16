@@ -17,7 +17,7 @@
  */
 class sfAggregateLogger extends sfLogger
 {
-    protected $loggers = array();
+    protected $loggers = [];
 
     /**
      * Initializes this logger.
@@ -29,13 +29,13 @@ class sfAggregateLogger extends sfLogger
      * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
      * @param array             $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
         if (isset($options['loggers'])) {
             if (!is_array($options['loggers'])) {
-                $options['loggers'] = array($options['loggers']);
+                $options['loggers'] = [$options['loggers']];
             }
 
             $this->addLoggers($options['loggers']);
@@ -75,7 +75,7 @@ class sfAggregateLogger extends sfLogger
     {
         $this->loggers[] = $logger;
 
-        $this->dispatcher->disconnect('application.log', array($logger, 'listenToLogEvent'));
+        $this->dispatcher->disconnect('application.log', [$logger, 'listenToLogEvent']);
     }
 
     /**
@@ -89,7 +89,7 @@ class sfAggregateLogger extends sfLogger
             }
         }
 
-        $this->loggers = array();
+        $this->loggers = [];
     }
 
     /**

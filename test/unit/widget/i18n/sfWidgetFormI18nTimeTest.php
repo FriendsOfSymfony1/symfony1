@@ -18,10 +18,10 @@ $dom->validateOnParse = true;
 // ->configure()
 $t->diag('->configure()');
 
-$w = new sfWidgetFormI18nTime(array('culture' => 'fr'));
+$w = new sfWidgetFormI18nTime(['culture' => 'fr']);
 $t->is($w->getOption('format'), '%hour%:%minute%:%second%', '->configure() automatically changes the date format for the given culture');
 $t->is($w->getOption('format_without_seconds'), '%hour%:%minute%', '->configure() automatically changes the date format for the given culture');
 
-$w = new sfWidgetFormI18nTime(array('culture' => 'sr'));
+$w = new sfWidgetFormI18nTime(['culture' => 'sr']);
 $t->is($w->getOption('format'), '%hour%.%minute%.%second%', '->configure() automatically changes the date format for the given culture');
 $t->is($w->getOption('format_without_seconds'), '%hour%.%minute%', '->configure() automatically changes the date format for the given culture');

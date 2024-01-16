@@ -22,14 +22,14 @@ abstract class sfBrowserBase
     protected $hostname;
     protected $remote;
     protected $dom;
-    protected $stack = array();
+    protected $stack = [];
     protected $stackPosition = -1;
-    protected $cookieJar = array();
-    protected $fields = array();
-    protected $files = array();
-    protected $vars = array();
-    protected $defaultServerArray = array();
-    protected $headers = array();
+    protected $cookieJar = [];
+    protected $fields = [];
+    protected $files = [];
+    protected $vars = [];
+    protected $defaultServerArray = [];
+    protected $headers = [];
     protected $currentException;
     protected $domCssSelector;
 
@@ -40,7 +40,7 @@ abstract class sfBrowserBase
      * @param string $remote   Remote address to spook
      * @param array  $options  Options for sfBrowser
      */
-    public function __construct($hostname = null, $remote = null, $options = array())
+    public function __construct($hostname = null, $remote = null, $options = [])
     {
         $this->initialize($hostname, $remote, $options);
     }
@@ -52,7 +52,7 @@ abstract class sfBrowserBase
      * @param string $remote   Remote address to spook
      * @param array  $options  Options for sfBrowser
      */
-    public function initialize($hostname = null, $remote = null, $options = array())
+    public function initialize($hostname = null, $remote = null, $options = [])
     {
         unset($_SERVER['argv'], $_SERVER['argc']);
 
@@ -67,7 +67,7 @@ abstract class sfBrowserBase
         $this->defaultServerArray = $_SERVER;
 
         // register our shutdown function
-        register_shutdown_function(array($this, 'shutdown'));
+        register_shutdown_function([$this, 'shutdown']);
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class sfBrowserBase
      */
     public function setCookie($name, $value, $expire = null, $path = '/', $domain = '', $secure = false, $httpOnly = false)
     {
-        $this->cookieJar[$name] = array(
+        $this->cookieJar[$name] = [
             'name' => $name,
             'value' => $value,
             'expire' => $expire,
@@ -121,7 +121,7 @@ abstract class sfBrowserBase
             'domain' => $domain,
             'secure' => (bool) $secure,
             'httpOnly' => $httpOnly,
-        );
+        ];
 
         return $this;
     }
@@ -147,7 +147,7 @@ abstract class sfBrowserBase
      */
     public function clearCookies()
     {
-        $this->cookieJar = array();
+        $this->cookieJar = [];
 
         return $this;
     }
@@ -177,7 +177,7 @@ abstract class sfBrowserBase
      *
      * @return sfBrowserBase
      */
-    public function get($uri, $parameters = array(), $changeStack = true)
+    public function get($uri, $parameters = [], $changeStack = true)
     {
         return $this->call($uri, 'get', $parameters, $changeStack);
     }
@@ -191,7 +191,7 @@ abstract class sfBrowserBase
      *
      * @return sfBrowserBase
      */
-    public function post($uri, $parameters = array(), $changeStack = true)
+    public function post($uri, $parameters = [], $changeStack = true)
     {
         return $this->call($uri, 'post', $parameters, $changeStack);
     }
@@ -206,7 +206,7 @@ abstract class sfBrowserBase
      *
      * @return sfBrowserBase
      */
-    public function call($uri, $method = 'get', $parameters = array(), $changeStack = true)
+    public function call($uri, $method = 'get', $parameters = [], $changeStack = true)
     {
         // check that the previous call() hasn't returned an uncatched exception
         $this->checkCurrentExceptionIsEmpty();
@@ -216,22 +216,22 @@ abstract class sfBrowserBase
         // add uri to the stack
         if ($changeStack) {
             $this->stack = array_slice($this->stack, 0, $this->stackPosition + 1);
-            $this->stack[] = array(
+            $this->stack[] = [
                 'uri' => $uri,
                 'method' => $method,
                 'parameters' => $parameters,
-            );
+            ];
             $this->stackPosition = count($this->stack) - 1;
         }
 
-        list($path, $queryString) = false !== ($pos = strpos($uri, '?')) ? array(substr($uri, 0, $pos), substr($uri, $pos + 1)) : array($uri, '');
+        list($path, $queryString) = false !== ($pos = strpos($uri, '?')) ? [substr($uri, 0, $pos), substr($uri, $pos + 1)] : [$uri, ''];
         $queryString = html_entity_decode($queryString);
 
         // remove anchor
         $path = preg_replace('/#.*/', '', $path);
 
         // removes all fields from previous request
-        $this->fields = array();
+        $this->fields = [];
 
         // prepare the request object
         $_SERVER = $this->defaultServerArray;
@@ -258,11 +258,11 @@ abstract class sfBrowserBase
         foreach ($this->headers as $header => $value) {
             $_SERVER['HTTP_'.strtoupper(str_replace('-', '_', $header))] = $value;
         }
-        $this->headers = array();
+        $this->headers = [];
 
         // request parameters
-        $_GET = $_POST = array();
-        if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT', 'PATCH'))) {
+        $_GET = $_POST = [];
+        if (in_array(strtoupper($method), ['POST', 'DELETE', 'PUT', 'PATCH'])) {
             if (isset($parameters['_with_csrf']) && $parameters['_with_csrf']) {
                 unset($parameters['_with_csrf']);
                 $form = new BaseForm();
@@ -276,11 +276,11 @@ abstract class sfBrowserBase
         }
 
         // handle input type="file" fields
-        $_FILES = array();
+        $_FILES = [];
         if (count($this->files)) {
             $_FILES = $this->files;
         }
-        $this->files = array();
+        $this->files = [];
 
         parse_str($queryString, $qs);
         if (is_array($qs)) {
@@ -296,7 +296,7 @@ abstract class sfBrowserBase
         }
 
         // restore cookies
-        $_COOKIE = array();
+        $_COOKIE = [];
         foreach ($this->cookieJar as $name => $cookie) {
             $_COOKIE[$name] = $cookie['value'];
         }
@@ -604,7 +604,7 @@ abstract class sfBrowserBase
      *
      * @uses   doClickElement() doClick() doClickCssSelector()
      */
-    public function click($name, $arguments = array(), $options = array())
+    public function click($name, $arguments = [], $options = [])
     {
         if ($name instanceof DOMElement) {
             list($uri, $method, $parameters) = $this->doClickElement($name, $arguments, $options);
@@ -636,7 +636,7 @@ abstract class sfBrowserBase
      *
      * @deprecated call {@link click()} using a CSS selector instead
      */
-    public function doClick($name, $arguments = array(), $options = array())
+    public function doClick($name, $arguments = [], $options = [])
     {
         if (false !== strpos($name, '[') || false !== strpos($name, ']')) {
             throw new InvalidArgumentException(sprintf('The name "%s" is not valid', $name));
@@ -675,7 +675,7 @@ abstract class sfBrowserBase
      *
      * @throws InvalidArgumentException If a matching element cannot be found
      */
-    public function doClickCssSelector($selector, $arguments = array(), $options = array())
+    public function doClickCssSelector($selector, $arguments = [], $options = [])
     {
         $elements = $this->getResponseDomCssSelector()->matchAll($selector)->getNodes();
         $position = isset($options['position']) ? $options['position'] - 1 : 0;
@@ -700,22 +700,22 @@ abstract class sfBrowserBase
      *
      * @uses getResponseDomXpath()
      */
-    public function doClickElement(DOMElement $item, $arguments = array(), $options = array())
+    public function doClickElement(DOMElement $item, $arguments = [], $options = [])
     {
         $method = strtolower(isset($options['method']) ? $options['method'] : 'get');
 
         if ('a' == $item->nodeName) {
-            if (in_array($method, array('post', 'put', 'delete'))) {
+            if (in_array($method, ['post', 'put', 'delete'])) {
                 if (isset($options['_with_csrf']) && $options['_with_csrf']) {
                     $arguments['_with_csrf'] = true;
                 }
 
-                return array($item->getAttribute('href'), $method, $arguments);
+                return [$item->getAttribute('href'), $method, $arguments];
             }
 
-            return array($item->getAttribute('href'), 'get', $arguments);
+            return [$item->getAttribute('href'), 'get', $arguments];
         }
-        if ('button' == $item->nodeName || ('input' == $item->nodeName && in_array($item->getAttribute('type'), array('submit', 'button', 'image')))) {
+        if ('button' == $item->nodeName || ('input' == $item->nodeName && in_array($item->getAttribute('type'), ['submit', 'button', 'image']))) {
             // add the item's value to the arguments if name is provided
             if ($item->getAttribute('name')) {
                 $this->parseArgumentAsArray($item->getAttribute('name'), $item->getAttribute('value'), $arguments);
@@ -737,7 +737,7 @@ abstract class sfBrowserBase
         $method = strtolower(isset($options['method']) ? $options['method'] : ($item->getAttribute('method') ?: 'get'));
 
         // merge form default values and arguments
-        $defaults = array();
+        $defaults = [];
         $arguments = sfToolkit::arrayDeepMerge($this->fields, $arguments);
 
         $xpath = $this->getResponseDomXpath();
@@ -767,8 +767,8 @@ abstract class sfBrowserBase
 
                 unset($arguments[$elementName]);
 
-                $this->parseArgumentAsArray($elementName, array('name' => basename($filename), 'type' => '', 'tmp_name' => $filename, 'error' => $fileError, 'size' => $fileSize), $this->files);
-            } elseif ('input' == $nodeName && !in_array($element->getAttribute('type'), array('submit', 'button', 'image'))) {
+                $this->parseArgumentAsArray($elementName, ['name' => basename($filename), 'type' => '', 'tmp_name' => $filename, 'error' => $fileError, 'size' => $fileSize], $this->files);
+            } elseif ('input' == $nodeName && !in_array($element->getAttribute('type'), ['submit', 'button', 'image'])) {
                 $value = $element->getAttribute('value');
             } elseif ('textarea' == $nodeName) {
                 $value = '';
@@ -778,7 +778,7 @@ abstract class sfBrowserBase
             } elseif ('select' == $nodeName) {
                 if ($multiple = $element->hasAttribute('multiple')) {
                     $elementName = str_replace('[]', '', $elementName);
-                    $value = array();
+                    $value = [];
                 } else {
                     $value = null;
                 }
@@ -809,14 +809,14 @@ abstract class sfBrowserBase
 
         // create request parameters
         $arguments = sfToolkit::arrayDeepMerge($defaults, $arguments);
-        if (in_array($method, array('post', 'put', 'delete'))) {
-            return array($url, $method, $arguments);
+        if (in_array($method, ['post', 'put', 'delete'])) {
+            return [$url, $method, $arguments];
         }
 
         $queryString = is_array($arguments) ? http_build_query($arguments, '', '&') : '';
         $sep = false === strpos($url, '?') ? '?' : '&';
 
-        return array($url.($queryString ? $sep.$queryString : ''), 'get', array());
+        return [$url.($queryString ? $sep.$queryString : ''), 'get', []];
     }
 
     /**
@@ -827,10 +827,10 @@ abstract class sfBrowserBase
     public function restart()
     {
         $this->newSession();
-        $this->cookieJar = array();
-        $this->stack = array();
-        $this->fields = array();
-        $this->vars = array();
+        $this->cookieJar = [];
+        $this->stack = [];
+        $this->fields = [];
+        $this->vars = [];
         $this->dom = null;
         $this->stackPosition = -1;
 
@@ -897,7 +897,7 @@ abstract class sfBrowserBase
             }
             if ($var && '[]' === substr($name, -2)) {
                 if (!is_array($var)) {
-                    $var = array($var);
+                    $var = [$var];
                 }
                 $var[] = $value;
             } else {

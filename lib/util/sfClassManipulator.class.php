@@ -17,7 +17,7 @@
  */
 class sfClassManipulator
 {
-    protected static $signatureTokens = array(
+    protected static $signatureTokens = [
         T_FINAL,
         T_ABSTRACT,
         T_STATIC,
@@ -25,7 +25,7 @@ class sfClassManipulator
         T_PROTECTED,
         T_PRIVATE,
         T_FUNCTION,
-    );
+    ];
 
     protected $code = '';
     protected $file = false;
@@ -95,6 +95,7 @@ class sfClassManipulator
      * Sets the file associated with this instance.
      *
      * @param string A file name
+     * @param mixed $file
      */
     public function setFile($file)
     {
@@ -242,17 +243,17 @@ class sfClassManipulator
                 } elseif ($inSignature && !preg_match('/\s+/', $value)) {
                     // clean up
                     preg_match('/^\s*/', $setup, $match);
-                    $before = implode('', array_map(array($this, 'getTokenValue'), $tokens)).$value.$match[0];
+                    $before = implode('', array_map([$this, 'getTokenValue'], $tokens)).$value.$match[0];
                     $setup = substr($setup, strlen($match[0]));
 
-                    return array($before, $setup);
+                    return [$before, $setup];
                 }
 
                 $setup = $value.$setup;
             }
         }
 
-        return array($before, $setup);
+        return [$before, $setup];
     }
 
     /**

@@ -45,7 +45,7 @@ class sfPearFrontendPlugin extends PEAR_Frontend_CLI
 
     protected function splitLongLine($text)
     {
-        $lines = array();
+        $lines = [];
         foreach (explode("\n", $text) as $longline) {
             foreach (explode("\n", wordwrap($longline, 62)) as $line) {
                 if ($line = trim($line)) {

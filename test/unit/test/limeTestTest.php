@@ -28,14 +28,14 @@ $t->isnt(-2, 2);
 $t->isnt(100, 100.1);
 $t->isnt(0, -1);
 $t->isnt(-2, 'Hello');
-$t->isnt(100, array(100));
+$t->isnt(100, [100]);
 
 $t->comment('E. Both falsy');
 $t->is(0, false);
 $t->is(0, null);
 $t->is('', false);
 $t->is(false, null);
-$t->is(array(), null);
+$t->is([], null);
 
 $t->comment('F. Values that should not be equal');
 $t->isnt(true, 'Hello');

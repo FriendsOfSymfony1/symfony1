@@ -25,7 +25,7 @@ class sfInflector
      */
     public static function camelize($lower_case_and_underscored_word)
     {
-        return strtr(ucwords(strtr((string) $lower_case_and_underscored_word, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
+        return strtr(ucwords(strtr((string) $lower_case_and_underscored_word, ['/' => ':: ', '_' => ' ', '-' => ' '])), [' ' => '']);
     }
 
     /**
@@ -39,8 +39,8 @@ class sfInflector
     {
         $tmp = (string) $camel_cased_word;
         $tmp = str_replace('::', '/', $tmp);
-        $tmp = sfToolkit::pregtr($tmp, array('/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
-            '/([a-z\d])([A-Z])/' => '\\1_\\2'));
+        $tmp = sfToolkit::pregtr($tmp, ['/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
+            '/([a-z\d])([A-Z])/' => '\\1_\\2']);
 
         return strtolower($tmp);
     }

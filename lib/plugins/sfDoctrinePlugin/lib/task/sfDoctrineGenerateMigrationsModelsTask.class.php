@@ -26,10 +26,10 @@ class sfDoctrineGenerateMigrationsModelsTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-migrations-models';
@@ -45,8 +45,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();

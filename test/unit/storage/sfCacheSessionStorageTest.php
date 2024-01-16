@@ -36,7 +36,7 @@ try {
     $t->pass('->__construct() throws an exception when not provided a cache option');
 }
 
-$storage = new sfCacheSessionStorage(array('cache' => array('class' => 'sfFileCache', 'param' => array('cache_dir' => $temp))));
+$storage = new sfCacheSessionStorage(['cache' => ['class' => 'sfFileCache', 'param' => ['cache_dir' => $temp]]]);
 $t->ok($storage instanceof sfStorage, '->__construct() is an instance of sfStorage');
 
 $storage->write('test', 123);

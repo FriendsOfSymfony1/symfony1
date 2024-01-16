@@ -36,8 +36,10 @@ class sfMemcacheCache extends sfCache
      * * see sfCache for options available for all drivers
      *
      * @see sfCache
+     *
+     * @param mixed $options
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
@@ -80,6 +82,7 @@ class sfMemcacheCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $default
+     * @param mixed      $key
      */
     public function get($key, $default = null)
     {
@@ -90,6 +93,8 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function has($key)
     {
@@ -105,6 +110,8 @@ class sfMemcacheCache extends sfCache
      * @see sfCache
      *
      * @param mixed|null $lifetime
+     * @param mixed      $key
+     * @param mixed      $data
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -127,6 +134,8 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function remove($key)
     {
@@ -141,6 +150,8 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $mode
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -151,6 +162,8 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function getLastModified($key)
     {
@@ -163,6 +176,8 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $key
      */
     public function getTimeout($key)
     {
@@ -175,6 +190,8 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $pattern
      *
      * @throws sfCacheException
      */
@@ -194,10 +211,12 @@ class sfMemcacheCache extends sfCache
 
     /**
      * @see sfCache
+     *
+     * @param mixed $keys
      */
     public function getMany($keys)
     {
-        $values = array();
+        $values = [];
         $prefix = $this->getOption('prefix');
         $prefixed_keys = array_map(function ($k) use ($prefix) { return $prefix.$k; }, $keys);
 
@@ -228,7 +247,7 @@ class sfMemcacheCache extends sfCache
      */
     protected function setMetadata($key, $lifetime)
     {
-        $this->memcache->set($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key, array('lastModified' => time(), 'timeout' => time() + $lifetime), false, time() + $lifetime);
+        $this->memcache->set($this->getOption('prefix').'_metadata'.self::SEPARATOR.$key, ['lastModified' => time(), 'timeout' => time() + $lifetime], false, time() + $lifetime);
     }
 
     /**
@@ -241,7 +260,7 @@ class sfMemcacheCache extends sfCache
     {
         $keys = $this->memcache->get($this->getOption('prefix').'_metadata');
         if (!is_array($keys)) {
-            $keys = array();
+            $keys = [];
         }
 
         if ($delete) {
@@ -266,7 +285,7 @@ class sfMemcacheCache extends sfCache
     {
         $keys = $this->memcache->get($this->getOption('prefix').'_metadata');
         if (!is_array($keys)) {
-            return array();
+            return [];
         }
 
         return $keys;

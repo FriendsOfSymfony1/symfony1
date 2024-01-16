@@ -49,7 +49,7 @@ class sfSessionStorage extends sfStorage
     {
         $cookieDefaults = session_get_cookie_params();
 
-        $options = array_merge(array(
+        $options = array_merge([
             'session_name' => 'symfony',
             'session_id' => null,
             'auto_start' => true,
@@ -60,7 +60,7 @@ class sfSessionStorage extends sfStorage
             'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
             'session_cache_limiter' => null,
             'gc_maxlifetime' => 1800,
-        ), $options);
+        ], $options);
 
         // initialize parent
         parent::initialize($options);

@@ -25,8 +25,11 @@ class sfI18nExtractTask extends sfBaseTask
 {
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    public function execute($arguments = array(), $options = array())
+    public function execute($arguments = [], $options = [])
     {
         $this->logSection('i18n', sprintf('extracting i18n strings for the "%s" application', $arguments['application']));
 
@@ -75,18 +78,18 @@ class sfI18nExtractTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
             new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'The environment', 'dev'),
             new sfCommandOption('display-new', null, sfCommandOption::PARAMETER_NONE, 'Output all new found strings'),
             new sfCommandOption('display-old', null, sfCommandOption::PARAMETER_NONE, 'Output all old strings'),
             new sfCommandOption('auto-save', null, sfCommandOption::PARAMETER_NONE, 'Save the new strings'),
             new sfCommandOption('auto-delete', null, sfCommandOption::PARAMETER_NONE, 'Delete old strings'),
-        ));
+        ]);
 
         $this->namespace = 'i18n';
         $this->name = 'extract';

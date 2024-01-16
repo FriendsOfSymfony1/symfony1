@@ -36,7 +36,7 @@ abstract class sfServiceContainerDumper implements sfServiceContainerDumperInter
      *
      * @return string The representation of the service container
      */
-    public function dump(array $options = array())
+    public function dump(array $options = [])
     {
         throw new LogicException('You must extend this abstract class and implement the dump() method.');
     }

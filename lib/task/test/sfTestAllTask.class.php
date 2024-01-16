@@ -22,11 +22,11 @@ class sfTestAllTask extends sfTestBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('only-failed', 'f', sfCommandOption::PARAMETER_NONE, 'Only run tests that failed last time'),
             new sfCommandOption('full-output', 'o', sfCommandOption::PARAMETER_NONE, 'Display full path for the test'),
             new sfCommandOption('xml', null, sfCommandOption::PARAMETER_REQUIRED, 'The file name for the JUnit compatible XML log file'),
-        ));
+        ]);
 
         $this->namespace = 'test';
         $this->name = 'all';
@@ -72,17 +72,20 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         require_once __DIR__.'/sfLimeHarness.class.php';
 
-        $h = new sfLimeHarness(array(
+        $h = new sfLimeHarness([
             'force_colors' => isset($options['color']) && $options['color'],
             'verbose' => isset($options['trace']) && $options['trace'],
-        ));
+        ]);
         $h->full_output = $options['full-output'] ? true : false;
-        $h->addPlugins(array_map(array($this->configuration, 'getPluginConfiguration'), $this->configuration->getPlugins()));
+        $h->addPlugins(array_map([$this->configuration, 'getPluginConfiguration'], $this->configuration->getPlugins()));
         $h->base_dir = sfConfig::get('sf_test_dir');
 
         $status = false;

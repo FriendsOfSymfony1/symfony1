@@ -29,7 +29,7 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
      *
      * @see sfWidgetFormTime
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -52,10 +52,10 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
             return $this->getOption('format');
         }
 
-        $trans = array(
+        $trans = [
             substr($timeFormat, $hourPos, strripos($timeFormat, 'h') - $hourPos + 1) => '%hour%',
             substr($timeFormat, $minutePos, strripos($timeFormat, 'm') - $minutePos + 1) => '%minute%',
-        );
+        ];
 
         if ($withSeconds) {
             if (false === $secondPos = stripos($timeFormat, 's')) {

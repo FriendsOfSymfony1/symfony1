@@ -45,7 +45,7 @@ class configuredView extends myView
     }
 }
 
-$context = sfContext::getInstance(array('request' => 'sfWebRequest', 'response' => 'sfWebResponse'));
+$context = sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse']);
 
 $view = new myView($context, '', '', '');
 
@@ -57,7 +57,7 @@ $t->is($view->isDecorator(), true, '->setDecorator() sets the decorator status f
 
 // format
 $t->diag('format');
-$context = sfContext::getInstance(array('request' => 'sfWebRequest', 'response' => 'sfWebResponse'), true);
+$context = sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse'], true);
 $context->getRequest()->setFormat('js', 'application/x-javascript');
 $context->getRequest()->setRequestFormat('js');
 configuredView::$isDecorated = true;
@@ -65,7 +65,7 @@ $view = new configuredView($context, '', '', '');
 $t->is($view->isDecorator(), false, '->initialize() uses the format to configure the view');
 $t->is($context->getResponse()->getContentType(), 'application/x-javascript', '->initialize() uses the format to configure the view');
 $t->is($view->getExtension(), '.js.php', '->initialize() uses the format to configure the view');
-$context = sfContext::getInstance(array('request' => 'sfWebRequest', 'response' => 'sfWebResponse'), true);
+$context = sfContext::getInstance(['request' => 'sfWebRequest', 'response' => 'sfWebResponse'], true);
 $context->getEventDispatcher()->connect('view.configure_format', 'configure_format');
 
 $context->getRequest()->setRequestFormat('js');

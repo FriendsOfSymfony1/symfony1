@@ -34,7 +34,7 @@ class sfViewConfigHandler extends sfYamlConfigHandler
         $this->yamlConfig = static::getConfiguration($configFiles);
 
         // init our data array
-        $data = array();
+        $data = [];
 
         $data[] = "\$response = \$this->context->getResponse();\n\n";
 
@@ -125,7 +125,7 @@ class sfViewConfigHandler extends sfYamlConfigHandler
         $components = $this->mergeConfigValue('components', $viewName);
         foreach ($components as $name => $component) {
             if (!is_array($component) || count($component) < 1) {
-                $component = array(null, null);
+                $component = [null, null];
             }
 
             $data .= "  \$this->setComponentSlot('{$name}', '{$component[0]}', '{$component[1]}');\n";
@@ -215,7 +215,7 @@ EOF;
      */
     protected function addHtmlHead($viewName = '')
     {
-        $data = array();
+        $data = [];
 
         foreach ($this->mergeConfigValue('http_metas', $viewName) as $httpequiv => $content) {
             $data[] = sprintf("  \$response->addHttpMeta('%s', '%s', false);", $httpequiv, str_replace('\'', '\\\'', $content));
@@ -257,7 +257,7 @@ EOF;
      */
     protected function addEscaping($viewName = '')
     {
-        $data = array();
+        $data = [];
 
         $escaping = $this->getConfigValue('escaping', $viewName);
 
@@ -271,16 +271,16 @@ EOF;
     protected static function mergeConfig($config)
     {
         // merge javascripts and stylesheets
-        $config['all']['stylesheets'] = array_merge(isset($config['default']['stylesheets']) && is_array($config['default']['stylesheets']) ? $config['default']['stylesheets'] : array(), isset($config['all']['stylesheets']) && is_array($config['all']['stylesheets']) ? $config['all']['stylesheets'] : array());
+        $config['all']['stylesheets'] = array_merge(isset($config['default']['stylesheets']) && is_array($config['default']['stylesheets']) ? $config['default']['stylesheets'] : [], isset($config['all']['stylesheets']) && is_array($config['all']['stylesheets']) ? $config['all']['stylesheets'] : []);
         unset($config['default']['stylesheets']);
 
-        $config['all']['javascripts'] = array_merge(isset($config['default']['javascripts']) && is_array($config['default']['javascripts']) ? $config['default']['javascripts'] : array(), isset($config['all']['javascripts']) && is_array($config['all']['javascripts']) ? $config['all']['javascripts'] : array());
+        $config['all']['javascripts'] = array_merge(isset($config['default']['javascripts']) && is_array($config['default']['javascripts']) ? $config['default']['javascripts'] : [], isset($config['all']['javascripts']) && is_array($config['all']['javascripts']) ? $config['all']['javascripts'] : []);
         unset($config['default']['javascripts']);
 
         // merge default and all
         $config['all'] = sfToolkit::arrayDeepMerge(
-            isset($config['default']) && is_array($config['default']) ? $config['default'] : array(),
-            isset($config['all']) && is_array($config['all']) ? $config['all'] : array()
+            isset($config['default']) && is_array($config['default']) ? $config['default'] : [],
+            isset($config['all']) && is_array($config['all']) ? $config['all'] : []
         );
 
         unset($config['default']);
@@ -298,7 +298,7 @@ EOF;
      */
     private function addAssets($type, $assets)
     {
-        $tmp = array();
+        $tmp = [];
         foreach ((array) $assets as $asset) {
             $position = '';
             if (is_array($asset)) {
@@ -311,11 +311,11 @@ EOF;
                 }
             } else {
                 $key = $asset;
-                $options = array();
+                $options = [];
             }
 
             if ('-*' == $key) {
-                $tmp = array();
+                $tmp = [];
             } elseif ('-' == $key[0]) {
                 unset($tmp[substr($key, 1)]);
             } else {

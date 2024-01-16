@@ -19,18 +19,18 @@ $dom->validateOnParse = true;
 $t->diag('->configure()');
 
 try {
-    new sfWidgetFormI18nChoiceLanguage(array('culture' => 'en', 'languages' => array('xx')));
+    new sfWidgetFormI18nChoiceLanguage(['culture' => 'en', 'languages' => ['xx']]);
     $t->fail('->configure() throws an InvalidArgumentException if a language does not exist');
 } catch (InvalidArgumentException $e) {
     $t->pass('->configure() throws an InvalidArgumentException if a language does not exist');
 }
 
-$v = new sfWidgetFormI18nChoiceLanguage(array('culture' => 'en', 'languages' => array('fr', 'en')));
-$t->is(array_keys($v->getOption('choices')), array('en', 'fr'), '->configure() can restrict the number of languages with the languages option');
+$v = new sfWidgetFormI18nChoiceLanguage(['culture' => 'en', 'languages' => ['fr', 'en']]);
+$t->is(array_keys($v->getOption('choices')), ['en', 'fr'], '->configure() can restrict the number of languages with the languages option');
 
 // ->render()
 $t->diag('->render()');
-$w = new sfWidgetFormI18nChoiceLanguage(array('culture' => 'fr'));
+$w = new sfWidgetFormI18nChoiceLanguage(['culture' => 'fr']);
 $dom->loadHTML($w->render('language', 'en'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#language option[value="en"]')->getValue(), 'anglais', '->render() renders all languages as option tags');
@@ -38,12 +38,12 @@ $t->is(count($css->matchAll('#language option[value="en"][selected="selected"]')
 
 // add_empty
 $t->diag('add_empty');
-$w = new sfWidgetFormI18nChoiceLanguage(array('culture' => 'fr', 'add_empty' => true));
+$w = new sfWidgetFormI18nChoiceLanguage(['culture' => 'fr', 'add_empty' => true]);
 $dom->loadHTML($w->render('language', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#language option[value=""]')->getValue(), '', '->render() renders an empty option if add_empty is true');
 
-$w = new sfWidgetFormI18nChoiceLanguage(array('culture' => 'fr', 'add_empty' => 'foo'));
+$w = new sfWidgetFormI18nChoiceLanguage(['culture' => 'fr', 'add_empty' => 'foo']);
 $dom->loadHTML($w->render('language', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#language option[value=""]')->getValue(), 'foo', '->render() renders an empty option if add_empty is true');

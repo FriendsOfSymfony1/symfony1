@@ -38,8 +38,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         foreach ($this->getUpgradeClasses() as $i => $class) {
             $v = new $class($this->dispatcher, $this->formatter);
@@ -78,10 +81,10 @@ EOF;
     protected function getUpgradeClasses()
     {
         $baseDir = __DIR__.'/validation/';
-        $classes = array();
+        $classes = [];
 
         foreach (glob($baseDir.'*.class.php') as $file) {
-            $class = str_replace(array($baseDir, '.class.php'), '', $file);
+            $class = str_replace([$baseDir, '.class.php'], '', $file);
 
             if ('sfValidation' != $class) {
                 $classes[] = $class;

@@ -14,7 +14,7 @@ $t = new lime_test(0);
 
 class myGenerator extends sfGenerator
 {
-    public function generate($params = array())
+    public function generate($params = [])
     {
     }
 }

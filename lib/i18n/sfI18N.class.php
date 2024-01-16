@@ -20,7 +20,7 @@ class sfI18N
     protected $configuration;
     protected $dispatcher;
     protected $cache;
-    protected $options = array();
+    protected $options = [];
     protected $culture = 'en';
     protected $messageSource;
     protected $messageFormat;
@@ -29,8 +29,10 @@ class sfI18N
      * Class constructor.
      *
      * @see initialize()
+     *
+     * @param mixed $options
      */
-    public function __construct(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = array())
+    public function __construct(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = [])
     {
         $this->initialize($configuration, $cache, $options);
     }
@@ -44,7 +46,7 @@ class sfI18N
      *
      * @return string The translated string
      */
-    public function __($string, $args = array(), $catalogue = 'messages')
+    public function __($string, $args = [], $catalogue = 'messages')
     {
         return $this->getMessageFormat()->format($string, $args, $catalogue);
     }
@@ -65,7 +67,7 @@ class sfI18N
      * @param sfCache                    $cache         A sfCache instance
      * @param array                      $options       An array of options
      */
-    public function initialize(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = array())
+    public function initialize(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = [])
     {
         $this->configuration = $configuration;
         $this->dispatcher = $configuration->getEventDispatcher();
@@ -76,18 +78,18 @@ class sfI18N
             unset($options['culture']);
         }
 
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'source' => 'XLIFF',
             'debug' => false,
             'database' => 'default',
             'untranslated_prefix' => '[T]',
             'untranslated_suffix' => '[/T]',
-        ), $options);
+        ], $options);
 
-        $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
+        $this->dispatcher->connect('user.change_culture', [$this, 'listenToChangeCultureEvent']);
 
         if ($this->isMessageSourceFileBased($this->options['source'])) {
-            $this->dispatcher->connect('controller.change_action', array($this, 'listenToChangeActionEvent'));
+            $this->dispatcher->connect('controller.change_action', [$this, 'listenToChangeActionEvent']);
         }
     }
 
@@ -122,7 +124,7 @@ class sfI18N
         if (null === $dirs) {
             $this->messageSource = $this->createMessageSource();
         } else {
-            $this->messageSource = sfMessageSource::factory('Aggregate', array_map(array($this, 'createMessageSource'), $dirs));
+            $this->messageSource = sfMessageSource::factory('Aggregate', array_map([$this, 'createMessageSource'], $dirs));
         }
 
         if (null !== $this->cache) {
@@ -208,7 +210,7 @@ class sfI18N
             $this->messageFormat = new sfMessageFormat($this->getMessageSource(), sfConfig::get('sf_charset'));
 
             if ($this->options['debug']) {
-                $this->messageFormat->setUntranslatedPS(array($this->options['untranslated_prefix'], $this->options['untranslated_suffix']));
+                $this->messageFormat->setUntranslatedPS([$this->options['untranslated_prefix'], $this->options['untranslated_suffix']]);
             }
         }
 
@@ -284,15 +286,15 @@ class sfI18N
         $dateRegexp = preg_replace('/[dmy]+/i', '(\d+)', preg_quote($dateFormat));
 
         // We parse date format to see where things are (m, d, y)
-        $a = array(
+        $a = [
             'd' => strpos($dateFormat, 'd'),
             'm' => strpos($dateFormat, 'M'),
             'y' => strpos($dateFormat, 'y'),
-        );
+        ];
         $tmp = array_flip($a);
         ksort($tmp);
         $i = 0;
-        $c = array();
+        $c = [];
         foreach ($tmp as $value) {
             $c[++$i] = $value;
         }
@@ -301,7 +303,7 @@ class sfI18N
         // We find all elements
         if (preg_match("~{$dateRegexp}~", $date, $matches)) {
             // We get matching timestamp
-            return array($matches[$datePositions['d']], $matches[$datePositions['m']], $matches[$datePositions['y']]);
+            return [$matches[$datePositions['d']], $matches[$datePositions['m']], $matches[$datePositions['y']]];
         }
 
         return null;
@@ -327,14 +329,14 @@ class sfI18N
         $timeFormat = $timeFormatInfo->getShortTimePattern();
 
         // We construct the regexp based on time format
-        $timeRegexp = preg_replace(array('/[hm]+/i', '/a/'), array('(\d+)', '(\w+)'), preg_quote($timeFormat));
+        $timeRegexp = preg_replace(['/[hm]+/i', '/a/'], ['(\d+)', '(\w+)'], preg_quote($timeFormat));
 
         // We parse time format to see where things are (h, m)
-        $timePositions = array(
+        $timePositions = [
             'h' => false !== strpos($timeFormat, 'H') ? strpos($timeFormat, 'H') : strpos($timeFormat, 'h'),
             'm' => strpos($timeFormat, 'm'),
             'a' => strpos($timeFormat, 'a'),
-        );
+        ];
         asort($timePositions);
         $i = 0;
 
@@ -364,7 +366,7 @@ class sfI18N
             }
 
             // We get matching timestamp
-            return array($hour, $matches[$timePositions['m']]);
+            return [$hour, $matches[$timePositions['m']]];
         }
 
         return null;

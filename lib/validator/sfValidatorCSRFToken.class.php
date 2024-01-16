@@ -19,8 +19,11 @@ class sfValidatorCSRFToken extends sfValidatorBase
 {
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $options
+     * @param mixed $messages
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('token');
 
@@ -31,6 +34,8 @@ class sfValidatorCSRFToken extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     protected function doClean($value)
     {

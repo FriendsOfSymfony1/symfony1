@@ -36,7 +36,7 @@ class sfValidatorTime extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addMessage('bad_format', '"%value%" does not match the time format (%time_format%).');
 
@@ -47,6 +47,8 @@ class sfValidatorTime extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     protected function doClean($value)
     {
@@ -54,14 +56,14 @@ class sfValidatorTime extends sfValidatorBase
             $clean = $this->convertTimeArrayToTimestamp($value);
         } elseif ($regex = $this->getOption('time_format')) {
             if (!preg_match($regex, $value, $match)) {
-                throw new sfValidatorError($this, 'bad_format', array('value' => $value, 'time_format' => $this->getOption('time_format_error') ?: $this->getOption('time_format')));
+                throw new sfValidatorError($this, 'bad_format', ['value' => $value, 'time_format' => $this->getOption('time_format_error') ?: $this->getOption('time_format')]);
             }
 
             $clean = $this->convertTimeArrayToTimestamp($match);
         } elseif (!ctype_digit($value)) {
             $clean = strtotime($value);
             if (false === $clean) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         } else {
             $clean = (int) $value;
@@ -82,9 +84,9 @@ class sfValidatorTime extends sfValidatorBase
     protected function convertTimeArrayToTimestamp($value)
     {
         // all elements must be empty or a number
-        foreach (array('hour', 'minute', 'second') as $key) {
+        foreach (['hour', 'minute', 'second'] as $key) {
             if (isset($value[$key]) && !ctype_digit((string) $value[$key]) && !empty($value[$key])) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 
@@ -94,7 +96,7 @@ class sfValidatorTime extends sfValidatorBase
             $this->isValueSet($value, 'second') && (!$this->isValueSet($value, 'minute') || !$this->isValueSet($value, 'hour'))
             || $this->isValueSet($value, 'minute') && !$this->isValueSet($value, 'hour')
         ) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         $clean = mktime(
@@ -104,7 +106,7 @@ class sfValidatorTime extends sfValidatorBase
         );
 
         if (false === $clean) {
-            throw new sfValidatorError($this, 'invalid', array('value' => var_export($value, true)));
+            throw new sfValidatorError($this, 'invalid', ['value' => var_export($value, true)]);
         }
 
         return $clean;
@@ -112,11 +114,13 @@ class sfValidatorTime extends sfValidatorBase
 
     protected function isValueSet($values, $key)
     {
-        return isset($values[$key]) && !in_array($values[$key], array(null, ''), true);
+        return isset($values[$key]) && !in_array($values[$key], [null, ''], true);
     }
 
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     protected function isEmpty($value)
     {

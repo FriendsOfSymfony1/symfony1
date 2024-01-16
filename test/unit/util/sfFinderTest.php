@@ -25,30 +25,30 @@ $t = new my_lime_test(39);
 require_once $_test_dir.'/../lib/util/sfFinder.class.php';
 
 $fixtureDir = __DIR__.'/fixtures/finder';
-$phpFiles = array(
+$phpFiles = [
     'dir1/dir2/file21.php',
     'dir1/file12.php',
-);
-$txtFiles = array(
+];
+$txtFiles = [
     'FILE5.txt',
     'file2.txt',
-);
-$regexpFiles = array(
+];
+$regexpFiles = [
     'dir1/dir2/file21.php',
     'dir1/dir2/file22',
     'dir1/dir2/file23',
     'dir1/dir2/file24',
     'file2.txt',
-);
-$regexpWithModifierFiles = array(
+];
+$regexpWithModifierFiles = [
     'dir1/dir2/file21.php',
     'dir1/dir2/file22',
     'dir1/dir2/file23',
     'dir1/dir2/file24',
     'FILE5.txt',
     'file2.txt',
-);
-$allFiles = array(
+];
+$allFiles = [
     'dir1/dir2/dir3/file31',
     'dir1/dir2/dir4/file41',
     'dir1/dir2/file21.php',
@@ -61,8 +61,8 @@ $allFiles = array(
     'file1',
     'FILE5.txt',
     'file2.txt',
-);
-$minDepth1Files = array(
+];
+$minDepth1Files = [
     'dir1/dir2/dir3/file31',
     'dir1/dir2/dir4/file41',
     'dir1/dir2/file21.php',
@@ -72,8 +72,8 @@ $minDepth1Files = array(
     'dir1/file11',
     'dir1/file12.php',
     'dir1/file13',
-);
-$maxDepth2Files = array(
+];
+$maxDepth2Files = [
     'dir1/dir2/file21.php',
     'dir1/dir2/file22',
     'dir1/dir2/file23',
@@ -84,8 +84,8 @@ $maxDepth2Files = array(
     'file1',
     'FILE5.txt',
     'file2.txt',
-);
-$anyWithoutDir2 = array(
+];
+$anyWithoutDir2 = [
     'dir1',
     'dir1/dir2',
     'dir1/file11',
@@ -94,7 +94,7 @@ $anyWithoutDir2 = array(
     'file1',
     'FILE5.txt',
     'file2.txt',
-);
+];
 
 // ::type()
 $t->diag('::type()');
@@ -122,7 +122,7 @@ $t->is($finder->name('*.php'), $finder, '->name() implements the fluent interfac
 
 $t->diag('->name() file name support');
 $finder = sfFinder::type('file')->name('file21.php')->relative();
-$t->arrays_are_equal($finder->in($fixtureDir), array('dir1/dir2/file21.php'), '->name() can take a file name as an argument');
+$t->arrays_are_equal($finder->in($fixtureDir), ['dir1/dir2/file21.php'], '->name() can take a file name as an argument');
 
 $t->diag('->name() globs support');
 $finder = sfFinder::type('file')->name('*.php')->relative();
@@ -137,7 +137,7 @@ $finder = sfFinder::type('file')->name('/^file(2|5).*$/i')->relative();
 $t->arrays_are_equal($finder->in($fixtureDir), $regexpWithModifierFiles, '->name() can take a regexp with a modifier as an argument');
 
 $t->diag('->name() array / args / chaining');
-$finder = sfFinder::type('file')->name(array('*.php', '*.txt'))->relative();
+$finder = sfFinder::type('file')->name(['*.php', '*.txt'])->relative();
 $t->arrays_are_equal($finder->in($fixtureDir), array_merge($phpFiles, $txtFiles), '->name() can take an array of patterns');
 $finder = sfFinder::type('file')->name('*.php', '*.txt')->relative();
 $t->arrays_are_equal($finder->in($fixtureDir), array_merge($phpFiles, $txtFiles), '->name() can take patterns as arguments');
@@ -151,7 +151,7 @@ $t->is($finder->not_name('*.php'), $finder, '->not_name() implements the fluent 
 
 $t->diag('->not_name() file name support');
 $finder = sfFinder::type('file')->not_name('file21.php')->relative();
-$t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, array('dir1/dir2/file21.php'))), '->not_name() can take a file name as an argument');
+$t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, ['dir1/dir2/file21.php'])), '->not_name() can take a file name as an argument');
 
 $t->diag('->not_name() globs support');
 $finder = sfFinder::type('file')->not_name('*.php')->relative();
@@ -162,7 +162,7 @@ $finder = sfFinder::type('file')->not_name('/^file2.*$/')->relative();
 $t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, $regexpFiles)), '->not_name() can take a regexp as an argument');
 
 $t->diag('->not_name() array / args / chaining');
-$finder = sfFinder::type('file')->not_name(array('*.php', '*.txt'))->relative();
+$finder = sfFinder::type('file')->not_name(['*.php', '*.txt'])->relative();
 $t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, array_merge($phpFiles, $txtFiles))), '->not_name() can take an array of patterns');
 $finder = sfFinder::type('file')->not_name('*.php', '*.txt')->relative();
 $t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, array_merge($phpFiles, $txtFiles))), '->not_name() can take patterns as arguments');
@@ -171,7 +171,7 @@ $t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles
 
 $t->diag('->name() ->not_name() in the same query');
 $finder = sfFinder::type('file')->not_name('/^file2.*$/')->name('*.php')->relative();
-$t->arrays_are_equal($finder->in($fixtureDir), array('dir1/file12.php'), '->not_name() and ->name() can be called in the same query');
+$t->arrays_are_equal($finder->in($fixtureDir), ['dir1/file12.php'], '->not_name() and ->name() can be called in the same query');
 
 // ->size()
 $t->diag('->size()');
@@ -179,11 +179,11 @@ $finder = sfFinder::type('file');
 $t->is($finder->size('> 2K'), $finder, '->size() implements the fluent interface');
 
 $finder = sfFinder::type('file')->size('> 100K')->relative();
-$t->is($finder->in($fixtureDir), array(), '->size() takes a size comparison string as its argument');
+$t->is($finder->in($fixtureDir), [], '->size() takes a size comparison string as its argument');
 $finder = sfFinder::type('file')->size('> 1K')->relative();
-$t->is($finder->in($fixtureDir), array('file1'), '->size() takes a size comparison string as its argument');
+$t->is($finder->in($fixtureDir), ['file1'], '->size() takes a size comparison string as its argument');
 $finder = sfFinder::type('file')->size('> 1K')->size('< 2K')->relative();
-$t->is($finder->in($fixtureDir), array(), '->size() takes a size comparison string as its argument');
+$t->is($finder->in($fixtureDir), [], '->size() takes a size comparison string as its argument');
 
 // ->mindepth() ->maxdepth()
 $t->diag('->mindepth() ->maxdepth()');
@@ -204,7 +204,7 @@ $t->is($finder->discard('file2.txt'), $finder, '->discard() implements the fluen
 
 $t->diag('->discard() file name support');
 $finder = sfFinder::type('file')->relative()->discard('file2.txt');
-$t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, array('file2.txt'))), '->discard() can discard a file name');
+$t->arrays_are_equal($finder->in($fixtureDir), array_values(array_diff($allFiles, ['file2.txt'])), '->discard() can discard a file name');
 
 $t->diag('->discard() glob support');
 $finder = sfFinder::type('file')->relative()->discard('*.php');
@@ -225,5 +225,5 @@ $t->arrays_are_equal($finder->in($fixtureDir), $anyWithoutDir2, '->prune() ignor
 $t->diag('->in() permissions');
 chmod($fixtureDir.'_permissions/secret', 0000);
 $finder = sfFinder::type('file')->relative();
-$t->arrays_are_equal($finder->in($fixtureDir.'_permissions'), array(), '->in() ignores directories it cannot read');
+$t->arrays_are_equal($finder->in($fixtureDir.'_permissions'), [], '->in() ignores directories it cannot read');
 chmod($fixtureDir.'_permissions/secret', 0755);

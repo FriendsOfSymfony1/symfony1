@@ -72,7 +72,7 @@ abstract class sfView
     protected $decoratorDirectory;
     protected $decoratorTemplate;
     protected $directory;
-    protected $componentSlots = array();
+    protected $componentSlots = [];
     protected $template;
     protected $attributeHolder;
     protected $parameterHolder;
@@ -85,6 +85,11 @@ abstract class sfView
      * Class constructor.
      *
      * @see initialize()
+     *
+     * @param mixed $context
+     * @param mixed $moduleName
+     * @param mixed $actionName
+     * @param mixed $viewName
      */
     public function __construct($context, $moduleName, $actionName, $viewName)
     {
@@ -103,7 +108,7 @@ abstract class sfView
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'view.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'view.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
             throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
@@ -130,12 +135,12 @@ abstract class sfView
         $this->context = $context;
         $this->dispatcher = $context->getEventDispatcher();
 
-        sfOutputEscaper::markClassesAsSafe(array('sfForm', 'sfFormField', 'sfFormFieldSchema', 'sfModelGeneratorHelper'));
+        sfOutputEscaper::markClassesAsSafe(['sfForm', 'sfFormField', 'sfFormFieldSchema', 'sfModelGeneratorHelper']);
 
         $this->attributeHolder = $this->initializeAttributeHolder();
 
         $this->parameterHolder = new sfParameterHolder();
-        $this->parameterHolder->add(sfConfig::get('mod_'.strtolower($moduleName).'_view_param', array()));
+        $this->parameterHolder->add(sfConfig::get('mod_'.strtolower($moduleName).'_view_param', []));
 
         $request = $context->getRequest();
 
@@ -153,7 +158,7 @@ abstract class sfView
                 }
             }
         }
-        $this->dispatcher->notify(new sfEvent($this, 'view.configure_format', array('format' => $format, 'response' => $context->getResponse(), 'request' => $context->getRequest())));
+        $this->dispatcher->notify(new sfEvent($this, 'view.configure_format', ['format' => $format, 'response' => $context->getResponse(), 'request' => $context->getRequest()]));
 
         // include view configuration
         $this->configure();
@@ -407,7 +412,7 @@ abstract class sfView
      */
     public function setComponentSlot($attributeName, $moduleName, $componentName)
     {
-        $this->componentSlots[$attributeName] = array();
+        $this->componentSlots[$attributeName] = [];
         $this->componentSlots[$attributeName]['module_name'] = $moduleName;
         $this->componentSlots[$attributeName]['component_name'] = $componentName;
     }
@@ -434,7 +439,7 @@ abstract class sfView
     public function getComponentSlot($name)
     {
         if (isset($this->componentSlots[$name]) && $this->componentSlots[$name]['module_name'] && $this->componentSlots[$name]['component_name']) {
-            return array($this->componentSlots[$name]['module_name'], $this->componentSlots[$name]['component_name']);
+            return [$this->componentSlots[$name]['module_name'], $this->componentSlots[$name]['component_name']];
         }
 
         return null;
@@ -509,12 +514,12 @@ abstract class sfView
         return $this->viewName;
     }
 
-    protected function initializeAttributeHolder($attributes = array())
+    protected function initializeAttributeHolder($attributes = [])
     {
-        return new sfViewParameterHolder($this->dispatcher, $attributes, array(
+        return new sfViewParameterHolder($this->dispatcher, $attributes, [
             'escaping_method' => sfConfig::get('sf_escaping_method'),
             'escaping_strategy' => sfConfig::get('sf_escaping_strategy'),
-        ));
+        ]);
     }
 
     /**

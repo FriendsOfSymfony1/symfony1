@@ -50,7 +50,7 @@ class sfOutputEscaperSafe extends ArrayIterator
 
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->value, $method), $arguments);
+        return call_user_func_array([$this->value, $method], $arguments);
     }
 
     public function __isset($key)

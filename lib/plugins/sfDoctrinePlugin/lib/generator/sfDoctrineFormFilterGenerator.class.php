@@ -38,7 +38,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
      *
      * @return string The data to put in configuration cache
      */
-    public function generate($params = array())
+    public function generate($params = [])
     {
         $this->params = $params;
 
@@ -149,9 +149,9 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
      */
     public function getWidgetOptionsForColumn($column)
     {
-        $options = array();
+        $options = [];
 
-        $withEmpty = $column->isNotNull() && !$column->isForeignKey() ? array("'with_empty' => false") : array();
+        $withEmpty = $column->isNotNull() && !$column->isForeignKey() ? ["'with_empty' => false"] : [];
 
         switch ($column->getDoctrineType()) {
             case 'boolean':
@@ -168,7 +168,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
                 break;
 
             case 'enum':
-                $values = array('' => '');
+                $values = ['' => ''];
                 $values = array_merge($values, $column['values']);
                 $values = array_combine($values, $values);
                 $options[] = "'choices' => ".$this->arrayExport($values);
@@ -244,7 +244,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
      */
     public function getValidatorOptionsForColumn($column)
     {
-        $options = array('\'required\' => false');
+        $options = ['\'required\' => false'];
 
         if ($column->isForeignKey()) {
             $columns = $column->getForeignTable()->getColumns();
@@ -290,7 +290,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     {
         $format = 'new %s(%s)';
 
-        if (in_array($class = $this->getValidatorClassForColumn($column), array('sfValidatorInteger', 'sfValidatorNumber'))) {
+        if (in_array($class = $this->getValidatorClassForColumn($column), ['sfValidatorInteger', 'sfValidatorNumber'])) {
             $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s))';
         }
 
@@ -354,6 +354,8 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
 
     /**
      * Filter out models that have disabled generation of form classes.
+     *
+     * @param mixed $models
      *
      * @return array $models Array of models to generate forms for
      */

@@ -61,7 +61,7 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
         }
         $html .= '</table>';
 
-        $types = array();
+        $types = [];
         foreach ($this->webDebug->getLogger()->getTypes() as $type) {
             $types[] = '<a href="#" onclick="sfWebDebugToggleMessages(\''.$type.'\'); return false;">'.$type.'</a>';
         }
@@ -91,7 +91,7 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
         static $constants;
 
         if (!$constants) {
-            foreach (array('sf_app_dir', 'sf_root_dir', 'sf_symfony_lib_dir') as $constant) {
+            foreach (['sf_app_dir', 'sf_root_dir', 'sf_symfony_lib_dir'] as $constant) {
                 $constants[realpath(sfConfig::get($constant)).DIRECTORY_SEPARATOR] = $constant.DIRECTORY_SEPARATOR;
             }
         }
@@ -102,9 +102,9 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
         // replace constants value with constant name
         $logLine = str_replace(array_keys($constants), array_values($constants), $logLine);
 
-        $logLine = sfToolkit::pregtr($logLine, array('/&quot;(.+?)&quot;/s' => '"<span class="sfWebDebugLogInfo">\\1</span>"',
+        $logLine = sfToolkit::pregtr($logLine, ['/&quot;(.+?)&quot;/s' => '"<span class="sfWebDebugLogInfo">\\1</span>"',
             '/^(.+?)\(\)\:/S' => '<span class="sfWebDebugLogInfo">\\1()</span>:',
-            '/line (\d+)$/' => 'line <span class="sfWebDebugLogInfo">\\1</span>'));
+            '/line (\d+)$/' => 'line <span class="sfWebDebugLogInfo">\\1</span>']);
 
         // special formatting for SQL lines
         $logLine = $this->formatSql($logLine);

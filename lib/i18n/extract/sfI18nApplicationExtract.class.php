@@ -15,19 +15,19 @@
  */
 class sfI18nApplicationExtract extends sfI18nExtract
 {
-    protected $extractObjects = array();
+    protected $extractObjects = [];
 
     /**
      * Configures the current extract object.
      */
     public function configure()
     {
-        $this->extractObjects = array();
+        $this->extractObjects = [];
 
         // Modules
         $moduleNames = sfFinder::type('dir')->maxdepth(0)->relative()->in(sfConfig::get('sf_app_module_dir'));
         foreach ($moduleNames as $moduleName) {
-            $this->extractObjects[] = new sfI18nModuleExtract($this->i18n, $this->culture, array('module' => $moduleName));
+            $this->extractObjects[] = new sfI18nModuleExtract($this->i18n, $this->culture, ['module' => $moduleName]);
         }
     }
 
@@ -67,7 +67,7 @@ class sfI18nApplicationExtract extends sfI18nExtract
 
     protected function aggregateMessages($method)
     {
-        $messages = array();
+        $messages = [];
         foreach ($this->extractObjects as $extractObject) {
             $messages = array_merge($messages, $extractObject->{$method}());
         }

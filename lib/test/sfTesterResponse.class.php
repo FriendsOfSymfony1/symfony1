@@ -60,7 +60,7 @@ class sfTesterResponse extends sfTester
      *
      * @return sfTester|sfTestFunctionalBase
      */
-    public function checkElement($selector, $value = true, $options = array())
+    public function checkElement($selector, $value = true, $options = [])
     {
         if (null === $this->dom) {
             throw new LogicException('The DOM is not accessible because the browser response content type is not HTML.');
@@ -111,7 +111,7 @@ class sfTesterResponse extends sfTester
             $form = new $form();
         }
 
-        $rendered = array();
+        $rendered = [];
         foreach ($this->domCssSelector->matchAll(sprintf('%1$s input, %1$s textarea, %1$s select', $selector))->getNodes() as $element) {
             $rendered[] = $element->getAttribute('name');
         }
@@ -121,7 +121,7 @@ class sfTesterResponse extends sfTester
             $dom->loadHTML((string) $widget);
 
             foreach ($dom->getElementsByTagName('*') as $element) {
-                if (in_array($element->tagName, array('input', 'select', 'textarea'))) {
+                if (in_array($element->tagName, ['input', 'select', 'textarea'])) {
                     if (false !== $pos = array_search($element->getAttribute('name'), $rendered)) {
                         unset($rendered[$pos]);
                     }
@@ -174,7 +174,7 @@ class sfTesterResponse extends sfTester
                     $filesystem->mirror(__DIR__.'/w3', $cache, $finder);
 
                     $finder = sfFinder::type('file');
-                    $filesystem->replaceTokens($finder->in($cache), '##', '##', array('LOCAL_W3' => $local));
+                    $filesystem->replaceTokens($finder->in($cache), '##', '##', ['LOCAL_W3' => $local]);
                 }
 
                 $content = preg_replace('#(<!DOCTYPE[^>]+")http://www.w3.org(.*")#i', '\\1'.$local.'\\2', $content);
@@ -291,7 +291,7 @@ class sfTesterResponse extends sfTester
      *
      * @return sfTester|sfTestFunctionalBase
      */
-    public function setsCookie($name, $value = null, $attributes = array())
+    public function setsCookie($name, $value = null, $attributes = [])
     {
         foreach ($this->response->getCookies() as $cookie) {
             if ($name == $cookie['name']) {
@@ -322,6 +322,7 @@ class sfTesterResponse extends sfTester
      * Tests the response content against a regex.
      *
      * @param string Regex
+     * @param mixed $regex
      *
      * @return sfTester|sfTestFunctionalBase
      */
@@ -396,7 +397,7 @@ class sfTesterResponse extends sfTester
         }
 
         foreach ($this->response->getCookies() as $cookie) {
-            vprintf("Set-Cookie: %s=%s; %spath=%s%s%s%s\n", array(
+            vprintf("Set-Cookie: %s=%s; %spath=%s%s%s%s\n", [
                 $cookie['name'],
                 $cookie['value'],
                 null === $cookie['expire'] ? '' : sprintf('expires=%s; ', date('D d-M-Y H:i:s T', $cookie['expire'])),
@@ -404,7 +405,7 @@ class sfTesterResponse extends sfTester
                 $cookie['domain'] ? sprintf('; domain=%s', $cookie['domain']) : '',
                 $cookie['secure'] ? '; secure' : '',
                 $cookie['httpOnly'] ? '; HttpOnly' : '',
-            ));
+            ]);
         }
 
         echo "\n";

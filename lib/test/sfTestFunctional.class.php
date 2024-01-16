@@ -22,13 +22,14 @@ class sfTestFunctional extends sfTestFunctionalBase
      *
      * @param sfBrowserBase $browser A sfBrowserBase instance
      * @param lime_test     $lime    A lime instance
+     * @param mixed         $testers
      */
-    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
+    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = [])
     {
-        $testers = array_merge(array(
+        $testers = array_merge([
             'view_cache' => 'sfTesterViewCache',
             'form' => 'sfTesterForm',
-        ), $testers);
+        ], $testers);
 
         parent::__construct($browser, $lime, $testers);
     }

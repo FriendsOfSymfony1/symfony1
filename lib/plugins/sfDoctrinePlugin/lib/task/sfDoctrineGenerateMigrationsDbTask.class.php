@@ -26,10 +26,10 @@ class sfDoctrineGenerateMigrationsDbTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-migrations-db';
@@ -45,8 +45,11 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
@@ -57,8 +60,8 @@ EOF;
             $this->getFilesystem()->mkdirs($config['migrations_path']);
         }
 
-        $this->callDoctrineCli('generate-migrations-db', array(
+        $this->callDoctrineCli('generate-migrations-db', [
             'yaml_schema_path' => $this->prepareSchemaFile($config['yaml_schema_path']),
-        ));
+        ]);
     }
 }

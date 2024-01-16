@@ -35,8 +35,8 @@ class sfFilterConfigHandler extends sfYamlConfigHandler
         $config = static::getConfiguration($configFiles);
 
         // init our data and includes arrays
-        $data = array();
-        $includes = array();
+        $data = [];
+        $includes = [];
 
         $execution = false;
         $rendering = false;
@@ -125,7 +125,7 @@ class sfFilterConfigHandler extends sfYamlConfigHandler
             // we get the order of the new file and merge with the previous configurations
             $previous = $config;
 
-            $config = array();
+            $config = [];
             foreach (static::parseYaml($configFile) as $key => $value) {
                 $value = (array) $value;
                 $config[$key] = isset($previous[$key]) ? sfToolkit::arrayDeepMerge($previous[$key], $value) : $value;

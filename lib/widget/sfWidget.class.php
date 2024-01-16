@@ -17,9 +17,9 @@
  */
 abstract class sfWidget
 {
-    protected $requiredOptions = array();
-    protected $attributes = array();
-    protected $options = array();
+    protected $requiredOptions = [];
+    protected $attributes = [];
+    protected $options = [];
 
     protected static $xhtml = true;
     protected static $charset = 'UTF-8';
@@ -33,7 +33,7 @@ abstract class sfWidget
      * @throws InvalidArgumentException when a option is not supported
      * @throws RuntimeException         when a required option is not given
      */
-    public function __construct($options = array(), $attributes = array())
+    public function __construct($options = [], $attributes = [])
     {
         $this->configure($options, $attributes);
 
@@ -66,7 +66,7 @@ abstract class sfWidget
      *
      * @return string A HTML representation of the widget
      */
-    abstract public function render($name, $value = null, $attributes = array(), $errors = array());
+    abstract public function render($name, $value = null, $attributes = [], $errors = []);
 
     /**
      * Adds a required option.
@@ -239,7 +239,7 @@ abstract class sfWidget
      */
     public function getStylesheets()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -249,7 +249,7 @@ abstract class sfWidget
      */
     public function getJavaScripts()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -299,7 +299,7 @@ abstract class sfWidget
      * @param array  $attributes An array of HTML attributes to be merged with the default HTML attributes
      * @param string An HTML tag string
      */
-    public function renderTag($tag, $attributes = array())
+    public function renderTag($tag, $attributes = [])
     {
         if (empty($tag)) {
             return '';
@@ -316,7 +316,7 @@ abstract class sfWidget
      * @param array  $attributes An array of HTML attributes to be merged with the default HTML attributes
      * @param string An HTML tag string
      */
-    public function renderContentTag($tag, $content = null, $attributes = array())
+    public function renderContentTag($tag, $content = null, $attributes = [])
     {
         if (empty($tag)) {
             return '';
@@ -381,7 +381,7 @@ abstract class sfWidget
      *
      * @see __construct()
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
     }
 

@@ -19,7 +19,7 @@ require_once __DIR__.'/../vendor/lime/lime.php';
  */
 abstract class sfTestFunctionalBase
 {
-    protected $testers = array();
+    protected $testers = [];
     protected $blockTester;
     protected $currentTester;
     protected $browser;
@@ -31,8 +31,9 @@ abstract class sfTestFunctionalBase
      *
      * @param sfBrowserBase $browser A sfBrowserBase instance
      * @param lime_test     $lime    A lime instance
+     * @param mixed         $testers
      */
-    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
+    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = [])
     {
         $this->browser = $browser;
 
@@ -40,24 +41,24 @@ abstract class sfTestFunctionalBase
             self::$test = null !== $lime ? $lime : new lime_test();
         }
 
-        $this->setTesters(array_merge(array(
+        $this->setTesters(array_merge([
             'request' => 'sfTesterRequest',
             'response' => 'sfTesterResponse',
             'user' => 'sfTesterUser',
             'mailer' => 'sfTesterMailer',
-        ), $testers));
+        ], $testers));
 
         // register our shutdown function
-        register_shutdown_function(array($this, 'shutdown'));
+        register_shutdown_function([$this, 'shutdown']);
 
         // register our error/exception handlers
-        set_error_handler(array($this, 'handlePhpError'));
-        set_exception_handler(array($this, 'handleException'));
+        set_error_handler([$this, 'handlePhpError']);
+        set_exception_handler([$this, 'handleException']);
     }
 
     public function __call($method, $arguments)
     {
-        $retval = call_user_func_array(array($this->browser, $method), $arguments);
+        $retval = call_user_func_array([$this->browser, $method], $arguments);
 
         // fix the fluent interface
         return $retval === $this->browser ? $this : $retval;
@@ -173,7 +174,7 @@ abstract class sfTestFunctionalBase
      *
      * @return sfTestFunctionalBase
      */
-    public function get($uri, $parameters = array(), $changeStack = true)
+    public function get($uri, $parameters = [], $changeStack = true)
     {
         return $this->call($uri, 'get', $parameters, $changeStack);
     }
@@ -208,7 +209,7 @@ abstract class sfTestFunctionalBase
      *
      * @return sfTestFunctionalBase
      */
-    public function post($uri, $parameters = array(), $changeStack = true)
+    public function post($uri, $parameters = [], $changeStack = true)
     {
         return $this->call($uri, 'post', $parameters, $changeStack);
     }
@@ -223,7 +224,7 @@ abstract class sfTestFunctionalBase
      *
      * @return sfTestFunctionalBase The current sfTestFunctionalBase instance
      */
-    public function call($uri, $method = 'get', $parameters = array(), $changeStack = true)
+    public function call($uri, $method = 'get', $parameters = [], $changeStack = true)
     {
         $this->checkCurrentExceptionIsEmpty();
 
@@ -277,7 +278,7 @@ abstract class sfTestFunctionalBase
      *
      * @return sfTestFunctionalBase
      */
-    public function click($name, $arguments = array(), $options = array())
+    public function click($name, $arguments = [], $options = [])
     {
         if ($name instanceof DOMElement) {
             list($uri, $method, $parameters) = $this->doClickElement($name, $arguments, $options);
@@ -457,19 +458,19 @@ abstract class sfTestFunctionalBase
         $this->test()->error(sprintf('%s: %s', get_class($exception), $exception->getMessage()));
 
         $traceData = $exception->getTrace();
-        array_unshift($traceData, array(
+        array_unshift($traceData, [
             'function' => '',
             'file' => null != $exception->getFile() ? $exception->getFile() : 'n/a',
             'line' => null != $exception->getLine() ? $exception->getLine() : 'n/a',
-            'args' => array(),
-        ));
+            'args' => [],
+        ]);
 
-        $traces = array();
+        $traces = [];
         $lineFormat = '  at %s%s%s() in %s line %s';
         for ($i = 0, $count = count($traceData); $i < $count; ++$i) {
             $line = isset($traceData[$i]['line']) ? $traceData[$i]['line'] : 'n/a';
             $file = isset($traceData[$i]['file']) ? $traceData[$i]['file'] : 'n/a';
-            $args = isset($traceData[$i]['args']) ? $traceData[$i]['args'] : array();
+            $args = isset($traceData[$i]['args']) ? $traceData[$i]['args'] : [];
             $this->test()->error(sprintf(
                 $lineFormat,
                 isset($traceData[$i]['class']) ? $traceData[$i]['class'] : '',

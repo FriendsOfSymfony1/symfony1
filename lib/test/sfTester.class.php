@@ -35,7 +35,7 @@ abstract class sfTester
 
     public function __call($method, $arguments)
     {
-        call_user_func_array(array($this->browser, $method), $arguments);
+        call_user_func_array([$this->browser, $method], $arguments);
 
         return $this->getObjectToReturn();
     }

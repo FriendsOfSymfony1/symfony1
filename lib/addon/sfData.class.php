@@ -19,7 +19,7 @@
 abstract class sfData
 {
     protected $deleteCurrentData = true;
-    protected $object_references = array();
+    protected $object_references = [];
 
     /**
      * Sets a flag to indicate if the current data in the database
@@ -68,7 +68,7 @@ abstract class sfData
             $element = sfConfig::get('sf_data_dir').'/fixtures';
         }
 
-        $files = array();
+        $files = [];
         if (is_array($element)) {
             foreach ($element as $e) {
                 $files = array_merge($files, $this->getFiles($e));
@@ -108,8 +108,8 @@ abstract class sfData
      */
     protected function doLoadData(array $files)
     {
-        $this->object_references = array();
-        $this->maps = array();
+        $this->object_references = [];
+        $this->maps = [];
 
         foreach ($files as $file) {
             $this->doLoadDataFromFile($file);

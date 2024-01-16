@@ -22,10 +22,10 @@ class sfProjectDisableTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('env', sfCommandArgument::REQUIRED, 'The environment name'),
             new sfCommandArgument('app', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The application name'),
-        ));
+        ]);
 
         $this->namespace = 'project';
         $this->name = 'disable';
@@ -45,12 +45,15 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (1 == count($arguments['app']) && !file_exists(sfConfig::get('sf_apps_dir').'/'.$arguments['app'][0])) {
             // support previous task signature
-            $applications = array($arguments['env']);
+            $applications = [$arguments['env']];
             $env = $arguments['app'][0];
         } else {
             $applications = count($arguments['app']) ? $arguments['app'] : sfFinder::type('dir')->relative()->maxdepth(0)->in(sfConfig::get('sf_apps_dir'));

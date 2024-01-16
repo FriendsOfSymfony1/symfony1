@@ -29,15 +29,15 @@ class sfWidgetFormFilterDate extends sfWidgetFormDateRange
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
-        $values = array_merge(array('is_empty' => ''), is_array($value) ? $value : array());
+        $values = array_merge(['is_empty' => ''], is_array($value) ? $value : []);
 
-        return strtr($this->getOption('filter_template'), array(
+        return strtr($this->getOption('filter_template'), [
             '%date_range%' => parent::render($name, $value, $attributes, $errors),
-            '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderTag('input', array('type' => 'checkbox', 'name' => $name.'[is_empty]', 'checked' => $values['is_empty'] ? 'checked' : '')) : '',
-            '%empty_label%' => $this->getOption('with_empty') ? $this->renderContentTag('label', $this->translate($this->getOption('empty_label')), array('for' => $this->generateId($name.'[is_empty]'))) : '',
-        ));
+            '%empty_checkbox%' => $this->getOption('with_empty') ? $this->renderTag('input', ['type' => 'checkbox', 'name' => $name.'[is_empty]', 'checked' => $values['is_empty'] ? 'checked' : '']) : '',
+            '%empty_label%' => $this->getOption('with_empty') ? $this->renderContentTag('label', $this->translate($this->getOption('empty_label')), ['for' => $this->generateId($name.'[is_empty]')]) : '',
+        ]);
     }
 
     /**
@@ -57,7 +57,7 @@ class sfWidgetFormFilterDate extends sfWidgetFormDateRange
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

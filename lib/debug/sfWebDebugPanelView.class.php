@@ -17,8 +17,8 @@
  */
 class sfWebDebugPanelView extends sfWebDebugPanel
 {
-    protected $actions = array();
-    protected $partials = array();
+    protected $actions = [];
+    protected $partials = [];
 
     /**
      * Constructor.
@@ -29,8 +29,8 @@ class sfWebDebugPanelView extends sfWebDebugPanel
     {
         parent::__construct($webDebug);
 
-        $this->webDebug->getEventDispatcher()->connect('controller.change_action', array($this, 'listenForChangeAction'));
-        $this->webDebug->getEventDispatcher()->connect('template.filter_parameters', array($this, 'filterTemplateParameters'));
+        $this->webDebug->getEventDispatcher()->connect('controller.change_action', [$this, 'listenForChangeAction']);
+        $this->webDebug->getEventDispatcher()->connect('template.filter_parameters', [$this, 'filterTemplateParameters']);
     }
 
     /**
@@ -38,8 +38,8 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      */
     public function listenForChangeAction(sfEvent $event)
     {
-        $this->actions = array();
-        $this->partials = array();
+        $this->actions = [];
+        $this->partials = [];
     }
 
     /**
@@ -51,12 +51,12 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      */
     public function filterTemplateParameters(sfEvent $event, $parameters)
     {
-        $entry = array('parameters' => $parameters);
+        $entry = ['parameters' => $parameters];
 
         if ('action' == $parameters['sf_type'] && $file = $this->getLastTemplate()) {
-            $this->actions[] = $entry + array('file' => $file);
+            $this->actions[] = $entry + ['file' => $file];
         } elseif ('partial' == $parameters['sf_type'] && $file = $this->getLastTemplate('sfPartialView')) {
-            $this->partials[] = $entry + array('file' => $file);
+            $this->partials[] = $entry + ['file' => $file];
         }
 
         return $parameters;
@@ -85,7 +85,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      */
     public function getPanelContent()
     {
-        $html = array();
+        $html = [];
 
         foreach ($this->actions as $action) {
             $html[] = $this->renderTemplateInformation($action['file'], $action['parameters']);
@@ -135,7 +135,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
         $parameters = $this->filterCoreParameters($parameters);
         ++$i;
 
-        $html = array();
+        $html = [];
         $html[] = sprintf('<h2>%s: %s %s</h2>', $label, $this->formatFileLink($file, null, $this->shortenTemplatePath($file)), $this->getToggler('sfWebDebugViewTemplate'.$i));
         $html[] = '<div id="sfWebDebugViewTemplate'.$i.'" style="display:'.(1 == $i ? 'block' : 'none').'">';
         if (count($parameters)) {
@@ -143,7 +143,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
             $html[] = '<ul>';
             foreach ($parameters as $name => $parameter) {
                 $presentation = '<li>'.$this->formatParameterAsHtml($name, $parameter).'</li>';
-                $html[] = $this->webDebug->getEventDispatcher()->filter(new sfEvent($this, 'debug.web.view.filter_parameter_html', array('parameter' => $parameter)), $presentation)->getReturnValue();
+                $html[] = $this->webDebug->getEventDispatcher()->filter(new sfEvent($this, 'debug.web.view.filter_parameter_html', ['parameter' => $parameter]), $presentation)->getReturnValue();
             }
             $html[] = '</ul>';
         } else {
@@ -158,6 +158,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      * Formats information about a parameter as HTML.
      *
      * @param string $name
+     * @param mixed  $parameter
      *
      * @return string
      */
@@ -204,7 +205,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
             $this->setStatus(sfLogger::NOTICE);
         }
 
-        $html = array();
+        $html = [];
         $html[] = $this->getParameterDescription($name, $form, $form->hasErrors() ? '<code class="sfWebDebugWarning">$%s</code>' : null);
         $html[] = $this->getToggler('sfWebDebugViewForm'.$i);
         $html[] = '<div id="sfWebDebugViewForm'.$i.'" style="display:none">';
@@ -228,7 +229,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      */
     protected function formatFormFieldSchemaAsHtml(sfFormFieldSchema $fieldSchema, $nameFormat = '%s')
     {
-        $html = array();
+        $html = [];
 
         foreach ($fieldSchema as $field) {
             $name = sprintf($nameFormat, $this->varExport($field->getName()));
@@ -255,6 +256,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      * @param string     $name
      * @param mixed|null $nameFormat
      * @param mixed|null $typeFormat
+     * @param mixed      $parameter
      *
      * @return string
      */
@@ -300,7 +302,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
      */
     protected function filterCoreParameters($parameters)
     {
-        $filtered = array();
+        $filtered = [];
 
         foreach ($parameters as $name => $value) {
             if (0 !== strpos($name, 'sf_')) {

@@ -35,7 +35,7 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @see sfRoute
      */
-    public function __construct($pattern, array $defaults = array(), array $requirements = array(), array $options = array())
+    public function __construct($pattern, array $defaults = [], array $requirements = [], array $options = [])
     {
         if (!isset($options['model'])) {
             throw new InvalidArgumentException(sprintf('You must pass a "model" option for a %s object (%s).', get_class($this), $pattern));
@@ -45,7 +45,7 @@ class sfObjectRoute extends sfRequestRoute
             throw new InvalidArgumentException(sprintf('You must pass a "type" option for a %s object (%s).', get_class($this), $pattern));
         }
 
-        if (!in_array($options['type'], array('object', 'list'))) {
+        if (!in_array($options['type'], ['object', 'list'])) {
             throw new InvalidArgumentException(sprintf('The "type" option can only be "object" or "list", "%s" given (%s).', $options['type'], $pattern));
         }
 
@@ -60,7 +60,7 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @return bool true if the parameters matches this route, false otherwise
      */
-    public function matchesParameters($params, $context = array())
+    public function matchesParameters($params, $context = [])
     {
         return parent::matchesParameters('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params);
     }
@@ -74,7 +74,7 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @return string The generated URL
      */
-    public function generate($params, $context = array(), $absolute = false)
+    public function generate($params, $context = [], $absolute = false)
     {
         return parent::generate('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params, $context, $absolute);
     }
@@ -150,7 +150,7 @@ class sfObjectRoute extends sfRequestRoute
             throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
         }
 
-        return call_user_func(array($className, $this->options['method']), $this->filterParameters($parameters));
+        return call_user_func([$className, $this->options['method']], $this->filterParameters($parameters));
     }
 
     protected function getObjectsForParameters($parameters)
@@ -161,7 +161,7 @@ class sfObjectRoute extends sfRequestRoute
             throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
         }
 
-        return call_user_func(array($className, $this->options['method']), $this->filterParameters($parameters));
+        return call_user_func([$className, $this->options['method']], $this->filterParameters($parameters));
     }
 
     protected function filterParameters($parameters)
@@ -170,7 +170,7 @@ class sfObjectRoute extends sfRequestRoute
             return $parameters;
         }
 
-        $params = array();
+        $params = [];
         foreach (array_keys($this->variables) as $variable) {
             $params[$variable] = $parameters[$variable];
         }
@@ -193,7 +193,7 @@ class sfObjectRoute extends sfRequestRoute
             $object = $parameters['sf_subject'];
             unset($parameters['sf_subject']);
         } else {
-            $parameters = array();
+            $parameters = [];
         }
 
         return array_merge($parameters, $this->doConvertObjectToArray($object));
@@ -208,10 +208,10 @@ class sfObjectRoute extends sfRequestRoute
 
     protected function getRealVariables()
     {
-        $variables = array();
+        $variables = [];
 
         foreach (array_keys($this->variables) as $variable) {
-            if (0 === strpos($variable, 'sf_') || in_array($variable, array('module', 'action'))) {
+            if (0 === strpos($variable, 'sf_') || in_array($variable, ['module', 'action'])) {
                 continue;
             }
 

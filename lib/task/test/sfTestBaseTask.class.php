@@ -28,7 +28,7 @@ abstract class sfTestBaseTask extends sfBaseTask
      */
     protected function filterTestFiles($tests, $arguments, $options)
     {
-        $event = new sfEvent($this, 'task.test.filter_test_files', array('arguments' => $arguments, 'options' => $options));
+        $event = new sfEvent($this, 'task.test.filter_test_files', ['arguments' => $arguments, 'options' => $options]);
 
         $this->dispatcher->filter($event, $tests);
 

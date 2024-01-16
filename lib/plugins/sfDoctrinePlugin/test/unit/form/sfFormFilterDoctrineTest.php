@@ -8,23 +8,23 @@ $t = new lime_test(16);
 
 class TestFormFilter extends ArticleFormFilter
 {
-    public $processedFields = array();
+    public $processedFields = [];
 
     public function configure()
     {
-        $this->setWidgets(array(
+        $this->setWidgets([
             'name' => new sfWidgetFormInputText(),
             'nomethod_bc' => new sfWidgetFormInputText(),
             'nomethod' => new sfWidgetFormInputText(),
             'author_id' => new sfWidgetFormInputText(),
-        ));
+        ]);
 
-        $this->setValidators(array(
+        $this->setValidators([
             'name' => new sfValidatorPass(),
             'nomethod_bc' => new sfValidatorPass(),
             'nomethod' => new sfValidatorPass(),
             'author_id' => new sfValidatorPass(),
-        ));
+        ]);
     }
 
     public function addNameColumnQuery($query, $field, $value)
@@ -34,30 +34,30 @@ class TestFormFilter extends ArticleFormFilter
 
     public function getFields()
     {
-        return array_merge(parent::getFields(), array(
+        return array_merge(parent::getFields(), [
             'body' => 'Invalid',
             'nomethod_bc' => 'Text',
             'author_id' => 'Number',
-        ));
+        ]);
     }
 }
 
 $t->diag('->getQuery()');
 
 $filter = new ArticleFormFilter();
-$filter->bind(array());
+$filter->bind([]);
 $t->isa_ok($filter->getQuery(), 'Doctrine_Query', '->getQuery() returns a Doctrine_Query object');
 
 $query = Doctrine_Query::create()->select('title, body');
 
-$filter = new ArticleFormFilter(array(), array('query' => $query));
-$filter->bind(array());
-$t->is_deeply($filter->getQuery()->getDqlPart('select'), array('title, body'), '->getQuery() uses the query option');
+$filter = new ArticleFormFilter([], ['query' => $query]);
+$filter->bind([]);
+$t->is_deeply($filter->getQuery()->getDqlPart('select'), ['title, body'], '->getQuery() uses the query option');
 $t->ok($filter->getQuery() !== $query, '->getQuery() clones the query option');
 
 // BC with symfony 1.2
 $filter = new TestFormFilter();
-$filter->bind(array('nomethod_bc' => 'nomethod_bc'));
+$filter->bind(['nomethod_bc' => 'nomethod_bc']);
 
 try {
     $filter->getQuery();
@@ -68,7 +68,7 @@ try {
 
 // BC with symfony 1.2
 $filter = new TestFormFilter();
-$filter->bind(array('body' => 'body'));
+$filter->bind(['body' => 'body']);
 
 try {
     $filter->getQuery();
@@ -79,7 +79,7 @@ try {
 
 // BC with symfony 1.2
 $filter = new TestFormFilter();
-$filter->bind(array('nomethod' => 'nomethod'));
+$filter->bind(['nomethod' => 'nomethod']);
 
 try {
     $filter->getQuery();
@@ -90,42 +90,42 @@ try {
 
 // new in symfony 1.3
 $filter = new TestFormFilter();
-$filter->bind(array('name' => 'Kris Wallsmith'));
+$filter->bind(['name' => 'Kris Wallsmith']);
 $filter->getQuery();
-$t->is_deeply($filter->processedFields, array('name'), '->getQuery() processes fields not specified in getFields()');
+$t->is_deeply($filter->processedFields, ['name'], '->getQuery() processes fields not specified in getFields()');
 
 // pass 0 to number filter
 $filter = new TestFormFilter();
-$filter->bind(array('author_id' => array('text' => 0)));
+$filter->bind(['author_id' => ['text' => 0]]);
 $query = $filter->getQuery();
 $t->is(trim($query->getDql()), 'FROM Article r WHERE r.author_id = ?', '->getQuery() filters by a 0 number');
-$t->is($query->getFlattenedParams(), array(0), '->getQuery() filters by a 0 number');
+$t->is($query->getFlattenedParams(), [0], '->getQuery() filters by a 0 number');
 
 $filter = new ArticleFormFilter();
-$filter->bind(array('type' => array('is_empty' => '1', 'text' => '')));
+$filter->bind(['type' => ['is_empty' => '1', 'text' => '']]);
 $query = $filter->getQuery();
 $t->is(trim($query->getDql()), 'FROM Article r WHERE (r.type IS NULL OR r.type = ?)', '->getQuery() tests for null or empty text fields');
-$t->is($query->getFlattenedParams(), array(''), '->getQuery() tests for null or empty text fields');
+$t->is($query->getFlattenedParams(), [''], '->getQuery() tests for null or empty text fields');
 
 $filter = new ArticleFormFilter();
-$filter->bind(array('views' => array('is_empty' => '1', 'text' => '')));
+$filter->bind(['views' => ['is_empty' => '1', 'text' => '']]);
 $query = $filter->getQuery();
 $t->is(trim($query->getDql()), 'FROM Article r WHERE (r.views IS NULL OR r.views = ?)', '->getQuery() tests for null or empty number fields');
-$t->is($query->getFlattenedParams(), array(''), '->getQuery() tests for null or empty number fields');
+$t->is($query->getFlattenedParams(), [''], '->getQuery() tests for null or empty number fields');
 
 $t->diag('->setTableMethod()');
 
 $filter = new ArticleFormFilter();
 $filter->setTableMethod('getNewQuery');
-$filter->bind(array());
-$t->is_deeply($filter->getQuery()->getDqlPart('select'), array('title, body'), '->setTableMethod() specifies a method that can return a new query');
+$filter->bind([]);
+$t->is_deeply($filter->getQuery()->getDqlPart('select'), ['title, body'], '->setTableMethod() specifies a method that can return a new query');
 
 $filter = new ArticleFormFilter();
 $filter->setTableMethod('filterSuppliedQuery');
-$filter->bind(array());
-$t->is_deeply($filter->getQuery()->getDqlPart('select'), array('title, body'), '->setTableMethod() specifies a method that can modify the supplied query');
+$filter->bind([]);
+$t->is_deeply($filter->getQuery()->getDqlPart('select'), ['title, body'], '->setTableMethod() specifies a method that can modify the supplied query');
 
 $filter = new ArticleFormFilter();
 $filter->setTableMethod('filterSuppliedQueryAndReturn');
-$filter->bind(array());
-$t->is_deeply($filter->getQuery()->getDqlPart('select'), array('title, body'), '->setTableMethod() specifies a method that can modify and return the supplied query');
+$filter->bind([]);
+$t->is_deeply($filter->getQuery()->getDqlPart('select'), ['title, body'], '->setTableMethod() specifies a method that can modify and return the supplied query');

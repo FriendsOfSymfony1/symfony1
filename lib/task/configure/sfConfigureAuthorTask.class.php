@@ -22,9 +22,9 @@ class sfConfigureAuthorTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('author', sfCommandArgument::REQUIRED, 'The project author'),
-        ));
+        ]);
 
         $this->namespace = 'configure';
         $this->name = 'author';
@@ -44,14 +44,17 @@ EOF;
 
     /**
      * @see sfTask
+     *
+     * @param mixed $arguments
+     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $file = sfConfig::get('sf_config_dir').'/properties.ini';
         $content = parse_ini_file($file, true);
 
         if (!isset($content['symfony'])) {
-            $content['symfony'] = array();
+            $content['symfony'] = [];
         }
 
         $content['symfony']['author'] = $arguments['author'];

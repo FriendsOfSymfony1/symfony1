@@ -32,7 +32,7 @@ class sfStreamLogger extends sfLogger
      *
      * @throws sfConfigurationException
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         if (!isset($options['stream'])) {
             throw new sfConfigurationException('You must provide a "stream" option for this logger.');

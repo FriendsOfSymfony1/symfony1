@@ -28,7 +28,7 @@ class sfPearRestPlugin extends sfPearRest11
      * @param PEAR_Config $config  The PEAR Config object
      * @param array       $options An array of options
      */
-    public function __construct(PEAR_Config $config, $options = array())
+    public function __construct(PEAR_Config $config, $options = [])
     {
         parent::__construct($config, $options);
 
@@ -45,7 +45,7 @@ class sfPearRestPlugin extends sfPearRest11
     public function __call($method, $arguments)
     {
         if (method_exists($this->rest10, $method)) {
-            return call_user_func_array(array($this->rest10, $method), $arguments);
+            return call_user_func_array([$this->rest10, $method], $arguments);
         }
     }
 
@@ -108,10 +108,10 @@ class sfPearRestPlugin extends sfPearRest11
         }
 
         if (!isset($allreleases['r'][0])) {
-            $allreleases['r'] = array($allreleases['r']);
+            $allreleases['r'] = [$allreleases['r']];
         }
 
-        $versions = array();
+        $versions = [];
         $allowedStates = $this->getAllowedStates($stability);
         foreach ($allreleases['r'] as $release) {
             if (!isset($allowedStates[$release['s']])) {
@@ -162,7 +162,7 @@ class sfPearRestPlugin extends sfPearRest11
             throw new sfPluginException(sprintf('Plugin "%s" version "%s" is already installed (you tried to install version "%s")', $plugin, $installed, $version));
         }
 
-        $info = $this->getDownloadURL($this->restBase, array('channel' => $this->channel, 'package' => $plugin, 'version' => $version), $stability, $installed);
+        $info = $this->getDownloadURL($this->restBase, ['channel' => $this->channel, 'package' => $plugin, 'version' => $version], $stability, $installed);
         if (PEAR::isError($info)) {
             throw new sfPluginRestException(sprintf('Unable to get download information for plugin "%s | %s | %s": %s', $plugin, $version, $stability, $info->getMessage()));
         }

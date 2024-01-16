@@ -16,14 +16,14 @@ $t = new lime_test(1);
 
 // prefix
 $handler = new sfDefineEnvironmentConfigHandler();
-$handler->initialize(array('prefix' => 'sf_'));
+$handler->initialize(['prefix' => 'sf_']);
 
 $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfDefineEnvironmentConfigHandler'.DIRECTORY_SEPARATOR;
 
-$files = array(
+$files = [
     $dir.'prefix_default.yml',
     $dir.'prefix_all.yml',
-);
+];
 
 sfConfig::set('sf_environment', 'prod');
 

@@ -26,12 +26,12 @@ class sfContext implements ArrayAccess
 
     /** @var sfApplicationConfiguration */
     protected $configuration;
-    protected $mailerConfiguration = array();
-    protected $serviceContainerConfiguration = array();
-    protected $factories = array();
+    protected $mailerConfiguration = [];
+    protected $serviceContainerConfiguration = [];
+    protected $factories = [];
     protected $hasShutdownUserAndStorage = false;
 
-    protected static $instances = array();
+    protected static $instances = [];
     protected static $current = 'default';
 
     /**
@@ -49,7 +49,7 @@ class sfContext implements ArrayAccess
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'context.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'context.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
             $verb = substr($method, 0, 3); // get | set
             $factory = strtolower(substr($method, 3)); // factory name
@@ -115,11 +115,11 @@ class sfContext implements ArrayAccess
             sfException::createFromException($e)->printStackTrace();
         }
 
-        $this->dispatcher->connect('template.filter_parameters', array($this, 'filterTemplateParameters'));
-        $this->dispatcher->connect('response.fastcgi_finish_request', array($this, 'shutdownUserAndStorage'));
+        $this->dispatcher->connect('template.filter_parameters', [$this, 'filterTemplateParameters']);
+        $this->dispatcher->connect('response.fastcgi_finish_request', [$this, 'shutdownUserAndStorage']);
 
         // register our shutdown function
-        register_shutdown_function(array($this, 'shutdown'));
+        register_shutdown_function([$this, 'shutdown']);
     }
 
     /**
@@ -168,7 +168,7 @@ class sfContext implements ArrayAccess
     {
         if (sfConfig::get('sf_use_database')) {
             // setup our database connections
-            $this->factories['databaseManager'] = new sfDatabaseManager($this->configuration, array('auto_shutdown' => false));
+            $this->factories['databaseManager'] = new sfDatabaseManager($this->configuration, ['auto_shutdown' => false]);
         }
 
         // create a new action stack

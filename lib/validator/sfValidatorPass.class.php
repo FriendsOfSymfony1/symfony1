@@ -19,6 +19,8 @@ class sfValidatorPass extends sfValidatorBase
 {
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     public function clean($value)
     {
@@ -27,6 +29,8 @@ class sfValidatorPass extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
+     *
+     * @param mixed $value
      */
     protected function doClean($value)
     {

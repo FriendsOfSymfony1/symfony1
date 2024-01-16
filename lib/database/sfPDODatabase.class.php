@@ -29,7 +29,7 @@ class sfPDODatabase extends sfDatabase
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->getConnection(), $method), $arguments);
+        return call_user_func_array([$this->getConnection(), $method], $arguments);
     }
 
     /**
@@ -50,7 +50,7 @@ class sfPDODatabase extends sfDatabase
             $password = $this->getParameter('password');
             $persistent = $this->getParameter('persistent');
 
-            $options = $persistent ? array(PDO::ATTR_PERSISTENT => true) : array();
+            $options = $persistent ? [PDO::ATTR_PERSISTENT => true] : [];
 
             $this->connection = new $pdo_class($dsn, $username, $password, $options);
         } catch (PDOException $e) {

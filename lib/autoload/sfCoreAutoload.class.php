@@ -30,7 +30,7 @@ class sfCoreAutoload
 
     // Don't edit this property by hand.
     // To update it, use sfCoreAutoload::make()
-    protected $classes = array(
+    protected $classes = [
         'sfaction' => 'action/sfAction.class.php',
         'sfactionstack' => 'action/sfActionStack.class.php',
         'sfactionstackentry' => 'action/sfActionStackEntry.class.php',
@@ -394,7 +394,7 @@ class sfCoreAutoload
         'sfyamldumper' => 'yaml/sfYamlDumper.class.php',
         'sfyamlinline' => 'yaml/sfYamlInline.class.php',
         'sfyamlparser' => 'yaml/sfYamlParser.class.php',
-    );
+    ];
 
     protected function __construct()
     {
@@ -427,7 +427,7 @@ class sfCoreAutoload
         }
 
         ini_set('unserialize_callback_func', 'spl_autoload_call');
-        if (false === spl_autoload_register(array(self::getInstance(), 'autoload'))) {
+        if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
             throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
 
@@ -439,7 +439,7 @@ class sfCoreAutoload
      */
     public static function unregister()
     {
-        spl_autoload_unregister(array(self::getInstance(), 'autoload'));
+        spl_autoload_unregister([self::getInstance(), 'autoload']);
         self::$registered = false;
     }
 
