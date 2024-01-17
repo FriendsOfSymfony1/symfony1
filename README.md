@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/FriendsOfSymfony1/symfony1/actions/workflows/continuous-integration.yml/badge.svg)
+![Build Status](https://github.com/FriendsOfSymfony1/symfony1/actions/workflows/continuous-integration.yml/badge.svg)
 
 About this version
 ------------------
