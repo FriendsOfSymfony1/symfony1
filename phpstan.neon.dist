@@ -1,0 +1,11 @@
+parameters:
+    level: 9
+    bootstrapFiles:
+        - .phpstan/bootstrap.php
+    paths:
+        - lib
+        - test
+    excludePaths:
+        analyse:
+            - lib/task/symfony/lime_symfony.php
+            - lib/task/symfony/sfSymfonyTestTask.class.php
