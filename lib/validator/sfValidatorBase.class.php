@@ -14,8 +14,6 @@
  * It also implements the required option for all validators.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfValidatorBase
 {

@@ -12,8 +12,6 @@
  * sfValidatorAnd validates an input value if all validators passes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorAnd extends sfValidatorBase
 {

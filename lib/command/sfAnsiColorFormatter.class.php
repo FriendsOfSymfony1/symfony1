@@ -12,8 +12,6 @@
  * sfAnsiColorFormatter provides methods to colorize text to be displayed on a console.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfAnsiColorFormatter extends sfFormatter
 {

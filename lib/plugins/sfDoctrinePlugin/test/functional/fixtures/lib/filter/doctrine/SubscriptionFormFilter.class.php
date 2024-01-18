@@ -2,8 +2,6 @@
 
 /**
  * Subscription filter form.
- *
- * @version    SVN: $Id$
  */
 class SubscriptionFormFilter extends BaseSubscriptionFormFilter
 {

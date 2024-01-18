@@ -17,8 +17,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @author     Julien Garand <julien.garand@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfMySQLSessionStorage extends sfDatabaseSessionStorage
 {

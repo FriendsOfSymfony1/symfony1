@@ -14,8 +14,6 @@
  * It implements features that is independent from the symfony controllers.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfBrowserBase
 {

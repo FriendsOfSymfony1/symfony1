@@ -12,8 +12,6 @@
  * sfYamlInline implements a YAML parser/dumper for the YAML inline syntax.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfYamlInline.class.php 16177 2009-03-11 08:32:48Z fabien $
  */
 class sfYamlInline
 {

@@ -22,8 +22,6 @@
  * Interface loosely based on perl File::Find::Rule module.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfFinder
 {
@@ -597,8 +595,6 @@ class sfFinder
  * @author     Richard Clamp <richardc@unixbeard.net> perl version
  * @copyright  2004-2005 Fabien Potencier <fabien.potencier@gmail.com>
  * @copyright  2002 Richard Clamp <richardc@unixbeard.net>
- *
- * @version    SVN: $Id$
  */
 class sfGlobToRegex
 {
@@ -702,8 +698,6 @@ class sfGlobToRegex
  * @copyright  2002 Richard Clamp <richardc@unixbeard.net>
  *
  * @see        http://physics.nist.gov/cuu/Units/binary.html
- *
- * @version    SVN: $Id$
  */
 class sfNumberCompare
 {

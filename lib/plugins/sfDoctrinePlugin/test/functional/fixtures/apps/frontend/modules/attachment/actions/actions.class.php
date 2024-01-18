@@ -4,8 +4,6 @@
  * attachment actions.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class attachmentActions extends sfActions
 {

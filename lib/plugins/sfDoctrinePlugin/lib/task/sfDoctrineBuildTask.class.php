@@ -15,8 +15,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  * Generates code based on your schema.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineBuildTask extends sfDoctrineBaseTask
 {

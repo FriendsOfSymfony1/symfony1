@@ -12,8 +12,6 @@
  * sfServiceContainerLoader is the abstract class used by all built-in loaders.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfServiceContainerLoader.php 267 2009-03-26 19:56:18Z fabien $
  */
 abstract class sfServiceContainerLoader implements sfServiceContainerLoaderInterface
 {

@@ -12,8 +12,6 @@
  * Marks a variable as being safe for output.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfOutputEscaperSafe extends ArrayIterator
 {

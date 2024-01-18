@@ -12,8 +12,6 @@
  * sfTesterUser implements tests for the symfony user object.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTesterUser extends sfTester
 {

@@ -15,8 +15,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  *
- * @version    SVN: $Id$
- *
  * @method sfWebController getController()
  * @method sfWebResponse   getResponse()
  */

@@ -2,8 +2,6 @@
 
 /**
  * Group form.
- *
- * @version    SVN: $Id$
  */
 class GroupForm extends BaseGroupForm
 {

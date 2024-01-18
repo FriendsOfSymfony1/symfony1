@@ -12,8 +12,6 @@
  * sfValidatorDate validates a date. It also converts the input value to a valid date.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorDate extends sfValidatorBase
 {

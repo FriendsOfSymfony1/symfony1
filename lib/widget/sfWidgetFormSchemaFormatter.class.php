@@ -12,8 +12,6 @@
  * sfWidgetFormSchemaFormatter allows to format a form schema with HTML formats.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfWidgetFormSchemaFormatter
 {

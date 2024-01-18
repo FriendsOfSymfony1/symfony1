@@ -12,8 +12,6 @@
  * Configures the main author of the project.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfConfigureAuthorTask extends sfBaseTask
 {

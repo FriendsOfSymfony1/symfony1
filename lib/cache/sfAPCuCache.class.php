@@ -13,8 +13,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Paulo M
- *
- * @version    SVN: $Id$
  */
 class sfAPCuCache extends sfCache
 {

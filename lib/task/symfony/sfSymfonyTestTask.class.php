@@ -12,8 +12,6 @@
  * Launches the symfony test suite.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfSymfonyTestTask extends sfTask
 {

@@ -12,12 +12,10 @@
 /**
  * sfPDODatabase provides connectivity for the PDO database abstraction layer.
  *
- * @author     Daniel Swarbrick (daniel@pressure.net.nz)
+ * @author     Daniel Swarbrick <daniel@pressure.net.nz>
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPDODatabase extends sfDatabase
 {

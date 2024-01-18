@@ -12,8 +12,6 @@
  * sfObjectRouteCollection represents a collection of routes bound to objects.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfObjectRouteCollection extends sfRouteCollection
 {

@@ -12,8 +12,6 @@
  * sfWebDebug creates debug information for easy debugging in the browser.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebug
 {

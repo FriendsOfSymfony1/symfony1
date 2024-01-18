@@ -12,8 +12,6 @@
  * sfBrowser simulates a browser which can surf a symfony application.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfBrowser extends sfBrowserBase
 {

@@ -2,8 +2,6 @@
 
 /**
  * Profile filter form.
- *
- * @version    SVN: $Id$
  */
 class ProfileFormFilter extends BaseProfileFormFilter
 {

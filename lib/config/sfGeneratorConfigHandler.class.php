@@ -12,8 +12,6 @@
  * sfGeneratorConfigHandler.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfGeneratorConfigHandler extends sfYamlConfigHandler
 {

@@ -12,8 +12,6 @@
  * sfWidgetFormI18nChoiceCountry represents a country choice widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
 {

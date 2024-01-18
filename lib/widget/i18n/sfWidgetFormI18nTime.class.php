@@ -12,8 +12,6 @@
  * sfWidgetFormI18nTime represents a time widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormI18nTime extends sfWidgetFormTime
 {

@@ -12,8 +12,6 @@
  * sfServiceContainerDumperInterface is the interface implemented by service container dumper classes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 interface sfServiceContainerDumperInterface
 {

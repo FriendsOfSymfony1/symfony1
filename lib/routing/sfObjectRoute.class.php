@@ -14,8 +14,6 @@
  * An object route can represent a single object or a list of objects.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfObjectRoute extends sfRequestRoute
 {

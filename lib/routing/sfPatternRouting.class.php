@@ -14,8 +14,6 @@
  * It parses and generates URLs by delegating the work to an array of sfRoute objects.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPatternRouting extends sfRouting
 {

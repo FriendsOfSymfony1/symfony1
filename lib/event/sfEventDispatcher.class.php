@@ -14,8 +14,6 @@
  * @see http://developer.apple.com/documentation/Cocoa/Conceptual/Notifications/index.html Apple's Cocoa framework
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfEventDispatcher.class.php 10631 2008-08-03 16:50:47Z fabien $
  */
 class sfEventDispatcher
 {

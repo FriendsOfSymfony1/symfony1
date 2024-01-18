@@ -7,8 +7,6 @@
  *
  * @author     ##NAME## <##EMAIL##>
  *
- * @version    SVN: $Id$
- *
  * @internal
  *
  * @coversNothing

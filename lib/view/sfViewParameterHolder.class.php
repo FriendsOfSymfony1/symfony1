@@ -14,8 +14,6 @@
  * It can also escape variables with an escaping method.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfViewParameterHolder extends sfParameterHolder
 {

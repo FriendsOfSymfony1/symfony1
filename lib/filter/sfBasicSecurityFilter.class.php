@@ -16,8 +16,6 @@
  * method of SecurityUser.
  *
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfBasicSecurityFilter extends sfFilter
 {

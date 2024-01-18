@@ -12,8 +12,6 @@
  * Displays the current routes for an application.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfAppRoutesTask extends sfBaseTask
 {

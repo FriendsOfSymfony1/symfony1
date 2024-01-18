@@ -12,8 +12,6 @@
  * sfValidatorRegex validates a value with a regular expression.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorRegex extends sfValidatorString
 {

@@ -4,8 +4,6 @@
  * sfWidgetFormInputFileMulti represents an upload HTML input tag with multiple option.
  *
  * @author     Vincent Chabot <vchabot@groupe-exp.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
 {

@@ -4,8 +4,6 @@
  * Connection profiler.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineConnectionProfiler extends Doctrine_Connection_Profiler
 {

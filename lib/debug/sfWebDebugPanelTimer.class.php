@@ -12,8 +12,6 @@
  * sfWebDebugPanelTimer adds a panel to the web debug toolbar with timer information.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelTimer extends sfWebDebugPanel
 {

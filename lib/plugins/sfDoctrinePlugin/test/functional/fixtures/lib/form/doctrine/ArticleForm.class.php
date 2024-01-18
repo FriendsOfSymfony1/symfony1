@@ -2,8 +2,6 @@
 
 /**
  * Article form.
- *
- * @version    SVN: $Id$
  */
 class ArticleForm extends BaseArticleForm
 {

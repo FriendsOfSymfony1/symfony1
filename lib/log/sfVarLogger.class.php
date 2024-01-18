@@ -12,8 +12,6 @@
  * sfVarLogger logs messages within its instance for later use.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfVarLogger extends sfLogger
 {

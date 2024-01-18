@@ -12,8 +12,6 @@
  * Represents a command line argument.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommandArgument
 {

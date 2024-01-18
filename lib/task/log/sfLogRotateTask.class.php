@@ -12,8 +12,6 @@
  * Rotates an application log files.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfLogRotateTask extends sfBaseTask
 {

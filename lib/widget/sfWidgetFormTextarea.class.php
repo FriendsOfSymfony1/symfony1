@@ -12,8 +12,6 @@
  * sfWidgetFormTextarea represents a textarea HTML tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormTextarea extends sfWidgetForm
 {

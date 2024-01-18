@@ -13,8 +13,6 @@
  * application or on a module level.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfRootConfigHandler extends sfYamlConfigHandler
 {

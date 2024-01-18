@@ -12,8 +12,6 @@
  * Optimizes a project for better performance.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectOptimizeTask extends sfBaseTask
 {

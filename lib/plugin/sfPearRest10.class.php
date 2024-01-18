@@ -14,8 +14,6 @@ require_once 'PEAR/REST/10.php';
  * sfPearRest10 interacts with a PEAR channel that supports REST 1.0.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPearRest10 extends PEAR_REST_10
 {

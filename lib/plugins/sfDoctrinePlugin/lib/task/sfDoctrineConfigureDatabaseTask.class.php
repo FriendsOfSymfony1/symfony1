@@ -12,8 +12,6 @@
  * Configures the database connection.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineConfigureDatabaseTask extends sfBaseTask
 {

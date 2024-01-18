@@ -19,8 +19,6 @@
  *     message: { type: clob, notnull: true }
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class Swift_DoctrineSpool extends Swift_ConfigurableSpool
 {

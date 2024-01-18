@@ -12,8 +12,6 @@
  * Class to manage command line arguments and options.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommandManager
 {

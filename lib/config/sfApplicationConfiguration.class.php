@@ -12,8 +12,6 @@
  * sfConfiguration represents a configuration for a symfony application.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfApplicationConfiguration extends ProjectConfiguration
 {

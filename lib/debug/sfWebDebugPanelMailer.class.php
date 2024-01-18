@@ -12,8 +12,6 @@
  * sfWebDebugPanelMailer adds a panel to the web debug toolbar with sent emails.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelMailer extends sfWebDebugPanel
 {

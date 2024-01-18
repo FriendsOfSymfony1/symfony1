@@ -4,8 +4,6 @@
  * doctrine_route_test actions.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class doctrine_route_testActions extends sfActions
 {

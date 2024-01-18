@@ -12,8 +12,6 @@
  * sfGeneratorManager helps generate classes, views and templates for scaffolding, admin interface, ...
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfGeneratorManager
 {

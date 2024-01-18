@@ -13,8 +13,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
- * @version    SVN: $Id$
- *
  * @param mixed|null $culture
  * @param mixed|null $charset
  */

@@ -12,8 +12,6 @@
  * sfValidatorI18nChoiceCountry validates than the value is a valid country.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorI18nChoiceCountry extends sfValidatorChoice
 {

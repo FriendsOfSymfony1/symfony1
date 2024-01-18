@@ -13,8 +13,6 @@
  * provides a central location for parsing YAML files.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfYamlConfigHandler extends sfConfigHandler
 {

@@ -12,8 +12,6 @@
  * sfServiceContainerBuilder is a DI container that provides an interface to build the services.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfServiceContainerBuilder.php 269 2009-03-26 20:39:16Z fabien $
  */
 class sfServiceContainerBuilder extends sfServiceContainer
 {

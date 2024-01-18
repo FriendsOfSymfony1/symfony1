@@ -12,8 +12,6 @@
  * sfCache is an abstract class for all cache classes in symfony.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfCache
 {

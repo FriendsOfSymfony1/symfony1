@@ -30,8 +30,6 @@ require_once 'PEAR/Installer.php';
  * sfPearEnvironment represents a PEAR environment.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPearEnvironment
 {

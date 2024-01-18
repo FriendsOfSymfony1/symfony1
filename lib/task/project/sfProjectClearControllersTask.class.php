@@ -12,8 +12,6 @@
  * Clears all non production environment controllers.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectClearControllersTask extends sfBaseTask
 {

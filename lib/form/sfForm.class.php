@@ -21,8 +21,6 @@
  * is generated on the fly.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfForm implements ArrayAccess, Iterator, Countable
 {

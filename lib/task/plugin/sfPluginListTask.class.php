@@ -14,8 +14,6 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  * Lists installed plugins.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPluginListTask extends sfPluginBaseTask
 {

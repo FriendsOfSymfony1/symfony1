@@ -13,8 +13,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Fabian Lange <fabian.lange@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorTime extends sfValidatorBase
 {

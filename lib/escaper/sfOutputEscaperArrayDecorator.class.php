@@ -14,8 +14,6 @@
  * @see        sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
  */
 class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator implements Iterator, ArrayAccess, Countable
 {

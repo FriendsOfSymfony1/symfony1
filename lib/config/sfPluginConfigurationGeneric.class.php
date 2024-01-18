@@ -12,8 +12,6 @@
  * sfPluginConfigurationGeneric represents a configuration for a plugin with no configuration class.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPluginConfigurationGeneric extends sfPluginConfiguration
 {

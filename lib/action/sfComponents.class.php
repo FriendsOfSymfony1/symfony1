@@ -12,8 +12,6 @@
  * sfComponents.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfComponents extends sfComponent
 {

@@ -13,8 +13,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
- * @version    SVN: $Id$
- *
  * @property sfApplicationConfiguration $configuration
  */
 abstract class sfCommandApplicationTask extends sfTask

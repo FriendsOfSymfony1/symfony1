@@ -12,8 +12,6 @@
  * Autoload again for dev environments.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfAutoloadAgain
 {

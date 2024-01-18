@@ -12,8 +12,6 @@
  * Base class for forms that deal with a single object.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfFormObject extends BaseForm
 {

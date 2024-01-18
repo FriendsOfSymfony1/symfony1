@@ -14,8 +14,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  * Create tables for specified list of models.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineCreateModelTables extends sfDoctrineBaseTask
 {

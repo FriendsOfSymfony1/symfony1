@@ -12,8 +12,6 @@
  * sfConsoleLogger logs messages to the console.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfConsoleLogger extends sfStreamLogger
 {

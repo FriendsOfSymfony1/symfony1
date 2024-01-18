@@ -12,8 +12,6 @@
  * sfValidatorInteger validates an integer. It also converts the input value to an integer.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorInteger extends sfValidatorBase
 {

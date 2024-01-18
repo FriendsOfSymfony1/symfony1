@@ -12,8 +12,6 @@
  * sfCommonFilter automatically adds javascripts and stylesheets information in the sfResponse content.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommonFilter extends sfFilter
 {

@@ -14,8 +14,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  * Generates a Doctrine admin module.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineGenerateAdminTask extends sfDoctrineBaseTask
 {

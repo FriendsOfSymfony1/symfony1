@@ -16,8 +16,6 @@
  * The options and messages are proxied from the decorated validator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfValidatorDecorator extends sfValidatorBase
 {

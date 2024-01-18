@@ -12,8 +12,6 @@
  * Finds deprecated settings usage.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDeprecatedSettingsValidation extends sfValidation
 {

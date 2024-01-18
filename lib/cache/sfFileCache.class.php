@@ -12,8 +12,6 @@
  * Cache class that stores content in files.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfFileCache extends sfCache
 {

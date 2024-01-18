@@ -12,8 +12,6 @@
  * sfValidatorEqual validates a value compared to another value.
  *
  * @author     Yvann Boucher <yboucher@groupe-exp.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorEqual extends sfValidatorBase
 {

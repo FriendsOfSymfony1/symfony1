@@ -14,8 +14,6 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  * Publishes Web Assets for Core and third party plugins.
  *
  * @author     Fabian Lange <fabian.lange@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPluginPublishAssetsTask extends sfPluginBaseTask
 {

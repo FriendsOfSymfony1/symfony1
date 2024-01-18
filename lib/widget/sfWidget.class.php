@@ -12,8 +12,6 @@
  * sfWidget is the base class for all widgets.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfWidget
 {

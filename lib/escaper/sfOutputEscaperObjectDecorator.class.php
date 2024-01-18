@@ -15,8 +15,6 @@
  * @see        sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
  */
 class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator implements Countable
 {

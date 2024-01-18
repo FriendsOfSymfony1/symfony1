@@ -13,8 +13,6 @@
  * to remove a previously uploaded file.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputFileEditable extends sfWidgetFormInputFile
 {

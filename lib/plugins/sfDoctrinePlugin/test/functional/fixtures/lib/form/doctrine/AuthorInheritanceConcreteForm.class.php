@@ -4,8 +4,6 @@
  * AuthorInheritanceConcrete form.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class AuthorInheritanceConcreteForm extends BaseAuthorInheritanceConcreteForm
 {

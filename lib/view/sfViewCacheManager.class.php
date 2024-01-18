@@ -16,8 +16,6 @@
  * To disable all caching, you can set the [sf_cache] constant to false.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfViewCacheManager
 {

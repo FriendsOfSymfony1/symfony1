@@ -12,8 +12,6 @@
  * Clears log files.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfLogClearTask extends sfBaseTask
 {
