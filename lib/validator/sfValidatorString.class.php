@@ -12,8 +12,6 @@
  * sfValidatorString validates a string. It also converts the input value to a string.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorString extends sfValidatorBase
 {

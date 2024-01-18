@@ -12,8 +12,6 @@
  * sfCacheFilter deals with page caching and action caching.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCacheFilter extends sfFilter
 {

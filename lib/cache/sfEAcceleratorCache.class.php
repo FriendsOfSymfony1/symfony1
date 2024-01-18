@@ -12,8 +12,6 @@
  * Cache class that stores cached content in EAccelerator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfEAcceleratorCache extends sfCache
 {

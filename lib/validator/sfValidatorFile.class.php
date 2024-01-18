@@ -12,8 +12,6 @@
  * sfValidatorFile validates an uploaded file.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorFile extends sfValidatorBase
 {

@@ -12,8 +12,6 @@
  * sfWidgetFormInput represents an HTML input tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInput extends sfWidgetForm
 {

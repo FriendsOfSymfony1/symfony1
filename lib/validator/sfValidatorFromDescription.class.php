@@ -12,8 +12,6 @@
  * sfValidatorFromDescription converts a string to a validator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorFromDescription extends sfValidatorDecorator
 {

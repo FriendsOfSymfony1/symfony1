@@ -12,8 +12,6 @@
  * Outputs test code coverage.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTestCoverageTask extends sfBaseTask
 {

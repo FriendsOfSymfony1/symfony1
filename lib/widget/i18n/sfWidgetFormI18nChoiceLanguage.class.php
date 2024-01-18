@@ -12,8 +12,6 @@
  * sfWidgetFormI18nChoiceLanguage represents a language choice widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
 {

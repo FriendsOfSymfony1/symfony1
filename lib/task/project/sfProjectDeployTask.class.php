@@ -12,8 +12,6 @@
  * Deploys a project to another server.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectDeployTask extends sfBaseTask
 {

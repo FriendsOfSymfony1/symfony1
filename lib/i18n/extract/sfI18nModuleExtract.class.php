@@ -10,8 +10,6 @@
 
 /**
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfI18nModuleExtract extends sfI18nExtract
 {

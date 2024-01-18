@@ -12,8 +12,6 @@
  * Cache class that does nothing.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfNoCache extends sfCache
 {

@@ -12,8 +12,6 @@
  * sfTesterMailer implements tests for the symfony mailer object.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTesterMailer extends sfTester
 {

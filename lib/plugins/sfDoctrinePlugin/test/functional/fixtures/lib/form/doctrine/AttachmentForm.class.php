@@ -4,8 +4,6 @@
  * Attachment form.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class AttachmentForm extends BaseAttachmentForm
 {

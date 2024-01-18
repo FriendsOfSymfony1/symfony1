@@ -4,8 +4,6 @@
  * articles actions.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class articlesActions extends sfActions
 {

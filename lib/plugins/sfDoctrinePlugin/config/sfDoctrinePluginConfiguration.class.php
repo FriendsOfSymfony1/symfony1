@@ -12,8 +12,6 @@
  * sfDoctrinePluginConfiguration Class.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrinePluginConfiguration extends sfPluginConfiguration
 {

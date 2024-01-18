@@ -12,8 +12,6 @@
  * I18NHelper.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 function __($text, $args = array(), $catalogue = 'messages')
 {

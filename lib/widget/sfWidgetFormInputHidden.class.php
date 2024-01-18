@@ -12,8 +12,6 @@
  * sfWidgetFormInputHidden represents a hidden HTML input tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputHidden extends sfWidgetFormInput
 {

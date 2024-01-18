@@ -14,8 +14,6 @@
  * This class is instanciated by sfContext on demand.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfMailer extends Swift_Mailer
 {

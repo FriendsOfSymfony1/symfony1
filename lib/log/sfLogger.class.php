@@ -22,8 +22,6 @@
  * - DEBUG:   Debug-level messages
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfLogger implements sfLoggerInterface
 {

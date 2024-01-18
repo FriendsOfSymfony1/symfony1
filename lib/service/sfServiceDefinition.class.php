@@ -12,8 +12,6 @@
  * sfServiceDefinition represents a service definition.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfServiceDefinition.php 269 2009-03-26 20:39:16Z fabien $
  */
 class sfServiceDefinition
 {

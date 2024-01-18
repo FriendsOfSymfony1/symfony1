@@ -17,8 +17,6 @@
  * Some methods based on the jquery library
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDomCssSelector implements Countable, Iterator
 {

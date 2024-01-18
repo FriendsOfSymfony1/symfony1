@@ -12,8 +12,6 @@
  * sfDebug provides some method to help debugging a symfony application.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDebug
 {

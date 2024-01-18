@@ -12,8 +12,6 @@
  * sfWidgetFormI18nDate represents a date widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormI18nDate extends sfWidgetFormDate
 {

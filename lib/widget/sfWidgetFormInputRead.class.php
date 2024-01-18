@@ -12,8 +12,6 @@
  * sfWidgetFormInputRead represents an HTML text hidden input tag with readonly text input tag containing text to read.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputRead extends sfWidgetFormInput
 {

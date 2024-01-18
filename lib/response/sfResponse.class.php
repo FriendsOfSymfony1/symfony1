@@ -13,8 +13,6 @@
  * as headers, cookies and content.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfResponse implements Serializable
 {

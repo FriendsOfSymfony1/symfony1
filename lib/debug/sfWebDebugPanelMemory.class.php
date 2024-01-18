@@ -12,8 +12,6 @@
  * sfWebDebugPanelMemory adds a panel to the web debug toolbar with the memory used by the script.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelMemory extends sfWebDebugPanel
 {

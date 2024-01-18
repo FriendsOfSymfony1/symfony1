@@ -12,8 +12,6 @@
  * sfCacheConfigHandler allows you to configure cache.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCacheConfigHandler extends sfYamlConfigHandler
 {

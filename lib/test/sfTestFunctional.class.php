@@ -12,8 +12,6 @@
  * sfTestFunctional tests an application by using a browser simulator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTestFunctional extends sfTestFunctionalBase
 {

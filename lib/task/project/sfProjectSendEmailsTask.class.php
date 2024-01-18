@@ -12,8 +12,6 @@
  * Send emails stored in a queue.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectSendEmailsTask extends sfBaseTask
 {

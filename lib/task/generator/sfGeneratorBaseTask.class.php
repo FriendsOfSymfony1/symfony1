@@ -12,8 +12,6 @@
  * Base class for all symfony generator tasks.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfGeneratorBaseTask extends sfBaseTask
 {

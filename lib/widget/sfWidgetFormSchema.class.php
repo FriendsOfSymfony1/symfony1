@@ -14,8 +14,6 @@
  * A field is a named validator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 {

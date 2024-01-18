@@ -13,8 +13,6 @@
  * the current culture from the internationalized model.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
 {

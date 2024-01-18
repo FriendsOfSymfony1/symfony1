@@ -12,8 +12,6 @@
  * sfGenerator is the abstract base class for all generators.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfGenerator
 {

@@ -12,8 +12,6 @@
  * sfFileLogger logs messages in a file.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfFileLogger extends sfLogger
 {

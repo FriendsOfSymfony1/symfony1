@@ -12,8 +12,6 @@
  * sfPluginConfiguration represents a configuration for a symfony plugin.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfPluginConfiguration
 {

@@ -12,8 +12,6 @@
  * Cache class that stores cached content in a SQLite database.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfSQLiteCache extends sfCache
 {

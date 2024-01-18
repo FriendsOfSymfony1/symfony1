@@ -12,8 +12,6 @@
  * sfServiceContainerInterface is the interface implemented by service container classes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 interface sfServiceContainerInterface
 {

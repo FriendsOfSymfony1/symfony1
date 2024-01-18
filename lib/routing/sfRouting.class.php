@@ -12,8 +12,6 @@
  * sfRouting class controls the generation and parsing of URLs.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfRouting
 {

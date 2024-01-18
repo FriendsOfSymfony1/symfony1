@@ -13,8 +13,6 @@
  * sfDoctrine pager class.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrinePager extends sfPager implements Serializable
 {

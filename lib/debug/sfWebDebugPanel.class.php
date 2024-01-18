@@ -12,8 +12,6 @@
  * sfWebDebugPanel represents a web debug panel.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfWebDebugPanel
 {

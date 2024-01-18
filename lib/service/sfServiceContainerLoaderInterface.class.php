@@ -12,8 +12,6 @@
  * sfServiceContainerLoaderInterface is the interface implemented by service container loader classes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 interface sfServiceContainerLoaderInterface
 {

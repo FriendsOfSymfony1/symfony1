@@ -12,8 +12,6 @@
  * sfValidatorSchemaCompare compares several values from an array.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorSchemaCompare extends sfValidatorSchema
 {

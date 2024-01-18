@@ -12,8 +12,6 @@
  * Extends the form component with symfony-specific functionality.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfFormSymfony extends sfForm
 {

@@ -12,8 +12,6 @@
  * sfValidatorCallback validates an input value if the given callback does not throw a sfValidatorError.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorCallback extends sfValidatorBase
 {

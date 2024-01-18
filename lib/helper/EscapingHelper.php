@@ -26,8 +26,6 @@
  * incorrectly specified.
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
  */
 
 /**

@@ -12,8 +12,6 @@
  * sfWidgetFormInputCheckbox represents an HTML checkbox tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputCheckbox extends sfWidgetFormInput
 {

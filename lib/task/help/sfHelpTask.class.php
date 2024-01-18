@@ -12,8 +12,6 @@
  * Displays help for a task.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfHelpTask extends sfCommandApplicationTask
 {

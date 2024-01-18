@@ -14,8 +14,6 @@ require_once 'PEAR/Config.php';
  * sfPearConfig.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPearConfig extends PEAR_Config
 {

@@ -12,8 +12,6 @@
  * sfValidatorError represents a validation error.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorError extends Exception implements Serializable
 {

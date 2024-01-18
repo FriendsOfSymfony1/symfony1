@@ -5,8 +5,7 @@
  * 
  * @package    ##PROJECT_NAME##
  * @subpackage form
- * @author     ##AUTHOR_NAME## 
- * @version    SVN: $Id$
+ * @author     ##AUTHOR_NAME##
  */
 class BaseForm extends sfFormSymfony
 {

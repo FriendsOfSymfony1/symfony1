@@ -12,8 +12,6 @@
  * Clears the symfony cache.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCacheClearTask extends sfBaseTask
 {

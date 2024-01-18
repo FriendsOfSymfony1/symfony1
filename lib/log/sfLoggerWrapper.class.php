@@ -12,8 +12,6 @@
  * sfLoggerWrapper wraps a class that implements sfLoggerInterface into a real sfLogger object.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfLoggerWrapper extends sfLogger
 {

@@ -12,8 +12,6 @@
  * sfWidgetFormSelectRadio represents radio HTML tags.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
 {

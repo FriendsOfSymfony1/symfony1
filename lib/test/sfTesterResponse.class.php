@@ -12,8 +12,6 @@
  * sfTesterResponse implements tests for the symfony response object.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTesterResponse extends sfTester
 {

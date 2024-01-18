@@ -14,8 +14,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  * Delete all generated model classes for models which no longer exist in your YAML schema.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineCleanModelFilesTask extends sfDoctrineBaseTask
 {

@@ -15,8 +15,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  * Compile Doctrine.
  *
  * @author     Jerome Tamarelle <jerome@tamarelle.net>
- *
- * @version    SVN: $Id: sfDoctrineCompileTask.class.php 105 2012-03-22 16:26:34Z jtamarelle $
  */
 class sfDoctrineCompileTask extends sfDoctrineBaseTask
 {

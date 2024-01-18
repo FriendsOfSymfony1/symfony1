@@ -12,8 +12,6 @@
  * sfViewConfigHandler allows you to configure views.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfViewConfigHandler extends sfYamlConfigHandler
 {

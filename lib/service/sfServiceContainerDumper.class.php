@@ -12,8 +12,6 @@
  * sfServiceContainerDumper is the abstract class for all built-in dumpers.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfServiceContainerDumper implements sfServiceContainerDumperInterface
 {

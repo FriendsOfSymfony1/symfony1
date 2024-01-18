@@ -14,8 +14,6 @@ require_once 'PEAR/Downloader.php';
  * sfPearDownloader downloads files from the Internet.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPearDownloader extends PEAR_Downloader
 {

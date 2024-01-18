@@ -16,8 +16,6 @@
  * @author     John Christopher <john.christopher@symfony-project.com>
  * @author     David Heinemeier Hansson
  * @author     Fabian Lange <fabian.lange@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 
 // Provides a set basic of helpers for calling JavaScript functions.

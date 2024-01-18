@@ -2,8 +2,6 @@
 
 /**
  * Profile form.
- *
- * @version    SVN: $Id$
  */
 class ProfileForm extends BaseProfileForm
 {

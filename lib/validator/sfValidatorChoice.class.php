@@ -12,8 +12,6 @@
  * sfValidatorChoice validates than the value is one of the expected values.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorChoice extends sfValidatorBase
 {

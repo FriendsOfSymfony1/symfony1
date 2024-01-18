@@ -12,8 +12,6 @@
  * sfMailerMessageLoggerPlugin is a Swift plugin to log all sent messages.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfMailerMessageLoggerPlugin implements Swift_Events_SendListener
 {

@@ -15,8 +15,6 @@
  * of the same class (why?).
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfSimpleAutoload
 {

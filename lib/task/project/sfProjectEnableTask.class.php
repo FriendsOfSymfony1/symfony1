@@ -12,8 +12,6 @@
  * Enables an application in a given environment.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectEnableTask extends sfBaseTask
 {

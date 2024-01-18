@@ -14,8 +14,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
- *
- * @version    SVN: $Id$
  */
 
 /**

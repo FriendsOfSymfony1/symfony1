@@ -12,8 +12,6 @@
  * sfSecurityConfigHandler allows you to configure action security.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfSecurityConfigHandler extends sfYamlConfigHandler
 {

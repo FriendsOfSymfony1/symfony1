@@ -12,8 +12,6 @@
  * sfValidatorPass is an identity validator. It simply returns the value unmodified.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorPass extends sfValidatorBase
 {

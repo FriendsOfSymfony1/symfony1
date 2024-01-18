@@ -14,8 +14,6 @@
  * This class generates a Doctrine filter forms.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
 {

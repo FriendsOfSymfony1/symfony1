@@ -2,8 +2,6 @@
 
 /**
  * Author form.
- *
- * @version    SVN: $Id$
  */
 class AuthorForm extends BaseAuthorForm
 {

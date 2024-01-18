@@ -12,8 +12,6 @@
  * sfWebDebugPanelConfig adds a panel to the web debug toolbar with the current configuration.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelConfig extends sfWebDebugPanel
 {

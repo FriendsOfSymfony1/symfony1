@@ -12,8 +12,6 @@
  * sfTimerManager is a container for sfTimer objects.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTimerManager
 {

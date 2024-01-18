@@ -12,8 +12,6 @@
  * Finds deprecated classes usage.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDeprecatedClassesValidation extends sfValidation
 {
