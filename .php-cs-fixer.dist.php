@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
@@ -28,6 +37,16 @@ $config->setRules([
     'fully_qualified_strict_types' => [
         'import_symbols' => true,
         'leading_backslash_in_global_namespace' => true,
+    ],
+    'header_comment' => [
+        'header' => <<<'EOF'
+This file is part of the Symfony1 package.
+
+(c) Fabien Potencier <fabien@symfony.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+EOF
     ],
     'modernize_strpos' => true,
 ])
