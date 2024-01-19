@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,11 +11,11 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(50);
+$t = new \lime_test(50);
 
 // ->clear()
 $t->diag('->clear()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->clear();
 $t->is($ph->getAll(), null, '->clear() clears all parameters');
 
@@ -24,41 +25,41 @@ $t->is($ph->getAll(), null, '->clear() clears all parameters');
 
 // ->get()
 $t->diag('->get()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $t->is($ph->get('foo'), 'bar', '->get() returns the parameter value for the given key');
 $t->is($ph->get('bar'), null, '->get() returns null if the key does not exist');
 
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $t->is('default_value', $ph->get('foo1', 'default_value'), '->get() takes the default value as its second argument');
 
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 $t->is('bar', $ph->get('myfoo', null, 'symfony/mynamespace'), '->get() takes an optional namespace as its third argument');
 $t->is(null, $ph->get('myfoo'), '->get() can have the same key for several namespaces');
 
 // ->getNames()
 $t->diag('->getNames()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('yourfoo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 
-$t->is($ph->getNames(), array('foo', 'yourfoo'), '->getNames() returns all key names for the default namespace');
-$t->is($ph->getNames('symfony/mynamespace'), array('myfoo'), '->getNames() takes a namepace as its first argument');
+$t->is($ph->getNames(), ['foo', 'yourfoo'], '->getNames() returns all key names for the default namespace');
+$t->is($ph->getNames('symfony/mynamespace'), ['myfoo'], '->getNames() takes a namepace as its first argument');
 
 // ->getNamespaces()
 $t->diag('->getNamespaces()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('yourfoo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 
-$t->is($ph->getNamespaces(), array($ph->getDefaultNamespace(), 'symfony/mynamespace'), '->getNamespaces() returns all non empty namespaces');
+$t->is($ph->getNamespaces(), [$ph->getDefaultNamespace(), 'symfony/mynamespace'], '->getNamespaces() returns all non empty namespaces');
 
 // ->setDefaultNamespace()
 $t->diag('->setDefaultNamespace()');
-$ph = new sfNamespacedParameterHolder('symfony/mynamespace');
+$ph = new \sfNamespacedParameterHolder('symfony/mynamespace');
 $ph->setDefaultNamespace('othernamespace');
 
 $t->is($ph->getDefaultNamespace(), 'othernamespace', '->setDefaultNamespace() sets the default namespace');
@@ -77,15 +78,15 @@ $t->is($ph->get('foo', null, 'foonamespace'), 'bar', '->setDefaultNamespace() do
 
 // ->getAll()
 $t->diag('->getAll()');
-$parameters = array('foo' => 'bar', 'myfoo' => 'bar');
-$ph = new sfNamespacedParameterHolder();
+$parameters = ['foo' => 'bar', 'myfoo' => 'bar'];
+$ph = new \sfNamespacedParameterHolder();
 $ph->add($parameters);
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 $t->is($ph->getAll(), $parameters, '->getAll() returns all parameters from the default namespace');
 
 // ->has()
 $t->diag('->has()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 $t->is($ph->has('foo'), true, '->has() returns true if the key exists');
@@ -95,7 +96,7 @@ $t->is($ph->has('myfoo', 'symfony/mynamespace'), true, '->has() returns true if 
 
 // ->hasNamespace()
 $t->diag('->hasNamespace()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 $t->is($ph->hasNamespace($ph->getDefaultNamespace()), true, '->hasNamespace() returns true for the default namespace');
@@ -104,7 +105,7 @@ $t->is($ph->hasNamespace('symfony/nonexistant'), false, '->hasNamespace() return
 
 // ->remove()
 $t->diag('->remove()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('myfoo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
@@ -125,7 +126,7 @@ $t->is($ph->getAll(), null, '->remove() removes the key from parameters');
 
 // ->removeNamespace()
 $t->diag('->removeNamespace()');
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', 'bar');
 $ph->set('myfoo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
@@ -153,7 +154,7 @@ $t->is(null, $ph->getAll(), '->removeNamespace() removes all the keys from param
 $t->diag('->set()');
 $foo = 'bar';
 
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->set('foo', $foo);
 $t->is($ph->get('foo'), $foo, '->set() sets the value for a key');
 
@@ -167,7 +168,7 @@ $t->is($ph->get('myfoo', null, 'symfony/mynamespace'), 'bar', '->set() takes a n
 $t->diag('->setByRef()');
 $foo = 'bar';
 
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->setByRef('foo', $foo);
 $t->is($ph->get('foo'), $foo, '->setByRef() sets the value for a key');
 
@@ -181,10 +182,10 @@ $t->is($ph->get('myfoo', null, 'symfony/mynamespace'), $myfoo, '->setByRef() tak
 // ->add()
 $t->diag('->add()');
 $foo = 'bar';
-$parameters = array('foo' => $foo, 'bar' => 'bar');
-$myparameters = array('myfoo' => 'bar', 'mybar' => 'bar');
+$parameters = ['foo' => $foo, 'bar' => 'bar'];
+$myparameters = ['myfoo' => 'bar', 'mybar' => 'bar'];
 
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->add($parameters);
 $ph->add($myparameters, 'symfony/mynamespace');
 
@@ -197,10 +198,10 @@ $t->is($ph->getAll(), $parameters, '->add() adds an array of parameters, not a r
 // ->addByRef()
 $t->diag('->addByRef()');
 $foo = 'bar';
-$parameters = array('foo' => &$foo, 'bar' => 'bar');
-$myparameters = array('myfoo' => 'bar', 'mybar' => 'bar');
+$parameters = ['foo' => &$foo, 'bar' => 'bar'];
+$myparameters = ['myfoo' => 'bar', 'mybar' => 'bar'];
 
-$ph = new sfNamespacedParameterHolder();
+$ph = new \sfNamespacedParameterHolder();
 $ph->addByRef($parameters);
 $ph->addByRef($myparameters, 'symfony/mynamespace');
 

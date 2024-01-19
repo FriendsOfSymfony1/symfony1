@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfValidation extends sfBaseTask
+abstract class sfValidation extends \sfBaseTask
 {
     protected $task;
 
@@ -26,9 +27,9 @@ abstract class sfValidation extends sfBaseTask
 
     abstract public function getHeader();
 
-    public function execute($arguments = array(), $options = array())
+    public function execute($arguments = [], $options = [])
     {
-        throw new sfException('You can\'t execute this task.');
+        throw new \sfException('You can\'t execute this task.');
     }
 
     /**
@@ -36,11 +37,11 @@ abstract class sfValidation extends sfBaseTask
      *
      * @param string $type String directory or file or any (for both file and directory)
      *
-     * @return sfFinder A sfFinder instance
+     * @return \sfFinder A sfFinder instance
      */
     protected function getFinder($type)
     {
-        return sfFinder::type($type)->prune('symfony')->discard('symfony');
+        return \sfFinder::type($type)->prune('symfony')->discard('symfony');
     }
 
     /**
@@ -60,8 +61,8 @@ abstract class sfValidation extends sfBaseTask
     protected function getProjectTemplateDirectories()
     {
         return array_merge(
-            glob(sfConfig::get('sf_apps_dir').'/*/modules/*/templates'),
-            glob(sfConfig::get('sf_apps_dir').'/*/templates')
+            glob(\sfConfig::get('sf_apps_dir').'/*/modules/*/templates'),
+            glob(\sfConfig::get('sf_apps_dir').'/*/templates')
         );
     }
 
@@ -70,7 +71,7 @@ abstract class sfValidation extends sfBaseTask
      */
     protected function getProjectActionDirectories()
     {
-        return glob(sfConfig::get('sf_apps_dir').'/*/modules/*/actions');
+        return glob(\sfConfig::get('sf_apps_dir').'/*/modules/*/actions');
     }
 
     /**
@@ -81,12 +82,12 @@ abstract class sfValidation extends sfBaseTask
     protected function getProjectLibDirectories($subdirectory = null)
     {
         return array_merge(
-            glob(sfConfig::get('sf_apps_dir').'/*/modules/*/lib'.$subdirectory),
-            glob(sfConfig::get('sf_apps_dir').'/*/lib'.$subdirectory),
-            array(
-                sfConfig::get('sf_apps_dir').'/lib'.$subdirectory,
-                sfConfig::get('sf_lib_dir').$subdirectory,
-            )
+            glob(\sfConfig::get('sf_apps_dir').'/*/modules/*/lib'.$subdirectory),
+            glob(\sfConfig::get('sf_apps_dir').'/*/lib'.$subdirectory),
+            [
+                \sfConfig::get('sf_apps_dir').'/lib'.$subdirectory,
+                \sfConfig::get('sf_lib_dir').$subdirectory,
+            ]
         );
     }
 
@@ -96,9 +97,9 @@ abstract class sfValidation extends sfBaseTask
     protected function getProjectConfigDirectories()
     {
         return array_merge(
-            glob(sfConfig::get('sf_apps_dir').'/*/modules/*/config'),
-            glob(sfConfig::get('sf_apps_dir').'/*/config'),
-            glob(sfConfig::get('sf_config_dir'))
+            glob(\sfConfig::get('sf_apps_dir').'/*/modules/*/config'),
+            glob(\sfConfig::get('sf_apps_dir').'/*/config'),
+            glob(\sfConfig::get('sf_config_dir'))
         );
     }
 
@@ -109,6 +110,6 @@ abstract class sfValidation extends sfBaseTask
      */
     protected function getApplications()
     {
-        return sfFinder::type('dir')->maxdepth(0)->relative()->in(sfConfig::get('sf_apps_dir'));
+        return \sfFinder::type('dir')->maxdepth(0)->relative()->in(\sfConfig::get('sf_apps_dir'));
     }
 }

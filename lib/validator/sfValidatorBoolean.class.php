@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorBoolean extends sfValidatorBase
+class sfValidatorBoolean extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -28,19 +29,19 @@ class sfValidatorBoolean extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
-        $this->addOption('true_values', array('true', 't', 'yes', 'y', 'on', '1'));
-        $this->addOption('false_values', array('false', 'f', 'no', 'n', 'off', '0'));
+        $this->addOption('true_values', ['true', 't', 'yes', 'y', 'on', '1']);
+        $this->addOption('false_values', ['false', 'f', 'no', 'n', 'off', '0']);
 
         $this->setOption('required', false);
         $this->setOption('empty_value', false);
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
@@ -53,6 +54,6 @@ class sfValidatorBoolean extends sfValidatorBase
             return false;
         }
 
-        throw new sfValidatorError($this, 'invalid', array('value' => $value));
+        throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
     }
 }

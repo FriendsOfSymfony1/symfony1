@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,15 +18,15 @@
  */
 class sfCommandOptionSet
 {
-    protected $options = array();
-    protected $shortcuts = array();
+    protected $options = [];
+    protected $shortcuts = [];
 
     /**
      * Constructor.
      *
      * @param array $options An array of sfCommandOption objects
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->setOptions($options);
     }
@@ -35,10 +36,10 @@ class sfCommandOptionSet
      *
      * @param array $options An array of sfCommandOption objects
      */
-    public function setOptions($options = array())
+    public function setOptions($options = [])
     {
-        $this->options = array();
-        $this->shortcuts = array();
+        $this->options = [];
+        $this->shortcuts = [];
         $this->addOptions($options);
     }
 
@@ -47,7 +48,7 @@ class sfCommandOptionSet
      *
      * @param array $options An array of sfCommandOption objects
      */
-    public function addOptions($options = array())
+    public function addOptions($options = [])
     {
         foreach ($options as $option) {
             $this->addOption($option);
@@ -57,17 +58,17 @@ class sfCommandOptionSet
     /**
      * Add a sfCommandOption objects.
      *
-     * @param sfCommandOption $option A sfCommandOption object
+     * @param \sfCommandOption $option A sfCommandOption object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
-    public function addOption(sfCommandOption $option)
+    public function addOption(\sfCommandOption $option)
     {
         if (isset($this->options[$option->getName()])) {
-            throw new sfCommandException(sprintf('An option named "%s" already exist.', $option->getName()));
+            throw new \sfCommandException(sprintf('An option named "%s" already exist.', $option->getName()));
         }
         if (isset($this->shortcuts[$option->getShortcut()])) {
-            throw new sfCommandException(sprintf('An option with shortcut "%s" already exist.', $option->getShortcut()));
+            throw new \sfCommandException(sprintf('An option with shortcut "%s" already exist.', $option->getShortcut()));
         }
 
         $this->options[$option->getName()] = $option;
@@ -81,14 +82,14 @@ class sfCommandOptionSet
      *
      * @param string $name The option name
      *
-     * @return sfCommandOption A sfCommandOption object
+     * @return \sfCommandOption A sfCommandOption object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getOption($name)
     {
         if (!$this->hasOption($name)) {
-            throw new sfCommandException(sprintf('The "--%s" option does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "--%s" option does not exist.', $name));
         }
 
         return $this->options[$name];
@@ -133,7 +134,7 @@ class sfCommandOptionSet
      *
      * @param string $shortcut
      *
-     * @return sfCommandOption A sfCommandOption object
+     * @return \sfCommandOption A sfCommandOption object
      */
     public function getOptionForShortcut($shortcut)
     {
@@ -147,7 +148,7 @@ class sfCommandOptionSet
      */
     public function getDefaults()
     {
-        $values = array();
+        $values = [];
         foreach ($this->options as $option) {
             $values[$option->getName()] = $option->getDefault();
         }
@@ -162,12 +163,12 @@ class sfCommandOptionSet
      *
      * @return string The option name
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     protected function shortcutToName($shortcut)
     {
         if (!isset($this->shortcuts[$shortcut])) {
-            throw new sfCommandException(sprintf('The "-%s" option does not exist.', $shortcut));
+            throw new \sfCommandException(sprintf('The "-%s" option does not exist.', $shortcut));
         }
 
         return $this->shortcuts[$shortcut];

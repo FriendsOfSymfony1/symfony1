@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,7 +30,7 @@ class sfParameterHolderProxyTest
 
         $t->diag(ucfirst($methodName).' holder proxy');
 
-        $namespaced = $object->{$holderMethod}() instanceof sfNamespacedParameterHolder ? true : false;
+        $namespaced = $object->{$holderMethod}() instanceof \sfNamespacedParameterHolder ? true : false;
 
         $t->isa_ok($object->{$holderMethod}(), $namespaced ? 'sfNamespacedParameterHolder' : 'sfParameterHolder', "->{$holderMethod}() returns a parameter holder instance");
         $t->is($object->{$hasMethod}('foo'), false, "->{$hasMethod}() returns false if the {$methodName} does not exist");

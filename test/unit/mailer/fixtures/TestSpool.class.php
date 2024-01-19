@@ -1,15 +1,17 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class TestSpool implements Swift_Spool
+
+class TestSpool implements \Swift_Spool
 {
-    protected $messages = array();
+    protected $messages = [];
 
     public function __construct()
     {
@@ -28,20 +30,20 @@ class TestSpool implements Swift_Spool
     {
     }
 
-    public function queueMessage(Swift_Mime_Message $message)
+    public function queueMessage(\Swift_Mime_Message $message)
     {
         $this->messages[] = $message;
 
         return 0;
     }
 
-    public function flushQueue(Swift_Transport $transport, &$failedRecipients = null)
+    public function flushQueue(\Swift_Transport $transport, &$failedRecipients = null)
     {
         foreach ($this->messages as $message) {
             $transport->send($message);
         }
 
-        $this->messages = array();
+        $this->messages = [];
     }
 
     public function getMessages()
@@ -56,6 +58,6 @@ class TestSpool implements Swift_Spool
 
     public function reset()
     {
-        $this->messages = array();
+        $this->messages = [];
     }
 }

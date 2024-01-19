@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfFileLogger extends sfLogger
+class sfFileLogger extends \sfLogger
 {
     protected $type = 'symfony';
     protected $format = '%time% %type% [%priority%] %message%%EOL%';
@@ -34,16 +35,16 @@ class sfFileLogger extends sfLogger
      * - dir_mode:    The mode to use when creating a directory (default to 0777)
      * - file_mode:   The mode to use when creating a file (default to 0666)
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      *
-     * @throws sfConfigurationException
-     * @throws sfFileException
+     * @throws \sfConfigurationException
+     * @throws \sfFileException
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         if (!isset($options['file'])) {
-            throw new sfConfigurationException('You must provide a "file" parameter for this logger.');
+            throw new \sfConfigurationException('You must provide a "file" parameter for this logger.');
         }
 
         if (isset($options['format'])) {
@@ -66,7 +67,7 @@ class sfFileLogger extends sfLogger
 
         $fileExists = file_exists($options['file']);
         if (!is_writable($dir) || ($fileExists && !is_writable($options['file']))) {
-            throw new sfFileException(sprintf('Unable to open the log file "%s" for writing.', $options['file']));
+            throw new \sfFileException(sprintf('Unable to open the log file "%s" for writing.', $options['file']));
         }
 
         $this->fp = fopen($options['file'], 'a');
@@ -108,13 +109,13 @@ class sfFileLogger extends sfLogger
     protected function doLog($message, $priority)
     {
         flock($this->fp, LOCK_EX);
-        fwrite($this->fp, strtr($this->format, array(
+        fwrite($this->fp, strtr($this->format, [
             '%type%' => $this->type,
             '%message%' => $message,
             '%time%' => self::strftime($this->timeFormat),
             '%priority%' => $this->getPriority($priority),
             '%EOL%' => PHP_EOL,
-        )));
+        ]));
         flock($this->fp, LOCK_UN);
     }
 
@@ -127,7 +128,7 @@ class sfFileLogger extends sfLogger
      */
     protected function getPriority($priority)
     {
-        return sfLogger::getPriorityName($priority);
+        return \sfLogger::getPriorityName($priority);
     }
 
     /**
@@ -151,7 +152,7 @@ class sfFileLogger extends sfLogger
     private static function _strftimeFormatToDateFormat($strftimeFormat)
     {
         // Missing %V %C %g %G
-        $search = array(
+        $search = [
             '%a', '%A', '%d', '%e', '%u',
             '%w', '%W', '%b', '%h', '%B',
             '%m', '%y', '%Y', '%D', '%F',
@@ -159,9 +160,9 @@ class sfFileLogger extends sfLogger
             '%I', '%l', '%M', '%p', '%P',
             '%r' /* %I:%M:%S %p */, '%R' /* %H:%M */, '%S', '%T' /* %H:%M:%S */, '%X', '%z', '%Z',
             '%c', '%s', '%j',
-            '%%');
+            '%%'];
 
-        $replace = array(
+        $replace = [
             'D', 'l', 'd', 'j', 'N',
             'w', 'W', 'M', 'M', 'F',
             'm', 'y', 'Y', 'm/d/y', 'Y-m-d',
@@ -169,7 +170,7 @@ class sfFileLogger extends sfLogger
             'h', 'g', 'i', 'A', 'a',
             'h:i:s A', 'H:i', 's', 'H:i:s', 'H:i:s', 'O', 'T',
             'D M j H:i:s Y' /* Tue Feb 5 00:45:10 2009 */, 'U', 'z',
-            '%');
+            '%'];
 
         return str_replace($search, $replace, $strftimeFormat);
     }

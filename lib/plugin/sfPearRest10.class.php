@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,12 +18,12 @@ require_once 'PEAR/REST/10.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearRest10 extends PEAR_REST_10
+class sfPearRest10 extends \PEAR_REST_10
 {
     /**
-     * @see PEAR_REST_10
+     * @see \PEAR_REST_10
      */
-    public function __construct($config, $options = array())
+    public function __construct($config, $options = [])
     {
         $class = isset($options['base_class']) ? $options['base_class'] : 'sfPearRest';
 

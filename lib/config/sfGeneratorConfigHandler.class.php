@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfGeneratorConfigHandler extends sfYamlConfigHandler
+class sfGeneratorConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -24,9 +25,9 @@ class sfGeneratorConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException  If a requested configuration file does not exist or is not readable
-     * @throws sfParseException          If a requested configuration file is improperly formatted
-     * @throws sfInitializationException If a generator.yml key check fails
+     * @throws \sfConfigurationException  If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException          If a requested configuration file is improperly formatted
+     * @throws \sfInitializationException If a generator.yml key check fails
      */
     public function execute($configFiles)
     {
@@ -37,26 +38,26 @@ class sfGeneratorConfigHandler extends sfYamlConfigHandler
         }
 
         if (!isset($config['generator'])) {
-            throw new sfParseException(sprintf('Configuration file "%s" must specify a generator section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0]));
+            throw new \sfParseException(sprintf('Configuration file "%s" must specify a generator section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0]));
         }
 
         $config = $config['generator'];
 
         if (!isset($config['class'])) {
-            throw new sfParseException(sprintf('Configuration file "%s" must specify a generator class section under the generator section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0]));
+            throw new \sfParseException(sprintf('Configuration file "%s" must specify a generator class section under the generator section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0]));
         }
 
-        foreach (array('fields', 'list', 'edit') as $section) {
+        foreach (['fields', 'list', 'edit'] as $section) {
             if (isset($config[$section])) {
-                throw new sfParseException(sprintf('Configuration file "%s" can specify a "%s" section but only under the param section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0], $section));
+                throw new \sfParseException(sprintf('Configuration file "%s" can specify a "%s" section but only under the param section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0], $section));
             }
         }
 
         // generate class and add a reference to it
-        $generatorManager = new sfGeneratorManager(sfContext::getInstance()->getConfiguration());
+        $generatorManager = new \sfGeneratorManager(\sfContext::getInstance()->getConfiguration());
 
         // generator parameters
-        $generatorParam = (isset($config['param']) ? $config['param'] : array());
+        $generatorParam = (isset($config['param']) ? $config['param'] : []);
 
         // hack to find the module name (look for the last /modules/ in path)
         preg_match('#.*/modules/([^/]+)/#', str_replace('\\', '/', $configFiles[0]), $match);
@@ -71,13 +72,13 @@ class sfGeneratorConfigHandler extends sfYamlConfigHandler
         return $retval;
     }
 
-    public static function getContent(sfGeneratorManager $generatorManager, $class, $parameters)
+    public static function getContent(\sfGeneratorManager $generatorManager, $class, $parameters)
     {
         return $generatorManager->generate($class, $parameters);
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

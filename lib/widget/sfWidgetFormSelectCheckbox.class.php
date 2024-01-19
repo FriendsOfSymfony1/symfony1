@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
+class sfWidgetFormSelectCheckbox extends \sfWidgetFormChoiceBase
 {
     /**
      * Renders the widget.
@@ -27,25 +28,25 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if ('[]' != substr($name, -2)) {
             $name .= '[]';
         }
 
         if (null === $value) {
-            $value = array();
+            $value = [];
         }
 
         $choices = $this->getChoices();
 
         // with groups?
         if (count($choices) && is_array(current($choices))) {
-            $parts = array();
+            $parts = [];
             foreach ($choices as $key => $option) {
-                $parts[] = strtr($this->getOption('template'), array('%group%' => $key, '%options%' => $this->formatChoices($name, $value, $option, $attributes)));
+                $parts[] = strtr($this->getOption('template'), ['%group%' => $key, '%options%' => $this->formatChoices($name, $value, $option, $attributes)]);
             }
 
             return implode("\n", $parts);
@@ -56,12 +57,12 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
 
     public function formatter($widget, $inputs)
     {
-        $rows = array();
+        $rows = [];
         foreach ($inputs as $input) {
             $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
         }
 
-        return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
+        return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), ['class' => $this->getOption('class')]);
     }
 
     /**
@@ -80,38 +81,38 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoiceBase
+     * @see \sfWidgetFormChoiceBase
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
         $this->addOption('class', 'checkbox_list');
         $this->addOption('label_separator', '&nbsp;');
         $this->addOption('separator', "\n");
-        $this->addOption('formatter', array($this, 'formatter'));
+        $this->addOption('formatter', [$this, 'formatter']);
         $this->addOption('template', '%group% %options%');
     }
 
     protected function formatChoices($name, $value, $choices, $attributes)
     {
-        $inputs = array();
+        $inputs = [];
         foreach ($choices as $key => $option) {
-            $baseAttributes = array(
+            $baseAttributes = [
                 'name' => $name,
                 'type' => 'checkbox',
                 'value' => self::escapeOnce($key),
                 'id' => $id = $this->generateId($name, self::escapeOnce($key)),
-            );
+            ];
 
             if ((is_array($value) && in_array((string) $key, $value)) || (is_string($value) && (string) $key == (string) $value)) {
                 $baseAttributes['checked'] = 'checked';
             }
 
-            $inputs[$id] = array(
+            $inputs[$id] = [
                 'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
-                'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
-            );
+                'label' => $this->renderContentTag('label', self::escapeOnce($option), ['for' => $id]),
+            ];
         }
 
         return call_user_func($this->getOption('formatter'), $this, $inputs);

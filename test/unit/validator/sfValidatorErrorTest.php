@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,17 +11,17 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(14);
+$t = new \lime_test(14);
 
-$v = new sfValidatorString();
+$v = new \sfValidatorString();
 
-$e = new sfValidatorError($v, 'max_length', array('value' => 'foo<br />', 'max_length' => 1));
+$e = new \sfValidatorError($v, 'max_length', ['value' => 'foo<br />', 'max_length' => 1]);
 
 // ->getValue()
 $t->diag('->getValue()');
 $t->is($e->getValue(), 'foo<br />', '->getValue() returns the value that has been validated with the validator');
 
-$e1 = new sfValidatorError($v, 'max_length', array('max_length' => 1));
+$e1 = new \sfValidatorError($v, 'max_length', ['max_length' => 1]);
 $t->is($e1->getValue(), null, '->getValue() returns null if there is no value key in arguments');
 
 // ->getValidator()
@@ -29,8 +30,8 @@ $t->is($e->getValidator(), $v, '->getValidator() returns the validator that trig
 
 // ->getArguments()
 $t->diag('->getArguments()');
-$t->is($e->getArguments(), array('%value%' => 'foo&lt;br /&gt;', '%max_length%' => 1), '->getArguments() returns the arguments needed to format the error message, escaped according to the current charset');
-$t->is($e->getArguments(true), array('value' => 'foo<br />', 'max_length' => 1), '->getArguments() takes a Boolean as its first argument to return the raw arguments');
+$t->is($e->getArguments(), ['%value%' => 'foo&lt;br /&gt;', '%max_length%' => 1], '->getArguments() returns the arguments needed to format the error message, escaped according to the current charset');
+$t->is($e->getArguments(true), ['value' => 'foo<br />', 'max_length' => 1], '->getArguments() takes a Boolean as its first argument to return the raw arguments');
 
 // ->getMessageFormat()
 $t->diag('->getMessageFormat()');
@@ -54,40 +55,40 @@ $t->diag('implements Serializable');
 // we test with non serializable objects
 // to ensure that the errors are always serializable
 // even if you use PDO as a session handler
-class NotSerializable implements Serializable
+class NotSerializable implements \Serializable
 {
     public function __serialize()
     {
-        throw new Exception('Not serializable');
+        throw new \Exception('Not serializable');
     }
 
     public function __unserialize($data)
     {
-        throw new Exception('Not serializable');
+        throw new \Exception('Not serializable');
     }
 
     public function serialize()
     {
-        throw new Exception('Not serializable');
+        throw new \Exception('Not serializable');
     }
 
     public function unserialize($serialized)
     {
-        throw new Exception('Not serializable');
+        throw new \Exception('Not serializable');
     }
 }
 
 function will_crash($a)
 {
-    return serialize(new sfValidatorError(new sfValidatorString(), 'max_length', array('value' => 'foo<br />', 'max_length' => 1)));
+    return serialize(new \sfValidatorError(new \sfValidatorString(), 'max_length', ['value' => 'foo<br />', 'max_length' => 1]));
 }
 
-$a = new NotSerializable();
+$a = new \NotSerializable();
 
 try {
     $serialized = will_crash($a);
     $t->pass('sfValidatorError implements Serializable');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sfValidatorError implements Serializable');
 }
 

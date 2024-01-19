@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceCountry extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -30,9 +31,9 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -43,11 +44,11 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
         // populate choices with all countries
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
 
-        $countries = sfCultureInfo::getInstance($culture)->getCountries(isset($options['countries']) ? $options['countries'] : null);
+        $countries = \sfCultureInfo::getInstance($culture)->getCountries(isset($options['countries']) ? $options['countries'] : null);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $countries = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $countries);
+            $countries = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $countries);
         }
 
         $this->setOption('choices', $countries);

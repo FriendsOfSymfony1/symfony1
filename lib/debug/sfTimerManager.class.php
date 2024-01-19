@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,7 +19,7 @@
 class sfTimerManager
 {
     /** @var sfTimer[] */
-    public static $timers = array();
+    public static $timers = [];
 
     /**
      * Gets a sfTimer instance.
@@ -28,12 +29,12 @@ class sfTimerManager
      * @param string $name  The name of the timer
      * @param bool   $reset
      *
-     * @return sfTimer The timer instance
+     * @return \sfTimer The timer instance
      */
     public static function getTimer($name, $reset = true)
     {
         if (!isset(self::$timers[$name])) {
-            self::$timers[$name] = new sfTimer($name);
+            self::$timers[$name] = new \sfTimer($name);
         }
 
         if ($reset) {
@@ -58,6 +59,6 @@ class sfTimerManager
      */
     public static function clearTimers()
     {
-        self::$timers = array();
+        self::$timers = [];
     }
 }

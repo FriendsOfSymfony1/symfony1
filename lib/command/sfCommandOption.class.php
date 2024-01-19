@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -38,7 +39,7 @@ class sfCommandOption
      * @param string $help     A help text
      * @param mixed  $default  The default value (must be null for self::PARAMETER_REQUIRED or self::PARAMETER_NONE)
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function __construct($name, $shortcut = null, $mode = null, $help = '', $default = null)
     {
@@ -59,7 +60,7 @@ class sfCommandOption
         if (null === $mode) {
             $mode = self::PARAMETER_NONE;
         } elseif (is_string($mode) || $mode > 15) {
-            throw new sfCommandException(sprintf('Option mode "%s" is not valid.', $mode));
+            throw new \sfCommandException(sprintf('Option mode "%s" is not valid.', $mode));
         }
 
         $this->name = $name;
@@ -135,19 +136,19 @@ class sfCommandOption
      *
      * @param mixed $default The default value
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function setDefault($default = null)
     {
         if (self::PARAMETER_NONE === (self::PARAMETER_NONE & $this->mode) && null !== $default) {
-            throw new sfCommandException('Cannot set a default value when using sfCommandOption::PARAMETER_NONE mode.');
+            throw new \sfCommandException('Cannot set a default value when using sfCommandOption::PARAMETER_NONE mode.');
         }
 
         if ($this->isArray()) {
             if (null === $default) {
-                $default = array();
+                $default = [];
             } elseif (!is_array($default)) {
-                throw new sfCommandException('A default value for an array option must be an array.');
+                throw new \sfCommandException('A default value for an array option must be an array.');
             }
         }
 

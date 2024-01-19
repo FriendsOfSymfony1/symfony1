@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,20 +33,20 @@ abstract class sfWidgetFormSchemaFormatter
     /**
      * Constructor.
      */
-    public function __construct(sfWidgetFormSchema $widgetSchema)
+    public function __construct(\sfWidgetFormSchema $widgetSchema)
     {
         $this->setWidgetSchema($widgetSchema);
     }
 
-    public function formatRow($label, $field, $errors = array(), $help = '', $hiddenFields = null)
+    public function formatRow($label, $field, $errors = [], $help = '', $hiddenFields = null)
     {
-        return strtr($this->getRowFormat(), array(
+        return strtr($this->getRowFormat(), [
             '%label%' => $label,
             '%field%' => $field,
             '%error%' => $this->formatErrorsForRow($errors),
             '%help%' => $this->formatHelp($help),
             '%hidden_fields%' => null === $hiddenFields ? '%hidden_fields%' : $hiddenFields,
-        ));
+        ]);
     }
 
     /**
@@ -56,7 +57,7 @@ abstract class sfWidgetFormSchemaFormatter
      *
      * @return string
      */
-    public function translate($subject, $parameters = array())
+    public function translate($subject, $parameters = [])
     {
         if (false === $subject) {
             return false;
@@ -75,7 +76,7 @@ abstract class sfWidgetFormSchemaFormatter
 
         $catalogue = $this->getTranslationCatalogue();
 
-        if (self::$translationCallable instanceof sfCallable) {
+        if (self::$translationCallable instanceof \sfCallable) {
             return self::$translationCallable->call($subject, $parameters, $catalogue);
         }
 
@@ -93,12 +94,12 @@ abstract class sfWidgetFormSchemaFormatter
     /**
      * Sets a callable which aims to translate form labels, errors and help messages.
      *
-     * @throws InvalidArgumentException if an invalid php callable or sfCallable has been provided
+     * @throws \InvalidArgumentException if an invalid php callable or sfCallable has been provided
      */
     public static function setTranslationCallable($callable)
     {
-        if (!$callable instanceof sfCallable && !is_callable($callable)) {
-            throw new InvalidArgumentException('Provided i18n callable should be either an instance of sfCallable or a valid PHP callable');
+        if (!$callable instanceof \sfCallable && !is_callable($callable)) {
+            throw new \InvalidArgumentException('Provided i18n callable should be either an instance of sfCallable or a valid PHP callable');
         }
 
         self::$translationCallable = $callable;
@@ -110,7 +111,7 @@ abstract class sfWidgetFormSchemaFormatter
             return '';
         }
 
-        return strtr($this->getHelpFormat(), array('%help%' => $this->translate($help)));
+        return strtr($this->getHelpFormat(), ['%help%' => $this->translate($help)]);
     }
 
     public function formatErrorRow($errors)
@@ -119,7 +120,7 @@ abstract class sfWidgetFormSchemaFormatter
             return '';
         }
 
-        return strtr($this->getErrorRowFormat(), array('%errors%' => $this->formatErrorsForRow($errors)));
+        return strtr($this->getErrorRowFormat(), ['%errors%' => $this->formatErrorsForRow($errors)]);
     }
 
     public function formatErrorsForRow($errors)
@@ -129,10 +130,10 @@ abstract class sfWidgetFormSchemaFormatter
         }
 
         if (!is_array($errors)) {
-            $errors = array($errors);
+            $errors = [$errors];
         }
 
-        return strtr($this->getErrorListFormatInARow(), array('%errors%' => implode('', $this->unnestErrors($errors))));
+        return strtr($this->getErrorListFormatInARow(), ['%errors%' => implode('', $this->unnestErrors($errors))]);
     }
 
     /**
@@ -143,7 +144,7 @@ abstract class sfWidgetFormSchemaFormatter
      *
      * @return string The label tag
      */
-    public function generateLabel($name, $attributes = array())
+    public function generateLabel($name, $attributes = [])
     {
         $labelName = $this->generateLabelName($name);
 
@@ -191,12 +192,12 @@ abstract class sfWidgetFormSchemaFormatter
      *
      * @param string $catalogue
      *
-     * @throws InvalidArgumentException when the catalogue is not a string
+     * @throws \InvalidArgumentException when the catalogue is not a string
      */
     public function setTranslationCatalogue($catalogue)
     {
         if (!is_string($catalogue)) {
-            throw new InvalidArgumentException('Catalogue name must be a string');
+            throw new \InvalidArgumentException('Catalogue name must be a string');
         }
 
         $this->translationCatalogue = $catalogue;
@@ -275,9 +276,9 @@ abstract class sfWidgetFormSchemaFormatter
     /**
      * Sets the widget schema associated with this formatter instance.
      *
-     * @param sfWidgetFormSchema $widgetSchema A sfWidgetFormSchema instance
+     * @param \sfWidgetFormSchema $widgetSchema A sfWidgetFormSchema instance
      */
-    public function setWidgetSchema(sfWidgetFormSchema $widgetSchema)
+    public function setWidgetSchema(\sfWidgetFormSchema $widgetSchema)
     {
         $this->widgetSchema = $widgetSchema;
     }
@@ -289,22 +290,22 @@ abstract class sfWidgetFormSchemaFormatter
 
     protected function unnestErrors($errors, $prefix = '')
     {
-        $newErrors = array();
+        $newErrors = [];
 
         foreach ($errors as $name => $error) {
-            if ($error instanceof ArrayAccess || is_array($error)) {
+            if ($error instanceof \ArrayAccess || is_array($error)) {
                 $newErrors = array_merge($newErrors, $this->unnestErrors($error, ($prefix ? $prefix.' > ' : '').$name));
             } else {
-                if ($error instanceof sfValidatorError) {
+                if ($error instanceof \sfValidatorError) {
                     $err = $this->translate($error->getMessageFormat(), $error->getArguments());
                 } else {
                     $err = $this->translate($error);
                 }
 
                 if (!is_int($name)) {
-                    $newErrors[] = strtr($this->getNamedErrorRowFormatInARow(), array('%error%' => $err, '%name%' => ($prefix ? $prefix.' > ' : '').$name));
+                    $newErrors[] = strtr($this->getNamedErrorRowFormatInARow(), ['%error%' => $err, '%name%' => ($prefix ? $prefix.' > ' : '').$name]);
                 } else {
-                    $newErrors[] = strtr($this->getErrorRowFormatInARow(), array('%error%' => $err));
+                    $newErrors[] = strtr($this->getErrorRowFormatInARow(), ['%error%' => $err]);
                 }
             }
         }

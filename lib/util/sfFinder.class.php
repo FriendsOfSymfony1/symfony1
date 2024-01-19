@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -28,12 +29,12 @@
 class sfFinder
 {
     protected $type = 'file';
-    protected $names = array();
-    protected $prunes = array();
-    protected $discards = array();
-    protected $execs = array();
+    protected $names = [];
+    protected $prunes = [];
+    protected $discards = [];
+    protected $execs = [];
     protected $mindepth = 0;
-    protected $sizes = array();
+    protected $sizes = [];
     protected $maxdepth = 1000000;
     protected $relative = false;
     protected $follow_link = false;
@@ -47,7 +48,7 @@ class sfFinder
      *
      * @param int $level
      *
-     * @return sfFinder current sfFinder object
+     * @return \sfFinder current sfFinder object
      */
     public function maxdepth($level)
     {
@@ -63,7 +64,7 @@ class sfFinder
      *
      * @param int $level
      *
-     * @return sfFinder current sfFinder object
+     * @return \sfFinder current sfFinder object
      */
     public function mindepth($level)
     {
@@ -82,7 +83,7 @@ class sfFinder
      *
      * @param string $name directory or file or any (for both file and directory)
      *
-     * @return sfFinder new sfFinder object
+     * @return \sfFinder new sfFinder object
      */
     public static function type($name)
     {
@@ -96,7 +97,7 @@ class sfFinder
      *
      * @param string $name directory or file or any (for both file and directory)
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function setType($name)
     {
@@ -127,9 +128,9 @@ class sfFinder
      * $finder->name('/\.php$/') // same as above
      * $finder->name('test.php')
      *
-     * @param  list   a list of patterns, globs or strings
+     * @param  \list   a list of patterns, globs or strings
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function name()
     {
@@ -144,9 +145,9 @@ class sfFinder
      *
      * @see    ->name()
      *
-     * @param  list   a list of patterns, globs or strings
+     * @param  \list   a list of patterns, globs or strings
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function not_name()
     {
@@ -163,16 +164,16 @@ class sfFinder
      * $finder->size('<= 1Ki');
      * $finder->size(4);
      *
-     * @param  list   a list of comparison strings
+     * @param  \list   a list of comparison strings
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function size()
     {
         $args = func_get_args();
         $numargs = count($args);
         for ($i = 0; $i < $numargs; ++$i) {
-            $this->sizes[] = new sfNumberCompare($args[$i]);
+            $this->sizes[] = new \sfNumberCompare($args[$i]);
         }
 
         return $this;
@@ -181,9 +182,9 @@ class sfFinder
     /**
      * Traverses no further.
      *
-     * @param  list   a list of patterns, globs to match
+     * @param  \list   a list of patterns, globs to match
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function prune()
     {
@@ -196,9 +197,9 @@ class sfFinder
     /**
      * Discards elements that matches.
      *
-     * @param  list   a list of patterns, globs to match
+     * @param  \list   a list of patterns, globs to match
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function discard()
     {
@@ -215,7 +216,7 @@ class sfFinder
      *
      * @param bool $ignore falase when version control directories shall be included (default is true)
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function ignore_version_control($ignore = true)
     {
@@ -227,7 +228,7 @@ class sfFinder
     /**
      * Returns files and directories ordered by name.
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function sort_by_name()
     {
@@ -239,7 +240,7 @@ class sfFinder
     /**
      * Returns files and directories ordered by type (directories before files), then by name.
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function sort_by_type()
     {
@@ -258,7 +259,7 @@ class sfFinder
      *
      * @param  mixed  function or method to call
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function exec()
     {
@@ -266,10 +267,10 @@ class sfFinder
         $numargs = count($args);
         for ($i = 0; $i < $numargs; ++$i) {
             if (is_array($args[$i]) && !method_exists($args[$i][0], $args[$i][1])) {
-                throw new sfException(sprintf('method "%s" does not exist for object "%s".', $args[$i][1], $args[$i][0]));
+                throw new \sfException(sprintf('method "%s" does not exist for object "%s".', $args[$i][1], $args[$i][0]));
             }
             if (!is_array($args[$i]) && !function_exists($args[$i])) {
-                throw new sfException(sprintf('function "%s" does not exist.', $args[$i]));
+                throw new \sfException(sprintf('function "%s" does not exist.', $args[$i]));
             }
 
             $this->execs[] = $args[$i];
@@ -281,7 +282,7 @@ class sfFinder
     /**
      * Returns relative paths for all files and directories.
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function relative()
     {
@@ -293,7 +294,7 @@ class sfFinder
     /**
      * Symlink following.
      *
-     * @return sfFinder Current object
+     * @return \sfFinder Current object
      */
     public function follow_link()
     {
@@ -309,13 +310,13 @@ class sfFinder
      */
     public function in()
     {
-        $files = array();
+        $files = [];
         $here_dir = getcwd();
 
         $finder = clone $this;
 
         if ($this->ignore_version_control) {
-            $ignores = array('.svn', '_svn', 'CVS', '_darcs', '.arch-params', '.monotone', '.bzr', '.git', '.hg');
+            $ignores = ['.svn', '_svn', 'CVS', '_darcs', '.arch-params', '.monotone', '.bzr', '.git', '.hg'];
 
             $finder->discard($ignores)->prune($ignores);
         }
@@ -380,20 +381,20 @@ class sfFinder
             return $str;
         }
 
-        return sfGlobToRegex::glob_to_regex($str);
+        return \sfGlobToRegex::glob_to_regex($str);
     }
 
     protected function args_to_array($arg_list, $not = false)
     {
-        $list = array();
+        $list = [];
         $nbArgList = count($arg_list);
         for ($i = 0; $i < $nbArgList; ++$i) {
             if (is_array($arg_list[$i])) {
                 foreach ($arg_list[$i] as $arg) {
-                    $list[] = array($not, $this->to_regex($arg));
+                    $list[] = [$not, $this->to_regex($arg)];
                 }
             } else {
-                $list[] = array($not, $this->to_regex($arg_list[$i]));
+                $list[] = [$not, $this->to_regex($arg_list[$i])];
             }
         }
 
@@ -403,18 +404,18 @@ class sfFinder
     protected function search_in($dir, $depth = 0)
     {
         if ($depth > $this->maxdepth) {
-            return array();
+            return [];
         }
 
         $dir = realpath($dir);
 
         if ((!$this->follow_link) && is_link($dir)) {
-            return array();
+            return [];
         }
 
-        $files = array();
-        $temp_files = array();
-        $temp_folders = array();
+        $files = [];
+        $temp_files = [];
+        $temp_folders = [];
         if (is_dir($dir) && is_readable($dir)) {
             $current_dir = opendir($dir);
             while (false !== $entryname = readdir($current_dir)) {
@@ -567,7 +568,7 @@ class sfFinder
         }
 
         foreach ($this->execs as $exec) {
-            if (!call_user_func_array($exec, array($dir, $entry))) {
+            if (!call_user_func_array($exec, [$dir, $entry])) {
                 return false;
             }
         }
@@ -717,7 +718,7 @@ class sfNumberCompare
     public function test($number)
     {
         if (!preg_match('{^([<>]=?)?(.*?)([kmg]i?)?$}i', $this->test, $matches)) {
-            throw new sfException(sprintf('don\'t understand "%s" as a test.', $this->test));
+            throw new \sfException(sprintf('don\'t understand "%s" as a test.', $this->test));
         }
 
         $target = array_key_exists(2, $matches) ? $matches[2] : '';

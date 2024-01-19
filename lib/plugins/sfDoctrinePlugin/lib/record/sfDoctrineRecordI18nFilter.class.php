@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
+class sfDoctrineRecordI18nFilter extends \Doctrine_Record_Filter
 {
     /**
      * @see Doctrine_Table::unshiftFilter()
@@ -33,9 +34,9 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
      * @param string $name  Name of the property
      * @param string $value Value of the property
      */
-    public function filterSet(Doctrine_Record $record, $name, $value)
+    public function filterSet(\Doctrine_Record $record, $name, $value)
     {
-        return $record['Translation'][sfDoctrineRecord::getDefaultCulture()][$name] = $value;
+        return $record['Translation'][\sfDoctrineRecord::getDefaultCulture()][$name] = $value;
     }
 
     /**
@@ -45,14 +46,14 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
      *
      * @param string $name Name of the property
      */
-    public function filterGet(Doctrine_Record $record, $name)
+    public function filterGet(\Doctrine_Record $record, $name)
     {
-        $culture = sfDoctrineRecord::getDefaultCulture();
+        $culture = \sfDoctrineRecord::getDefaultCulture();
         if (isset($record['Translation'][$culture]) && '' != $record['Translation'][$culture][$name]) {
             return $record['Translation'][$culture][$name];
         }
 
-        $defaultCulture = sfConfig::get('sf_default_culture');
+        $defaultCulture = \sfConfig::get('sf_default_culture');
 
         return $record['Translation'][$defaultCulture][$name];
     }

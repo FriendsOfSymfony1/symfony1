@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -58,7 +58,7 @@ class sfToolkit
         $fp = opendir($directory);
 
         // ignore names
-        $ignore = array('.', '..', 'CVS', '.svn');
+        $ignore = ['.', '..', 'CVS', '.svn'];
 
         while (($file = readdir($fp)) !== false) {
             if (!in_array($file, $ignore)) {
@@ -142,7 +142,7 @@ class sfToolkit
             return $source;
         }
 
-        $ignore = array(T_COMMENT => true, T_DOC_COMMENT => true);
+        $ignore = [T_COMMENT => true, T_DOC_COMMENT => true];
         $output = '';
 
         foreach (token_get_all($source) as $token) {
@@ -171,7 +171,7 @@ class sfToolkit
      */
     public static function stripslashesDeep($value)
     {
-        return is_array($value) ? array_map(array('sfToolkit', 'stripslashesDeep'), $value) : stripslashes($value);
+        return is_array($value) ? array_map(['sfToolkit', 'stripslashesDeep'], $value) : stripslashes($value);
     }
 
     // code from php at moechofe dot com (array_merge comment on php.net)
@@ -204,7 +204,7 @@ class sfToolkit
 
             case 2:
                 $args = func_get_args();
-                $args[2] = array();
+                $args[2] = [];
                 if (is_array($args[0]) && is_array($args[1])) {
                     foreach (array_unique(array_merge(array_keys($args[0]), array_keys($args[1]))) as $key) {
                         $isKey0 = array_key_exists($key, $args[0]);
@@ -227,10 +227,10 @@ class sfToolkit
 
             default:
                 $args = func_get_args();
-                $args[1] = sfToolkit::arrayDeepMerge($args[0], $args[1]);
+                $args[1] = \sfToolkit::arrayDeepMerge($args[0], $args[1]);
                 array_shift($args);
 
-                return call_user_func_array(array('sfToolkit', 'arrayDeepMerge'), $args);
+                return call_user_func_array(['sfToolkit', 'arrayDeepMerge'], $args);
 
                 break;
         }
@@ -256,7 +256,7 @@ class sfToolkit
       )
     /x', (string) $string, $matches, PREG_SET_ORDER);
 
-        $attributes = array();
+        $attributes = [];
         foreach ($matches as $val) {
             $attributes[$val[1]] = self::literalize($val[3]);
         }
@@ -276,11 +276,11 @@ class sfToolkit
         $value = trim($value);
         $lvalue = strtolower($value);
 
-        if (in_array($lvalue, array('null', '~', ''))) {
+        if (in_array($lvalue, ['null', '~', ''])) {
             $value = null;
-        } elseif (in_array($lvalue, array('true', 'on', '+', 'yes'))) {
+        } elseif (in_array($lvalue, ['true', 'on', '+', 'yes'])) {
             $value = true;
-        } elseif (in_array($lvalue, array('false', 'off', '-', 'no'))) {
+        } elseif (in_array($lvalue, ['false', 'off', '-', 'no'])) {
             $value = false;
         } elseif (ctype_digit($value)) {
             $value = (int) $value;
@@ -310,7 +310,7 @@ class sfToolkit
         }
 
         return preg_replace_callback('/%(.+?)%/', function ($v) {
-            return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : '%'.$v[1].'%';
+            return \sfConfig::has(strtolower($v[1])) ? \sfConfig::get(strtolower($v[1])) : '%'.$v[1].'%';
         }, $value);
     }
 
@@ -440,13 +440,13 @@ class sfToolkit
      *
      * @return string
      *
-     * @throws sfException If no php cli found
+     * @throws \sfException If no php cli found
      */
     public static function getPhpCli()
     {
         $path = getenv('PATH') ?: getenv('Path');
-        $suffixes = DIRECTORY_SEPARATOR == '\\' ? (getenv('PATHEXT') ? explode(PATH_SEPARATOR, getenv('PATHEXT')) : array('.exe', '.bat', '.cmd', '.com')) : array('');
-        foreach (array('php5', 'php') as $phpCli) {
+        $suffixes = DIRECTORY_SEPARATOR == '\\' ? (getenv('PATHEXT') ? explode(PATH_SEPARATOR, getenv('PATHEXT')) : ['.exe', '.bat', '.cmd', '.com']) : [''];
+        foreach (['php5', 'php'] as $phpCli) {
             foreach ($suffixes as $suffix) {
                 foreach (explode(PATH_SEPARATOR, $path) as $dir) {
                     if (is_file($file = $dir.DIRECTORY_SEPARATOR.$phpCli.$suffix) && is_executable($file)) {
@@ -456,7 +456,7 @@ class sfToolkit
             }
         }
 
-        throw new sfException('Unable to find PHP executable.');
+        throw new \sfException('Unable to find PHP executable.');
     }
 
     /**
@@ -540,7 +540,7 @@ class sfToolkit
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('Unrecognized position: "%s"', $position));
+                throw new \InvalidArgumentException(sprintf('Unrecognized position: "%s"', $position));
         }
 
         return set_include_path(implode(PATH_SEPARATOR, $paths));

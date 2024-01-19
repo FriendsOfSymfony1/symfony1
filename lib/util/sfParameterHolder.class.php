@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,9 +20,9 @@
  *
  * @version    SVN: $Id$
  */
-class sfParameterHolder implements Serializable
+class sfParameterHolder implements \Serializable
 {
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * The constructor for sfParameterHolder.
@@ -56,7 +56,7 @@ class sfParameterHolder implements Serializable
      */
     public function clear()
     {
-        $this->parameters = array();
+        $this->parameters = [];
     }
 
     /**

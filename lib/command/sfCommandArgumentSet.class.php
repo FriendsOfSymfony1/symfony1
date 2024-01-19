@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +18,7 @@
  */
 class sfCommandArgumentSet
 {
-    protected $arguments = array();
+    protected $arguments = [];
     protected $requiredCount = 0;
     protected $hasAnArrayArgument = false;
     protected $hasOptional = false;
@@ -27,7 +28,7 @@ class sfCommandArgumentSet
      *
      * @param array $arguments An array of sfCommandArgument objects
      */
-    public function __construct($arguments = array())
+    public function __construct($arguments = [])
     {
         $this->setArguments($arguments);
     }
@@ -37,9 +38,9 @@ class sfCommandArgumentSet
      *
      * @param array $arguments An array of sfCommandArgument objects
      */
-    public function setArguments($arguments = array())
+    public function setArguments($arguments = [])
     {
-        $this->arguments = array();
+        $this->arguments = [];
         $this->requiredCount = 0;
         $this->hasOptional = false;
         $this->addArguments($arguments);
@@ -50,7 +51,7 @@ class sfCommandArgumentSet
      *
      * @param array $arguments An array of sfCommandArgument objects
      */
-    public function addArguments($arguments = array())
+    public function addArguments($arguments = [])
     {
         if (null !== $arguments) {
             foreach ($arguments as $argument) {
@@ -62,22 +63,22 @@ class sfCommandArgumentSet
     /**
      * Add a sfCommandArgument objects.
      *
-     * @param sfCommandArgument $argument A sfCommandArgument object
+     * @param \sfCommandArgument $argument A sfCommandArgument object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
-    public function addArgument(sfCommandArgument $argument)
+    public function addArgument(\sfCommandArgument $argument)
     {
         if (isset($this->arguments[$argument->getName()])) {
-            throw new sfCommandException(sprintf('An argument with name "%s" already exist.', $argument->getName()));
+            throw new \sfCommandException(sprintf('An argument with name "%s" already exist.', $argument->getName()));
         }
 
         if ($this->hasAnArrayArgument) {
-            throw new sfCommandException('Cannot add an argument after an array argument.');
+            throw new \sfCommandException('Cannot add an argument after an array argument.');
         }
 
         if ($argument->isRequired() && $this->hasOptional) {
-            throw new sfCommandException('Cannot add a required argument after an optional one.');
+            throw new \sfCommandException('Cannot add a required argument after an optional one.');
         }
 
         if ($argument->isArray()) {
@@ -98,14 +99,14 @@ class sfCommandArgumentSet
      *
      * @param string $name The argument name
      *
-     * @return sfCommandArgument A sfCommandArgument object
+     * @return \sfCommandArgument A sfCommandArgument object
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getArgument($name)
     {
         if (!$this->hasArgument($name)) {
-            throw new sfCommandException(sprintf('The "%s" argument does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "%s" argument does not exist.', $name));
         }
 
         return $this->arguments[$name];
@@ -160,7 +161,7 @@ class sfCommandArgumentSet
      */
     public function getDefaults()
     {
-        $values = array();
+        $values = [];
         foreach ($this->arguments as $argument) {
             $values[$argument->getName()] = $argument->getDefault();
         }

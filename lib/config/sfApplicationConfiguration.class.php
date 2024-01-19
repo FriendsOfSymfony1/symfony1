@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,27 +16,27 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfApplicationConfiguration extends ProjectConfiguration
+abstract class sfApplicationConfiguration extends \ProjectConfiguration
 {
     protected static $coreLoaded = false;
-    protected static $loadedHelpers = array();
+    protected static $loadedHelpers = [];
 
     protected $configCache;
     protected $application;
     protected $environment;
     protected $debug = false;
-    protected $config = array();
+    protected $config = [];
     protected $cache;
 
     /**
      * Constructor.
      *
-     * @param string            $environment The environment name
-     * @param bool              $debug       true to enable debug mode
-     * @param string            $rootDir     The project root directory
-     * @param sfEventDispatcher $dispatcher  An event dispatcher
+     * @param string             $environment The environment name
+     * @param bool               $debug       true to enable debug mode
+     * @param string             $rootDir     The project root directory
+     * @param \sfEventDispatcher $dispatcher  An event dispatcher
      */
-    public function __construct($environment, $debug, $rootDir = null, sfEventDispatcher $dispatcher = null)
+    public function __construct($environment, $debug, $rootDir = null, \sfEventDispatcher $dispatcher = null)
     {
         $this->environment = $environment;
         $this->debug = (bool) $debug;
@@ -47,18 +48,18 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
 
         $this->initConfiguration();
 
-        if (sfConfig::get('sf_check_lock')) {
+        if (\sfConfig::get('sf_check_lock')) {
             $this->checkLock();
         }
 
-        if (is_file($file = sfConfig::get('sf_app_cache_dir').'/config/configuration.php')) {
+        if (is_file($file = \sfConfig::get('sf_app_cache_dir').'/config/configuration.php')) {
             $this->cache = require $file;
         }
 
         $this->initialize();
 
         // store current sfConfig values
-        $this->config = sfConfig::getAll();
+        $this->config = \sfConfig::getAll();
     }
 
     /**
@@ -81,8 +82,8 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
 
     public function activate()
     {
-        sfConfig::clear();
-        sfConfig::add($this->config);
+        \sfConfig::clear();
+        \sfConfig::add($this->config);
     }
 
     /**
@@ -93,20 +94,20 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
         $configCache = $this->getConfigCache();
 
         // in debug mode, start global timer
-        if ($this->isDebug() && !sfConfig::get('sf_cli') && !sfWebDebugPanelTimer::isStarted()) {
-            sfWebDebugPanelTimer::startTime();
+        if ($this->isDebug() && !\sfConfig::get('sf_cli') && !\sfWebDebugPanelTimer::isStarted()) {
+            \sfWebDebugPanelTimer::startTime();
         }
 
         // required core classes for the framework
-        if (!$this->isDebug() && !sfConfig::get('sf_test') && !sfConfig::get('sf_cli') && !self::$coreLoaded) {
+        if (!$this->isDebug() && !\sfConfig::get('sf_test') && !\sfConfig::get('sf_cli') && !self::$coreLoaded) {
             $configCache->import('config/core_compile.yml', false);
         }
 
         // autoloader(s)
-        $this->dispatcher->connect('autoload.filter_config', array($this, 'filterAutoloadConfig'));
-        sfAutoload::getInstance()->register();
+        $this->dispatcher->connect('autoload.filter_config', [$this, 'filterAutoloadConfig']);
+        \sfAutoload::getInstance()->register();
         if ($this->isDebug()) {
-            sfAutoloadAgain::getInstance()->register();
+            \sfAutoloadAgain::getInstance()->register();
         }
 
         // load base settings
@@ -115,29 +116,29 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
             include $file;
         }
 
-        if (!sfConfig::get('sf_cli') && false !== sfConfig::get('sf_csrf_secret')) {
-            sfForm::enableCSRFProtection(sfConfig::get('sf_csrf_secret'));
+        if (!\sfConfig::get('sf_cli') && false !== \sfConfig::get('sf_csrf_secret')) {
+            \sfForm::enableCSRFProtection(\sfConfig::get('sf_csrf_secret'));
         }
 
-        sfWidget::setCharset(sfConfig::get('sf_charset'));
-        sfValidatorBase::setCharset(sfConfig::get('sf_charset'));
+        \sfWidget::setCharset(\sfConfig::get('sf_charset'));
+        \sfValidatorBase::setCharset(\sfConfig::get('sf_charset'));
 
         // force setting default timezone if not set
-        if ($default_timezone = sfConfig::get('sf_default_timezone')) {
+        if ($default_timezone = \sfConfig::get('sf_default_timezone')) {
             date_default_timezone_set($default_timezone);
-        } elseif (sfConfig::get('sf_force_default_timezone', true)) {
+        } elseif (\sfConfig::get('sf_force_default_timezone', true)) {
             date_default_timezone_set(@date_default_timezone_get());
         }
 
         // error settings
         ini_set('display_errors', $this->isDebug() ? 'on' : 'off');
-        error_reporting(sfConfig::get('sf_error_reporting'));
+        error_reporting(\sfConfig::get('sf_error_reporting'));
 
         // initialize plugin configuration objects
         $this->initializePlugins();
 
         // compress output
-        if (!self::$coreLoaded && sfConfig::get('sf_compressed')) {
+        if (!self::$coreLoaded && \sfConfig::get('sf_compressed')) {
             ob_start('ob_gzhandler');
         }
 
@@ -149,7 +150,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      *
      * @return array
      */
-    public function filterAutoloadConfig(sfEvent $event, array $config)
+    public function filterAutoloadConfig(\sfEvent $event, array $config)
     {
         foreach ($this->pluginConfigurations as $name => $configuration) {
             $config = $configuration->filterAutoloadConfig($event, $config);
@@ -161,12 +162,12 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     /**
      * Returns a configuration cache object for the current configuration.
      *
-     * @return sfConfigCache A sfConfigCache instance
+     * @return \sfConfigCache A sfConfigCache instance
      */
     public function getConfigCache()
     {
         if (null === $this->configCache) {
-            $this->configCache = new sfConfigCache($this);
+            $this->configCache = new \sfConfigCache($this);
         }
 
         return $this->configCache;
@@ -178,16 +179,16 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     public function checkLock()
     {
         if (
-            $this->hasLockFile(sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.$this->getApplication().'_'.$this->getEnvironment().'-cli.lck', 5)
-            || $this->hasLockFile(sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.$this->getApplication().'_'.$this->getEnvironment().'.lck')
+            $this->hasLockFile(\sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.$this->getApplication().'_'.$this->getEnvironment().'-cli.lck', 5)
+            || $this->hasLockFile(\sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.$this->getApplication().'_'.$this->getEnvironment().'.lck')
         ) {
             // application is not available - we'll find the most specific unavailable page...
-            $files = array(
-                sfConfig::get('sf_app_config_dir').'/unavailable.php',
-                sfConfig::get('sf_config_dir').'/unavailable.php',
-                sfConfig::get('sf_web_dir').'/errors/unavailable.php',
+            $files = [
+                \sfConfig::get('sf_app_config_dir').'/unavailable.php',
+                \sfConfig::get('sf_config_dir').'/unavailable.php',
+                \sfConfig::get('sf_web_dir').'/errors/unavailable.php',
                 $this->getSymfonyLibDir().'/exception/data/unavailable.php',
-            );
+            ];
 
             foreach ($files as $file) {
                 if (is_readable($file)) {
@@ -213,14 +214,14 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     {
         parent::setRootDir($rootDir);
 
-        sfConfig::add(array(
+        \sfConfig::add([
             'sf_app' => $this->getApplication(),
             'sf_environment' => $this->getEnvironment(),
             'sf_debug' => $this->isDebug(),
             'sf_cli' => PHP_SAPI === 'cli',
-        ));
+        ]);
 
-        $this->setAppDir(sfConfig::get('sf_apps_dir').DIRECTORY_SEPARATOR.$this->getApplication());
+        $this->setAppDir(\sfConfig::get('sf_apps_dir').DIRECTORY_SEPARATOR.$this->getApplication());
     }
 
     /**
@@ -230,7 +231,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function setAppDir($appDir)
     {
-        sfConfig::add(array(
+        \sfConfig::add([
             'sf_app_dir' => $appDir,
 
             // SF_APP_DIR directory structure
@@ -239,17 +240,17 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
             'sf_app_module_dir' => $appDir.DIRECTORY_SEPARATOR.'modules',
             'sf_app_template_dir' => $appDir.DIRECTORY_SEPARATOR.'templates',
             'sf_app_i18n_dir' => $appDir.DIRECTORY_SEPARATOR.'i18n',
-        ));
+        ]);
     }
 
     /**
-     * @see sfProjectConfiguration
+     * @see \sfProjectConfiguration
      */
     public function setCacheDir($cacheDir)
     {
         parent::setCacheDir($cacheDir);
 
-        sfConfig::add(array(
+        \sfConfig::add([
             'sf_app_base_cache_dir' => $cacheDir.DIRECTORY_SEPARATOR.$this->getApplication(),
             'sf_app_cache_dir' => $appCacheDir = $cacheDir.DIRECTORY_SEPARATOR.$this->getApplication().DIRECTORY_SEPARATOR.$this->getEnvironment(),
 
@@ -259,7 +260,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
             'sf_config_cache_dir' => $appCacheDir.DIRECTORY_SEPARATOR.'config',
             'sf_test_cache_dir' => $appCacheDir.DIRECTORY_SEPARATOR.'test',
             'sf_module_cache_dir' => $appCacheDir.DIRECTORY_SEPARATOR.'modules',
-        ));
+        ]);
     }
 
     /**
@@ -272,9 +273,9 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     public function getControllerDirs($moduleName)
     {
         if (!isset($this->cache['getControllerDirs'][$moduleName])) {
-            $dirs = array();
+            $dirs = [];
 
-            $dirs[sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/actions'] = false; // application
+            $dirs[\sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/actions'] = false; // application
 
             foreach ($this->getPluginPaths() as $path) {
                 if (is_dir($dir = $path.'/modules/'.$moduleName.'/actions')) {
@@ -301,12 +302,12 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function getLibDirs($moduleName)
     {
-        $dirs = array();
+        $dirs = [];
 
-        $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/lib';                  // application
+        $dirs[] = \sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/lib';                  // application
         $dirs = array_merge($dirs, $this->getPluginSubPaths('/modules/'.$moduleName.'/lib')); // plugins
         $dirs[] = $this->getSymfonyLibDir().'/controller/'.$moduleName.'/lib';                // core modules
-        $dirs[] = sfConfig::get('sf_module_cache_dir').'/auto'.ucfirst($moduleName.'/lib');   // generated templates in cache
+        $dirs[] = \sfConfig::get('sf_module_cache_dir').'/auto'.ucfirst($moduleName.'/lib');   // generated templates in cache
 
         return $dirs;
     }
@@ -320,12 +321,12 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function getTemplateDirs($moduleName)
     {
-        $dirs = array();
+        $dirs = [];
 
-        $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';                  // application
+        $dirs[] = \sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';                  // application
         $dirs = array_merge($dirs, $this->getPluginSubPaths('/modules/'.$moduleName.'/templates')); // plugins
         $dirs[] = $this->getSymfonyLibDir().'/controller/'.$moduleName.'/templates';                // core modules
-        $dirs[] = sfConfig::get('sf_module_cache_dir').'/auto'.ucfirst($moduleName.'/templates');   // generated templates in cache
+        $dirs[] = \sfConfig::get('sf_module_cache_dir').'/auto'.ucfirst($moduleName.'/templates');   // generated templates in cache
 
         return $dirs;
     }
@@ -339,22 +340,22 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function getHelperDirs($moduleName = '')
     {
-        $dirs = array();
+        $dirs = [];
 
         if ($moduleName) {
-            $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/lib/helper'; // module
+            $dirs[] = \sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/lib/helper'; // module
 
             $dirs = array_merge($dirs, $this->getPluginSubPaths('/modules/'.$moduleName.'/lib/helper'));
         }
 
         return array_merge(
             $dirs,
-            array(
-                sfConfig::get('sf_app_lib_dir').'/helper',         // application
-                sfConfig::get('sf_lib_dir').'/helper',             // project
-            ),
+            [
+                \sfConfig::get('sf_app_lib_dir').'/helper',         // application
+                \sfConfig::get('sf_lib_dir').'/helper',             // project
+            ],
             $this->getPluginSubPaths('/lib/helper'),             // plugins
-            array($this->getSymfonyLibDir().'/helper')           // symfony
+            [$this->getSymfonyLibDir().'/helper']           // symfony
         );
     }
 
@@ -398,7 +399,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     }
 
     /**
-     * @see sfProjectConfiguration
+     * @see \sfProjectConfiguration
      */
     public function getPluginPaths()
     {
@@ -416,7 +417,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function getDecoratorDirs()
     {
-        return array(sfConfig::get('sf_app_template_dir'));
+        return [\sfConfig::get('sf_app_template_dir')];
     }
 
     /**
@@ -442,10 +443,10 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function getI18NGlobalDirs()
     {
-        $dirs = array();
+        $dirs = [];
 
         // application
-        if (is_dir($dir = sfConfig::get('sf_app_i18n_dir'))) {
+        if (is_dir($dir = \sfConfig::get('sf_app_i18n_dir'))) {
             $dirs[] = $dir;
         }
 
@@ -462,15 +463,15 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      */
     public function getI18NDirs($moduleName)
     {
-        $dirs = array();
+        $dirs = [];
 
         // module
-        if (is_dir($dir = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/i18n')) {
+        if (is_dir($dir = \sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/i18n')) {
             $dirs[] = $dir;
         }
 
         // application
-        if (is_dir($dir = sfConfig::get('sf_app_i18n_dir'))) {
+        if (is_dir($dir = \sfConfig::get('sf_app_i18n_dir'))) {
             $dirs[] = $dir;
         }
 
@@ -492,9 +493,9 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
     {
         $globalConfigPath = basename(dirname($configPath)).'/'.basename($configPath);
 
-        $files = array(
+        $files = [
             $this->getSymfonyLibDir().'/config/'.$globalConfigPath, // symfony
-        );
+        ];
 
         foreach ($this->getPluginPaths() as $path) {
             if (is_file($file = $path.'/'.$globalConfigPath)) {
@@ -502,12 +503,12 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
             }
         }
 
-        $files = array_merge($files, array(
+        $files = array_merge($files, [
             $this->getRootDir().'/'.$globalConfigPath,              // project
             $this->getRootDir().'/'.$configPath,                    // project
-            sfConfig::get('sf_app_dir').'/'.$globalConfigPath,      // application
-            sfConfig::get('sf_app_cache_dir').'/'.$configPath,      // generated modules
-        ));
+            \sfConfig::get('sf_app_dir').'/'.$globalConfigPath,      // application
+            \sfConfig::get('sf_app_cache_dir').'/'.$configPath,      // generated modules
+        ]);
 
         foreach ($this->getPluginPaths() as $path) {
             if (is_file($file = $path.'/'.$configPath)) {
@@ -515,9 +516,9 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
             }
         }
 
-        $files[] = sfConfig::get('sf_app_dir').'/'.$configPath;   // module
+        $files[] = \sfConfig::get('sf_app_dir').'/'.$configPath;   // module
 
-        $configs = array();
+        $configs = [];
         foreach (array_unique($files) as $file) {
             if (is_readable($file)) {
                 $configs[] = $file;
@@ -562,7 +563,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
                 }
 
                 if (!$included) {
-                    throw new InvalidArgumentException(sprintf('Unable to load "%sHelper.php" helper in: %s.', $helperName, implode(', ', array_map(array('sfDebug', 'shortenFilePath'), $dirs))));
+                    throw new \InvalidArgumentException(sprintf('Unable to load "%sHelper.php" helper in: %s.', $helperName, implode(', ', array_map(['sfDebug', 'shortenFilePath'], $dirs))));
                 }
             }
 

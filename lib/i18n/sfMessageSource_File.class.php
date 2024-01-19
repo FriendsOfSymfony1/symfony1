@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfMessageSource_File class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,7 +18,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:18:44 EST 2004
  */
-abstract class sfMessageSource_File extends sfMessageSource
+abstract class sfMessageSource_File extends \sfMessageSource
 {
     /**
      * Separator between culture name and source.
@@ -96,7 +88,7 @@ abstract class sfMessageSource_File extends sfMessageSource
         $variants = explode('_', $this->culture);
         $source = $catalogue.$this->dataExt;
 
-        $catalogues = array($source);
+        $catalogues = [$source];
 
         $variant = null;
 
@@ -143,7 +135,7 @@ abstract class sfMessageSource_File extends sfMessageSource
     protected function getCatalogueByDir($catalogue)
     {
         $variants = explode('_', $this->culture);
-        $catalogues = array();
+        $catalogues = [];
 
         $variant = null;
 
@@ -162,8 +154,8 @@ abstract class sfMessageSource_File extends sfMessageSource
      * of directory structures.
      * E.g. array('messages', 'en_AU').
      *
-     * @param mixed|null $dir
-     * @param mixed|null $variant
+     * @param \mixed|null $dir
+     * @param \mixed|null $variant
      *
      * @return array list of catalogues
      */
@@ -172,7 +164,7 @@ abstract class sfMessageSource_File extends sfMessageSource
         $dir = $dir ?: $this->getSource($variant);
         $files = scandir($dir);
 
-        $catalogue = array();
+        $catalogue = [];
 
         foreach ($files as $file) {
             if (is_dir($dir.'/'.$file) && preg_match('/^[a-z]{2}(_[A-Z]{2,3})?$/', $file)) {

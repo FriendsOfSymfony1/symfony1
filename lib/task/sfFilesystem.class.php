@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,10 +24,10 @@ class sfFilesystem
     /**
      * Constructor.
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param sfFormatter       $formatter  An sfFormatter instance
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param \sfFormatter       $formatter  An sfFormatter instance
      */
-    public function __construct(sfEventDispatcher $dispatcher = null, sfFormatter $formatter = null)
+    public function __construct(\sfEventDispatcher $dispatcher = null, \sfFormatter $formatter = null)
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = $formatter;
@@ -47,7 +48,7 @@ class sfFilesystem
      *
      * @return bool
      */
-    public function copy($originFile, $targetFile, $options = array())
+    public function copy($originFile, $targetFile, $options = [])
     {
         if (!array_key_exists('override', $options)) {
             $options['override'] = false;
@@ -101,7 +102,7 @@ class sfFilesystem
     public function touch($files)
     {
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         foreach ($files as $file) {
@@ -119,7 +120,7 @@ class sfFilesystem
     public function remove($files)
     {
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         $files = array_reverse($files);
@@ -149,7 +150,7 @@ class sfFilesystem
         umask($umask);
 
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         foreach ($files as $file) {
@@ -168,13 +169,13 @@ class sfFilesystem
      *
      * @return bool
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function rename($origin, $target)
     {
         // we check that target does not exist
         if (is_readable($target)) {
-            throw new sfException(sprintf('Cannot rename because the target "%s" already exist.', $target));
+            throw new \sfException(sprintf('Cannot rename because the target "%s" already exist.', $target));
         }
 
         $this->logSection('rename', $origin.' > '.$target);
@@ -192,7 +193,7 @@ class sfFilesystem
     public function symlink($originDir, $targetDir, $copyOnWindows = false)
     {
         if ('\\' == DIRECTORY_SEPARATOR && $copyOnWindows) {
-            $finder = sfFinder::type('any');
+            $finder = \sfFinder::type('any');
             $this->mirror($originDir, $targetDir, $finder);
 
             return;
@@ -232,14 +233,14 @@ class sfFilesystem
     /**
      * Mirrors a directory to another.
      *
-     * @param string   $originDir The origin directory
-     * @param string   $targetDir The target directory
-     * @param sfFinder $finder    An sfFinder instance
-     * @param array    $options   An array of options (see copy())
+     * @param string    $originDir The origin directory
+     * @param string    $targetDir The target directory
+     * @param \sfFinder $finder    An sfFinder instance
+     * @param array     $options   An array of options (see copy())
      *
-     * @throws sfException
+     * @throws \sfException
      */
-    public function mirror($originDir, $targetDir, $finder, $options = array())
+    public function mirror($originDir, $targetDir, $finder, $options = [])
     {
         foreach ($finder->relative()->in($originDir) as $file) {
             if (is_dir($originDir.DIRECTORY_SEPARATOR.$file)) {
@@ -249,7 +250,7 @@ class sfFilesystem
             } elseif (is_link($originDir.DIRECTORY_SEPARATOR.$file)) {
                 $this->symlink($originDir.DIRECTORY_SEPARATOR.$file, $targetDir.DIRECTORY_SEPARATOR.$file);
             } else {
-                throw new sfException(sprintf('Unable to guess "%s" file type.', $file));
+                throw new \sfException(sprintf('Unable to guess "%s" file type.', $file));
             }
         }
     }
@@ -267,14 +268,14 @@ class sfFilesystem
     {
         $this->logSection('exec ', $cmd);
 
-        $descriptorspec = array(
-            1 => array('pipe', 'w'), // stdout
-            2 => array('pipe', 'w'), // stderr
-        );
+        $descriptorspec = [
+            1 => ['pipe', 'w'], // stdout
+            2 => ['pipe', 'w'], // stderr
+        ];
 
         $process = proc_open($cmd, $descriptorspec, $pipes);
         if (!is_resource($process)) {
-            throw new RuntimeException('Unable to execute the command.');
+            throw new \RuntimeException('Unable to execute the command.');
         }
 
         stream_set_blocking($pipes[1], false);
@@ -310,10 +311,10 @@ class sfFilesystem
         fclose($pipes[2]);
 
         if (($return = proc_close($process)) > 0) {
-            throw new RuntimeException('Problem executing command.', $return);
+            throw new \RuntimeException('Problem executing command.', $return);
         }
 
-        return array($output, $err);
+        return [$output, $err];
     }
 
     /**
@@ -327,7 +328,7 @@ class sfFilesystem
     public function replaceTokens($files, $beginToken, $endToken, $tokens)
     {
         if (!is_array($files)) {
-            $files = array($files);
+            $files = [$files];
         }
 
         foreach ($files as $file) {
@@ -357,7 +358,7 @@ class sfFilesystem
 
         $message = $this->formatter ? $this->formatter->formatSection($section, $message, $size) : $section.' '.$message."\n";
 
-        $this->dispatcher->notify(new sfEvent($this, 'command.log', array($message)));
+        $this->dispatcher->notify(new \sfEvent($this, 'command.log', [$message]));
     }
 
     /**
@@ -419,7 +420,7 @@ class sfFilesystem
             return '';
         }
 
-        $out = array();
+        $out = [];
         foreach (explode(DIRECTORY_SEPARATOR, $path) as $i => $fold) {
             if ('' == $fold || '.' == $fold) {
                 continue;

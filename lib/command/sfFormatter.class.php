@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,7 +40,7 @@ class sfFormatter
      * @param string $name    The style name
      * @param array  $options An array of options
      */
-    public function setStyle($name, $options = array())
+    public function setStyle($name, $options = [])
     {
     }
 
@@ -51,7 +52,7 @@ class sfFormatter
      *
      * @return string The formatted text
      */
-    public function format($text = '', $parameters = array())
+    public function format($text = '', $parameters = [])
     {
         return $text;
     }

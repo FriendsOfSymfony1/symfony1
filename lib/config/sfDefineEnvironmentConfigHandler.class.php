@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +14,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
+class sfDefineEnvironmentConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -22,8 +23,8 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -41,7 +42,7 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
         // parse the yaml
         $config = static::getConfiguration($configFiles);
 
-        $values = array();
+        $values = [];
         foreach ($config as $category => $keys) {
             $values = array_merge($values, $this->getValues($prefix, $category, $keys));
         }
@@ -64,7 +65,7 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -85,10 +86,10 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
         if (!is_array($keys)) {
             list($key, $value) = $this->fixCategoryValue($prefix.strtolower($category), '', $keys);
 
-            return array($key => $value);
+            return [$key => $value];
         }
 
-        $values = array();
+        $values = [];
 
         $category = $this->fixCategoryName($category, $prefix);
 
@@ -112,7 +113,7 @@ class sfDefineEnvironmentConfigHandler extends sfYamlConfigHandler
      */
     protected function fixCategoryValue($category, $key, $value)
     {
-        return array($category.$key, $value);
+        return [$category.$key, $value];
     }
 
     /**

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,25 +20,25 @@ abstract class sfTask
 {
     protected $namespace = '';
     protected $name;
-    protected $aliases = array();
+    protected $aliases = [];
     protected $briefDescription = '';
     protected $detailedDescription = '';
-    protected $arguments = array();
-    protected $options = array();
+    protected $arguments = [];
+    protected $options = [];
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
-    /** @var sfFormatter */
+    /** @var \sfFormatter */
     protected $formatter;
 
     /**
      * Constructor.
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param sfFormatter       $formatter  An sfFormatter instance
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param \sfFormatter       $formatter  An sfFormatter instance
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter)
+    public function __construct(\sfEventDispatcher $dispatcher, \sfFormatter $formatter)
     {
         $this->initialize($dispatcher, $formatter);
 
@@ -47,10 +48,10 @@ abstract class sfTask
     /**
      * Initializes the sfTask instance.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param sfFormatter       $formatter  A sfFormatter instance
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param \sfFormatter       $formatter  A sfFormatter instance
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfFormatter $formatter)
+    public function initialize(\sfEventDispatcher $dispatcher, \sfFormatter $formatter)
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = $formatter;
@@ -59,7 +60,7 @@ abstract class sfTask
     /**
      * Returns the formatter instance.
      *
-     * @return sfFormatter The formatter instance
+     * @return \sfFormatter The formatter instance
      */
     public function getFormatter()
     {
@@ -69,9 +70,9 @@ abstract class sfTask
     /**
      * Sets the formatter instance.
      *
-     * @param sfFormatter $formatter The formatter instance
+     * @param \sfFormatter $formatter The formatter instance
      */
-    public function setFormatter(sfFormatter $formatter)
+    public function setFormatter(\sfFormatter $formatter)
     {
         $this->formatter = $formatter;
     }
@@ -79,12 +80,12 @@ abstract class sfTask
     /**
      * Runs the task from the CLI.
      *
-     * @param sfCommandManager $commandManager An sfCommandManager instance
-     * @param mixed            $options        The command line options
+     * @param \sfCommandManager $commandManager An sfCommandManager instance
+     * @param mixed             $options        The command line options
      *
      * @return int 0 if everything went fine, or an error code
      */
-    public function runFromCLI(sfCommandManager $commandManager, $options = null)
+    public function runFromCLI(\sfCommandManager $commandManager, $options = null)
     {
         $commandManager->getArgumentSet()->addArguments($this->getArguments());
         $commandManager->getOptionSet()->addOptions($this->getOptions());
@@ -100,13 +101,13 @@ abstract class sfTask
      *
      * @return int 0 if everything went fine, or an error code
      */
-    public function run($arguments = array(), $options = array())
+    public function run($arguments = [], $options = [])
     {
-        $commandManager = new sfCommandManager(new sfCommandArgumentSet($this->getArguments()), new sfCommandOptionSet($this->getOptions()));
+        $commandManager = new \sfCommandManager(new \sfCommandArgumentSet($this->getArguments()), new \sfCommandOptionSet($this->getOptions()));
 
         if (is_array($arguments) && is_string(key($arguments))) {
             // index arguments by name for ordering and reference
-            $indexArguments = array();
+            $indexArguments = [];
             foreach ($this->arguments as $argument) {
                 $indexArguments[$argument->getName()] = $argument;
             }
@@ -128,7 +129,7 @@ abstract class sfTask
         }
 
         // index options by name for reference
-        $indexedOptions = array();
+        $indexedOptions = [];
         foreach ($this->options as $option) {
             $indexedOptions[$option->getName()] = $option;
         }
@@ -146,7 +147,7 @@ abstract class sfTask
             }
 
             // add -- before each option if needed
-            if (0 !== strpos($value, '--')) {
+            if (!str_starts_with($value, '--')) {
                 $value = '--'.$value;
             }
 
@@ -184,14 +185,14 @@ abstract class sfTask
      *
      * @see sfCommandArgument::__construct()
      *
-     * @param string     $name
-     * @param int        $mode
-     * @param string     $help
-     * @param mixed|null $default
+     * @param string      $name
+     * @param int         $mode
+     * @param string      $help
+     * @param \mixed|null $default
      */
     public function addArgument($name, $mode = null, $help = '', $default = null)
     {
-        $this->arguments[] = new sfCommandArgument($name, $mode, $help, $default);
+        $this->arguments[] = new \sfCommandArgument($name, $mode, $help, $default);
     }
 
     /**
@@ -221,15 +222,15 @@ abstract class sfTask
      *
      * @see sfCommandOption::__construct()
      *
-     * @param string     $name
-     * @param string     $shortcut
-     * @param int        $mode
-     * @param string     $help
-     * @param mixed|null $default
+     * @param string      $name
+     * @param string      $shortcut
+     * @param int         $mode
+     * @param string      $help
+     * @param \mixed|null $default
      */
     public function addOption($name, $shortcut = null, $mode = null, $help = '', $default = null)
     {
-        $this->options[] = new sfCommandOption($name, $shortcut, $mode, $help, $default);
+        $this->options[] = new \sfCommandOption($name, $shortcut, $mode, $help, $default);
     }
 
     /**
@@ -263,7 +264,7 @@ abstract class sfTask
             $name = substr($name, 0, -4);
         }
 
-        return str_replace('_', '-', sfInflector::underscore($name));
+        return str_replace('_', '-', \sfInflector::underscore($name));
     }
 
     /**
@@ -320,13 +321,13 @@ abstract class sfTask
      */
     public function getSynopsis()
     {
-        $options = array();
+        $options = [];
         foreach ($this->getOptions() as $option) {
             $shortcut = $option->getShortcut() ? sprintf('-%s|', $option->getShortcut()) : '';
             $options[] = sprintf('['.($option->isParameterRequired() ? '%s--%s="..."' : ($option->isParameterOptional() ? '%s--%s[="..."]' : '%s--%s')).']', $shortcut, $option->getName());
         }
 
-        $arguments = array();
+        $arguments = [];
         foreach ($this->getArguments() as $argument) {
             $arguments[] = sprintf($argument->isRequired() ? '%s' : '[%s]', $argument->getName().($argument->isArray() ? '1' : ''));
 
@@ -346,10 +347,10 @@ abstract class sfTask
     public function log($messages)
     {
         if (!is_array($messages)) {
-            $messages = array($messages);
+            $messages = [$messages];
         }
 
-        $this->dispatcher->notify(new sfEvent($this, 'command.log', $messages));
+        $this->dispatcher->notify(new \sfEvent($this, 'command.log', $messages));
     }
 
     /**
@@ -362,7 +363,7 @@ abstract class sfTask
      */
     public function logSection($section, $message, $size = null, $style = 'INFO')
     {
-        $this->dispatcher->notify(new sfEvent($this, 'command.log', array($this->formatter->formatSection($section, $message, $size, $style))));
+        $this->dispatcher->notify(new \sfEvent($this, 'command.log', [$this->formatter->formatSection($section, $message, $size, $style)]));
     }
 
     /**
@@ -374,20 +375,20 @@ abstract class sfTask
     public function logBlock($messages, $style)
     {
         if (!is_array($messages)) {
-            $messages = array($messages);
+            $messages = [$messages];
         }
 
         $style = str_replace('_LARGE', '', $style, $count);
         $large = (bool) $count;
 
         $len = 0;
-        $lines = array();
+        $lines = [];
         foreach ($messages as $message) {
             $lines[] = sprintf($large ? '  %s  ' : ' %s ', $message);
             $len = max($this->strlen($message) + ($large ? 4 : 2), $len);
         }
 
-        $messages = $large ? array(str_repeat(' ', $len)) : array();
+        $messages = $large ? [str_repeat(' ', $len)] : [];
         foreach ($lines as $line) {
             $messages[] = $line.str_repeat(' ', $len - $this->strlen($line));
         }
@@ -436,7 +437,7 @@ abstract class sfTask
     public function askConfirmation($question, $style = 'QUESTION', $default = true)
     {
         $answer = 'z';
-        while ($answer && !in_array(strtolower($answer[0]), array('y', 'n'))) {
+        while ($answer && !in_array(strtolower($answer[0]), ['y', 'n'])) {
             $answer = $this->ask($question, $style);
         }
 
@@ -458,30 +459,30 @@ abstract class sfTask
      *
      * @param array|string $question
      *
-     * @throws sfValidatorError
+     * @throws \sfValidatorError
      */
-    public function askAndValidate($question, sfValidatorBase $validator, array $options = array())
+    public function askAndValidate($question, \sfValidatorBase $validator, array $options = [])
     {
         if (!is_array($question)) {
-            $question = array($question);
+            $question = [$question];
         }
 
-        $options = array_merge(array(
+        $options = array_merge([
             'value' => null,
             'attempts' => false,
             'style' => 'QUESTION',
-        ), $options);
+        ], $options);
 
         // does the provided value passes the validator?
         if ($options['value']) {
             try {
                 return $validator->clean($options['value']);
-            } catch (sfValidatorError $error) {
+            } catch (\sfValidatorError $error) {
             }
         }
 
         // no, ask the user for a valid user
-        /** @var sfValidatorError|null $error */
+        /** @var \sfValidatorError|null $error */
         $error = null;
         while (false === $options['attempts'] || $options['attempts']--) {
             if (null !== $error) {
@@ -492,7 +493,7 @@ abstract class sfTask
 
             try {
                 return $validator->clean($value);
-            } catch (sfValidatorError $error) {
+            } catch (\sfValidatorError $error) {
             }
         }
 
@@ -506,7 +507,7 @@ abstract class sfTask
      */
     public function asXml()
     {
-        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $dom->appendChild($taskXML = $dom->createElement('task'));
         $taskXML->setAttribute('id', $this->getFullName());
@@ -521,7 +522,7 @@ abstract class sfTask
 
         $taskXML->appendChild($helpXML = $dom->createElement('help'));
         $help = $this->detailedDescription;
-        $help = str_replace(array('|COMMENT', '|INFO'), array('|strong', '|em'), $help);
+        $help = str_replace(['|COMMENT', '|INFO'], ['|strong', '|em'], $help);
         $help = preg_replace('/\[(.+?)\|(\w+)\]/s', '<$2>$1</$2>', $help);
         $helpXML->appendChild($dom->createTextNode(implode("\n ", explode("\n", $help))));
 
@@ -541,7 +542,7 @@ abstract class sfTask
             $helpXML->appendChild($dom->createTextNode($argument->getHelp()));
 
             $argumentXML->appendChild($defaultsXML = $dom->createElement('defaults'));
-            $defaults = is_array($argument->getDefault()) ? $argument->getDefault() : ($argument->getDefault() ? array($argument->getDefault()) : array());
+            $defaults = is_array($argument->getDefault()) ? $argument->getDefault() : ($argument->getDefault() ? [$argument->getDefault()] : []);
             foreach ($defaults as $default) {
                 $defaultsXML->appendChild($defaultXML = $dom->createElement('default'));
                 $defaultXML->appendChild($dom->createTextNode($default));
@@ -561,7 +562,7 @@ abstract class sfTask
 
             if ($option->acceptParameter()) {
                 $optionXML->appendChild($defaultsXML = $dom->createElement('defaults'));
-                $defaults = is_array($option->getDefault()) ? $option->getDefault() : ($option->getDefault() ? array($option->getDefault()) : array());
+                $defaults = is_array($option->getDefault()) ? $option->getDefault() : ($option->getDefault() ? [$option->getDefault()] : []);
                 foreach ($defaults as $default) {
                     $defaultsXML->appendChild($defaultXML = $dom->createElement('default'));
                     $defaultXML->appendChild($dom->createTextNode($default));
@@ -579,22 +580,22 @@ abstract class sfTask
     {
     }
 
-    protected function process(sfCommandManager $commandManager, $options)
+    protected function process(\sfCommandManager $commandManager, $options)
     {
         $commandManager->process($options);
         if (!$commandManager->isValid()) {
-            throw new sfCommandArgumentsException(sprintf("The execution of task \"%s\" failed.\n- %s", $this->getFullName(), implode("\n- ", $commandManager->getErrors())));
+            throw new \sfCommandArgumentsException(sprintf("The execution of task \"%s\" failed.\n- %s", $this->getFullName(), implode("\n- ", $commandManager->getErrors())));
         }
     }
 
-    protected function doRun(sfCommandManager $commandManager, $options)
+    protected function doRun(\sfCommandManager $commandManager, $options)
     {
-        $event = $this->dispatcher->filter(new sfEvent($this, 'command.filter_options', array('command_manager' => $commandManager)), $options);
+        $event = $this->dispatcher->filter(new \sfEvent($this, 'command.filter_options', ['command_manager' => $commandManager]), $options);
         $options = $event->getReturnValue();
 
         $this->process($commandManager, $options);
 
-        $event = new sfEvent($this, 'command.pre_command', array('arguments' => $commandManager->getArgumentValues(), 'options' => $commandManager->getOptionValues()));
+        $event = new \sfEvent($this, 'command.pre_command', ['arguments' => $commandManager->getArgumentValues(), 'options' => $commandManager->getOptionValues()]);
         $this->dispatcher->notifyUntil($event);
         if ($event->isProcessed()) {
             return $event->getReturnValue();
@@ -602,7 +603,7 @@ abstract class sfTask
 
         $ret = $this->execute($commandManager->getArgumentValues(), $commandManager->getOptionValues());
 
-        $this->dispatcher->notify(new sfEvent($this, 'command.post_command'));
+        $this->dispatcher->notify(new \sfEvent($this, 'command.post_command'));
 
         return $ret;
     }
@@ -615,7 +616,7 @@ abstract class sfTask
      *
      * @return int 0 if everything went fine, or an error code
      */
-    abstract protected function execute($arguments = array(), $options = array());
+    abstract protected function execute($arguments = [], $options = []);
 
     protected function strlen($string)
     {

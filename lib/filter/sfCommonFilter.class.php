@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,12 +16,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfCommonFilter extends sfFilter
+class sfCommonFilter extends \sfFilter
 {
     /**
      * Executes this filter.
      *
-     * @param sfFilterChain $filterChain A sfFilterChain instance
+     * @param \sfFilterChain $filterChain A sfFilterChain instance
      */
     public function execute($filterChain)
     {
@@ -33,12 +34,12 @@ class sfCommonFilter extends sfFilter
         // include javascripts and stylesheets
         $content = $response->getContent();
         if (false !== ($pos = strpos($content, '</head>'))) {
-            $this->context->getConfiguration()->loadHelpers(array('Tag', 'Asset'));
+            $this->context->getConfiguration()->loadHelpers(['Tag', 'Asset']);
             $html = '';
-            if (!sfConfig::get('symfony.asset.javascripts_included', false)) {
+            if (!\sfConfig::get('symfony.asset.javascripts_included', false)) {
                 $html .= get_javascripts($response);
             }
-            if (!sfConfig::get('symfony.asset.stylesheets_included', false)) {
+            if (!\sfConfig::get('symfony.asset.stylesheets_included', false)) {
                 $html .= get_stylesheets($response);
             }
 
@@ -47,7 +48,7 @@ class sfCommonFilter extends sfFilter
             }
         }
 
-        sfConfig::set('symfony.asset.javascripts_included', false);
-        sfConfig::set('symfony.asset.stylesheets_included', false);
+        \sfConfig::set('symfony.asset.javascripts_included', false);
+        \sfConfig::set('symfony.asset.stylesheets_included', false);
     }
 }

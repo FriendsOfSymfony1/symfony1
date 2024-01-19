@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,8 +22,8 @@ class sfServiceDefinition
     protected $file;
     protected $constructor;
     protected $shared = true;
-    protected $arguments = array();
-    protected $calls = array();
+    protected $arguments = [];
+    protected $calls = [];
     protected $configurator;
 
     /**
@@ -31,7 +32,7 @@ class sfServiceDefinition
      * @param string $class     The service class
      * @param array  $arguments An array of arguments to pass to the service constructor
      */
-    public function __construct($class, array $arguments = array())
+    public function __construct($class, array $arguments = [])
     {
         $this->class = $class;
         $this->arguments = $arguments;
@@ -42,7 +43,7 @@ class sfServiceDefinition
      *
      * @param string $method The method name
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setConstructor($method)
     {
@@ -54,7 +55,7 @@ class sfServiceDefinition
     /**
      * Gets the constructor method.
      *
-     * @return sfServiceDefinition The constructor method name
+     * @return \sfServiceDefinition The constructor method name
      */
     public function getConstructor()
     {
@@ -66,7 +67,7 @@ class sfServiceDefinition
      *
      * @param string $class The service class
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setClass($class)
     {
@@ -90,7 +91,7 @@ class sfServiceDefinition
      *
      * @param array $arguments An array of arguments
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setArguments(array $arguments)
     {
@@ -104,7 +105,7 @@ class sfServiceDefinition
      *
      * @param mixed $argument An argument
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function addArgument($argument)
     {
@@ -128,11 +129,11 @@ class sfServiceDefinition
      *
      * @param array $calls An array of method calls
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
-    public function setMethodCalls(array $calls = array())
+    public function setMethodCalls(array $calls = [])
     {
-        $this->calls = array();
+        $this->calls = [];
         foreach ($calls as $call) {
             $this->addMethodCall($call[0], $call[1]);
         }
@@ -146,11 +147,11 @@ class sfServiceDefinition
      * @param string $method    The method name to call
      * @param array  $arguments An array of arguments to pass to the method call
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
-    public function addMethodCall($method, array $arguments = array())
+    public function addMethodCall($method, array $arguments = [])
     {
-        $this->calls[] = array($method, $arguments);
+        $this->calls[] = [$method, $arguments];
 
         return $this;
     }
@@ -170,7 +171,7 @@ class sfServiceDefinition
      *
      * @param string $file A full pathname to include
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setFile($file)
     {
@@ -194,7 +195,7 @@ class sfServiceDefinition
      *
      * @param bool $shared Whether the service must be shared or not
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setShared($shared)
     {
@@ -218,7 +219,7 @@ class sfServiceDefinition
      *
      * @param mixed $callable A PHP callable
      *
-     * @return sfServiceDefinition The current instance
+     * @return \sfServiceDefinition The current instance
      */
     public function setConfigurator($callable)
     {

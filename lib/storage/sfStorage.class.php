@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  */
 abstract class sfStorage
 {
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Class constructor.
@@ -28,12 +28,12 @@ abstract class sfStorage
      *
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->initialize($options);
 
         if ($this->options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
@@ -46,13 +46,13 @@ abstract class sfStorage
      *
      * @param array $options An associative array of options
      *
-     * @throws sfInitializationException If an error occurs while initializing this sfStorage
+     * @throws \sfInitializationException If an error occurs while initializing this sfStorage
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'auto_shutdown' => true,
-        ), $options);
+        ], $options);
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class sfStorage
      *
      * @return mixed Data associated with the key
      *
-     * @throws sfStorageException If an error occurs while reading data from this storage
+     * @throws \sfStorageException If an error occurs while reading data from this storage
      */
     abstract public function read($key);
 
@@ -85,7 +85,7 @@ abstract class sfStorage
      *
      * @return bool True if session regenerated, false if error
      *
-     * @throws sfStorageException If an error occurs while regenerating this storage
+     * @throws \sfStorageException If an error occurs while regenerating this storage
      */
     abstract public function regenerate($destroy = false);
 
@@ -98,14 +98,14 @@ abstract class sfStorage
      *
      * @return mixed Data associated with the key
      *
-     * @throws sfStorageException If an error occurs while removing data from this storage
+     * @throws \sfStorageException If an error occurs while removing data from this storage
      */
     abstract public function remove($key);
 
     /**
      * Executes the shutdown procedure.
      *
-     * @throws sfStorageException If an error occurs while shutting down this storage
+     * @throws \sfStorageException If an error occurs while shutting down this storage
      */
     abstract public function shutdown();
 
@@ -117,7 +117,7 @@ abstract class sfStorage
      * @param string $key  A unique key identifying your data
      * @param mixed  $data Data associated with your key
      *
-     * @throws sfStorageException If an error occurs while writing to this storage
+     * @throws \sfStorageException If an error occurs while writing to this storage
      */
     abstract public function write($key, $data);
 }

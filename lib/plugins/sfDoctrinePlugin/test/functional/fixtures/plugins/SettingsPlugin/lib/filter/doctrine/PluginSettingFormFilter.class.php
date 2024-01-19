@@ -1,12 +1,14 @@
 <?php
 
-/**
- * PluginSetting form.
+/*
+ * This file is part of the Symfony1 package.
  *
- * @author     ##AUTHOR_NAME##
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * @version    SVN: $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-abstract class PluginSettingFormFilter extends BaseSettingFormFilter
+
+abstract class PluginSettingFormFilter extends \BaseSettingFormFilter
 {
 }

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,11 +16,11 @@
  *
  * @version    SVN: $Id$
  */
-class sfRouteCollection implements Iterator
+class sfRouteCollection implements \Iterator
 {
     protected $count = 0;
-    protected $options = array();
-    protected $routes = array();
+    protected $options = [];
+    protected $routes = [];
 
     /**
      * Constructor.
@@ -29,7 +30,7 @@ class sfRouteCollection implements Iterator
     public function __construct(array $options)
     {
         if (!isset($options['name'])) {
-            throw new InvalidArgumentException('You must pass a "name" option to sfRouteCollection');
+            throw new \InvalidArgumentException('You must pass a "name" option to sfRouteCollection');
         }
 
         $this->options = $options;

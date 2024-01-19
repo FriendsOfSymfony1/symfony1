@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,14 +16,14 @@
  *
  * @author     Jerome Macias <jmacias@groupe-exp.com>
  */
-class sfServiceContainerLoaderArray extends sfServiceContainerLoader
+class sfServiceContainerLoaderArray extends \sfServiceContainerLoader
 {
     public function doLoad($content)
     {
         $this->validate($content);
 
-        $parameters = array();
-        $definitions = array();
+        $parameters = [];
+        $definitions = [];
 
         // parameters
         if (isset($content['parameters'])) {
@@ -38,18 +39,18 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
             }
         }
 
-        return array($definitions, $parameters);
+        return [$definitions, $parameters];
     }
 
     protected function validate($content)
     {
         if (!is_array($content)) {
-            throw new InvalidArgumentException('The service definition is not valid.');
+            throw new \InvalidArgumentException('The service definition is not valid.');
         }
 
         foreach (array_keys($content) as $key) {
-            if (!in_array($key, array('parameters', 'services'))) {
-                throw new InvalidArgumentException(sprintf('The service defintion is not valid ("%s" is not recognized).', $key));
+            if (!in_array($key, ['parameters', 'services'])) {
+                throw new \InvalidArgumentException(sprintf('The service defintion is not valid ("%s" is not recognized).', $key));
             }
         }
 
@@ -58,11 +59,11 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
 
     protected function parseDefinition($service)
     {
-        if (is_string($service) && 0 === strpos($service, '@')) {
+        if (is_string($service) &&   str_starts_with($service, '@')) {
             return substr($service, 1);
         }
 
-        $definition = new sfServiceDefinition($service['class']);
+        $definition = new \sfServiceDefinition($service['class']);
 
         if (isset($service['shared'])) {
             $definition->setShared($service['shared']);
@@ -84,7 +85,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
             if (is_string($service['configurator'])) {
                 $definition->setConfigurator($service['configurator']);
             } else {
-                $definition->setConfigurator(array($this->resolveServices($service['configurator'][0]), $service['configurator'][1]));
+                $definition->setConfigurator([$this->resolveServices($service['configurator'][0]), $service['configurator'][1]]);
             }
         }
 
@@ -100,9 +101,9 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
     protected function resolveServices($value)
     {
         if (is_array($value)) {
-            $value = array_map(array($this, 'resolveServices'), $value);
-        } elseif (is_string($value) && 0 === strpos($value, '@')) {
-            $value = new sfServiceReference(substr($value, 1));
+            $value = array_map([$this, 'resolveServices'], $value);
+        } elseif (is_string($value) &&   str_starts_with($value, '@')) {
+            $value = new \sfServiceReference(substr($value, 1));
         }
 
         return $value;

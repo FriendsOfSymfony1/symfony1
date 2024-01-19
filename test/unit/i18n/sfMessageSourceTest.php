@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,9 +11,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(3);
+$t = new \lime_test(3);
 
-class sfMessageSource_Simple extends sfMessageSource
+class sfMessageSource_Simple extends \sfMessageSource
 {
     public function __construct($source)
     {
@@ -41,8 +42,8 @@ class sfMessageSource_Simple extends sfMessageSource
 
 // ::factory()
 $t->diag('::factory()');
-$source = sfMessageSource::factory('Simple');
-$t->ok($source instanceof sfIMessageSource, '::factory() returns a sfMessageSource instance');
+$source = \sfMessageSource::factory('Simple');
+$t->ok($source instanceof \sfIMessageSource, '::factory() returns a sfMessageSource instance');
 
 // ->getCulture() ->setCulture()
 $t->diag('->getCulture() ->setCulture()');

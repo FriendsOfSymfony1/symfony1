@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,19 +19,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfBasicSecurityFilter extends sfFilter
+class sfBasicSecurityFilter extends \sfFilter
 {
     /**
      * Executes this filter.
      *
-     * @param sfFilterChain $filterChain A sfFilterChain instance
+     * @param \sfFilterChain $filterChain A sfFilterChain instance
      */
     public function execute($filterChain)
     {
         // disable security on login and secure actions
         if (
-            (sfConfig::get('sf_login_module') == $this->context->getModuleName()) && (sfConfig::get('sf_login_action') == $this->context->getActionName())
-            || (sfConfig::get('sf_secure_module') == $this->context->getModuleName()) && (sfConfig::get('sf_secure_action') == $this->context->getActionName())
+            (\sfConfig::get('sf_login_module') == $this->context->getModuleName()) && (\sfConfig::get('sf_login_action') == $this->context->getActionName())
+            || (\sfConfig::get('sf_secure_module') == $this->context->getModuleName()) && (\sfConfig::get('sf_secure_action') == $this->context->getActionName())
         ) {
             $filterChain->execute();
 
@@ -42,8 +42,8 @@ class sfBasicSecurityFilter extends sfFilter
         //       is vague enough to describe any level of security and can be
         //       used to retrieve such data and should never have to be altered
         if (!$this->context->getUser()->isAuthenticated()) {
-            if (sfConfig::get('sf_logging_enabled')) {
-                $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array(sprintf('Action "%s/%s" requires authentication, forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action')))));
+            if (\sfConfig::get('sf_logging_enabled')) {
+                $this->context->getEventDispatcher()->notify(new \sfEvent($this, 'application.log', [sprintf('Action "%s/%s" requires authentication, forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), \sfConfig::get('sf_login_module'), \sfConfig::get('sf_login_action'))]));
             }
 
             // the user is not authenticated
@@ -53,8 +53,8 @@ class sfBasicSecurityFilter extends sfFilter
         // the user is authenticated
         $credential = $this->getUserCredential();
         if (null !== $credential && !$this->context->getUser()->hasCredential($credential)) {
-            if (sfConfig::get('sf_logging_enabled')) {
-                $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array(sprintf('Action "%s/%s" requires credentials "%s", forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), sfYaml::dump($credential, 0), sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action')))));
+            if (\sfConfig::get('sf_logging_enabled')) {
+                $this->context->getEventDispatcher()->notify(new \sfEvent($this, 'application.log', [sprintf('Action "%s/%s" requires credentials "%s", forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), \sfYaml::dump($credential, 0), \sfConfig::get('sf_secure_module'), \sfConfig::get('sf_secure_action'))]));
             }
 
             // the user doesn't have access
@@ -68,25 +68,25 @@ class sfBasicSecurityFilter extends sfFilter
     /**
      * Forwards the current request to the secure action.
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      */
     protected function forwardToSecureAction()
     {
-        $this->context->getController()->forward(sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'));
+        $this->context->getController()->forward(\sfConfig::get('sf_secure_module'), \sfConfig::get('sf_secure_action'));
 
-        throw new sfStopException();
+        throw new \sfStopException();
     }
 
     /**
      * Forwards the current request to the login action.
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      */
     protected function forwardToLoginAction()
     {
-        $this->context->getController()->forward(sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'));
+        $this->context->getController()->forward(\sfConfig::get('sf_login_module'), \sfConfig::get('sf_login_action'));
 
-        throw new sfStopException();
+        throw new \sfStopException();
     }
 
     /**

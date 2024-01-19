@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,12 +18,12 @@ require_once __DIR__.'/sfGeneratorBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfGenerateProjectTask extends sfGeneratorBaseTask
+class sfGenerateProjectTask extends \sfGeneratorBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function doRun(sfCommandManager $commandManager, $options)
+    protected function doRun(\sfCommandManager $commandManager, $options)
     {
         $this->process($commandManager, $options);
 
@@ -30,19 +31,19 @@ class sfGenerateProjectTask extends sfGeneratorBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The project name'),
-            new sfCommandArgument('author', sfCommandArgument::OPTIONAL, 'The project author', 'Your name here'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The project name'),
+            new \sfCommandArgument('author', \sfCommandArgument::OPTIONAL, 'The project author', 'Your name here'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('orm', null, sfCommandOption::PARAMETER_REQUIRED, 'The ORM to use by default', 'Doctrine'),
-            new sfCommandOption('installer', null, sfCommandOption::PARAMETER_REQUIRED, 'An installer script to execute', null),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('orm', null, \sfCommandOption::PARAMETER_REQUIRED, 'The ORM to use by default', 'Doctrine'),
+            new \sfCommandOption('installer', null, \sfCommandOption::PARAMETER_REQUIRED, 'An installer script to execute', null),
+        ]);
 
         $this->namespace = 'generate';
         $this->name = 'project';
@@ -77,20 +78,20 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (file_exists('symfony')) {
-            throw new sfCommandException(sprintf('A symfony project already exists in this directory (%s).', getcwd()));
+            throw new \sfCommandException(sprintf('A symfony project already exists in this directory (%s).', getcwd()));
         }
 
-        if (!in_array(strtolower($options['orm']), array('doctrine', 'none'))) {
-            throw new InvalidArgumentException(sprintf('Invalid ORM name "%s".', $options['orm']));
+        if (!in_array(strtolower($options['orm']), ['doctrine', 'none'])) {
+            throw new \InvalidArgumentException(sprintf('Invalid ORM name "%s".', $options['orm']));
         }
 
         if ($options['installer'] && $this->commandApplication && !file_exists($options['installer'])) {
-            throw new InvalidArgumentException(sprintf('The installer "%s" does not exist.', $options['installer']));
+            throw new \InvalidArgumentException(sprintf('The installer "%s" does not exist.', $options['installer']));
         }
 
         // clean orm option
@@ -103,18 +104,18 @@ EOF;
         $this->installDir(__DIR__.'/skeleton/project');
 
         // update ProjectConfiguration class (use a relative path when the symfony core is nested within the project)
-        $symfonyCoreAutoload = 0 === strpos(sfConfig::get('sf_symfony_lib_dir'), sfConfig::get('sf_root_dir')) ?
-          sprintf('__DIR__.\'/..%s/autoload/sfCoreAutoload.class.php\'', str_replace(sfConfig::get('sf_root_dir'), '', sfConfig::get('sf_symfony_lib_dir'))) :
-          var_export(sfConfig::get('sf_symfony_lib_dir').'/autoload/sfCoreAutoload.class.php', true);
+        $symfonyCoreAutoload =   str_starts_with(\sfConfig::get('sf_symfony_lib_dir'), \sfConfig::get('sf_root_dir')) ?
+          sprintf('__DIR__.\'/..%s/autoload/sfCoreAutoload.class.php\'', str_replace(\sfConfig::get('sf_root_dir'), '', \sfConfig::get('sf_symfony_lib_dir'))) :
+          var_export(\sfConfig::get('sf_symfony_lib_dir').'/autoload/sfCoreAutoload.class.php', true);
 
-        $this->replaceTokens(array(sfConfig::get('sf_config_dir')), array('SYMFONY_CORE_AUTOLOAD' => str_replace('\\', '/', $symfonyCoreAutoload)));
+        $this->replaceTokens([\sfConfig::get('sf_config_dir')], ['SYMFONY_CORE_AUTOLOAD' => str_replace('\\', '/', $symfonyCoreAutoload)]);
 
-        $this->tokens = array(
+        $this->tokens = [
             'ORM' => $this->options['orm'],
             'PROJECT_NAME' => $this->arguments['name'],
             'AUTHOR_NAME' => $this->arguments['author'],
-            'PROJECT_DIR' => sfConfig::get('sf_root_dir'),
-        );
+            'PROJECT_DIR' => \sfConfig::get('sf_root_dir'),
+        ];
 
         $this->replaceTokens();
 
@@ -133,7 +134,7 @@ EOF;
         }
 
         // fix permission for common directories
-        $fixPerms = new sfProjectPermissionsTask($this->dispatcher, $this->formatter);
+        $fixPerms = new \sfProjectPermissionsTask($this->dispatcher, $this->formatter);
         $fixPerms->setCommandApplication($this->commandApplication);
         $fixPerms->setConfiguration($this->configuration);
         $fixPerms->run();

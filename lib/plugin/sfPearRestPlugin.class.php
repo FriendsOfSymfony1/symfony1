@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPearRestPlugin extends sfPearRest11
+class sfPearRestPlugin extends \sfPearRest11
 {
     protected $config;
     protected $rest10;
@@ -25,15 +26,15 @@ class sfPearRestPlugin extends sfPearRest11
     /**
      * Constructs a new sfRestPlugin instance.
      *
-     * @param PEAR_Config $config  The PEAR Config object
-     * @param array       $options An array of options
+     * @param \PEAR_Config $config  The PEAR Config object
+     * @param array        $options An array of options
      */
-    public function __construct(PEAR_Config $config, $options = array())
+    public function __construct(\PEAR_Config $config, $options = [])
     {
         parent::__construct($config, $options);
 
         $this->config = $config;
-        $this->rest10 = new sfPearRest10($config, $options);
+        $this->rest10 = new \sfPearRest10($config, $options);
     }
 
     /**
@@ -45,7 +46,7 @@ class sfPearRestPlugin extends sfPearRest11
     public function __call($method, $arguments)
     {
         if (method_exists($this->rest10, $method)) {
-            return call_user_func_array(array($this->rest10, $method), $arguments);
+            return call_user_func_array([$this->rest10, $method], $arguments);
         }
     }
 
@@ -72,8 +73,8 @@ class sfPearRestPlugin extends sfPearRest11
     {
         $info = $this->packageInfo($this->restBase, $plugin);
 
-        if (PEAR::isError($info)) {
-            throw new sfPluginRestException(sprintf('Unable to get plugin licence information for plugin "%s": %s', $plugin, $info->getMessage()));
+        if (\PEAR::isError($info)) {
+            throw new \sfPluginRestException(sprintf('Unable to get plugin licence information for plugin "%s": %s', $plugin, $info->getMessage()));
         }
 
         if (null === $info) {
@@ -82,7 +83,7 @@ class sfPearRestPlugin extends sfPearRest11
         }
 
         if (!isset($info['license']) || null === $info['license']) {
-            throw new Exception('No license found for this plugin!');
+            throw new \Exception('No license found for this plugin!');
         }
 
         return $info['releases'][$version]['license'];
@@ -99,19 +100,19 @@ class sfPearRestPlugin extends sfPearRest11
     public function getPluginVersions($plugin, $stability = null)
     {
         $allreleases = $this->_rest->retrieveData($this->restBase.'r/'.strtolower($plugin).'/allreleases.xml');
-        if (PEAR::isError($allreleases)) {
-            throw new sfPluginRestException(sprintf('Unable to get information for plugin "%s": %s', $plugin, $allreleases->getMessage()));
+        if (\PEAR::isError($allreleases)) {
+            throw new \sfPluginRestException(sprintf('Unable to get information for plugin "%s": %s', $plugin, $allreleases->getMessage()));
         }
 
         if (!isset($allreleases['r']) || (isset($allreleases['r']) && !is_array($allreleases['r']) || !count($allreleases['r']))) {
-            throw new sfPluginRestException(sprintf('No release available for plugin "%s"', $plugin));
+            throw new \sfPluginRestException(sprintf('No release available for plugin "%s"', $plugin));
         }
 
         if (!isset($allreleases['r'][0])) {
-            $allreleases['r'] = array($allreleases['r']);
+            $allreleases['r'] = [$allreleases['r']];
         }
 
-        $versions = array();
+        $versions = [];
         $allowedStates = $this->getAllowedStates($stability);
         foreach ($allreleases['r'] as $release) {
             if (!isset($allowedStates[$release['s']])) {
@@ -122,7 +123,7 @@ class sfPearRestPlugin extends sfPearRest11
         }
 
         if (!count($versions)) {
-            throw new sfPluginException(sprintf('No release available for plugin "%s" in state "%s"', $plugin, $stability));
+            throw new \sfPluginException(sprintf('No release available for plugin "%s" in state "%s"', $plugin, $stability));
         }
 
         return $versions;
@@ -139,8 +140,8 @@ class sfPearRestPlugin extends sfPearRest11
     public function getPluginDependencies($plugin, $version)
     {
         $dependencies = $this->_rest->retrieveData($this->restBase.'r/'.strtolower($plugin).'/deps.'.$version.'.txt');
-        if (PEAR::isError($dependencies)) {
-            throw new sfPluginRestException(sprintf('Unable to get dependencies information for plugin "%s": %s', $plugin, $dependencies->getMessage()));
+        if (\PEAR::isError($dependencies)) {
+            throw new \sfPluginRestException(sprintf('Unable to get dependencies information for plugin "%s": %s', $plugin, $dependencies->getMessage()));
         }
 
         return unserialize($dependencies);
@@ -159,16 +160,16 @@ class sfPearRestPlugin extends sfPearRest11
     {
         $installed = $this->config->getRegistry()->packageInfo($plugin, 'version', $this->channel);
         if ($installed >= $version) {
-            throw new sfPluginException(sprintf('Plugin "%s" version "%s" is already installed (you tried to install version "%s")', $plugin, $installed, $version));
+            throw new \sfPluginException(sprintf('Plugin "%s" version "%s" is already installed (you tried to install version "%s")', $plugin, $installed, $version));
         }
 
-        $info = $this->getDownloadURL($this->restBase, array('channel' => $this->channel, 'package' => $plugin, 'version' => $version), $stability, $installed);
-        if (PEAR::isError($info)) {
-            throw new sfPluginRestException(sprintf('Unable to get download information for plugin "%s | %s | %s": %s', $plugin, $version, $stability, $info->getMessage()));
+        $info = $this->getDownloadURL($this->restBase, ['channel' => $this->channel, 'package' => $plugin, 'version' => $version], $stability, $installed);
+        if (\PEAR::isError($info)) {
+            throw new \sfPluginRestException(sprintf('Unable to get download information for plugin "%s | %s | %s": %s', $plugin, $version, $stability, $info->getMessage()));
         }
 
         if (!isset($info['url'])) {
-            throw new sfPluginRestException(sprintf('Plugin "%s" cannot be installed (No URL found)', $plugin));
+            throw new \sfPluginRestException(sprintf('Plugin "%s" cannot be installed (No URL found)', $plugin));
         }
 
         return $info['url'].(extension_loaded('zlib') ? '.tgz' : '.tar');
@@ -182,14 +183,14 @@ class sfPearRestPlugin extends sfPearRest11
     protected function getRESTBase($channelName)
     {
         $channel = $this->config->getRegistry()->getChannel($channelName);
-        if (PEAR::isError($channel)) {
-            throw new sfPluginException(sprintf('Unable to initialize channel "%s"', $channel->getMessage()));
+        if (\PEAR::isError($channel)) {
+            throw new \sfPluginException(sprintf('Unable to initialize channel "%s"', $channel->getMessage()));
         }
 
         $mirror = $this->config->get('preferred_mirror', null, $channelName);
 
         if (!$channel->supportsREST($mirror)) {
-            throw new sfPluginRestException(sprintf('The channel "%s" does not support the REST protocol', $channelName));
+            throw new \sfPluginRestException(sprintf('The channel "%s" does not support the REST protocol', $channelName));
         }
 
         return $channel->getBaseURL('REST1.1', $mirror);

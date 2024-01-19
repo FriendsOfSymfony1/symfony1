@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,14 +12,14 @@
 /**
  * sfMySQLiDatabase provides connectivity for the MySQL brand database.
  *
- * @see sfMySQLDatabase
+ * @see \sfMySQLDatabase
  *
  * @property $connection mysqli
  */
-class sfMySQLiDatabase extends sfMySQLDatabase
+class sfMySQLiDatabase extends \sfMySQLDatabase
 {
     /**
-     * @throws sfDatabaseException
+     * @throws \sfDatabaseException
      */
     public function connect()
     {
@@ -32,7 +32,7 @@ class sfMySQLiDatabase extends sfMySQLDatabase
     /**
      * Execute the shutdown procedure.
      *
-     * @throws sfDatabaseException If an error occurs while shutting down this database
+     * @throws \sfDatabaseException If an error occurs while shutting down this database
      */
     public function shutdown()
     {

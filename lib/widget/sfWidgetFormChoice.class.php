@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormChoice extends sfWidgetFormChoiceBase
+class sfWidgetFormChoice extends \sfWidgetFormChoiceBase
 {
     /**
      * Sets the format for HTML id attributes. This is made avaiable to the renderer,
@@ -23,7 +24,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      *
      * @param string $format The format string (must contain a %s for the id placeholder)
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
     public function setIdFormat($format)
     {
@@ -40,9 +41,9 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if ($this->getOption('multiple')) {
             $attributes['multiple'] = 'multiple';
@@ -91,7 +92,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
         }
 
         $options = $this->options['renderer_options'];
-        $options['choices'] = new sfCallable(array($this, 'getChoices'));
+        $options['choices'] = new \sfCallable([$this, 'getChoices']);
 
         $renderer = new $class($options, $this->getAttributes());
 
@@ -124,16 +125,16 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoiceBase
+     * @see \sfWidgetFormChoiceBase
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
         $this->addOption('multiple', false);
         $this->addOption('expanded', false);
         $this->addOption('renderer_class', false);
-        $this->addOption('renderer_options', array());
+        $this->addOption('renderer_options', []);
         $this->addOption('renderer', false);
     }
 }

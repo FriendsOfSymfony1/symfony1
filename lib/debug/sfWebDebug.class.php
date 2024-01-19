@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,8 +20,8 @@ class sfWebDebug
 {
     protected $dispatcher;
     protected $logger;
-    protected $options = array();
-    protected $panels = array();
+    protected $options = [];
+    protected $panels = [];
 
     /**
      * Constructor.
@@ -30,11 +31,11 @@ class sfWebDebug
      *  * image_root_path:    The image root path
      *  * request_parameters: The current request parameters
      *
-     * @param sfEventDispatcher $dispatcher The event dispatcher
-     * @param sfVarLogger       $logger     The logger
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher The event dispatcher
+     * @param \sfVarLogger       $logger     The logger
+     * @param array              $options    An array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfVarLogger $logger, array $options = array())
+    public function __construct(\sfEventDispatcher $dispatcher, \sfVarLogger $logger, array $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->logger = $logger;
@@ -45,12 +46,12 @@ class sfWebDebug
         }
 
         if (!isset($this->options['request_parameters'])) {
-            $this->options['request_parameters'] = array();
+            $this->options['request_parameters'] = [];
         }
 
         $this->configure();
 
-        $this->dispatcher->notify(new sfEvent($this, 'debug.web.load_panels'));
+        $this->dispatcher->notify(new \sfEvent($this, 'debug.web.load_panels'));
     }
 
     /**
@@ -58,27 +59,27 @@ class sfWebDebug
      */
     public function configure()
     {
-        $this->setPanel('symfony_version', new sfWebDebugPanelSymfonyVersion($this));
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_cache')) {
-            $this->setPanel('cache', new sfWebDebugPanelCache($this));
+        $this->setPanel('symfony_version', new \sfWebDebugPanelSymfonyVersion($this));
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_cache')) {
+            $this->setPanel('cache', new \sfWebDebugPanelCache($this));
         }
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->setPanel('config', new sfWebDebugPanelConfig($this));
-            $this->setPanel('view', new sfWebDebugPanelView($this));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->setPanel('config', new \sfWebDebugPanelConfig($this));
+            $this->setPanel('view', new \sfWebDebugPanelView($this));
         }
-        $this->setPanel('logs', new sfWebDebugPanelLogs($this));
-        $this->setPanel('memory', new sfWebDebugPanelMemory($this));
-        if (sfConfig::get('sf_debug')) {
-            $this->setPanel('time', new sfWebDebugPanelTimer($this));
+        $this->setPanel('logs', new \sfWebDebugPanelLogs($this));
+        $this->setPanel('memory', new \sfWebDebugPanelMemory($this));
+        if (\sfConfig::get('sf_debug')) {
+            $this->setPanel('time', new \sfWebDebugPanelTimer($this));
         }
 
-        $this->setPanel('mailer', new sfWebDebugPanelMailer($this));
+        $this->setPanel('mailer', new \sfWebDebugPanelMailer($this));
     }
 
     /**
      * Gets the logger.
      *
-     * @return sfVarLogger The logger instance
+     * @return \sfVarLogger The logger instance
      */
     public function getLogger()
     {
@@ -88,7 +89,7 @@ class sfWebDebug
     /**
      * Gets the event dispatcher.
      *
-     * @return sfEventDispatcher The event dispatcher
+     * @return \sfEventDispatcher The event dispatcher
      */
     public function getEventDispatcher()
     {
@@ -108,10 +109,10 @@ class sfWebDebug
     /**
      * Sets a panel by name.
      *
-     * @param string          $name  The panel name
-     * @param sfWebDebugPanel $panel The panel
+     * @param string           $name  The panel name
+     * @param \sfWebDebugPanel $panel The panel
      */
-    public function setPanel($name, sfWebDebugPanel $panel)
+    public function setPanel($name, \sfWebDebugPanel $panel)
     {
         $this->panels[$name] = $panel;
     }
@@ -129,8 +130,8 @@ class sfWebDebug
     /**
      * Gets an option value by name.
      *
-     * @param string     $name    The option name
-     * @param mixed|null $default
+     * @param string      $name    The option name
+     * @param \mixed|null $default
      *
      * @return mixed The option value
      */
@@ -159,7 +160,7 @@ class sfWebDebug
         }
 
         if (false !== $pos = $posFunction($content, '</head>')) {
-            $styles = '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style>';
+            $styles = '<style type="text/css">'.str_replace(["\r", "\n"], ' ', $this->getStylesheet()).'</style>';
             $content = $substrFunction($content, 0, $pos).$styles.$substrFunction($content, $pos);
         }
 
@@ -182,8 +183,8 @@ class sfWebDebug
     {
         $current = isset($this->options['request_parameters']['sfWebDebugPanel']) ? $this->options['request_parameters']['sfWebDebugPanel'] : null;
 
-        $titles = array();
-        $panels = array();
+        $titles = [];
+        $panels = [];
         foreach ($this->panels as $name => $panel) {
             if ($title = $panel->getTitle()) {
                 if (($content = $panel->getPanelContent()) || $panel->getTitleUrl()) {
@@ -236,10 +237,10 @@ class sfWebDebug
      */
     public function getPriority($value)
     {
-        if ($value >= sfLogger::INFO) {
+        if ($value >= \sfLogger::INFO) {
             return 'info';
         }
-        if ($value >= sfLogger::WARNING) {
+        if ($value >= \sfLogger::WARNING) {
             return 'warning';
         }
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 function is_cli()
 {
     return !isset($_SERVER['HTTP_HOST']);
@@ -67,7 +76,7 @@ check(version_compare(phpversion(), '5.3.1', '>='), sprintf('PHP version is at l
 echo "\n** Optional checks **\n\n";
 check(class_exists('PDO'), 'PDO is installed', 'Install PDO (mandatory for Doctrine)', false);
 if (class_exists('PDO')) {
-    $drivers = PDO::getAvailableDrivers();
+    $drivers = \PDO::getAvailableDrivers();
     check(count($drivers), 'PDO has some drivers installed: '.implode(', ', $drivers), 'Install PDO drivers (mandatory for Doctrine)');
 }
 check(function_exists('token_get_all'), 'The token_get_all() function is available', 'Install and enable the Tokenizer extension (highly recommended)', false);

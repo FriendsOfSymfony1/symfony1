@@ -1,21 +1,12 @@
 <?php
 
-/**
- * sfMessageSource_SQLite class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @author     Jérôme Macias <jmacias@groupe-exp.com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -84,7 +75,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:58:58 EST 2004
  */
-class sfMessageSource_SQLite3 extends sfMessageSource_Database
+class sfMessageSource_SQLite3 extends \sfMessageSource_Database
 {
     /**
      * The SQLite datasource, the filename of the database.
@@ -116,7 +107,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
      */
     public function &loadData($variant)
     {
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
 
         $variant = $db->escapeString($variant);
 
@@ -127,10 +118,10 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
           AND c.name = '{$variant}'
         ORDER BY id ASC";
 
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
         $rs = $db->query($statement);
 
-        $result = array();
+        $result = [];
 
         while ($row = $rs->fetchArray(SQLITE3_NUM)) {
             $source = $row[1];
@@ -153,7 +144,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
      */
     public function isValidSource($variant)
     {
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
 
         $variant = $db->escapeString($variant);
         $rs = $db->querySingle("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'");
@@ -194,7 +185,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
         }
         $inserted = 0;
 
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
         $time = time();
 
         foreach ($messages as $message) {
@@ -232,7 +223,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
             return false;
         }
 
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
 
         $comments = $db->escapeString($comments);
         $target = $db->escapeString($target);
@@ -270,7 +261,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
             return false;
         }
 
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
         $text = $db->escapeString($message);
 
         $db->exec("DELETE FROM trans_unit WHERE cat_id = {$cat_id} AND source = '{$message}'");
@@ -294,11 +285,11 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
      */
     public function catalogues()
     {
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
         $statement = 'SELECT name FROM catalogue ORDER BY name';
         $rs = $db->query($statement);
 
-        $result = array();
+        $result = [];
         while ($row = $rs->fetchArray(SQLITE3_NUM)) {
             $details = explode('.', $row[0]);
             if (!isset($details[1])) {
@@ -322,7 +313,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
      */
     protected function getLastModified($source)
     {
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
 
         $source = $db->escapeString($source);
         $rs = $db->querySingle("SELECT date_modified FROM catalogue WHERE name = '{$source}'");
@@ -348,7 +339,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
 
         $variant = $catalogue.'.'.$this->culture;
 
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
 
         $name = $db->escapeString($this->getSource($variant));
 
@@ -374,7 +365,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
 
         $db->close();
 
-        return array($cat_id, $variant, $count);
+        return [$cat_id, $variant, $count];
     }
 
     /**
@@ -386,7 +377,7 @@ class sfMessageSource_SQLite3 extends sfMessageSource_Database
     {
         $time = time();
 
-        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $db = new \SQLite3($this->source, SQLITE3_OPEN_READWRITE);
         $result = $db->exec("UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}");
         $res = (bool) $db->changes();
         $db->close();

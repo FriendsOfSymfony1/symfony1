@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +14,7 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-$b = new sfTestBrowser();
+$b = new \sfTestBrowser();
 
 // default main page
 $b->
@@ -37,8 +38,8 @@ $b->
 ;
 */
 // 404 with ETag enabled must returns 404, not 304
-sfConfig::set('sf_cache', true);
-sfConfig::set('sf_etag', true);
+\sfConfig::set('sf_cache', true);
+\sfConfig::set('sf_etag', true);
 $b->
   get('/notfound')->
   with('request')->begin()->
@@ -59,8 +60,8 @@ $b->
     isStatusCode(404)->
     checkElement('body', '/404/')->
   end();
-sfConfig::set('sf_cache', false);
-sfConfig::set('sf_etag', false);
+\sfConfig::set('sf_cache', false);
+\sfConfig::set('sf_etag', false);
 
 // unexistant action
 $b->

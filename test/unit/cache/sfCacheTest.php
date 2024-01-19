@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,7 +11,7 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-class myCache extends sfCache
+class myCache extends \sfCache
 {
     public function get($key, $default = null)
     {
@@ -28,7 +29,7 @@ class myCache extends sfCache
     {
     }
 
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
     }
 
@@ -49,10 +50,10 @@ class fakeCache
 {
 }
 
-$t = new lime_test(1);
+$t = new \lime_test(1);
 
 // ->initialize()
 $t->diag('->initialize()');
-$cache = new myCache();
-$cache->initialize(array('foo' => 'bar'));
+$cache = new \myCache();
+$cache->initialize(['foo' => 'bar']);
 $t->is($cache->getOption('foo'), 'bar', '->initialize() takes an array of options as its first argument');

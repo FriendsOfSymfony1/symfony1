@@ -1,11 +1,15 @@
 <?php
 
-/**
- * Project filter form base class.
+/*
+ * This file is part of the Symfony1 package.
  *
- * @version    SVN: $Id$
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
-abstract class BaseFormFilterDoctrine extends sfFormFilterDoctrine
+
+abstract class BaseFormFilterDoctrine extends \sfFormFilterDoctrine
 {
     public function setup()
     {

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,22 +18,22 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginUpgradeTask extends sfPluginBaseTask
+class sfPluginUpgradeTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The plugin name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('stability', 's', sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
-            new sfCommandOption('release', 'r', sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
-            new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('stability', 's', \sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
+            new \sfCommandOption('release', 'r', \sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
+            new \sfCommandOption('channel', 'c', \sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'upgrade';
@@ -54,9 +55,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('upgrading plugin "%s"', $arguments['name']));
 

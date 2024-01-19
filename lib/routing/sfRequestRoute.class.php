@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,19 +18,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfRequestRoute extends sfRoute
+class sfRequestRoute extends \sfRoute
 {
     /**
      * Constructor.
      *
      * Applies a default sf_method requirements of GET or HEAD.
      *
-     * @see sfRoute
+     * @see \sfRoute
      */
-    public function __construct($pattern, $defaults = array(), $requirements = array(), $options = array())
+    public function __construct($pattern, $defaults = [], $requirements = [], $options = [])
     {
         if (!isset($requirements['sf_method'])) {
-            $requirements['sf_method'] = array('get', 'head');
+            $requirements['sf_method'] = ['get', 'head'];
         } else {
             $requirements['sf_method'] = array_map('strtolower', (array) $requirements['sf_method']);
         }
@@ -45,7 +46,7 @@ class sfRequestRoute extends sfRoute
      *
      * @return array|bool An array of parameters or false if not matching
      */
-    public function matchesUrl($url, $context = array())
+    public function matchesUrl($url, $context = [])
     {
         if (false === $parameters = parent::matchesUrl($url, $context)) {
             return false;
@@ -67,7 +68,7 @@ class sfRequestRoute extends sfRoute
      *
      * @return bool true if the parameters match this route, false otherwise
      */
-    public function matchesParameters($params, $context = array())
+    public function matchesParameters($params, $context = [])
     {
         if (isset($params['sf_method'])) {
             // enforce the sf_method requirement
@@ -90,7 +91,7 @@ class sfRequestRoute extends sfRoute
      *
      * @return string The generated URL
      */
-    public function generate($params, $context = array(), $absolute = false)
+    public function generate($params, $context = [], $absolute = false)
     {
         unset($params['sf_method']);
 

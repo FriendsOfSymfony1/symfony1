@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,22 +19,22 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineGenerateMigrationTask extends sfDoctrineBaseTask
+class sfDoctrineGenerateMigrationTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The name of the migration'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The name of the migration'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('editor-cmd', null, sfCommandOption::PARAMETER_REQUIRED, 'Open script with this command upon creation'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('editor-cmd', null, \sfCommandOption::PARAMETER_REQUIRED, 'Open script with this command upon creation'),
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-migration';
@@ -53,11 +53,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
 
         $this->logSection('doctrine', sprintf('generating migration class named "%s"', $arguments['name']));
@@ -66,18 +66,18 @@ EOF;
             $this->getFilesystem()->mkdirs($config['migrations_path']);
         }
 
-        $this->callDoctrineCli('generate-migration', array('name' => $arguments['name']));
+        $this->callDoctrineCli('generate-migration', ['name' => $arguments['name']]);
 
-        $finder = sfFinder::type('file')->sort_by_name()->name('*.php');
+        $finder = \sfFinder::type('file')->sort_by_name()->name('*.php');
         if ($files = $finder->in($config['migrations_path'])) {
             $file = array_pop($files);
 
             $contents = file_get_contents($file);
-            $contents = strtr(sfToolkit::stripComments($contents), array(
+            $contents = strtr(\sfToolkit::stripComments($contents), [
                 "{\n\n" => "{\n",
                 "\n}" => "\n}\n",
                 '    ' => '  ',
-            ));
+            ]);
             file_put_contents($file, $contents);
 
             if (isset($options['editor-cmd'])) {

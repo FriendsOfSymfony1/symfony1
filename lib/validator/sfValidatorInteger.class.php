@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorInteger extends sfValidatorBase
+class sfValidatorInteger extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -33,9 +34,9 @@ class sfValidatorInteger extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addMessage('max', '"%value%" must be at most %max%.');
         $this->addMessage('min', '"%value%" must be at least %min%.');
@@ -47,22 +48,22 @@ class sfValidatorInteger extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         $clean = (int) $value;
 
         if ((string) $clean != $value) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         if ($this->hasOption('max') && $clean > $this->getOption('max')) {
-            throw new sfValidatorError($this, 'max', array('value' => $value, 'max' => $this->getOption('max')));
+            throw new \sfValidatorError($this, 'max', ['value' => $value, 'max' => $this->getOption('max')]);
         }
 
         if ($this->hasOption('min') && $clean < $this->getOption('min')) {
-            throw new sfValidatorError($this, 'min', array('value' => $value, 'min' => $this->getOption('min')));
+            throw new \sfValidatorError($this, 'min', ['value' => $value, 'min' => $this->getOption('min')]);
         }
 
         return $clean;

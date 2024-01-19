@@ -3,4 +3,4 @@
 
 <span class="<?php echo $sf_data->getRaw('arr') ? 'yes' : 'no'; ?>"></span>
 
-<?php include_partial('escaping/partial2', array('var' => $var, 'arr' => $arr)); ?>
+<?php include_partial('escaping/partial2', ['var' => $var, 'arr' => $arr]); ?>

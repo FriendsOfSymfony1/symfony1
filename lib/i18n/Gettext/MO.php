@@ -1,6 +1,14 @@
 <?php
 
-// +----------------------------------------------------------------------+
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 // | PEAR :: File :: Gettext :: MO                                        |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 3.0 of the PHP license,       |
@@ -31,7 +39,7 @@ require_once __DIR__.'/TGettext.class.php';
  *
  * @version     $Revision: 9856 $
  */
-class TGettext_MO extends TGettext
+class TGettext_MO extends \TGettext
 {
     /**
      * file handle.
@@ -201,23 +209,23 @@ class TGettext_MO extends TGettext
         // move to msgid hash table
         fseek($this->_handle, $offset_original);
         // read lengths and offsets of msgids
-        $original = array();
+        $original = [];
         for ($i = 0; $i < $count; ++$i) {
-            $original[$i] = array(
+            $original[$i] = [
                 'length' => $this->_readInt($be),
                 'offset' => $this->_readInt($be),
-            );
+            ];
         }
 
         // move to msgstr hash table
         fseek($this->_handle, $offset_translat);
         // read lengths and offsets of msgstrs
-        $translat = array();
+        $translat = [];
         for ($i = 0; $i < $count; ++$i) {
-            $translat[$i] = array(
+            $translat[$i] = [
                 'length' => $this->_readInt($be),
                 'offset' => $this->_readInt($be),
-            );
+            ];
         }
 
         // read all
@@ -299,7 +307,7 @@ class TGettext_MO extends TGettext
             foreach ($this->meta as $key => $val) {
                 $meta .= $key.': '.$val."\n";
             }
-            $strings = array('' => $meta) + $this->strings;
+            $strings = ['' => $meta] + $this->strings;
         } else {
             $strings = $this->strings;
         }

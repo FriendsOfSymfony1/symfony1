@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,9 +16,9 @@
  *
  * @version    SVN: $Id$
  */
-class sfMessageSource_Aggregate extends sfMessageSource
+class sfMessageSource_Aggregate extends \sfMessageSource
 {
-    protected $messageSources = array();
+    protected $messageSources = [];
 
     /**
      * Constructor.
@@ -70,9 +71,9 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function getSource($variant)
     {
-        $sources = array();
+        $sources = [];
         foreach ($this->messageSources as $messageSource) {
-            $sources[] = array($messageSource, $messageSource->getSource(str_replace($messageSource->getId(), '', $variant)));
+            $sources[] = [$messageSource, $messageSource->getSource(str_replace($messageSource->getId(), '', $variant))];
         }
 
         return $sources;
@@ -86,7 +87,7 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function &loadData($sources)
     {
-        $messages = array();
+        $messages = [];
         foreach ($sources as $source) {
             if (false === $source[0]->isValidSource($source[1])) {
                 continue;
@@ -111,7 +112,7 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function getCatalogueList($catalogue)
     {
-        $variants = array();
+        $variants = [];
         foreach ($this->messageSources as $messageSource) {
             foreach ($messageSource->getCatalogueList($catalogue) as $variant) {
                 $variants[] = $messageSource->getId().$variant;
@@ -215,7 +216,7 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function catalogues()
     {
-        throw new sfException('The "catalogues()" method is not implemented for this message source.');
+        throw new \sfException('The "catalogues()" method is not implemented for this message source.');
     }
 
     /**

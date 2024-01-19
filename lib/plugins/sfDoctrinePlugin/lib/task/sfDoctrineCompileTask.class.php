@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,22 +18,22 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id: sfDoctrineCompileTask.class.php 105 2012-03-22 16:26:34Z jtamarelle $
  */
-class sfDoctrineCompileTask extends sfDoctrineBaseTask
+class sfDoctrineCompileTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('database', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'A specific database'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('database', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'A specific database'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('no-confirmation', null, \sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database'),
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'compile';
@@ -47,13 +47,13 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
-        $compiledFile = sfConfig::get('sf_cache_dir').'/doctrine.compiled.php';
+        $compiledFile = \sfConfig::get('sf_cache_dir').'/doctrine.compiled.php';
 
         if (file_exists($compiledFile)) {
             $this->logSection('error', $compiledFile.' already exists', null, 'ERROR');
@@ -62,7 +62,7 @@ EOF;
             return;
         }
 
-        $drivers = array();
+        $drivers = [];
         foreach ($databaseManager->getNames() as $name) {
             $drivers[] = strtolower($databaseManager->getDatabase($name)->getDoctrineConnection()->getDriverName());
         }
@@ -70,7 +70,7 @@ EOF;
 
         $this->logSection('compile', 'Included drivers: '.implode(', ', $drivers));
 
-        Doctrine_Core::compile($compiledFile, $drivers);
+        \Doctrine_Core::compile($compiledFile, $drivers);
 
         $this->logSection('file+', $compiledFile);
     }

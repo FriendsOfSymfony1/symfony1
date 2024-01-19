@@ -1,18 +1,20 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 require_once __DIR__.'/../../bootstrap/unit.php';
 
 // lazy constant, cause it is so often used in this test
 define('DS', DIRECTORY_SEPARATOR);
 
-class myFilesystem extends sfFilesystem
+class myFilesystem extends \sfFilesystem
 {
     public function calculateRelativeDir($from, $to)
     {
@@ -25,10 +27,10 @@ class myFilesystem extends sfFilesystem
     }
 }
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
-$dispatcher = new sfEventDispatcher();
-$filesystem = new myFilesystem($dispatcher, null);
+$dispatcher = new \sfEventDispatcher();
+$filesystem = new \myFilesystem($dispatcher, null);
 
 $t->diag('sfFilesystem canonicalizes pathes');
 $t->is($filesystem->canonicalizePath('..'.DS.DS.'.'.DS.'..'.DS.'dir4'.DS.DS.'.'.DS.'dir5'.DS.'dir6'.DS.'..'.DS.DS.'dir7'.DS), '..'.DS.'..'.DS.'dir4'.DS.'dir5'.DS.'dir7'.DS, '->canonicalizePath() correctly resolves "\\.." and "\\."');

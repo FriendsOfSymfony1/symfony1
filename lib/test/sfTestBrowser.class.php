@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require_once __DIR__.'/../vendor/lime/lime.php';
 
 /*
@@ -20,7 +29,7 @@ require_once __DIR__.'/../vendor/lime/lime.php';
  *
  * @version    SVN: $Id$
  */
-class sfTestBrowser extends sfTestFunctional
+class sfTestBrowser extends \sfTestFunctional
 {
     /**
      * Initializes the browser tester instance.
@@ -29,16 +38,16 @@ class sfTestBrowser extends sfTestFunctional
      * @param string $remote   Remote address to spook
      * @param array  $options  Options for sfBrowser
      */
-    public function __construct($hostname = null, $remote = null, $options = array())
+    public function __construct($hostname = null, $remote = null, $options = [])
     {
         if (is_object($hostname)) {
             // new signature
             parent::__construct($hostname, $remote);
         } else {
-            $browser = new sfBrowser($hostname, $remote, $options);
+            $browser = new \sfBrowser($hostname, $remote, $options);
 
             if (null === self::$test) {
-                $lime = new lime_test(null, isset($options['output']) ? $options['output'] : null);
+                $lime = new \lime_test(null, isset($options['output']) ? $options['output'] : null);
             } else {
                 $lime = null;
             }

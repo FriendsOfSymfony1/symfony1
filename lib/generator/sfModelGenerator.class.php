@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,14 +16,14 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfModelGenerator extends sfGenerator
+abstract class sfModelGenerator extends \sfGenerator
 {
-    /** @var sfModelGeneratorConfiguration */
+    /** @var \sfModelGeneratorConfiguration */
     protected $configuration;
-    protected $primaryKey = array();
+    protected $primaryKey = [];
     protected $modelClass = '';
-    protected $params = array();
-    protected $config = array();
+    protected $params = [];
+    protected $config = [];
     protected $formObject;
 
     /**
@@ -32,9 +33,9 @@ abstract class sfModelGenerator extends sfGenerator
      *
      * @return string The data to put in configuration cache
      *
-     * @throws sfConfigurationException
+     * @throws \sfConfigurationException
      */
-    public function generate($params = array())
+    public function generate($params = [])
     {
         $this->validateParameters($params);
 
@@ -49,7 +50,7 @@ abstract class sfModelGenerator extends sfGenerator
         $this->setTheme($theme);
         $themeDir = $this->generatorManager->getConfiguration()->getGeneratorTemplate($this->getGeneratorClass(), $theme, '');
         if (!is_dir($themeDir)) {
-            throw new sfConfigurationException(sprintf('The theme "%s" does not exist.', $theme));
+            throw new \sfConfigurationException(sprintf('The theme "%s" does not exist.', $theme));
         }
 
         // configure the model
@@ -58,7 +59,7 @@ abstract class sfModelGenerator extends sfGenerator
         $this->configuration = $this->loadConfiguration();
 
         // generate files
-        $this->generatePhpFiles($this->generatedModuleName, sfFinder::type('file')->relative()->in($themeDir));
+        $this->generatePhpFiles($this->generatedModuleName, \sfFinder::type('file')->relative()->in($themeDir));
 
         // move helper file
         if (file_exists($file = $this->generatorManager->getBasePath().'/'.$this->getGeneratedModuleName().'/lib/helper.php')) {
@@ -107,7 +108,7 @@ abstract class sfModelGenerator extends sfGenerator
      */
     public function getSingularName()
     {
-        return isset($this->params['singular']) ? $this->params['singular'] : sfInflector::underscore($this->getModelClass());
+        return isset($this->params['singular']) ? $this->params['singular'] : \sfInflector::underscore($this->getModelClass());
     }
 
     /**
@@ -139,9 +140,9 @@ abstract class sfModelGenerator extends sfGenerator
      */
     public function getRetrieveByPkParamsForAction($indent)
     {
-        $params = array();
+        $params = [];
         foreach ($this->getPrimaryKeys() as $pk) {
-            $params[] = sprintf("\$request->getParameter('%s')", sfInflector::underscore($pk));
+            $params[] = sprintf("\$request->getParameter('%s')", \sfInflector::underscore($pk));
         }
 
         return implode(",\n".str_repeat(' ', max(0, $indent - strlen($this->getSingularName().$this->modelClass))), $params);
@@ -157,9 +158,9 @@ abstract class sfModelGenerator extends sfGenerator
      */
     public function getPrimaryKeyUrlParams($prefix = '', $full = false)
     {
-        $params = array();
+        $params = [];
         foreach ($this->getPrimaryKeys() as $pk) {
-            $fieldName = sfInflector::underscore($pk);
+            $fieldName = \sfInflector::underscore($pk);
 
             if ($full) {
                 $params[] = sprintf("%s='.%s->%s()", $fieldName, $prefix, $this->getColumnGetter($fieldName, false));
@@ -201,7 +202,7 @@ abstract class sfModelGenerator extends sfGenerator
      */
     public function getLinkToAction($actionName, $params, $pk_link = false)
     {
-        $action = isset($params['action']) ? $params['action'] : 'List'.sfInflector::camelize($actionName);
+        $action = isset($params['action']) ? $params['action'] : 'List'.\sfInflector::camelize($actionName);
 
         $url_params = $pk_link ? '?'.$this->getPrimaryKeyUrlParams() : '\'';
 
@@ -216,7 +217,7 @@ abstract class sfModelGenerator extends sfGenerator
      *
      * @return string HTML code
      */
-    public function addCredentialCondition($content, $params = array())
+    public function addCredentialCondition($content, $params = [])
     {
         if (isset($params['credentials'])) {
             $credentials = $this->asPhp($params['credentials']);
@@ -235,7 +236,7 @@ EOF;
     /**
      * Returns HTML code for a field.
      *
-     * @param sfModelGeneratorConfigurationField $field The field
+     * @param \sfModelGeneratorConfigurationField $field The field
      *
      * @return string HTML code
      */
@@ -278,12 +279,12 @@ EOF;
 
         // find %%xx%% strings
         preg_match_all('/%%([^%]+)%%/', $value, $matches, PREG_PATTERN_ORDER);
-        $fields = array();
+        $fields = [];
         foreach ($matches[1] as $name) {
             $fields[] = $name;
         }
 
-        $vars = array();
+        $vars = [];
         foreach ($this->configuration->getContextConfiguration($context, $fields) as $field) {
             $vars[] = '\'%%'.$field->getName().'%%\' => '.$this->renderField($field);
         }
@@ -294,7 +295,7 @@ EOF;
     /**
      * Gets the form object.
      *
-     * @return sfForm
+     * @return \sfForm
      */
     public function getFormObject()
     {
@@ -339,7 +340,7 @@ EOF;
 
     public function asPhp($variable)
     {
-        return str_replace(array("\n", 'array ('), array('', 'array('), var_export($variable, true));
+        return str_replace(["\n", 'array ('], ['', 'array('], var_export($variable, true));
     }
 
     public function escapeString($string)
@@ -357,22 +358,22 @@ EOF;
      *
      * @param array $params An array of parameters
      *
-     * @throws sfInitializationException
-     * @throws sfParseException
+     * @throws \sfInitializationException
+     * @throws \sfParseException
      */
     protected function validateParameters($params)
     {
-        foreach (array('model_class', 'moduleName') as $key) {
+        foreach (['model_class', 'moduleName'] as $key) {
             if (!isset($params[$key])) {
-                throw new sfParseException(sprintf('sfModelGenerator must have a "%s" parameter.', $key));
+                throw new \sfParseException(sprintf('sfModelGenerator must have a "%s" parameter.', $key));
             }
         }
 
         if (!class_exists($params['model_class'])) {
-            throw new sfInitializationException(sprintf('Unable to generate a module for non-existent model "%s".', $params['model_class']));
+            throw new \sfInitializationException(sprintf('Unable to generate a module for non-existent model "%s".', $params['model_class']));
         }
 
-        $this->config = isset($params['config']) ? $params['config'] : array();
+        $this->config = isset($params['config']) ? $params['config'] : [];
 
         unset($params['config']);
         $this->params = $params;
@@ -385,13 +386,13 @@ EOF;
     {
         try {
             $this->generatorManager->getConfiguration()->getGeneratorTemplate($this->getGeneratorClass(), $this->getTheme(), '../parts/configuration.php');
-        } catch (sfException $e) {
+        } catch (\sfException $e) {
             return null;
         }
 
         $config = $this->getGeneratorManager()->getConfiguration();
-        if (!$config instanceof sfApplicationConfiguration) {
-            throw new LogicException('The sfModelGenerator can only operates with an application configuration.');
+        if (!$config instanceof \sfApplicationConfiguration) {
+            throw new \LogicException('The sfModelGenerator can only operates with an application configuration.');
         }
 
         $basePath = $this->getGeneratedModuleName().'/lib/Base'.ucfirst($this->getModuleName()).'GeneratorConfiguration.class.php';
@@ -417,7 +418,7 @@ EOF;
                 continue;
             }
 
-            throw new InvalidArgumentException(sprintf('Your generator configuration contains some errors for the "%s" context. The following configuration cannot be parsed: %s.', $context, $this->asPhp($value)));
+            throw new \InvalidArgumentException(sprintf('Your generator configuration contains some errors for the "%s" context. The following configuration cannot be parsed: %s.', $context, $this->asPhp($value)));
         }
 
         return new $class();

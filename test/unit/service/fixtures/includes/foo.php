@@ -1,19 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 class FooClass
 {
     public $bar;
     public $initialized = false;
     public $configured = false;
     public $called = false;
-    public $arguments = array();
+    public $arguments = [];
 
-    public function __construct($arguments = array())
+    public function __construct($arguments = [])
     {
         $this->arguments = $arguments;
     }
 
-    public static function getInstance($arguments = array())
+    public static function getInstance($arguments = [])
     {
         $obj = new self($arguments);
         $obj->called = true;

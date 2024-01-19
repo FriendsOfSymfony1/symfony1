@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,7 +18,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfFactoryConfigHandler extends sfYamlConfigHandler
+class sfFactoryConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -27,8 +27,8 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -36,11 +36,11 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
         $config = static::getConfiguration($configFiles);
 
         // init our data and includes arrays
-        $includes = array();
-        $instances = array();
+        $includes = [];
+        $instances = [];
 
         // available list of factories
-        $factories = array('view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer', 'service_container');
+        $factories = ['view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer', 'service_container'];
 
         // let's do our fancy work
         foreach ($factories as $factory) {
@@ -49,7 +49,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
 
             if (!isset($keys['class'])) {
                 // missing class key
-                throw new sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $factory));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $factory));
             }
 
             $class = $keys['class'];
@@ -58,7 +58,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
                 // we have a file to include
                 if (!is_readable($keys['file'])) {
                     // factory file doesn't exist
-                    throw new sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $class, $keys['file']));
+                    throw new \sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $class, $keys['file']));
                 }
 
                 // append our data
@@ -66,10 +66,10 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
             }
 
             // parse parameters
-            $parameters = array();
+            $parameters = [];
             if (isset($keys['param'])) {
                 if (!is_array($keys['param'])) {
-                    throw new InvalidArgumentException(sprintf('The "param" key for the "%s" factory must be an array (in %s).', $class, $configFiles[0]));
+                    throw new \InvalidArgumentException(sprintf('The "param" key for the "%s" factory must be an array (in %s).', $class, $configFiles[0]));
                 }
 
                 $parameters = $keys['param'];
@@ -83,7 +83,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
                     break;
 
                 case 'request':
-                    $parameters['no_script_name'] = sfConfig::get('sf_no_script_name');
+                    $parameters['no_script_name'] = \sfConfig::get('sf_no_script_name');
                     $instances[] = sprintf("  \$class = sfConfig::get('sf_factory_request', '%s');\n   \$this->factories['request'] = new \$class(\$this->dispatcher, array(), array(), sfConfig::get('sf_factory_request_parameters', %s), sfConfig::get('sf_factory_request_attributes', array()));", $class, var_export($parameters, true));
 
                     break;
@@ -96,7 +96,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
                     break;
 
                 case 'storage':
-                    $defaultParameters = array();
+                    $defaultParameters = [];
                     $defaultParameters[] = sprintf("'auto_shutdown' => false, 'session_id' => \$this->getRequest()->getParameter('%s'),", $parameters['session_name']);
                     if (is_subclass_of($class, 'sfDatabaseSessionStorage')) {
                         $defaultParameters[] = sprintf("'database' => \$this->getDatabaseManager()->getDatabase('%s'),", isset($parameters['database']) ? $parameters['database'] : 'default');
@@ -190,7 +190,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
 
                             if (!isset($keys['class'])) {
                                 // missing class key
-                                throw new sfParseException(sprintf('Configuration file "%s" specifies logger "%s" with missing class key.', $configFiles[0], $name));
+                                throw new \sfParseException(sprintf('Configuration file "%s" specifies logger "%s" with missing class key.', $configFiles[0], $name));
                             }
 
                             $condition = true;
@@ -259,7 +259,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

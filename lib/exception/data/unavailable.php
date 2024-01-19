@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo sfConfig::get('sf_charset', 'utf-8'); ?>" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo \sfConfig::get('sf_charset', 'utf-8'); ?>" />
 <meta name="title" content="symfony project" />
 <meta name="robots" content="index, follow" />
 <meta name="description" content="symfony project" />

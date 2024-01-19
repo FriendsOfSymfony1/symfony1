@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,8 +16,8 @@
  *
  * @version    SVN: $Id$
  *
- * @param mixed|null $culture
- * @param mixed|null $charset
+ * @param \mixed|null $culture
+ * @param \mixed|null $charset
  */
 function format_daterange($start_date, $end_date, $format = 'd', $full_text = '', $start_text = '', $end_text = '', $culture = null, $charset = null)
 {
@@ -33,22 +34,22 @@ function format_daterange($start_date, $end_date, $format = 'd', $full_text = ''
 
 function format_date($date, $format = 'd', $culture = null, $charset = null)
 {
-    static $dateFormats = array();
+    static $dateFormats = [];
 
     if (null === $date) {
         return null;
     }
 
     if (!$culture) {
-        $culture = sfContext::getInstance()->getUser()->getCulture();
+        $culture = \sfContext::getInstance()->getUser()->getCulture();
     }
 
     if (!$charset) {
-        $charset = sfConfig::get('sf_charset');
+        $charset = \sfConfig::get('sf_charset');
     }
 
     if (!isset($dateFormats[$culture])) {
-        $dateFormats[$culture] = new sfDateFormat($culture);
+        $dateFormats[$culture] = new \sfDateFormat($culture);
     }
 
     return $dateFormats[$culture]->format($date, $format, null, $charset);
@@ -67,7 +68,7 @@ function distance_of_time_in_words($from_time, $to_time = null, $include_seconds
     $distance_in_seconds = floor(abs($to_time - $from_time));
 
     $string = '';
-    $parameters = array();
+    $parameters = [];
 
     if ($distance_in_minutes <= 1) {
         if (!$include_seconds) {
@@ -112,7 +113,7 @@ function distance_of_time_in_words($from_time, $to_time = null, $include_seconds
         $parameters['%years%'] = floor($distance_in_minutes / 525960);
     }
 
-    if (sfConfig::get('sf_i18n')) {
+    if (\sfConfig::get('sf_i18n')) {
         require_once __DIR__.'/I18NHelper.php';
 
         return __($string, $parameters);

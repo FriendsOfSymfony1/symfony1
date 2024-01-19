@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * configFiltersSimpleFilter actions.
  *
@@ -7,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class configFiltersSimpleFilterActions extends sfActions
+class configFiltersSimpleFilterActions extends \sfActions
 {
     public function executeIndex()
     {

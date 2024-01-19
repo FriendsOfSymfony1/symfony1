@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectDeployTask extends sfBaseTask
+class sfProjectDeployTask extends \sfBaseTask
 {
     protected $outputBuffer = '';
     protected $errorBuffer = '';
@@ -43,19 +44,19 @@ class sfProjectDeployTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('server', sfCommandArgument::REQUIRED, 'The server name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('server', \sfCommandArgument::REQUIRED, 'The server name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('go', null, sfCommandOption::PARAMETER_NONE, 'Do the deployment'),
-            new sfCommandOption('rsync-dir', null, sfCommandOption::PARAMETER_REQUIRED, 'The directory where to look for rsync*.txt files', 'config'),
-            new sfCommandOption('rsync-options', null, sfCommandOption::PARAMETER_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('go', null, \sfCommandOption::PARAMETER_NONE, 'Do the deployment'),
+            new \sfCommandOption('rsync-dir', null, \sfCommandOption::PARAMETER_REQUIRED, 'The directory where to look for rsync*.txt files', 'config'),
+            new \sfCommandOption('rsync-options', null, \sfCommandOption::PARAMETER_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress'),
+        ]);
 
         $this->namespace = 'project';
         $this->name = 'deploy';
@@ -107,31 +108,31 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $env = $arguments['server'];
 
-        $ini = sfConfig::get('sf_config_dir').'/properties.ini';
+        $ini = \sfConfig::get('sf_config_dir').'/properties.ini';
         if (!file_exists($ini)) {
-            throw new sfCommandException('You must create a config/properties.ini file');
+            throw new \sfCommandException('You must create a config/properties.ini file');
         }
 
         $properties = parse_ini_file($ini, true);
 
         if (!isset($properties[$env])) {
-            throw new sfCommandException(sprintf('You must define the configuration for server "%s" in config/properties.ini', $env));
+            throw new \sfCommandException(sprintf('You must define the configuration for server "%s" in config/properties.ini', $env));
         }
 
         $properties = $properties[$env];
 
         if (!isset($properties['host'])) {
-            throw new sfCommandException('You must define a "host" entry.');
+            throw new \sfCommandException('You must define a "host" entry.');
         }
 
         if (!isset($properties['dir'])) {
-            throw new sfCommandException('You must define a "dir" entry.');
+            throw new \sfCommandException('You must define a "dir" entry.');
         }
 
         $host = $properties['host'];
@@ -169,7 +170,7 @@ EOF;
         $dryRun = $options['go'] ? '' : '--dry-run';
         $command = "rsync {$dryRun} {$parameters} -e {$ssh} ./ {$user}{$host}:{$dir}";
 
-        $this->getFilesystem()->execute($command, $options['trace'] ? array($this, 'logOutput') : null, array($this, 'logErrors'));
+        $this->getFilesystem()->execute($command, $options['trace'] ? [$this, 'logOutput'] : null, [$this, 'logErrors']);
 
         $this->clearBuffers();
     }

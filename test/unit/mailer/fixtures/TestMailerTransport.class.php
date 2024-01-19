@@ -1,13 +1,15 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class TestMailerTransport implements Swift_Transport
+
+class TestMailerTransport implements \Swift_Transport
 {
     protected $sleep;
     protected $foo;
@@ -34,7 +36,7 @@ class TestMailerTransport implements Swift_Transport
         $this->started = false;
     }
 
-    public function registerPlugin(Swift_Events_EventListener $plugin)
+    public function registerPlugin(\Swift_Events_EventListener $plugin)
     {
     }
 
@@ -53,7 +55,7 @@ class TestMailerTransport implements Swift_Transport
         return $this->count;
     }
 
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    public function send(\Swift_Mime_Message $message, &$failedRecipients = null)
     {
         ++$this->count;
 

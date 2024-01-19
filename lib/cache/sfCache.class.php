@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +22,7 @@ abstract class sfCache
     public const ALL = 2;
     public const SEPARATOR = ':';
 
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Class constructor.
@@ -30,7 +31,7 @@ abstract class sfCache
      *
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->initialize($options);
     }
@@ -50,15 +51,15 @@ abstract class sfCache
      *
      * * lifetime (optional): The default life time (default value: 86400)
      *
-     * @throws sfInitializationException If an error occurs while initializing this sfCache instance
+     * @throws \sfInitializationException If an error occurs while initializing this sfCache instance
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'automatic_cleaning_factor' => 1000,
             'lifetime' => 86400,
             'prefix' => md5(__DIR__),
-        ), $options);
+        ], $options);
 
         $this->options['prefix'] .= self::SEPARATOR;
     }
@@ -109,7 +110,7 @@ abstract class sfCache
      *
      * @return bool true if no problem
      *
-     * @see patternToRegexp
+     * @see \patternToRegexp
      */
     abstract public function removePattern($pattern);
 
@@ -151,7 +152,7 @@ abstract class sfCache
      */
     public function getMany($keys)
     {
-        $data = array();
+        $data = [];
         foreach ($keys as $key) {
             $data[$key] = $this->get($key);
         }
@@ -176,11 +177,11 @@ abstract class sfCache
      *
      * @return mixed The backend object
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function getBackend()
     {
-        throw new sfException('This cache class does not have a backend object.');
+        throw new \sfException('This cache class does not have a backend object.');
     }
 
     /**
@@ -222,8 +223,8 @@ abstract class sfCache
     protected function patternToRegexp($pattern)
     {
         $regexp = str_replace(
-            array('\\*\\*', '\\*'),
-            array('.+?', '[^'.preg_quote(sfCache::SEPARATOR, '#').']+'),
+            ['\\*\\*', '\\*'],
+            ['.+?', '[^'.preg_quote(\sfCache::SEPARATOR, '#').']+'],
             preg_quote($pattern, '#')
         );
 

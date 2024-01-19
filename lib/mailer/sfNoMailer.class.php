@@ -1,11 +1,20 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * sfMailer is the main entry point for the mailer system - sfNoMailer disable all mailer features.
  */
 class sfNoMailer
 {
-    public function __construct(sfEventDispatcher $dispatcher, $options)
+    public function __construct(\sfEventDispatcher $dispatcher, $options)
     {
     }
 
@@ -14,7 +23,7 @@ class sfNoMailer
         return null;
     }
 
-    public function setRealtimeTransport(Swift_Transport $transport)
+    public function setRealtimeTransport(\Swift_Transport $transport)
     {
     }
 

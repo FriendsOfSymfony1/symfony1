@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,16 +20,16 @@ require_once 'PEAR/Frontend/CLI.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearFrontendPlugin extends PEAR_Frontend_CLI
+class sfPearFrontendPlugin extends \PEAR_Frontend_CLI
 {
     protected $dispatcher;
 
     /**
      * Sets the sfEventDispatcher object for this frontend.
      *
-     * @param sfEventDispatcher $dispatcher The sfEventDispatcher instance
+     * @param \sfEventDispatcher $dispatcher The sfEventDispatcher instance
      */
-    public function setEventDispatcher(sfEventDispatcher $dispatcher)
+    public function setEventDispatcher(\sfEventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
@@ -40,12 +41,12 @@ class sfPearFrontendPlugin extends PEAR_Frontend_CLI
 
     public function _display($text)
     {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', $this->splitLongLine($text)));
+        $this->dispatcher->notify(new \sfEvent($this, 'application.log', $this->splitLongLine($text)));
     }
 
     protected function splitLongLine($text)
     {
-        $lines = array();
+        $lines = [];
         foreach (explode("\n", $text) as $longline) {
             foreach (explode("\n", wordwrap($longline, 62)) as $line) {
                 if ($line = trim($line)) {

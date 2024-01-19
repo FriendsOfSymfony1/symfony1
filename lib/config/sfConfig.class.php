@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +18,7 @@
  */
 class sfConfig
 {
-    protected static $config = array();
+    protected static $config = [];
 
     /**
      * Retrieves a config parameter.
@@ -65,7 +66,7 @@ class sfConfig
      *
      * @param array $parameters An associative array of config parameters and their associated values
      */
-    public static function add($parameters = array())
+    public static function add($parameters = [])
     {
         self::$config = array_merge(self::$config, $parameters);
     }
@@ -85,6 +86,6 @@ class sfConfig
      */
     public static function clear()
     {
-        self::$config = array();
+        self::$config = [];
     }
 }

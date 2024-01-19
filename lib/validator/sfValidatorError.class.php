@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,19 +16,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorError extends Exception implements Serializable
+class sfValidatorError extends \Exception implements \Serializable
 {
     protected $validator;
-    protected $arguments = array();
+    protected $arguments = [];
 
     /**
      * Constructor.
      *
-     * @param sfValidatorBase $validator An sfValidatorBase instance
-     * @param string          $code      The error code
-     * @param array           $arguments An array of named arguments needed to render the error message
+     * @param \sfValidatorBase $validator An sfValidatorBase instance
+     * @param string           $code      The error code
+     * @param array            $arguments An array of named arguments needed to render the error message
      */
-    public function __construct(sfValidatorBase $validator, $code, $arguments = array())
+    public function __construct(\sfValidatorBase $validator, $code, $arguments = [])
     {
         $this->validator = $validator;
         $this->arguments = $arguments;
@@ -58,7 +59,7 @@ class sfValidatorError extends Exception implements Serializable
      */
     public function __serialize()
     {
-        return array($this->validator, $this->arguments, $this->code, $this->message);
+        return [$this->validator, $this->arguments, $this->code, $this->message];
     }
 
     /**
@@ -82,7 +83,7 @@ class sfValidatorError extends Exception implements Serializable
     /**
      * Returns the validator that triggered this error.
      *
-     * @return sfValidatorBase A sfValidatorBase instance
+     * @return \sfValidatorBase A sfValidatorBase instance
      */
     public function getValidator()
     {
@@ -102,13 +103,13 @@ class sfValidatorError extends Exception implements Serializable
             return $this->arguments;
         }
 
-        $arguments = array();
+        $arguments = [];
         foreach ($this->arguments as $key => $value) {
             if (is_array($value)) {
                 continue;
             }
 
-            $arguments["%{$key}%"] = htmlspecialchars($value, ENT_QUOTES, sfValidatorBase::getCharset());
+            $arguments["%{$key}%"] = htmlspecialchars($value, ENT_QUOTES, \sfValidatorBase::getCharset());
         }
 
         return $arguments;

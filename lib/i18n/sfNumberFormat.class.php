@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfNumberFormat class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -64,7 +56,7 @@ class sfNumberFormat
     /**
      * The DateTimeFormatInfo, containing culture specific patterns and names.
      *
-     * @var DateTimeFormatInfo
+     * @var \DateTimeFormatInfo
      */
     protected $formatInfo;
 
@@ -76,18 +68,18 @@ class sfNumberFormat
      *
      * @param mixed $formatInfo either null, a sfCultureInfo, a sfNumberFormatInfo, or string
      *
-     * @return sfNumberFormat
+     * @return \sfNumberFormat
      */
     public function __construct($formatInfo = null)
     {
         if (null === $formatInfo) {
-            $this->formatInfo = sfNumberFormatInfo::getInvariantInfo();
-        } elseif ($formatInfo instanceof sfCultureInfo) {
+            $this->formatInfo = \sfNumberFormatInfo::getInvariantInfo();
+        } elseif ($formatInfo instanceof \sfCultureInfo) {
             $this->formatInfo = $formatInfo->getNumberFormat();
-        } elseif ($formatInfo instanceof sfNumberFormatInfo) {
+        } elseif ($formatInfo instanceof \sfNumberFormatInfo) {
             $this->formatInfo = $formatInfo;
         } else {
-            $this->formatInfo = sfNumberFormatInfo::getInstance($formatInfo);
+            $this->formatInfo = \sfNumberFormatInfo::getInstance($formatInfo);
         }
     }
 
@@ -143,7 +135,7 @@ class sfNumberFormat
 
         $result = str_replace('¤', $symbol ?: '', $result);
 
-        return sfToolkit::I18N_toEncoding($result, $charset);
+        return \sfToolkit::I18N_toEncoding($result, $charset);
     }
 
     /**
@@ -263,25 +255,25 @@ class sfNumberFormat
         switch ($pattern) {
             case 'c':
             case 'C':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::CURRENCY);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::CURRENCY);
 
                 break;
 
             case 'd':
             case 'D':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::DECIMAL);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::DECIMAL);
 
                 break;
 
             case 'e':
             case 'E':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::SCIENTIFIC);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::SCIENTIFIC);
 
                 break;
 
             case 'p':
             case 'P':
-                $this->formatInfo->setPattern(sfNumberFormatInfo::PERCENTAGE);
+                $this->formatInfo->setPattern(\sfNumberFormatInfo::PERCENTAGE);
 
                 break;
 
@@ -296,7 +288,7 @@ class sfNumberFormat
     {
         $string = (string) $float;
 
-        if (false === strpos($float, 'E')) {
+        if (!str_contains($float, 'E')) {
             return $string;
         }
 

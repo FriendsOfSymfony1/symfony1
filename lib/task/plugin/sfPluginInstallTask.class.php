@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,24 +18,24 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginInstallTask extends sfPluginBaseTask
+class sfPluginInstallTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The plugin name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('stability', 's', sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
-            new sfCommandOption('release', 'r', sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
-            new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
-            new sfCommandOption('install_deps', 'd', sfCommandOption::PARAMETER_NONE, 'Whether to force installation of required dependencies', null),
-            new sfCommandOption('force-license', null, sfCommandOption::PARAMETER_NONE, 'Whether to force installation even if the license is not MIT like'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('stability', 's', \sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
+            new \sfCommandOption('release', 'r', \sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
+            new \sfCommandOption('channel', 'c', \sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
+            new \sfCommandOption('install_deps', 'd', \sfCommandOption::PARAMETER_NONE, 'Whether to force installation of required dependencies', null),
+            new \sfCommandOption('force-license', null, \sfCommandOption::PARAMETER_NONE, 'Whether to force installation even if the license is not MIT like'),
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'install';
@@ -87,9 +88,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('installing plugin "%s"', $arguments['name']));
 
@@ -100,14 +101,14 @@ EOF;
         if (!$options['force-license']) {
             try {
                 $license = $this->getPluginManager()->getPluginLicense($arguments['name'], $options);
-            } catch (Exception $e) {
-                throw new sfCommandException(sprintf('%s (use --force-license to force installation)', $e->getMessage()));
+            } catch (\Exception $e) {
+                throw new \sfCommandException(sprintf('%s (use --force-license to force installation)', $e->getMessage()));
             }
 
             if (false !== $license) {
                 $temp = trim(str_replace('license', '', strtolower($license)));
-                if (null !== $license && !in_array($temp, array('mit', 'bsd', 'lgpl', 'php', 'apache'))) {
-                    throw new sfCommandException(sprintf('The license of this plugin "%s" is not MIT like (use --force-license to force installation).', $license));
+                if (null !== $license && !in_array($temp, ['mit', 'bsd', 'lgpl', 'php', 'apache'])) {
+                    throw new \sfCommandException(sprintf('The license of this plugin "%s" is not MIT like (use --force-license to force installation).', $license));
                 }
             }
         }

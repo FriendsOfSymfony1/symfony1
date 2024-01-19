@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorUrl extends sfValidatorRegex
+class sfValidatorUrl extends \sfValidatorRegex
 {
     public const REGEX_URL_FORMAT = '~^
       (%s)://                                 # protocol
@@ -46,13 +47,13 @@ class sfValidatorUrl extends sfValidatorRegex
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorRegex
+     * @see \sfValidatorRegex
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 
-        $this->addOption('protocols', array('http', 'https', 'ftp', 'ftps'));
-        $this->setOption('pattern', new sfCallable(array($this, 'generateRegex')));
+        $this->addOption('protocols', ['http', 'https', 'ftp', 'ftps']);
+        $this->setOption('pattern', new \sfCallable([$this, 'generateRegex']));
     }
 }

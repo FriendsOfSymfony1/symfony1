@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,12 +17,12 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfResponse implements Serializable
+abstract class sfResponse implements \Serializable
 {
     /** @var array */
-    protected $options = array();
+    protected $options = [];
 
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
     /** @var string */
@@ -34,7 +35,7 @@ abstract class sfResponse implements Serializable
      *
      * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $options = array())
+    public function __construct(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->initialize($dispatcher, $options);
     }
@@ -47,13 +48,13 @@ abstract class sfResponse implements Serializable
      *
      * @return mixed The returned value of the called method
      *
-     * @throws sfException If the calls fails
+     * @throws \sfException If the calls fails
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'response.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new \sfEvent($this, 'response.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
-            throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+            throw new \sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
 
         return $event->getReturnValue();
@@ -66,7 +67,7 @@ abstract class sfResponse implements Serializable
      */
     public function __serialize()
     {
-        return array('content' => $this->content);
+        return ['content' => $this->content];
     }
 
     /**
@@ -86,12 +87,12 @@ abstract class sfResponse implements Serializable
      *
      *  * logging: Whether to enable logging or not (false by default)
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param array              $options    An array of options
      *
-     * @throws sfInitializationException If an error occurs while initializing this sfResponse
+     * @throws \sfInitializationException If an error occurs while initializing this sfResponse
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->options = $options;
@@ -104,9 +105,9 @@ abstract class sfResponse implements Serializable
     /**
      * Sets the event dispatcher.
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
      */
-    public function setEventDispatcher(sfEventDispatcher $dispatcher)
+    public function setEventDispatcher(\sfEventDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
@@ -136,11 +137,11 @@ abstract class sfResponse implements Serializable
      */
     public function sendContent()
     {
-        $event = $this->dispatcher->filter(new sfEvent($this, 'response.filter_content'), $this->getContent());
+        $event = $this->dispatcher->filter(new \sfEvent($this, 'response.filter_content'), $this->getContent());
         $content = $event->getReturnValue();
 
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send content (%s o)', strlen($content)))));
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Send content (%s o)', strlen($content))]));
         }
 
         echo $content;

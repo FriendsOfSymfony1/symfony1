@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,9 +27,9 @@ class sfActionStackEntry
     /**
      * Class constructor.
      *
-     * @param string   $moduleName     A module name
-     * @param string   $actionName     An action name
-     * @param sfAction $actionInstance An sfAction implementation instance
+     * @param string    $moduleName     A module name
+     * @param string    $actionName     An action name
+     * @param \sfAction $actionInstance An sfAction implementation instance
      */
     public function __construct($moduleName, $actionName, $actionInstance)
     {
@@ -51,7 +51,7 @@ class sfActionStackEntry
     /**
      * Retrieves this entry's action instance.
      *
-     * @return sfAction An sfAction implementation instance
+     * @return \sfAction An sfAction implementation instance
      */
     public function getActionInstance()
     {

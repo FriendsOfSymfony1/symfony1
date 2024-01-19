@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +18,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfObjectRoute extends sfRequestRoute
+class sfObjectRoute extends \sfRequestRoute
 {
     /** @var bool|object */
     protected $object = false;
@@ -33,20 +34,20 @@ class sfObjectRoute extends sfRequestRoute
      * @param array  $requirements An array of requirements for parameters (regexes)
      * @param array  $options      An array of options
      *
-     * @see sfRoute
+     * @see \sfRoute
      */
-    public function __construct($pattern, array $defaults = array(), array $requirements = array(), array $options = array())
+    public function __construct($pattern, array $defaults = [], array $requirements = [], array $options = [])
     {
         if (!isset($options['model'])) {
-            throw new InvalidArgumentException(sprintf('You must pass a "model" option for a %s object (%s).', get_class($this), $pattern));
+            throw new \InvalidArgumentException(sprintf('You must pass a "model" option for a %s object (%s).', get_class($this), $pattern));
         }
 
         if (!isset($options['type'])) {
-            throw new InvalidArgumentException(sprintf('You must pass a "type" option for a %s object (%s).', get_class($this), $pattern));
+            throw new \InvalidArgumentException(sprintf('You must pass a "type" option for a %s object (%s).', get_class($this), $pattern));
         }
 
-        if (!in_array($options['type'], array('object', 'list'))) {
-            throw new InvalidArgumentException(sprintf('The "type" option can only be "object" or "list", "%s" given (%s).', $options['type'], $pattern));
+        if (!in_array($options['type'], ['object', 'list'])) {
+            throw new \InvalidArgumentException(sprintf('The "type" option can only be "object" or "list", "%s" given (%s).', $options['type'], $pattern));
         }
 
         parent::__construct($pattern, $defaults, $requirements, $options);
@@ -60,7 +61,7 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @return bool true if the parameters matches this route, false otherwise
      */
-    public function matchesParameters($params, $context = array())
+    public function matchesParameters($params, $context = [])
     {
         return parent::matchesParameters('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params);
     }
@@ -74,7 +75,7 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @return string The generated URL
      */
-    public function generate($params, $context = array(), $absolute = false)
+    public function generate($params, $context = [], $absolute = false)
     {
         return parent::generate('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params, $context, $absolute);
     }
@@ -86,16 +87,16 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @return object The related object
      *
-     * @throws sfError404Exception
+     * @throws \sfError404Exception
      */
     public function getObject()
     {
         if (!$this->isBound()) {
-            throw new LogicException('The route is not bound.');
+            throw new \LogicException('The route is not bound.');
         }
 
         if ('object' != $this->options['type']) {
-            throw new LogicException(sprintf('The route "%s" is not of type "object".', $this->pattern));
+            throw new \LogicException(sprintf('The route "%s" is not of type "object".', $this->pattern));
         }
 
         if (false !== $this->object) {
@@ -104,7 +105,7 @@ class sfObjectRoute extends sfRequestRoute
 
         // check the related object
         if (!($this->object = $this->getObjectForParameters($this->parameters)) && (!isset($this->options['allow_empty']) || !$this->options['allow_empty'])) {
-            throw new sfError404Exception(sprintf('Unable to find the %s object with the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
+            throw new \sfError404Exception(sprintf('Unable to find the %s object with the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
         }
 
         return $this->object;
@@ -117,16 +118,16 @@ class sfObjectRoute extends sfRequestRoute
      *
      * @return array And array of related objects
      *
-     * @throws sfError404Exception
+     * @throws \sfError404Exception
      */
     public function getObjects()
     {
         if (!$this->isBound()) {
-            throw new LogicException('The route is not bound.');
+            throw new \LogicException('The route is not bound.');
         }
 
         if ('list' != $this->options['type']) {
-            throw new LogicException(sprintf('The route "%s" is not of type "list".', $this->pattern));
+            throw new \LogicException(sprintf('The route "%s" is not of type "list".', $this->pattern));
         }
 
         if (false !== $this->objects) {
@@ -136,7 +137,7 @@ class sfObjectRoute extends sfRequestRoute
         $this->objects = $this->getObjectsForParameters($this->parameters);
 
         if (!count($this->objects) && isset($this->options['allow_empty']) && !$this->options['allow_empty']) {
-            throw new sfError404Exception(sprintf('No %s object found for the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
+            throw new \sfError404Exception(sprintf('No %s object found for the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
         }
 
         return $this->objects;
@@ -147,10 +148,10 @@ class sfObjectRoute extends sfRequestRoute
         $className = $this->options['model'];
 
         if (!isset($this->options['method'])) {
-            throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
+            throw new \InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
         }
 
-        return call_user_func(array($className, $this->options['method']), $this->filterParameters($parameters));
+        return call_user_func([$className, $this->options['method']], $this->filterParameters($parameters));
     }
 
     protected function getObjectsForParameters($parameters)
@@ -158,10 +159,10 @@ class sfObjectRoute extends sfRequestRoute
         $className = $this->options['model'];
 
         if (!isset($this->options['method'])) {
-            throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
+            throw new \InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
         }
 
-        return call_user_func(array($className, $this->options['method']), $this->filterParameters($parameters));
+        return call_user_func([$className, $this->options['method']], $this->filterParameters($parameters));
     }
 
     protected function filterParameters($parameters)
@@ -170,7 +171,7 @@ class sfObjectRoute extends sfRequestRoute
             return $parameters;
         }
 
-        $params = array();
+        $params = [];
         foreach (array_keys($this->variables) as $variable) {
             $params[$variable] = $parameters[$variable];
         }
@@ -193,7 +194,7 @@ class sfObjectRoute extends sfRequestRoute
             $object = $parameters['sf_subject'];
             unset($parameters['sf_subject']);
         } else {
-            $parameters = array();
+            $parameters = [];
         }
 
         return array_merge($parameters, $this->doConvertObjectToArray($object));
@@ -208,10 +209,10 @@ class sfObjectRoute extends sfRequestRoute
 
     protected function getRealVariables()
     {
-        $variables = array();
+        $variables = [];
 
         foreach (array_keys($this->variables) as $variable) {
-            if (0 === strpos($variable, 'sf_') || in_array($variable, array('module', 'action'))) {
+            if (str_starts_with($variable, 'sf_') || in_array($variable, ['module', 'action'])) {
                 continue;
             }
 

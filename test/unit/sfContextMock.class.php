@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,18 +24,18 @@ class sfContext
 
     public function __destruct()
     {
-        sfToolkit::clearDirectory($this->sessionPath);
+        \sfToolkit::clearDirectory($this->sessionPath);
     }
 
-    public static function getInstance($factories = array(), $force = false)
+    public static function getInstance($factories = [], $force = false)
     {
         if (!isset(self::$instance) || $force) {
-            self::$instance = new sfContext();
+            self::$instance = new \sfContext();
 
             self::$instance->sessionPath = sys_get_temp_dir().'/sessions_'.rand(11111, 99999);
-            self::$instance->storage = new sfSessionTestStorage(array('session_path' => self::$instance->sessionPath));
+            self::$instance->storage = new \sfSessionTestStorage(['session_path' => self::$instance->sessionPath]);
 
-            self::$instance->dispatcher = new sfEventDispatcher();
+            self::$instance->dispatcher = new \sfEventDispatcher();
 
             foreach ($factories as $type => $class) {
                 self::$instance->inject($type, $class);
@@ -99,7 +100,7 @@ class sfContext
         return $this->controller;
     }
 
-    public function inject($type, $class, $parameters = array())
+    public function inject($type, $class, $parameters = [])
     {
         switch ($type) {
             case 'routing':

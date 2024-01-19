@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDatabaseConfigHandler extends sfYamlConfigHandler
+class sfDatabaseConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -28,8 +28,8 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -62,7 +62,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             require_once $include;
         }
 
-        $databases = array();
+        $databases = [];
         foreach ($data as $name => $database) {
             $databases[$name] = new $database[0]($database[1]);
         }
@@ -71,7 +71,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -92,16 +92,16 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
         $config = static::getConfiguration($configFiles);
 
         // init our data and includes arrays
-        $data = array();
-        $databases = array();
-        $includes = array();
+        $data = [];
+        $databases = [];
+        $includes = [];
 
         // get a list of database connections
         foreach ($config as $name => $dbConfig) {
             // is this category already registered?
             if (in_array($name, $databases)) {
                 // this category is already registered
-                throw new sfParseException(sprintf('Configuration file "%s" specifies previously registered category "%s".', $configFiles[0], $name));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies previously registered category "%s".', $configFiles[0], $name));
             }
 
             // add this database
@@ -110,14 +110,14 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             // let's do our fancy work
             if (!isset($dbConfig['class'])) {
                 // missing class key
-                throw new sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $name));
+                throw new \sfParseException(sprintf('Configuration file "%s" specifies category "%s" with missing class key.', $configFiles[0], $name));
             }
 
             if (isset($dbConfig['file'])) {
                 // we have a file to include
                 if (!is_readable($dbConfig['file'])) {
                     // database file doesn't exist
-                    throw new sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $dbConfig['class'], $dbConfig['file']));
+                    throw new \sfParseException(sprintf('Configuration file "%s" specifies class "%s" with nonexistent or unreadable file "%s".', $configFiles[0], $dbConfig['class'], $dbConfig['file']));
                 }
 
                 // append our data
@@ -125,16 +125,16 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             }
 
             // parse parameters
-            $parameters = array();
+            $parameters = [];
             if (isset($dbConfig['param'])) {
                 $parameters = $dbConfig['param'];
             }
             $parameters['name'] = $name;
 
             // append new data
-            $data[$name] = array($dbConfig['class'], $parameters);
+            $data[$name] = [$dbConfig['class'], $parameters];
         }
 
-        return array($includes, $data);
+        return [$includes, $data];
     }
 }

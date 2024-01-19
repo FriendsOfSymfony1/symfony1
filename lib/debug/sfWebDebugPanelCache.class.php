@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelCache extends sfWebDebugPanel
+class sfWebDebugPanelCache extends \sfWebDebugPanel
 {
     public function getTitle()
     {
@@ -27,7 +28,7 @@ class sfWebDebugPanelCache extends sfWebDebugPanel
     {
         $queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 
-        if (false === strpos($queryString, '_sf_ignore_cache')) {
+        if (!str_contains($queryString, '_sf_ignore_cache')) {
             return sprintf('?%s_sf_ignore_cache=1', $queryString ? $queryString.'&' : '');
         }
 

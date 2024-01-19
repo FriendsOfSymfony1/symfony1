@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,18 +14,18 @@ if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
-class TestBrowser extends sfTestBrowser
+class TestBrowser extends \sfTestBrowser
 {
-    public $events = array();
+    public $events = [];
 
-    public function listen(sfEvent $event)
+    public function listen(\sfEvent $event)
     {
         $this->events[] = $event;
     }
 }
 
-$b = new TestBrowser();
-$b->addListener('context.load_factories', array($b, 'listen'));
+$b = new \TestBrowser();
+$b->addListener('context.load_factories', [$b, 'listen']);
 
 // listeners
 $b->get('/');
@@ -106,7 +107,7 @@ $b->
 try {
     $b->with('response')->checkElement('h1', 'text');
     $b->test()->fail('The DOM is not accessible if the response content type is not HTML');
-} catch (LogicException $e) {
+} catch (\LogicException $e) {
     $b->test()->pass('The DOM is not accessible if the response content type is not HTML');
 }
 

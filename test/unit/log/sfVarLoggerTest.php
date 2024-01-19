@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,15 +11,15 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(9);
+$t = new \lime_test(9);
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 
 $buffer = fopen('php://memory', 'rw');
-$logger = new sfVarLogger($dispatcher);
+$logger = new \sfVarLogger($dispatcher);
 
 $logger->log('foo');
-$logger->log('{sfFoo} bar', sfLogger::ERR);
+$logger->log('{sfFoo} bar', \sfLogger::ERR);
 
 $logs = $logger->getLogs();
 $t->is(count($logs), 2, 'sfVarLogger logs all messages into its instance');

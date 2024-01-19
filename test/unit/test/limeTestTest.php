@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(28);
+$t = new \lime_test(28);
 
 $t->comment('A. Equal numbers');
 $t->is(1, 1);
@@ -28,14 +37,14 @@ $t->isnt(-2, 2);
 $t->isnt(100, 100.1);
 $t->isnt(0, -1);
 $t->isnt(-2, 'Hello');
-$t->isnt(100, array(100));
+$t->isnt(100, [100]);
 
 $t->comment('E. Both falsy');
 $t->is(0, false);
 $t->is(0, null);
 $t->is('', false);
 $t->is(false, null);
-$t->is(array(), null);
+$t->is([], null);
 
 $t->comment('F. Values that should not be equal');
 $t->isnt(true, 'Hello');

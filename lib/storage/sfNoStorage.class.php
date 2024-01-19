@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,7 +21,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfNoStorage extends sfStorage
+class sfNoStorage extends \sfStorage
 {
     /**
      * Reads data from this storage.
@@ -31,7 +32,7 @@ class sfNoStorage extends sfStorage
      *
      * @return mixed Data associated with the key
      *
-     * @throws sfStorageException If an error occurs while reading data from this storage
+     * @throws \sfStorageException If an error occurs while reading data from this storage
      */
     public function read($key)
     {
@@ -47,7 +48,7 @@ class sfNoStorage extends sfStorage
      *
      * @return mixed Data associated with the key
      *
-     * @throws sfStorageException If an error occurs while removing data from this storage
+     * @throws \sfStorageException If an error occurs while removing data from this storage
      */
     public function remove($key)
     {
@@ -62,7 +63,7 @@ class sfNoStorage extends sfStorage
      * @param string $key  A unique key identifying your data
      * @param mixed  $data Data associated with your key
      *
-     * @throws sfStorageException If an error occurs while writing to this storage
+     * @throws \sfStorageException If an error occurs while writing to this storage
      */
     public function write($key, $data)
     {
@@ -83,7 +84,7 @@ class sfNoStorage extends sfStorage
     /**
      * Executes the shutdown procedure.
      *
-     * @throws sfStorageException If an error occurs while shutting down this storage
+     * @throws \sfStorageException If an error occurs while shutting down this storage
      */
     public function shutdown()
     {

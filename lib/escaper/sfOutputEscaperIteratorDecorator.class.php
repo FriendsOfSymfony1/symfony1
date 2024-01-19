@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,35 +21,35 @@
  * implement the Traversable interface will cause the constructor to throw an
  * exception.
  *
- * @see        sfOutputEscaper
+ * @see        \sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
  *
  * @version    SVN: $Id$
  */
-class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator implements Iterator, ArrayAccess
+class sfOutputEscaperIteratorDecorator extends \sfOutputEscaperObjectDecorator implements \Iterator, \ArrayAccess
 {
     /**
      * The iterator to be used.
      *
-     * @var IteratorIterator
+     * @var \IteratorIterator
      */
     private $iterator;
 
     /**
      * Constructs a new escaping iteratoror using the escaping method and value supplied.
      *
-     * @param string      $escapingMethod The escaping method to use
-     * @param Traversable $value          The iterator to escape
+     * @param string       $escapingMethod The escaping method to use
+     * @param \Traversable $value          The iterator to escape
      */
-    public function __construct($escapingMethod, Traversable $value)
+    public function __construct($escapingMethod, \Traversable $value)
     {
         // Set the original value for __call(). Set our own iterator because passing
         // it to IteratorIterator will lose any other method calls.
 
         parent::__construct($escapingMethod, $value);
 
-        $this->iterator = new IteratorIterator($value);
+        $this->iterator = new \IteratorIterator($value);
     }
 
     /**
@@ -68,7 +69,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
     #[\ReturnTypeWillChange]
     public function current()
     {
-        return sfOutputEscaper::escape($this->escapingMethod, $this->iterator->current());
+        return \sfOutputEscaper::escape($this->escapingMethod, $this->iterator->current());
     }
 
     /**
@@ -126,7 +127,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        return sfOutputEscaper::escape($this->escapingMethod, $this->value[$offset]);
+        return \sfOutputEscaper::escape($this->escapingMethod, $this->value[$offset]);
     }
 
     /**
@@ -139,12 +140,12 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      * @param string $offset (ignored)
      * @param string $value  (ignored)
      *
-     * @throws sfException
+     * @throws \sfException
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        throw new sfException('Cannot set values.');
+        throw new \sfException('Cannot set values.');
     }
 
     /**
@@ -156,11 +157,11 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @param string $offset (ignored)
      *
-     * @throws sfException
+     * @throws \sfException
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        throw new sfException('Cannot unset values.');
+        throw new \sfException('Cannot unset values.');
     }
 }

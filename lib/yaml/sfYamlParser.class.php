@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,10 +23,10 @@ if (!defined('PREG_BAD_UTF8_OFFSET_ERROR')) {
 class sfYamlParser
 {
     protected $offset = 0;
-    protected $lines = array();
+    protected $lines = [];
     protected $currentLineNb = -1;
     protected $currentLine = '';
-    protected $refs = array();
+    protected $refs = [];
 
     /**
      * Constructor.
@@ -44,7 +45,7 @@ class sfYamlParser
      *
      * @return mixed A PHP value
      *
-     * @throws InvalidArgumentException If the YAML is not valid
+     * @throws \InvalidArgumentException If the YAML is not valid
      */
     public function parse($value)
     {
@@ -53,7 +54,7 @@ class sfYamlParser
         $this->lines = explode("\n", $this->cleanup($value));
 
         if (function_exists('mb_detect_encoding') && false === mb_detect_encoding($value, 'UTF-8', true)) {
-            throw new InvalidArgumentException('The YAML value does not appear to be valid UTF-8.');
+            throw new \InvalidArgumentException('The YAML value does not appear to be valid UTF-8.');
         }
 
         if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2) {
@@ -61,7 +62,7 @@ class sfYamlParser
             mb_internal_encoding('UTF-8');
         }
 
-        $data = array();
+        $data = [];
         while ($this->moveToNextLine()) {
             if ($this->isCurrentLineEmpty()) {
                 continue;
@@ -69,7 +70,7 @@ class sfYamlParser
 
             // tab?
             if (preg_match('#^\t+#', $this->currentLine)) {
-                throw new InvalidArgumentException(sprintf('A YAML file cannot contain tabs as indentation at line %d (%s).', $this->getRealCurrentLineNb() + 1, $this->currentLine));
+                throw new \InvalidArgumentException(sprintf('A YAML file cannot contain tabs as indentation at line %d (%s).', $this->getRealCurrentLineNb() + 1, $this->currentLine));
             }
 
             $isRef = $isInPlace = $isProcessed = false;
@@ -80,18 +81,18 @@ class sfYamlParser
                 }
 
                 // array
-                if (!isset($values['value']) || '' == trim($values['value'], ' ') || 0 === strpos(ltrim($values['value'], ' '), '#')) {
+                if (!isset($values['value']) || '' == trim($values['value'], ' ') ||   str_starts_with(ltrim($values['value'], ' '), '#')) {
                     $c = $this->getRealCurrentLineNb() + 1;
-                    $parser = new sfYamlParser($c);
+                    $parser = new \sfYamlParser($c);
                     $parser->refs = &$this->refs;
                     $data[] = $parser->parse($this->getNextEmbedBlock());
                 } else {
                     if (isset($values['leadspaces'])
                       && ' ' == $values['leadspaces']
-                      && preg_match('#^(?P<key>'.sfYamlInline::REGEX_QUOTED_STRING.'|[^ \'"\{].*?) *\:(\s+(?P<value>.+?))?\s*$#u', $values['value'], $matches)) {
+                      && preg_match('#^(?P<key>'.\sfYamlInline::REGEX_QUOTED_STRING.'|[^ \'"\{].*?) *\:(\s+(?P<value>.+?))?\s*$#u', $values['value'], $matches)) {
                         // this is a compact notation element, add to next block and parse
                         $c = $this->getRealCurrentLineNb();
-                        $parser = new sfYamlParser($c);
+                        $parser = new \sfYamlParser($c);
                         $parser->refs = &$this->refs;
 
                         $block = $values['value'];
@@ -104,14 +105,14 @@ class sfYamlParser
                         $data[] = $this->parseValue($values['value']);
                     }
                 }
-            } elseif (preg_match('#^(?P<key>'.sfYamlInline::REGEX_QUOTED_STRING.'|[^ \'"].*?) *\:(\s+(?P<value>.+?))?\s*$#u', $this->currentLine, $values)) {
-                $key = sfYamlInline::parseScalar($values['key']);
+            } elseif (preg_match('#^(?P<key>'.\sfYamlInline::REGEX_QUOTED_STRING.'|[^ \'"].*?) *\:(\s+(?P<value>.+?))?\s*$#u', $this->currentLine, $values)) {
+                $key = \sfYamlInline::parseScalar($values['key']);
 
                 if ('<<' === $key) {
                     if (isset($values['value']) && '*' === substr($values['value'], 0, 1)) {
                         $isInPlace = substr($values['value'], 1);
                         if (!array_key_exists($isInPlace, $this->refs)) {
-                            throw new InvalidArgumentException(sprintf('Reference "%s" does not exist at line %s (%s).', $isInPlace, $this->getRealCurrentLineNb() + 1, $this->currentLine));
+                            throw new \InvalidArgumentException(sprintf('Reference "%s" does not exist at line %s (%s).', $isInPlace, $this->getRealCurrentLineNb() + 1, $this->currentLine));
                         }
                     } else {
                         if (isset($values['value']) && '' !== $values['value']) {
@@ -120,19 +121,19 @@ class sfYamlParser
                             $value = $this->getNextEmbedBlock();
                         }
                         $c = $this->getRealCurrentLineNb() + 1;
-                        $parser = new sfYamlParser($c);
+                        $parser = new \sfYamlParser($c);
                         $parser->refs = &$this->refs;
                         $parsed = $parser->parse($value);
 
-                        $merged = array();
+                        $merged = [];
                         if (!is_array($parsed)) {
-                            throw new InvalidArgumentException(sprintf('YAML merge keys used with a scalar value instead of an array at line %s (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
+                            throw new \InvalidArgumentException(sprintf('YAML merge keys used with a scalar value instead of an array at line %s (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
                         }
                         if (isset($parsed[0])) {
                             // Numeric array, merge individual elements
                             foreach (array_reverse($parsed) as $parsedItem) {
                                 if (!is_array($parsedItem)) {
-                                    throw new InvalidArgumentException(sprintf('Merge items must be arrays at line %s (%s).', $this->getRealCurrentLineNb() + 1, $parsedItem));
+                                    throw new \InvalidArgumentException(sprintf('Merge items must be arrays at line %s (%s).', $this->getRealCurrentLineNb() + 1, $parsedItem));
                                 }
                                 $merged = array_merge($parsedItem, $merged);
                             }
@@ -153,13 +154,13 @@ class sfYamlParser
                     $data = $isProcessed;
                 }
                 // hash
-                elseif (!isset($values['value']) || '' == trim($values['value'], ' ') || 0 === strpos(ltrim($values['value'], ' '), '#')) {
+                elseif (!isset($values['value']) || '' == trim($values['value'], ' ') ||   str_starts_with(ltrim($values['value'], ' '), '#')) {
                     // if next line is less indented or equal, then it means that the current value is null
                     if ($this->isNextLineIndented()) {
                         $data[$key] = null;
                     } else {
                         $c = $this->getRealCurrentLineNb() + 1;
-                        $parser = new sfYamlParser($c);
+                        $parser = new \sfYamlParser($c);
                         $parser->refs = &$this->refs;
                         $data[$key] = $parser->parse($this->getNextEmbedBlock());
                     }
@@ -173,11 +174,11 @@ class sfYamlParser
             } else {
                 // 1-liner followed by newline
                 if (2 == count($this->lines) && empty($this->lines[1])) {
-                    $value = sfYamlInline::load($this->lines[0]);
+                    $value = \sfYamlInline::load($this->lines[0]);
                     if (is_array($value)) {
                         $first = reset($value);
                         if ('*' === substr($first, 0, 1)) {
-                            $data = array();
+                            $data = [];
                             foreach ($value as $alias) {
                                 $data[] = $this->refs[substr($alias, 1)];
                             }
@@ -222,7 +223,7 @@ class sfYamlParser
                         $error = 'Unable to parse line';
                 }
 
-                throw new InvalidArgumentException(sprintf('%s %d (%s).', $error, $this->getRealCurrentLineNb() + 1, $this->currentLine));
+                throw new \InvalidArgumentException(sprintf('%s %d (%s).', $error, $this->getRealCurrentLineNb() + 1, $this->currentLine));
             }
 
             if ($isRef) {
@@ -272,13 +273,13 @@ class sfYamlParser
             $newIndent = $this->getCurrentLineIndentation();
 
             if (!$this->isCurrentLineEmpty() && 0 == $newIndent) {
-                throw new InvalidArgumentException(sprintf('Indentation problem at line %d (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
+                throw new \InvalidArgumentException(sprintf('Indentation problem at line %d (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
             }
         } else {
             $newIndent = $indentation;
         }
 
-        $data = array(substr($this->currentLine, $newIndent));
+        $data = [substr($this->currentLine, $newIndent)];
 
         while ($this->moveToNextLine()) {
             if ($this->isCurrentLineEmpty()) {
@@ -301,7 +302,7 @@ class sfYamlParser
 
                 break;
             } else {
-                throw new InvalidArgumentException(sprintf('Indentation problem at line %d (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
+                throw new \InvalidArgumentException(sprintf('Indentation problem at line %d (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
             }
         }
 
@@ -347,7 +348,7 @@ class sfYamlParser
             }
 
             if (!array_key_exists($value, $this->refs)) {
-                throw new InvalidArgumentException(sprintf('Reference "%s" does not exist (%s).', $value, $this->currentLine));
+                throw new \InvalidArgumentException(sprintf('Reference "%s" does not exist (%s).', $value, $this->currentLine));
             }
 
             return $this->refs[$value];
@@ -359,7 +360,7 @@ class sfYamlParser
             return $this->parseFoldedScalar($matches['separator'], preg_replace('#\d+#', '', $modifiers), abs((int) $modifiers));
         }
 
-        return sfYamlInline::load($value);
+        return \sfYamlInline::load($value);
     }
 
     /**
@@ -510,7 +511,7 @@ class sfYamlParser
      */
     protected function cleanup($value)
     {
-        $value = str_replace(array("\r\n", "\r"), "\n", $value);
+        $value = str_replace(["\r\n", "\r"], "\n", $value);
 
         if (!preg_match("#\n$#", $value)) {
             $value .= "\n";

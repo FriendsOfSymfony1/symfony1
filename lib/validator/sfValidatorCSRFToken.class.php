@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,12 +16,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorCSRFToken extends sfValidatorBase
+class sfValidatorCSRFToken extends \sfValidatorBase
 {
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('token');
 
@@ -30,12 +31,12 @@ class sfValidatorCSRFToken extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         if ($value != $this->getOption('token')) {
-            throw new sfValidatorError($this, 'csrf_attack');
+            throw new \sfValidatorError($this, 'csrf_attack');
         }
 
         return $value;

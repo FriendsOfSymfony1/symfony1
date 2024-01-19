@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * my_articles module configuration.
  *
@@ -7,6 +16,6 @@
  *
  * @version    SVN: $Id$
  */
-class my_articlesGeneratorConfiguration extends BaseMy_articlesGeneratorConfiguration
+class my_articlesGeneratorConfiguration extends \BaseMy_articlesGeneratorConfiguration
 {
 }

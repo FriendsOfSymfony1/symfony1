@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,12 +20,12 @@
 abstract class sfFilter
 {
     /** @var bool[] */
-    public static $filterCalled = array();
+    public static $filterCalled = [];
 
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $parameterHolder;
 
-    /** @var sfContext */
+    /** @var \sfContext */
     protected $context;
 
     /**
@@ -33,10 +33,10 @@ abstract class sfFilter
      *
      * @see initialize()
      *
-     * @param sfContext $context
-     * @param array     $parameters
+     * @param \sfContext $context
+     * @param array      $parameters
      */
-    public function __construct($context, $parameters = array())
+    public function __construct($context, $parameters = [])
     {
         $this->initialize($context, $parameters);
     }
@@ -44,16 +44,16 @@ abstract class sfFilter
     /**
      * Initializes this Filter.
      *
-     * @param sfContext $context    The current application context
-     * @param array     $parameters An associative array of initialization parameters
+     * @param \sfContext $context    The current application context
+     * @param array      $parameters An associative array of initialization parameters
      *
      * @return bool|void true
      */
-    public function initialize($context, $parameters = array())
+    public function initialize($context, $parameters = [])
     {
         $this->context = $context;
 
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
         $this->parameterHolder->add($parameters);
 
         return true;
@@ -62,7 +62,7 @@ abstract class sfFilter
     /**
      * Retrieves the current application context.
      *
-     * @return sfContext The current sfContext instance
+     * @return \sfContext The current sfContext instance
      */
     final public function getContext()
     {
@@ -72,7 +72,7 @@ abstract class sfFilter
     /**
      * Gets the parameter holder for this object.
      *
-     * @return sfParameterHolder A sfParameterHolder instance
+     * @return \sfParameterHolder A sfParameterHolder instance
      */
     public function getParameterHolder()
     {
@@ -91,7 +91,7 @@ abstract class sfFilter
      *
      * @return string The value associated with the key
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function getParameter($name, $default = null)
     {
@@ -109,7 +109,7 @@ abstract class sfFilter
      *
      * @return bool true if the given key exists, false otherwise
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function hasParameter($name)
     {
@@ -126,7 +126,7 @@ abstract class sfFilter
      * @param string $name  The key name
      * @param string $value The value
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function setParameter($name, $value)
     {

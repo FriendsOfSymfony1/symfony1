@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,16 +25,16 @@ require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
 
 require_once __DIR__.'/../../../lib/config/sfConfig.class.php';
 
-class sfException extends Exception
+class sfException extends \Exception
 {
 }
 
-sfConfig::set('sf_charset', 'UTF-8');
+\sfConfig::set('sf_charset', 'UTF-8');
 
-$t = new lime_test(11);
+$t = new \lime_test(11);
 
-$a = array('<strong>escaped!</strong>', 1, null, array(2, '<strong>escaped!</strong>'));
-$escaped = sfOutputEscaper::escape('esc_entities', $a);
+$a = ['<strong>escaped!</strong>', 1, null, [2, '<strong>escaped!</strong>']];
+$escaped = \sfOutputEscaper::escape('esc_entities', $a);
 
 // ->getRaw()
 $t->diag('->getRaw()');
@@ -52,14 +53,14 @@ $t->diag('ArrayAccess interface is read only');
 try {
     unset($escaped[0]);
     $t->fail('The escaped object is read only (unset)');
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass('The escaped object is read only (unset)');
 }
 
 try {
     $escaped[0] = 12;
     $t->fail('The escaped object is read only (set)');
-} catch (sfException $e) {
+} catch (\sfException $e) {
     $t->pass('The escaped object is read only (set)');
 }
 
@@ -93,5 +94,5 @@ foreach ($escaped as $key => $value) {
 // ->valid()
 $t->diag('->valid()');
 
-$escaped = sfOutputEscaper::escape('esc_entities', array(1, 2, 3));
+$escaped = \sfOutputEscaper::escape('esc_entities', [1, 2, 3]);
 $t->is($escaped->valid(), true, '->valid() returns true if called before iteration');

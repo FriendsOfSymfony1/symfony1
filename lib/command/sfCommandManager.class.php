@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,38 +22,38 @@ class sfCommandManager
     protected $arguments = '';
 
     /** @var string[] */
-    protected $errors = array();
+    protected $errors = [];
 
-    /** @var sfCommandOptionSet */
+    /** @var \sfCommandOptionSet */
     protected $optionSet;
 
-    /** @var sfCommandArgumentSet */
-    protected $argumentSet = array();
+    /** @var \sfCommandArgumentSet */
+    protected $argumentSet = [];
 
     /** @var array */
-    protected $optionValues = array();
+    protected $optionValues = [];
 
     /** @var array */
-    protected $argumentValues = array();
+    protected $argumentValues = [];
 
     /** @var array */
-    protected $parsedArgumentValues = array();
+    protected $parsedArgumentValues = [];
 
     /**
      * Constructor.
      *
-     * @param sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
-     * @param sfCommandOptionSet   $optionSet   A setOptionSet object
+     * @param \sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
+     * @param \sfCommandOptionSet   $optionSet   A setOptionSet object
      */
-    public function __construct(sfCommandArgumentSet $argumentSet = null, sfCommandOptionSet $optionSet = null)
+    public function __construct(\sfCommandArgumentSet $argumentSet = null, \sfCommandOptionSet $optionSet = null)
     {
         if (null === $argumentSet) {
-            $argumentSet = new sfCommandArgumentSet();
+            $argumentSet = new \sfCommandArgumentSet();
         }
         $this->setArgumentSet($argumentSet);
 
         if (null === $optionSet) {
-            $optionSet = new sfCommandOptionSet();
+            $optionSet = new \sfCommandOptionSet();
         }
         $this->setOptionSet($optionSet);
     }
@@ -60,9 +61,9 @@ class sfCommandManager
     /**
      * Sets the argument set.
      *
-     * @param sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
+     * @param \sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
      */
-    public function setArgumentSet(sfCommandArgumentSet $argumentSet)
+    public function setArgumentSet(\sfCommandArgumentSet $argumentSet)
     {
         $this->argumentSet = $argumentSet;
     }
@@ -70,7 +71,7 @@ class sfCommandManager
     /**
      * Gets the argument set.
      *
-     * @return sfCommandArgumentSet A sfCommandArgumentSet object
+     * @return \sfCommandArgumentSet A sfCommandArgumentSet object
      */
     public function getArgumentSet()
     {
@@ -80,9 +81,9 @@ class sfCommandManager
     /**
      * Sets the option set.
      *
-     * @param sfCommandOptionSet $optionSet A sfCommandOptionSet object
+     * @param \sfCommandOptionSet $optionSet A sfCommandOptionSet object
      */
-    public function setOptionSet(sfCommandOptionSet $optionSet)
+    public function setOptionSet(\sfCommandOptionSet $optionSet)
     {
         $this->optionSet = $optionSet;
     }
@@ -90,7 +91,7 @@ class sfCommandManager
     /**
      * Gets the option set.
      *
-     * @return sfCommandOptionSet A sfCommandOptionSet object
+     * @return \sfCommandOptionSet A sfCommandOptionSet object
      */
     public function getOptionSet()
     {
@@ -123,10 +124,10 @@ class sfCommandManager
         $this->arguments = $arguments;
         $this->optionValues = $this->optionSet->getDefaults();
         $this->argumentValues = $this->argumentSet->getDefaults();
-        $this->parsedArgumentValues = array();
-        $this->errors = array();
+        $this->parsedArgumentValues = [];
+        $this->errors = [];
 
-        while (!in_array($argument = array_shift($this->arguments), array('', null))) {
+        while (!in_array($argument = array_shift($this->arguments), ['', null])) {
             if ('--' == $argument) {
                 // stop options parsing
                 $this->parsedArgumentValues = array_merge($this->parsedArgumentValues, $this->arguments);
@@ -203,12 +204,12 @@ class sfCommandManager
      *
      * @return mixed The argument value
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getArgumentValue($name)
     {
         if (!$this->argumentSet->hasArgument($name)) {
-            throw new sfCommandException(sprintf('The "%s" argument does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "%s" argument does not exist.', $name));
         }
 
         return $this->argumentValues[$name];
@@ -231,18 +232,18 @@ class sfCommandManager
      *
      * @return mixed The option value
      *
-     * @throws sfCommandException
+     * @throws \sfCommandException
      */
     public function getOptionValue($name)
     {
         if (!$this->optionSet->hasOption($name)) {
-            throw new sfCommandException(sprintf('The "%s" option does not exist.', $name));
+            throw new \sfCommandException(sprintf('The "%s" option does not exist.', $name));
         }
 
         return $this->optionValues[$name];
     }
 
-    public function setOption(sfCommandOption $option, $value)
+    public function setOption(\sfCommandOption $option, $value)
     {
         if ($option->isArray()) {
             $this->optionValues[$option->getName()][] = $value;
@@ -318,7 +319,7 @@ class sfCommandManager
      */
     protected function parseLongOption($argument)
     {
-        if (false !== strpos($argument, '=')) {
+        if (str_contains($argument, '=')) {
             list($name, $value) = explode('=', $argument, 2);
 
             if (!$this->optionSet->hasOption($name)) {

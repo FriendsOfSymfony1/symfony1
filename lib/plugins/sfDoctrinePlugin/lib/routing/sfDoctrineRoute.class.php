@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,14 +19,14 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineRoute extends sfObjectRoute
+class sfDoctrineRoute extends \sfObjectRoute
 {
     protected $query;
 
-    public function setListQuery(Doctrine_Query $query)
+    public function setListQuery(\Doctrine_Query $query)
     {
         if (!$this->isBound()) {
-            throw new LogicException('The route is not bound.');
+            throw new \LogicException('The route is not bound.');
         }
 
         $this->query = $query;
@@ -38,7 +38,7 @@ class sfDoctrineRoute extends sfObjectRoute
 
         // If query returned Doctrine_Collection with results inside then we
         // need to return the first Doctrine_Record
-        if ($results instanceof Doctrine_Collection) {
+        if ($results instanceof \Doctrine_Collection) {
             if (count($results)) {
                 $results = $results->getFirst();
             } else {
@@ -55,10 +55,10 @@ class sfDoctrineRoute extends sfObjectRoute
 
     protected function getObjectsForParameters($parameters)
     {
-        $tableModel = Doctrine_Core::getTable($this->options['model']);
+        $tableModel = \Doctrine_Core::getTable($this->options['model']);
 
-        $variables = array();
-        $values = array();
+        $variables = [];
+        $values = [];
         foreach ($this->getRealVariables() as $variable) {
             if ($tableModel->hasColumn($tableModel->getColumnName($variable))) {
                 $variables[] = $variable;
@@ -90,9 +90,9 @@ class sfDoctrineRoute extends sfObjectRoute
         // If query returned a Doctrine_Record instance instead of a
         // Doctrine_Collection then we need to create a new Doctrine_Collection with
         // one element inside and return that
-        if ($results instanceof Doctrine_Record) {
+        if ($results instanceof \Doctrine_Record) {
             $obj = $results;
-            $results = new Doctrine_Collection($obj->getTable());
+            $results = new \Doctrine_Collection($obj->getTable());
             $results[] = $obj;
         }
 
@@ -105,15 +105,15 @@ class sfDoctrineRoute extends sfObjectRoute
             return parent::doConvertObjectToArray($object);
         }
 
-        $parameters = array();
+        $parameters = [];
         foreach ($this->getRealVariables() as $variable) {
             try {
                 $parameters[$variable] = $object->{$variable};
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 try {
-                    $method = 'get'.sfInflector::camelize($variable);
+                    $method = 'get'.\sfInflector::camelize($variable);
                     $parameters[$variable] = $object->{$method}();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                 }
             }
         }

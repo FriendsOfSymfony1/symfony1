@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,9 +16,9 @@
  *
  * @version    SVN: $Id$
  */
-class sfAggregateLogger extends sfLogger
+class sfAggregateLogger extends \sfLogger
 {
-    protected $loggers = array();
+    protected $loggers = [];
 
     /**
      * Initializes this logger.
@@ -26,16 +27,16 @@ class sfAggregateLogger extends sfLogger
      *
      * - loggers: Logger objects that extends sfLogger.
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
         if (isset($options['loggers'])) {
             if (!is_array($options['loggers'])) {
-                $options['loggers'] = array($options['loggers']);
+                $options['loggers'] = [$options['loggers']];
             }
 
             $this->addLoggers($options['loggers']);
@@ -69,13 +70,13 @@ class sfAggregateLogger extends sfLogger
     /**
      * Adds a logger.
      *
-     * @param sfLoggerInterface $logger The Logger object
+     * @param \sfLoggerInterface $logger The Logger object
      */
-    public function addLogger(sfLoggerInterface $logger)
+    public function addLogger(\sfLoggerInterface $logger)
     {
         $this->loggers[] = $logger;
 
-        $this->dispatcher->disconnect('application.log', array($logger, 'listenToLogEvent'));
+        $this->dispatcher->disconnect('application.log', [$logger, 'listenToLogEvent']);
     }
 
     /**
@@ -84,12 +85,12 @@ class sfAggregateLogger extends sfLogger
     public function shutdown()
     {
         foreach ($this->loggers as $logger) {
-            if ($logger instanceof sfLogger) {
+            if ($logger instanceof \sfLogger) {
                 $logger->shutdown();
             }
         }
 
-        $this->loggers = array();
+        $this->loggers = [];
     }
 
     /**

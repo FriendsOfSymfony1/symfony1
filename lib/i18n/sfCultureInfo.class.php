@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfCultureInfo class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -88,7 +80,7 @@ class sfCultureInfo
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * The current culture.
@@ -109,19 +101,19 @@ class sfCultureInfo
      *
      * @var array
      */
-    protected $dataFiles = array();
+    protected $dataFiles = [];
 
     /**
      * The current date time format info.
      *
-     * @var sfDateTimeFormatInfo
+     * @var \sfDateTimeFormatInfo
      */
     protected $dateTimeFormat;
 
     /**
      * The current number format info.
      *
-     * @var sfNumberFormatInfo
+     * @var \sfNumberFormatInfo
      */
     protected $numberFormat;
 
@@ -130,7 +122,7 @@ class sfCultureInfo
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * Initializes a new instance of the sfCultureInfo class based on the
@@ -140,7 +132,7 @@ class sfCultureInfo
      *
      * @param string $culture a culture name, e.g. "en_AU".
      *
-     * @return return new sfCultureInfo
+     * @return \return new sfCultureInfo
      */
     public function __construct($culture = 'en')
     {
@@ -184,7 +176,7 @@ class sfCultureInfo
             return $this->{$getProperty}();
         }
 
-        throw new sfException(sprintf('Property %s does not exists.', $name));
+        throw new \sfException(sprintf('Property %s does not exists.', $name));
     }
 
     /**
@@ -200,7 +192,7 @@ class sfCultureInfo
         if (in_array($setProperty, $this->properties)) {
             $this->{$setProperty}($value);
         } else {
-            throw new sfException(sprintf('Property %s can not be set.', $name));
+            throw new \sfException(sprintf('Property %s can not be set.', $name));
         }
     }
 
@@ -209,14 +201,14 @@ class sfCultureInfo
      *
      * @param string $culture The culture for this instance
      *
-     * @return sfCultureInfo Invariant culture info is "en"
+     * @return \sfCultureInfo Invariant culture info is "en"
      */
     public static function getInstance($culture = 'en')
     {
-        static $instances = array();
+        static $instances = [];
 
         if (!isset($instances[$culture])) {
-            $instances[$culture] = new sfCultureInfo($culture);
+            $instances[$culture] = new \sfCultureInfo($culture);
         }
 
         return $instances[$culture];
@@ -254,14 +246,14 @@ class sfCultureInfo
      * Gets the sfDateTimeFormatInfo that defines the culturally appropriate
      * format of displaying dates and times.
      *
-     * @return sfDateTimeFormatInfo date time format information for the culture
+     * @return \sfDateTimeFormatInfo date time format information for the culture
      */
     public function getDateTimeFormat()
     {
         if (null === $this->dateTimeFormat) {
             $calendar = $this->getCalendar();
             $info = $this->findInfo("calendar/{$calendar}", true);
-            $this->setDateTimeFormat(new sfDateTimeFormatInfo($info));
+            $this->setDateTimeFormat(new \sfDateTimeFormatInfo($info));
         }
 
         return $this->dateTimeFormat;
@@ -270,7 +262,7 @@ class sfCultureInfo
     /**
      * Sets the date time format information.
      *
-     * @param sfDateTimeFormatInfo $dateTimeFormat the new date time format info
+     * @param \sfDateTimeFormatInfo $dateTimeFormat the new date time format info
      */
     public function setDateTimeFormat($dateTimeFormat)
     {
@@ -336,14 +328,14 @@ class sfCultureInfo
      * instances of the invariant culture.
      * The invariant culture is assumed to be "en";.
      *
-     * @return sfCultureInfo invariant culture info is "en"
+     * @return \sfCultureInfo invariant culture info is "en"
      */
     public static function getInvariantCulture()
     {
         static $invariant;
 
         if (null === $invariant) {
-            $invariant = new sfCultureInfo();
+            $invariant = new \sfCultureInfo();
         }
 
         return $invariant;
@@ -365,7 +357,7 @@ class sfCultureInfo
      * Gets the sfNumberFormatInfo that defines the culturally appropriate
      * format of displaying numbers, currency, and percentage.
      *
-     * @return sfNumberFormatInfo the number format info for current culture
+     * @return \sfNumberFormatInfo the number format info for current culture
      */
     public function getNumberFormat()
     {
@@ -373,9 +365,9 @@ class sfCultureInfo
             $elements = $this->findInfo('NumberElements');
             $patterns = $this->findInfo('NumberPatterns');
             $currencies = $this->getCurrencies(null, true);
-            $data = array('NumberElements' => $elements, 'NumberPatterns' => $patterns, 'Currencies' => $currencies);
+            $data = ['NumberElements' => $elements, 'NumberPatterns' => $patterns, 'Currencies' => $currencies];
 
-            $this->setNumberFormat(new sfNumberFormatInfo($data));
+            $this->setNumberFormat(new \sfNumberFormatInfo($data));
         }
 
         return $this->numberFormat;
@@ -384,7 +376,7 @@ class sfCultureInfo
     /**
      * Sets the number format information.
      *
-     * @param sfNumberFormatInfo $numberFormat the new number format info
+     * @param \sfNumberFormatInfo $numberFormat the new number format info
      */
     public function setNumberFormat($numberFormat)
     {
@@ -395,7 +387,7 @@ class sfCultureInfo
      * Gets the sfCultureInfo that represents the parent culture of the
      * current sfCultureInfo.
      *
-     * @return sfCultureInfo parent culture information
+     * @return \sfCultureInfo parent culture information
      */
     public function getParent()
     {
@@ -403,7 +395,7 @@ class sfCultureInfo
             return $this->getInvariantCulture();
         }
 
-        return new sfCultureInfo(substr($this->culture, 0, 2));
+        return new \sfCultureInfo(substr($this->culture, 0, 2));
     }
 
     /**
@@ -417,14 +409,14 @@ class sfCultureInfo
      *
      * @return array list of culture information available
      */
-    public static function getCultures($type = sfCultureInfo::ALL)
+    public static function getCultures($type = \sfCultureInfo::ALL)
     {
-        $dataDir = sfCultureInfo::dataDir();
-        $dataExt = sfCultureInfo::fileExt();
+        $dataDir = \sfCultureInfo::dataDir();
+        $dataExt = \sfCultureInfo::fileExt();
         $dir = dir($dataDir);
 
-        $neutral = array();
-        $specific = array();
+        $neutral = [];
+        $specific = [];
 
         while (false !== ($entry = $dir->read())) {
             if (is_file($dataDir.$entry) && substr($entry, -4) == $dataExt && $entry != 'root'.$dataExt) {
@@ -439,7 +431,7 @@ class sfCultureInfo
         $dir->close();
 
         switch ($type) {
-            case sfCultureInfo::ALL:
+            case \sfCultureInfo::ALL:
                 $all = array_merge($neutral, $specific);
                 sort($all);
 
@@ -447,12 +439,12 @@ class sfCultureInfo
 
                 break;
 
-            case sfCultureInfo::NEUTRAL:
+            case \sfCultureInfo::NEUTRAL:
                 return $neutral;
 
                 break;
 
-            case sfCultureInfo::SPECIFIC:
+            case \sfCultureInfo::SPECIFIC:
                 return $specific;
 
                 break;
@@ -471,7 +463,7 @@ class sfCultureInfo
         $countries = $this->findInfo('Countries', true);
 
         if (!isset($countries[$code])) {
-            throw new InvalidArgumentException(sprintf('The country %s does not exist.', $code));
+            throw new \InvalidArgumentException(sprintf('The country %s does not exist.', $code));
         }
 
         return $countries[$code];
@@ -489,7 +481,7 @@ class sfCultureInfo
         $currencies = $this->findInfo('Currencies', true);
 
         if (!isset($currencies[$code])) {
-            throw new InvalidArgumentException(sprintf('The currency %s does not exist.', $code));
+            throw new \InvalidArgumentException(sprintf('The currency %s does not exist.', $code));
         }
 
         return $currencies[$code][1];
@@ -507,7 +499,7 @@ class sfCultureInfo
         $languages = $this->findInfo('Languages', true);
 
         if (!isset($languages[$code])) {
-            throw new InvalidArgumentException(sprintf('The language %s does not exist.', $code));
+            throw new \InvalidArgumentException(sprintf('The language %s does not exist.', $code));
         }
 
         return $languages[$code];
@@ -523,7 +515,7 @@ class sfCultureInfo
     public function getCountries($countries = null)
     {
         // remove integer keys as they do not represent countries
-        $allCountries = array();
+        $allCountries = [];
         foreach ($this->findInfo('Countries', true) as $key => $value) {
             if (!is_int($key)) {
                 $allCountries[$key] = $value;
@@ -533,7 +525,7 @@ class sfCultureInfo
         // restrict countries to a sub-set
         if (null !== $countries) {
             if ($problems = array_diff($countries, array_keys($allCountries))) {
-                throw new InvalidArgumentException(sprintf('The following countries do not exist: %s.', implode(', ', $problems)));
+                throw new \InvalidArgumentException(sprintf('The following countries do not exist: %s.', implode(', ', $problems)));
             }
 
             $allCountries = array_intersect_key($allCountries, array_flip($countries));
@@ -559,13 +551,13 @@ class sfCultureInfo
         // restrict countries to a sub-set
         if (null !== $currencies) {
             if ($problems = array_diff($currencies, array_keys($allCurrencies))) {
-                throw new InvalidArgumentException(sprintf('The following currencies do not exist: %s.', implode(', ', $problems)));
+                throw new \InvalidArgumentException(sprintf('The following currencies do not exist: %s.', implode(', ', $problems)));
             }
 
             $allCurrencies = array_intersect_key($allCurrencies, array_flip($currencies));
         }
 
-        $tmp = array();
+        $tmp = [];
         foreach ($allCurrencies as $key => $value) {
             $allCurrencies[$key] = $value[1];
             $tmp[$key] = $value[0];
@@ -575,7 +567,7 @@ class sfCultureInfo
 
         if ($full) {
             foreach ($allCurrencies as $key => $value) {
-                $allCurrencies[$key] = array($tmp[$key], $value);
+                $allCurrencies[$key] = [$tmp[$key], $value];
             }
         }
 
@@ -596,7 +588,7 @@ class sfCultureInfo
         // restrict languages to a sub-set
         if (null !== $languages) {
             if ($problems = array_diff($languages, array_keys($allLanguages))) {
-                throw new InvalidArgumentException(sprintf('The following languages do not exist: %s.', implode(', ', $problems)));
+                throw new \InvalidArgumentException(sprintf('The following languages do not exist: %s.', implode(', ', $problems)));
             }
 
             $allLanguages = array_intersect_key($allLanguages, array_flip($languages));
@@ -682,7 +674,7 @@ class sfCultureInfo
     {
         if (!empty($culture)) {
             if (!preg_match('/^[a-z]{2}(_[A-Z]{2,5}){0,2}$/', $culture)) {
-                throw new sfException(sprintf('Invalid culture supplied: %s', $culture));
+                throw new \sfException(sprintf('Invalid culture supplied: %s', $culture));
             }
         }
 
@@ -699,7 +691,7 @@ class sfCultureInfo
         $file_parts = explode('_', $culture);
         $current_part = $file_parts[0];
 
-        $files = array($current_part);
+        $files = [$current_part];
 
         for ($i = 1, $max = count($file_parts); $i < $max; ++$i) {
             $current_part .= '_'.$file_parts[$i];
@@ -710,7 +702,7 @@ class sfCultureInfo
             $filename = $this->dataDir.$file.$this->dataFileExt;
 
             if (false == is_file($filename)) {
-                throw new sfException(sprintf('Data file for "%s" was not found.', $file));
+                throw new \sfException(sprintf('Data file for "%s" was not found.', $file));
             }
 
             if (false == in_array($filename, $this->dataFiles)) {
@@ -738,8 +730,8 @@ class sfCultureInfo
      */
     protected function &getData($filename)
     {
-        static $data = array();
-        static $files = array();
+        static $data = [];
+        static $files = [];
 
         if (!in_array($filename, $files)) {
             $data[$filename] = unserialize(file_get_contents($filename));
@@ -767,7 +759,7 @@ class sfCultureInfo
      */
     protected function findInfo($path = '/', $merge = false)
     {
-        $result = array();
+        $result = [];
         foreach ($this->dataFiles as $section) {
             $info = $this->searchArray($this->data[$section], $path);
 

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorRegex extends sfValidatorString
+class sfValidatorRegex extends \sfValidatorString
 {
     /**
      * Returns the current validator's regular expression.
@@ -26,7 +27,7 @@ class sfValidatorRegex extends sfValidatorString
     {
         $pattern = $this->getOption('pattern');
 
-        return $pattern instanceof sfCallable ? $pattern->call() : $pattern;
+        return $pattern instanceof \sfCallable ? $pattern->call() : $pattern;
     }
 
     /**
@@ -40,9 +41,9 @@ class sfValidatorRegex extends sfValidatorString
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorString
+     * @see \sfValidatorString
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 
@@ -51,7 +52,7 @@ class sfValidatorRegex extends sfValidatorString
     }
 
     /**
-     * @see sfValidatorString
+     * @see \sfValidatorString
      */
     protected function doClean($value)
     {
@@ -63,7 +64,7 @@ class sfValidatorRegex extends sfValidatorString
             ($this->getOption('must_match') && !preg_match($pattern, $clean))
             || (!$this->getOption('must_match') && preg_match($pattern, $clean))
         ) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         return $clean;

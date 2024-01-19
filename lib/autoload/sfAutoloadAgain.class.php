@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,7 +33,7 @@ class sfAutoloadAgain
     /**
      * Returns the singleton autoloader.
      *
-     * @return sfAutoloadAgain
+     * @return \sfAutoloadAgain
      */
     public static function getInstance()
     {
@@ -67,7 +68,7 @@ class sfAutoloadAgain
                 }
             }
         } else {
-            $position = array_search(array(__CLASS__, 'autoload'), $autoloads, true);
+            $position = array_search([__CLASS__, 'autoload'], $autoloads, true);
         }
 
         if (isset($autoloads[$position + 1])) {
@@ -80,7 +81,7 @@ class sfAutoloadAgain
             return class_exists($class, false) || interface_exists($class, false);
         }
 
-        $autoload = sfAutoload::getInstance();
+        $autoload = \sfAutoload::getInstance();
         $autoload->reloadClasses(true);
 
         $this->reloaded = true;
@@ -104,7 +105,7 @@ class sfAutoloadAgain
     public function register()
     {
         if (!$this->isRegistered()) {
-            spl_autoload_register(array($this, 'autoload'));
+            spl_autoload_register([$this, 'autoload']);
             $this->registered = true;
         }
     }
@@ -114,7 +115,7 @@ class sfAutoloadAgain
      */
     public function unregister()
     {
-        spl_autoload_unregister(array($this, 'autoload'));
+        spl_autoload_unregister([$this, 'autoload']);
         $this->registered = false;
     }
 }

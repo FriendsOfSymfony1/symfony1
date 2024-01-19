@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfAPCCache extends sfCache
+class sfAPCCache extends \sfCache
 {
     protected $enabled;
 
@@ -26,9 +27,9 @@ class sfAPCCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
+     * @see \sfCache
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
@@ -36,9 +37,9 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -52,7 +53,7 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -66,9 +67,9 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -80,7 +81,7 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -92,21 +93,21 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
         if (!$this->enabled) {
             return true;
         }
 
-        if (sfCache::ALL === $mode) {
+        if (\sfCache::ALL === $mode) {
             return apc_clear_cache('user');
         }
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -118,7 +119,7 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function getTimeout($key)
     {
@@ -130,7 +131,7 @@ class sfAPCCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {

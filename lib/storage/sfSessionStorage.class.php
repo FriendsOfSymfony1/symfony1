@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,7 +22,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSessionStorage extends sfStorage
+class sfSessionStorage extends \sfStorage
 {
     protected static $sessionIdRegenerated = false;
     protected static $sessionStarted = false;
@@ -43,13 +43,13 @@ class sfSessionStorage extends sfStorage
      *
      * @param array $options An associative array of options
      *
-     * @see sfStorage
+     * @see \sfStorage
      */
     public function initialize($options = null)
     {
         $cookieDefaults = session_get_cookie_params();
 
-        $options = array_merge(array(
+        $options = array_merge([
             'session_name' => 'symfony',
             'session_id' => null,
             'auto_start' => true,
@@ -60,7 +60,7 @@ class sfSessionStorage extends sfStorage
             'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
             'session_cache_limiter' => null,
             'gc_maxlifetime' => 1800,
-        ), $options);
+        ], $options);
 
         // initialize parent
         parent::initialize($options);

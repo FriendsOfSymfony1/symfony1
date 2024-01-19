@@ -1,6 +1,14 @@
 <?php
 
-// +----------------------------------------------------------------------+
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 // | PEAR :: File :: Gettext                                              |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 3.0 of the PHP license,       |
@@ -48,7 +56,7 @@ class TGettext
      *
      * @var array
      */
-    protected $strings = array();
+    protected $strings = [];
 
     /**
      * meta.
@@ -58,7 +66,7 @@ class TGettext
      *
      * @var array
      */
-    protected $meta = array();
+    protected $meta = [];
 
     /**
      * file path.
@@ -83,7 +91,7 @@ class TGettext
         $format = strtoupper($format);
         $filename = __DIR__.'/'.$format.'.php';
         if (false == is_file($filename)) {
-            throw new Exception("Class file {$file} not found");
+            throw new \Exception("Class file {$file} not found");
         }
 
         include_once $filename;
@@ -108,12 +116,12 @@ class TGettext
     public function poFile2moFile($pofile, $mofile)
     {
         if (!is_file($pofile)) {
-            throw new Exception("File {$pofile} doesn't exist.");
+            throw new \Exception("File {$pofile} doesn't exist.");
         }
 
         include_once __DIR__.'/PO.php';
 
-        $PO = new TGettext_PO($pofile);
+        $PO = new \TGettext_PO($pofile);
         if (true !== ($e = $PO->load())) {
             return $e;
         }
@@ -140,14 +148,14 @@ class TGettext
     public function prepare($string, $reverse = false)
     {
         if ($reverse) {
-            $smap = array('"', "\n", "\t", "\r");
-            $rmap = array('\"', '\\n"'."\n".'"', '\\t', '\\r');
+            $smap = ['"', "\n", "\t", "\r"];
+            $rmap = ['\"', '\\n"'."\n".'"', '\\t', '\\r'];
 
             return (string) str_replace($smap, $rmap, $string);
         }
         $string = preg_replace('/"\s+"/', '', $string);
-        $smap = array('\\n', '\\r', '\\t', '\"');
-        $rmap = array("\n", "\r", "\t", '"');
+        $smap = ['\\n', '\\r', '\\t', '\"'];
+        $rmap = ["\n", "\r", "\t", '"'];
 
         return (string) str_replace($smap, $rmap, $string);
     }
@@ -163,7 +171,7 @@ class TGettext
      */
     public function meta2array($meta)
     {
-        $array = array();
+        $array = [];
         foreach (explode("\n", $meta) as $info) {
             if ($info = trim($info)) {
                 list($key, $value) = explode(':', $info, 2);
@@ -200,7 +208,7 @@ class TGettext
      */
     public function toArray()
     {
-        return array('meta' => $this->meta, 'strings' => $this->strings);
+        return ['meta' => $this->meta, 'strings' => $this->strings];
     }
 
     /**
@@ -252,7 +260,7 @@ class TGettext
     public function toMO()
     {
         include_once __DIR__.'/MO.php';
-        $MO = new TGettext_MO();
+        $MO = new \TGettext_MO();
         $MO->fromArray($this->toArray());
 
         return $MO;
@@ -266,7 +274,7 @@ class TGettext
     public function toPO()
     {
         include_once __DIR__.'/PO.php';
-        $PO = new TGettext_PO();
+        $PO = new \TGettext_PO();
         $PO->fromArray($this->toArray());
 
         return $PO;

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * sfWidgetFormInputFileMulti represents an upload HTML input tag with multiple option.
  *
@@ -7,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
+class sfWidgetFormInputFileMulti extends \sfWidgetFormInputFile
 {
     /**
      * Renders the widget.
@@ -19,9 +28,9 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if ($this->getOption('multiple')) {
             $name .= '[]';
@@ -37,9 +46,9 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * exception actions.
  *
@@ -7,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class exceptionActions extends sfActions
+class exceptionActions extends \sfActions
 {
     public function executeNoException()
     {
@@ -16,11 +25,11 @@ class exceptionActions extends sfActions
 
     public function executeThrowsException()
     {
-        throw new Exception('Exception message');
+        throw new \Exception('Exception message');
     }
 
     public function executeThrowsSfException()
     {
-        throw new sfException('sfException message');
+        throw new \sfException('sfException message');
     }
 }

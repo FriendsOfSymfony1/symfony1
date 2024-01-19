@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,7 +22,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfFormFilterDoctrine extends sfFormFilter
+abstract class sfFormFilterDoctrine extends \sfFormFilter
 {
     /**
      * Returns the current model name.
@@ -64,7 +64,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
     /**
      * Sets the query object to use.
      *
-     * @param Doctrine_Query $query
+     * @param \Doctrine_Query $query
      */
     public function setQuery($query)
     {
@@ -74,9 +74,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
     /**
      * Returns a Doctrine Query based on the current values form the form.
      *
-     * @return Doctrine_Query A Doctrine Query object
+     * @return \Doctrine_Query A Doctrine Query object
      *
-     * @throws sfValidatorErrorSchema
+     * @throws \sfValidatorErrorSchema
      */
     public function getQuery()
     {
@@ -123,7 +123,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
      *
      * @param array $values An array of parameters to build the Query object
      *
-     * @return Doctrine_Query A Doctrine Query object
+     * @return \Doctrine_Query A Doctrine Query object
      */
     public function buildQuery(array $values)
     {
@@ -136,9 +136,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
      * Overload this method instead of {@link buildQuery()} to avoid running
      * {@link processValues()} multiple times.
      *
-     * @return Doctrine_Query
+     * @return \Doctrine_Query
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     protected function doBuildQuery(array $values)
     {
@@ -148,7 +148,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
             $tmp = $this->getTable()->{$method}($query);
 
             // for backward compatibility
-            if ($tmp instanceof Doctrine_Query) {
+            if ($tmp instanceof \Doctrine_Query) {
                 $query = $tmp;
             }
         }
@@ -167,14 +167,14 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
             if ($this->getTable()->hasField($field)) {
                 $method = sprintf('add%sColumnQuery', self::camelize($this->getFieldName($field)));
             } elseif (!method_exists($this, $method = sprintf('add%sColumnQuery', self::camelize($field))) && null !== $type) {
-                throw new LogicException(sprintf('You must define a "%s" method to be able to filter with the "%s" field.', $method, $field));
+                throw new \LogicException(sprintf('You must define a "%s" method to be able to filter with the "%s" field.', $method, $field));
             }
 
             if (method_exists($this, $method)) {
                 $this->{$method}($query, $field, $values[$field]);
             } elseif (null !== $type) {
                 if (!method_exists($this, $method = sprintf('add%sQuery', $type))) {
-                    throw new LogicException(sprintf('Unable to filter for the "%s" type.', $type));
+                    throw new \LogicException(sprintf('Unable to filter for the "%s" type.', $type));
                 }
 
                 $this->{$method}($query, $field, $values[$field]);
@@ -184,7 +184,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
         return $query;
     }
 
-    protected function addForeignKeyQuery(Doctrine_Query $query, $field, $value)
+    protected function addForeignKeyQuery(\Doctrine_Query $query, $field, $value)
     {
         $fieldName = $this->getFieldName($field);
 
@@ -195,42 +195,42 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
         }
     }
 
-    protected function addEnumQuery(Doctrine_Query $query, $field, $value)
+    protected function addEnumQuery(\Doctrine_Query $query, $field, $value)
     {
         $fieldName = $this->getFieldName($field);
 
         $query->addWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $fieldName), $value);
     }
 
-    protected function addTextQuery(Doctrine_Query $query, $field, $values)
+    protected function addTextQuery(\Doctrine_Query $query, $field, $values)
     {
         $fieldName = $this->getFieldName($field);
 
         if (is_array($values) && isset($values['is_empty']) && $values['is_empty']) {
-            $query->addWhere(sprintf('(%s.%s IS NULL OR %1$s.%2$s = ?)', $query->getRootAlias(), $fieldName), array(''));
+            $query->addWhere(sprintf('(%s.%s IS NULL OR %1$s.%2$s = ?)', $query->getRootAlias(), $fieldName), ['']);
         } elseif (is_array($values) && isset($values['text']) && '' != $values['text']) {
             $query->addWhere(sprintf('%s.%s LIKE ?', $query->getRootAlias(), $fieldName), '%'.$values['text'].'%');
         }
     }
 
-    protected function addNumberQuery(Doctrine_Query $query, $field, $values)
+    protected function addNumberQuery(\Doctrine_Query $query, $field, $values)
     {
         $fieldName = $this->getFieldName($field);
 
         if (is_array($values) && isset($values['is_empty']) && $values['is_empty']) {
-            $query->addWhere(sprintf('(%s.%s IS NULL OR %1$s.%2$s = ?)', $query->getRootAlias(), $fieldName), array(''));
+            $query->addWhere(sprintf('(%s.%s IS NULL OR %1$s.%2$s = ?)', $query->getRootAlias(), $fieldName), ['']);
         } elseif (is_array($values) && isset($values['text']) && '' !== $values['text']) {
             $query->addWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $fieldName), $values['text']);
         }
     }
 
-    protected function addBooleanQuery(Doctrine_Query $query, $field, $value)
+    protected function addBooleanQuery(\Doctrine_Query $query, $field, $value)
     {
         $fieldName = $this->getFieldName($field);
         $query->addWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $fieldName), $value);
     }
 
-    protected function addDateQuery(Doctrine_Query $query, $field, $values)
+    protected function addDateQuery(\Doctrine_Query $query, $field, $values)
     {
         $fieldName = $this->getFieldName($field);
 
@@ -262,14 +262,14 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
      *
      * @return string
      *
-     * @throws InvalidArgumentException If no relation with the supplied alias exists on the current model
+     * @throws \InvalidArgumentException If no relation with the supplied alias exists on the current model
      */
     protected function getRelatedModelName($alias)
     {
-        $table = Doctrine_Core::getTable($this->getModelName());
+        $table = \Doctrine_Core::getTable($this->getModelName());
 
         if (!$table->hasRelation($alias)) {
-            throw new InvalidArgumentException(sprintf('The "%s" model has no "%s" relation.', $this->getModelName(), $alias));
+            throw new \InvalidArgumentException(sprintf('The "%s" model has no "%s" relation.', $this->getModelName(), $alias));
         }
 
         $relation = $table->getRelation($alias);
@@ -289,11 +289,11 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
     protected function camelize($text)
     {
-        return strtr(ucwords(strtr($text, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
+        return strtr(ucwords(strtr($text, ['/' => ':: ', '_' => ' ', '-' => ' '])), [' ' => '']);
     }
 
     protected function getTable()
     {
-        return Doctrine_Core::getTable($this->getModelName());
+        return \Doctrine_Core::getTable($this->getModelName());
     }
 }

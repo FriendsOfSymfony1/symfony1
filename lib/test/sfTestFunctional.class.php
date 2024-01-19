@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,20 +16,20 @@
  *
  * @version    SVN: $Id$
  */
-class sfTestFunctional extends sfTestFunctionalBase
+class sfTestFunctional extends \sfTestFunctionalBase
 {
     /**
      * Initializes the browser tester instance.
      *
-     * @param sfBrowserBase $browser A sfBrowserBase instance
-     * @param lime_test     $lime    A lime instance
+     * @param \sfBrowserBase $browser A sfBrowserBase instance
+     * @param \lime_test     $lime    A lime instance
      */
-    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
+    public function __construct(\sfBrowserBase $browser, \lime_test $lime = null, $testers = [])
     {
-        $testers = array_merge(array(
+        $testers = array_merge([
             'view_cache' => 'sfTesterViewCache',
             'form' => 'sfTesterForm',
-        ), $testers);
+        ], $testers);
 
         parent::__construct($browser, $lime, $testers);
     }
@@ -40,7 +41,7 @@ class sfTestFunctional extends sfTestFunctionalBase
      * @param string $actionName The action name
      * @param mixed  $position   The position in the action stack (default to the last entry)
      *
-     * @return sfTestFunctional The current sfTestFunctional instance
+     * @return \sfTestFunctional The current sfTestFunctional instance
      */
     public function isForwardedTo($moduleName, $actionName, $position = 'last')
     {

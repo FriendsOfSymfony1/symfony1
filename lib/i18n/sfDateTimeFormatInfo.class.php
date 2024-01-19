@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfDateTimeFormatInfo class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -74,12 +66,12 @@ class sfDateTimeFormatInfo
     /**
      * ICU date time formatting data.
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * A list of properties that are accessable/writable.
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * Initializes a new writable instance of the sfDateTimeFormatInfo class
@@ -92,12 +84,12 @@ class sfDateTimeFormatInfo
      *
      * @see getInstance()
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->properties = get_class_methods($this);
 
         if (empty($data)) {
-            throw new sfException('Please provide the ICU data to initialize.');
+            throw new \sfException('Please provide the ICU data to initialize.');
         }
 
         $this->data = $data;
@@ -114,7 +106,7 @@ class sfDateTimeFormatInfo
             return $this->{$getProperty}();
         }
 
-        throw new sfException(sprintf('Property %s does not exists.', $name));
+        throw new \sfException(sprintf('Property %s does not exists.', $name));
     }
 
     /**
@@ -127,21 +119,21 @@ class sfDateTimeFormatInfo
         if (in_array($setProperty, $this->properties)) {
             $this->{$setProperty}($value);
         } else {
-            throw new sfException(sprintf('Property %s can not be set.', $name));
+            throw new \sfException(sprintf('Property %s can not be set.', $name));
         }
     }
 
     /**
      * Gets the default sfDateTimeFormatInfo that is culture-independent (invariant).
      *
-     * @return sfDateTimeFormatInfo default sfDateTimeFormatInfo
+     * @return \sfDateTimeFormatInfo default sfDateTimeFormatInfo
      */
     public static function getInvariantInfo()
     {
         static $invariant;
 
         if (null === $invariant) {
-            $invariant = sfCultureInfo::getInvariantCulture()->DateTimeFormat;
+            $invariant = \sfCultureInfo::getInvariantCulture()->DateTimeFormat;
         }
 
         return $invariant;
@@ -150,21 +142,21 @@ class sfDateTimeFormatInfo
     /**
      * Returns the sfDateTimeFormatInfo associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the sfDateTimeFormat property
+     * @param \sfCultureInfo $culture the culture that gets the sfDateTimeFormat property
      *
-     * @return sfDateTimeFormatInfo sfDateTimeFormatInfo for the specified
-     *                              culture
+     * @return \sfDateTimeFormatInfo sfDateTimeFormatInfo for the specified
+     *                               culture
      */
     public static function getInstance($culture = null)
     {
-        if ($culture instanceof sfCultureInfo) {
+        if ($culture instanceof \sfCultureInfo) {
             return $culture->DateTimeFormat;
         }
         if (is_string($culture)) {
-            return sfCultureInfo::getInstance($culture)->DateTimeFormat;
+            return \sfCultureInfo::getInstance($culture)->DateTimeFormat;
         }
 
-        return sfCultureInfo::getInvariantCulture()->DateTimeFormat;
+        return \sfCultureInfo::getInvariantCulture()->DateTimeFormat;
     }
 
     /**
@@ -524,7 +516,7 @@ class sfDateTimeFormatInfo
      */
     public function formatDateTime($date, $time)
     {
-        return str_replace(array('{0}', '{1}'), array($time, $date), $this->getDateTimeOrderPattern());
+        return str_replace(['{0}', '{1}'], [$time, $date], $this->getDateTimeOrderPattern());
     }
 
     /**

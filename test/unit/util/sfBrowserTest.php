@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,36 +11,36 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(76);
+$t = new \lime_test(76);
 
 // ->click()
 $t->diag('->click()');
 
-class myClickBrowser extends sfBrowser
+class myClickBrowser extends \sfBrowser
 {
     public function setHtml($html)
     {
-        $this->dom = new DOMDocument('1.0', 'UTF-8');
+        $this->dom = new \DOMDocument('1.0', 'UTF-8');
         $this->dom->validateOnParse = true;
         $this->dom->loadHTML($html);
-        $this->domCssSelector = new sfDomCssSelector($this->dom);
+        $this->domCssSelector = new \sfDomCssSelector($this->dom);
     }
 
     public function getFiles()
     {
         $f = $this->files;
-        $this->files = array();
+        $this->files = [];
 
         return $f;
     }
 
-    public function call($uri, $method = 'get', $parameters = array(), $changeStack = true)
+    public function call($uri, $method = 'get', $parameters = [], $changeStack = true)
     {
         $uri = $this->fixUri($uri);
 
-        $this->fields = array();
+        $this->fields = [];
 
-        return array($method, $uri, $parameters);
+        return [$method, $uri, $parameters];
     }
 
     public function getDefaultServerArray($name)
@@ -147,36 +148,36 @@ $html = <<<'EOF'
 </html>
 EOF;
 
-$b = new myClickBrowser();
+$b = new \myClickBrowser();
 $b->setHtml($html);
 
 try {
     $b->click('nonexistantname');
     $t->fail('->click() throws an error if the name does not exist');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->click() throws an error if the name does not exist');
 }
 
 try {
     list($method, $uri, $parameters) = $b->click('submit5');
     $t->pass('->click() clicks on button links');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('->click() clicks on button links');
 }
 
 list($method, $uri, $parameters) = $b->click('test link');
 $t->is($uri, '/mylink', '->click() clicks on links');
 
-list($method, $uri, $parameters) = $b->click('test link', array(), array('position' => 2));
+list($method, $uri, $parameters) = $b->click('test link', [], ['position' => 2]);
 $t->is($uri, '/myotherlink', '->click() can take a third argument to tell the position of the link to click on');
 
 list($method, $uri, $parameters) = $b->click('image link');
 $t->is($uri, '/myimagelink', '->click() clicks on image links');
 
-list($method, $uri, $parameters) = $b->click('submit', null, array('position' => 2));
+list($method, $uri, $parameters) = $b->click('submit', null, ['position' => 2]);
 $t->is($uri, '/submitlink', '->click() clicks on submit link at position 2');
 
-list($method, $uri, $parameters) = $b->click('submit', null, array('position' => 3));
+list($method, $uri, $parameters) = $b->click('submit', null, ['position' => 3]);
 $t->is($uri, '/submitimagelink', '->click() clicks on submit image link at position 3');
 
 list($method, $uri, $parameters) = $b->click('submit');
@@ -186,13 +187,13 @@ $t->is($parameters['text_default_value'], 'default', '->click() uses default for
 $t->is($parameters['text'], '', '->click() uses default form field values (input)');
 $t->is($parameters['textarea'], 'content', '->click() uses default form field values (textarea)');
 $t->is($parameters['select'], 'selected', '->click() uses default form field values (select)');
-$t->is($parameters['select_multiple'], array('selected', 'last'), '->click() uses default form field values (select - multiple)');
+$t->is($parameters['select_multiple'], ['selected', 'last'], '->click() uses default form field values (select - multiple)');
 $t->is($parameters['article']['title'], 'title', '->click() recognizes array names');
-$t->is($parameters['article']['category'], array('2', '3'), '->click() recognizes array names');
+$t->is($parameters['article']['category'], ['2', '3'], '->click() recognizes array names');
 $t->is($parameters['article']['or']['much']['longer'], 'very long!', '->click() recognizes array names');
 $t->is($parameters['submit'], 'submit', '->click() populates button clicked');
 $t->ok(!isset($parameters['mybutton']), '->click() do not populate buttons not clicked');
-$t->is($parameters['myarray'], array('value1', 'value2', 'value3'), '->click() recognizes array names');
+$t->is($parameters['myarray'], ['value1', 'value2', 'value3'], '->click() recognizes array names');
 $t->is($parameters['checkbox1'], 'checkboxvalue', '->click() returns the value of the checkbox value attribute');
 $t->is($parameters['checkbox2'], '1', '->click() returns 1 if the checkbox has no value');
 
@@ -218,37 +219,37 @@ $t->is($uri, '/myform4?submit=submit4', '->click() can click on submit button an
 list($method, $uri, $parameters) = $b->click('image submit');
 $t->is($uri, '/myform4?submit_image=image', '->click() can click on image button in forms');
 
-list($method, $uri, $parameters) = $b->click('submit', array(
+list($method, $uri, $parameters) = $b->click('submit', [
     'text_default_value' => 'myvalue',
     'text' => 'myothervalue',
     'textarea' => 'mycontent',
     'select' => 'last',
-    'select_multiple' => array('first', 'selected', 'last'),
-    'article' => array(
+    'select_multiple' => ['first', 'selected', 'last'],
+    'article' => [
         'title' => 'mytitle',
-        'category' => array(1, 2, 3),
-        'or' => array('much' => array('longer' => 'long')),
-    ),
-));
+        'category' => [1, 2, 3],
+        'or' => ['much' => ['longer' => 'long']],
+    ],
+]);
 $t->is($parameters['text_default_value'], 'myvalue', '->click() takes an array of parameters as its second argument');
 $t->is($parameters['text'], 'myothervalue', '->click() can override input fields');
 $t->is($parameters['textarea'], 'mycontent', '->click() can override textarea fields');
 $t->is($parameters['select'], 'last', '->click() can override select fields');
-$t->is($parameters['select_multiple'], array('first', 'selected', 'last'), '->click() can override select (multiple) fields');
+$t->is($parameters['select_multiple'], ['first', 'selected', 'last'], '->click() can override select (multiple) fields');
 $t->is($parameters['article']['title'], 'mytitle', '->click() can override array fields');
-$t->is($parameters['article']['category'], array(1, 2, 3), '->click() can override array fields');
+$t->is($parameters['article']['category'], [1, 2, 3], '->click() can override array fields');
 $t->is($parameters['article']['or']['much']['longer'], 'long', '->click() recognizes array names');
 $t->is(isset($parameters['i_am_disabled']), false, '->click() ignores disabled fields');
 
 list($method, $uri, $parameters) = $b->click('#clickable-link');
 $t->is($method, 'get', '->click() accepts a CSS selector');
 $t->is($uri, '/mylink', '->click() accepts a CSS selector');
-$t->is_deeply($parameters, array(), '->click() accepts a CSS selector');
+$t->is_deeply($parameters, [], '->click() accepts a CSS selector');
 
-list($method, $uri, $parameters) = $b->click('.one-of-many-clickable-links', array(), array('position' => 2));
+list($method, $uri, $parameters) = $b->click('.one-of-many-clickable-links', [], ['position' => 2]);
 $t->is($method, 'get', '->click() accepts a CSS selector and position option');
 $t->is($uri, '/myimagelink', '->click() accepts a CSS selector and position option');
-$t->is_deeply($parameters, array(), '->click() accepts a CSS selector and position option');
+$t->is_deeply($parameters, [], '->click() accepts a CSS selector and position option');
 
 list($method, $uri, $parameters) = $b->click('#clickable-input-submit');
 $t->is($method, 'post', '->click() accepts a CSS selector for a submit input');
@@ -257,7 +258,7 @@ $t->is($uri, '/myform', '->click() accepts a CSS selector for a submit input');
 try {
     $b->click('#orphaned-input-submit');
     $t->fail('->click() throws an error if a submit is clicked outside a form');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->click() throws an error if a submit is clicked outside a form');
 }
 
@@ -274,12 +275,12 @@ list($method, $uri, $parameters) = $b->
 $t->is($parameters['text_default_value'], 'myvalue', '->setField() overrides default form field values');
 $t->is($parameters['text'], 'myothervalue', '->setField() overrides default form field values');
 $t->is($parameters['article']['title'], 'mytitle', '->setField() overrides default form field values');
-$t->is($parameters['myarray'], array('value0', 'value1', 'value2'), '->setField() overrides default form field values');
+$t->is($parameters['myarray'], ['value0', 'value1', 'value2'], '->setField() overrides default form field values');
 
 list($method, $uri, $parameters) = $b->
   setField('text_default_value', 'myvalue')->
   setField('text', 'myothervalue')->
-  click('submit', array('text_default_value' => 'yourvalue', 'text' => 'yourothervalue'));
+  click('submit', ['text_default_value' => 'yourvalue', 'text' => 'yourothervalue']);
 $t->is($parameters['text_default_value'], 'yourvalue', '->setField() is overriden by parameters from click call');
 $t->is($parameters['text'], 'yourothervalue', '->setField() is overriden by parameters from click call');
 
@@ -301,7 +302,7 @@ $t->is($parameters['radio1'], 'a', '->select() toggles radiobuttons');
 try {
     $b->deselect('b-radio');
     $t->fail('->deselect() cannot deselect radiobuttons');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->pass('->deselect() cannot deselect radiobuttons');
 }
 
@@ -319,19 +320,19 @@ $t->is($b->getDefaultServerArray('HTTPS'), null, '->call() preserve non-secure r
 // file uploads
 $t->diag('file uploads');
 
-$unexistentFilename = sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'unexistent-file-'.md5(getmypid().'-'.microtime());
-$existentFilename = sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'existent-file-'.md5(getmypid().'-'.microtime());
+$unexistentFilename = \sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'unexistent-file-'.md5(getmypid().'-'.microtime());
+$existentFilename = \sfConfig::get('sf_test_cache_dir').DIRECTORY_SEPARATOR.'existent-file-'.md5(getmypid().'-'.microtime());
 file_put_contents($existentFilename, 'test');
 
-list($method, $uri, $parameters) = $b->click('submit', array('myfile' => $unexistentFilename));
+list($method, $uri, $parameters) = $b->click('submit', ['myfile' => $unexistentFilename]);
 $files = $b->getFiles();
 $t->is($method, 'post', 'file upload is using right method');
 $t->ok(!isset($parameters['myfile']), 'file upload key is removed from the main request');
 $t->is(isset($files['myfile']) && is_array($files['myfile']), true, 'file upload set up a _FILE entry for our test file');
-$t->is(array_keys($files['myfile']), array('name', 'type', 'tmp_name', 'error', 'size'), 'file upload returns correctly formatted array');
+$t->is(array_keys($files['myfile']), ['name', 'type', 'tmp_name', 'error', 'size'], 'file upload returns correctly formatted array');
 $t->is($files['myfile']['error'], UPLOAD_ERR_NO_FILE, 'unexistent file does not exists (UPLOAD_ERR_NO_FILE)');
 
-list($method, $uri, $parameters) = $b->click('submit', array('myfile' => $existentFilename));
+list($method, $uri, $parameters) = $b->click('submit', ['myfile' => $existentFilename]);
 $files = $b->getFiles();
 
 $t->is($files['myfile']['error'], UPLOAD_ERR_OK, 'existent file exists (UPLOAD_ERR_OK)');

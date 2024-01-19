@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorFile extends sfValidatorBase
+class sfValidatorFile extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -47,29 +48,29 @@ class sfValidatorFile extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         if (!ini_get('file_uploads')) {
-            throw new LogicException(sprintf('Unable to use a file validator as "file_uploads" is disabled in your php.ini file (%s)', get_cfg_var('cfg_file_path')));
+            throw new \LogicException(sprintf('Unable to use a file validator as "file_uploads" is disabled in your php.ini file (%s)', get_cfg_var('cfg_file_path')));
         }
 
         $this->addOption('max_size');
         $this->addOption('mime_types');
-        $this->addOption('mime_type_guessers', array(
-            array($this, 'guessFromFileinfo'),
-            array($this, 'guessFromMimeContentType'),
-            array($this, 'guessFromFileBinary'),
-        ));
-        $this->addOption('mime_categories', array(
-            'web_images' => array(
+        $this->addOption('mime_type_guessers', [
+            [$this, 'guessFromFileinfo'],
+            [$this, 'guessFromMimeContentType'],
+            [$this, 'guessFromFileBinary'],
+        ]);
+        $this->addOption('mime_categories', [
+            'web_images' => [
                 'image/jpeg',
                 'image/pjpeg',
                 'image/png',
                 'image/x-png',
                 'image/gif',
-            )));
+            ]]);
         $this->addOption('validated_file_class', 'sfValidatedFile');
         $this->addOption('path', null);
 
@@ -92,12 +93,12 @@ class sfValidatorFile extends sfValidatorBase
      *  * error:    The error code (optional)
      *  * size:     The file size in bytes (optional)
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         if (!is_array($value) || !isset($value['tmp_name'])) {
-            throw new sfValidatorError($this, 'invalid', array('value' => (string) $value));
+            throw new \sfValidatorError($this, 'invalid', ['value' => (string) $value]);
         }
 
         if (!isset($value['name'])) {
@@ -123,22 +124,22 @@ class sfValidatorFile extends sfValidatorBase
                     $max = min($max, $this->getOption('max_size'));
                 }
 
-                throw new sfValidatorError($this, 'max_size', array('max_size' => round($max / 1024, 0), 'size' => (int) $value['size']));
+                throw new \sfValidatorError($this, 'max_size', ['max_size' => round($max / 1024, 0), 'size' => (int) $value['size']]);
             case UPLOAD_ERR_FORM_SIZE:
-                throw new sfValidatorError($this, 'max_size', array('max_size' => 0, 'size' => (int) $value['size']));
+                throw new \sfValidatorError($this, 'max_size', ['max_size' => 0, 'size' => (int) $value['size']]);
             case UPLOAD_ERR_PARTIAL:
-                throw new sfValidatorError($this, 'partial');
+                throw new \sfValidatorError($this, 'partial');
             case UPLOAD_ERR_NO_TMP_DIR:
-                throw new sfValidatorError($this, 'no_tmp_dir');
+                throw new \sfValidatorError($this, 'no_tmp_dir');
             case UPLOAD_ERR_CANT_WRITE:
-                throw new sfValidatorError($this, 'cant_write');
+                throw new \sfValidatorError($this, 'cant_write');
             case UPLOAD_ERR_EXTENSION:
-                throw new sfValidatorError($this, 'extension');
+                throw new \sfValidatorError($this, 'extension');
         }
 
         // check file size
         if ($this->hasOption('max_size') && $this->getOption('max_size') < (int) $value['size']) {
-            throw new sfValidatorError($this, 'max_size', array('max_size' => round($this->getOption('max_size') / 1024, 0), 'size' => (int) $value['size']));
+            throw new \sfValidatorError($this, 'max_size', ['max_size' => round($this->getOption('max_size') / 1024, 0), 'size' => (int) $value['size']]);
         }
 
         $mimeType = $this->getMimeType((string) $value['tmp_name'], (string) $value['type']);
@@ -147,7 +148,7 @@ class sfValidatorFile extends sfValidatorBase
         if ($this->hasOption('mime_types')) {
             $mimeTypes = is_array($this->getOption('mime_types')) ? $this->getOption('mime_types') : $this->getMimeTypesFromCategory($this->getOption('mime_types'));
             if (!in_array($mimeType, array_map('strtolower', $mimeTypes))) {
-                throw new sfValidatorError($this, 'mime_types', array('mime_types' => $mimeTypes, 'mime_type' => $mimeType));
+                throw new \sfValidatorError($this, 'mime_types', ['mime_types' => $mimeTypes, 'mime_type' => $mimeType]);
             }
         }
 
@@ -196,7 +197,7 @@ class sfValidatorFile extends sfValidatorBase
             return null;
         }
 
-        if (!$finfo = new finfo(FILEINFO_MIME)) {
+        if (!$finfo = new \finfo(FILEINFO_MIME)) {
             return null;
         }
 
@@ -238,7 +239,7 @@ class sfValidatorFile extends sfValidatorBase
         ob_start();
         // need to use --mime instead of -i. see #6641
         $cmd = 'file -b --mime -- %s 2>/dev/null';
-        $file = (0 === strpos($file, '-') ? './' : '').$file;
+        $file = (str_starts_with($file, '-') ? './' : '').$file;
         passthru(sprintf($cmd, escapeshellarg($file)), $return);
         if ($return > 0) {
             ob_end_clean();
@@ -260,14 +261,14 @@ class sfValidatorFile extends sfValidatorBase
         $categories = $this->getOption('mime_categories');
 
         if (!isset($categories[$category])) {
-            throw new InvalidArgumentException(sprintf('Invalid mime type category "%s".', $category));
+            throw new \InvalidArgumentException(sprintf('Invalid mime type category "%s".', $category));
         }
 
         return $categories[$category];
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function isEmpty($value)
     {
@@ -281,7 +282,7 @@ class sfValidatorFile extends sfValidatorBase
     /**
      * Returns the maximum size of an uploaded file as configured in php.ini.
      *
-     * @return type The maximum size of an uploaded file in bytes
+     * @return \type The maximum size of an uploaded file in bytes
      */
     protected function getMaxFilesize()
     {

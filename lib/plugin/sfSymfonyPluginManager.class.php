@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSymfonyPluginManager extends sfPluginManager
+class sfSymfonyPluginManager extends \sfPluginManager
 {
     /**
      * Initializes this sfPluginManager instance.
@@ -26,15 +27,15 @@ class sfSymfonyPluginManager extends sfPluginManager
      *
      * See sfPluginManager for other options.
      *
-     * @param sfEventDispatcher $dispatcher  An event dispatcher instance
-     * @param sfPearEnvironment $environment A sfPearEnvironment instance
+     * @param \sfEventDispatcher $dispatcher  An event dispatcher instance
+     * @param \sfPearEnvironment $environment A sfPearEnvironment instance
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfPearEnvironment $environment)
+    public function initialize(\sfEventDispatcher $dispatcher, \sfPearEnvironment $environment)
     {
         parent::initialize($dispatcher, $environment);
 
         if (!$environment->getOption('web_dir')) {
-            throw new sfPluginException('You must provide a "web_dir" option.');
+            throw new \sfPluginException('You must provide a "web_dir" option.');
         }
     }
 
@@ -53,8 +54,8 @@ class sfSymfonyPluginManager extends sfPluginManager
         $this->registerSymfonyPackage();
 
         // register callbacks to manage web content
-        $this->dispatcher->connect('plugin.post_install', array($this, 'listenToPluginPostInstall'));
-        $this->dispatcher->connect('plugin.post_uninstall', array($this, 'listenToPluginPostUninstall'));
+        $this->dispatcher->connect('plugin.post_install', [$this, 'listenToPluginPostInstall']);
+        $this->dispatcher->connect('plugin.post_uninstall', [$this, 'listenToPluginPostUninstall']);
     }
 
     /**
@@ -66,9 +67,9 @@ class sfSymfonyPluginManager extends sfPluginManager
     {
         $webDir = $sourceDirectory.DIRECTORY_SEPARATOR.$plugin.DIRECTORY_SEPARATOR.'web';
         if (is_dir($webDir)) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Installing web data for plugin')));
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Installing web data for plugin']));
 
-            $filesystem = new sfFilesystem();
+            $filesystem = new \sfFilesystem();
             $filesystem->relativeSymlink($webDir, $this->environment->getOption('web_dir').DIRECTORY_SEPARATOR.$plugin, true);
         }
     }
@@ -82,14 +83,14 @@ class sfSymfonyPluginManager extends sfPluginManager
     {
         $targetDir = $this->environment->getOption('web_dir').DIRECTORY_SEPARATOR.$plugin;
         if (is_dir($targetDir)) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Uninstalling web data for plugin')));
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', ['Uninstalling web data for plugin']));
 
-            $filesystem = new sfFilesystem();
+            $filesystem = new \sfFilesystem();
 
             if (is_link($targetDir)) {
                 $filesystem->remove($targetDir);
             } else {
-                $filesystem->remove(sfFinder::type('any')->in($targetDir));
+                $filesystem->remove(\sfFinder::type('any')->in($targetDir));
                 $filesystem->remove($targetDir);
             }
         }
@@ -107,10 +108,10 @@ class sfSymfonyPluginManager extends sfPluginManager
     public static function enablePlugin($plugin, $configDir)
     {
         if (!$configDir) {
-            throw new sfPluginException('You must provide a "config_dir" option.');
+            throw new \sfPluginException('You must provide a "config_dir" option.');
         }
 
-        $manipulator = sfClassManipulator::fromFile($configDir.'/ProjectConfiguration.class.php');
+        $manipulator = \sfClassManipulator::fromFile($configDir.'/ProjectConfiguration.class.php');
         $manipulator->wrapMethod('setup', '', sprintf('$this->enablePlugins(\'%s\');', $plugin));
         $manipulator->save();
     }
@@ -127,7 +128,7 @@ class sfSymfonyPluginManager extends sfPluginManager
     public static function disablePlugin($plugin, $configDir)
     {
         if (!$configDir) {
-            throw new sfPluginException('You must provide a "config_dir" option.');
+            throw new \sfPluginException('You must provide a "config_dir" option.');
         }
 
         $file = $configDir.'/ProjectConfiguration.class.php';
@@ -145,7 +146,7 @@ class sfSymfonyPluginManager extends sfPluginManager
     /**
      * Listens to the plugin.post_install event.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
     public function listenToPluginPostInstall($event)
     {
@@ -157,7 +158,7 @@ class sfSymfonyPluginManager extends sfPluginManager
     /**
      * Listens to the plugin.post_uninstall event.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
     public function listenToPluginPostUninstall($event)
     {
@@ -171,15 +172,15 @@ class sfSymfonyPluginManager extends sfPluginManager
      */
     protected function registerSymfonyPackage()
     {
-        $symfony = new PEAR_PackageFile_v2_rw();
+        $symfony = new \PEAR_PackageFile_v2_rw();
         $symfony->setPackage('symfony');
         $symfony->setChannel('pear.symfony-project.com');
         $symfony->setConfig($this->environment->getConfig());
         $symfony->setPackageType('php');
         $symfony->setAPIVersion(preg_replace('/\d+(\-\w+)?$/', '0', SYMFONY_VERSION));
-        $symfony->setAPIStability(false === strpos(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
+        $symfony->setAPIStability(!str_contains(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
         $symfony->setReleaseVersion(preg_replace('/\-\w+$/', '', SYMFONY_VERSION));
-        $symfony->setReleaseStability(false === strpos(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
+        $symfony->setReleaseStability(!str_contains(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
         $symfony->setDate(date('Y-m-d'));
         $symfony->setDescription('symfony');
         $symfony->setSummary('symfony');
@@ -193,7 +194,7 @@ class sfSymfonyPluginManager extends sfPluginManager
 
         $this->environment->getRegistry()->deletePackage('symfony', 'pear.symfony-project.com');
         if (!$this->environment->getRegistry()->addPackage2($symfony)) {
-            throw new sfPluginException('Unable to register the symfony package');
+            throw new \sfPluginException('Unable to register the symfony package');
         }
     }
 

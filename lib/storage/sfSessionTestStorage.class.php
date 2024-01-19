@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,10 +16,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfSessionTestStorage extends sfStorage
+class sfSessionTestStorage extends \sfStorage
 {
     protected $sessionId;
-    protected $sessionData = array();
+    protected $sessionData = [];
 
     /**
      * Available options:.
@@ -28,17 +29,17 @@ class sfSessionTestStorage extends sfStorage
      *
      * @param array $options An associative array of options
      *
-     * @see sfStorage
+     * @see \sfStorage
      */
     public function initialize($options = null)
     {
         if (!isset($options['session_path'])) {
-            throw new InvalidArgumentException('The "session_path" option is mandatory for the sfSessionTestStorage class.');
+            throw new \InvalidArgumentException('The "session_path" option is mandatory for the sfSessionTestStorage class.');
         }
 
-        $options = array_merge(array(
+        $options = array_merge([
             'session_id' => null,
-        ), $options);
+        ], $options);
 
         // initialize parent
         parent::initialize($options);
@@ -48,10 +49,10 @@ class sfSessionTestStorage extends sfStorage
         if ($this->sessionId) {
             // we read session data from temp file
             $file = $this->options['session_path'].DIRECTORY_SEPARATOR.$this->sessionId.'.session';
-            $this->sessionData = is_file($file) ? unserialize(file_get_contents($file)) : array();
+            $this->sessionData = is_file($file) ? unserialize(file_get_contents($file)) : [];
         } else {
             $this->sessionId = md5(uniqid(mt_rand(), true));
-            $this->sessionData = array();
+            $this->sessionData = [];
         }
     }
 
@@ -124,7 +125,7 @@ class sfSessionTestStorage extends sfStorage
      */
     public function clear()
     {
-        sfToolkit::clearDirectory($this->options['session_path']);
+        \sfToolkit::clearDirectory($this->options['session_path']);
     }
 
     /**
@@ -153,7 +154,7 @@ class sfSessionTestStorage extends sfStorage
             umask($current_umask);
             file_put_contents($sessionsDir.DIRECTORY_SEPARATOR.$this->sessionId.'.session', serialize($this->sessionData));
             $this->sessionId = '';
-            $this->sessionData = array();
+            $this->sessionData = [];
         }
     }
 }

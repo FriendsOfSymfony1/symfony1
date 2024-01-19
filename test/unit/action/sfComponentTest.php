@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
  *
- * For the full copyright and license information, please component the LICENSE
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -14,23 +15,23 @@ require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 require_once $_test_dir.'/unit/sfNoRouting.class.php';
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
-class myComponent extends sfComponent
+class myComponent extends \sfComponent
 {
     public function execute($request)
     {
     }
 }
 
-$context = sfContext::getInstance(array(
+$context = \sfContext::getInstance([
     'routing' => 'sfNoRouting',
     'request' => 'sfWebRequest',
-));
+]);
 
 // ->initialize()
 $t->diag('->initialize()');
-$component = new myComponent($context, 'module', 'action');
+$component = new \myComponent($context, 'module', 'action');
 $t->is($component->getContext(), $context, '->initialize() takes a sfContext object as its first argument');
 $component->initialize($context, 'module', 'action');
 $t->is($component->getContext(), $context, '->initialize() takes a sfContext object as its first argument');
@@ -52,11 +53,11 @@ $t->is($component->getResponse(), $context->getResponse(), '->getResponse() retu
 
 // __set()
 $t->diag('__set()');
-$component->foo = array();
+$component->foo = [];
 $component->foo[] = 'bar';
-$t->is($component->foo, array('bar'), '__set() populates component variables');
+$t->is($component->foo, ['bar'], '__set() populates component variables');
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
-$dispatcherTest = new sfEventDispatcherTest($t);
+$dispatcherTest = new \sfEventDispatcherTest($t);
 $dispatcherTest->launchTests($context->getEventDispatcher(), $component, 'component');

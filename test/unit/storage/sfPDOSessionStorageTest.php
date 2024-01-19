@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +13,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 ob_start();
 $plan = 14;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
     $t->skip('SQLite needed to run these tests', $plan);
@@ -21,16 +22,16 @@ if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
 }
 
 // initialize the storage
-$database = new sfPDODatabase(array('dsn' => 'sqlite::memory:'));
+$database = new \sfPDODatabase(['dsn' => 'sqlite::memory:']);
 $connection = $database->getConnection();
 $connection->exec('CREATE TABLE session (sess_id, sess_data, sess_time)');
 
 ini_set('session.use_cookies', 0);
 $session_id = '1';
 
-$storage = new sfPDOSessionStorage(array('db_table' => 'session', 'session_id' => $session_id, 'database' => $database));
-$t->ok($storage instanceof sfStorage, 'sfPDOSessionStorage is an instance of sfStorage');
-$t->ok($storage instanceof sfDatabaseSessionStorage, 'sfPDOSessionStorage is an instance of sfDatabaseSessionStorage');
+$storage = new \sfPDOSessionStorage(['db_table' => 'session', 'session_id' => $session_id, 'database' => $database]);
+$t->ok($storage instanceof \sfStorage, 'sfPDOSessionStorage is an instance of sfStorage');
+$t->ok($storage instanceof \sfDatabaseSessionStorage, 'sfPDOSessionStorage is an instance of sfDatabaseSessionStorage');
 
 // regenerate()
 $oldSessionData = 'foo:bar';
@@ -58,7 +59,7 @@ $session_id = session_id();
 try {
     $retrieved_data = $storage->sessionRead($session_id);
     $t->pass('sessionRead() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionRead() does not throw an exception');
 }
 $t->is($retrieved_data, $newSessionData, 'sessionRead() reads session data');
@@ -69,7 +70,7 @@ $otherSessionData = 'foo:foo:foo';
 try {
     $write = $storage->sessionWrite($session_id, $otherSessionData);
     $t->pass('sessionWrite() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionWrite() does not throw an exception');
 }
 
@@ -80,7 +81,7 @@ $t->is($storage->sessionRead($session_id), $otherSessionData, 'sessionWrite() wr
 try {
     $storage->sessionGC(0);
     $t->pass('sessionGC() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionGC() does not throw an exception');
 }
 
@@ -88,7 +89,7 @@ try {
 try {
     $storage->sessionDestroy($session_id);
     $t->pass('sessionDestroy() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionClose() does not throw an exception');
 }
 $result = $connection->query(sprintf('SELECT sess_id, sess_data FROM session WHERE sess_id = "%s"', $session_id));

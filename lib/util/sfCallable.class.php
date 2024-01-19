@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -51,7 +52,7 @@ class sfCallable
     public function call()
     {
         if (!is_callable($this->callable)) {
-            throw new sfException(sprintf('"%s" is not a valid callable.', is_array($this->callable) ? sprintf('%s:%s', is_object($this->callable[0]) ? get_class($this->callable[0]) : $this->callable[0], $this->callable[1]) : (is_object($this->callable) ? sprintf('Object(%s)', get_class($this->callable)) : var_export($this->callable, true))));
+            throw new \sfException(sprintf('"%s" is not a valid callable.', is_array($this->callable) ? sprintf('%s:%s', is_object($this->callable[0]) ? get_class($this->callable[0]) : $this->callable[0], $this->callable[1]) : (is_object($this->callable) ? sprintf('Object(%s)', get_class($this->callable)) : var_export($this->callable, true))));
         }
 
         $arguments = func_get_args();

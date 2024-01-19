@@ -1,13 +1,22 @@
 <?php
 
-require_once __DIR__.'/../../../../lib/autoload/sfCoreAutoload.class.php';
-sfCoreAutoload::register();
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-class ProjectConfiguration extends sfProjectConfiguration
+require_once __DIR__.'/../../../../lib/autoload/sfCoreAutoload.class.php';
+\sfCoreAutoload::register();
+
+class ProjectConfiguration extends \sfProjectConfiguration
 {
     public function setup()
     {
-        $this->enableAllPluginsExcept(array('sfDoctrinePlugin'));
+        $this->enableAllPluginsExcept(['sfDoctrinePlugin']);
         $this->enablePlugins('sfAutoloadPlugin');
     }
 }

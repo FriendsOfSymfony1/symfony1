@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineCli extends Doctrine_Cli
+class sfDoctrineCli extends \Doctrine_Cli
 {
     protected $symfonyDispatcher;
     protected $symfonyFormatter;
@@ -52,17 +52,17 @@ class sfDoctrineCli extends Doctrine_Cli
      */
     public function notify($notification = null, $style = 'HEADER')
     {
-        $this->symfonyDispatcher->notify(new sfEvent($this, 'command.log', array($this->symfonyFormatter->formatSection('doctrine', $notification))));
+        $this->symfonyDispatcher->notify(new \sfEvent($this, 'command.log', [$this->symfonyFormatter->formatSection('doctrine', $notification)]));
     }
 
     /**
      * Notify symfony of an exception thrown by the Doctrine cli.
      *
-     * @param Doctrine_Exception $exception
+     * @param \Doctrine_Exception $exception
      *
-     * @throws sfException
+     * @throws \sfException
      */
-    public function notifyException(Exception $exception)
+    public function notifyException(\Exception $exception)
     {
         throw $exception;
     }

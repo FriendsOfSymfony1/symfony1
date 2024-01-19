@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,12 +25,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfMySQLDatabase extends sfDatabase
+class sfMySQLDatabase extends \sfDatabase
 {
     /**
      * Connects to the database.
      *
-     * @throws sfDatabaseException If a connection could not be created
+     * @throws \sfDatabaseException If a connection could not be created
      */
     public function connect()
     {
@@ -55,13 +55,13 @@ class sfMySQLDatabase extends sfDatabase
         // make sure the connection went through
         if (false === $this->connection) {
             // the connection's foobar'd
-            throw new sfDatabaseException('Failed to create a MySQLDatabase connection.');
+            throw new \sfDatabaseException('Failed to create a MySQLDatabase connection.');
         }
 
         // select our database
         if ($this->selectDatabase($database)) {
             // can't select the database
-            throw new sfDatabaseException(sprintf('Failed to select MySQLDatabase "%s".', $database));
+            throw new \sfDatabaseException(sprintf('Failed to select MySQLDatabase "%s".', $database));
         }
 
         // set encoding if specified
@@ -77,7 +77,7 @@ class sfMySQLDatabase extends sfDatabase
     /**
      * Execute the shutdown procedure.
      *
-     * @throws sfDatabaseException If an error occurs while shutting down this database
+     * @throws \sfDatabaseException If an error occurs while shutting down this database
      */
     public function shutdown()
     {

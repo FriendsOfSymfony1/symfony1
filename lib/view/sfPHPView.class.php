@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPHPView extends sfView
+class sfPHPView extends \sfView
 {
     /**
      * Executes any presentation logic for this view.
@@ -61,7 +61,7 @@ class sfPHPView extends sfView
     public function render()
     {
         $content = null;
-        if (sfConfig::get('sf_cache')) {
+        if (\sfConfig::get('sf_cache')) {
             $viewCache = $this->context->getViewCacheManager();
             $uri = $viewCache->getCurrentCacheKey();
 
@@ -83,7 +83,7 @@ class sfPHPView extends sfView
             // render template file
             $content = $this->renderFile($this->getDirectory().'/'.$this->getTemplate());
 
-            if (sfConfig::get('sf_cache') && null !== $uri) {
+            if (\sfConfig::get('sf_cache') && null !== $uri) {
                 $content = $viewCache->setActionCache($uri, $content, $this->isDecorator() ? $this->getDecoratorDirectory().'/'.$this->getDecoratorTemplate() : false);
             }
         }
@@ -109,7 +109,7 @@ class sfPHPView extends sfView
 
         $coreHelpersLoaded = 1;
 
-        $helpers = array_unique(array_merge(array('Helper', 'Url', 'Asset', 'Tag', 'Escaping'), sfConfig::get('sf_standard_helpers')));
+        $helpers = array_unique(array_merge(['Helper', 'Url', 'Asset', 'Tag', 'Escaping'], \sfConfig::get('sf_standard_helpers')));
 
         $this->context->getConfiguration()->loadHelpers($helpers);
     }
@@ -123,8 +123,8 @@ class sfPHPView extends sfView
      */
     protected function renderFile($_sfFile)
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Render "%s"', $_sfFile))));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Render "%s"', $_sfFile)]));
         }
 
         $this->loadCoreAndStandardHelpers();
@@ -139,7 +139,7 @@ class sfPHPView extends sfView
 
         try {
             require $_sfFile;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // need to end output buffering before throwing the exception #7596
             ob_end_clean();
 
@@ -158,19 +158,19 @@ class sfPHPView extends sfView
      */
     protected function decorate($content)
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Decorate content with "%s/%s"', $this->getDecoratorDirectory(), $this->getDecoratorTemplate()))));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Decorate content with "%s/%s"', $this->getDecoratorDirectory(), $this->getDecoratorTemplate())]));
         }
 
         // set the decorator content as an attribute
         $attributeHolder = $this->attributeHolder;
 
-        $this->attributeHolder = $this->initializeAttributeHolder(array('sf_content' => new sfOutputEscaperSafe($content)));
+        $this->attributeHolder = $this->initializeAttributeHolder(['sf_content' => new \sfOutputEscaperSafe($content)]);
         $this->attributeHolder->set('sf_type', 'layout');
 
         // check to see if the decorator template exists
         if (!is_readable($this->getDecoratorDirectory().'/'.$this->getDecoratorTemplate())) {
-            throw new sfRenderException(sprintf('The decorator template "%s" does not exist or is unreadable in "%s".', $this->decoratorTemplate, $this->decoratorDirectory));
+            throw new \sfRenderException(sprintf('The decorator template "%s" does not exist or is unreadable in "%s".', $this->decoratorTemplate, $this->decoratorDirectory));
         }
 
         // render the decorator template and return the result

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -40,11 +41,11 @@
  *
  * @version    SVN: $Id$
  */
-class sfServiceContainer implements sfServiceContainerInterface
+class sfServiceContainer implements \sfServiceContainerInterface
 {
-    protected $serviceIds = array();
-    protected $parameters = array();
-    protected $services = array();
+    protected $serviceIds = [];
+    protected $parameters = [];
+    protected $services = [];
     protected $count = 0;
 
     /**
@@ -52,7 +53,7 @@ class sfServiceContainer implements sfServiceContainerInterface
      *
      * @param array $parameters An array of parameters
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         $this->setParameters($parameters);
         $this->setService('service_container', $this);
@@ -65,7 +66,7 @@ class sfServiceContainer implements sfServiceContainerInterface
      */
     public function setParameters(array $parameters)
     {
-        $this->parameters = array();
+        $this->parameters = [];
         foreach ($parameters as $key => $value) {
             $this->parameters[strtolower($key)] = $value;
         }
@@ -106,11 +107,11 @@ class sfServiceContainer implements sfServiceContainerInterface
             return $this->parameters[strtolower($name)];
         }
 
-        if (sfConfig::has($name)) {
-            return sfConfig::get($name);
+        if (\sfConfig::has($name)) {
+            return \sfConfig::get($name);
         }
 
-        throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
+        throw new \InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
     }
 
     /**
@@ -181,7 +182,7 @@ class sfServiceContainer implements sfServiceContainerInterface
             return $this->{$method}();
         }
 
-        throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
+        throw new \InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
     }
 
     /**
@@ -191,8 +192,8 @@ class sfServiceContainer implements sfServiceContainerInterface
      */
     public function getServiceIds()
     {
-        $ids = array();
-        $r = new ReflectionClass($this);
+        $ids = [];
+        $r = new \ReflectionClass($this);
         foreach ($r->getMethods() as $method) {
             if (preg_match('/^get(.+)Service$/', $name = $method->getName(), $match)) {
                 $ids[] = self::underscore($match[1]);
@@ -204,11 +205,11 @@ class sfServiceContainer implements sfServiceContainerInterface
 
     public static function camelize($id)
     {
-        return strtr(ucwords(strtr($id, array('_' => ' ', '-' => ' ', '.' => '_ '))), array(' ' => ''));
+        return strtr(ucwords(strtr($id, ['_' => ' ', '-' => ' ', '.' => '_ '])), [' ' => '']);
     }
 
     public static function underscore($id)
     {
-        return strtolower(preg_replace(array('/_/', '/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('.', '\\1_\\2', '\\1_\\2'), $id));
+        return strtolower(preg_replace(['/_/', '/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], ['.', '\\1_\\2', '\\1_\\2'], $id));
     }
 }

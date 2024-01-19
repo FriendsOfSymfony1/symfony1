@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfLogRotateTask extends sfBaseTask
+class sfLogRotateTask extends \sfBaseTask
 {
     /** the default period to rotate logs in days */
     public const DEF_PERIOD = 7;
@@ -37,7 +38,7 @@ class sfLogRotateTask extends sfBaseTask
     public function rotate($app, $env, $period = null, $history = null, $override = false)
     {
         $logfile = $app.'_'.$env;
-        $logdir = sfConfig::get('sf_log_dir');
+        $logdir = \sfConfig::get('sf_log_dir');
 
         // set history and period values if not passed to default values
         $period = isset($period) ? $period : self::DEF_PERIOD;
@@ -52,7 +53,7 @@ class sfLogRotateTask extends sfBaseTask
         }
 
         // determine date of last rotation
-        $logs = sfFinder::type('file')->maxdepth(1)->name($logfile.'_*.log')->sort_by_name()->in($logdir.'/history');
+        $logs = \sfFinder::type('file')->maxdepth(1)->name($logfile.'_*.log')->sort_by_name()->in($logdir.'/history');
         $recentlog = is_array($logs) ? array_pop($logs) : null;
 
         if ($recentlog) {
@@ -70,7 +71,7 @@ class sfLogRotateTask extends sfBaseTask
         // if rotate log on date doesn't exist, or that date is today, then rotate the log
         if (!$rotateOn || ($rotateOn == $today) || $override) {
             // create a lock file
-            $lockFile = sfConfig::get('sf_data_dir').'/'.$app.'_'.$env.'-cli.lck';
+            $lockFile = \sfConfig::get('sf_data_dir').'/'.$app.'_'.$env.'-cli.lck';
             $this->getFilesystem()->touch($lockFile);
 
             // change mode so the web user can remove it if we die
@@ -95,7 +96,7 @@ class sfLogRotateTask extends sfBaseTask
                 $this->getFilesystem()->remove($srcLog);
 
                 // get all log history files for this application and environment
-                $newLogs = sfFinder::type('file')->maxdepth(1)->name($logfile.'_*.log')->sort_by_name()->in($logdir.'/history');
+                $newLogs = \sfFinder::type('file')->maxdepth(1)->name($logfile.'_*.log')->sort_by_name()->in($logdir.'/history');
 
                 // if the number of logs in history exceeds history then remove the oldest log
                 if (count($newLogs) > $history) {
@@ -109,19 +110,19 @@ class sfLogRotateTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('env', sfCommandArgument::REQUIRED, 'The environment name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('env', \sfCommandArgument::REQUIRED, 'The environment name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('history', null, sfCommandOption::PARAMETER_REQUIRED, 'The maximum number of old log files to keep', self::DEF_HISTORY),
-            new sfCommandOption('period', null, sfCommandOption::PARAMETER_REQUIRED, 'The period in days', self::DEF_PERIOD),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('history', null, \sfCommandOption::PARAMETER_REQUIRED, 'The maximum number of old log files to keep', self::DEF_HISTORY),
+            new \sfCommandOption('period', null, \sfCommandOption::PARAMETER_REQUIRED, 'The period in days', self::DEF_PERIOD),
+        ]);
 
         $this->namespace = 'log';
         $this->name = 'rotate';
@@ -140,9 +141,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->rotate($arguments['application'], $arguments['env'], $options['period'], $options['history'], true);
     }

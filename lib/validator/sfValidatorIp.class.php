@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorIp extends sfValidatorString
+class sfValidatorIp extends \sfValidatorString
 {
     public const IP_V4 = '4';
     public const IP_V6 = '6';
@@ -36,7 +37,7 @@ class sfValidatorIp extends sfValidatorString
     public const IP_V6_ONLY_PUBLIC = '6_public';
     public const IP_ALL_ONLY_PUBLIC = 'all_public';
 
-    public function configure($options = array(), $messages = array())
+    public function configure($options = [], $messages = [])
     {
         $this->addOption('version', self::IP_ALL);
 
@@ -112,7 +113,7 @@ class sfValidatorIp extends sfValidatorString
         }
 
         if (!filter_var($value, FILTER_VALIDATE_IP, $flag)) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         return $value;

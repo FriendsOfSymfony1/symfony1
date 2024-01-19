@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,16 +16,16 @@
  *
  * @version    SVN: $Id$
  */
-class sfConfigureAuthorTask extends sfBaseTask
+class sfConfigureAuthorTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('author', sfCommandArgument::REQUIRED, 'The project author'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('author', \sfCommandArgument::REQUIRED, 'The project author'),
+        ]);
 
         $this->namespace = 'configure';
         $this->name = 'author';
@@ -43,15 +44,15 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $file = sfConfig::get('sf_config_dir').'/properties.ini';
+        $file = \sfConfig::get('sf_config_dir').'/properties.ini';
         $content = parse_ini_file($file, true);
 
         if (!isset($content['symfony'])) {
-            $content['symfony'] = array();
+            $content['symfony'] = [];
         }
 
         $content['symfony']['author'] = $arguments['author'];

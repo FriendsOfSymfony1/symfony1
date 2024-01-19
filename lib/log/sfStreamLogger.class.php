@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfStreamLogger extends sfLogger
+class sfStreamLogger extends \sfLogger
 {
     /** @var resource */
     protected $stream;
@@ -27,19 +28,19 @@ class sfStreamLogger extends sfLogger
      *
      * - stream: A PHP stream
      *
-     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
-     * @param array             $options    an array of options
+     * @param \sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array              $options    an array of options
      *
-     * @throws sfConfigurationException
+     * @throws \sfConfigurationException
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         if (!isset($options['stream'])) {
-            throw new sfConfigurationException('You must provide a "stream" option for this logger.');
+            throw new \sfConfigurationException('You must provide a "stream" option for this logger.');
         }
 
         if (is_resource($options['stream']) && 'stream' != get_resource_type($options['stream'])) {
-            throw new sfConfigurationException('The provided "stream" option is not a stream.');
+            throw new \sfConfigurationException('The provided "stream" option is not a stream.');
         }
 
         $this->stream = $options['stream'];

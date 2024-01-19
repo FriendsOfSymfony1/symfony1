@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004 David Heinemeier Hansson
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,7 +30,7 @@
  *   <?php echo link_to_function('Greeting', "alert('Hello world!')") ?>
  *   <?php echo link_to_function(image_tag('delete'), "do_delete()", array('confirm' => 'Really?')) ?>
  */
-function link_to_function($name, $function, $html_options = array())
+function link_to_function($name, $function, $html_options = [])
 {
     $html_options = _parse_attributes($html_options);
 
@@ -52,7 +52,7 @@ function link_to_function($name, $function, $html_options = array())
  * Examples:
  *   <?php echo button_to_function('Greeting', "alert('Hello world!')") ?>
  */
-function button_to_function($name, $function, $html_options = array())
+function button_to_function($name, $function, $html_options = [])
 {
     $html_options = _parse_attributes($html_options);
 
@@ -71,12 +71,12 @@ function button_to_function($name, $function, $html_options = array())
  *   => <script type="text/javascript">alert('All is good')</script>
  *   <?php javascript_tag() ?>alert('All is good')<?php end_javascript_tag() ?>.
  *
- * @param mixed|null $content
+ * @param \mixed|null $content
  */
 function javascript_tag($content = null)
 {
     if (null !== $content) {
-        return content_tag('script', javascript_cdata_section($content), array('type' => 'text/javascript'));
+        return content_tag('script', javascript_cdata_section($content), ['type' => 'text/javascript']);
     }
 
     ob_start();
@@ -98,7 +98,7 @@ function javascript_cdata_section($content)
  */
 function if_javascript()
 {
-    if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
+    if (!\sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
         ob_start();
     }
 }
@@ -109,7 +109,7 @@ function if_javascript()
  */
 function end_if_javascript()
 {
-    if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
+    if (!\sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
         $content = ob_get_clean();
         echo javascript_tag("document.write('".esc_js_no_entities($content)."');");
     }
@@ -119,7 +119,7 @@ function end_if_javascript()
  * converts the given PHP array or string to the corresponding javascript array or string.
  * javascript strings need to be single quoted.
  *
- * @param option (typically from option array)
+ * @param \option (typically from option array)
  *
  * @return string javascript string or array equivalent
  */
@@ -144,7 +144,7 @@ function array_or_string_for_javascript($option)
  */
 function options_for_javascript($options)
 {
-    $opts = array();
+    $opts = [];
     foreach ($options as $key => $value) {
         if (is_array($value)) {
             $value = options_for_javascript($value);

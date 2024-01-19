@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,45 +16,45 @@
  *
  * @version    SVN: $Id$
  */
-class sfBrowser extends sfBrowserBase
+class sfBrowser extends \sfBrowserBase
 {
-    protected $listeners = array();
+    protected $listeners = [];
     protected $context;
     protected $currentException;
-    protected $rawConfiguration = array();
+    protected $rawConfiguration = [];
 
     /**
      * Returns the current application context.
      *
      * @param bool $forceReload true to force context reload, false otherwise
      *
-     * @return sfContext
+     * @return \sfContext
      */
     public function getContext($forceReload = false)
     {
         if (null === $this->context || $forceReload) {
             $isContextEmpty = null === $this->context;
-            $context = $isContextEmpty ? sfContext::getInstance() : $this->context;
+            $context = $isContextEmpty ? \sfContext::getInstance() : $this->context;
 
             // create configuration
             $currentConfiguration = $context->getConfiguration();
-            $configuration = ProjectConfiguration::getApplicationConfiguration($currentConfiguration->getApplication(), $currentConfiguration->getEnvironment(), $currentConfiguration->isDebug());
+            $configuration = \ProjectConfiguration::getApplicationConfiguration($currentConfiguration->getApplication(), $currentConfiguration->getEnvironment(), $currentConfiguration->isDebug());
 
             // connect listeners
-            $configuration->getEventDispatcher()->connect('application.throw_exception', array($this, 'listenToException'));
+            $configuration->getEventDispatcher()->connect('application.throw_exception', [$this, 'listenToException']);
             foreach ($this->listeners as $name => $listener) {
                 $configuration->getEventDispatcher()->connect($name, $listener);
             }
 
             // create context
-            $this->context = sfContext::createInstance($configuration);
+            $this->context = \sfContext::createInstance($configuration);
             unset($currentConfiguration);
 
             if (!$isContextEmpty) {
-                sfConfig::clear();
-                sfConfig::add($this->rawConfiguration);
+                \sfConfig::clear();
+                \sfConfig::add($this->rawConfiguration);
             } else {
-                $this->rawConfiguration = sfConfig::getAll();
+                $this->rawConfiguration = \sfConfig::getAll();
             }
         }
 
@@ -68,7 +69,7 @@ class sfBrowser extends sfBrowserBase
     /**
      * Gets response.
      *
-     * @return sfWebResponse
+     * @return \sfWebResponse
      */
     public function getResponse()
     {
@@ -78,7 +79,7 @@ class sfBrowser extends sfBrowserBase
     /**
      * Gets request.
      *
-     * @return sfWebRequest
+     * @return \sfWebRequest
      */
     public function getRequest()
     {
@@ -88,7 +89,7 @@ class sfBrowser extends sfBrowserBase
     /**
      * Gets user.
      *
-     * @return sfUser
+     * @return \sfUser
      */
     public function getUser()
     {
@@ -103,15 +104,15 @@ class sfBrowser extends sfBrowserBase
         parent::shutdown();
 
         // we remove all session data
-        sfToolkit::clearDirectory(sfConfig::get('sf_test_cache_dir').'/sessions');
+        \sfToolkit::clearDirectory(\sfConfig::get('sf_test_cache_dir').'/sessions');
     }
 
     /**
      * Listener for exceptions.
      *
-     * @param sfEvent $event The event to handle
+     * @param \sfEvent $event The event to handle
      */
-    public function listenToException(sfEvent $event)
+    public function listenToException(\sfEvent $event)
     {
         $this->setCurrentException($event->getSubject());
     }
@@ -122,13 +123,13 @@ class sfBrowser extends sfBrowserBase
     protected function doCall()
     {
         // Before getContext, it can trigger some
-        sfConfig::set('sf_test', true);
+        \sfConfig::set('sf_test', true);
 
         // recycle our context object
         $this->context = $this->getContext(true);
 
         // we register a fake rendering filter
-        sfConfig::set('sf_rendering_filter', array('sfFakeRenderingFilter', null));
+        \sfConfig::set('sf_rendering_filter', ['sfFakeRenderingFilter', null]);
 
         $this->resetCurrentException();
 
@@ -148,7 +149,7 @@ class sfBrowser extends sfBrowserBase
     }
 }
 
-class sfFakeRenderingFilter extends sfFilter
+class sfFakeRenderingFilter extends \sfFilter
 {
     public function execute($filterChain)
     {

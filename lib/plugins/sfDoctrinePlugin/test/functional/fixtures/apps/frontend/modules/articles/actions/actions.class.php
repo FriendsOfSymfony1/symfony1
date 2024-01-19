@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * articles actions.
  *
@@ -7,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class articlesActions extends sfActions
+class articlesActions extends \sfActions
 {
     public function executeIndex()
     {
@@ -16,7 +25,7 @@ class articlesActions extends sfActions
 
     public function executeRedirectToShow()
     {
-        $this->redirect('article', Doctrine_Core::getTable('Article')->createQuery()->fetchOne());
+        $this->redirect('article', \Doctrine_Core::getTable('Article')->createQuery()->fetchOne());
     }
 
     public function executeShow()
@@ -26,7 +35,7 @@ class articlesActions extends sfActions
 
     public function executeCreate()
     {
-        $this->form = new ArticleForm();
+        $this->form = new \ArticleForm();
 
         $this->setTemplate('edit');
     }
@@ -38,7 +47,7 @@ class articlesActions extends sfActions
 
     public function executeUpdate($request)
     {
-        $this->forward404Unless($request->isMethod(sfRequest::POST));
+        $this->forward404Unless($request->isMethod(\sfRequest::POST));
 
         $this->form = $this->getArticleForm($request->getParameter('id'));
 
@@ -63,7 +72,7 @@ class articlesActions extends sfActions
 
     private function getArticleTable()
     {
-        return Doctrine_Core::getTable('Article');
+        return \Doctrine_Core::getTable('Article');
     }
 
     private function getArticleById($id)
@@ -75,10 +84,10 @@ class articlesActions extends sfActions
     {
         $article = $this->getArticleById($id);
 
-        if ($article instanceof Article) {
-            return new ArticleForm($article);
+        if ($article instanceof \Article) {
+            return new \ArticleForm($article);
         }
 
-        return new ArticleForm();
+        return new \ArticleForm();
     }
 }
