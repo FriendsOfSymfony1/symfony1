@@ -29,7 +29,9 @@ $config->setRules([
         'import_symbols' => true,
         'leading_backslash_in_global_namespace' => true,
     ],
+    'modernize_strpos' => true,
 ])
+    ->setRiskyAllowed(true)
     ->setCacheFile('.php-cs-fixer.cache')
     ->setFinder($finder)
 ;
