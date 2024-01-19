@@ -154,7 +154,7 @@ class sfValidatorDate extends sfValidatorBase
         // all elements must be empty or a number
         foreach (array('year', 'month', 'day', 'hour', 'minute', 'second') as $key) {
             if (isset($value[$key]) && !ctype_digit((string) $value[$key]) && !empty($value[$key])) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', $value);
             }
         }
 
@@ -164,14 +164,14 @@ class sfValidatorDate extends sfValidatorBase
           (!isset($value['month']) || !$value['month'] ? 1 : 0) +
           (!isset($value['day']) || !$value['day'] ? 1 : 0);
         if ($empties > 0 && $empties < 3) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', $value);
         }
         if (3 == $empties) {
             return $this->getEmptyValue();
         }
 
         if (!checkdate((int) $value['month'], (int) $value['day'], (int) $value['year'])) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', $value);
         }
 
         if ($this->getOption('with_time')) {
@@ -181,7 +181,7 @@ class sfValidatorDate extends sfValidatorBase
                 $this->isValueSet($value, 'second') && (!$this->isValueSet($value, 'minute') || !$this->isValueSet($value, 'hour'))
                 || $this->isValueSet($value, 'minute') && !$this->isValueSet($value, 'hour')
             ) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', $value);
             }
 
             $clean = sprintf(
