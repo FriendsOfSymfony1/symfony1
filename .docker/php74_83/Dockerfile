@@ -22,17 +22,36 @@ RUN set -eux; \
 ARG APCU_VERSION
 RUN set -eux; \
   \
-  test x"" = x"${APCU_VERSION}" || { \
-    pecl install apcu-${APCU_VERSION}; \
-    docker-php-ext-enable apcu; \
-    \
-    rm -r /tmp/pear; \
-  }
+  if test x"" = x"${APCU_VERSION}"; then \
+    return 0; \
+  else :; fi; \
+  \
+  packageName=apcu; \
+  packageVersion=${APCU_VERSION}; \
+  \
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  if test x"5.1.23" = x"${packageVersion}"; then \
+    packageSha256sum=67ee7464ccad2335c3fa4aeb0b8edbcf6d8344feea7922620c6a13015d604482; \
+  else :; fi; \
+  \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
+    | sha256sum -cw --status; \
+  \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
+  \
+  docker-php-ext-enable ${packageName}; \
+  \
+  rm -r /tmp/pear; \
+  :;
 
 # Install memcache PHP extension
 #
 ARG MEMCACHE_VERSION
 RUN set -eux; \
+  \
   buildDeps=' \
     libzip-dev \
   '; \
@@ -41,8 +60,31 @@ RUN set -eux; \
     $buildDeps \
   ; \
   \
-  pecl install memcache-${MEMCACHE_VERSION}; \
-  docker-php-ext-enable memcache; \
+  packageName=memcache; \
+  packageVersion=${MEMCACHE_VERSION}; \
+  \
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  if test x"4.0.5.2" = x"${packageVersion}"; then \
+      packageSha256sum=7b7667813baea003671f174bbec849e43ff235a8ea4ab7e36c3a0380c2a9ed63; \
+  else :; fi; \
+  \
+  if test x"8.0" = x"${packageVersion}"; then \
+      packageSha256sum=defe33e6f7831d82b7283b95e14a531070531acbf21278f3f0d7050505cf3395; \
+  else :; fi; \
+  \
+  if test x"8.2" = x"${packageVersion}"; then \
+      packageSha256sum=b3f0640eacdeb9046c6c86a1546d7fb8a4e9f219e5d9a36a287e59b2dd8208e5; \
+  else :; fi; \
+  \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
+    | sha256sum -cw --status; \
+  \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
+  \
+  docker-php-ext-enable ${packageName}; \
   \
   apt-get purge -y --force-yes --auto-remove -o APT::AutoRemove::RecommendsImportant=true \
     $buildDeps \

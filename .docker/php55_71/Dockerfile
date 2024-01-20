@@ -28,17 +28,40 @@ RUN docker-php-ext-install mbstring
 ARG APCU_VERSION
 RUN set -eux; \
   \
-  test x"" = x"${APCU_VERSION}" || { \
-    pecl install apcu-${APCU_VERSION}; \
-    docker-php-ext-enable apcu; \
-    \
-    rm -r /tmp/pear; \
-  }
+  if test x"" = x"${APCU_VERSION}"; then \
+    return 0; \
+  else :; fi; \
+  \
+  packageName=apcu; \
+  packageVersion=${APCU_VERSION}; \
+  \
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  if test x"4.0.11" = x"${packageVersion}"; then \
+    packageSha256sum=454f302ec13a6047ca4c39e081217ce5a61bbea815aec9c1091fb849e70b4d00; \
+  else :; fi; \
+  \
+  if test x"5.1.23" = x"${packageVersion}"; then \
+    packageSha256sum=67ee7464ccad2335c3fa4aeb0b8edbcf6d8344feea7922620c6a13015d604482; \
+  else :; fi; \
+  \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
+    | sha256sum -cw --status; \
+  \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
+  \
+  docker-php-ext-enable ${packageName}; \
+  \
+  rm -r /tmp/pear; \
+  :;
 
 # Install memcache PHP extension
 #
 ARG MEMCACHE_VERSION
 RUN set -eux; \
+  \
   buildDeps=' \
     libzip-dev \
   '; \
@@ -47,8 +70,26 @@ RUN set -eux; \
     $buildDeps \
   ; \
   \
-  pecl install memcache-${MEMCACHE_VERSION}; \
-  docker-php-ext-enable memcache; \
+  packageName=memcache; \
+  packageVersion=${MEMCACHE_VERSION}; \
+  \
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  if test x"4.0.5.2" = x"${packageVersion}"; then \
+    packageSha256sum=7b7667813baea003671f174bbec849e43ff235a8ea4ab7e36c3a0380c2a9ed63; \
+  else :; fi; \
+  if test x"3.0.8" = x"${packageVersion}"; then \
+    packageSha256sum=2cae5b423ffbfd33a259829849f6000d4db018debe3e29ecf3056f06642e8311; \
+  else :; fi; \
+  \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
+    | sha256sum -cw --status; \
+  \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
+  \
+  docker-php-ext-enable ${packageName}; \
   \
   apt-get purge -y --force-yes --auto-remove -o APT::AutoRemove::RecommendsImportant=true \
     $buildDeps \

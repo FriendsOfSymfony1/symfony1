@@ -63,10 +63,24 @@ FROM php53
 #
 RUN set -eux; \
   \
-  pecl install apc-3.1.13; \
-  echo 'extension=apc.so' >> /usr/local/lib/php.ini; \
+  packageName=APC; \
+  packageVersion=3.1.13; \
   \
-  rm -r /tmp/pear;
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  packageSha256sum=5ef8ba07729e72946e95951672a5378bed98cb5a294e79bf0f0a97ac62829abd; \
+  \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
+    | sha256sum -cw --status; \
+  \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
+  \
+  echo "extension=apc.so" >> /usr/local/lib/php.ini; \
+  \
+  rm -r /tmp/pear; \
+  :;
 
 # Install composer
 #

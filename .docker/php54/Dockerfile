@@ -25,14 +25,35 @@ RUN docker-php-ext-install mbstring
 # Install APC PHP extension
 #
 RUN set -eux; \
-  pecl install apc-3.1.13; \
-  docker-php-ext-enable apc; \
-  rm -r /tmp/pear;
+  \
+  packageName=APC; \
+  packageVersion=3.1.13; \
+  \
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  packageSha256sum=5ef8ba07729e72946e95951672a5378bed98cb5a294e79bf0f0a97ac62829abd; \
+  \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
+    | sha256sum -cw --status; \
+  \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
+  \
+  echo "extension=apc.so" >> /usr/local/lib/php.ini; \
+  \
+  rm -r /tmp/pear; \
+  :;
 
 # Install memcache PHP extension
 #
 ARG MEMCACHE_VERSION
 RUN set -eux; \
+  \
+  if test x"3.0.8" = x"${MEMCACHE_VERSION}"; then \
+      packageSha256sum=2cae5b423ffbfd33a259829849f6000d4db018debe3e29ecf3056f06642e8311; \
+  else :; fi; \
+  \
   buildDeps=' \
     libzip-dev \
   '; \
@@ -41,7 +62,13 @@ RUN set -eux; \
     $buildDeps \
   ; \
   \
-  pecl install memcache-${MEMCACHE_VERSION}; \
+  curl --insecure -sSLfO https://pecl.php.net/get/memcache-${MEMCACHE_VERSION}.tgz; \
+  echo "${packageSha256sum}  memcache-${MEMCACHE_VERSION}.tgz" \
+    | sha256sum -cw --status; \
+  \
+  pecl install memcache-${MEMCACHE_VERSION}.tgz; \
+  rm memcache-${MEMCACHE_VERSION}.tgz; \
+  \
   docker-php-ext-enable memcache; \
   \
   apt-get purge -y --force-yes --auto-remove -o APT::AutoRemove::RecommendsImportant=true \
