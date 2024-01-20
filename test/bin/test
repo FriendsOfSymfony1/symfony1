@@ -103,9 +103,11 @@ startDockerComposeServices ()
 
 configureWithArguments ()
 {
+    configureDockerComposeExecFlags
+
     # Commands
     #
-    DOCKER_COMPOSE_EXEC="${DOCKER_COMPOSE} exec -u `id -u`:`id -g`"
+    DOCKER_COMPOSE_EXEC="${DOCKER_COMPOSE} exec ${dockerComposeExecFlags}"
     INSTALL_GIT_SUB_MODULE='git submodule update --checkout --recursive --force'
     COMPOSER_UPDATE='composer update --prefer-dist --no-suggest --optimize-autoloader'
 
@@ -123,6 +125,30 @@ configureWithArguments ()
 
         exit 0
     else :; fi
+}
+
+configureDockerComposeExecFlags ()
+{
+    dockerComposeExecFlags="-u `id -u`:`id -g`"
+
+    if hasTty; then
+        :
+    else
+        dockerComposeExecFlags="${dockerComposeExecFlags} -T"
+    fi
+}
+
+hasTty ()
+{
+    test -t 0 || {
+        return 1
+    }
+
+    test -t 1 || {
+        return 1
+    }
+
+    return 0
 }
 
 populatePHPVersions ()
