@@ -24,14 +24,21 @@ RUN docker-php-ext-install mbstring
 
 # Install APC PHP extension
 #
+ARG APC_VERSION
 RUN set -eux; \
   \
-  packageName=APC; \
-  packageVersion=3.1.13; \
+  packageName=apc; \
+  packageVersion=${APC_VERSION}; \
+  packageFile=APC-${packageVersion}.tgz; \
   \
-  packageFile=${packageName}-${packageVersion}.tgz; \
+  if test x"3.1.13" = x"${packageVersion}"; then \
+    packageSha256sum=5ef8ba07729e72946e95951672a5378bed98cb5a294e79bf0f0a97ac62829abd; \
+  else :; fi; \
   \
-  packageSha256sum=5ef8ba07729e72946e95951672a5378bed98cb5a294e79bf0f0a97ac62829abd; \
+  if test x"" = x"${packageVersion}"; then \
+    echo "Skip installation of ${packageName} PHP extension"; \
+    return 0; \
+  fi; \
   \
   curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
   echo "${packageSha256sum}  ${packageFile}" \
@@ -40,7 +47,7 @@ RUN set -eux; \
   pecl install ${packageFile}; \
   rm ${packageFile}; \
   \
-  echo "extension=apc.so" >> /usr/local/lib/php.ini; \
+  docker-php-ext-enable ${packageName}; \
   \
   rm -r /tmp/pear; \
   :;
@@ -50,9 +57,18 @@ RUN set -eux; \
 ARG MEMCACHE_VERSION
 RUN set -eux; \
   \
-  if test x"3.0.8" = x"${MEMCACHE_VERSION}"; then \
-      packageSha256sum=2cae5b423ffbfd33a259829849f6000d4db018debe3e29ecf3056f06642e8311; \
+  packageName=memcache; \
+  packageVersion=${MEMCACHE_VERSION}; \
+  packageFile=${packageName}-${packageVersion}.tgz; \
+  \
+  if test x"3.0.8" = x"${packageVersion}"; then \
+    packageSha256sum=2cae5b423ffbfd33a259829849f6000d4db018debe3e29ecf3056f06642e8311; \
   else :; fi; \
+  \
+  if test x"" = x"${packageVersion}"; then \
+    echo "Skip installation of ${packageName} PHP extension"; \
+    return 0; \
+  fi; \
   \
   buildDeps=' \
     libzip-dev \
@@ -62,14 +78,14 @@ RUN set -eux; \
     $buildDeps \
   ; \
   \
-  curl --insecure -sSLfO https://pecl.php.net/get/memcache-${MEMCACHE_VERSION}.tgz; \
-  echo "${packageSha256sum}  memcache-${MEMCACHE_VERSION}.tgz" \
+  curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
+  echo "${packageSha256sum}  ${packageFile}" \
     | sha256sum -cw --status; \
   \
-  pecl install memcache-${MEMCACHE_VERSION}.tgz; \
-  rm memcache-${MEMCACHE_VERSION}.tgz; \
+  pecl install ${packageFile}; \
+  rm ${packageFile}; \
   \
-  docker-php-ext-enable memcache; \
+  docker-php-ext-enable ${packageName}; \
   \
   apt-get purge -y --force-yes --auto-remove -o APT::AutoRemove::RecommendsImportant=true \
     $buildDeps \

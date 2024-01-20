@@ -22,18 +22,18 @@ RUN set -eux; \
 ARG APCU_VERSION
 RUN set -eux; \
   \
-  if test x"" = x"${APCU_VERSION}"; then \
-    return 0; \
-  else :; fi; \
-  \
   packageName=apcu; \
   packageVersion=${APCU_VERSION}; \
-  \
   packageFile=${packageName}-${packageVersion}.tgz; \
   \
   if test x"5.1.23" = x"${packageVersion}"; then \
     packageSha256sum=67ee7464ccad2335c3fa4aeb0b8edbcf6d8344feea7922620c6a13015d604482; \
   else :; fi; \
+  \
+  if test x"" = x"${packageVersion}"; then \
+    echo "Skip installation of ${packageName} PHP extension"; \
+    return 0; \
+  fi; \
   \
   curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
   echo "${packageSha256sum}  ${packageFile}" \
@@ -52,17 +52,8 @@ RUN set -eux; \
 ARG MEMCACHE_VERSION
 RUN set -eux; \
   \
-  buildDeps=' \
-    libzip-dev \
-  '; \
-  apt-get update; \
-  apt-get install -y --force-yes --no-upgrade --no-install-recommends \
-    $buildDeps \
-  ; \
-  \
   packageName=memcache; \
   packageVersion=${MEMCACHE_VERSION}; \
-  \
   packageFile=${packageName}-${packageVersion}.tgz; \
   \
   if test x"4.0.5.2" = x"${packageVersion}"; then \
@@ -76,6 +67,19 @@ RUN set -eux; \
   if test x"8.2" = x"${packageVersion}"; then \
       packageSha256sum=b3f0640eacdeb9046c6c86a1546d7fb8a4e9f219e5d9a36a287e59b2dd8208e5; \
   else :; fi; \
+  \
+  if test x"" = x"${packageVersion}"; then \
+    echo "Skip installation of ${packageName} PHP extension"; \
+    return 0; \
+  fi; \
+  \
+  buildDeps=' \
+    libzip-dev \
+  '; \
+  apt-get update; \
+  apt-get install -y --force-yes --no-upgrade --no-install-recommends \
+    $buildDeps \
+  ; \
   \
   curl --insecure -sSLfO https://pecl.php.net/get/${packageFile}; \
   echo "${packageSha256sum}  ${packageFile}" \
