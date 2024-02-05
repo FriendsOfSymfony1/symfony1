@@ -17,6 +17,13 @@
  */
 abstract class sfBaseTask extends sfCommandApplicationTask
 {
+
+    protected $version;
+    protected $namespace;
+    protected $name;
+    protected $briefDescription;
+    protected $detailedDescription;
+
     protected $configuration;
     protected $pluginManager;
     protected $statusStartTime;
