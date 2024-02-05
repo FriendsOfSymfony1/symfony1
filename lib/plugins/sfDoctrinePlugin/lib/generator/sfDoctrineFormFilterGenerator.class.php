@@ -19,17 +19,6 @@
  */
 class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
 {
-
-    /**
-     * @var Doctrine_Table
-     */
-    public $table;
-
-    /**
-     * @var string
-     */
-    public $modelName;
-
     /**
      * Initializes the current sfGenerator instance.
      *
