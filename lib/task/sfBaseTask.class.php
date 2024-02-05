@@ -17,7 +17,6 @@
  */
 abstract class sfBaseTask extends sfCommandApplicationTask
 {
-
     protected $configuration;
     protected $pluginManager;
     protected $statusStartTime;
