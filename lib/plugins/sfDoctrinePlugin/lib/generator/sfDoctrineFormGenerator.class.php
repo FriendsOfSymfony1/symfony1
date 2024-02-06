@@ -21,7 +21,6 @@
  */
 class sfDoctrineFormGenerator extends sfGenerator
 {
-
     /**
      * @var Doctrine_Table
      */
