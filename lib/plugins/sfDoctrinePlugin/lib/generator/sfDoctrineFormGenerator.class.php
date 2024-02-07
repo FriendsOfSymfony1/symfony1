@@ -20,6 +20,16 @@
 class sfDoctrineFormGenerator extends sfGenerator
 {
     /**
+     * @var Doctrine_Table
+     */
+    public $table;
+
+    /**
+     * @var string
+     */
+    public $modelName;
+
+    /**
      * Array of all the loaded models.
      *
      * @var array
