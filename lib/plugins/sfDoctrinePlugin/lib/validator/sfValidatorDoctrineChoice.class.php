@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorDoctrineChoice extends sfValidatorBase
+class sfValidatorDoctrineChoice extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -32,9 +32,9 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
      *  * min:        The minimum number of values that need to be selected (this option is only active if multiple is true)
      *  * max:        The maximum number of values that need to be selected (this option is only active if multiple is true)
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('model');
         $this->addOption('query', null);
@@ -48,19 +48,19 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
         if ($query = $this->getOption('query')) {
             $query = clone $query;
         } else {
-            $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
+            $query = \Doctrine_Core::getTable($this->getOption('model'))->createQuery();
         }
 
         if ($this->getOption('multiple')) {
             if (!is_array($value)) {
-                $value = array($value);
+                $value = [$value];
             }
 
             if (isset($value[0]) && '' === $value[0]) {
@@ -70,23 +70,23 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
             $count = count($value);
 
             if ($this->hasOption('min') && $count < $this->getOption('min')) {
-                throw new sfValidatorError($this, 'min', array('count' => $count, 'min' => $this->getOption('min')));
+                throw new \sfValidatorError($this, 'min', ['count' => $count, 'min' => $this->getOption('min')]);
             }
 
             if ($this->hasOption('max') && $count > $this->getOption('max')) {
-                throw new sfValidatorError($this, 'max', array('count' => $count, 'max' => $this->getOption('max')));
+                throw new \sfValidatorError($this, 'max', ['count' => $count, 'max' => $this->getOption('max')]);
             }
 
             $query->andWhereIn(sprintf('%s.%s', $query->getRootAlias(), $this->getColumn()), $value);
 
             if ($query->count() != count($value)) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         } else {
             $query->andWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $this->getColumn()), $value);
 
             if (!$query->count()) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new \sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 
@@ -102,7 +102,7 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
      */
     protected function getColumn()
     {
-        $table = Doctrine_Core::getTable($this->getOption('model'));
+        $table = \Doctrine_Core::getTable($this->getOption('model'));
         if ($this->getOption('column')) {
             $columnName = $this->getOption('column');
         } else {

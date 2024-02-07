@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelDoctrine extends sfWebDebugPanel
+class sfWebDebugPanelDoctrine extends \sfWebDebugPanel
 {
     /**
      * Get the title/icon for the panel.
@@ -50,7 +50,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
     {
         return '
       <div id="sfWebDebugDatabaseLogs">
-        <h3>Doctrine Version: '.Doctrine_Core::VERSION.'</h3>
+        <h3>Doctrine Version: '.\Doctrine_Core::VERSION.'</h3>
         <ol>'.implode("\n", $this->getSqlLogs()).'</ol>
       </div>
     ';
@@ -59,7 +59,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
     /**
      * Listens to debug.web.load_panels and adds this panel.
      */
-    public static function listenToAddPanelEvent(sfEvent $event)
+    public static function listenToAddPanelEvent(\sfEvent $event)
     {
         $event->getSubject()->setPanel('db', new self($event->getSubject()));
     }
@@ -71,13 +71,13 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
      */
     protected function getDoctrineEvents()
     {
-        $databaseManager = sfContext::getInstance()->getDatabaseManager();
+        $databaseManager = \sfContext::getInstance()->getDatabaseManager();
 
-        $events = array();
+        $events = [];
         if ($databaseManager) {
             foreach ($databaseManager->getNames() as $name) {
                 $database = $databaseManager->getDatabase($name);
-                if ($database instanceof sfDoctrineDatabase && $profiler = $database->getProfiler()) {
+                if ($database instanceof \sfDoctrineDatabase && $profiler = $database->getProfiler()) {
                     foreach ($profiler->getQueryExecutionEvents() as $event) {
                         $events[$event->getSequence()] = $event;
                     }
@@ -100,21 +100,21 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
     {
         $logs = $this->webDebug->getLogger()->getLogs();
 
-        $html = array();
+        $html = [];
         foreach ($this->getDoctrineEvents() as $i => $event) {
-            $conn = $event->getInvoker() instanceof Doctrine_Connection ? $event->getInvoker() : $event->getInvoker()->getConnection();
-            $params = sfDoctrineConnectionProfiler::fixParams($event->getParams());
-            $query = $this->formatSql(htmlspecialchars($event->getQuery(), ENT_QUOTES, sfConfig::get('sf_charset')));
+            $conn = $event->getInvoker() instanceof \Doctrine_Connection ? $event->getInvoker() : $event->getInvoker()->getConnection();
+            $params = \sfDoctrineConnectionProfiler::fixParams($event->getParams());
+            $query = $this->formatSql(htmlspecialchars($event->getQuery(), ENT_QUOTES, \sfConfig::get('sf_charset')));
 
             // interpolate parameters
             foreach ($params as $param) {
-                $param = htmlspecialchars((string) $param, ENT_QUOTES, sfConfig::get('sf_charset'));
+                $param = htmlspecialchars((string) $param, ENT_QUOTES, \sfConfig::get('sf_charset'));
                 $query = join(var_export(is_scalar($param) ? $param : (string) $param, true), explode('?', $query, 2));
             }
 
             // slow query
-            if ($event->slowQuery && $this->getStatus() > sfLogger::NOTICE) {
-                $this->setStatus(sfLogger::NOTICE);
+            if ($event->slowQuery && $this->getStatus() > \sfLogger::NOTICE) {
+                $this->setStatus(\sfLogger::NOTICE);
             }
 
             // backtrace
@@ -125,7 +125,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
                     break;
                 }
 
-                if (false !== strpos($log['message'], $event->getQuery())) {
+                if (str_contains($log['message'], $event->getQuery())) {
                     // assume queries are being requested in order
                     unset($logs[$i]);
                     $backtrace = '&nbsp;'.$this->getToggleableDebugStack($log['debug_backtrace']);

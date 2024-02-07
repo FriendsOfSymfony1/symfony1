@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfFormObject extends BaseForm
+abstract class sfFormObject extends \BaseForm
 {
     protected $isNew = true;
     protected $object;
@@ -93,8 +94,8 @@ abstract class sfFormObject extends BaseForm
      *
      * @return mixed The current saved object
      *
-     * @throws Exception
-     * @throws sfValidatorErrorSchema
+     * @throws \Exception
+     * @throws \sfValidatorErrorSchema
      *
      * @see doSave()
      */
@@ -114,7 +115,7 @@ abstract class sfFormObject extends BaseForm
             $this->doSave($con);
 
             $con->commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $con->rollBack();
 
             throw $e;
@@ -180,7 +181,7 @@ abstract class sfFormObject extends BaseForm
                 continue;
             }
 
-            if ($form instanceof sfFormObject) {
+            if ($form instanceof \sfFormObject) {
                 $form->updateObject($values[$name]);
             } else {
                 $this->updateObjectEmbeddedForms($values[$name], $form->getEmbeddedForms());
@@ -205,7 +206,7 @@ abstract class sfFormObject extends BaseForm
         }
 
         foreach ($forms as $form) {
-            if ($form instanceof sfFormObject) {
+            if ($form instanceof \sfFormObject) {
                 $form->saveObject($con);
             } else {
                 $this->saveObjectEmbeddedForms($con, $form->getEmbeddedForms());
@@ -226,9 +227,9 @@ abstract class sfFormObject extends BaseForm
      *
      * @return string An HTML representation of the opening form tag
      *
-     * @see sfForm
+     * @see \sfForm
      */
-    public function renderFormTag($url, array $attributes = array())
+    public function renderFormTag($url, array $attributes = [])
     {
         if (!isset($attributes['method'])) {
             $attributes['method'] = $this->isNew() ? 'post' : 'put';
@@ -263,6 +264,6 @@ abstract class sfFormObject extends BaseForm
 
     protected function camelize($text)
     {
-        return strtr(ucwords(strtr($text, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
+        return strtr(ucwords(strtr($text, ['/' => ':: ', '_' => ' ', '-' => ' '])), [' ' => '']);
     }
 }

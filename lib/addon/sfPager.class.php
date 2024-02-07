@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfPager implements Iterator, Countable
+abstract class sfPager implements \Iterator, \Countable
 {
     protected $page = 1;
     protected $maxPerPage = 0;
@@ -25,7 +26,7 @@ abstract class sfPager implements Iterator, Countable
     protected $tableName = '';
     protected $objects;
     protected $cursor = 1;
-    protected $parameters = array();
+    protected $parameters = [];
     protected $currentMaxLink = 1;
     protected $parameterHolder;
     protected $maxRecordLimit = false;
@@ -43,7 +44,7 @@ abstract class sfPager implements Iterator, Countable
     {
         $this->setClass($class);
         $this->setMaxPerPage($maxPerPage);
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
     }
 
     /**
@@ -99,7 +100,7 @@ abstract class sfPager implements Iterator, Countable
      */
     public function getLinks($nb_links = 5)
     {
-        $links = array();
+        $links = [];
         $tmp = $this->page - floor($nb_links / 2);
         $check = $this->lastPage - $nb_links + 1;
         $limit = $check > 0 ? $check : 1;
@@ -174,7 +175,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the next object.
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function getNext()
     {
@@ -188,7 +189,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the previous object.
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function getPrevious()
     {
@@ -382,7 +383,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the current pager's parameter holder.
      *
-     * @return sfParameterHolder
+     * @return \sfParameterHolder
      */
     public function getParameterHolder()
     {
@@ -392,8 +393,8 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns a parameter.
      *
-     * @param string     $name
-     * @param mixed|null $default
+     * @param string      $name
+     * @param \mixed|null $default
      */
     public function getParameter($name, $default = null)
     {
@@ -425,7 +426,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the current result.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function current()
@@ -440,7 +441,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the current key.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function key()
@@ -455,7 +456,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Advances the internal pointer and returns the current result.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function next()
@@ -472,7 +473,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Resets the internal pointer and returns the current result.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function rewind()
@@ -489,7 +490,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns true if pointer is within bounds.
      *
-     * @see Iterator
+     * @see \Iterator
      */
     #[\ReturnTypeWillChange]
     public function valid()
@@ -504,7 +505,7 @@ abstract class sfPager implements Iterator, Countable
     /**
      * Returns the total number of results.
      *
-     * @see Countable
+     * @see \Countable
      */
     #[\ReturnTypeWillChange]
     public function count()

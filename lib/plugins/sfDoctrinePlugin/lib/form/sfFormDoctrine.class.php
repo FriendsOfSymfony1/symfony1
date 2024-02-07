@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfFormDoctrine extends sfFormObject
+abstract class sfFormDoctrine extends \sfFormObject
 {
     /**
      * Constructor.
@@ -28,37 +28,37 @@ abstract class sfFormDoctrine extends sfFormObject
      * @param array  $options    An array of options
      * @param string $CSRFSecret A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
      *
-     * @throws sfException
+     * @throws \sfException
      *
-     * @see sfForm
+     * @see \sfForm
      */
-    public function __construct($object = null, $options = array(), $CSRFSecret = null)
+    public function __construct($object = null, $options = [], $CSRFSecret = null)
     {
         $class = $this->getModelName();
         if (!$object) {
             $this->object = new $class();
         } else {
             if (!$object instanceof $class) {
-                throw new sfException(sprintf('The "%s" form only accepts a "%s" object.', get_class($this), $class));
+                throw new \sfException(sprintf('The "%s" form only accepts a "%s" object.', get_class($this), $class));
             }
 
             $this->object = $object;
             $this->isNew = !$this->getObject()->exists();
         }
 
-        parent::__construct(array(), $options, $CSRFSecret);
+        parent::__construct([], $options, $CSRFSecret);
 
         $this->updateDefaultsFromObject();
     }
 
     /**
-     * @return Doctrine_Connection
+     * @return \Doctrine_Connection
      *
-     * @see sfFormObject
+     * @see \sfFormObject
      */
     public function getConnection()
     {
-        return Doctrine_Manager::getInstance()->getConnectionForComponent($this->getModelName());
+        return \Doctrine_Manager::getInstance()->getConnectionForComponent($this->getModelName());
     }
 
     /**
@@ -67,12 +67,12 @@ abstract class sfFormDoctrine extends sfFormObject
      * @param array  $cultures  An array of cultures
      * @param string $decorator A HTML decorator for the embedded form
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function embedI18n($cultures, $decorator = null)
     {
         if (!$this->isI18n()) {
-            throw new sfException(sprintf('The model "%s" is not internationalized.', $this->getModelName()));
+            throw new \sfException(sprintf('The model "%s" is not internationalized.', $this->getModelName()));
         }
 
         $class = $this->getI18nFormClass();
@@ -101,9 +101,9 @@ abstract class sfFormDoctrine extends sfFormObject
      * @param string $innerDecorator A HTML decorator for each embedded form
      * @param string $decorator      A HTML decorator for the main embedded form
      *
-     * @throws InvalidArgumentException If the relationship is not a collection
+     * @throws \InvalidArgumentException If the relationship is not a collection
      */
-    public function embedRelation($relationName, $formClass = null, $formArgs = array(), $innerDecorator = null, $decorator = null)
+    public function embedRelation($relationName, $formClass = null, $formArgs = [], $innerDecorator = null, $decorator = null)
     {
         if (false !== $pos = stripos($relationName, ' as ')) {
             $fieldName = substr($relationName, $pos + 4);
@@ -114,15 +114,15 @@ abstract class sfFormDoctrine extends sfFormObject
 
         $relation = $this->getObject()->getTable()->getRelation($relationName);
 
-        $r = new ReflectionClass(null === $formClass ? $relation->getClass().'Form' : $formClass);
+        $r = new \ReflectionClass(null === $formClass ? $relation->getClass().'Form' : $formClass);
 
-        if (Doctrine_Relation::ONE == $relation->getType()) {
-            $this->embedForm($fieldName, $r->newInstanceArgs(array_merge(array($this->getObject()->{$relationName}), $formArgs)), $decorator);
+        if (\Doctrine_Relation::ONE == $relation->getType()) {
+            $this->embedForm($fieldName, $r->newInstanceArgs(array_merge([$this->getObject()->{$relationName}], $formArgs)), $decorator);
         } else {
-            $subForm = new sfForm();
+            $subForm = new \sfForm();
 
             foreach ($this->getObject()->{$relationName} as $index => $childObject) {
-                $form = $r->newInstanceArgs(array_merge(array($childObject), $formArgs));
+                $form = $r->newInstanceArgs(array_merge([$childObject], $formArgs));
 
                 $subForm->embedForm($index, $form, $innerDecorator);
                 $subForm->getWidgetSchema()->setLabel($index, (string) $childObject);
@@ -142,7 +142,7 @@ abstract class sfFormDoctrine extends sfFormObject
      * The method must return the processed value or false to remove the value
      * from the array of cleaned up values.
      *
-     * @see sfFormObject
+     * @see \sfFormObject
      *
      * @param array $values
      *
@@ -163,7 +163,7 @@ abstract class sfFormDoctrine extends sfFormObject
                 }
             } else {
                 // save files
-                if ($this->validatorSchema[$field] instanceof sfValidatorFile) {
+                if ($this->validatorSchema[$field] instanceof \sfValidatorFile) {
                     $values[$field] = $this->processUploadedFile($field, null, $valuesToProcess);
                 }
             }
@@ -207,14 +207,14 @@ abstract class sfFormDoctrine extends sfFormObject
      *
      * @return string The primary key name of the i18n model
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function getI18nModelPrimaryKeyName()
     {
         $primaryKey = $this->getObject()->getTable()->getIdentifier();
 
         if (is_array($primaryKey)) {
-            throw new sfException(sprintf('The model "%s" has composite primary keys and cannot be used with i18n..', $this->getModelName()));
+            throw new \sfException(sprintf('The model "%s" has composite primary keys and cannot be used with i18n..', $this->getModelName()));
         }
 
         return $primaryKey;
@@ -231,7 +231,7 @@ abstract class sfFormDoctrine extends sfFormObject
     }
 
     /**
-     * @see sfFormObject
+     * @see \sfFormObject
      */
     protected function doUpdateObject($values)
     {
@@ -253,7 +253,7 @@ abstract class sfFormDoctrine extends sfFormObject
         }
 
         foreach ($this->embeddedForms as $name => $form) {
-            if ($form instanceof sfFormDoctrine) {
+            if ($form instanceof \sfFormDoctrine) {
                 $form->updateDefaultsFromObject();
                 $defaults[$name] = $form->getDefaults();
             }
@@ -273,8 +273,8 @@ abstract class sfFormDoctrine extends sfFormObject
      */
     protected function processUploadedFile($field, $filename = null, $values = null)
     {
-        if (!$this->validatorSchema[$field] instanceof sfValidatorFile) {
-            throw new LogicException(sprintf('You cannot save the current file for field "%s" as the field is not a file.', $field));
+        if (!$this->validatorSchema[$field] instanceof \sfValidatorFile) {
+            throw new \LogicException(sprintf('You cannot save the current file for field "%s" as the field is not a file.', $field));
         }
 
         if (null === $values) {
@@ -312,8 +312,8 @@ abstract class sfFormDoctrine extends sfFormObject
      */
     protected function removeFile($field)
     {
-        if (!$this->validatorSchema[$field] instanceof sfValidatorFile) {
-            throw new LogicException(sprintf('You cannot remove the current file for field "%s" as the field is not a file.', $field));
+        if (!$this->validatorSchema[$field] instanceof \sfValidatorFile) {
+            throw new \LogicException(sprintf('You cannot remove the current file for field "%s" as the field is not a file.', $field));
         }
 
         $directory = $this->validatorSchema[$field]->getOption('path');
@@ -336,16 +336,16 @@ abstract class sfFormDoctrine extends sfFormObject
     /**
      * Saves the current file for the field.
      *
-     * @param string          $field    The field name
-     * @param string          $filename The file name of the file to save
-     * @param sfValidatedFile $file     The validated file to save
+     * @param string           $field    The field name
+     * @param string           $filename The file name of the file to save
+     * @param \sfValidatedFile $file     The validated file to save
      *
      * @return string The filename used to save the file
      */
-    protected function saveFile($field, $filename = null, sfValidatedFile $file = null)
+    protected function saveFile($field, $filename = null, \sfValidatedFile $file = null)
     {
-        if (!$this->validatorSchema[$field] instanceof sfValidatorFile) {
-            throw new LogicException(sprintf('You cannot save the current file for field "%s" as the field is not a file.', $field));
+        if (!$this->validatorSchema[$field] instanceof \sfValidatorFile) {
+            throw new \LogicException(sprintf('You cannot save the current file for field "%s" as the field is not a file.', $field));
         }
 
         if (null === $file) {
@@ -381,14 +381,14 @@ abstract class sfFormDoctrine extends sfFormObject
      *
      * @return string
      *
-     * @throws InvalidArgumentException If no relation with the supplied alias exists on the current model
+     * @throws \InvalidArgumentException If no relation with the supplied alias exists on the current model
      */
     protected function getRelatedModelName($alias)
     {
-        $table = Doctrine_Core::getTable($this->getModelName());
+        $table = \Doctrine_Core::getTable($this->getModelName());
 
         if (!$table->hasRelation($alias)) {
-            throw new InvalidArgumentException(sprintf('The "%s" model has no "%s" relation.', $this->getModelName(), $alias));
+            throw new \InvalidArgumentException(sprintf('The "%s" model has no "%s" relation.', $this->getModelName(), $alias));
         }
 
         $relation = $table->getRelation($alias);

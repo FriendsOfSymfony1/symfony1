@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004 David Heinemeier Hansson
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -42,14 +42,14 @@
  *
  * @return string XHTML compliant <link> tag
  */
-function auto_discovery_link_tag($type = 'rss', $url = '', $tag_options = array())
+function auto_discovery_link_tag($type = 'rss', $url = '', $tag_options = [])
 {
-    return tag('link', array(
+    return tag('link', [
         'rel' => isset($tag_options['rel']) ? $tag_options['rel'] : 'alternate',
         'type' => isset($tag_options['type']) ? $tag_options['type'] : 'application/'.$type.'+xml',
         'title' => isset($tag_options['title']) ? $tag_options['title'] : ucfirst($type),
         'href' => url_for($url, true),
-    ));
+    ]);
 }
 
 /**
@@ -71,11 +71,11 @@ function auto_discovery_link_tag($type = 'rss', $url = '', $tag_options = array(
  *
  * @return string file path to the JavaScript file
  *
- * @see    javascript_include_tag
+ * @see    \javascript_include_tag
  */
 function javascript_path($source, $absolute = false)
 {
-    return _compute_public_path($source, sfConfig::get('sf_web_js_dir_name', 'js'), 'js', $absolute);
+    return _compute_public_path($source, \sfConfig::get('sf_web_js_dir_name', 'js'), 'js', $absolute);
 }
 
 /**
@@ -95,12 +95,12 @@ function javascript_path($source, $absolute = false)
  *
  * @return string XHTML compliant <script> tag(s)
  *
- * @see    javascript_path
+ * @see    \javascript_path
  */
 function javascript_include_tag()
 {
     $sources = func_get_args();
-    $sourceOptions = (func_num_args() > 1 && is_array($sources[func_num_args() - 1])) ? array_pop($sources) : array();
+    $sourceOptions = (func_num_args() > 1 && is_array($sources[func_num_args() - 1])) ? array_pop($sources) : [];
 
     $html = '';
     foreach ($sources as $source) {
@@ -122,7 +122,7 @@ function javascript_include_tag()
             unset($sourceOptions['raw_name']);
         }
 
-        $options = array_merge(array('type' => 'text/javascript', 'src' => $source), $sourceOptions);
+        $options = array_merge(['type' => 'text/javascript', 'src' => $source], $sourceOptions);
         $tag = content_tag('script', '', $options);
 
         if (null !== $condition) {
@@ -154,11 +154,11 @@ function javascript_include_tag()
  *
  * @return string file path to the stylesheet file
  *
- * @see    stylesheet_tag
+ * @see    \stylesheet_tag
  */
 function stylesheet_path($source, $absolute = false)
 {
-    return _compute_public_path($source, sfConfig::get('sf_web_css_dir_name', 'css'), 'css', $absolute);
+    return _compute_public_path($source, \sfConfig::get('sf_web_css_dir_name', 'css'), 'css', $absolute);
 }
 
 /**
@@ -188,12 +188,12 @@ function stylesheet_path($source, $absolute = false)
  *
  * @return string XHTML compliant <link> tag(s)
  *
- * @see    stylesheet_path
+ * @see    \stylesheet_path
  */
 function stylesheet_tag()
 {
     $sources = func_get_args();
-    $sourceOptions = (func_num_args() > 1 && is_array($sources[func_num_args() - 1])) ? array_pop($sources) : array();
+    $sourceOptions = (func_num_args() > 1 && is_array($sources[func_num_args() - 1])) ? array_pop($sources) : [];
 
     $html = '';
     foreach ($sources as $source) {
@@ -215,7 +215,7 @@ function stylesheet_tag()
             unset($sourceOptions['raw_name']);
         }
 
-        $options = array_merge(array('rel' => 'stylesheet', 'type' => 'text/css', 'media' => 'screen', 'href' => $source), $sourceOptions);
+        $options = array_merge(['rel' => 'stylesheet', 'type' => 'text/css', 'media' => 'screen', 'href' => $source], $sourceOptions);
         $tag = tag('link', $options);
 
         if (null !== $condition) {
@@ -233,9 +233,9 @@ function stylesheet_tag()
  *
  * @see sfResponse->addStylesheet()
  */
-function use_stylesheet($css, $position = '', $options = array())
+function use_stylesheet($css, $position = '', $options = [])
 {
-    sfContext::getInstance()->getResponse()->addStylesheet($css, $position, $options);
+    \sfContext::getInstance()->getResponse()->addStylesheet($css, $position, $options);
 }
 
 /**
@@ -243,9 +243,9 @@ function use_stylesheet($css, $position = '', $options = array())
  *
  * @see sfResponse->addJavascript()
  */
-function use_javascript($js, $position = '', $options = array())
+function use_javascript($js, $position = '', $options = [])
 {
-    sfContext::getInstance()->getResponse()->addJavascript($js, $position, $options);
+    \sfContext::getInstance()->getResponse()->addJavascript($js, $position, $options);
 }
 
 /**
@@ -256,9 +256,9 @@ function use_javascript($js, $position = '', $options = array())
 function decorate_with($layout)
 {
     if (false === $layout) {
-        sfContext::getInstance()->get('view_instance')->setDecorator(false);
+        \sfContext::getInstance()->get('view_instance')->setDecorator(false);
     } else {
-        sfContext::getInstance()->get('view_instance')->setDecoratorTemplate($layout);
+        \sfContext::getInstance()->get('view_instance')->setDecoratorTemplate($layout);
     }
 }
 
@@ -281,11 +281,11 @@ function decorate_with($layout)
  *
  * @return string file path to the image file
  *
- * @see    image_tag
+ * @see    \image_tag
  */
 function image_path($source, $absolute = false)
 {
-    return _compute_public_path($source, sfConfig::get('sf_web_images_dir_name', 'images'), 'png', $absolute);
+    return _compute_public_path($source, \sfConfig::get('sf_web_images_dir_name', 'images'), 'png', $absolute);
 }
 
 /**
@@ -309,9 +309,9 @@ function image_path($source, $absolute = false)
  *
  * @return string XHTML compliant <img> tag
  *
- * @see    image_path
+ * @see    \image_path
  */
-function image_tag($source, $options = array())
+function image_tag($source, $options = [])
 {
     if (!$source) {
         return '';
@@ -355,13 +355,13 @@ function image_tag($source, $options = array())
 
 function _compute_public_path($source, $dir, $ext, $absolute = false)
 {
-    if (strpos($source, '://') || 0 === strpos($source, '//')) {
+    if (strpos($source, '://') ||   str_starts_with($source, '//')) {
         return $source;
     }
 
-    $request = sfContext::getInstance()->getRequest();
+    $request = \sfContext::getInstance()->getRequest();
     $sf_relative_url_root = $request->getRelativeUrlRoot();
-    if (0 !== strpos($source, '/')) {
+    if (!str_starts_with($source, '/')) {
         $source = $sf_relative_url_root.'/'.$dir.'/'.$source;
     }
 
@@ -371,11 +371,11 @@ function _compute_public_path($source, $dir, $ext, $absolute = false)
         $source = substr($source, 0, $pos);
     }
 
-    if (false === strpos(basename($source), '.')) {
+    if (!str_contains(basename($source), '.')) {
         $source .= '.'.$ext;
     }
 
-    if ($sf_relative_url_root && 0 !== strpos($source, $sf_relative_url_root)) {
+    if ($sf_relative_url_root &&   !str_starts_with($source, $sf_relative_url_root)) {
         $source = $sf_relative_url_root.$source;
     }
 
@@ -404,15 +404,15 @@ function _compute_public_path($source, $dir, $ext, $absolute = false)
  *
  * @return string XHTML compliant <meta> tag(s)
  *
- * @see    include_http_metas
+ * @see    \include_http_metas
  * @see    sfWebResponse::addMeta()
  */
 function include_metas()
 {
-    $context = sfContext::getInstance();
-    $i18n = sfConfig::get('sf_i18n') ? $context->getI18N() : null;
+    $context = \sfContext::getInstance();
+    $i18n = \sfConfig::get('sf_i18n') ? $context->getI18N() : null;
     foreach ($context->getResponse()->getMetas() as $name => $content) {
-        echo tag('meta', array('name' => $name, 'content' => null === $i18n ? $content : $i18n->__($content)))."\n";
+        echo tag('meta', ['name' => $name, 'content' => null === $i18n ? $content : $i18n->__($content)])."\n";
     }
 }
 
@@ -430,13 +430,13 @@ function include_metas()
  *
  * @return string XHTML compliant <meta> tag(s)
  *
- * @see    include_metas
+ * @see    \include_metas
  * @see    sfWebResponse::addHttpMeta()
  */
 function include_http_metas()
 {
-    foreach (sfContext::getInstance()->getResponse()->getHttpMetas() as $httpequiv => $value) {
-        echo tag('meta', array('http-equiv' => $httpequiv, 'content' => $value))."\n";
+    foreach (\sfContext::getInstance()->getResponse()->getHttpMetas() as $httpequiv => $value) {
+        echo tag('meta', ['http-equiv' => $httpequiv, 'content' => $value])."\n";
     }
 }
 
@@ -450,7 +450,7 @@ function include_http_metas()
  */
 function include_title()
 {
-    $title = sfContext::getInstance()->getResponse()->getTitle();
+    $title = \sfContext::getInstance()->getResponse()->getTitle();
 
     echo content_tag('title', $title)."\n";
 }
@@ -466,8 +466,8 @@ function include_title()
  */
 function get_javascripts()
 {
-    $response = sfContext::getInstance()->getResponse();
-    sfConfig::set('symfony.asset.javascripts_included', true);
+    $response = \sfContext::getInstance()->getResponse();
+    \sfConfig::set('symfony.asset.javascripts_included', true);
 
     $html = '';
     foreach ($response->getJavascripts() as $file => $options) {
@@ -494,7 +494,7 @@ function include_javascripts()
  */
 function clear_javascripts()
 {
-    sfContext::getInstance()->getResponse()->clearJavascripts();
+    \sfContext::getInstance()->getResponse()->clearJavascripts();
 }
 
 /**
@@ -508,8 +508,8 @@ function clear_javascripts()
  */
 function get_stylesheets()
 {
-    $response = sfContext::getInstance()->getResponse();
-    sfConfig::set('symfony.asset.stylesheets_included', true);
+    $response = \sfContext::getInstance()->getResponse();
+    \sfConfig::set('symfony.asset.stylesheets_included', true);
 
     $html = '';
     foreach ($response->getStylesheets() as $file => $options) {
@@ -535,7 +535,7 @@ function include_stylesheets()
  */
 function clear_stylesheets()
 {
-    sfContext::getInstance()->getResponse()->clearStylesheets();
+    \sfContext::getInstance()->getResponse()->clearStylesheets();
 }
 
 /**
@@ -549,9 +549,9 @@ function clear_stylesheets()
  *
  * @return string XHTML compliant <script> tag(s)
  *
- * @see    javascript_include_tag
+ * @see    \javascript_include_tag
  */
-function dynamic_javascript_include_tag($uri, $absolute = false, $options = array())
+function dynamic_javascript_include_tag($uri, $absolute = false, $options = [])
 {
     $options['raw_name'] = true;
 
@@ -566,7 +566,7 @@ function dynamic_javascript_include_tag($uri, $absolute = false, $options = arra
  *
  * @see sfResponse->addJavascript()
  */
-function use_dynamic_javascript($js, $position = '', $options = array())
+function use_dynamic_javascript($js, $position = '', $options = [])
 {
     $options['raw_name'] = true;
 
@@ -581,7 +581,7 @@ function use_dynamic_javascript($js, $position = '', $options = array())
  *
  * @see sfResponse->addStylesheet()
  */
-function use_dynamic_stylesheet($css, $position = '', $options = array())
+function use_dynamic_stylesheet($css, $position = '', $options = [])
 {
     $options['raw_name'] = true;
 
@@ -590,7 +590,7 @@ function use_dynamic_stylesheet($css, $position = '', $options = array())
 
 function _dynamic_path($uri, $format, $absolute = false)
 {
-    return url_for($uri.(false === strpos($uri, '?') ? '?' : '&').'sf_format='.$format, $absolute);
+    return url_for($uri.(!str_contains($uri, '?') ? '?' : '&').'sf_format='.$format, $absolute);
 }
 
 /**
@@ -611,7 +611,7 @@ function _dynamic_path($uri, $format, $absolute = false)
  *
  * @return string <script> tags
  */
-function get_javascripts_for_form(sfForm $form)
+function get_javascripts_for_form(\sfForm $form)
 {
     $html = '';
     foreach ($form->getJavaScripts() as $file) {
@@ -626,7 +626,7 @@ function get_javascripts_for_form(sfForm $form)
  *
  * @see get_javascripts_for_form()
  */
-function include_javascripts_for_form(sfForm $form)
+function include_javascripts_for_form(\sfForm $form)
 {
     echo get_javascripts_for_form($form);
 }
@@ -634,9 +634,9 @@ function include_javascripts_for_form(sfForm $form)
 /**
  * Adds javascripts from the supplied form to the response object.
  */
-function use_javascripts_for_form(sfForm $form)
+function use_javascripts_for_form(\sfForm $form)
 {
-    $response = sfContext::getInstance()->getResponse();
+    $response = \sfContext::getInstance()->getResponse();
 
     foreach ($form->getJavaScripts() as $file) {
         $response->addJavascript($file);
@@ -661,11 +661,11 @@ function use_javascripts_for_form(sfForm $form)
  *
  * @return string <link> tags
  */
-function get_stylesheets_for_form(sfForm $form)
+function get_stylesheets_for_form(\sfForm $form)
 {
     $html = '';
     foreach ($form->getStylesheets() as $file => $media) {
-        $html .= stylesheet_tag($file, array('media' => $media));
+        $html .= stylesheet_tag($file, ['media' => $media]);
     }
 
     return $html;
@@ -676,7 +676,7 @@ function get_stylesheets_for_form(sfForm $form)
  *
  * @see get_stylesheets_for_form()
  */
-function include_stylesheets_for_form(sfForm $form)
+function include_stylesheets_for_form(\sfForm $form)
 {
     echo get_stylesheets_for_form($form);
 }
@@ -684,11 +684,11 @@ function include_stylesheets_for_form(sfForm $form)
 /**
  * Adds stylesheets from the supplied form to the response object.
  */
-function use_stylesheets_for_form(sfForm $form)
+function use_stylesheets_for_form(\sfForm $form)
 {
-    $response = sfContext::getInstance()->getResponse();
+    $response = \sfContext::getInstance()->getResponse();
 
     foreach ($form->getStylesheets() as $file => $media) {
-        $response->addStylesheet($file, '', array('media' => $media));
+        $response->addStylesheet($file, '', ['media' => $media]);
     }
 }

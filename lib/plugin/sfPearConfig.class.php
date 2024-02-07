@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,9 +18,9 @@ require_once 'PEAR/Config.php';
  *
  * @version    SVN: $Id$
  */
-class sfPearConfig extends PEAR_Config
+class sfPearConfig extends \PEAR_Config
 {
-    public function &getREST($version, $options = array())
+    public function &getREST($version, $options = [])
     {
         $class = 'sfPearRest'.str_replace('.', '', $version);
 

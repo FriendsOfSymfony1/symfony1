@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfMessageSource_MySQL class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -87,7 +79,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:58:58 EST 2004
  */
-class sfMessageSource_MySQL extends sfMessageSource_Database
+class sfMessageSource_MySQL extends \sfMessageSource_Database
 {
     /**
      * The datasource string, full DSN to the database.
@@ -106,7 +98,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     /**
      * A resource link to the database.
      *
-     * @var db
+     * @var \db
      */
     protected $db;
 
@@ -136,7 +128,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     /**
      * Gets the database connection.
      *
-     * @return db database connection
+     * @return \db database connection
      */
     public function connection()
     {
@@ -163,7 +155,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
         $rs = mysql_query($statement, $this->db);
 
-        $result = array();
+        $result = [];
 
         while ($row = mysql_fetch_array($rs, MYSQL_NUM)) {
             $source = $row[1];
@@ -318,7 +310,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
     {
         $statement = 'SELECT name FROM catalogue ORDER BY name';
         $rs = mysql_query($statement, $this->db);
-        $result = array();
+        $result = [];
         while ($row = mysql_fetch_array($rs, MYSQL_NUM)) {
             $details = explode('.', $row[0]);
             if (!isset($details[1])) {
@@ -356,7 +348,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
         $connect_function = 'mysql_connect';
 
         if (!function_exists($connect_function)) {
-            throw new RuntimeException('The function mysql_connect() does not exist. Please confirm MySQL is enabled in php.ini');
+            throw new \RuntimeException('The function mysql_connect() does not exist. Please confirm MySQL is enabled in php.ini');
         }
 
         if ($dbhost && $user && $pw) {
@@ -370,15 +362,15 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
         }
 
         if (empty($conn)) {
-            throw new sfException(sprintf('Error in connecting to %s.', $dsninfo));
+            throw new \sfException(sprintf('Error in connecting to %s.', $dsninfo));
         }
 
         if ($dsninfo['database']) {
             if (!@mysql_select_db($dsninfo['database'], $conn)) {
-                throw new sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
+                throw new \sfException(sprintf('Error in connecting database, dsn: %s.', $dsninfo));
             }
         } else {
-            throw new sfException('Please provide a database for message translation.');
+            throw new \sfException('Please provide a database for message translation.');
         }
 
         return $conn;
@@ -431,7 +423,7 @@ class sfMessageSource_MySQL extends sfMessageSource_Database
 
         $count = (int) mysql_result($rs, 0);
 
-        return array($cat_id, $variant, $count);
+        return [$cat_id, $variant, $count];
     }
 
     /**

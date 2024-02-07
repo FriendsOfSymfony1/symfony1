@@ -1,27 +1,28 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
  *
- * For the full copyright and license information, please generator the LICENSE
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(0);
+$t = new \lime_test(0);
 
-class myGenerator extends sfGenerator
+class myGenerator extends \sfGenerator
 {
-    public function generate($params = array())
+    public function generate($params = [])
     {
     }
 }
 
-class ProjectConfiguration extends sfProjectConfiguration
+class ProjectConfiguration extends \sfProjectConfiguration
 {
 }
 
-$manager = new sfGeneratorManager(new ProjectConfiguration());
-$generator = new myGenerator($manager);
+$manager = new \sfGeneratorManager(new \ProjectConfiguration());
+$generator = new \myGenerator($manager);

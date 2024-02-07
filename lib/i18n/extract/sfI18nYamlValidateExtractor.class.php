@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +14,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nYamlValidateExtractor extends sfI18nYamlExtractor
+class sfI18nYamlValidateExtractor extends \sfI18nYamlExtractor
 {
     /**
      * Extract i18n strings for the given content.
@@ -24,9 +25,9 @@ class sfI18nYamlValidateExtractor extends sfI18nYamlExtractor
      */
     public function extract($content)
     {
-        $strings = array();
+        $strings = [];
 
-        $config = sfYaml::load($content, sfConfig::get('sf_charset', 'UTF-8'));
+        $config = \sfYaml::load($content, \sfConfig::get('sf_charset', 'UTF-8'));
 
         // New validate.yml format
 

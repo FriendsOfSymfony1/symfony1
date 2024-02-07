@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +13,7 @@ error_reporting(error_reporting() & ~E_STRICT);
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(40);
+$t = new \lime_test(40);
 
 @include_once 'PEAR.php';
 if (!class_exists('PEAR')) {
@@ -34,17 +35,17 @@ mkdir($temp, 0777, true);
 
 define('SF_PLUGIN_TEST_DIR', $temp);
 
-$options = array(
+$options = [
     'plugin_dir' => $temp.'/plugins',
     'cache_dir' => $temp.'/cache',
     'preferred_state' => 'stable',
     'rest_base_class' => 'sfPearRestTest',
     'downloader_base_class' => 'sfPearDownloaderTest',
-);
+];
 
-$dispatcher = new sfEventDispatcher();
+$dispatcher = new \sfEventDispatcher();
 
-class myPluginManager extends sfPluginManager
+class myPluginManager extends \sfPluginManager
 {
     protected $mainPackageVersion = '1.0.0';
 
@@ -58,7 +59,7 @@ class myPluginManager extends sfPluginManager
     {
         $this->environment->registerChannel('pear.example.com', true);
 
-        $mainPackage = new PEAR_PackageFile_v2_rw();
+        $mainPackage = new \PEAR_PackageFile_v2_rw();
         $mainPackage->setPackage('sfMainPackage');
         $mainPackage->setChannel('pear.example.com');
         $mainPackage->setConfig($this->environment->getConfig());
@@ -80,7 +81,7 @@ class myPluginManager extends sfPluginManager
 
         $this->environment->getRegistry()->deletePackage('sfMainPackage', 'pear.example.com');
         if (!$this->environment->getRegistry()->addPackage2($mainPackage)) {
-            throw new sfException('Unable to register our sfMainPackage');
+            throw new \sfException('Unable to register our sfMainPackage');
         }
     }
 
@@ -96,8 +97,8 @@ class myPluginManager extends sfPluginManager
 
 // ->initialize()
 $t->diag('->initialize()');
-$environment = new sfPearEnvironment($dispatcher, $options);
-$pluginManager = new myPluginManager($dispatcher, $environment);
+$environment = new \sfPearEnvironment($dispatcher, $options);
+$pluginManager = new \myPluginManager($dispatcher, $environment);
 $t->is($pluginManager->getEnvironment(), $environment, '->initialize() takes a sfPearEnvironment as its second argument');
 
 // ->installPlugin() ->uninstallPlugin()
@@ -108,13 +109,13 @@ $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.0.3', '->ins
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');
 $t->ok(!is_file($temp.'/plugins/sfTestPlugin/VERSION'), '->uninstallPlugin() uninstalls a plugin');
 
-$pluginManager->installPlugin('sfTestPlugin', array('stability' => 'beta'));
+$pluginManager->installPlugin('sfTestPlugin', ['stability' => 'beta']);
 $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.0.4', '->installPlugin() can take a stability option');
 
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');
 $t->ok(!is_file($temp.'/plugins/sfTestPlugin/VERSION'), '->uninstallPlugin() uninstalls a plugin');
 
-$pluginManager->installPlugin('sfTestPlugin', array('version' => '1.0.0'));
+$pluginManager->installPlugin('sfTestPlugin', ['version' => '1.0.0']);
 $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.0.0', '->installPlugin() can take a version option');
 
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');
@@ -123,10 +124,10 @@ $t->ok(!is_file($temp.'/plugins/sfTestPlugin/VERSION'), '->uninstallPlugin() uni
 $t->diag('Try to install a version that won\'t work with our main package');
 
 try {
-    $pluginManager->installPlugin('sfTestPlugin', array('version' => '1.1.3'));
+    $pluginManager->installPlugin('sfTestPlugin', ['version' => '1.1.3']);
 
     $t->fail('->installPlugin() throws an exception if you try to install a version that is not compatible with our main package');
-} catch (sfPluginDependencyException $e) {
+} catch (\sfPluginDependencyException $e) {
     $t->pass('->installPlugin() throws an exception if you try to install a version that is not compatible with our main package');
 }
 
@@ -139,7 +140,7 @@ $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.1.3', '->ins
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');
 $t->ok(!is_file($temp.'/plugins/sfTestPlugin/VERSION'), '->uninstallPlugin() uninstalls a plugin');
 
-$pluginManager->installPlugin('sfTestPlugin', array('stability' => 'beta'));
+$pluginManager->installPlugin('sfTestPlugin', ['stability' => 'beta']);
 $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.1.4', '->installPlugin() takes a stability as its 4th argument');
 
 $t->ok($pluginManager->uninstallPlugin('sfTestPlugin'), '->uninstallPlugin() returns true if the plugin is properly uninstalled');
@@ -154,7 +155,7 @@ try {
     $pluginManager->installPlugin('sfBarPlugin');
 
     $t->fail('->installPlugin() throws an exception if the plugin does not exist');
-} catch (sfPluginException $e) {
+} catch (\sfPluginException $e) {
     $t->pass('->installPlugin() throws an exception if the plugin does not exist');
 }
 
@@ -184,8 +185,8 @@ $t->is($pluginManager->getPluginVersion('sfTestPlugin', 'alpha'), '1.1.4', '->ge
 $t->diag('->getInstalledPlugins()');
 $pluginManager->installPlugin('sfTestPlugin');
 $installed = $pluginManager->getInstalledPlugins();
-$a = array($installed[0]->getName(), $installed[1]->getName());
-$b = array('sfTestPlugin', 'sfMainPackage');
+$a = [$installed[0]->getName(), $installed[1]->getName()];
+$b = ['sfTestPlugin', 'sfMainPackage'];
 sort($a);
 sort($b);
 $t->is($a, $b, '->getInstalledPlugin() returns an array of installed packages');
@@ -197,18 +198,18 @@ $t->diag('install a plugin with a dependency must fail');
 try {
     $pluginManager->installPlugin('sfFooPlugin');
     $t->fail('->installPlugin() throws an exception if the plugin needs a dependency to be installed');
-} catch (sfPluginDependencyException $e) {
+} catch (\sfPluginDependencyException $e) {
     $t->pass('->installPlugin() throws an exception if the plugin needs a dependency to be installed');
 }
 
 $t->diag('install a plugin with a dependency and force installation of all dependencies');
-$pluginManager->installPlugin('sfFooPlugin', array('install_deps' => true));
+$pluginManager->installPlugin('sfFooPlugin', ['install_deps' => true]);
 $t->is(file_get_contents($temp.'/plugins/sfFooPlugin/VERSION'), '1.0.0', '->installPlugin() can take a install_deps option');
 $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.1.3', '->installPlugin() can take a install_deps option');
 $pluginManager->uninstallPlugin('sfFooPlugin');
 $pluginManager->uninstallPlugin('sfTestPlugin');
 
-$pluginManager->installPlugin('sfTestPlugin', array('version' => '1.1.4'));
+$pluginManager->installPlugin('sfTestPlugin', ['version' => '1.1.4']);
 $pluginManager->installPlugin('sfFooPlugin');
 $t->is(file_get_contents($temp.'/plugins/sfFooPlugin/VERSION'), '1.0.0', '->installPlugin() installs a plugin if all dependencies are installed');
 $t->is(file_get_contents($temp.'/plugins/sfTestPlugin/VERSION'), '1.1.4', '->installPlugin() installs a plugin if all dependencies are installed');
@@ -216,13 +217,13 @@ $pluginManager->uninstallPlugin('sfFooPlugin');
 $pluginManager->uninstallPlugin('sfTestPlugin');
 
 $t->diag('try to uninstall a plugin with a depedency must fail');
-$pluginManager->installPlugin('sfTestPlugin', array('version' => '1.1.4'));
+$pluginManager->installPlugin('sfTestPlugin', ['version' => '1.1.4']);
 $pluginManager->installPlugin('sfFooPlugin');
 
 try {
     $pluginManager->uninstallPlugin('sfTestPlugin');
     $t->fail('->uninstallPlugin() throws an exception if you try to uninstall a plugin that is needed for another one');
-} catch (sfPluginException $e) {
+} catch (\sfPluginException $e) {
     $t->pass('->uninstallPlugin() throws an exception if you try to uninstall a plugin that is needed for another one');
 }
 $pluginManager->uninstallPlugin('sfFooPlugin');
@@ -230,26 +231,26 @@ $pluginManager->uninstallPlugin('sfTestPlugin');
 
 $t->diag('install a plugin with a dependency which is installed by with a too old version');
 $pluginManager->setMainPackageVersion('1.0.0');
-$pluginManager->installPlugin('sfTestPlugin', array('version' => '1.0.4'));
+$pluginManager->installPlugin('sfTestPlugin', ['version' => '1.0.4']);
 $pluginManager->setMainPackageVersion('1.1.0');
 
 try {
     $pluginManager->installPlugin('sfFooPlugin');
     $t->fail('->installPlugin() throws an exception if you try to install a plugin with a dependency that is installed but not in the right version');
-} catch (sfPluginDependencyException $e) {
+} catch (\sfPluginDependencyException $e) {
     $t->pass('->installPlugin() throws an exception if you try to install a plugin with a dependency that is installed but not in the right version');
 }
 $pluginManager->uninstallPlugin('sfTestPlugin');
 
 $t->diag('install a plugin with a dependency which is installed with a too old version and you want automatic upgrade');
 $pluginManager->setMainPackageVersion('1.0.0');
-$pluginManager->installPlugin('sfTestPlugin', array('version' => '1.0.4'));
+$pluginManager->installPlugin('sfTestPlugin', ['version' => '1.0.4']);
 $pluginManager->setMainPackageVersion('1.1.0');
-$pluginManager->installPlugin('sfFooPlugin', array('install_deps' => true));
+$pluginManager->installPlugin('sfFooPlugin', ['install_deps' => true]);
 $t->is(file_get_contents($temp.'/plugins/sfFooPlugin/VERSION'), '1.0.0', '->installPlugin() installs a plugin if all dependencies are installed');
 $pluginManager->uninstallPlugin('sfFooPlugin');
 $pluginManager->uninstallPlugin('sfTestPlugin');
 
 // teardown
-sfToolkit::clearDirectory($temp);
+\sfToolkit::clearDirectory($temp);
 rmdir($temp);

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,24 +18,24 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginPublishAssetsTask extends sfPluginBaseTask
+class sfPluginPublishAssetsTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('plugins', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Publish this plugin\'s assets'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('plugins', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'Publish this plugin\'s assets'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('core-only', '', \sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('relative', '', sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('relative', '', \sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'publish-assets';
@@ -56,18 +57,18 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $enabledPlugins = $this->configuration->getPlugins();
 
         if ($diff = array_diff($arguments['plugins'], $enabledPlugins)) {
-            throw new InvalidArgumentException('Plugin(s) not found: '.implode(', ', $diff));
+            throw new \InvalidArgumentException('Plugin(s) not found: '.implode(', ', $diff));
         }
 
         if ($options['core-only']) {
-            $corePlugins = sfFinder::type('dir')->relative()->maxdepth(0)->in($this->configuration->getSymfonyLibDir().'/plugins');
+            $corePlugins = \sfFinder::type('dir')->relative()->maxdepth(0)->in($this->configuration->getSymfonyLibDir().'/plugins');
             $arguments['plugins'] = array_unique(array_merge($arguments['plugins'], array_intersect($enabledPlugins, $corePlugins)));
         } elseif (!count($arguments['plugins'])) {
             $arguments['plugins'] = $enabledPlugins;
@@ -93,9 +94,9 @@ EOF;
 
         if (is_dir($webDir)) {
             if ($relative) {
-                $this->getFilesystem()->relativeSymlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+                $this->getFilesystem()->relativeSymlink($webDir, \sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
             } else {
-                $this->getFilesystem()->symlink($webDir, sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
+                $this->getFilesystem()->symlink($webDir, \sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.$plugin, true);
             }
         }
     }

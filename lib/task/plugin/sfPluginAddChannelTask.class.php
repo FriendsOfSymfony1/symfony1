@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,16 +18,16 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginAddChannelTask extends sfPluginBaseTask
+class sfPluginAddChannelTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The channel name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The channel name'),
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'add-channel';
@@ -41,9 +42,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('add channel "%s"', $arguments['name']));
 

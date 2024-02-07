@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,21 +16,21 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterForm extends sfTester
+class sfTesterForm extends \sfTester
 {
     protected $form;
 
     /**
      * Constructor.
      *
-     * @param sfTestFunctionalBase $browser A browser
-     * @param lime_test            $tester  A tester object
+     * @param \sfTestFunctionalBase $browser A browser
+     * @param \lime_test            $tester  A tester object
      */
-    public function __construct(sfTestFunctionalBase $browser, $tester)
+    public function __construct(\sfTestFunctionalBase $browser, $tester)
     {
         parent::__construct($browser, $tester);
 
-        $this->browser->addListener('template.filter_parameters', array($this, 'filterTemplateParameters'));
+        $this->browser->addListener('template.filter_parameters', [$this, 'filterTemplateParameters']);
     }
 
     /**
@@ -49,7 +50,7 @@ class sfTesterForm extends sfTester
             $action = $this->browser->getContext()->getActionStack()->getLastEntry()->getActionInstance();
 
             foreach ($action->getVarHolder()->getAll() as $name => $value) {
-                if ($value instanceof sfForm && $value->isBound()) {
+                if ($value instanceof \sfForm && $value->isBound()) {
                     $this->form = $value;
 
                     break;
@@ -61,7 +62,7 @@ class sfTesterForm extends sfTester
     /**
      * Returns the current form.
      *
-     * @return sfForm The current sfForm form instance
+     * @return \sfForm The current sfForm form instance
      */
     public function getForm()
     {
@@ -78,7 +79,7 @@ class sfTesterForm extends sfTester
     public function hasErrors($value = true)
     {
         if (null === $this->form) {
-            throw new LogicException('no form has been submitted.');
+            throw new \LogicException('no form has been submitted.');
         }
 
         if (is_int($value)) {
@@ -121,11 +122,11 @@ class sfTesterForm extends sfTester
     public function isError($field, $value = true)
     {
         if (null === $this->form) {
-            throw new LogicException('no form has been submitted.');
+            throw new \LogicException('no form has been submitted.');
         }
 
         if (null === $field) {
-            $error = new sfValidatorErrorSchema(new sfValidatorPass());
+            $error = new \sfValidatorErrorSchema(new \sfValidatorPass());
             foreach ($this->form->getGlobalErrors() as $globalError) {
                 $error->addError($globalError);
             }
@@ -166,7 +167,7 @@ class sfTesterForm extends sfTester
     public function debug()
     {
         if (null === $this->form) {
-            throw new LogicException('no form has been submitted.');
+            throw new \LogicException('no form has been submitted.');
         }
 
         echo $this->tester->error('Form debug');
@@ -180,12 +181,12 @@ class sfTesterForm extends sfTester
     /**
      * Listens to the template.filter_parameters event to get the submitted form object.
      *
-     * @param sfEvent $event      The event
-     * @param array   $parameters An array of parameters passed to the template
+     * @param \sfEvent $event      The event
+     * @param array    $parameters An array of parameters passed to the template
      *
      * @return array The array of parameters passed to the template
      */
-    public function filterTemplateParameters(sfEvent $event, $parameters)
+    public function filterTemplateParameters(\sfEvent $event, $parameters)
     {
         if (!isset($parameters['sf_type'])) {
             return $parameters;
@@ -193,7 +194,7 @@ class sfTesterForm extends sfTester
 
         if ('action' == $parameters['sf_type']) {
             foreach ($parameters as $key => $value) {
-                if ($value instanceof sfForm && $value->isBound()) {
+                if ($value instanceof \sfForm && $value->isBound()) {
                     $this->form = $value;
 
                     break;
@@ -207,7 +208,7 @@ class sfTesterForm extends sfTester
     /**
      * @param string $path
      *
-     * @return sfFormField
+     * @return \sfFormField
      */
     public function getFormField($path)
     {

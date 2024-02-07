@@ -1,7 +1,7 @@
 <?php decorate_with(__DIR__.'/defaultLayout.php'); ?>
 
 <div class="sfTMessageContainer sfTAlert"> 
-  <?php echo image_tag('/sf/sf_default/images/icons/cancel48.png', array('alt' => 'page not found', 'class' => 'sfTMessageIcon', 'size' => '48x48')); ?>
+  <?php echo image_tag('/sf/sf_default/images/icons/cancel48.png', ['alt' => 'page not found', 'class' => 'sfTMessageIcon', 'size' => '48x48']); ?>
   <div class="sfTMessageWrap">
     <h1>Oops! Page Not Found</h1>
     <h5>The server returned a 404 response.</h5>

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,9 +18,9 @@
  */
 abstract class sfWidget
 {
-    protected $requiredOptions = array();
-    protected $attributes = array();
-    protected $options = array();
+    protected $requiredOptions = [];
+    protected $attributes = [];
+    protected $options = [];
 
     protected static $xhtml = true;
     protected static $charset = 'UTF-8';
@@ -30,10 +31,10 @@ abstract class sfWidget
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @throws InvalidArgumentException when a option is not supported
-     * @throws RuntimeException         when a required option is not given
+     * @throws \InvalidArgumentException when a option is not supported
+     * @throws \RuntimeException         when a required option is not given
      */
-    public function __construct($options = array(), $attributes = array())
+    public function __construct($options = [], $attributes = [])
     {
         $this->configure($options, $attributes);
 
@@ -42,12 +43,12 @@ abstract class sfWidget
 
         // check option names
         if ($diff = array_diff($optionKeys, array_merge($currentOptionKeys, $this->requiredOptions))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         // check required options
         if ($diff = array_diff($this->requiredOptions, array_merge($currentOptionKeys, $optionKeys))) {
-            throw new RuntimeException(sprintf('%s requires the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
+            throw new \RuntimeException(sprintf('%s requires the following options: \'%s\'.', get_class($this), implode('\', \'', $diff)));
         }
 
         $this->options = array_merge($this->options, $options);
@@ -66,14 +67,14 @@ abstract class sfWidget
      *
      * @return string A HTML representation of the widget
      */
-    abstract public function render($name, $value = null, $attributes = array(), $errors = array());
+    abstract public function render($name, $value = null, $attributes = [], $errors = []);
 
     /**
      * Adds a required option.
      *
      * @param string $name The option name
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function addRequiredOption($name)
     {
@@ -98,7 +99,7 @@ abstract class sfWidget
      * @param string $name  The option name
      * @param mixed  $value The default value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function addOption($name, $value = null)
     {
@@ -113,14 +114,14 @@ abstract class sfWidget
      * @param string $name  The option name
      * @param mixed  $value The value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      *
-     * @throws InvalidArgumentException when a option is not supported
+     * @throws \InvalidArgumentException when a option is not supported
      */
     public function setOption($name, $value)
     {
         if (!in_array($name, array_merge(array_keys($this->options), $this->requiredOptions))) {
-            throw new InvalidArgumentException(sprintf('%s does not support the following option: \'%s\'.', get_class($this), $name));
+            throw new \InvalidArgumentException(sprintf('%s does not support the following option: \'%s\'.', get_class($this), $name));
         }
 
         $this->options[$name] = $value;
@@ -168,7 +169,7 @@ abstract class sfWidget
      *
      * @param array $options An array of options
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setOptions($options)
     {
@@ -193,7 +194,7 @@ abstract class sfWidget
      * @param string $name  The attribute name
      * @param string $value The attribute value
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setAttribute($name, $value)
     {
@@ -219,7 +220,7 @@ abstract class sfWidget
      *
      * @param array $attributes An array of HTML attributes
      *
-     * @return sfWidget The current widget instance
+     * @return \sfWidget The current widget instance
      */
     public function setAttributes($attributes)
     {
@@ -239,7 +240,7 @@ abstract class sfWidget
      */
     public function getStylesheets()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -249,7 +250,7 @@ abstract class sfWidget
      */
     public function getJavaScripts()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -299,7 +300,7 @@ abstract class sfWidget
      * @param array  $attributes An array of HTML attributes to be merged with the default HTML attributes
      * @param string An HTML tag string
      */
-    public function renderTag($tag, $attributes = array())
+    public function renderTag($tag, $attributes = [])
     {
         if (empty($tag)) {
             return '';
@@ -316,7 +317,7 @@ abstract class sfWidget
      * @param array  $attributes An array of HTML attributes to be merged with the default HTML attributes
      * @param string An HTML tag string
      */
-    public function renderContentTag($tag, $content = null, $attributes = array())
+    public function renderContentTag($tag, $content = null, $attributes = [])
     {
         if (empty($tag)) {
             return '';
@@ -381,7 +382,7 @@ abstract class sfWidget
      *
      * @see __construct()
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
     }
 

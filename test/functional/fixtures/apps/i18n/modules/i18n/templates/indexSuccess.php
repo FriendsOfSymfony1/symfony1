@@ -7,7 +7,7 @@
 <div id="template_local"><?php echo __('a local english sentence'); ?></div>
 
 <div id="action_other"><?php echo $otherTest; ?></div>
-<div id="template_other"><?php echo __('an english sentence', array(), 'other'); ?></div>
+<div id="template_other"><?php echo __('an english sentence', [], 'other'); ?></div>
 
 <div id="action_other_local"><?php echo $otherLocalTest; ?></div>
-<div id="template_other_local"><?php echo __('a local english sentence', array(), 'other'); ?></div>
+<div id="template_other_local"><?php echo __('a local english sentence', [], 'other'); ?></div>

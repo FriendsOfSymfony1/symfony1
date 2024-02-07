@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,24 +19,24 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineDqlTask extends sfDoctrineBaseTask
+class sfDoctrineDqlTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('dql_query', sfCommandArgument::REQUIRED, 'The DQL query to execute', null),
-            new sfCommandArgument('parameter', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Query parameter'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('dql_query', \sfCommandArgument::REQUIRED, 'The DQL query to execute', null),
+            new \sfCommandArgument('parameter', \sfCommandArgument::OPTIONAL | \sfCommandArgument::IS_ARRAY, 'Query parameter'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('show-sql', null, sfCommandOption::PARAMETER_NONE, 'Show the sql that would be executed'),
-            new sfCommandOption('table', null, sfCommandOption::PARAMETER_NONE, 'Return results in table format'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('show-sql', null, \sfCommandOption::PARAMETER_NONE, 'Show the sql that would be executed'),
+            new \sfCommandOption('table', null, \sfCommandOption::PARAMETER_NONE, 'Return results in table format'),
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'dql';
@@ -59,15 +59,15 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
 
         $dql = $arguments['dql_query'];
 
-        $q = Doctrine_Query::create()
+        $q = \Doctrine_Query::create()
             ->parseDqlQuery($dql)
         ;
 
@@ -84,14 +84,14 @@ EOF;
             if (!$options['table']) {
                 $results = $q->fetchArray($arguments['parameter']);
 
-                $this->log(array(
+                $this->log([
                     sprintf('found %s results', number_format($count)),
-                    sfYaml::dump($results, 4),
-                ));
+                    \sfYaml::dump($results, 4),
+                ]);
             } else {
-                $results = $q->execute($arguments['parameter'], Doctrine_Core::HYDRATE_SCALAR);
+                $results = $q->execute($arguments['parameter'], \Doctrine_Core::HYDRATE_SCALAR);
 
-                $headers = array();
+                $headers = [];
 
                 // calculate lengths
                 foreach ($results as $result) {
@@ -117,7 +117,7 @@ EOF;
                     $div .= str_repeat('-', $length + 2).'+';
                 }
 
-                $this->log(array($div, $hdr, $div));
+                $this->log([$div, $hdr, $div]);
 
                 // print results
                 foreach ($results as $result) {
@@ -149,7 +149,7 @@ EOF;
     /**
      * Renders the supplied value.
      *
-     * @param string|null $value
+     * @param \string|null $value
      *
      * @return string
      */

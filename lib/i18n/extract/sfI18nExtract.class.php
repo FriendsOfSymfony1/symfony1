@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,11 +16,11 @@
  */
 abstract class sfI18nExtract
 {
-    protected $currentMessages = array();
-    protected $newMessages = array();
-    protected $allSeenMessages = array();
+    protected $currentMessages = [];
+    protected $newMessages = [];
+    protected $allSeenMessages = [];
     protected $culture;
-    protected $parameters = array();
+    protected $parameters = [];
     protected $i18n;
 
     /**
@@ -27,7 +28,7 @@ abstract class sfI18nExtract
      *
      * @see initialize()
      */
-    public function __construct(sfI18N $i18n, $culture, $parameters = array())
+    public function __construct(\sfI18N $i18n, $culture, $parameters = [])
     {
         $this->initialize($i18n, $culture, $parameters);
     }
@@ -35,15 +36,15 @@ abstract class sfI18nExtract
     /**
      * Initializes the current extract object.
      *
-     * @param sfI18N $i18n       A sfI18N instance
-     * @param string $culture    The culture
-     * @param array  $parameters An array of parameters
+     * @param \sfI18N $i18n       A sfI18N instance
+     * @param string  $culture    The culture
+     * @param array   $parameters An array of parameters
      */
-    public function initialize(sfI18N $i18n, $culture, $parameters = array())
+    public function initialize(\sfI18N $i18n, $culture, $parameters = [])
     {
-        $this->allSeenMessages = array();
-        $this->newMessages = array();
-        $this->currentMessages = array();
+        $this->allSeenMessages = [];
+        $this->newMessages = [];
+        $this->currentMessages = [];
 
         $this->culture = $culture;
         $this->parameters = $parameters;
@@ -157,7 +158,7 @@ abstract class sfI18nExtract
      */
     protected function loadCurrentMessages()
     {
-        $this->currentMessages = array();
+        $this->currentMessages = [];
         foreach ($this->i18n->getMessageSource()->read() as $catalogue => $translations) {
             foreach ($translations as $key => $values) {
                 $this->currentMessages[] = $key;
@@ -172,10 +173,10 @@ abstract class sfI18nExtract
      */
     protected function extractFromPhpFiles($dir)
     {
-        $phpExtractor = new sfI18nPhpExtractor();
+        $phpExtractor = new \sfI18nPhpExtractor();
 
-        $files = sfFinder::type('file')->name('*.php');
-        $messages = array();
+        $files = \sfFinder::type('file')->name('*.php');
+        $messages = [];
         foreach ($files->in($dir) as $file) {
             $messages = array_merge($messages, $phpExtractor->extract(file_get_contents($file)));
         }

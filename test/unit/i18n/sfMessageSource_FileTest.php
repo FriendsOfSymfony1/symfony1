@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,9 +11,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new \lime_test(7);
 
-class sfMessageSource_Simple extends sfMessageSource_File
+class sfMessageSource_Simple extends \sfMessageSource_File
 {
     protected $dataExt = '.xml';
 
@@ -34,16 +35,16 @@ class sfMessageSource_Simple extends sfMessageSource_File
     }
 }
 
-$source = sfMessageSource::factory('Simple', __DIR__.'/fixtures');
+$source = \sfMessageSource::factory('Simple', __DIR__.'/fixtures');
 $source->setCulture('fr_FR');
 
 // ->getCatalogueByDir()
 $t->diag('->getCatalogueByDir()');
-$t->is($source->getCatalogueByDir('messages'), array('fr_FR/messages.xml', 'fr/messages.xml'), '->getCatalogueByDir() returns catalogues by directory');
+$t->is($source->getCatalogueByDir('messages'), ['fr_FR/messages.xml', 'fr/messages.xml'], '->getCatalogueByDir() returns catalogues by directory');
 
 // ->getCatalogueList()
 $t->diag('->getCatalogueList()');
-$t->is($source->getCatalogueList('messages'), array('fr_FR/messages.xml', 'fr/messages.xml', 'messages.fr_FR.xml', 'messages.fr.xml', 'messages.xml'), '->getCatalogueByDir() returns all catalogues for the current culture');
+$t->is($source->getCatalogueList('messages'), ['fr_FR/messages.xml', 'fr/messages.xml', 'messages.fr_FR.xml', 'messages.fr.xml', 'messages.xml'], '->getCatalogueByDir() returns all catalogues for the current culture');
 
 // ->getSource()
 $t->diag('->getSource()');

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,13 +25,13 @@ require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
 
 require_once __DIR__.'/../../../lib/config/sfConfig.class.php';
 
-class sfException extends Exception
+class sfException extends \Exception
 {
 }
 
-sfConfig::set('sf_charset', 'UTF-8');
+\sfConfig::set('sf_charset', 'UTF-8');
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
 class OutputEscaperTest
 {
@@ -46,12 +47,12 @@ class OutputEscaperTest
 
     public function getTitles()
     {
-        return array(1, 2, '<strong>escaped!</strong>');
+        return [1, 2, '<strong>escaped!</strong>'];
     }
 }
 
-$object = new OutputEscaperTest();
-$escaped = sfOutputEscaper::escape('esc_entities', $object);
+$object = new \OutputEscaperTest();
+$escaped = \sfOutputEscaper::escape('esc_entities', $object);
 
 $t->is($escaped->getTitle(), '&lt;strong&gt;escaped!&lt;/strong&gt;', 'The escaped object behaves like the real object');
 
@@ -64,8 +65,8 @@ $t->diag('__toString()');
 $t->is($escaped->__toString(), '&lt;strong&gt;escaped!&lt;/strong&gt;', 'The escaped object behaves like the real object');
 
 if (class_exists('SimpleXMLElement')) {
-    $element = new SimpleXMLElement('<foo>bar</foo>');
-    $escaped = sfOutputEscaper::escape('esc_entities', $element);
+    $element = new \SimpleXMLElement('<foo>bar</foo>');
+    $escaped = \sfOutputEscaper::escape('esc_entities', $element);
     $t->is((string) $escaped, (string) $element, '->__toString() is compatible with SimpleXMLElement');
 } else {
     $t->skip('->__toString() is compatible with SimpleXMLElement');
@@ -75,7 +76,7 @@ class Foo
 {
 }
 
-class FooCountable implements Countable
+class FooCountable implements \Countable
 {
     #[\ReturnTypeWillChange]
     public function count()
@@ -86,17 +87,17 @@ class FooCountable implements Countable
 
 // implements Countable
 $t->diag('implements Countable');
-$foo = sfOutputEscaper::escape('esc_entities', new Foo());
-$fooc = sfOutputEscaper::escape('esc_entities', new FooCountable());
+$foo = \sfOutputEscaper::escape('esc_entities', new \Foo());
+$fooc = \sfOutputEscaper::escape('esc_entities', new \FooCountable());
 $t->is(count($foo), 1, '->count() returns 1 if the embedded object does not implement the Countable interface');
 $t->is(count($fooc), 2, '->count() returns the count() for the embedded object');
 
 // ->__isset()
 $t->diag('->__isset()');
 
-$raw = new stdClass();
+$raw = new \stdClass();
 $raw->foo = 'bar';
-$esc = sfOutputEscaper::escape('esc_entities', $raw);
+$esc = \sfOutputEscaper::escape('esc_entities', $raw);
 $t->ok(isset($esc->foo), '->__isset() asks the wrapped object whether a property is set');
 unset($raw->foo);
 $t->ok(!isset($esc->foo), '->__isset() asks the wrapped object whether a property is set');

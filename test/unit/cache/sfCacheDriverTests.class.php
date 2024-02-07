@@ -1,12 +1,14 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 class sfCacheDriverTests
 {
     public static function launch($t, $cache)
@@ -52,7 +54,7 @@ class sfCacheDriverTests
         $cache->set('bar', $data, 86400);
         sleep(2);
 
-        $cache->clean(sfCache::OLD);
+        $cache->clean(\sfCache::OLD);
         $t->is($cache->has('foo'), false, '->clean() cleans old cache key if given the sfCache::OLD argument');
         $t->is($cache->has('bar'), true, '->clean() cleans old cache key if given the sfCache::OLD argument');
 
@@ -60,7 +62,7 @@ class sfCacheDriverTests
         sleep(2);
         $cache->set('bar', $data, 86400);
 
-        $cache->clean(sfCache::ALL);
+        $cache->clean(\sfCache::ALL);
         $t->is($cache->has('foo'), false, '->clean() cleans all cache key if given the sfCache::ALL argument');
         $t->is($cache->has('bar'), false, '->clean() cleans all cache key if given the sfCache::ALL argument');
 
@@ -94,14 +96,14 @@ class sfCacheDriverTests
         // ->removePattern()
         $t->diag('->removePattern()');
 
-        $tests = array(
-            '*:bar:foo' => array(false, false, true, true),
-            'foo:bar:*' => array(false, true, false, true),
-            'foo:**:foo' => array(false, true, true, true),
-            'foo:bar:**' => array(false, true, false, false),
-            '**:bar' => array(true, true, true, false),
-            '**' => array(false, false, false, false),
-        );
+        $tests = [
+            '*:bar:foo' => [false, false, true, true],
+            'foo:bar:*' => [false, true, false, true],
+            'foo:**:foo' => [false, true, true, true],
+            'foo:bar:**' => [false, true, false, false],
+            '**:bar' => [true, true, true, false],
+            '**' => [false, false, false, false],
+        ];
 
         foreach ($tests as $pattern => $results) {
             $t->diag($pattern);
@@ -123,7 +125,7 @@ class sfCacheDriverTests
 
         // ->getTimeout()
         $t->diag('->getTimeout()');
-        foreach (array(86400, 10) as $lifetime) {
+        foreach ([86400, 10] as $lifetime) {
             $cache->set('foo', 'bar', $lifetime);
 
             $delta = $cache->getTimeout('foo') - time();
@@ -134,7 +136,7 @@ class sfCacheDriverTests
         sleep(2);
         $t->is($cache->getTimeout('bar'), 0, '->getTimeout() returns the timeout time for a given cache key');
 
-        foreach (array(86400, 10) as $lifetime) {
+        foreach ([86400, 10] as $lifetime) {
             $cache->setOption('lifetime', $lifetime);
             $cache->set('foo', 'bar');
 
@@ -146,7 +148,7 @@ class sfCacheDriverTests
 
         // ->getLastModified()
         $t->diag('->getLastModified()');
-        foreach (array(86400, 10) as $lifetime) {
+        foreach ([86400, 10] as $lifetime) {
             $cache->set('bar', 'foo', $lifetime);
             $now = time();
             $lastModified = $cache->getLastModified('bar');
@@ -157,7 +159,7 @@ class sfCacheDriverTests
         sleep(2);
         $t->is($cache->getLastModified('bar'), 0, '->getLastModified() returns the last modified time for a given cache key');
 
-        foreach (array(86400, 10) as $lifetime) {
+        foreach ([86400, 10] as $lifetime) {
             $cache->setOption('lifetime', $lifetime);
             $cache->set('bar', 'foo');
 
@@ -175,7 +177,7 @@ class sfCacheDriverTests
         $cache->set('bar', 'foo');
         $cache->set('foo', 'bar');
 
-        $t->is($cache->getMany(array('foo', 'bar')), array('foo' => 'bar', 'bar' => 'foo'), '->getMany() gets many keys in one call');
+        $t->is($cache->getMany(['foo', 'bar']), ['foo' => 'bar', 'bar' => 'foo'], '->getMany() gets many keys in one call');
 
         $cache->clean();
     }

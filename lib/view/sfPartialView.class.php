@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,17 +16,17 @@
  *
  * @version    SVN: $Id$
  */
-class sfPartialView extends sfPHPView
+class sfPartialView extends \sfPHPView
 {
     protected $viewCache;
     protected $checkCache = false;
     protected $cacheKey;
-    protected $partialVars = array();
+    protected $partialVars = [];
 
     /**
      * Constructor.
      *
-     * @see sfView
+     * @see \sfView
      */
     public function initialize($context, $moduleName, $actionName, $viewName)
     {
@@ -33,7 +34,7 @@ class sfPartialView extends sfPHPView
 
         $this->viewCache = $this->context->getViewCacheManager();
 
-        if (sfConfig::get('sf_cache')) {
+        if (\sfConfig::get('sf_cache')) {
             $this->checkCache = $this->viewCache->isActionCacheable($moduleName, $actionName);
         }
 
@@ -74,8 +75,8 @@ class sfPartialView extends sfPHPView
      */
     public function render()
     {
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled')) {
-            $timer = sfTimerManager::getTimer(sprintf('Partial "%s/%s"', $this->moduleName, $this->actionName));
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_logging_enabled')) {
+            $timer = \sfTimerManager::getTimer(sprintf('Partial "%s/%s"', $this->moduleName, $this->actionName));
         }
 
         if ($retval = $this->getCache()) {
@@ -106,7 +107,7 @@ class sfPartialView extends sfPHPView
 
             // render template
             $retval = $this->renderFile($this->getDirectory().'/'.$this->getTemplate());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             if ($this->checkCache) {
                 $this->context->setResponse($mainResponse);
                 $mainResponse->merge($response);
@@ -121,7 +122,7 @@ class sfPartialView extends sfPHPView
             $mainResponse->merge($response);
         }
 
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled')) {
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_logging_enabled')) {
             $timer->addTime();
         }
 

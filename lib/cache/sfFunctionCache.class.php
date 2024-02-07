@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,9 +23,9 @@ class sfFunctionCache
     /**
      * Constructor.
      *
-     * @param sfCache $cache An sfCache object instance
+     * @param \sfCache $cache An sfCache object instance
      */
-    public function __construct(sfCache $cache)
+    public function __construct(\sfCache $cache)
     {
         $this->cache = $cache;
     }
@@ -44,10 +45,10 @@ class sfFunctionCache
      *
      * @return mixed The result of the function/method
      *
-     * @throws Exception
-     * @throws sfException
+     * @throws \Exception
+     * @throws \sfException
      */
-    public function call($callable, $arguments = array())
+    public function call($callable, $arguments = [])
     {
         // Generate a cache id
         $key = $this->computeCacheKey($callable, $arguments);
@@ -56,10 +57,10 @@ class sfFunctionCache
         if (null !== $serialized) {
             $data = unserialize($serialized);
         } else {
-            $data = array();
+            $data = [];
 
             if (!is_callable($callable)) {
-                throw new sfException('The first argument to call() must be a valid callable.');
+                throw new \sfException('The first argument to call() must be a valid callable.');
             }
 
             ob_start();
@@ -67,7 +68,7 @@ class sfFunctionCache
 
             try {
                 $data['result'] = call_user_func_array($callable, $arguments);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 ob_end_clean();
 
                 throw $e;
@@ -86,7 +87,7 @@ class sfFunctionCache
     /**
      * Returns the cache instance.
      *
-     * @return sfCache The sfCache instance
+     * @return \sfCache The sfCache instance
      */
     public function getCache()
     {
@@ -101,7 +102,7 @@ class sfFunctionCache
      *
      * @return string The associated cache key
      */
-    public function computeCacheKey($callable, $arguments = array())
+    public function computeCacheKey($callable, $arguments = [])
     {
         return md5(serialize($callable).serialize($arguments));
     }

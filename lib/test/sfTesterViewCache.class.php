@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfTesterViewCache extends sfTester
+class sfTesterViewCache extends \sfTester
 {
     protected $viewCacheManager;
     protected $response;
@@ -103,7 +104,7 @@ class sfTesterViewCache extends sfTester
                 } else {
                     $ret = unserialize($cacheManager->get($uri));
                     $content = $ret['content'];
-                    $this->tester->ok(false !== strpos($this->response->getContent(), $content), 'content in cache is ok');
+                    $this->tester->ok(str_contains($this->response->getContent(), $content), 'content in cache is ok');
                 }
             }
         }

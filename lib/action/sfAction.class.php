@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,16 +20,16 @@
  * @method sfWebController getController()
  * @method sfWebResponse   getResponse()
  */
-abstract class sfAction extends sfComponent
+abstract class sfAction extends \sfComponent
 {
-    protected $security = array();
+    protected $security = [];
 
     /**
      * Initializes this action.
      *
-     * @param sfContext $context    the current application context
-     * @param string    $moduleName the module name
-     * @param string    $actionName the action name
+     * @param \sfContext $context    the current application context
+     * @param string     $moduleName the module name
+     * @param string     $actionName the action name
      */
     public function initialize($context, $moduleName, $actionName)
     {
@@ -64,11 +64,11 @@ abstract class sfAction extends sfComponent
      *
      * @param string $message Message of the generated exception
      *
-     * @throws sfError404Exception
+     * @throws \sfError404Exception
      */
     public function forward404($message = null)
     {
-        throw new sfError404Exception($this->get404Message($message));
+        throw new \sfError404Exception($this->get404Message($message));
     }
 
     /**
@@ -77,12 +77,12 @@ abstract class sfAction extends sfComponent
      * @param bool   $condition A condition that evaluates to true or false
      * @param string $message   Message of the generated exception
      *
-     * @throws sfError404Exception
+     * @throws \sfError404Exception
      */
     public function forward404Unless($condition, $message = null)
     {
         if (!$condition) {
-            throw new sfError404Exception($this->get404Message($message));
+            throw new \sfError404Exception($this->get404Message($message));
         }
     }
 
@@ -92,12 +92,12 @@ abstract class sfAction extends sfComponent
      * @param bool   $condition A condition that evaluates to true or false
      * @param string $message   Message of the generated exception
      *
-     * @throws sfError404Exception
+     * @throws \sfError404Exception
      */
     public function forward404If($condition, $message = null)
     {
         if ($condition) {
-            throw new sfError404Exception($this->get404Message($message));
+            throw new \sfError404Exception($this->get404Message($message));
         }
     }
 
@@ -108,7 +108,7 @@ abstract class sfAction extends sfComponent
      */
     public function redirect404()
     {
-        return $this->redirect('/'.sfConfig::get('sf_error_404_module').'/'.sfConfig::get('sf_error_404_action'));
+        return $this->redirect('/'.\sfConfig::get('sf_error_404_module').'/'.\sfConfig::get('sf_error_404_action'));
     }
 
     /**
@@ -119,17 +119,17 @@ abstract class sfAction extends sfComponent
      * @param string $module A module name
      * @param string $action An action name
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      */
     public function forward($module, $action)
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Forward to action "%s/%s"', $module, $action))));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Forward to action "%s/%s"', $module, $action)]));
         }
 
         $this->getController()->forward($module, $action);
 
-        throw new sfStopException();
+        throw new \sfStopException();
     }
 
     /**
@@ -141,7 +141,7 @@ abstract class sfAction extends sfComponent
      * @param string $module    A module name
      * @param string $action    An action name
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      */
     public function forwardIf($condition, $module, $action)
     {
@@ -159,7 +159,7 @@ abstract class sfAction extends sfComponent
      * @param string $module    A module name
      * @param string $action    An action name
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      */
     public function forwardUnless($condition, $module, $action)
     {
@@ -180,19 +180,19 @@ abstract class sfAction extends sfComponent
      * @param string $url        Url
      * @param int    $statusCode Status code (default to 302)
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      */
     public function redirect($url, $statusCode = 302)
     {
         // compatibility with url_for2() style signature
         if (is_object($statusCode) || is_array($statusCode)) {
-            $url = array_merge(array('sf_route' => $url), is_object($statusCode) ? array('sf_subject' => $statusCode) : $statusCode);
+            $url = array_merge(['sf_route' => $url], is_object($statusCode) ? ['sf_subject' => $statusCode] : $statusCode);
             $statusCode = func_num_args() >= 3 ? func_get_arg(2) : 302;
         }
 
         $this->getController()->redirect($url, 0, $statusCode);
 
-        throw new sfStopException();
+        throw new \sfStopException();
     }
 
     /**
@@ -204,16 +204,16 @@ abstract class sfAction extends sfComponent
      * @param string $url        Url
      * @param int    $statusCode Status code (default to 302)
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      *
-     * @see redirect
+     * @see \redirect
      */
     public function redirectIf($condition, $url, $statusCode = 302)
     {
         if ($condition) {
             // compatibility with url_for2() style signature
             $arguments = func_get_args();
-            call_user_func_array(array($this, 'redirect'), array_slice($arguments, 1));
+            call_user_func_array([$this, 'redirect'], array_slice($arguments, 1));
         }
     }
 
@@ -226,16 +226,16 @@ abstract class sfAction extends sfComponent
      * @param string $url        Url
      * @param int    $statusCode Status code (default to 302)
      *
-     * @throws sfStopException
+     * @throws \sfStopException
      *
-     * @see redirect
+     * @see \redirect
      */
     public function redirectUnless($condition, $url, $statusCode = 302)
     {
         if (!$condition) {
             // compatibility with url_for2() style signature
             $arguments = func_get_args();
-            call_user_func_array(array($this, 'redirect'), array_slice($arguments, 1));
+            call_user_func_array([$this, 'redirect'], array_slice($arguments, 1));
         }
     }
 
@@ -254,7 +254,7 @@ abstract class sfAction extends sfComponent
     {
         $this->getResponse()->setContent($this->getResponse()->getContent().$text);
 
-        return sfView::NONE;
+        return \sfView::NONE;
     }
 
     /**
@@ -271,7 +271,7 @@ abstract class sfAction extends sfComponent
         $this->getResponse()->setContentType('application/json');
         $this->getResponse()->setContent(json_encode($data));
 
-        return sfView::NONE;
+        return \sfView::NONE;
     }
 
     /**
@@ -309,7 +309,7 @@ abstract class sfAction extends sfComponent
      *
      * @return string sfView::NONE
      *
-     * @see    getPartial
+     * @see    \getPartial
      */
     public function renderPartial($templateName, $vars = null)
     {
@@ -353,7 +353,7 @@ abstract class sfAction extends sfComponent
      *
      * @return string sfView::NONE
      *
-     * @see    getComponent
+     * @see    \getComponent
      */
     public function renderComponent($moduleName, $componentName, $vars = null)
     {
@@ -431,16 +431,16 @@ abstract class sfAction extends sfComponent
      */
     public function setTemplate($name, $module = null)
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name))));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name)]));
         }
 
         if (null !== $module) {
-            $dir = $this->context->getConfiguration()->getTemplateDir($module, $name.sfView::SUCCESS.'.php');
+            $dir = $this->context->getConfiguration()->getTemplateDir($module, $name.\sfView::SUCCESS.'.php');
             $name = $dir.'/'.$name;
         }
 
-        sfConfig::set('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_template', $name);
+        \sfConfig::set('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_template', $name);
     }
 
     /**
@@ -455,7 +455,7 @@ abstract class sfAction extends sfComponent
      */
     public function getTemplate()
     {
-        return sfConfig::get('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_template');
+        return \sfConfig::get('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_template');
     }
 
     /**
@@ -469,11 +469,11 @@ abstract class sfAction extends sfComponent
      */
     public function setLayout($name)
     {
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Change layout to "%s"', $name))));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Change layout to "%s"', $name)]));
         }
 
-        sfConfig::set('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_layout', $name);
+        \sfConfig::set('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_layout', $name);
     }
 
     /**
@@ -486,7 +486,7 @@ abstract class sfAction extends sfComponent
      */
     public function getLayout()
     {
-        return sfConfig::get('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_layout');
+        return \sfConfig::get('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_layout');
     }
 
     /**
@@ -496,13 +496,13 @@ abstract class sfAction extends sfComponent
      */
     public function setViewClass($class)
     {
-        sfConfig::set('mod_'.strtolower($this->getModuleName()).'_view_class', $class);
+        \sfConfig::set('mod_'.strtolower($this->getModuleName()).'_view_class', $class);
     }
 
     /**
      * Returns the current route for this request.
      *
-     * @return sfRoute The route for the request
+     * @return \sfRoute The route for the request
      */
     public function getRoute()
     {

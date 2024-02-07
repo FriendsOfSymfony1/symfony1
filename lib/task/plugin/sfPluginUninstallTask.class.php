@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,21 +18,21 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfPluginUninstallTask extends sfPluginBaseTask
+class sfPluginUninstallTask extends \sfPluginBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('name', \sfCommandArgument::REQUIRED, 'The plugin name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
-            new sfCommandOption('install_deps', 'd', sfCommandOption::PARAMETER_NONE, 'Whether to force installation of dependencies', null),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('channel', 'c', \sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
+            new \sfCommandOption('install_deps', 'd', \sfCommandOption::PARAMETER_NONE, 'Whether to force installation of dependencies', null),
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'uninstall';
@@ -65,9 +66,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('uninstalling plugin "%s"', $arguments['name']));
 

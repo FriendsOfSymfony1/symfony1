@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorString extends sfValidatorBase
+class sfValidatorString extends \sfValidatorBase
 {
     /**
      * Configures the current validator.
@@ -33,9 +34,9 @@ class sfValidatorString extends sfValidatorBase
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addMessage('max_length', '"%value%" is too long (%max_length% characters max).');
         $this->addMessage('min_length', '"%value%" is too short (%min_length% characters min).');
@@ -47,7 +48,7 @@ class sfValidatorString extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {
@@ -56,11 +57,11 @@ class sfValidatorString extends sfValidatorBase
         $length = function_exists('mb_strlen') ? mb_strlen($clean, $this->getCharset()) : strlen($clean);
 
         if ($this->hasOption('max_length') && $length > $this->getOption('max_length')) {
-            throw new sfValidatorError($this, 'max_length', array('value' => $value, 'max_length' => $this->getOption('max_length')));
+            throw new \sfValidatorError($this, 'max_length', ['value' => $value, 'max_length' => $this->getOption('max_length')]);
         }
 
         if ($this->hasOption('min_length') && $length < $this->getOption('min_length')) {
-            throw new sfValidatorError($this, 'min_length', array('value' => $value, 'min_length' => $this->getOption('min_length')));
+            throw new \sfValidatorError($this, 'min_length', ['value' => $value, 'min_length' => $this->getOption('min_length')]);
         }
 
         return $clean;

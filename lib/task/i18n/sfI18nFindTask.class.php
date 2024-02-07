@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,32 +16,32 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nFindTask extends sfBaseTask
+class sfI18nFindTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    public function execute($arguments = array(), $options = array())
+    public function execute($arguments = [], $options = [])
     {
         $this->logSection('i18n', sprintf('find non "i18n ready" strings in the "%s" application', $arguments['application']));
 
         // Look in templates
-        $dirs = array();
-        $moduleNames = sfFinder::type('dir')->maxdepth(0)->relative()->in(sfConfig::get('sf_app_module_dir'));
+        $dirs = [];
+        $moduleNames = \sfFinder::type('dir')->maxdepth(0)->relative()->in(\sfConfig::get('sf_app_module_dir'));
         foreach ($moduleNames as $moduleName) {
-            $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
+            $dirs[] = \sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
         }
-        $dirs[] = sfConfig::get('sf_app_dir').'/templates';
+        $dirs[] = \sfConfig::get('sf_app_dir').'/templates';
 
-        $strings = array();
+        $strings = [];
         foreach ($dirs as $dir) {
-            $templates = sfFinder::type('file')->name('*.php')->in($dir);
+            $templates = \sfFinder::type('file')->name('*.php')->in($dir);
             foreach ($templates as $template) {
                 if (!isset($strings[$template])) {
-                    $strings[$template] = array();
+                    $strings[$template] = [];
                 }
 
-                $dom = new DOMDocument('1.0', sfConfig::get('sf_charset', 'UTF-8'));
+                $dom = new \DOMDocument('1.0', \sfConfig::get('sf_charset', 'UTF-8'));
                 $content = file_get_contents($template);
 
                 // remove doctype
@@ -48,7 +49,7 @@ class sfI18nFindTask extends sfBaseTask
 
                 @$dom->loadXML('<doc>'.$content.'</doc>');
 
-                $nodes = array($dom);
+                $nodes = [$dom];
                 while ($nodes) {
                     $node = array_shift($nodes);
 
@@ -82,7 +83,7 @@ class sfI18nFindTask extends sfBaseTask
                 continue;
             }
 
-            $this->logSection('i18n', sprintf('strings in "%s"', str_replace(sfConfig::get('sf_root_dir'), '', $template)), 1000);
+            $this->logSection('i18n', sprintf('strings in "%s"', str_replace(\sfConfig::get('sf_root_dir'), '', $template)), 1000);
             foreach ($messages as $message) {
                 $this->log("  {$message}\n");
             }
@@ -90,17 +91,17 @@ class sfI18nFindTask extends sfBaseTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+        ]);
 
         $this->namespace = 'i18n';
         $this->name = 'find';

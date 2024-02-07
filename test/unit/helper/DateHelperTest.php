@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +13,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once $_test_dir.'/unit/sfContextMock.class.php';
 
-$t = new lime_test(592);
+$t = new \lime_test(592);
 
 class sfUser
 {
@@ -24,9 +25,9 @@ class sfUser
     }
 }
 
-sfConfig::set('sf_charset', 'utf-8');
+\sfConfig::set('sf_charset', 'utf-8');
 
-$context = sfContext::getInstance(array('user' => 'sfUser'));
+$context = \sfContext::getInstance(['user' => 'sfUser']);
 
 require_once __DIR__.'/../../../lib/helper/UrlHelper.php';
 
@@ -91,16 +92,16 @@ $t->is(format_datetime(date('Y-m-d', $now)), date('F j, Y', $now).' 12:00:00 AM 
 $t->is(format_datetime(date('Y-m-d H:i:s', $now), 'f'), date('F j, Y g:i A', $now), 'formats timestamps correctly');
 
 $t->diag('sfDateFormat');
-$df = new sfDateFormat('en_US');
+$df = new \sfDateFormat('en_US');
 $t->is($df->format('7/14/1789', 'i', 'd'), '1789-07-14', 'pre-epoch date from en_US to iso');
 $t->is($df->format('7/14/1789 14:29', 'I', $df->getInputPattern('g')), '1789-07-14 14:29:00', 'pre-epoch date-time from en_US to iso with getInputPattern()');
-$df = new sfDateFormat('fr');
+$df = new \sfDateFormat('fr');
 $t->is($df->format(date('d/m/y', $now), 'i', 'd'), date('Y-m-d', $now), 'format two digit year from fr to iso');
 
-$cultures = sfCultureInfo::getCultures();
+$cultures = \sfCultureInfo::getCultures();
 foreach ($cultures as $culture) {
-    if (sfCultureInfo::validCulture($culture)) {
-        $df = new sfDateFormat($culture);
+    if (\sfCultureInfo::validCulture($culture)) {
+        $df = new \sfDateFormat($culture);
         $shortDate = $df->format($now, 'd');
         $t->is($df->format($shortDate, 'i', 'd'), date('Y-m-d', $now), sprintf('"%s": conversion "d" to "i"', $culture));
         $dateTime = $df->format($now, $df->getInputPattern('g'));

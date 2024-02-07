@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,12 +17,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineColumn implements ArrayAccess
+class sfDoctrineColumn implements \ArrayAccess
 {
     /**
      * Array mapping Doctrine column types to the native symfony type.
      */
-    public static $doctrineToSymfony = array(
+    public static $doctrineToSymfony = [
         'boolean' => 'BOOLEAN',
         'string' => 'LONGVARCHAR',
         'integer' => 'INTEGER',
@@ -37,7 +37,7 @@ class sfDoctrineColumn implements ArrayAccess
         'object' => 'LONGVARCHAR',
         'array' => 'LONGVARCHAR',
         'decimal' => 'DECIMAL',
-    );
+    ];
 
     /**
      * Store the name of the related class for this column if it is
@@ -58,7 +58,7 @@ class sfDoctrineColumn implements ArrayAccess
     /**
      * Doctrine_Table instance this column belongs to.
      *
-     * @var Doctrine_Table
+     * @var \Doctrine_Table
      */
     protected $table;
 
@@ -74,14 +74,14 @@ class sfDoctrineColumn implements ArrayAccess
      *
      * @var array
      */
-    protected $definition = array();
+    protected $definition = [];
 
     /**
      * Constructor.
      *
      * @param string $name
      */
-    public function __construct($name, Doctrine_Table $table)
+    public function __construct($name, \Doctrine_Table $table)
     {
         $this->name = $name;
         $this->table = $table;
@@ -187,7 +187,7 @@ class sfDoctrineColumn implements ArrayAccess
      *
      * @param string $key
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function getRelationKey($key)
     {
@@ -252,7 +252,7 @@ class sfDoctrineColumn implements ArrayAccess
             $local = array_map('strtolower', $local);
             if (in_array(strtolower($this->name), $local)) {
                 $this->foreignClassName = $relation['class'];
-                if (Doctrine_Relation::ONE === $relation->getType()) {
+                if (\Doctrine_Relation::ONE === $relation->getType()) {
                     $this->foreignFieldName = $relation['foreign'];
                 }
 
@@ -294,12 +294,12 @@ class sfDoctrineColumn implements ArrayAccess
     /**
      * If foreign key get the related Doctrine_Table object.
      *
-     * @return Doctrine_Table $table
+     * @return \Doctrine_Table $table
      */
     public function getForeignTable()
     {
         if ($this->isForeignKey()) {
-            return Doctrine_Core::getTable($this->foreignClassName);
+            return \Doctrine_Core::getTable($this->foreignClassName);
         }
 
         return false;
@@ -308,7 +308,7 @@ class sfDoctrineColumn implements ArrayAccess
     /**
      * Set the Doctrine_Table object this column belongs to.
      */
-    public function setTable(Doctrine_Table $table)
+    public function setTable(\Doctrine_Table $table)
     {
         $this->table = $table;
     }
@@ -316,7 +316,7 @@ class sfDoctrineColumn implements ArrayAccess
     /**
      * Get the Doctrine_Table object this column belongs to.
      *
-     * @return Doctrine_Table $table
+     * @return \Doctrine_Table $table
      */
     public function getTable()
     {

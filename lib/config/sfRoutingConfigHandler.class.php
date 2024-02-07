@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +14,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfRoutingConfigHandler extends sfYamlConfigHandler
+class sfRoutingConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -22,23 +23,23 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
         $options = $this->getOptions();
         unset($options['cache']);
 
-        $data = array();
+        $data = [];
         foreach ($this->parse($configFiles) as $name => $routeConfig) {
-            $r = new ReflectionClass($routeConfig[0]);
+            $r = new \ReflectionClass($routeConfig[0]);
 
-            /** @var sfRoute $route */
+            /** @var \sfRoute $route */
             $route = $r->newInstanceArgs($routeConfig[1]);
 
-            $routes = $route instanceof sfRouteCollection ? $route : array($name => $route);
-            foreach (sfPatternRouting::flattenRoutes($routes) as $name => $route) {
+            $routes = $route instanceof \sfRouteCollection ? $route : [$name => $route];
+            foreach (\sfPatternRouting::flattenRoutes($routes) as $name => $route) {
                 $route->setDefaultOptions($options);
                 $data[] = sprintf('$this->routes[\'%s\'] = %s;', $name, var_export(serialize($route), true));
             }
@@ -57,9 +58,9 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
     {
         $routeDefinitions = $this->parse($configFiles);
 
-        $routes = array();
+        $routes = [];
         foreach ($routeDefinitions as $name => $route) {
-            $r = new ReflectionClass($route[0]);
+            $r = new \ReflectionClass($route[0]);
             $routes[$name] = $r->newInstanceArgs($route[1]);
         }
 
@@ -67,7 +68,7 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -76,7 +77,7 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
 
     protected function getOptions()
     {
-        $config = sfFactoryConfigHandler::getConfiguration(sfContext::getInstance()->getConfiguration()->getConfigPaths('config/factories.yml'));
+        $config = \sfFactoryConfigHandler::getConfiguration(\sfContext::getInstance()->getConfiguration()->getConfigPaths('config/factories.yml'));
 
         return $config['routing']['param'];
     }
@@ -87,24 +88,24 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
         $config = static::getConfiguration($configFiles);
 
         // collect routes
-        $routes = array();
+        $routes = [];
         foreach ($config as $name => $params) {
             if (
                 (isset($params['type']) && 'collection' == $params['type'])
-                || (isset($params['class']) && false !== strpos($params['class'], 'Collection'))
+                || (isset($params['class']) &&   str_contains($params['class'], 'Collection'))
             ) {
-                $options = isset($params['options']) ? $params['options'] : array();
+                $options = isset($params['options']) ? $params['options'] : [];
                 $options['name'] = $name;
-                $options['requirements'] = isset($params['requirements']) ? $params['requirements'] : array();
+                $options['requirements'] = isset($params['requirements']) ? $params['requirements'] : [];
 
-                $routes[$name] = array(isset($params['class']) ? $params['class'] : 'sfRouteCollection', array($options));
+                $routes[$name] = [isset($params['class']) ? $params['class'] : 'sfRouteCollection', [$options]];
             } else {
-                $routes[$name] = array(isset($params['class']) ? $params['class'] : 'sfRoute', array(
+                $routes[$name] = [isset($params['class']) ? $params['class'] : 'sfRoute', [
                     $params['url'] ?: '/',
-                    isset($params['params']) ? $params['params'] : (isset($params['param']) ? $params['param'] : array()),
-                    isset($params['requirements']) ? $params['requirements'] : array(),
-                    isset($params['options']) ? $params['options'] : array(),
-                ));
+                    isset($params['params']) ? $params['params'] : (isset($params['param']) ? $params['param'] : []),
+                    isset($params['requirements']) ? $params['requirements'] : [],
+                    isset($params['options']) ? $params['options'] : [],
+                ]];
             }
         }
 

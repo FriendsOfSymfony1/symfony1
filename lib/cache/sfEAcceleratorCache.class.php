@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfEAcceleratorCache extends sfCache
+class sfEAcceleratorCache extends \sfCache
 {
     /**
      * Initializes this sfCache instance.
@@ -24,28 +25,28 @@ class sfEAcceleratorCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
+     * @see \sfCache
      *
      * @param array $options
      *
-     * @throws sfInitializationException
+     * @throws \sfInitializationException
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
         if (!function_exists('eaccelerator_put') || !ini_get('eaccelerator.enable')) {
-            throw new sfInitializationException('You must have EAccelerator installed and enabled to use sfEAcceleratorCache class (or perhaps you forgot to add --with-eaccelerator-shared-memory when installing).');
+            throw new \sfInitializationException('You must have EAccelerator installed and enabled to use sfEAcceleratorCache class (or perhaps you forgot to add --with-eaccelerator-shared-memory when installing).');
         }
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param string     $key
-     * @param mixed|null $default
+     * @param string      $key
+     * @param \mixed|null $default
      *
-     * @return string|null
+     * @return \string|null
      */
     public function get($key, $default = null)
     {
@@ -55,7 +56,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
      * @param string $key
      *
@@ -67,11 +68,11 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param string   $key
-     * @param string   $data
-     * @param int|null $lifetime
+     * @param string    $key
+     * @param string    $data
+     * @param \int|null $lifetime
      *
      * @return bool
      */
@@ -81,7 +82,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -89,7 +90,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {
@@ -107,20 +108,20 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
-        if (sfCache::OLD === $mode) {
+        if (\sfCache::OLD === $mode) {
             return eaccelerator_gc();
         }
 
         $infos = eaccelerator_list_keys();
         if (is_array($infos)) {
             foreach ($infos as $info) {
-                if (false !== strpos($info['name'], $this->getOption('prefix'))) {
+                if (str_contains($info['name'], $this->getOption('prefix'))) {
                     // eaccelerator bug (http://eaccelerator.net/ticket/287)
-                    $key = 0 === strpos($info['name'], ':') ? substr($info['name'], 1) : $info['name'];
+                    $key =   str_starts_with($info['name'], ':') ? substr($info['name'], 1) : $info['name'];
                     if (!eaccelerator_rm($key)) {
                         return false;
                     }
@@ -132,7 +133,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -144,7 +145,7 @@ class sfEAcceleratorCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function getTimeout($key)
     {

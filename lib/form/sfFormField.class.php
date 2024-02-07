@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,10 +20,10 @@ class sfFormField
 {
     protected static $toStringException;
 
-    /** @var sfWidgetForm */
+    /** @var \sfWidgetForm */
     protected $widget;
 
-    /** @var sfFormField|null */
+    /** @var \sfFormField|null */
     protected $parent;
 
     /** @var string */
@@ -37,13 +38,13 @@ class sfFormField
     /**
      * Constructor.
      *
-     * @param sfWidgetForm     $widget A sfWidget instance
-     * @param sfFormField      $parent The sfFormField parent instance (null for the root widget)
-     * @param string           $name   The field name
-     * @param string           $value  The field value
-     * @param sfValidatorError $error  A sfValidatorError instance
+     * @param \sfWidgetForm     $widget A sfWidget instance
+     * @param \sfFormField      $parent The sfFormField parent instance (null for the root widget)
+     * @param string            $name   The field name
+     * @param string            $value  The field value
+     * @param \sfValidatorError $error  A sfValidatorError instance
      */
-    public function __construct(sfWidgetForm $widget, sfFormField $parent = null, $name, $value, sfValidatorError $error = null)
+    public function __construct(\sfWidgetForm $widget, \sfFormField $parent = null, $name, $value, \sfValidatorError $error = null)
     {
         $this->widget = $widget;
         $this->parent = $parent;
@@ -61,7 +62,7 @@ class sfFormField
     {
         try {
             return $this->render();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             self::setToStringException($e);
 
             // we return a simple Exception message in case the form framework is used out of symfony.
@@ -86,7 +87,7 @@ class sfFormField
      *
      * This is a hack needed because PHP does not allow to throw exceptions in __toString() magic method.
      *
-     * @return Exception
+     * @return \Exception
      */
     public static function getToStringException()
     {
@@ -98,9 +99,9 @@ class sfFormField
      *
      * This is a hack needed because PHP does not allow to throw exceptions in __toString() magic method.
      *
-     * @param Exception $e The exception thrown by __toString()
+     * @param \Exception $e The exception thrown by __toString()
      */
-    public static function setToStringException(Exception $e)
+    public static function setToStringException(\Exception $e)
     {
         if (null === self::$toStringException) {
             self::$toStringException = $e;
@@ -114,7 +115,7 @@ class sfFormField
      *
      * @return string The rendered widget
      */
-    public function render($attributes = array())
+    public function render($attributes = [])
     {
         if ($this->parent) {
             return $this->parent->getWidget()->renderField($this->name, $this->value, $attributes, $this->error);
@@ -136,19 +137,19 @@ class sfFormField
      *
      * @return string The formatted row
      */
-    public function renderRow($attributes = array(), $label = null, $help = null)
+    public function renderRow($attributes = [], $label = null, $help = null)
     {
         if (null === $this->parent) {
-            throw new LogicException(sprintf('Unable to render the row for "%s".', $this->name));
+            throw new \LogicException(sprintf('Unable to render the row for "%s".', $this->name));
         }
 
-        $field = $this->parent->getWidget()->renderField($this->name, $this->value, !is_array($attributes) ? array() : $attributes, $this->error);
+        $field = $this->parent->getWidget()->renderField($this->name, $this->value, !is_array($attributes) ? [] : $attributes, $this->error);
 
-        $error = $this->error instanceof sfValidatorErrorSchema ? $this->error->getGlobalErrors() : $this->error;
+        $error = $this->error instanceof \sfValidatorErrorSchema ? $this->error->getGlobalErrors() : $this->error;
 
         $help = null === $help ? $this->parent->getWidget()->getHelp($this->name) : $help;
 
-        return strtr($this->parent->getWidget()->getFormFormatter()->formatRow($this->renderLabel($label), $field, $error, $help), array('%hidden_fields%' => ''));
+        return strtr($this->parent->getWidget()->getFormFormatter()->formatRow($this->renderLabel($label), $field, $error, $help), ['%hidden_fields%' => '']);
     }
 
     /**
@@ -161,10 +162,10 @@ class sfFormField
     public function renderError()
     {
         if (null === $this->parent) {
-            throw new LogicException(sprintf('Unable to render the error for "%s".', $this->name));
+            throw new \LogicException(sprintf('Unable to render the error for "%s".', $this->name));
         }
 
-        $error = $this->getWidget() instanceof sfWidgetFormSchema ? $this->getWidget()->getGlobalErrors($this->error) : $this->error;
+        $error = $this->getWidget() instanceof \sfWidgetFormSchema ? $this->getWidget()->getGlobalErrors($this->error) : $this->error;
 
         return $this->parent->getWidget()->getFormFormatter()->formatErrorsForRow($error);
     }
@@ -177,7 +178,7 @@ class sfFormField
     public function renderHelp()
     {
         if (null === $this->parent) {
-            throw new LogicException(sprintf('Unable to render the help for "%s".', $this->name));
+            throw new \LogicException(sprintf('Unable to render the help for "%s".', $this->name));
         }
 
         return $this->parent->getWidget()->getFormFormatter()->formatHelp($this->parent->getWidget()->getHelp($this->name));
@@ -191,10 +192,10 @@ class sfFormField
      *
      * @return string The label tag
      */
-    public function renderLabel($label = null, $attributes = array())
+    public function renderLabel($label = null, $attributes = [])
     {
         if (null === $this->parent) {
-            throw new LogicException(sprintf('Unable to render the label for "%s".', $this->name));
+            throw new \LogicException(sprintf('Unable to render the label for "%s".', $this->name));
         }
 
         if (null !== $label) {
@@ -219,7 +220,7 @@ class sfFormField
     public function renderLabelName()
     {
         if (null === $this->parent) {
-            throw new LogicException(sprintf('Unable to render the label name for "%s".', $this->name));
+            throw new \LogicException(sprintf('Unable to render the label name for "%s".', $this->name));
         }
 
         return $this->parent->getWidget()->getFormFormatter()->generateLabelName($this->name);
@@ -288,7 +289,7 @@ class sfFormField
     /**
      * Returns the parent form field.
      *
-     * @return sfFormField A sfFormField instance
+     * @return \sfFormField A sfFormField instance
      */
     public function getParent()
     {
@@ -298,7 +299,7 @@ class sfFormField
     /**
      * Returns the error for this field.
      *
-     * @return sfValidatorError A sfValidatorError instance
+     * @return \sfValidatorError A sfValidatorError instance
      */
     public function getError()
     {
@@ -312,7 +313,7 @@ class sfFormField
      */
     public function hasError()
     {
-        if ($this->error instanceof sfValidatorErrorSchema) {
+        if ($this->error instanceof \sfValidatorErrorSchema) {
             return $this->error->count() > 0;
         }
 

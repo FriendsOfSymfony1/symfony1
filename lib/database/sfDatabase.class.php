@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,7 +20,7 @@
  */
 abstract class sfDatabase
 {
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $parameterHolder;
 
     /** @var PDO|resource */
@@ -36,7 +36,7 @@ abstract class sfDatabase
      *
      * @param array $parameters An associative array of initialization parameters
      */
-    public function __construct($parameters = array())
+    public function __construct($parameters = [])
     {
         $this->initialize($parameters);
     }
@@ -46,18 +46,18 @@ abstract class sfDatabase
      *
      * @param array $parameters An associative array of initialization parameters
      *
-     * @throws sfInitializationException If an error occurs while initializing this sfDatabase object
+     * @throws \sfInitializationException If an error occurs while initializing this sfDatabase object
      */
-    public function initialize($parameters = array())
+    public function initialize($parameters = [])
     {
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
         $this->parameterHolder->add($parameters);
     }
 
     /**
      * Connects to the database.
      *
-     * @throws sfDatabaseException If a connection could not be created
+     * @throws \sfDatabaseException If a connection could not be created
      */
     abstract public function connect();
 
@@ -69,7 +69,7 @@ abstract class sfDatabase
      *
      * @return mixed A database connection
      *
-     * @throws sfDatabaseException If a connection could not be retrieved
+     * @throws \sfDatabaseException If a connection could not be retrieved
      */
     public function getConnection()
     {
@@ -85,7 +85,7 @@ abstract class sfDatabase
      *
      * @return mixed A database resource
      *
-     * @throws sfDatabaseException If a resource could not be retrieved
+     * @throws \sfDatabaseException If a resource could not be retrieved
      */
     public function getResource()
     {
@@ -99,7 +99,7 @@ abstract class sfDatabase
     /**
      * Gets the parameter holder for this object.
      *
-     * @return sfParameterHolder A sfParameterHolder instance
+     * @return \sfParameterHolder A sfParameterHolder instance
      */
     public function getParameterHolder()
     {
@@ -118,7 +118,7 @@ abstract class sfDatabase
      *
      * @return string The value associated with the key
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function getParameter($name, $default = null)
     {
@@ -136,7 +136,7 @@ abstract class sfDatabase
      *
      * @return bool true if the given key exists, false otherwise
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function hasParameter($name)
     {
@@ -153,7 +153,7 @@ abstract class sfDatabase
      * @param string $name  The key name
      * @param string $value The value
      *
-     * @see sfParameterHolder
+     * @see \sfParameterHolder
      */
     public function setParameter($name, $value)
     {
@@ -163,7 +163,7 @@ abstract class sfDatabase
     /**
      * Executes the shutdown procedure.
      *
-     * @throws sfDatabaseException If an error occurs while shutting down this database
+     * @throws \sfDatabaseException If an error occurs while shutting down this database
      */
     abstract public function shutdown();
 }

@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfMessageSource class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -59,7 +51,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 19:55:49 EST 2004
  */
-abstract class sfMessageSource implements sfIMessageSource
+abstract class sfMessageSource implements \sfIMessageSource
 {
     /**
      * The culture name for this message source.
@@ -73,7 +65,7 @@ abstract class sfMessageSource implements sfIMessageSource
      *
      * @var array
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * The source of message translations.
@@ -85,11 +77,11 @@ abstract class sfMessageSource implements sfIMessageSource
     /**
      * The translation cache.
      *
-     * @var sfMessageCache
+     * @var \sfMessageCache
      */
     protected $cache;
 
-    protected $untranslated = array();
+    protected $untranslated = [];
 
     /**
      * Private constructor. sfMessageSource must be initialized using
@@ -116,15 +108,15 @@ abstract class sfMessageSource implements sfIMessageSource
      * @param string $source   the location of the resource
      * @param string $filename the filename of the custom message source
      *
-     * @return sfMessageSource a new message source of the specified type
+     * @return \sfMessageSource a new message source of the specified type
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public static function factory($type, $source = '.', $filename = '')
     {
         if ($filename) {
             if (!is_file($filename)) {
-                throw new sfException(sprintf('File %s not found.', $filename));
+                throw new \sfException(sprintf('File %s not found.', $filename));
             }
 
             include_once $filename;
@@ -136,7 +128,7 @@ abstract class sfMessageSource implements sfIMessageSource
 
         $class = 'sfMessageSource_'.$type;
         if (!class_exists($class)) {
-            throw new sfException(sprintf('Unable to find type "%s".', $type));
+            throw new \sfException(sprintf('Unable to find type "%s".', $type));
         }
 
         return new $class($source);
@@ -165,7 +157,7 @@ abstract class sfMessageSource implements sfIMessageSource
     {
         $variants = $this->getCatalogueList($catalogue);
 
-        $this->messages = array();
+        $this->messages = [];
 
         foreach ($variants as $variant) {
             $source = $this->getSource($variant);
@@ -219,7 +211,7 @@ abstract class sfMessageSource implements sfIMessageSource
     /**
      * Gets the cache handler for this source.
      *
-     * @return sfMessageCache cache handler
+     * @return \sfMessageCache cache handler
      */
     public function getCache()
     {
@@ -229,9 +221,9 @@ abstract class sfMessageSource implements sfIMessageSource
     /**
      * Sets the cache handler for caching the messages.
      *
-     * @param sfCache $cache the cache handler
+     * @param \sfCache $cache the cache handler
      */
-    public function setCache(sfCache $cache)
+    public function setCache(\sfCache $cache)
     {
         $this->cache = $cache;
     }
@@ -279,7 +271,7 @@ abstract class sfMessageSource implements sfIMessageSource
      */
     public function &loadData($variant)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -316,7 +308,7 @@ abstract class sfMessageSource implements sfIMessageSource
      */
     public function getCatalogueList($catalogue)
     {
-        return array();
+        return [];
     }
 
     /**

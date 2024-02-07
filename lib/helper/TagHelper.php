@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004 David Heinemeier Hansson
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,7 +27,7 @@
  *
  * @return string
  */
-function tag($name, $options = array(), $open = false)
+function tag($name, $options = [], $open = false)
 {
     if (!$name) {
         return '';
@@ -36,7 +36,7 @@ function tag($name, $options = array(), $open = false)
     return '<'.$name._tag_options($options).($open ? '>' : ' />');
 }
 
-function content_tag($name, $content = '', $options = array())
+function content_tag($name, $content = '', $options = [])
 {
     if (!$name) {
         return '';
@@ -84,7 +84,7 @@ function escape_javascript($javascript = '')
  */
 function escape_once($html)
 {
-    return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, sfConfig::get('sf_charset')));
+    return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, \sfConfig::get('sf_charset')));
 }
 
 /**
@@ -99,7 +99,7 @@ function fix_double_escape($escaped)
     return preg_replace('/&amp;([a-z]+|(#\d+)|(#x[\da-f]+));/i', '&$1;', $escaped);
 }
 
-function _tag_options($options = array())
+function _tag_options($options = [])
 {
     $options = _parse_attributes($options);
 
@@ -113,7 +113,7 @@ function _tag_options($options = array())
 
 function _parse_attributes($string)
 {
-    return is_array($string) ? $string : sfToolkit::stringToArray($string);
+    return is_array($string) ? $string : \sfToolkit::stringToArray($string);
 }
 
 function _get_option(&$options, $name, $default = null)
@@ -153,8 +153,8 @@ function _get_option(&$options, $name, $default = null)
 function get_id_from_name($name, $value = null)
 {
     // check to see if we have an array variable for a field name
-    if (false !== strpos($name, '[')) {
-        $name = str_replace(array('[]', '][', '[', ']'), array((null != $value) ? '_'.$value : '', '_', '_', ''), $name);
+    if (str_contains($name, '[')) {
+        $name = str_replace(['[]', '][', '[', ']'], [(null != $value) ? '_'.$value : '', '_', '_', ''], $name);
     }
 
     return $name;
@@ -171,7 +171,7 @@ function _convert_options($options)
 {
     $options = _parse_attributes($options);
 
-    foreach (array('disabled', 'readonly', 'multiple') as $attribute) {
+    foreach (['disabled', 'readonly', 'multiple'] as $attribute) {
         if (array_key_exists($attribute, $options)) {
             if ($options[$attribute]) {
                 $options[$attribute] = $attribute;

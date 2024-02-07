@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,21 +21,21 @@
 class sfActionStack
 {
     /** @var sfActionStackEntry[] */
-    protected $stack = array();
+    protected $stack = [];
 
     /**
      * Adds an entry to the action stack.
      *
-     * @param string   $moduleName     A module name
-     * @param string   $actionName     An action name
-     * @param sfAction $actionInstance An sfAction implementation instance
+     * @param string    $moduleName     A module name
+     * @param string    $actionName     An action name
+     * @param \sfAction $actionInstance An sfAction implementation instance
      *
-     * @return sfActionStackEntry sfActionStackEntry instance
+     * @return \sfActionStackEntry sfActionStackEntry instance
      */
     public function addEntry($moduleName, $actionName, $actionInstance)
     {
         // create our action stack entry and add it to our stack
-        $actionEntry = new sfActionStackEntry($moduleName, $actionName, $actionInstance);
+        $actionEntry = new \sfActionStackEntry($moduleName, $actionName, $actionInstance);
 
         $this->stack[] = $actionEntry;
 
@@ -47,7 +47,7 @@ class sfActionStack
      *
      * @param int $index An entry index
      *
-     * @return sfActionStackEntry an action stack entry implementation
+     * @return \sfActionStackEntry an action stack entry implementation
      */
     public function getEntry($index)
     {
@@ -63,7 +63,7 @@ class sfActionStack
     /**
      * Removes the entry at a specific index.
      *
-     * @return sfActionStackEntry an action stack entry implementation
+     * @return \sfActionStackEntry an action stack entry implementation
      */
     public function popEntry()
     {

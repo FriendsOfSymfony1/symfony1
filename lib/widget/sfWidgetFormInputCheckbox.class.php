@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormInputCheckbox extends sfWidgetFormInput
+class sfWidgetFormInputCheckbox extends \sfWidgetFormInput
 {
     /**
      * Constructor.
@@ -27,9 +28,9 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
-    public function __construct($options = array(), $attributes = array())
+    public function __construct($options = [], $attributes = [])
     {
         $this->addOption('value_attribute_value');
 
@@ -46,9 +47,9 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      *
      * @return string An HTML tag string
      *
-     * @see sfWidgetForm
+     * @see \sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if (null !== $value && false !== $value) {
             $attributes['checked'] = 'checked';
@@ -65,9 +66,9 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormInput
+     * @see \sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

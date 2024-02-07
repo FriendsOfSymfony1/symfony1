@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -41,7 +42,7 @@ function esc_entities($value)
 {
     // Numbers and boolean values get turned into strings which can cause problems
     // with type comparisons (e.g. === or is_int() etc).
-    return is_string($value) ? htmlentities($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
+    return is_string($value) ? htmlentities($value, ENT_QUOTES, \sfConfig::get('sf_charset')) : $value;
 }
 
 define('ESC_ENTITIES', 'esc_entities');
@@ -57,7 +58,7 @@ function esc_specialchars($value)
 {
     // Numbers and boolean values get turned into strings which can cause problems
     // with type comparisons (e.g. === or is_int() etc).
-    return is_string($value) ? htmlspecialchars($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
+    return is_string($value) ? htmlspecialchars($value, ENT_QUOTES, \sfConfig::get('sf_charset')) : $value;
 }
 
 define('ESC_SPECIALCHARS', 'esc_specialchars');
@@ -108,8 +109,8 @@ define('ESC_JS', 'esc_js');
 function esc_js_no_entities($value)
 {
     return str_replace(
-        array('\\', "\n", "\r", '"', "'"),
-        array('\\\\', '\\n', '\\r', '\\"', "\\'"),
+        ['\\', "\n", "\r", '"', "'"],
+        ['\\\\', '\\n', '\\r', '\\"', "\\'"],
         $value
     );
 }

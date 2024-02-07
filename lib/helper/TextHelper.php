@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004 David Heinemeier Hansson
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,8 +17,8 @@
  *
  * @version    SVN: $Id$
  *
- * @param mixed|null $truncate_pattern
- * @param mixed|null $length_max
+ * @param \mixed|null $truncate_pattern
+ * @param \mixed|null $length_max
  */
 
 /**
@@ -102,7 +102,7 @@ function highlight_text($text, $phrase, $highlighter = '<strong class="highlight
         return $text;
     }
 
-    if (is_array($phrase) or ($phrase instanceof sfOutputEscaperArrayDecorator)) {
+    if (is_array($phrase) or ($phrase instanceof \sfOutputEscaperArrayDecorator)) {
         foreach ($phrase as $word) {
             $pattern[] = '/('.preg_quote($word, '/').')/i';
             $replacement[] = $highlighter;
@@ -182,12 +182,12 @@ function wrap_text($text, $line_width = 80)
  * Two consecutive newlines(<tt>\n\n</tt>) are considered as a paragraph, one newline (<tt>\n</tt>) is
  * considered a linebreak, three or more consecutive newlines are turned into two newlines.
  */
-function simple_format_text($text, $options = array())
+function simple_format_text($text, $options = [])
 {
     $css = (isset($options['class'])) ? ' class="'.$options['class'].'"' : '';
 
-    $text = sfToolkit::pregtr($text, array("/(\r\n|\r)/" => "\n",               // lets make them newlines crossplatform
-        "/\n{2,}/" => "</p><p{$css}>"));    // turn two and more newlines into paragraph
+    $text = \sfToolkit::pregtr($text, ["/(\r\n|\r)/" => "\n",               // lets make them newlines crossplatform
+        "/\n{2,}/" => "</p><p{$css}>"]);    // turn two and more newlines into paragraph
 
     // turn single newline into <br/>
     $text = str_replace("\n", "\n<br />", $text);
@@ -204,7 +204,7 @@ function simple_format_text($text, $options = array())
  *     Go to <a href="http://www.symfony-project.com">http://www.symfony-project.com</a> and
  *     say hello to <a href="mailto:fabien.potencier@example.com">fabien.potencier@example.com</a>
  */
-function auto_link_text($text, $link = 'all', $href_options = array(), $truncate = false, $truncate_len = 35, $pad = '...')
+function auto_link_text($text, $link = 'all', $href_options = [], $truncate = false, $truncate_len = 35, $pad = '...')
 {
     if ('all' == $link) {
         return _auto_link_urls(_auto_link_email_addresses($text), $href_options, $truncate, $truncate_len, $pad);
@@ -251,7 +251,7 @@ if (!defined('SF_AUTO_LINK_RE')) {
 /**
  * Turns all urls into clickable links.
  */
-function _auto_link_urls($text, $href_options = array(), $truncate = false, $truncate_len = 40, $pad = '...')
+function _auto_link_urls($text, $href_options = [], $truncate = false, $truncate_len = 40, $pad = '...')
 {
     $href_options = _tag_options($href_options);
 

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceCurrency extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -30,9 +31,9 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -43,11 +44,11 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
         // populate choices with all currencies
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
 
-        $currencies = sfCultureInfo::getInstance($culture)->getCurrencies(isset($options['currencies']) ? $options['currencies'] : null);
+        $currencies = \sfCultureInfo::getInstance($culture)->getCurrencies(isset($options['currencies']) ? $options['currencies'] : null);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $currencies = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $currencies);
+            $currencies = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $currencies);
         }
 
         $this->setOption('choices', $currencies);

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,10 +16,10 @@
  *
  * @version    SVN: $Id: sfNoRouting.class.php 20566 2009-07-29 07:04:01Z fabien $
  */
-class sfNoRouting extends sfRouting
+class sfNoRouting extends \sfRouting
 {
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function getCurrentInternalUri($with_route_name = false)
     {
@@ -34,9 +35,9 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
-    public function generate($name, $params = array(), $absolute = false)
+    public function generate($name, $params = [], $absolute = false)
     {
         $parameters = $this->mergeArrays($this->defaultParameters, $params);
         if ($this->getDefaultParameter('module') == $parameters['module']) {
@@ -52,23 +53,23 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function parse($url)
     {
-        return array();
+        return [];
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function getRoutes()
     {
-        return array();
+        return [];
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function getRoute($name)
     {
@@ -76,15 +77,15 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function setRoutes($routes)
     {
-        return array();
+        return [];
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function hasRoutes()
     {
@@ -92,7 +93,7 @@ class sfNoRouting extends sfRouting
     }
 
     /**
-     * @see sfRouting
+     * @see \sfRouting
      */
     public function clearRoutes()
     {

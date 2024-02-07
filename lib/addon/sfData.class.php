@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +20,7 @@
 abstract class sfData
 {
     protected $deleteCurrentData = true;
-    protected $object_references = array();
+    protected $object_references = [];
 
     /**
      * Sets a flag to indicate if the current data in the database
@@ -60,15 +61,15 @@ abstract class sfData
      *
      * @return array A list of *.yml files
      *
-     * @throws sfInitializationException if the directory or file does not exist
+     * @throws \sfInitializationException if the directory or file does not exist
      */
     public function getFiles($element = null)
     {
         if (null === $element) {
-            $element = sfConfig::get('sf_data_dir').'/fixtures';
+            $element = \sfConfig::get('sf_data_dir').'/fixtures';
         }
 
-        $files = array();
+        $files = [];
         if (is_array($element)) {
             foreach ($element as $e) {
                 $files = array_merge($files, $this->getFiles($e));
@@ -76,9 +77,9 @@ abstract class sfData
         } elseif (is_file($element)) {
             $files[] = $element;
         } elseif (is_dir($element)) {
-            $files = sfFinder::type('file')->name('*.yml')->sort_by_name()->in($element);
+            $files = \sfFinder::type('file')->name('*.yml')->sort_by_name()->in($element);
         } else {
-            throw new sfInitializationException(sprintf('You must give an array, a directory or a file to sfData::getFiles() (%s given).', $element));
+            throw new \sfInitializationException(sprintf('You must give an array, a directory or a file to sfData::getFiles() (%s given).', $element));
         }
 
         $files = array_unique($files);
@@ -95,7 +96,7 @@ abstract class sfData
     protected function doLoadDataFromFile($file)
     {
         // import new datas
-        $data = sfYaml::load($file, sfConfig::get('sf_charset', 'UTF-8'));
+        $data = \sfYaml::load($file, \sfConfig::get('sf_charset', 'UTF-8'));
 
         $this->loadDataFromArray($data);
     }
@@ -108,8 +109,8 @@ abstract class sfData
      */
     protected function doLoadData(array $files)
     {
-        $this->object_references = array();
-        $this->maps = array();
+        $this->object_references = [];
+        $this->maps = [];
 
         foreach ($files as $file) {
             $this->doLoadDataFromFile($file);

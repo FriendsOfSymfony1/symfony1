@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfFileCache extends sfCache
+class sfFileCache extends \sfCache
 {
     public const READ_DATA = 1;
     public const READ_TIMEOUT = 2;
@@ -32,23 +33,23 @@ class sfFileCache extends sfCache
      *
      * * see sfCache for options available for all drivers
      *
-     * @see sfCache
+     * @see \sfCache
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
         if (!$this->getOption('cache_dir')) {
-            throw new sfInitializationException('You must pass a "cache_dir" option to initialize a sfFileCache object.');
+            throw new \sfInitializationException('You must pass a "cache_dir" option to initialize a sfFileCache object.');
         }
 
         $this->setcache_dir($this->getOption('cache_dir'));
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $default
+     * @param \mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -67,7 +68,7 @@ class sfFileCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function has($key)
     {
@@ -77,21 +78,21 @@ class sfFileCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      *
-     * @param mixed|null $lifetime
+     * @param \mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
         if ($this->getOption('automatic_cleaning_factor') > 0 && 1 == mt_rand(1, $this->getOption('automatic_cleaning_factor'))) {
-            $this->clean(sfCache::OLD);
+            $this->clean(\sfCache::OLD);
         }
 
         return $this->write($this->getFilePath($key), $data, time() + $this->getLifetime($lifetime));
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function remove($key)
     {
@@ -99,27 +100,27 @@ class sfFileCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function removePattern($pattern)
     {
-        if (false !== strpos($pattern, '**')) {
-            $pattern = str_replace(sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION;
+        if (str_contains($pattern, '**')) {
+            $pattern = str_replace(\sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION;
 
             $regexp = self::patternToRegexp($pattern);
-            $paths = array();
-            foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $path) {
+            $paths = [];
+            foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $path) {
                 if (preg_match($regexp, str_replace($this->getOption('cache_dir').DIRECTORY_SEPARATOR, '', $path))) {
                     $paths[] = $path;
                 }
             }
         } else {
-            $paths = glob($this->getOption('cache_dir').DIRECTORY_SEPARATOR.str_replace(sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION);
+            $paths = glob($this->getOption('cache_dir').DIRECTORY_SEPARATOR.str_replace(\sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION);
         }
 
         foreach ($paths as $path) {
             if (is_dir($path)) {
-                sfToolkit::clearDirectory($path);
+                \sfToolkit::clearDirectory($path);
             } else {
                 @unlink($path);
             }
@@ -127,17 +128,17 @@ class sfFileCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
-    public function clean($mode = sfCache::ALL)
+    public function clean($mode = \sfCache::ALL)
     {
         if (!is_dir($this->getOption('cache_dir'))) {
             return true;
         }
 
         $result = true;
-        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $file) {
-            if (sfCache::ALL == $mode || !$this->isValid($file)) {
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $file) {
+            if (\sfCache::ALL == $mode || !$this->isValid($file)) {
                 $result = @unlink($file) && $result;
             }
         }
@@ -146,7 +147,7 @@ class sfFileCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function getTimeout($key)
     {
@@ -162,7 +163,7 @@ class sfFileCache extends sfCache
     }
 
     /**
-     * @see sfCache
+     * @see \sfCache
      */
     public function getLastModified($key)
     {
@@ -197,7 +198,7 @@ class sfFileCache extends sfCache
      */
     protected function getFilePath($key)
     {
-        return $this->getOption('cache_dir').DIRECTORY_SEPARATOR.str_replace(sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $key).self::EXTENSION;
+        return $this->getOption('cache_dir').DIRECTORY_SEPARATOR.str_replace(\sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $key).self::EXTENSION;
     }
 
     /**
@@ -211,12 +212,12 @@ class sfFileCache extends sfCache
      *
      * @return array the (meta)data of the cache file. E.g. $data[sfFileCache::READ_DATA]
      *
-     * @throws sfCacheException
+     * @throws \sfCacheException
      */
     protected function read($path, $type = self::READ_DATA)
     {
         if (!$fp = @fopen($path, 'rb')) {
-            throw new sfCacheException(sprintf('Unable to read cache file "%s".', $path));
+            throw new \sfCacheException(sprintf('Unable to read cache file "%s".', $path));
         }
 
         @flock($fp, LOCK_SH);
@@ -255,7 +256,7 @@ class sfFileCache extends sfCache
      *
      * @return bool true if ok, otherwise false
      *
-     * @throws sfCacheException
+     * @throws \sfCacheException
      */
     protected function write($path, $data, $timeout)
     {
@@ -270,7 +271,7 @@ class sfFileCache extends sfCache
         $tmpFile = tempnam($cacheDir, basename($path));
 
         if (!$fp = @fopen($tmpFile, 'wb')) {
-            throw new sfCacheException(sprintf('Unable to write cache file "%s".', $tmpFile));
+            throw new \sfCacheException(sprintf('Unable to write cache file "%s".', $tmpFile));
         }
 
         @fwrite($fp, str_pad($timeout, 12, 0, STR_PAD_LEFT));

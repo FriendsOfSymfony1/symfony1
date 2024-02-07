@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +14,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nPhpExtractor implements sfI18nExtractorInterface
+class sfI18nPhpExtractor implements \sfI18nExtractorInterface
 {
     /**
      * Extract i18n strings for the given content.
@@ -26,7 +27,7 @@ class sfI18nPhpExtractor implements sfI18nExtractorInterface
     {
         $tokens = token_get_all($content);
 
-        $strings = array();
+        $strings = [];
         $i18n_function = 0;
         $line = 0;
         $heredoc = false;

@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfNumberFormatInfo class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -51,21 +43,21 @@ class sfNumberFormatInfo
      *
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * A list of properties that are accessable/writable.
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * The number pattern.
      *
      * @var array
      */
-    protected $pattern = array();
+    protected $pattern = [];
 
     /**
      * Initializes a new writable instance of the sfNumberFormatInfo class
@@ -79,12 +71,12 @@ class sfNumberFormatInfo
      *
      * @see getInstance()
      */
-    public function __construct($data = array(), $type = sfNumberFormatInfo::DECIMAL)
+    public function __construct($data = [], $type = \sfNumberFormatInfo::DECIMAL)
     {
         $this->properties = get_class_methods($this);
 
         if (empty($data)) {
-            throw new sfException('Please provide the ICU data to initialize.');
+            throw new \sfException('Please provide the ICU data to initialize.');
         }
 
         $this->data = $data;
@@ -103,7 +95,7 @@ class sfNumberFormatInfo
             return $this->{$getProperty}();
         }
 
-        throw new sfException(sprintf('Property %s does not exists.', $name));
+        throw new \sfException(sprintf('Property %s does not exists.', $name));
     }
 
     /**
@@ -116,7 +108,7 @@ class sfNumberFormatInfo
         if (in_array($setProperty, $this->properties)) {
             $this->{$setProperty}($value);
         } else {
-            throw new sfException(sprintf('Property %s can not be set.', $name));
+            throw new \sfException(sprintf('Property %s can not be set.', $name));
         }
     }
 
@@ -127,7 +119,7 @@ class sfNumberFormatInfo
      *
      * @param int $type pattern type
      */
-    public function setPattern($type = sfNumberFormatInfo::DECIMAL)
+    public function setPattern($type = \sfNumberFormatInfo::DECIMAL)
     {
         if (is_int($type)) {
             $this->pattern = $this->parsePattern($this->data['NumberPatterns'][$type]);
@@ -148,13 +140,13 @@ class sfNumberFormatInfo
     /**
      * Gets the default sfNumberFormatInfo that is culture-independent (invariant).
      *
-     * @return sfNumberFormatInfo default sfNumberFormatInfo
+     * @return \sfNumberFormatInfo default sfNumberFormatInfo
      */
-    public static function getInvariantInfo($type = sfNumberFormatInfo::DECIMAL)
+    public static function getInvariantInfo($type = \sfNumberFormatInfo::DECIMAL)
     {
         static $invariant;
         if (null === $invariant) {
-            $culture = sfCultureInfo::getInvariantCulture();
+            $culture = \sfCultureInfo::getInvariantCulture();
             $invariant = $culture->NumberFormat;
             $invariant->setPattern($type);
         }
@@ -165,34 +157,34 @@ class sfNumberFormatInfo
     /**
      * Returns the sfNumberFormatInfo associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the sfNumberFormat property
-     * @param int           $type    the number formatting type, it should be
-     *                               sfNumberFormatInfo::DECIMAL, sfNumberFormatInfo::CURRENCY,
-     *                               sfNumberFormatInfo::PERCENTAGE, or sfNumberFormatInfo::SCIENTIFIC
+     * @param \sfCultureInfo $culture the culture that gets the sfNumberFormat property
+     * @param int            $type    the number formatting type, it should be
+     *                                sfNumberFormatInfo::DECIMAL, sfNumberFormatInfo::CURRENCY,
+     *                                sfNumberFormatInfo::PERCENTAGE, or sfNumberFormatInfo::SCIENTIFIC
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      *
      * @see getCurrencyInstance();
      * @see getPercentageInstance();
      * @see getScientificInstance();
      */
-    public static function getInstance($culture = null, $type = sfNumberFormatInfo::DECIMAL)
+    public static function getInstance($culture = null, $type = \sfNumberFormatInfo::DECIMAL)
     {
-        if ($culture instanceof sfCultureInfo) {
+        if ($culture instanceof \sfCultureInfo) {
             $formatInfo = $culture->getNumberFormat();
             $formatInfo->setPattern($type);
 
             return $formatInfo;
         }
         if (is_string($culture)) {
-            $sfCultureInfo = sfCultureInfo::getInstance($culture);
+            $sfCultureInfo = \sfCultureInfo::getInstance($culture);
             $formatInfo = $sfCultureInfo->getNumberFormat();
             $formatInfo->setPattern($type);
 
             return $formatInfo;
         }
 
-        $sfCultureInfo = sfCultureInfo::getInstance();
+        $sfCultureInfo = \sfCultureInfo::getInstance();
         $formatInfo = $sfCultureInfo->getNumberFormat();
         $formatInfo->setPattern($type);
 
@@ -202,9 +194,9 @@ class sfNumberFormatInfo
     /**
      * Returns the currency format info associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the NumberFormat property
+     * @param \sfCultureInfo $culture the culture that gets the NumberFormat property
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      */
     public static function getCurrencyInstance($culture = null)
     {
@@ -214,9 +206,9 @@ class sfNumberFormatInfo
     /**
      * Returns the percentage format info associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the NumberFormat property
+     * @param \sfCultureInfo $culture the culture that gets the NumberFormat property
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      */
     public static function getPercentageInstance($culture = null)
     {
@@ -226,9 +218,9 @@ class sfNumberFormatInfo
     /**
      * Returns the scientific format info associated with the specified culture.
      *
-     * @param sfCultureInfo $culture the culture that gets the NumberFormat property
+     * @param \sfCultureInfo $culture the culture that gets the NumberFormat property
      *
-     * @return sfNumberFormatInfo sfNumberFormatInfo for the specified culture
+     * @return \sfNumberFormatInfo sfNumberFormatInfo for the specified culture
      */
     public static function getScientificInstance($culture = null)
     {
@@ -329,7 +321,7 @@ class sfNumberFormatInfo
         $group1 = $this->pattern['groupSize1'];
         $group2 = $this->pattern['groupSize2'];
 
-        return array($group1, $group2);
+        return [$group1, $group2];
     }
 
     /**
@@ -351,14 +343,14 @@ class sfNumberFormatInfo
      * The negative pattern is composed of a prefix, and postfix.
      * This function returns <b>array(prefix, postfix)</b>.
      *
-     * @return arary negative pattern
+     * @return \arary negative pattern
      */
     public function getNegativePattern()
     {
         $prefix = $this->pattern['negPref'];
         $postfix = $this->pattern['negPost'];
 
-        return array($prefix, $postfix);
+        return [$prefix, $postfix];
     }
 
     /**
@@ -366,7 +358,7 @@ class sfNumberFormatInfo
      * The negative pattern is composed of a prefix, and postfix in the form
      * <b>array(prefix, postfix)</b>.
      *
-     * @param arary $pattern negative pattern
+     * @param \arary $pattern negative pattern
      */
     public function setNegativePattern($pattern)
     {
@@ -379,14 +371,14 @@ class sfNumberFormatInfo
      * The positive pattern is composed of a prefix, and postfix.
      * This function returns <b>array(prefix, postfix)</b>.
      *
-     * @return arary positive pattern
+     * @return \arary positive pattern
      */
     public function getPositivePattern()
     {
         $prefix = $this->pattern['posPref'];
         $postfix = $this->pattern['posPost'];
 
-        return array($prefix, $postfix);
+        return [$prefix, $postfix];
     }
 
     /**
@@ -394,7 +386,7 @@ class sfNumberFormatInfo
      * The positive pattern is composed of a prefix, and postfix in the form
      * <b>array(prefix, postfix)</b>.
      *
-     * @param arary $pattern positive pattern
+     * @param \arary $pattern positive pattern
      */
     public function setPositivePattern($pattern)
     {
@@ -681,6 +673,6 @@ class sfNumberFormatInfo
         $regexp = '/[#,\.0]+/';
         $result = preg_split($regexp, $pattern);
 
-        return array($result[0], $result[1]);
+        return [$result[0], $result[1]];
     }
 }

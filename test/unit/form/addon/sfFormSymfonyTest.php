@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,18 +11,18 @@
 
 require_once __DIR__.'/../../../bootstrap/unit.php';
 
-$t = new lime_test(8);
+$t = new \lime_test(8);
 
 class FormListener
 {
-    public $events = array();
+    public $events = [];
 
-    public function listen(sfEvent $event)
+    public function listen(\sfEvent $event)
     {
         $this->events[] = func_get_args();
     }
 
-    public function filter(sfEvent $event, $value)
+    public function filter(\sfEvent $event, $value)
     {
         $this->events[] = func_get_args();
 
@@ -30,27 +31,27 @@ class FormListener
 
     public function reset()
     {
-        $this->events = array();
+        $this->events = [];
     }
 }
 
-$listener = new FormListener();
-$dispatcher = new sfEventDispatcher();
+$listener = new \FormListener();
+$dispatcher = new \sfEventDispatcher();
 
-$dispatcher->connect('form.post_configure', array($listener, 'listen'));
-$dispatcher->connect('form.filter_values', array($listener, 'filter'));
-$dispatcher->connect('form.validation_error', array($listener, 'listen'));
+$dispatcher->connect('form.post_configure', [$listener, 'listen']);
+$dispatcher->connect('form.filter_values', [$listener, 'filter']);
+$dispatcher->connect('form.validation_error', [$listener, 'listen']);
 
-sfFormSymfony::setEventDispatcher($dispatcher);
+\sfFormSymfony::setEventDispatcher($dispatcher);
 
-class TestForm extends sfFormSymfony
+class TestForm extends \sfFormSymfony
 {
     public function configure()
     {
-        $this->setValidators(array(
-            'first_name' => new sfValidatorString(),
-            'last_name' => new sfValidatorString(),
-        ));
+        $this->setValidators([
+            'first_name' => new \sfValidatorString(),
+            'last_name' => new \sfValidatorString(),
+        ]);
     }
 }
 
@@ -58,25 +59,25 @@ class TestForm extends sfFormSymfony
 $t->diag('->__construct()');
 
 $listener->reset();
-$form = new TestForm();
+$form = new \TestForm();
 $t->is(count($listener->events), 1, '->__construct() notifies one event');
 $t->is($listener->events[0][0]->getName(), 'form.post_configure', '->__construct() notifies the "form.post_configure" event');
 
 // ->bind()
 $t->diag('->bind()');
 
-$form = new TestForm();
+$form = new \TestForm();
 $listener->reset();
-$form->bind(array(
+$form->bind([
     'first_name' => 'John',
     'last_name' => 'Doe',
-));
+]);
 
 $t->is(count($listener->events), 1, '->bind() notifies one event when validation is successful');
 $t->is($listener->events[0][0]->getName(), 'form.filter_values', '->bind() notifies the "form.filter_values" event');
-$t->is_deeply($listener->events[0][1], array('first_name' => 'John', 'last_name' => 'Doe'), '->bind() filters the tainted values');
+$t->is_deeply($listener->events[0][1], ['first_name' => 'John', 'last_name' => 'Doe'], '->bind() filters the tainted values');
 
-$form = new TestForm();
+$form = new \TestForm();
 $listener->reset();
 $form->bind();
 

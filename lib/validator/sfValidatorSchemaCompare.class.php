@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorSchemaCompare extends sfValidatorSchema
+class sfValidatorSchemaCompare extends \sfValidatorSchema
 {
     public const EQUAL = '==';
     public const NOT_EQUAL = '!=';
@@ -50,9 +51,9 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
      * @param array  $options    An array of options
      * @param array  $messages   An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    public function __construct($leftField, $operator, $rightField, $options = array(), $messages = array())
+    public function __construct($leftField, $operator, $rightField, $options = [], $messages = [])
     {
         $this->addOption('left_field', $leftField);
         $this->addOption('operator', $operator);
@@ -64,7 +65,7 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function asString($indent = 0)
     {
@@ -76,8 +77,8 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
         if ($options || $messages) {
             $arguments = sprintf(
                 '(%s%s)',
-                $options ? sfYamlInline::dump($options) : ($messages ? '{}' : ''),
-                $messages ? ', '.sfYamlInline::dump($messages) : ''
+                $options ? \sfYamlInline::dump($options) : ($messages ? '{}' : ''),
+                $messages ? ', '.\sfYamlInline::dump($messages) : ''
             );
         }
 
@@ -92,16 +93,16 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($values)
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
 
         if (!is_array($values)) {
-            throw new InvalidArgumentException('You must pass an array parameter to the clean() method');
+            throw new \InvalidArgumentException('You must pass an array parameter to the clean() method');
         }
 
         $leftValue = isset($values[$this->getOption('left_field')]) ? $values[$this->getOption('left_field')] : null;
@@ -149,20 +150,20 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('The operator "%s" does not exist.', $this->getOption('operator')));
+                throw new \InvalidArgumentException(sprintf('The operator "%s" does not exist.', $this->getOption('operator')));
         }
 
         if (!$valid) {
-            $error = new sfValidatorError($this, 'invalid', array(
+            $error = new \sfValidatorError($this, 'invalid', [
                 'left_field' => $leftValue,
                 'right_field' => $rightValue,
                 'operator' => $this->getOption('operator'),
-            ));
+            ]);
             if ($this->getOption('throw_global_error')) {
                 throw $error;
             }
 
-            $errorSchema = new sfValidatorErrorSchema($this);
+            $errorSchema = new \sfValidatorErrorSchema($this);
             $errorSchema->addError($error, $this->getOption('left_field'));
 
             throw $errorSchema;

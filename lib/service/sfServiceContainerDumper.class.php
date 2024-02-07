@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,16 +16,16 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfServiceContainerDumper implements sfServiceContainerDumperInterface
+abstract class sfServiceContainerDumper implements \sfServiceContainerDumperInterface
 {
     protected $container;
 
     /**
      * Constructor.
      *
-     * @param sfServiceContainerBuilder $container The service container to dump
+     * @param \sfServiceContainerBuilder $container The service container to dump
      */
-    public function __construct(sfServiceContainerBuilder $container)
+    public function __construct(\sfServiceContainerBuilder $container)
     {
         $this->container = $container;
     }
@@ -36,8 +37,8 @@ abstract class sfServiceContainerDumper implements sfServiceContainerDumperInter
      *
      * @return string The representation of the service container
      */
-    public function dump(array $options = array())
+    public function dump(array $options = [])
     {
-        throw new LogicException('You must extend this abstract class and implement the dump() method.');
+        throw new \LogicException('You must extend this abstract class and implement the dump() method.');
     }
 }

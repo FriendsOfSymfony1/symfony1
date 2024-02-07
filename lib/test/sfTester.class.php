@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,10 +25,10 @@ abstract class sfTester
     /**
      * Constructor.
      *
-     * @param sfTestFunctionalBase $browser A browser
-     * @param lime_test            $tester  A tester object
+     * @param \sfTestFunctionalBase $browser A browser
+     * @param \lime_test            $tester  A tester object
      */
-    public function __construct(sfTestFunctionalBase $browser, $tester)
+    public function __construct(\sfTestFunctionalBase $browser, $tester)
     {
         $this->browser = $browser;
         $this->tester = $tester;
@@ -35,7 +36,7 @@ abstract class sfTester
 
     public function __call($method, $arguments)
     {
-        call_user_func_array(array($this->browser, $method), $arguments);
+        call_user_func_array([$this->browser, $method], $arguments);
 
         return $this->getObjectToReturn();
     }
@@ -53,7 +54,7 @@ abstract class sfTester
     /**
      * Begins a block.
      *
-     * @return sfTester This sfTester instance
+     * @return \sfTester This sfTester instance
      */
     public function begin()
     {
@@ -65,7 +66,7 @@ abstract class sfTester
     /**
      * Ends a block.
      *
-     * @param sfTestFunctionalBase
+     * @param \sfTestFunctionalBase
      */
     public function end()
     {

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,7 +31,7 @@ abstract class sfOutputEscaper
      */
     protected $escapingMethod;
 
-    protected static $safeClasses = array();
+    protected static $safeClasses = [];
 
     /**
      * Constructor stores the escaping method and value.
@@ -86,7 +87,7 @@ abstract class sfOutputEscaper
      *
      * @return mixed Escaping value
      *
-     * @throws InvalidArgumentException If the escaping fails
+     * @throws \InvalidArgumentException If the escaping fails
      */
     public static function escape($escapingMethod, $value)
     {
@@ -100,11 +101,11 @@ abstract class sfOutputEscaper
         }
 
         if (is_array($value)) {
-            return new sfOutputEscaperArrayDecorator($escapingMethod, $value);
+            return new \sfOutputEscaperArrayDecorator($escapingMethod, $value);
         }
 
         if (is_object($value)) {
-            if ($value instanceof sfOutputEscaper) {
+            if ($value instanceof \sfOutputEscaper) {
                 // avoid double decoration
                 $copy = clone $value;
 
@@ -117,20 +118,20 @@ abstract class sfOutputEscaper
                 // return the unescaped object
                 return $value;
             }
-            if ($value instanceof sfOutputEscaperSafe) {
+            if ($value instanceof \sfOutputEscaperSafe) {
                 // do not escape objects marked as safe
                 // return the original object
                 return $value->getValue();
             }
-            if ($value instanceof Traversable) {
-                return new sfOutputEscaperIteratorDecorator($escapingMethod, $value);
+            if ($value instanceof \Traversable) {
+                return new \sfOutputEscaperIteratorDecorator($escapingMethod, $value);
             }
 
-            return new sfOutputEscaperObjectDecorator($escapingMethod, $value);
+            return new \sfOutputEscaperObjectDecorator($escapingMethod, $value);
         }
 
         // it must be a resource; cannot escape that.
-        throw new InvalidArgumentException(sprintf('Unable to escape value "%s".', var_export($value, true)));
+        throw new \InvalidArgumentException(sprintf('Unable to escape value "%s".', var_export($value, true)));
     }
 
     /**
@@ -140,7 +141,7 @@ abstract class sfOutputEscaper
      *
      * @return mixed Unescaped value
      *
-     * @throws InvalidArgumentException If the escaping fails
+     * @throws \InvalidArgumentException If the escaping fails
      */
     public static function unescape($value)
     {
@@ -149,7 +150,7 @@ abstract class sfOutputEscaper
         }
 
         if (is_scalar($value)) {
-            return html_entity_decode($value, ENT_QUOTES, sfConfig::get('sf_charset'));
+            return html_entity_decode($value, ENT_QUOTES, \sfConfig::get('sf_charset'));
         }
         if (is_array($value)) {
             foreach ($value as $name => $v) {
@@ -159,7 +160,7 @@ abstract class sfOutputEscaper
             return $value;
         }
         if (is_object($value)) {
-            return $value instanceof sfOutputEscaper ? $value->getRawValue() : $value;
+            return $value instanceof \sfOutputEscaper ? $value->getRawValue() : $value;
         }
 
         return $value;
@@ -204,7 +205,7 @@ abstract class sfOutputEscaper
      */
     public static function markClassAsSafe($class)
     {
-        self::markClassesAsSafe(array($class));
+        self::markClassesAsSafe([$class]);
     }
 
     /**

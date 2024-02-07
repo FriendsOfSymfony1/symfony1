@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfServiceConfigHandler extends sfYamlConfigHandler
+class sfServiceConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -26,18 +27,18 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
      */
     public function execute($configFiles)
     {
-        $class = sfConfig::get('sf_app').'_'.sfConfig::get('sf_environment').'ServiceContainer';
+        $class = \sfConfig::get('sf_app').'_'.\sfConfig::get('sf_environment').'ServiceContainer';
 
-        $serviceContainerBuilder = new sfServiceContainerBuilder();
+        $serviceContainerBuilder = new \sfServiceContainerBuilder();
 
-        $loader = new sfServiceContainerLoaderArray($serviceContainerBuilder);
+        $loader = new \sfServiceContainerLoaderArray($serviceContainerBuilder);
         $loader->load(static::getConfiguration($configFiles));
 
-        $dumper = new sfServiceContainerDumperPhp($serviceContainerBuilder);
-        $code = $dumper->dump(array(
+        $dumper = new \sfServiceContainerDumperPhp($serviceContainerBuilder);
+        $code = $dumper->dump([
             'class' => $class,
             'base_class' => $this->parameterHolder->get('base_class'),
-        ));
+        ]);
 
         // compile data
         $retval = sprintf(
@@ -58,7 +59,7 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

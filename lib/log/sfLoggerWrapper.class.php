@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,17 +16,17 @@
  *
  * @version    SVN: $Id$
  */
-class sfLoggerWrapper extends sfLogger
+class sfLoggerWrapper extends \sfLogger
 {
-    /** @var sfLoggerInterface */
+    /** @var \sfLoggerInterface */
     protected $logger;
 
     /**
      * Creates a new logger wrapper.
      *
-     * @param sfLoggerInterface $logger The wrapped logger
+     * @param \sfLoggerInterface $logger The wrapped logger
      */
-    public function __construct(sfLoggerInterface $logger)
+    public function __construct(\sfLoggerInterface $logger)
     {
         $this->logger = $logger;
     }

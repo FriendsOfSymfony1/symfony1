@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,17 +19,17 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineGenerateMigrationsDbTask extends sfDoctrineBaseTask
+class sfDoctrineGenerateMigrationsDbTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-migrations-db';
@@ -44,11 +44,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $databaseManager = new sfDatabaseManager($this->configuration);
+        $databaseManager = new \sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
 
         $this->logSection('doctrine', 'generating migration classes from database');
@@ -57,8 +57,8 @@ EOF;
             $this->getFilesystem()->mkdirs($config['migrations_path']);
         }
 
-        $this->callDoctrineCli('generate-migrations-db', array(
+        $this->callDoctrineCli('generate-migrations-db', [
             'yaml_schema_path' => $this->prepareSchemaFile($config['yaml_schema_path']),
-        ));
+        ]);
     }
 }

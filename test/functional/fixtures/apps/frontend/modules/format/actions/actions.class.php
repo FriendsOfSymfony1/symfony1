@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * format actions.
  *
@@ -7,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class formatActions extends sfActions
+class formatActions extends \sfActions
 {
     public function executeIndex($request)
     {
@@ -33,13 +42,13 @@ class formatActions extends sfActions
 
     public function executeThrowsException()
     {
-        throw new Exception('Descriptive message');
+        throw new \Exception('Descriptive message');
     }
 
     public function executeThrowsNonDebugException()
     {
-        sfConfig::set('sf_debug', false);
+        \sfConfig::set('sf_debug', false);
 
-        throw new Exception('Descriptive message');
+        throw new \Exception('Descriptive message');
     }
 }

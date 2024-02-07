@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfSecurityConfigHandler extends sfYamlConfigHandler
+class sfSecurityConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -24,9 +25,9 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException  If a requested configuration file does not exist or is not readable
-     * @throws sfParseException          If a requested configuration file is improperly formatted
-     * @throws sfInitializationException If a view.yml key check fails
+     * @throws \sfConfigurationException  If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException          If a requested configuration file is improperly formatted
+     * @throws \sfInitializationException If a view.yml key check fails
      */
     public function execute($configFiles)
     {
@@ -46,7 +47,7 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {

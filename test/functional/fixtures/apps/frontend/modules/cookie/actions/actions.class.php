@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * cookie actions.
  *
@@ -7,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class cookieActions extends sfActions
+class cookieActions extends \sfActions
 {
     public function executeIndex($request)
     {
@@ -18,13 +27,13 @@ class cookieActions extends sfActions
     {
         $this->getResponse()->setCookie('foobar', 'barfoo');
 
-        return sfView::NONE;
+        return \sfView::NONE;
     }
 
     public function executeRemoveCookie($request)
     {
         $this->getResponse()->setCookie('foobar', 'foofoobar', time() - 10);
 
-        return sfView::NONE;
+        return \sfView::NONE;
     }
 }

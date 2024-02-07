@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,13 +18,13 @@
  */
 abstract class sfRouting
 {
-    /** @var sfEventDispatcher */
+    /** @var \sfEventDispatcher */
     protected $dispatcher;
 
-    /** @var sfCache|null */
+    /** @var \sfCache|null */
     protected $cache;
-    protected $defaultParameters = array();
-    protected $options = array();
+    protected $defaultParameters = [];
+    protected $options = [];
 
     /**
      * Class constructor.
@@ -32,19 +33,19 @@ abstract class sfRouting
      *
      * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
+    public function __construct(\sfEventDispatcher $dispatcher, \sfCache $cache = null, $options = [])
     {
         $this->initialize($dispatcher, $cache, $options);
 
         if (!isset($this->options['auto_shutdown']) || $this->options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
     /**
      * Returns the routing cache object.
      *
-     * @return sfCache A sfCache instance or null
+     * @return \sfCache A sfCache instance or null
      */
     public function getCache()
     {
@@ -62,11 +63,11 @@ abstract class sfRouting
      *  * debug:          Whether to cache or not (false by default)
      *  * context:        An array of context variables to help URL matching and generation
      *
-     * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
-     * @param sfCache           $cache      An sfCache instance
-     * @param array             $options    an associative array of initialization options
+     * @param \sfEventDispatcher $dispatcher An sfEventDispatcher instance
+     * @param \sfCache           $cache      An sfCache instance
+     * @param array              $options    an associative array of initialization options
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, \sfCache $cache = null, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -83,13 +84,13 @@ abstract class sfRouting
         }
 
         if (!isset($options['context'])) {
-            $options['context'] = array();
+            $options['context'] = [];
         }
 
         $this->options = $options;
 
-        $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
-        $this->dispatcher->connect('request.filter_parameters', array($this, 'filterParametersEvent'));
+        $this->dispatcher->connect('user.change_culture', [$this, 'listenToChangeCultureEvent']);
+        $this->dispatcher->connect('request.filter_parameters', [$this, 'filterParametersEvent']);
 
         $this->loadConfiguration();
     }
@@ -111,7 +112,7 @@ abstract class sfRouting
      */
     public function loadConfiguration()
     {
-        $this->dispatcher->notify(new sfEvent($this, 'routing.load_configuration'));
+        $this->dispatcher->notify(new \sfEvent($this, 'routing.load_configuration'));
     }
 
     /**
@@ -136,7 +137,7 @@ abstract class sfRouting
      *
      * @param string $name The route name
      *
-     * @return sfRoute
+     * @return \sfRoute
      */
     abstract public function getRoute($name);
 
@@ -170,7 +171,7 @@ abstract class sfRouting
      *
      * @return string The generated URL
      */
-    abstract public function generate($name, $params = array(), $absolute = false);
+    abstract public function generate($name, $params = [], $absolute = false);
 
     /**
      * Parses a URL to find a matching route and sets internal state.
@@ -229,9 +230,9 @@ abstract class sfRouting
     /**
      * Listens to the user.change_culture event.
      *
-     * @param sfEvent $event An sfEvent instance
+     * @param \sfEvent $event An sfEvent instance
      */
-    public function listenToChangeCultureEvent(sfEvent $event)
+    public function listenToChangeCultureEvent(\sfEvent $event)
     {
         // change the culture in the routing default parameters
         $this->setDefaultParameter('sf_culture', $event['culture']);
@@ -240,12 +241,12 @@ abstract class sfRouting
     /**
      * Listens to the request.filter_parameters event.
      *
-     * @param sfEvent $event      An sfEvent instance
-     * @param array   $parameters
+     * @param \sfEvent $event      An sfEvent instance
+     * @param array    $parameters
      *
      * @return array $parameters  An array of parameters for the event
      */
-    public function filterParametersEvent(sfEvent $event, $parameters)
+    public function filterParametersEvent(\sfEvent $event, $parameters)
     {
         $context = $event->getParameters();
 
@@ -268,14 +269,14 @@ abstract class sfRouting
     protected function fixGeneratedUrl($url, $absolute = false)
     {
         if (isset($this->options['context']['prefix'])) {
-            if (0 === strpos($url, 'http')) {
+            if (str_starts_with($url, 'http')) {
                 $url = preg_replace('#https?\://[^/]+#', '$0'.$this->options['context']['prefix'], $url);
             } else {
                 $url = $this->options['context']['prefix'].$url;
             }
         }
 
-        if ($absolute && isset($this->options['context']['host']) && 0 !== strpos($url, 'http')) {
+        if ($absolute && isset($this->options['context']['host']) &&   !str_starts_with($url, 'http')) {
             $url = 'http'.(isset($this->options['context']['is_secure']) && $this->options['context']['is_secure'] ? 's' : '').'://'.$this->options['context']['host'].$url;
         }
 

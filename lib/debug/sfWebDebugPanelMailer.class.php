@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,21 +16,21 @@
  *
  * @version    SVN: $Id$
  */
-class sfWebDebugPanelMailer extends sfWebDebugPanel
+class sfWebDebugPanelMailer extends \sfWebDebugPanel
 {
-    /** @var sfMailer */
+    /** @var \sfMailer */
     protected $mailer;
 
     /**
      * Constructor.
      *
-     * @param sfWebDebug $webDebug The web debug toolbar instance
+     * @param \sfWebDebug $webDebug The web debug toolbar instance
      */
-    public function __construct(sfWebDebug $webDebug)
+    public function __construct(\sfWebDebug $webDebug)
     {
         parent::__construct($webDebug);
 
-        $this->webDebug->getEventDispatcher()->connect('mailer.configure', array($this, 'listenForMailerConfigure'));
+        $this->webDebug->getEventDispatcher()->connect('mailer.configure', [$this, 'listenForMailerConfigure']);
     }
 
     public function getTitle()
@@ -52,14 +53,14 @@ class sfWebDebugPanelMailer extends sfWebDebugPanel
             return false;
         }
 
-        $html = array();
+        $html = [];
 
         // configuration information
         $strategy = $this->mailer->getDeliveryStrategy();
         $html[] = '<h2>Configuration</h2>';
         $html[] = '<em>Delivery strategy</em>: '.$strategy;
 
-        if (sfMailer::SINGLE_ADDRESS == $strategy) {
+        if (\sfMailer::SINGLE_ADDRESS == $strategy) {
             $html[] = ' - <em>all emails are delivered to</em>: '.$this->mailer->getDeliveryAddress();
         }
 
@@ -75,12 +76,12 @@ class sfWebDebugPanelMailer extends sfWebDebugPanel
     /**
      * Listens for the mailer.configure event and captures a reference to the mailer.
      */
-    public function listenForMailerConfigure(sfEvent $event)
+    public function listenForMailerConfigure(\sfEvent $event)
     {
         $this->mailer = $event->getSubject();
     }
 
-    protected function renderMessageInformation(Swift_Message $message)
+    protected function renderMessageInformation(\Swift_Message $message)
     {
         static $i = 0;
 
@@ -88,7 +89,7 @@ class sfWebDebugPanelMailer extends sfWebDebugPanel
 
         $to = null === $message->getTo() ? '' : implode(', ', array_keys($message->getTo()));
 
-        $html = array();
+        $html = [];
         $html[] = sprintf('<h3>%s (to: %s) %s</h3>', $message->getSubject(), $to, $this->getToggler('sfWebDebugMailTemplate'.$i));
         $html[] = '<div id="sfWebDebugMailTemplate'.$i.'" style="display:'.(1 == $i ? 'block' : 'none').'">';
         $html[] = '<pre>'.htmlentities($message->toString(), ENT_QUOTES, $message->getCharset()).'</pre>';

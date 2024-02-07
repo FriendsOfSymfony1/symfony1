@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,9 +18,9 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
+class sfValidatorSchema extends \sfValidatorBase implements \ArrayAccess
 {
-    protected $fields = array();
+    protected $fields = [];
     protected $preValidator;
     protected $postValidator;
 
@@ -35,16 +36,16 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    public function __construct($fields = null, $options = array(), $messages = array())
+    public function __construct($fields = null, $options = [], $messages = [])
     {
         if (is_array($fields)) {
             foreach ($fields as $name => $validator) {
                 $this[$name] = $validator;
             }
         } elseif (null !== $fields) {
-            throw new InvalidArgumentException('sfValidatorSchema constructor takes an array of sfValidatorBase objects.');
+            throw new \InvalidArgumentException('sfValidatorSchema constructor takes an array of sfValidatorBase objects.');
         }
 
         parent::__construct($options, $messages);
@@ -66,7 +67,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function clean($values)
     {
@@ -85,7 +86,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      *
      * @return array The cleaned values
      *
-     * @throws sfValidatorError
+     * @throws \sfValidatorError
      */
     public function preClean($values)
     {
@@ -106,7 +107,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      *
      * @param array $values The input values
      *
-     * @throws sfValidatorError
+     * @throws \sfValidatorError
      */
     public function postClean($values)
     {
@@ -120,11 +121,11 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     /**
      * Sets the pre validator.
      *
-     * @param sfValidatorBase $validator An sfValidatorBase instance
+     * @param \sfValidatorBase $validator An sfValidatorBase instance
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
-    public function setPreValidator(sfValidatorBase $validator)
+    public function setPreValidator(\sfValidatorBase $validator)
     {
         $this->preValidator = clone $validator;
 
@@ -134,7 +135,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     /**
      * Returns the pre validator.
      *
-     * @return sfValidatorBase A sfValidatorBase instance
+     * @return \sfValidatorBase A sfValidatorBase instance
      */
     public function getPreValidator()
     {
@@ -144,11 +145,11 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     /**
      * Sets the post validator.
      *
-     * @param sfValidatorBase $validator An sfValidatorBase instance
+     * @param \sfValidatorBase $validator An sfValidatorBase instance
      *
-     * @return sfValidatorBase The current validator instance
+     * @return \sfValidatorBase The current validator instance
      */
-    public function setPostValidator(sfValidatorBase $validator)
+    public function setPostValidator(\sfValidatorBase $validator)
     {
         $this->postValidator = clone $validator;
 
@@ -158,7 +159,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     /**
      * Returns the post validator.
      *
-     * @return sfValidatorBase An sfValidatorBase instance
+     * @return \sfValidatorBase An sfValidatorBase instance
      */
     public function getPostValidator()
     {
@@ -183,7 +184,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      *
      * @param string $name The field name
      *
-     * @return sfValidatorBase The sfValidatorBase instance associated with the given name, null if it does not exist
+     * @return \sfValidatorBase The sfValidatorBase instance associated with the given name, null if it does not exist
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($name)
@@ -194,14 +195,14 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     /**
      * Sets a field (implements the ArrayAccess interface).
      *
-     * @param string          $name      The field name
-     * @param sfValidatorBase $validator An sfValidatorBase instance
+     * @param string           $name      The field name
+     * @param \sfValidatorBase $validator An sfValidatorBase instance
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($name, $validator)
     {
-        if (!$validator instanceof sfValidatorBase) {
-            throw new InvalidArgumentException('A validator must be an instance of sfValidatorBase.');
+        if (!$validator instanceof \sfValidatorBase) {
+            throw new \InvalidArgumentException('A validator must be an instance of sfValidatorBase.');
         }
 
         $this->fields[$name] = clone $validator;
@@ -229,11 +230,11 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function asString($indent = 0)
     {
-        throw new Exception('Unable to convert a sfValidatorSchema to string.');
+        throw new \Exception('Unable to convert a sfValidatorSchema to string.');
     }
 
     /**
@@ -251,9 +252,9 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addOption('allow_extra_fields', false);
         $this->addOption('filter_extra_fields', true);
@@ -263,25 +264,25 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($values)
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
 
         if (!is_array($values)) {
-            throw new InvalidArgumentException('You must pass an array parameter to the clean() method');
+            throw new \InvalidArgumentException('You must pass an array parameter to the clean() method');
         }
 
-        $clean = array();
+        $clean = [];
         $unused = array_keys($this->fields);
-        $errorSchema = new sfValidatorErrorSchema($this);
+        $errorSchema = new \sfValidatorErrorSchema($this);
 
         // check that post_max_size has not been reached
         if (isset($_SERVER['CONTENT_LENGTH']) && (int) $_SERVER['CONTENT_LENGTH'] > $this->getBytes(ini_get('post_max_size')) && 0 != ini_get('post_max_size')) {
-            $errorSchema->addError(new sfValidatorError($this, 'post_max_size'));
+            $errorSchema->addError(new \sfValidatorError($this, 'post_max_size'));
 
             throw $errorSchema;
         }
@@ -289,9 +290,9 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
         // pre validator
         try {
             $values = $this->preClean($values);
-        } catch (sfValidatorErrorSchema $e) {
+        } catch (\sfValidatorErrorSchema $e) {
             $errorSchema->addErrors($e);
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $errorSchema->addError($e);
         }
 
@@ -300,7 +301,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
             // field exists in our schema?
             if (!array_key_exists($name, $this->fields)) {
                 if (!$this->options['allow_extra_fields']) {
-                    $errorSchema->addError(new sfValidatorError($this, 'extra_fields', array('field' => $name)));
+                    $errorSchema->addError(new \sfValidatorError($this, 'extra_fields', ['field' => $name]));
                 } elseif (!$this->options['filter_extra_fields']) {
                     $clean[$name] = $value;
                 }
@@ -313,11 +314,11 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
             // validate value
             try {
                 $clean[$name] = $this->fields[$name]->clean($value);
-            } catch (sfValidatorError $e) {
+            } catch (\sfValidatorError $e) {
                 $clean[$name] = null;
 
                 $errorSchema->addError($e, (string) $name);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $class = get_class($e);
 
                 throw new $class($e->getMessage().' of "'.$name.'" field');
@@ -329,7 +330,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
             // validate value
             try {
                 $clean[$name] = $this->fields[$name]->clean(null);
-            } catch (sfValidatorError $e) {
+            } catch (\sfValidatorError $e) {
                 $clean[$name] = null;
 
                 $errorSchema->addError($e, (string) $name);
@@ -339,9 +340,9 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
         // post validator
         try {
             $clean = $this->postClean($clean);
-        } catch (sfValidatorErrorSchema $e) {
+        } catch (\sfValidatorErrorSchema $e) {
             $errorSchema->addErrors($e);
-        } catch (sfValidatorError $e) {
+        } catch (\sfValidatorError $e) {
             $errorSchema->addError($e);
         }
 
@@ -358,11 +359,11 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
         $number = (float) $value;
         $modifier = strtolower($value[strlen($value) - 1]);
 
-        $exp_by_modifier = array(
+        $exp_by_modifier = [
             'k' => 1,
             'm' => 2,
             'g' => 3,
-        );
+        ];
 
         if (array_key_exists($modifier, $exp_by_modifier)) {
             $exp = $exp_by_modifier[$modifier];

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -72,7 +72,7 @@ abstract class sfView
     protected $decoratorDirectory;
     protected $decoratorTemplate;
     protected $directory;
-    protected $componentSlots = array();
+    protected $componentSlots = [];
     protected $template;
     protected $attributeHolder;
     protected $parameterHolder;
@@ -103,9 +103,9 @@ abstract class sfView
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'view.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new \sfEvent($this, 'view.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
-            throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+            throw new \sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
 
         return $event->getReturnValue();
@@ -114,10 +114,10 @@ abstract class sfView
     /**
      * Initializes this view.
      *
-     * @param sfContext $context    The current application context
-     * @param string    $moduleName The module name for this view
-     * @param string    $actionName The action name for this view
-     * @param string    $viewName   The view name
+     * @param \sfContext $context    The current application context
+     * @param string     $moduleName The module name for this view
+     * @param string     $actionName The action name for this view
+     * @param string     $viewName   The view name
      *
      * @return bool true, if initialization completes successfully, otherwise false
      */
@@ -130,12 +130,12 @@ abstract class sfView
         $this->context = $context;
         $this->dispatcher = $context->getEventDispatcher();
 
-        sfOutputEscaper::markClassesAsSafe(array('sfForm', 'sfFormField', 'sfFormFieldSchema', 'sfModelGeneratorHelper'));
+        \sfOutputEscaper::markClassesAsSafe(['sfForm', 'sfFormField', 'sfFormFieldSchema', 'sfModelGeneratorHelper']);
 
         $this->attributeHolder = $this->initializeAttributeHolder();
 
-        $this->parameterHolder = new sfParameterHolder();
-        $this->parameterHolder->add(sfConfig::get('mod_'.strtolower($moduleName).'_view_param', array()));
+        $this->parameterHolder = new \sfParameterHolder();
+        $this->parameterHolder->add(\sfConfig::get('mod_'.strtolower($moduleName).'_view_param', []));
 
         $request = $context->getRequest();
 
@@ -153,7 +153,7 @@ abstract class sfView
                 }
             }
         }
-        $this->dispatcher->notify(new sfEvent($this, 'view.configure_format', array('format' => $format, 'response' => $context->getResponse(), 'request' => $context->getRequest())));
+        $this->dispatcher->notify(new \sfEvent($this, 'view.configure_format', ['format' => $format, 'response' => $context->getResponse(), 'request' => $context->getRequest()]));
 
         // include view configuration
         $this->configure();
@@ -223,7 +223,7 @@ abstract class sfView
     /**
      * Retrieves attributes for the current view.
      *
-     * @return sfParameterHolder The attribute parameter holder
+     * @return \sfParameterHolder The attribute parameter holder
      */
     public function getAttributeHolder()
     {
@@ -269,7 +269,7 @@ abstract class sfView
     /**
      * Retrieves the parameters for the current view.
      *
-     * @return sfParameterHolder The parameter holder
+     * @return \sfParameterHolder The parameter holder
      */
     public function getParameterHolder()
     {
@@ -376,7 +376,7 @@ abstract class sfView
             $template .= $this->getExtension();
         }
 
-        if (sfToolkit::isPathAbsolute($template)) {
+        if (\sfToolkit::isPathAbsolute($template)) {
             $this->decoratorDirectory = dirname($template);
             $this->decoratorTemplate = basename($template);
         } else {
@@ -407,7 +407,7 @@ abstract class sfView
      */
     public function setComponentSlot($attributeName, $moduleName, $componentName)
     {
-        $this->componentSlots[$attributeName] = array();
+        $this->componentSlots[$attributeName] = [];
         $this->componentSlots[$attributeName]['module_name'] = $moduleName;
         $this->componentSlots[$attributeName]['component_name'] = $componentName;
     }
@@ -434,7 +434,7 @@ abstract class sfView
     public function getComponentSlot($name)
     {
         if (isset($this->componentSlots[$name]) && $this->componentSlots[$name]['module_name'] && $this->componentSlots[$name]['component_name']) {
-            return array($this->componentSlots[$name]['module_name'], $this->componentSlots[$name]['component_name']);
+            return [$this->componentSlots[$name]['module_name'], $this->componentSlots[$name]['component_name']];
         }
 
         return null;
@@ -450,7 +450,7 @@ abstract class sfView
      */
     public function setTemplate($template)
     {
-        if (sfToolkit::isPathAbsolute($template)) {
+        if (\sfToolkit::isPathAbsolute($template)) {
             $this->directory = dirname($template);
             $this->template = basename($template);
         } else {
@@ -509,38 +509,38 @@ abstract class sfView
         return $this->viewName;
     }
 
-    protected function initializeAttributeHolder($attributes = array())
+    protected function initializeAttributeHolder($attributes = [])
     {
-        return new sfViewParameterHolder($this->dispatcher, $attributes, array(
-            'escaping_method' => sfConfig::get('sf_escaping_method'),
-            'escaping_strategy' => sfConfig::get('sf_escaping_strategy'),
-        ));
+        return new \sfViewParameterHolder($this->dispatcher, $attributes, [
+            'escaping_method' => \sfConfig::get('sf_escaping_method'),
+            'escaping_strategy' => \sfConfig::get('sf_escaping_strategy'),
+        ]);
     }
 
     /**
      * Executes a basic pre-render check to verify all required variables exist
      * and that the template is readable.
      *
-     * @throws sfRenderException If the pre-render check fails
+     * @throws \sfRenderException If the pre-render check fails
      */
     protected function preRenderCheck()
     {
         if (null === $this->template) {
             // a template has not been set
-            throw new sfRenderException('A template has not been set.');
+            throw new \sfRenderException('A template has not been set.');
         }
 
         if (!is_readable($this->directory.'/'.$this->template)) {
             // 404?
             if ('404' == $this->context->getResponse()->getStatusCode()) {
                 // use default exception templates
-                $this->template = sfException::getTemplatePathForError($this->context->getRequest()->getRequestFormat(), false);
+                $this->template = \sfException::getTemplatePathForError($this->context->getRequest()->getRequestFormat(), false);
                 $this->directory = dirname($this->template);
                 $this->template = basename($this->template);
                 $this->setAttribute('code', '404');
                 $this->setAttribute('text', 'Not Found');
             } else {
-                throw new sfRenderException(sprintf('The template "%s" does not exist or is unreadable in "%s".', $this->template, $this->directory));
+                throw new \sfRenderException(sprintf('The template "%s" does not exist or is unreadable in "%s".', $this->template, $this->directory));
             }
         }
     }

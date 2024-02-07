@@ -1,4 +1,16 @@
 <?php
+
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+use Psr\Log\LoggerInterface;
+
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -14,19 +26,19 @@
  *
  * @author     Martin Poirier Theoret <mpoiriert@gmail.com>
  */
-class sfPsrLoggerAdapter extends sfLogger
+class sfPsrLoggerAdapter extends \sfLogger
 {
     /**
      * Buffer to keep all the log before the psr logger is registered.
      *
      * @var array
      */
-    private $buffer = array();
+    private $buffer = [];
 
     /**
      * The logger that will the log will be forward to.
      *
-     * @var Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     private $logger;
 
@@ -47,14 +59,14 @@ class sfPsrLoggerAdapter extends sfLogger
      *
      * @param array $options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         if (isset($options['logger_service_id'])) {
             $this->loggerServiceId = $options['logger_service_id'];
         }
 
         if (!isset($options['auto_connect']) || $options['auto_connect']) {
-            $dispatcher->connect('context.load_factories', array($this, 'listenContextLoadFactoriesEvent'));
+            $dispatcher->connect('context.load_factories', [$this, 'listenContextLoadFactoriesEvent']);
         }
 
         parent::initialize($dispatcher, $options);
@@ -63,18 +75,18 @@ class sfPsrLoggerAdapter extends sfLogger
     /**
      * Listen the context load factories to get the configure service after the service container is available.
      */
-    public function listenContextLoadFactoriesEvent(sfEvent $event)
+    public function listenContextLoadFactoriesEvent(\sfEvent $event)
     {
         $context = $event->getSubject();
         // @var $context sfContext
         $this->setLogger($context->getService($this->loggerServiceId));
-        $this->dispatcher->disconnect('context.load_factories', array($this, 'listenContextLoadFactoriesEvent'));
+        $this->dispatcher->disconnect('context.load_factories', [$this, 'listenContextLoadFactoriesEvent']);
     }
 
     /**
      * Set the logger.
      */
-    public function setLogger(Psr\Log\LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
         $this->flushBuffer();
@@ -86,7 +98,7 @@ class sfPsrLoggerAdapter extends sfLogger
     public function flushBuffer()
     {
         if (!$this->logger) {
-            $this->buffer = array();
+            $this->buffer = [];
 
             return;
         }
@@ -95,7 +107,7 @@ class sfPsrLoggerAdapter extends sfLogger
             $this->log($log['message'], $log['priority']);
         }
 
-        $this->buffer = array();
+        $this->buffer = [];
     }
 
     /**
@@ -113,42 +125,42 @@ class sfPsrLoggerAdapter extends sfLogger
         }
 
         switch ($priority) {
-            case sfLogger::EMERG:
+            case \sfLogger::EMERG:
                 $this->logger->emergency($message);
 
                 break;
 
-            case sfLogger::ALERT:
+            case \sfLogger::ALERT:
                 $this->logger->alert($message);
 
                 break;
 
-            case sfLogger::CRIT:
+            case \sfLogger::CRIT:
                 $this->logger->critical($message);
 
                 break;
 
-            case sfLogger::ERR:
+            case \sfLogger::ERR:
                 $this->logger->error($message);
 
                 break;
 
-            case sfLogger::WARNING:
+            case \sfLogger::WARNING:
                 $this->logger->warning($message);
 
                 break;
 
-            case sfLogger::NOTICE:
+            case \sfLogger::NOTICE:
                 $this->logger->notice($message);
 
                 break;
 
-            case sfLogger::INFO:
+            case \sfLogger::INFO:
                 $this->logger->info($message);
 
                 break;
 
-            case sfLogger::DEBUG:
+            case \sfLogger::DEBUG:
                 $this->logger->debug($message);
 
                 break;

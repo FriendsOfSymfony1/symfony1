@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfAutoloadConfigHandler extends sfYamlConfigHandler
+class sfAutoloadConfigHandler extends \sfYamlConfigHandler
 {
     /**
      * Executes this configuration handler.
@@ -24,15 +24,15 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
         // set our required categories list and initialize our handler
-        $this->initialize(array('required_categories' => array('autoload')));
+        $this->initialize(['required_categories' => ['autoload']]);
 
-        $data = array();
+        $data = [];
         foreach ($this->parse($configFiles) as $name => $mapping) {
             $data[] = sprintf("\n  // %s", $name);
 
@@ -53,7 +53,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
 
     public function evaluate($configFiles)
     {
-        $mappings = array();
+        $mappings = [];
         foreach ($this->parse($configFiles) as $mapping) {
             foreach ($mapping as $class => $file) {
                 $mappings[$class] = $file;
@@ -65,7 +65,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
 
     public static function parseFile($path, $file, $prefix)
     {
-        $mapping = array();
+        $mapping = [];
         preg_match_all('~^\s*(?:abstract\s+|final\s+)?(?:class|interface|trait)\s+(\w+)~mi', file_get_contents($file), $classes);
         foreach ($classes[1] as $class) {
             $localPrefix = '';
@@ -84,14 +84,14 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
-        $configuration = sfProjectConfiguration::getActive();
+        $configuration = \sfProjectConfiguration::getActive();
 
         $pluginPaths = $configuration->getPluginPaths();
-        $pluginConfigFiles = array();
+        $pluginConfigFiles = [];
 
         // move plugin files to front
         foreach ($configFiles as $i => $configFile) {
@@ -113,7 +113,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
             }
         }
 
-        $event = $configuration->getEventDispatcher()->filter(new sfEvent(__CLASS__, 'autoload.filter_config'), $config);
+        $event = $configuration->getEventDispatcher()->filter(new \sfEvent(__CLASS__, 'autoload.filter_config'), $config);
         $config = $event->getReturnValue();
 
         return $config;
@@ -124,9 +124,9 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
         // parse the yaml
         $config = static::getConfiguration($configFiles);
 
-        $mappings = array();
+        $mappings = [];
         foreach ($config['autoload'] as $name => $entry) {
-            $mapping = array();
+            $mapping = [];
 
             // file mapping or directory mapping?
             if (isset($entry['files'])) {
@@ -140,8 +140,8 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
                 $path = $entry['path'];
 
                 // we automatically add our php classes
-                require_once sfConfig::get('sf_symfony_lib_dir').'/util/sfFinder.class.php';
-                $finder = sfFinder::type('file')->name('*'.$ext)->follow_link();
+                require_once \sfConfig::get('sf_symfony_lib_dir').'/util/sfFinder.class.php';
+                $finder = \sfFinder::type('file')->name('*'.$ext)->follow_link();
 
                 // recursive mapping?
                 $recursive = isset($entry['recursive']) ? $entry['recursive'] : false;

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,7 +19,7 @@ $_test_dir = realpath(__DIR__.'/../../');
 
 require_once $_test_dir.'/../lib/vendor/lime/lime.php';
 
-sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
+\sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
 
 // setup cache
 $temp = tempnam('/tmp/cache_dir', 'tmp');
@@ -26,18 +27,18 @@ unlink($temp);
 mkdir($temp);
 
 $plan = 8;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 // initialize the storage
 try {
-    $storage = new sfCacheSessionStorage();
+    $storage = new \sfCacheSessionStorage();
     $t->fail('->__construct() does not throw an exception when not provided a cache option');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('->__construct() throws an exception when not provided a cache option');
 }
 
-$storage = new sfCacheSessionStorage(array('cache' => array('class' => 'sfFileCache', 'param' => array('cache_dir' => $temp))));
-$t->ok($storage instanceof sfStorage, '->__construct() is an instance of sfStorage');
+$storage = new \sfCacheSessionStorage(['cache' => ['class' => 'sfFileCache', 'param' => ['cache_dir' => $temp]]]);
+$t->ok($storage instanceof \sfStorage, '->__construct() is an instance of sfStorage');
 
 $storage->write('test', 123);
 
@@ -64,5 +65,5 @@ $t->is($storage->read($key), null, '->remove() removes data from the storage');
 $storage->shutdown();
 
 // clean up cache
-sfToolkit::clearDirectory($temp);
+\sfToolkit::clearDirectory($temp);
 rmdir($temp);

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,7 +21,7 @@
  */
 abstract class sfConfigHandler
 {
-    /** @var sfParameterHolder */
+    /** @var \sfParameterHolder */
     protected $parameterHolder;
 
     /**
@@ -29,7 +29,7 @@ abstract class sfConfigHandler
      *
      * @see initialize()
      *
-     * @param array|null $parameters
+     * @param \array|null $parameters
      */
     public function __construct($parameters = null)
     {
@@ -41,11 +41,11 @@ abstract class sfConfigHandler
      *
      * @param array $parameters An associative array of initialization parameters
      *
-     * @throws sfInitializationException If an error occurs while initializing this ConfigHandler
+     * @throws \sfInitializationException If an error occurs while initializing this ConfigHandler
      */
     public function initialize($parameters = null)
     {
-        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder = new \sfParameterHolder();
         $this->parameterHolder->add($parameters);
     }
 
@@ -56,8 +56,8 @@ abstract class sfConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
-     * @throws sfParseException         If a requested configuration file is improperly formatted
+     * @throws \sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException         If a requested configuration file is improperly formatted
      */
     abstract public function execute($configFiles);
 
@@ -73,9 +73,9 @@ abstract class sfConfigHandler
     public static function replaceConstants($value)
     {
         if (is_array($value)) {
-            array_walk_recursive($value, function (&$value) { $value = sfToolkit::replaceConstants($value); });
+            array_walk_recursive($value, function (&$value) { $value = \sfToolkit::replaceConstants($value); });
         } else {
-            $value = sfToolkit::replaceConstants($value);
+            $value = \sfToolkit::replaceConstants($value);
         }
 
         return $value;
@@ -91,11 +91,11 @@ abstract class sfConfigHandler
     public static function replacePath($path)
     {
         if (is_array($path)) {
-            array_walk_recursive($path, function (&$path) { $path = sfConfigHandler::replacePath($path); });
+            array_walk_recursive($path, function (&$path) { $path = \sfConfigHandler::replacePath($path); });
         } else {
-            if (!sfToolkit::isPathAbsolute($path)) {
+            if (!\sfToolkit::isPathAbsolute($path)) {
                 // not an absolute path so we'll prepend to it
-                $path = sfConfig::get('sf_app_dir').'/'.$path;
+                $path = \sfConfig::get('sf_app_dir').'/'.$path;
             }
         }
 
@@ -105,7 +105,7 @@ abstract class sfConfigHandler
     /**
      * Gets the parameter holder for this configuration handler.
      *
-     * @return sfParameterHolder A sfParameterHolder instance
+     * @return \sfParameterHolder A sfParameterHolder instance
      */
     public function getParameterHolder()
     {
@@ -117,10 +117,10 @@ abstract class sfConfigHandler
      *
      * @param array $configFiles An array of ordered configuration files
      *
-     * @throws LogicException no matter what
+     * @throws \LogicException no matter what
      */
     public static function getConfiguration(array $configFiles)
     {
-        throw new LogicException('You must call the ::getConfiguration() method on a concrete config handler class');
+        throw new \LogicException('You must call the ::getConfiguration() method on a concrete config handler class');
     }
 }

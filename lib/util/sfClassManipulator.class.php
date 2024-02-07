@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +18,7 @@
  */
 class sfClassManipulator
 {
-    protected static $signatureTokens = array(
+    protected static $signatureTokens = [
         T_FINAL,
         T_ABSTRACT,
         T_STATIC,
@@ -25,7 +26,7 @@ class sfClassManipulator
         T_PROTECTED,
         T_PRIVATE,
         T_FUNCTION,
-    );
+    ];
 
     protected $code = '';
     protected $file = false;
@@ -45,7 +46,7 @@ class sfClassManipulator
      *
      * @param string $file A file name
      *
-     * @return sfClassManipulator A sfClassManipulator instance
+     * @return \sfClassManipulator A sfClassManipulator instance
      */
     public static function fromFile($file)
     {
@@ -65,7 +66,7 @@ class sfClassManipulator
     public function save()
     {
         if (!$this->file) {
-            throw new LogicException('Unable to save the code as no file has been provided.');
+            throw new \LogicException('Unable to save the code as no file has been provided.');
         }
 
         file_put_contents($this->file, $this->code);
@@ -242,17 +243,17 @@ class sfClassManipulator
                 } elseif ($inSignature && !preg_match('/\s+/', $value)) {
                     // clean up
                     preg_match('/^\s*/', $setup, $match);
-                    $before = implode('', array_map(array($this, 'getTokenValue'), $tokens)).$value.$match[0];
+                    $before = implode('', array_map([$this, 'getTokenValue'], $tokens)).$value.$match[0];
                     $setup = substr($setup, strlen($match[0]));
 
-                    return array($before, $setup);
+                    return [$before, $setup];
                 }
 
                 $setup = $value.$setup;
             }
         }
 
-        return array($before, $setup);
+        return [$before, $setup];
     }
 
     /**

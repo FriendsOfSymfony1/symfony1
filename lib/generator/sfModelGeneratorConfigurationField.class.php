@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 /**
  * Model generator field.
  *
@@ -56,7 +65,7 @@ class sfModelGeneratorConfigurationField
             return $this->config;
         }
 
-        $value = sfModelGeneratorConfiguration::getFieldConfigValue($this->config, $key, $default);
+        $value = \sfModelGeneratorConfiguration::getFieldConfigValue($this->config, $key, $default);
 
         return $escaped ? str_replace("'", "\\'", $value) : $value;
     }
@@ -178,18 +187,18 @@ class sfModelGeneratorConfigurationField
      */
     public function getRendererArguments()
     {
-        return isset($this->config['renderer_arguments']) ? $this->config['renderer_arguments'] : array();
+        return isset($this->config['renderer_arguments']) ? $this->config['renderer_arguments'] : [];
     }
 
     public static function splitFieldWithFlag($field)
     {
-        if (in_array($flag = $field[0], array('=', '_', '~'))) {
+        if (in_array($flag = $field[0], ['=', '_', '~'])) {
             $field = substr($field, 1);
         } else {
             $flag = null;
         }
 
-        return array($field, $flag);
+        return [$field, $flag];
     }
 
     /**
@@ -222,7 +231,7 @@ class sfModelGeneratorConfigurationField
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('Flag "%s" does not exist.', $flag));
+                throw new \InvalidArgumentException(sprintf('Flag "%s" does not exist.', $flag));
         }
     }
 

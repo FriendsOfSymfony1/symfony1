@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfWebController extends sfController
+abstract class sfWebController extends \sfController
 {
     /**
      * Generates an URL from an array of parameters.
@@ -27,7 +27,7 @@ abstract class sfWebController extends sfController
      *
      * @return string A URL to a symfony resource
      */
-    public function genUrl($parameters = array(), $absolute = false)
+    public function genUrl($parameters = [], $absolute = false)
     {
         $route = '';
         $fragment = '';
@@ -39,7 +39,7 @@ abstract class sfWebController extends sfController
             }
 
             // relative URL?
-            if (0 === strpos($parameters, '/')) {
+            if (str_starts_with($parameters, '/')) {
                 return $parameters;
             }
 
@@ -78,13 +78,13 @@ abstract class sfWebController extends sfController
      *
      * @return array An array of parameters
      *
-     * @throws sfParseException
+     * @throws \sfParseException
      */
     public function convertUrlStringToParameters($url)
     {
         $givenUrl = $url;
 
-        $params = array();
+        $params = [];
         $queryString = '';
         $route = '';
 
@@ -111,12 +111,12 @@ abstract class sfWebController extends sfController
         // routeName?
         if ($url && '@' == $url[0]) {
             $route = substr($url, 1);
-        } elseif (false !== strpos($url, '/')) {
+        } elseif (str_contains($url, '/')) {
             list($params['module'], $params['action']) = explode('/', $url);
         } elseif (!$queryString) {
             $route = $givenUrl;
         } else {
-            throw new InvalidArgumentException(sprintf('An internal URI must contain a module and an action (module/action) ("%s" given).', $givenUrl));
+            throw new \InvalidArgumentException(sprintf('An internal URI must contain a module and an action (module/action) ("%s" given).', $givenUrl));
         }
 
         // split the query string
@@ -135,11 +135,11 @@ abstract class sfWebController extends sfController
 
             // check that all string is matched
             if (!$matched) {
-                throw new sfParseException(sprintf('Unable to parse query string "%s".', $queryString));
+                throw new \sfParseException(sprintf('Unable to parse query string "%s".', $queryString));
             }
         }
 
-        return array($route, $params);
+        return [$route, $params];
     }
 
     /**
@@ -150,24 +150,24 @@ abstract class sfWebController extends sfController
      *                                 browsers that do not support HTTP headers
      * @param int          $statusCode The status code
      *
-     * @throws InvalidArgumentException If the url argument is null or an empty string
+     * @throws \InvalidArgumentException If the url argument is null or an empty string
      */
     public function redirect($url, $delay = 0, $statusCode = 302)
     {
         if (empty($url)) {
-            throw new InvalidArgumentException('Cannot redirect to an empty URL.');
+            throw new \InvalidArgumentException('Cannot redirect to an empty URL.');
         }
 
         $url = $this->genUrl($url, true);
         // see #8083
         $url = str_replace('&amp;', '&', $url);
 
-        if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Redirect to "%s"', $url))));
+        if (\sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new \sfEvent($this, 'application.log', [sprintf('Redirect to "%s"', $url)]));
         }
 
         // redirect
-        /** @var sfWebResponse $response */
+        /** @var \sfWebResponse $response */
         $response = $this->context->getResponse();
         $response->clearHttpHeaders();
         $response->setStatusCode($statusCode);
@@ -178,7 +178,7 @@ abstract class sfWebController extends sfController
             $response->setHttpHeader('Location', $url);
         }
 
-        $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlspecialchars($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
+        $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlspecialchars($url, ENT_QUOTES, \sfConfig::get('sf_charset'))));
         $response->send();
     }
 }

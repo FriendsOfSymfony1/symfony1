@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
+class sfPostgreSQLSessionStorage extends \sfDatabaseSessionStorage
 {
     /**
      * Destroys a session.
@@ -28,7 +28,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if the session was destroyed, otherwise an exception is thrown
      *
-     * @throws sfDatabaseException If the session cannot be destroyed
+     * @throws \sfDatabaseException If the session cannot be destroyed
      */
     public function sessionDestroy($id)
     {
@@ -47,7 +47,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         }
 
         // failed to destroy session
-        throw new sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot destroy session id "%s".', $id));
+        throw new \sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot destroy session id "%s".', $id));
     }
 
     /**
@@ -57,7 +57,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if old sessions have been cleaned, otherwise an exception is thrown
      *
-     * @throws sfDatabaseException If any old sessions cannot be cleaned
+     * @throws \sfDatabaseException If any old sessions cannot be cleaned
      */
     public function sessionGC($lifetime)
     {
@@ -69,7 +69,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         $sql = 'DELETE FROM '.$db_table.' WHERE '.$db_time_col.' < '.(time() - $lifetime);
 
         if (!@pg_query($this->db, $sql)) {
-            throw new sfDatabaseException('sfPostgreSQLSessionStorage cannot delete old sessions.');
+            throw new \sfDatabaseException('sfPostgreSQLSessionStorage cannot delete old sessions.');
         }
 
         return true;
@@ -82,7 +82,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return string The session data if the session was read or created, otherwise an exception is thrown
      *
-     * @throws sfDatabaseException If the session cannot be read
+     * @throws \sfDatabaseException If the session cannot be read
      */
     public function sessionRead($id)
     {
@@ -115,7 +115,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         }
 
         // can't create record
-        throw new sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot create new record for id "%s".', $id));
+        throw new \sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot create new record for id "%s".', $id));
     }
 
     /**
@@ -126,7 +126,7 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if the session was written, otherwise an exception is thrown
      *
-     * @throws sfDatabaseException If the session data cannot be written
+     * @throws \sfDatabaseException If the session data cannot be written
      */
     public function sessionWrite($id, $data)
     {
@@ -148,6 +148,6 @@ class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
         }
 
         // failed to write session data
-        throw new sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot write session data for id "%s".', $id));
+        throw new \sfDatabaseException(sprintf('sfPostgreSQLSessionStorage cannot write session data for id "%s".', $id));
     }
 }

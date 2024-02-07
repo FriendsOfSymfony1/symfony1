@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,9 +11,9 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(12);
+$t = new \lime_test(12);
 
-$v = new sfValidatorString();
+$v = new \sfValidatorString();
 
 // ->clean()
 $t->diag('->clean()');
@@ -29,7 +30,7 @@ try {
     $v->clean('foo');
     $t->fail('"max_length" option set the maximum length of the string');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('"max_length" option set the maximum length of the string');
     $t->is($e->getCode(), 'max_length', '->clean() throws a sfValidatorError');
 }
@@ -39,7 +40,7 @@ $v->setMessage('max_length', 'Too long');
 try {
     $v->clean('foo');
     $t->fail('"max_length" error message customization');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->is($e->getMessage(), 'Too long', '"max_length" error message customization');
 }
 
@@ -52,7 +53,7 @@ try {
     $v->clean('fo');
     $t->fail('"min_length" option set the minimum length of the string');
     $t->skip('', 1);
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->pass('"min_length" option set the minimum length of the string');
     $t->is($e->getCode(), 'min_length', '->clean() throws a sfValidatorError');
 }
@@ -62,7 +63,7 @@ $v->setMessage('min_length', 'Too short');
 try {
     $v->clean('fo');
     $t->fail('"min_length" error message customization');
-} catch (sfValidatorError $e) {
+} catch (\sfValidatorError $e) {
     $t->is($e->getMessage(), 'Too short', '"min_length" error message customization');
 }
 

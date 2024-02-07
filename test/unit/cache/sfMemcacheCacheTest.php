@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,7 +12,7 @@
 require_once __DIR__.'/../../bootstrap/unit.php';
 
 $plan = 73;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (!class_exists('Memcache')) {
     $t->skip('Memcache needed to run these tests', $plan);
@@ -22,7 +23,7 @@ if (!class_exists('Memcache')) {
 require_once __DIR__.'/sfCacheDriverTests.class.php';
 
 // setup
-sfConfig::set('sf_logging_enabled', false);
+\sfConfig::set('sf_logging_enabled', false);
 
 // ->initialize()
 $t->diag('->initialize()');
@@ -33,17 +34,17 @@ try {
         $memcachedHost = null;
     }
 
-    $cache = new sfMemcacheCache(array(
+    $cache = new \sfMemcacheCache([
         'storeCacheInfo' => true,
         'host' => $memcachedHost,
-    ));
-} catch (sfInitializationException $e) {
+    ]);
+} catch (\sfInitializationException $e) {
     $t->skip('Memcached must be active to run these tests', $plan);
 
     return;
 }
 
-sfCacheDriverTests::launch($t, $cache);
+\sfCacheDriverTests::launch($t, $cache);
 
 // ->remove() test for ticket #6220
 $t->diag('->remove() test for ticket #6220');

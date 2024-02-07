@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,7 +26,7 @@ class sfInflector
      */
     public static function camelize($lower_case_and_underscored_word)
     {
-        return strtr(ucwords(strtr((string) $lower_case_and_underscored_word, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
+        return strtr(ucwords(strtr((string) $lower_case_and_underscored_word, ['/' => ':: ', '_' => ' ', '-' => ' '])), [' ' => '']);
     }
 
     /**
@@ -39,8 +40,8 @@ class sfInflector
     {
         $tmp = (string) $camel_cased_word;
         $tmp = str_replace('::', '/', $tmp);
-        $tmp = sfToolkit::pregtr($tmp, array('/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
-            '/([a-z\d])([A-Z])/' => '\\1_\\2'));
+        $tmp = \sfToolkit::pregtr($tmp, ['/([A-Z]+)([A-Z][a-z])/' => '\\1_\\2',
+            '/([a-z\d])([A-Z])/' => '\\1_\\2']);
 
         return strtolower($tmp);
     }
@@ -68,7 +69,7 @@ class sfInflector
      */
     public static function foreign_key($class_name, $separate_with_underscore = true)
     {
-        return sfInflector::underscore(sfInflector::demodulize($class_name)).($separate_with_underscore ? '_id' : 'id');
+        return \sfInflector::underscore(\sfInflector::demodulize($class_name)).($separate_with_underscore ? '_id' : 'id');
     }
 
     /**
@@ -80,7 +81,7 @@ class sfInflector
      */
     public static function tableize($class_name)
     {
-        return sfInflector::underscore($class_name);
+        return \sfInflector::underscore($class_name);
     }
 
     /**
@@ -92,7 +93,7 @@ class sfInflector
      */
     public static function classify($table_name)
     {
-        return sfInflector::camelize($table_name);
+        return \sfInflector::camelize($table_name);
     }
 
     /**

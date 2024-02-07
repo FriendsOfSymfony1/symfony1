@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,20 +16,20 @@
  *
  * @version    SVN: $Id$
  */
-class sfListTask extends sfCommandApplicationTask
+class sfListTask extends \sfCommandApplicationTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('namespace', sfCommandArgument::OPTIONAL, 'The namespace name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('namespace', \sfCommandArgument::OPTIONAL, 'The namespace name'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
+        ]);
 
         $this->briefDescription = 'Lists tasks';
 
@@ -48,11 +49,11 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $tasks = array();
+        $tasks = [];
         foreach ($this->commandApplication->getTasks() as $name => $task) {
             if ($arguments['namespace'] && $arguments['namespace'] != $task->getNamespace()) {
                 continue;
@@ -88,7 +89,7 @@ EOF;
         }
         $width += strlen($this->formatter->format('  ', 'INFO'));
 
-        $messages = array();
+        $messages = [];
         if ($namespace) {
             $messages[] = $this->formatter->format(sprintf('Available tasks for the "%s" namespace:', $namespace), 'COMMENT');
         } else {
@@ -114,7 +115,7 @@ EOF;
 
     protected function outputAsXml($namespace, $tasks)
     {
-        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->formatOutput = true;
         $dom->appendChild($symfonyXML = $dom->createElement('symfony'));
 
@@ -129,7 +130,7 @@ EOF;
         // display tasks
         ksort($tasks);
         $currentNamespace = 'foobar';
-        $namespaceArrayXML = array();
+        $namespaceArrayXML = [];
         foreach ($tasks as $name => $task) {
             if (!$namespace && $currentNamespace != $task->getNamespace()) {
                 $currentNamespace = $task->getNamespace();
@@ -143,7 +144,7 @@ EOF;
                 $taskXML->appendChild($dom->createTextNode($task->getName()));
             }
 
-            $taskXML = new DOMDocument('1.0', 'UTF-8');
+            $taskXML = new \DOMDocument('1.0', 'UTF-8');
             $taskXML->formatOutput = true;
             $taskXML->loadXML($task->asXml());
             $node = $taskXML->getElementsByTagName('task')->item(0);

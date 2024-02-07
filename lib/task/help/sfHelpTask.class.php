@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,20 +16,20 @@
  *
  * @version    SVN: $Id$
  */
-class sfHelpTask extends sfCommandApplicationTask
+class sfHelpTask extends \sfCommandApplicationTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('task_name', sfCommandArgument::OPTIONAL, 'The task name', 'help'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('task_name', \sfCommandArgument::OPTIONAL, 'The task name', 'help'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('xml', null, \sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
+        ]);
 
         $this->briefDescription = 'Displays help for a task';
 
@@ -44,12 +45,12 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (!isset($this->commandApplication)) {
-            throw new sfCommandException('You can only launch this task from the command line.');
+            throw new \sfCommandException('You can only launch this task from the command line.');
         }
 
         $task = $this->commandApplication->getTask($arguments['task_name']);
@@ -61,9 +62,9 @@ EOF;
         }
     }
 
-    protected function outputAsText(sfTask $task)
+    protected function outputAsText(\sfTask $task)
     {
-        $messages = array();
+        $messages = [];
 
         $messages[] = $this->formatter->format('Usage:', 'COMMENT');
         $messages[] = $this->formatter->format(sprintf(' '.$task->getSynopsis(), null === $this->commandApplication ? '' : $this->commandApplication->getName()))."\n";
@@ -113,7 +114,7 @@ EOF;
         $this->log($messages);
     }
 
-    protected function outputAsXml(sfTask $task)
+    protected function outputAsXml(\sfTask $task)
     {
         echo $task->asXml();
     }

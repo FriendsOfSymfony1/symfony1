@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfChoiceFormat class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -85,14 +77,14 @@ class sfChoiceFormat
      *
      * @return bool true if number is in the set, false otherwise
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public function isValid($number, $set)
     {
         $n = preg_match_all($this->validate, $set, $matches, PREG_SET_ORDER);
 
         if ($n < 3) {
-            throw new sfException(sprintf('Invalid set "%s".', $set));
+            throw new \sfException(sprintf('Invalid set "%s".', $set));
         }
 
         if (preg_match('/\{\s*n:([^\}]+)\}/', $set, $def)) {
@@ -103,7 +95,7 @@ class sfChoiceFormat
         $rightBracket = $matches[$n - 1][0];
 
         $i = 0;
-        $elements = array();
+        $elements = [];
 
         foreach ($matches as $match) {
             $string = $match[0];
@@ -152,13 +144,13 @@ class sfChoiceFormat
     public function parse($string)
     {
         $n = preg_match_all($this->parse, $string, $matches, PREG_OFFSET_CAPTURE);
-        $sets = array();
+        $sets = [];
         foreach ($matches[1] as $match) {
             $sets[] = $match[0];
         }
 
         $offset = $matches[0];
-        $strings = array();
+        $strings = [];
         for ($i = 0; $i < $n; ++$i) {
             $len = strlen($offset[$i][0]);
             $begin = 0 == $i ? $len : $offset[$i][1] + $len;
@@ -166,7 +158,7 @@ class sfChoiceFormat
             $strings[] = substr($string, $begin, $end - $begin);
         }
 
-        return array($sets, $strings);
+        return [$sets, $strings];
     }
 
     /**
@@ -198,7 +190,7 @@ class sfChoiceFormat
             eval($str);
 
             return $result;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }

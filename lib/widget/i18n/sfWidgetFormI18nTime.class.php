@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nTime extends sfWidgetFormTime
+class sfWidgetFormI18nTime extends \sfWidgetFormTime
 {
     /**
      * Constructor.
@@ -27,9 +28,9 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormTime
+     * @see \sfWidgetFormTime
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -46,16 +47,16 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
 
     protected function getTimeFormat($culture, $withSeconds)
     {
-        $timeFormat = $withSeconds ? sfDateTimeFormatInfo::getInstance($culture)->getMediumTimePattern() : sfDateTimeFormatInfo::getInstance($culture)->getShortTimePattern();
+        $timeFormat = $withSeconds ? \sfDateTimeFormatInfo::getInstance($culture)->getMediumTimePattern() : \sfDateTimeFormatInfo::getInstance($culture)->getShortTimePattern();
 
         if (false === ($hourPos = stripos($timeFormat, 'h')) || false === ($minutePos = stripos($timeFormat, 'm'))) {
             return $this->getOption('format');
         }
 
-        $trans = array(
+        $trans = [
             substr($timeFormat, $hourPos, strripos($timeFormat, 'h') - $hourPos + 1) => '%hour%',
             substr($timeFormat, $minutePos, strripos($timeFormat, 'm') - $minutePos + 1) => '%minute%',
-        );
+        ];
 
         if ($withSeconds) {
             if (false === $secondPos = stripos($timeFormat, 's')) {

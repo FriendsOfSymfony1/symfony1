@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -21,10 +21,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfNamespacedParameterHolder extends sfParameterHolder
+class sfNamespacedParameterHolder extends \sfParameterHolder
 {
     protected $default_namespace;
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * The constructor for sfNamespacedParameterHolder.
@@ -50,7 +50,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
      */
     public function __serialize()
     {
-        return array($this->default_namespace, $this->parameters);
+        return [$this->default_namespace, $this->parameters];
     }
 
     /**
@@ -99,7 +99,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
     public function clear()
     {
         $this->parameters = null;
-        $this->parameters = array();
+        $this->parameters = [];
     }
 
     /**
@@ -147,7 +147,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
             return array_keys($this->parameters[$ns]);
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -178,7 +178,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
             $ns = $this->default_namespace;
         }
 
-        $parameters = array();
+        $parameters = [];
 
         if (isset($this->parameters[$ns])) {
             $parameters = $this->parameters[$ns];
@@ -246,7 +246,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
      *
      * @param string $ns a parameter namespace
      *
-     * @return mixed|null
+     * @return \mixed|null
      */
     public function &removeNamespace($ns = null)
     {
@@ -280,7 +280,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
         }
 
         if (!isset($this->parameters[$ns])) {
-            $this->parameters[$ns] = array();
+            $this->parameters[$ns] = [];
         }
 
         $this->parameters[$ns][$name] = $value;
@@ -302,7 +302,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
         }
 
         if (!isset($this->parameters[$ns])) {
-            $this->parameters[$ns] = array();
+            $this->parameters[$ns] = [];
         }
 
         $this->parameters[$ns][$name] = &$value;
@@ -328,7 +328,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
         }
 
         if (!isset($this->parameters[$ns])) {
-            $this->parameters[$ns] = array();
+            $this->parameters[$ns] = [];
         }
 
         foreach ($parameters as $key => $value) {
@@ -352,7 +352,7 @@ class sfNamespacedParameterHolder extends sfParameterHolder
         }
 
         if (!isset($this->parameters[$ns])) {
-            $this->parameters[$ns] = array();
+            $this->parameters[$ns] = [];
         }
 
         foreach ($parameters as $key => &$value) {

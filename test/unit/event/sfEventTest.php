@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,11 +11,11 @@
 
 require_once __DIR__.'/../../bootstrap/unit.php';
 
-$t = new lime_test(11);
+$t = new \lime_test(11);
 
-$subject = new stdClass();
-$parameters = array('foo' => 'bar');
-$event = new sfEvent($subject, 'name', $parameters);
+$subject = new \stdClass();
+$parameters = ['foo' => 'bar'];
+$event = new \sfEvent($subject, 'name', $parameters);
 
 // ->getSubject()
 $t->diag('->getSubject()');
@@ -49,7 +50,7 @@ $t->is($event['foo'], 'foo', 'sfEvent implements the ArrayAccess interface');
 try {
     $event['foobar'];
     $t->fail('::offsetGet() throws an InvalidArgumentException exception when the parameter does not exist');
-} catch (InvalidArgumentException $e) {
+} catch (\InvalidArgumentException $e) {
     $t->pass('::offsetGet() throws an InvalidArgumentException exception when the parameter does not exist');
 }
 

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id: sfEvent.class.php 8698 2008-04-30 16:35:28Z fabien $
  */
-class sfEvent implements ArrayAccess
+class sfEvent implements \ArrayAccess
 {
     protected $value;
     protected $processed = false;
@@ -30,7 +31,7 @@ class sfEvent implements ArrayAccess
      * @param string $name       The event name
      * @param array  $parameters An array of parameters
      */
-    public function __construct($subject, $name, $parameters = array())
+    public function __construct($subject, $name, $parameters = [])
     {
         $this->subject = $subject;
         $this->name = $name;
@@ -132,7 +133,7 @@ class sfEvent implements ArrayAccess
     public function offsetGet($name)
     {
         if (!array_key_exists($name, $this->parameters)) {
-            throw new InvalidArgumentException(sprintf('The event "%s" has no "%s" parameter.', $this->name, $name));
+            throw new \InvalidArgumentException(sprintf('The event "%s" has no "%s" parameter.', $this->name, $name));
         }
 
         return $this->parameters[$name];

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,9 +16,9 @@
  *
  * @version    SVN: $Id$
  */
-class sfCacheConfigHandler extends sfYamlConfigHandler
+class sfCacheConfigHandler extends \sfYamlConfigHandler
 {
-    protected $cacheConfig = array();
+    protected $cacheConfig = [];
 
     /**
      * Executes this configuration handler.
@@ -26,9 +27,9 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws sfConfigurationException  If a requested configuration file does not exist or is not readable
-     * @throws sfParseException          If a requested configuration file is improperly formatted
-     * @throws sfInitializationException If a cache.yml key check fails
+     * @throws \sfConfigurationException  If a requested configuration file does not exist or is not readable
+     * @throws \sfParseException          If a requested configuration file is improperly formatted
+     * @throws \sfInitializationException If a cache.yml key check fails
      */
     public function execute($configFiles)
     {
@@ -36,7 +37,7 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
         $this->yamlConfig = static::getConfiguration($configFiles);
 
         // iterate through all action names
-        $data = array();
+        $data = [];
         $first = true;
         foreach ($this->yamlConfig as $actionName => $values) {
             if ('all' == $actionName) {
@@ -64,7 +65,7 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
     }
 
     /**
-     * @see sfConfigHandler
+     * @see \sfConfigHandler
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -80,7 +81,7 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
      */
     protected function addCache($actionName = '')
     {
-        $data = array();
+        $data = [];
 
         // enabled?
         $enabled = $this->getConfigValue('enabled', $actionName);
@@ -98,9 +99,9 @@ class sfCacheConfigHandler extends sfYamlConfigHandler
         $contextual = $this->getConfigValue('contextual', $actionName) ? 'true' : 'false';
 
         // vary
-        $vary = $this->getConfigValue('vary', $actionName, array());
+        $vary = $this->getConfigValue('vary', $actionName, []);
         if (!is_array($vary)) {
-            $vary = array($vary);
+            $vary = [$vary];
         }
 
         // add cache information to cache manager

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,12 +11,12 @@
 
 require_once __DIR__.'/../../../bootstrap/unit.php';
 
-$t = new lime_test(7);
+$t = new \lime_test(7);
 
 // __construct()
 $t->diag('__construct()');
-$e = new sfI18nPhpExtractor();
-$t->ok($e instanceof sfI18nExtractorInterface, 'sfI18nPhpExtractor implements the sfI18nExtractorInterface interface');
+$e = new \sfI18nPhpExtractor();
+$t->ok($e instanceof \sfI18nExtractorInterface, 'sfI18nPhpExtractor implements the sfI18nExtractorInterface interface');
 
 // ->extract();
 $t->diag('->extract()');
@@ -30,19 +31,19 @@ __('bar')
 <?php __("I\'m so \"happy\"") ?>
 EOF;
 
-$t->is($e->extract($content), array('foo', 'I\'m "happy"', 'I\'m very "happy"', 'I\\\'m so "happy"'), '->extract() extracts strings from PHP files');
+$t->is($e->extract($content), ['foo', 'I\'m "happy"', 'I\'m very "happy"', 'I\\\'m so "happy"'], '->extract() extracts strings from PHP files');
 
 $content = <<<'EOF'
 <?php format_number_choice('foo') ?>
 EOF;
 
-$t->is($e->extract($content), array('foo'), '->extract() takes into account the format_number_choice() helper');
+$t->is($e->extract($content), ['foo'], '->extract() takes into account the format_number_choice() helper');
 
 $content = <<<'EOF'
 <?php $this->getContext()->getI18N()->__('foo') ?>
 EOF;
 
-$t->is($e->extract($content), array('foo'), '->extract() takes into account calls in an action file');
+$t->is($e->extract($content), ['foo'], '->extract() takes into account calls in an action file');
 
 $content = <<<'EOF'
 <?php
@@ -53,7 +54,7 @@ $content = <<<'EOF'
 ?>
 EOF;
 
-$t->is($e->extract($content), array('foo', 'bar', 'foobar', 'foo %a% bar'), '->extract() extracts strings from \'\' and "" quoted strings');
+$t->is($e->extract($content), ['foo', 'bar', 'foobar', 'foo %a% bar'], '->extract() extracts strings from \'\' and "" quoted strings');
 
 $content = <<<'EOF'
 <?php
@@ -65,7 +66,7 @@ $content = <<<'EOF'
 ?>
 EOF;
 
-$t->is($e->extract($content), array('foo', 'bar'), '->extract() does not care if you add some whitespaces');
+$t->is($e->extract($content), ['foo', 'bar'], '->extract() does not care if you add some whitespaces');
 
 $content = <<<'EOF'
 <?php
@@ -80,4 +81,4 @@ EOD
 );
 EOF;
 
-$t->is(fix_linebreaks($e->extract($content)), array("foo\n", "bar\n"), '->extract() extracts strings from HEREDOC quoted strings');
+$t->is(fix_linebreaks($e->extract($content)), ["foo\n", "bar\n"], '->extract() extracts strings from HEREDOC quoted strings');

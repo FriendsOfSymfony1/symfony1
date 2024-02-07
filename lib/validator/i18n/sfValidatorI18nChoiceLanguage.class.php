@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidatorI18nChoiceLanguage extends sfValidatorChoice
+class sfValidatorI18nChoiceLanguage extends \sfValidatorChoice
 {
     /**
      * Configures the current validator.
@@ -27,21 +28,21 @@ class sfValidatorI18nChoiceLanguage extends sfValidatorChoice
      * @param array $options  An array of options
      * @param array $messages An array of error messages
      *
-     * @see sfValidatorChoice
+     * @see \sfValidatorChoice
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 
         $this->addOption('languages');
 
         // populate choices with all languages
-        $languages = array_keys(sfCultureInfo::getInstance()->getLanguages());
+        $languages = array_keys(\sfCultureInfo::getInstance()->getLanguages());
 
         // restrict languages to a sub-set
         if (isset($options['languages'])) {
             if ($problems = array_diff($options['languages'], $languages)) {
-                throw new InvalidArgumentException(sprintf('The following languages do not exist: %s.', implode(', ', $problems)));
+                throw new \InvalidArgumentException(sprintf('The following languages do not exist: %s.', implode(', ', $problems)));
             }
 
             $languages = $options['languages'];

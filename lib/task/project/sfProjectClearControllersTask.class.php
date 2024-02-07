@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,10 +16,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfProjectClearControllersTask extends sfBaseTask
+class sfProjectClearControllersTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
@@ -55,12 +56,12 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        $finder = sfFinder::type('file')->maxdepth(1)->name('*.php');
-        foreach ($finder->in(sfConfig::get('sf_web_dir')) as $controller) {
+        $finder = \sfFinder::type('file')->maxdepth(1)->name('*.php');
+        foreach ($finder->in(\sfConfig::get('sf_web_dir')) as $controller) {
             $content = file_get_contents($controller);
 
             if (preg_match('/ProjectConfiguration::getApplicationConfiguration\(\'(.*?)\', \'(.*?)\'/', $content, $match)) {

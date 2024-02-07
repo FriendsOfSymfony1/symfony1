@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineFormGenerator extends sfGenerator
+class sfDoctrineFormGenerator extends \sfGenerator
 {
     /**
      * @var Doctrine_Table
@@ -36,28 +36,28 @@ class sfDoctrineFormGenerator extends sfGenerator
      *
      * @var array
      */
-    public $models = array();
+    public $models = [];
 
     /**
      * Array of all plugin models.
      *
      * @var array
      */
-    public $pluginModels = array();
+    public $pluginModels = [];
 
     /**
      * Array of all configuration params.
      *
      * @var array
      */
-    public $params = array();
+    public $params = [];
 
     /**
      * Initializes the current sfGenerator instance.
      *
-     * @param sfGeneratorManager A sfGeneratorManager instance
+     * @param \sfGeneratorManager A sfGeneratorManager instance
      */
-    public function initialize(sfGeneratorManager $generatorManager)
+    public function initialize(\sfGeneratorManager $generatorManager)
     {
         parent::initialize($generatorManager);
 
@@ -72,7 +72,7 @@ class sfDoctrineFormGenerator extends sfGenerator
      *
      * @return string The data to put in configuration cache
      */
-    public function generate($params = array())
+    public function generate($params = [])
     {
         $this->params = $params;
 
@@ -87,7 +87,7 @@ class sfDoctrineFormGenerator extends sfGenerator
         $models = $this->loadModels();
 
         // create the project base class for all forms
-        $file = sfConfig::get('sf_lib_dir').'/form/doctrine/BaseFormDoctrine.class.php';
+        $file = \sfConfig::get('sf_lib_dir').'/form/doctrine/BaseFormDoctrine.class.php';
         if (!file_exists($file)) {
             if (!is_dir($directory = dirname($file))) {
                 mkdir($directory, 0777, true);
@@ -100,10 +100,10 @@ class sfDoctrineFormGenerator extends sfGenerator
 
         // create a form class for every Doctrine class
         foreach ($models as $model) {
-            $this->table = Doctrine_Core::getTable($model);
+            $this->table = \Doctrine_Core::getTable($model);
             $this->modelName = $model;
 
-            $baseDir = sfConfig::get('sf_lib_dir').'/form/doctrine';
+            $baseDir = \sfConfig::get('sf_lib_dir').'/form/doctrine';
 
             $isPluginModel = $this->isPluginModel($model);
             if ($isPluginModel) {
@@ -156,19 +156,19 @@ class sfDoctrineFormGenerator extends sfGenerator
                     continue;
                 }
 
-                foreach (sfFinder::type('file')->name('*.php')->in($path.'/lib/model/doctrine') as $path) {
+                foreach (\sfFinder::type('file')->name('*.php')->in($path.'/lib/model/doctrine') as $path) {
                     $info = pathinfo($path);
                     $e = explode('.', $info['filename']);
                     $modelName = substr($e[0], 6, strlen($e[0]));
 
                     if (class_exists($e[0]) && class_exists($modelName)) {
-                        $parent = new ReflectionClass('Doctrine_Record');
-                        $reflection = new ReflectionClass($modelName);
+                        $parent = new \ReflectionClass('Doctrine_Record');
+                        $reflection = new \ReflectionClass($modelName);
                         if ($reflection->isSubclassOf($parent)) {
                             $this->pluginModels[$modelName] = $pluginName;
 
                             if ($reflection->isInstantiable()) {
-                                $generators = Doctrine_Core::getTable($modelName)->getGenerators();
+                                $generators = \Doctrine_Core::getTable($modelName)->getGenerators();
                                 foreach ($generators as $generator) {
                                     $this->pluginModels[$generator->getOption('className')] = $pluginName;
                                 }
@@ -217,12 +217,12 @@ class sfDoctrineFormGenerator extends sfGenerator
      */
     public function getManyToManyRelations()
     {
-        $relations = array();
+        $relations = [];
         foreach ($this->table->getRelations() as $relation) {
             if (
-                Doctrine_Relation::MANY == $relation->getType()
+                \Doctrine_Relation::MANY == $relation->getType()
                 && isset($relation['refTable'])
-                && (null === $this->getParentModel() || !Doctrine_Core::getTable($this->getParentModel())->hasRelation($relation->getAlias()))
+                && (null === $this->getParentModel() || !\Doctrine_Core::getTable($this->getParentModel())->hasRelation($relation->getAlias()))
             ) {
                 $relations[] = $relation;
             }
@@ -244,16 +244,16 @@ class sfDoctrineFormGenerator extends sfGenerator
      */
     public function getForeignKeyNames()
     {
-        $names = array();
+        $names = [];
         foreach ($this->table->getRelations() as $relation) {
-            if (Doctrine_Relation::ONE === $relation->getType()) {
+            if (\Doctrine_Relation::ONE === $relation->getType()) {
                 $foreignDef = $relation->getTable()->getDefinitionOf($relation->getForeignFieldName());
-                $names[] = array($relation['table']->getOption('name'), $relation->getForeignFieldName(), $this->isColumnNotNull($relation->getForeignFieldName(), $foreignDef), false);
+                $names[] = [$relation['table']->getOption('name'), $relation->getForeignFieldName(), $this->isColumnNotNull($relation->getForeignFieldName(), $foreignDef), false];
             }
         }
 
         foreach ($this->getManyToManyRelations() as $relation) {
-            $names[] = array($relation['table']->getOption('name'), $relation['alias'], false, true);
+            $names[] = [$relation['table']->getOption('name'), $relation['alias'], false, true];
         }
 
         return $names;
@@ -262,7 +262,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     /**
      * Returns the first primary key column of the current table.
      *
-     * @param ColumnMap A ColumnMap object
+     * @param \ColumnMap A ColumnMap object
      */
     public function getPrimaryKey()
     {
@@ -276,7 +276,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     /**
      * Returns a sfWidgetForm class name for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The name of a subclass of sfWidgetForm
      */
@@ -335,13 +335,13 @@ class sfDoctrineFormGenerator extends sfGenerator
     /**
      * Returns a PHP string representing options to pass to a widget for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The options to pass to the widget as a PHP string
      */
     public function getWidgetOptionsForColumn($column)
     {
-        $options = array();
+        $options = [];
 
         if ($column->isForeignKey()) {
             $options[] = sprintf('\'model\' => $this->getRelatedModelName(\'%s\'), \'add_empty\' => %s', $column->getRelationKey('alias'), $column->isNotNull() ? 'false' : 'true');
@@ -355,7 +355,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     /**
      * Returns a sfValidator class name for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The name of a subclass of sfValidator
      */
@@ -431,13 +431,13 @@ class sfDoctrineFormGenerator extends sfGenerator
     /**
      * Returns a PHP string representing options to pass to a validator for a given column.
      *
-     * @param sfDoctrineColumn $column
+     * @param \sfDoctrineColumn $column
      *
      * @return string The options to pass to the validator as a PHP string
      */
     public function getValidatorOptionsForColumn($column)
     {
-        $options = array();
+        $options = [];
 
         if ($column->isForeignKey()) {
             if ($foreignColumn = $column->getForeignTable()->getColumnName($column->getForeignFieldName())) {
@@ -545,7 +545,7 @@ class sfDoctrineFormGenerator extends sfGenerator
 
     public function underscore($name)
     {
-        return strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), '\\1_\\2', $name));
+        return strtolower(preg_replace(['/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], '\\1_\\2', $name));
     }
 
     /**
@@ -556,24 +556,24 @@ class sfDoctrineFormGenerator extends sfGenerator
     public function getColumns()
     {
         $parentModel = $this->getParentModel();
-        $parentColumns = $parentModel ? array_keys(Doctrine_Core::getTable($parentModel)->getColumns()) : array();
+        $parentColumns = $parentModel ? array_keys(\Doctrine_Core::getTable($parentModel)->getColumns()) : [];
 
-        $columns = array();
+        $columns = [];
         foreach (array_diff(array_keys($this->table->getColumns()), $parentColumns) as $name) {
-            $columns[] = new sfDoctrineColumn($name, $this->table);
+            $columns[] = new \sfDoctrineColumn($name, $this->table);
         }
 
         // add relations to columns for inherited classes
         if ($parentModel) {
-            $parentRelationNames = array_keys(Doctrine_Core::getTable($parentModel)->getRelations());
+            $parentRelationNames = array_keys(\Doctrine_Core::getTable($parentModel)->getRelations());
             $relations = $this->table->getRelations();
-            $relationColumns = array();
+            $relationColumns = [];
             foreach (array_diff(array_keys($relations), $parentRelationNames) as $relationName) {
-                if (Doctrine_Relation::ONE == $relations[$relationName]->getType()) {
+                if (\Doctrine_Relation::ONE == $relations[$relationName]->getType()) {
                     $columnName = $relations[$relationName]->getLocal();
                     if (!in_array($columnName, $relationColumns)) {
                         $relationColumns[] = $columnName;
-                        $columns[] = new sfDoctrineColumn($columnName, $this->table);
+                        $columns[] = new \sfDoctrineColumn($columnName, $this->table);
                     }
                 }
             }
@@ -584,11 +584,11 @@ class sfDoctrineFormGenerator extends sfGenerator
 
     public function getUniqueColumnNames()
     {
-        $uniqueColumns = array();
+        $uniqueColumns = [];
 
         foreach ($this->getColumns() as $column) {
             if ($column->getDefinitionKey('unique')) {
-                $uniqueColumns[] = array($column->getFieldName());
+                $uniqueColumns[] = [$column->getFieldName()];
             }
         }
 
@@ -612,16 +612,16 @@ class sfDoctrineFormGenerator extends sfGenerator
     /**
      * Returns the name of the model class this model extends.
      *
-     * @return string|null
+     * @return \string|null
      */
     public function getParentModel()
     {
-        $baseClasses = array(
+        $baseClasses = [
             'Doctrine_Record',
             'sfDoctrineRecord',
-        );
+        ];
 
-        $builderOptions = sfConfig::get('doctrine_model_builder_options', array());
+        $builderOptions = \sfConfig::get('doctrine_model_builder_options', []);
         if (isset($builderOptions['baseClassName'])) {
             $baseClasses[] = $builderOptions['baseClassName'];
         }
@@ -633,7 +633,7 @@ class sfDoctrineFormGenerator extends sfGenerator
                 break;
             }
 
-            $r = new ReflectionClass($model);
+            $r = new \ReflectionClass($model);
             if (!$r->isAbstract()) {
                 return $r->getName();
             }
@@ -655,10 +655,10 @@ class sfDoctrineFormGenerator extends sfGenerator
      */
     protected function loadModels()
     {
-        Doctrine_Core::loadModels($this->generatorManager->getConfiguration()->getModelDirs());
-        $models = Doctrine_Core::getLoadedModels();
-        $models = Doctrine_Core::initializeModels($models);
-        $models = Doctrine_Core::filterInvalidModels($models);
+        \Doctrine_Core::loadModels($this->generatorManager->getConfiguration()->getModelDirs());
+        $models = \Doctrine_Core::getLoadedModels();
+        $models = \Doctrine_Core::initializeModels($models);
+        $models = \Doctrine_Core::filterInvalidModels($models);
         $this->models = $this->filterModels($models);
 
         return $this->models;
@@ -672,7 +672,7 @@ class sfDoctrineFormGenerator extends sfGenerator
     protected function filterModels($models)
     {
         foreach ($models as $key => $model) {
-            $table = Doctrine_Core::getTable($model);
+            $table = \Doctrine_Core::getTable($model);
             $symfonyOptions = (array) $table->getOption('symfony');
 
             if ($table->isGenerator()) {

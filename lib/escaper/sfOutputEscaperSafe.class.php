@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfOutputEscaperSafe extends ArrayIterator
+class sfOutputEscaperSafe extends \ArrayIterator
 {
     protected $value;
 
@@ -50,7 +51,7 @@ class sfOutputEscaperSafe extends ArrayIterator
 
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->value, $method), $arguments);
+        return call_user_func_array([$this->value, $method], $arguments);
     }
 
     public function __isset($key)

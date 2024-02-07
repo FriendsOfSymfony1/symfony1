@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -40,15 +41,15 @@ class sfPearEnvironment
     protected $registry;
     protected $rest;
     protected $frontend;
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructs a new sfPluginManager.
      *
-     * @param sfEventDispatcher $dispatcher An event dispatcher instance
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher An event dispatcher instance
+     * @param array              $options    An array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $options)
+    public function __construct(\sfEventDispatcher $dispatcher, $options)
     {
         $this->initialize($dispatcher, $options);
     }
@@ -65,20 +66,20 @@ class sfPearEnvironment
      * * downloader_base_class: The base class for downloads (default to sfPearDownloader)
      *                          (mainly used for testing)
      *
-     * @param sfEventDispatcher $dispatcher An event dispatcher instance
-     * @param array             $options    An array of options
+     * @param \sfEventDispatcher $dispatcher An event dispatcher instance
+     * @param array              $options    An array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(\sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
         // initialize options
         if (!isset($options['plugin_dir'])) {
-            throw new sfConfigurationException('You must provide a "plugin_dir" option.');
+            throw new \sfConfigurationException('You must provide a "plugin_dir" option.');
         }
 
         if (!isset($options['cache_dir'])) {
-            throw new sfConfigurationException('You must provide a "cache_dir" option.');
+            throw new \sfConfigurationException('You must provide a "cache_dir" option.');
         }
 
         if (!is_dir($options['cache_dir']) && !@mkdir($options['cache_dir'], 0777, true) && !is_dir($options['cache_dir'])) {
@@ -101,7 +102,7 @@ class sfPearEnvironment
         $this->initializeFrontend();
 
         // initializes the REST object
-        $this->rest = new sfPearRestPlugin($this->config, array('base_class' => $options['rest_base_class']));
+        $this->rest = new \sfPearRestPlugin($this->config, ['base_class' => $options['rest_base_class']]);
         $this->rest->setChannel($this->config->get('default_channel'));
     }
 
@@ -192,9 +193,9 @@ class sfPearEnvironment
 
         if (!$this->registry->channelExists($channel, true)) {
             $class = $this->options['downloader_base_class'];
-            $downloader = new $class($this->frontend, array(), $this->config);
+            $downloader = new $class($this->frontend, [], $this->config);
             if (!$downloader->discover($channel)) {
-                throw new sfPluginException(sprintf('Unable to register channel "%s"', $channel));
+                throw new \sfPluginException(sprintf('Unable to register channel "%s"', $channel));
             }
         }
 
@@ -212,7 +213,7 @@ class sfPearEnvironment
      */
     public function initializeConfiguration($pluginDir, $cacheDir)
     {
-        $this->config = $GLOBALS['_PEAR_Config_instance'] = new sfPearConfig();
+        $this->config = $GLOBALS['_PEAR_Config_instance'] = new \sfPearConfig();
 
         // change the configuration for use
         $this->config->set('php_dir', $pluginDir);
@@ -238,9 +239,9 @@ class sfPearEnvironment
      */
     protected function initializeFrontend()
     {
-        $this->frontend = PEAR_Frontend::singleton('sfPearFrontendPlugin');
-        if (PEAR::isError($this->frontend)) {
-            throw new sfPluginException(sprintf('Unable to initialize PEAR Frontend object: %s', $this->frontend->getMessage()));
+        $this->frontend = \PEAR_Frontend::singleton('sfPearFrontendPlugin');
+        if (\PEAR::isError($this->frontend)) {
+            throw new \sfPluginException(sprintf('Unable to initialize PEAR Frontend object: %s', $this->frontend->getMessage()));
         }
 
         $this->frontend->setEventDispatcher($this->dispatcher);
@@ -252,8 +253,8 @@ class sfPearEnvironment
     protected function initializeRegistry()
     {
         $this->registry = $this->config->getRegistry();
-        if (PEAR::isError($this->registry)) {
-            throw new sfPluginException(sprintf('Unable to initialize PEAR registry: %s', $this->registry->getMessage()));
+        if (\PEAR::isError($this->registry)) {
+            throw new \sfPluginException(sprintf('Unable to initialize PEAR registry: %s', $this->registry->getMessage()));
         }
     }
 }

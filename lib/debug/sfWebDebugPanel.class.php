@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,14 +19,14 @@
 abstract class sfWebDebugPanel
 {
     protected $webDebug;
-    protected $status = sfLogger::INFO;
+    protected $status = \sfLogger::INFO;
 
     /**
      * Constructor.
      *
-     * @param sfWebDebug $webDebug The web debug toolbar instance
+     * @param \sfWebDebug $webDebug The web debug toolbar instance
      */
-    public function __construct(sfWebDebug $webDebug)
+    public function __construct(\sfWebDebug $webDebug)
     {
         $this->webDebug = $webDebug;
     }
@@ -117,7 +118,7 @@ abstract class sfWebDebugPanel
             $file = isset($trace['file']) ? $trace['file'] : null;
             $line = isset($trace['line']) ? $trace['line'] : null;
 
-            $isProjectFile = $file && 0 === strpos($file, sfConfig::get('sf_root_dir')) && !preg_match('/(cache|plugins|vendor)/', $file);
+            $isProjectFile = $file &&   str_starts_with($file, \sfConfig::get('sf_root_dir')) && !preg_match('/(cache|plugins|vendor)/', $file);
 
             $html .= sprintf('<span%s>#%s &raquo; ', $isProjectFile ? ' class="sfWebDebugHighlight"' : '', $keys[$j] + 1);
 
@@ -150,24 +151,24 @@ abstract class sfWebDebugPanel
     public function formatFileLink($file, $line = null, $text = null)
     {
         // this method is called a lot so we avoid calling class_exists()
-        if ($file && !sfToolkit::isPathAbsolute($file)) {
+        if ($file && !\sfToolkit::isPathAbsolute($file)) {
             if (null === $text) {
                 $text = $file;
             }
 
             // translate class to file name
-            $r = new ReflectionClass($file);
+            $r = new \ReflectionClass($file);
             $file = $r->getFileName();
         }
 
-        $shortFile = sfDebug::shortenFilePath($file);
+        $shortFile = \sfDebug::shortenFilePath($file);
 
-        if ($linkFormat = sfConfig::get('sf_file_link_format', ini_get('xdebug.file_link_format'))) {
+        if ($linkFormat = \sfConfig::get('sf_file_link_format', ini_get('xdebug.file_link_format'))) {
             // return a link
             return sprintf(
                 '<a href="%s" class="sfWebDebugFileLink" title="%s">%s</a>',
-                htmlspecialchars(strtr($linkFormat, array('%f' => $file, '%l' => $line)), ENT_QUOTES, sfConfig::get('sf_charset')),
-                htmlspecialchars($shortFile, ENT_QUOTES, sfConfig::get('sf_charset')),
+                htmlspecialchars(strtr($linkFormat, ['%f' => $file, '%l' => $line]), ENT_QUOTES, \sfConfig::get('sf_charset')),
+                htmlspecialchars($shortFile, ENT_QUOTES, \sfConfig::get('sf_charset')),
                 null === $text ? $shortFile : $text
             );
         }

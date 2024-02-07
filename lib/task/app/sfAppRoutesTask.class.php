@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,19 +16,19 @@
  *
  * @version    SVN: $Id$
  */
-class sfAppRoutesTask extends sfBaseTask
+class sfAppRoutesTask extends \sfBaseTask
 {
-    protected $routes = array();
+    protected $routes = [];
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-            new sfCommandArgument('name', sfCommandArgument::OPTIONAL, 'A route name'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('application', \sfCommandArgument::REQUIRED, 'The application name'),
+            new \sfCommandArgument('name', \sfCommandArgument::OPTIONAL, 'A route name'),
+        ]);
 
         $this->namespace = 'app';
         $this->name = 'routes';
@@ -41,9 +42,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->routes = $this->getRouting()->getRoutes();
 
@@ -86,7 +87,7 @@ EOF;
         $this->logSection('app', sprintf('Route "%s" for application "%s"', $name, $application));
 
         if (!isset($this->routes[$name])) {
-            throw new sfCommandException(sprintf('The route "%s" does not exist.', $name));
+            throw new \sfCommandException(sprintf('The route "%s" does not exist.', $name));
         }
 
         $route = $this->routes[$name];

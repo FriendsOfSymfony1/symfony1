@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfMessageFormat class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -53,7 +45,7 @@ class sfMessageFormat
     /**
      * The message source.
      *
-     * @var sfMessageSource
+     * @var \sfMessageSource
      */
     protected $source;
 
@@ -62,28 +54,28 @@ class sfMessageFormat
      *
      * @var array
      */
-    protected $catalogues = array();
+    protected $catalogues = [];
 
     /**
      * The translation messages.
      *
      * @var array
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * A list of untranslated messages.
      *
      * @var array
      */
-    protected $untranslated = array();
+    protected $untranslated = [];
 
     /**
      * The prefix and suffix to append to untranslated messages.
      *
      * @var array
      */
-    protected $postscript = array('', '');
+    protected $postscript = ['', ''];
 
     /**
      * Output encoding charset.
@@ -97,10 +89,10 @@ class sfMessageFormat
      * Create a new instance of sfMessageFormat using the messages
      * from the supplied message source.
      *
-     * @param sfMessageSource $source  the source of translation messages
-     * @param string          $charset for the message output
+     * @param \sfMessageSource $source  the source of translation messages
+     * @param string           $charset for the message output
      */
-    public function __construct(sfIMessageSource $source, $charset = 'UTF-8')
+    public function __construct(\sfIMessageSource $source, $charset = 'UTF-8')
     {
         $this->source = $source;
         $this->setCharset($charset);
@@ -140,7 +132,7 @@ class sfMessageFormat
      *
      * @return string translated string
      */
-    public function format($string, $args = array(), $catalogue = null, $charset = null)
+    public function format($string, $args = [], $catalogue = null, $charset = null)
     {
         // make sure that objects with __toString() are converted to strings
         $string = (string) $string;
@@ -148,15 +140,15 @@ class sfMessageFormat
             $charset = $this->getCharset();
         }
 
-        $s = $this->formatString(sfToolkit::I18N_toUTF8($string, $charset), $args, $catalogue);
+        $s = $this->formatString(\sfToolkit::I18N_toUTF8($string, $charset), $args, $catalogue);
 
-        return sfToolkit::I18N_toEncoding($s, $charset);
+        return \sfToolkit::I18N_toEncoding($s, $charset);
     }
 
     /**
      * Gets the message source.
      *
-     * @return MessageSource
+     * @return \MessageSource
      */
     public function getSource()
     {
@@ -207,10 +199,10 @@ class sfMessageFormat
      *
      * @return string translated string
      */
-    protected function formatString($string, $args = array(), $catalogue = null)
+    protected function formatString($string, $args = [], $catalogue = null)
     {
         if (empty($args)) {
-            $args = array();
+            $args = [];
         }
 
         if (empty($catalogue)) {

@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) Jonathan H. Wage <jonwage@gmail.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineConnectionListener extends Doctrine_EventListener
+class sfDoctrineConnectionListener extends \Doctrine_EventListener
 {
     protected $connection;
     protected $encoding;
@@ -28,7 +28,7 @@ class sfDoctrineConnectionListener extends Doctrine_EventListener
         $this->encoding = $encoding;
     }
 
-    public function postConnect(Doctrine_Event $event)
+    public function postConnect(\Doctrine_Event $event)
     {
         $this->connection->setCharset($this->encoding);
         $this->connection->setDateFormat();

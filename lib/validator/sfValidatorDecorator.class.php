@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,19 +20,19 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfValidatorDecorator extends sfValidatorBase
+abstract class sfValidatorDecorator extends \sfValidatorBase
 {
     protected $validator;
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
-    public function __construct($options = array(), $messages = array())
+    public function __construct($options = [], $messages = [])
     {
         $this->validator = $this->getValidator();
 
-        if (!$this->validator instanceof sfValidatorBase) {
-            throw new RuntimeException('The getValidator() method must return a sfValidatorBase instance.');
+        if (!$this->validator instanceof \sfValidatorBase) {
+            throw new \RuntimeException('The getValidator() method must return a sfValidatorBase instance.');
         }
 
         foreach ($options as $key => $value) {
@@ -44,7 +45,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function clean($value)
     {
@@ -52,7 +53,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function getMessage($name)
     {
@@ -60,7 +61,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function setMessage($name, $value)
     {
@@ -68,7 +69,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function getMessages()
     {
@@ -76,7 +77,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function setMessages($values)
     {
@@ -84,7 +85,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function getOption($name)
     {
@@ -92,7 +93,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function setOption($name, $value)
     {
@@ -100,7 +101,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function hasOption($name)
     {
@@ -108,7 +109,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function getOptions()
     {
@@ -116,7 +117,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function setOptions($values)
     {
@@ -124,7 +125,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function asString($indent = 0)
     {
@@ -132,7 +133,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function getDefaultOptions()
     {
@@ -140,7 +141,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     }
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     public function getDefaultMessages()
     {
@@ -152,12 +153,12 @@ abstract class sfValidatorDecorator extends sfValidatorBase
      *
      * Every subclass must implement this method.
      *
-     * @return sfValidatorBase A sfValidatorBase instance
+     * @return \sfValidatorBase A sfValidatorBase instance
      */
     abstract protected function getValidator();
 
     /**
-     * @see sfValidatorBase
+     * @see \sfValidatorBase
      */
     protected function doClean($value)
     {

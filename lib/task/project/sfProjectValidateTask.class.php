@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,10 +16,10 @@
  *
  * @version    SVN: $Id$
  */
-class sfValidateTask extends sfBaseTask
+class sfValidateTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
@@ -37,9 +38,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         foreach ($this->getUpgradeClasses() as $i => $class) {
             $v = new $class($this->dispatcher, $this->formatter);
@@ -72,16 +73,16 @@ EOF;
 
     protected function formatFile($file)
     {
-        return str_replace(realpath(sfConfig::get('sf_root_dir')), 'ROOT', realpath($file));
+        return str_replace(realpath(\sfConfig::get('sf_root_dir')), 'ROOT', realpath($file));
     }
 
     protected function getUpgradeClasses()
     {
         $baseDir = __DIR__.'/validation/';
-        $classes = array();
+        $classes = [];
 
         foreach (glob($baseDir.'*.class.php') as $file) {
-            $class = str_replace(array($baseDir, '.class.php'), '', $file);
+            $class = str_replace([$baseDir, '.class.php'], '', $file);
 
             if ('sfValidation' != $class) {
                 $classes[] = $class;

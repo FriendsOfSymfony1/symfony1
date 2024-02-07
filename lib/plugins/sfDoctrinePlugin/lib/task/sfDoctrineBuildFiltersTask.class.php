@@ -1,10 +1,11 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
  *
- * For the full copyright and license informationation, please view the LICENSE
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
@@ -17,20 +18,20 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @version    SVN: $Id$
  */
-class sfDoctrineBuildFiltersTask extends sfDoctrineBaseTask
+class sfDoctrineBuildFiltersTask extends \sfDoctrineBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
-            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-            new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
-            new sfCommandOption('filter-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
-            new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfDoctrineFormFilterGenerator'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('application', null, \sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new \sfCommandOption('env', null, \sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new \sfCommandOption('model-dir-name', null, \sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
+            new \sfCommandOption('filter-dir-name', null, \sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
+            new \sfCommandOption('generator-class', null, \sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfDoctrineFormFilterGenerator'),
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'build-filters';
@@ -50,28 +51,28 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('doctrine', 'generating filter form classes');
-        $databaseManager = new sfDatabaseManager($this->configuration);
-        $generatorManager = new sfGeneratorManager($this->configuration);
-        $generatorManager->generate($options['generator-class'], array(
+        $databaseManager = new \sfDatabaseManager($this->configuration);
+        $generatorManager = new \sfGeneratorManager($this->configuration);
+        $generatorManager->generate($options['generator-class'], [
             'model_dir_name' => $options['model-dir-name'],
             'filter_dir_name' => $options['filter-dir-name'],
-        ));
+        ]);
 
-        $properties = parse_ini_file(sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'properties.ini', true);
+        $properties = parse_ini_file(\sfConfig::get('sf_config_dir').DIRECTORY_SEPARATOR.'properties.ini', true);
 
-        $constants = array(
+        $constants = [
             'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
             'AUTHOR_NAME' => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
-        );
+        ];
 
         // customize php and yml files
-        $finder = sfFinder::type('file')->name('*.php');
-        $this->getFilesystem()->replaceTokens($finder->in(sfConfig::get('sf_lib_dir').'/filter/'), '##', '##', $constants);
+        $finder = \sfFinder::type('file')->name('*.php');
+        $this->getFilesystem()->replaceTokens($finder->in(\sfConfig::get('sf_lib_dir').'/filter/'), '##', '##', $constants);
 
         $this->reloadAutoload();
     }

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,35 +16,35 @@
  *
  * @version    SVN: $Id$
  *
- * @property sfApplicationConfiguration $configuration
+ * @property \sfApplicationConfiguration $configuration
  */
-abstract class sfCommandApplicationTask extends sfTask
+abstract class sfCommandApplicationTask extends \sfTask
 {
-    /** @var sfSymfonyCommandApplication */
+    /** @var \sfSymfonyCommandApplication */
     protected $commandApplication;
 
-    /** @var sfMailer */
+    /** @var \sfMailer */
     private $mailer;
 
-    /** @var sfRouting */
+    /** @var \sfRouting */
     private $routing;
 
-    /** @var sfServiceContainer */
+    /** @var \sfServiceContainer */
     private $serviceContainer;
     private $factoryConfiguration;
 
     /**
      * Sets the command application instance for this task.
      *
-     * @param sfCommandApplication $commandApplication A sfCommandApplication instance
+     * @param \sfCommandApplication $commandApplication A sfCommandApplication instance
      */
-    public function setCommandApplication(sfCommandApplication $commandApplication = null)
+    public function setCommandApplication(\sfCommandApplication $commandApplication = null)
     {
         $this->commandApplication = $commandApplication;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     public function log($messages)
     {
@@ -53,9 +54,9 @@ abstract class sfCommandApplicationTask extends sfTask
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      *
-     * @param mixed|null $size
+     * @param \mixed|null $size
      */
     public function logSection($section, $message, $size = null, $style = 'INFO')
     {
@@ -81,19 +82,19 @@ abstract class sfCommandApplicationTask extends sfTask
      *
      * @param string $name The name of the task
      *
-     * @return sfTask
+     * @return \sfTask
      *
-     * @throws LogicException If the current task has no command application
+     * @throws \LogicException If the current task has no command application
      */
     protected function createTask($name)
     {
         if (null === $this->commandApplication) {
-            throw new LogicException('Unable to create a task as no command application is associated with this task yet.');
+            throw new \LogicException('Unable to create a task as no command application is associated with this task yet.');
         }
 
         $task = $this->commandApplication->getTaskToExecute($name);
 
-        if ($task instanceof sfCommandApplicationTask) {
+        if ($task instanceof \sfCommandApplicationTask) {
             $task->setCommandApplication($this->commandApplication);
         }
 
@@ -111,7 +112,7 @@ abstract class sfCommandApplicationTask extends sfTask
      *
      * @see createTask()
      */
-    protected function runTask($name, $arguments = array(), $options = array())
+    protected function runTask($name, $arguments = [], $options = [])
     {
         return $this->createTask($name)->run($arguments, $options);
     }
@@ -124,7 +125,7 @@ abstract class sfCommandApplicationTask extends sfTask
      * instance, which is automatically created according to the current
      * --application option.
      *
-     * @return sfMailer A sfMailer instance
+     * @return \sfMailer A sfMailer instance
      */
     protected function getMailer()
     {
@@ -138,12 +139,12 @@ abstract class sfCommandApplicationTask extends sfTask
     /**
      * Initialize mailer.
      *
-     * @return sfMailer A sfMailer instance
+     * @return \sfMailer A sfMailer instance
      */
     protected function initializeMailer()
     {
         if (!class_exists('Swift')) {
-            $swift_dir = sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/lib';
+            $swift_dir = \sfConfig::get('sf_symfony_lib_dir').'/vendor/swiftmailer/lib';
 
             require_once $swift_dir.'/swift_required.php';
         }
@@ -161,7 +162,7 @@ abstract class sfCommandApplicationTask extends sfTask
      * instance, which is automatically created according to the current
      * --application option.
      *
-     * @return sfRouting A sfRouting instance
+     * @return \sfRouting A sfRouting instance
      */
     protected function getRouting()
     {
@@ -175,21 +176,21 @@ abstract class sfCommandApplicationTask extends sfTask
     /**
      * Initialize routing.
      *
-     * @return sfRouting A sfRouting instance
+     * @return \sfRouting A sfRouting instance
      */
     protected function initializeRouting()
     {
         $config = $this->getFactoryConfiguration();
-        $params = array_merge($config['routing']['param'], array('load_configuration' => false, 'logging' => false));
+        $params = array_merge($config['routing']['param'], ['load_configuration' => false, 'logging' => false]);
 
-        $handler = new sfRoutingConfigHandler();
+        $handler = new \sfRoutingConfigHandler();
         $routes = $handler->evaluate($this->configuration->getConfigPaths('config/routing.yml'));
 
-        /** @var sfRouting $routing */
+        /** @var \sfRouting $routing */
         $routing = new $config['routing']['class']($this->dispatcher, null, $params);
         $routing->setRoutes($routes);
 
-        $this->dispatcher->notify(new sfEvent($routing, 'routing.load_configuration'));
+        $this->dispatcher->notify(new \sfEvent($routing, 'routing.load_configuration'));
 
         return $routing;
     }
@@ -202,7 +203,7 @@ abstract class sfCommandApplicationTask extends sfTask
      * instance, which is automatically created according to the current
      * --application option.
      *
-     * @return sfServiceContainer An application service container
+     * @return \sfServiceContainer An application service container
      */
     protected function getServiceContainer()
     {
@@ -226,7 +227,7 @@ abstract class sfCommandApplicationTask extends sfTask
     protected function getFactoryConfiguration()
     {
         if (null === $this->factoryConfiguration) {
-            $this->factoryConfiguration = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
+            $this->factoryConfiguration = \sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
         }
 
         return $this->factoryConfiguration;

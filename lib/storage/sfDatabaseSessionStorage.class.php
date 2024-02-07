@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,12 +17,12 @@
  *
  * @version    SVN: $Id$
  */
-abstract class sfDatabaseSessionStorage extends sfSessionStorage
+abstract class sfDatabaseSessionStorage extends \sfSessionStorage
 {
-    /** @var sfDatabase */
+    /** @var \sfDatabase */
     protected $db;
 
-    /** @var PDO */
+    /** @var \PDO */
     protected $con;
 
     /**
@@ -38,17 +38,17 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool|void
      *
-     * @throws sfInitializationException
+     * @throws \sfInitializationException
      *
-     * @see sfSessionStorage
+     * @see \sfSessionStorage
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
-        $options = array_merge(array(
+        $options = array_merge([
             'db_id_col' => 'sess_id',
             'db_data_col' => 'sess_data',
             'db_time_col' => 'sess_time',
-        ), $options);
+        ], $options);
 
         // disable auto_start
         $options['auto_start'] = false;
@@ -57,21 +57,21 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
         parent::initialize($options);
 
         if (!isset($this->options['db_table'])) {
-            throw new sfInitializationException('You must provide a "db_table" option to sfDatabaseSessionStorage.');
+            throw new \sfInitializationException('You must provide a "db_table" option to sfDatabaseSessionStorage.');
         }
 
         if (!isset($this->options['database'])) {
-            throw new sfInitializationException('You must provide a "database" option to sfDatabaseSessionStorage.');
+            throw new \sfInitializationException('You must provide a "database" option to sfDatabaseSessionStorage.');
         }
 
         // use this object as the session handler
         session_set_save_handler(
-            array($this, 'sessionOpen'),
-            array($this, 'sessionClose'),
-            array($this, 'sessionRead'),
-            array($this, 'sessionWrite'),
-            array($this, 'sessionDestroy'),
-            array($this, 'sessionGC')
+            [$this, 'sessionOpen'],
+            [$this, 'sessionClose'],
+            [$this, 'sessionRead'],
+            [$this, 'sessionWrite'],
+            [$this, 'sessionDestroy'],
+            [$this, 'sessionGC']
         );
 
         // start our session
@@ -97,18 +97,18 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was opened, otherwise an exception is thrown
      *
-     * @throws DatabaseException If a connection with the database does not exist or cannot be created
+     * @throws \DatabaseException If a connection with the database does not exist or cannot be created
      */
     public function sessionOpen($path = null, $name = null)
     {
         // what database are we using?
-        /** @var sfDatabase $database */
+        /** @var \sfDatabase $database */
         $database = $this->options['database'];
 
         // get the database and connection
         $databaseClass = get_class($database);
         if ('sfPropelDatabase' == $databaseClass) {
-            $this->db = Propel::getConnection($database->getParameter('name'));
+            $this->db = \Propel::getConnection($database->getParameter('name'));
         } elseif ('sfDoctrineDatabase' == $databaseClass) {
             $this->db = $database->getConnection();
         } else {
@@ -118,7 +118,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
         $this->con = $database->getConnection();
 
         if (null === $this->db && null === $this->con) {
-            throw new sfDatabaseException('Database connection does not exist. Unable to open session.');
+            throw new \sfDatabaseException('Database connection does not exist. Unable to open session.');
         }
 
         return true;
@@ -131,7 +131,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was destroyed, otherwise an exception is thrown
      *
-     * @throws DatabaseException If the session cannot be destroyed
+     * @throws \DatabaseException If the session cannot be destroyed
      */
     abstract public function sessionDestroy($id);
 
@@ -142,7 +142,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if old sessions have been cleaned, otherwise an exception is thrown
      *
-     * @throws DatabaseException If any old sessions cannot be cleaned
+     * @throws \DatabaseException If any old sessions cannot be cleaned
      */
     abstract public function sessionGC($lifetime);
 
@@ -153,7 +153,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was read, otherwise an exception is thrown
      *
-     * @throws DatabaseException If the session cannot be read
+     * @throws \DatabaseException If the session cannot be read
      */
     abstract public function sessionRead($id);
 
@@ -165,7 +165,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
      *
      * @return bool true, if the session was written, otherwise an exception is thrown
      *
-     * @throws DatabaseException If the session data cannot be written
+     * @throws \DatabaseException If the session data cannot be written
      */
     abstract public function sessionWrite($id, $data);
 

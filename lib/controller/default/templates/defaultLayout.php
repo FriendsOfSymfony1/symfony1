@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="sfTContainer">
-  <?php echo link_to(image_tag('/sf/sf_default/images/sfTLogo.png', array('alt' => 'symfony PHP Framework', 'class' => 'sfTLogo', 'size' => '186x39')), 'http://www.symfony-project.org/'); ?>
+  <?php echo link_to(image_tag('/sf/sf_default/images/sfTLogo.png', ['alt' => 'symfony PHP Framework', 'class' => 'sfTLogo', 'size' => '186x39']), 'http://www.symfony-project.org/'); ?>
   <?php echo $sf_content; ?>
 </div>
 </body>

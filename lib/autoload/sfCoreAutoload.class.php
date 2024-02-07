@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,7 +31,7 @@ class sfCoreAutoload
 
     // Don't edit this property by hand.
     // To update it, use sfCoreAutoload::make()
-    protected $classes = array(
+    protected $classes = [
         'sfaction' => 'action/sfAction.class.php',
         'sfactionstack' => 'action/sfActionStack.class.php',
         'sfactionstackentry' => 'action/sfActionStackEntry.class.php',
@@ -394,7 +395,7 @@ class sfCoreAutoload
         'sfyamldumper' => 'yaml/sfYamlDumper.class.php',
         'sfyamlinline' => 'yaml/sfYamlInline.class.php',
         'sfyamlparser' => 'yaml/sfYamlParser.class.php',
-    );
+    ];
 
     protected function __construct()
     {
@@ -404,12 +405,12 @@ class sfCoreAutoload
     /**
      * Retrieves the singleton instance of this class.
      *
-     * @return sfCoreAutoload a sfCoreAutoload implementation instance
+     * @return \sfCoreAutoload a sfCoreAutoload implementation instance
      */
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            self::$instance = new sfCoreAutoload();
+            self::$instance = new \sfCoreAutoload();
         }
 
         return self::$instance;
@@ -418,7 +419,7 @@ class sfCoreAutoload
     /**
      * Register sfCoreAutoload in spl autoloader.
      *
-     * @throws sfException If unable to register SPL autoload function
+     * @throws \sfException If unable to register SPL autoload function
      */
     public static function register()
     {
@@ -427,8 +428,8 @@ class sfCoreAutoload
         }
 
         ini_set('unserialize_callback_func', 'spl_autoload_call');
-        if (false === spl_autoload_register(array(self::getInstance(), 'autoload'))) {
-            throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
+        if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
+            throw new \sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
 
         self::$registered = true;
@@ -439,7 +440,7 @@ class sfCoreAutoload
      */
     public static function unregister()
     {
-        spl_autoload_unregister(array(self::getInstance(), 'autoload'));
+        spl_autoload_unregister([self::getInstance(), 'autoload']);
         self::$registered = false;
     }
 
@@ -466,7 +467,7 @@ class sfCoreAutoload
      *
      * @param string $class The class name (case insensitive)
      *
-     * @return string|null An absolute path or null
+     * @return \string|null An absolute path or null
      */
     public function getClassPath($class)
     {
@@ -500,7 +501,7 @@ class sfCoreAutoload
 
         require_once $libDir.'/util/sfFinder.class.php';
 
-        $files = sfFinder::type('file')
+        $files = \sfFinder::type('file')
             ->prune('plugins')
             ->prune('vendor')
             ->prune('skeleton')
@@ -515,7 +516,7 @@ class sfCoreAutoload
         $classes = '';
         foreach ($files as $file) {
             $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
-            $class = basename($file, false === strpos($file, '.class.php') ? '.php' : '.class.php');
+            $class = basename($file, !str_contains($file, '.class.php') ? '.php' : '.class.php');
 
             $contents = file_get_contents($file);
             if (false !== stripos($contents, 'class '.$class)

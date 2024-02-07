@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,22 +14,22 @@
  *
  * @author     Francois Zaninotto <francois.zaninotto@symfony-project.com>
  */
-class sfGenerateTaskTask extends sfBaseTask
+class sfGenerateTaskTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('task_name', sfCommandArgument::REQUIRED, 'The task name (can contain namespace)'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('task_name', \sfCommandArgument::REQUIRED, 'The task name (can contain namespace)'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('dir', null, sfCommandOption::PARAMETER_REQUIRED, 'The directory to create the task in', 'lib/task'),
-            new sfCommandOption('use-database', null, sfCommandOption::PARAMETER_REQUIRED, 'Whether the task needs model initialization to access database', sfConfig::get('sf_orm')),
-            new sfCommandOption('brief-description', null, sfCommandOption::PARAMETER_REQUIRED, 'A brief task description (appears in task list)'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('dir', null, \sfCommandOption::PARAMETER_REQUIRED, 'The directory to create the task in', 'lib/task'),
+            new \sfCommandOption('use-database', null, \sfCommandOption::PARAMETER_REQUIRED, 'Whether the task needs model initialization to access database', \sfConfig::get('sf_orm')),
+            new \sfCommandOption('brief-description', null, \sfCommandOption::PARAMETER_REQUIRED, 'A brief task description (appears in task list)'),
+        ]);
 
         $this->namespace = 'generate';
         $this->name = 'task';
@@ -66,9 +67,9 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $taskName = $arguments['task_name'];
         $taskNameComponents = explode(':', $taskName);
@@ -78,7 +79,7 @@ EOF;
 
         // Validate the class name
         if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $taskClassName)) {
-            throw new sfCommandException(sprintf('The task class name "%s" is invalid.', $taskClassName));
+            throw new \sfCommandException(sprintf('The task class name "%s" is invalid.', $taskClassName));
         }
 
         $briefDescription = $options['brief-description'];
@@ -89,8 +90,8 @@ Call it with:
   [php symfony {$taskName}|INFO]
 HED;
 
-        $useDatabase = sfToolkit::literalize($options['use-database']);
-        $defaultConnection = is_string($useDatabase) ? $useDatabase : sfConfig::get('sf_orm');
+        $useDatabase = \sfToolkit::literalize($options['use-database']);
+        $defaultConnection = is_string($useDatabase) ? $useDatabase : \sfConfig::get('sf_orm');
 
         if ($useDatabase) {
             $content = <<<HED
@@ -167,13 +168,13 @@ HED;
         }
 
         // check that the task directory exists and that the task file doesn't exist
-        if (!is_readable(sfConfig::get('sf_root_dir').'/'.$options['dir'])) {
+        if (!is_readable(\sfConfig::get('sf_root_dir').'/'.$options['dir'])) {
             $this->getFilesystem()->mkdirs($options['dir']);
         }
 
-        $taskFile = sfConfig::get('sf_root_dir').'/'.$options['dir'].'/'.$taskClassName.'.class.php';
+        $taskFile = \sfConfig::get('sf_root_dir').'/'.$options['dir'].'/'.$taskClassName.'.class.php';
         if (is_readable($taskFile)) {
-            throw new sfCommandException(sprintf('A "%s" task already exists in "%s".', $taskName, $taskFile));
+            throw new \sfCommandException(sprintf('A "%s" task already exists in "%s".', $taskName, $taskFile));
         }
 
         $this->logSection('task', sprintf('Creating "%s" task file', $taskFile));

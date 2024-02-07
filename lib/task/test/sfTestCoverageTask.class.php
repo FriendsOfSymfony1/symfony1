@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,21 +16,21 @@
  *
  * @version    SVN: $Id$
  */
-class sfTestCoverageTask extends sfBaseTask
+class sfTestCoverageTask extends \sfBaseTask
 {
     /**
-     * @see sfTask
+     * @see \sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
-            new sfCommandArgument('test_name', sfCommandArgument::REQUIRED, 'A test file name or a test directory'),
-            new sfCommandArgument('lib_name', sfCommandArgument::REQUIRED, 'A lib file name or a lib directory for wich you want to know the coverage'),
-        ));
+        $this->addArguments([
+            new \sfCommandArgument('test_name', \sfCommandArgument::REQUIRED, 'A test file name or a test directory'),
+            new \sfCommandArgument('lib_name', \sfCommandArgument::REQUIRED, 'A lib file name or a lib directory for wich you want to know the coverage'),
+        ]);
 
-        $this->addOptions(array(
-            new sfCommandOption('detailed', null, sfCommandOption::PARAMETER_NONE, 'Output detailed information'),
-        ));
+        $this->addOptions([
+            new \sfCommandOption('detailed', null, \sfCommandOption::PARAMETER_NONE, 'Output detailed information'),
+        ]);
 
         $this->namespace = 'test';
         $this->name = 'coverage';
@@ -50,41 +51,41 @@ EOF;
     }
 
     /**
-     * @see sfTask
+     * @see \sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
-        require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
+        require_once \sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
 
-        $coverage = $this->getCoverage($this->getTestHarness(array('force_colors' => isset($options['color']) && $options['color'])), $options['detailed']);
+        $coverage = $this->getCoverage($this->getTestHarness(['force_colors' => isset($options['color']) && $options['color']]), $options['detailed']);
 
-        $testFiles = $this->getFiles(sfConfig::get('sf_root_dir').'/'.$arguments['test_name']);
+        $testFiles = $this->getFiles(\sfConfig::get('sf_root_dir').'/'.$arguments['test_name']);
         $max = count($testFiles);
         foreach ($testFiles as $i => $file) {
             $this->logSection('coverage', sprintf('running %s (%d/%d)', $file, $i + 1, $max));
             $coverage->process($file);
         }
 
-        $coveredFiles = $this->getFiles(sfConfig::get('sf_root_dir').'/'.$arguments['lib_name']);
+        $coveredFiles = $this->getFiles(\sfConfig::get('sf_root_dir').'/'.$arguments['lib_name']);
         $coverage->output($coveredFiles);
     }
 
-    protected function getTestHarness($harnessOptions = array())
+    protected function getTestHarness($harnessOptions = [])
     {
         require_once __DIR__.'/sfLimeHarness.class.php';
 
-        $harness = new sfLimeHarness($harnessOptions);
-        $harness->addPlugins(array_map(array($this->configuration, 'getPluginConfiguration'), $this->configuration->getPlugins()));
-        $harness->base_dir = sfConfig::get('sf_root_dir');
+        $harness = new \sfLimeHarness($harnessOptions);
+        $harness->addPlugins(array_map([$this->configuration, 'getPluginConfiguration'], $this->configuration->getPlugins()));
+        $harness->base_dir = \sfConfig::get('sf_root_dir');
 
         return $harness;
     }
 
-    protected function getCoverage(lime_harness $harness, $detailed = false)
+    protected function getCoverage(\lime_harness $harness, $detailed = false)
     {
-        $coverage = new lime_coverage($harness);
+        $coverage = new \lime_coverage($harness);
         $coverage->verbose = $detailed;
-        $coverage->base_dir = sfConfig::get('sf_root_dir');
+        $coverage->base_dir = \sfConfig::get('sf_root_dir');
 
         return $coverage;
     }
@@ -92,12 +93,12 @@ EOF;
     protected function getFiles($directory)
     {
         if (is_dir($directory)) {
-            return sfFinder::type('file')->name('*.php')->in($directory);
+            return \sfFinder::type('file')->name('*.php')->in($directory);
         }
         if (file_exists($directory)) {
-            return array($directory);
+            return [$directory];
         }
 
-        throw new sfCommandException(sprintf('File or directory "%s" does not exist.', $directory));
+        throw new \sfCommandException(sprintf('File or directory "%s" does not exist.', $directory));
     }
 }

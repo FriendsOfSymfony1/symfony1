@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +16,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
+class sfWidgetFormI18nChoiceTimezone extends \sfWidgetFormChoice
 {
     /**
      * Constructor.
@@ -29,9 +30,9 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
      * @param array $options    An array of options
      * @param array $attributes An array of default HTML attributes
      *
-     * @see sfWidgetFormChoice
+     * @see \sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -39,12 +40,12 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
         $this->addOption('add_empty', false);
 
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
-        $timezones = array_keys(sfCultureInfo::getInstance($culture)->getTimeZones());
+        $timezones = array_keys(\sfCultureInfo::getInstance($culture)->getTimeZones());
         $timezones = array_combine($timezones, $timezones);
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $timezones = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $timezones);
+            $timezones = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $timezones);
         }
 
         $this->setOption('choices', $timezones);

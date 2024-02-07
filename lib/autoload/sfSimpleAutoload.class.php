@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,10 +27,10 @@ class sfSimpleAutoload
     protected $cacheFile;
     protected $cacheLoaded = false;
     protected $cacheChanged = false;
-    protected $dirs = array();
-    protected $files = array();
-    protected $classes = array();
-    protected $overriden = array();
+    protected $dirs = [];
+    protected $files = [];
+    protected $classes = [];
+    protected $overriden = [];
 
     protected function __construct($cacheFile = null)
     {
@@ -45,12 +46,12 @@ class sfSimpleAutoload
      *
      * @param string $cacheFile The file path to save the cache
      *
-     * @return sfSimpleAutoload a sfSimpleAutoload implementation instance
+     * @return \sfSimpleAutoload a sfSimpleAutoload implementation instance
      */
     public static function getInstance($cacheFile = null)
     {
         if (!isset(self::$instance)) {
-            self::$instance = new sfSimpleAutoload($cacheFile);
+            self::$instance = new \sfSimpleAutoload($cacheFile);
         }
 
         return self::$instance;
@@ -59,7 +60,7 @@ class sfSimpleAutoload
     /**
      * Register sfSimpleAutoload in spl autoloader.
      *
-     * @throws sfException
+     * @throws \sfException
      */
     public static function register()
     {
@@ -68,12 +69,12 @@ class sfSimpleAutoload
         }
 
         ini_set('unserialize_callback_func', 'spl_autoload_call');
-        if (false === spl_autoload_register(array(self::getInstance(), 'autoload'))) {
-            throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
+        if (false === spl_autoload_register([self::getInstance(), 'autoload'])) {
+            throw new \sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
         }
 
         if (self::getInstance()->cacheFile) {
-            register_shutdown_function(array(self::getInstance(), 'saveCache'));
+            register_shutdown_function([self::getInstance(), 'saveCache']);
         }
 
         self::$registered = true;
@@ -84,7 +85,7 @@ class sfSimpleAutoload
      */
     public static function unregister()
     {
-        spl_autoload_unregister(array(self::getInstance(), 'autoload'));
+        spl_autoload_unregister([self::getInstance(), 'autoload']);
         self::$registered = false;
     }
 
@@ -108,10 +109,10 @@ class sfSimpleAutoload
         if (isset($this->classes[$class])) {
             try {
                 require $this->classes[$class];
-            } catch (sfException $e) {
+            } catch (\sfException $e) {
                 $e->printStackTrace();
-            } catch (Exception $e) {
-                sfException::createFromException($e)->printStackTrace();
+            } catch (\Exception $e) {
+                \sfException::createFromException($e)->printStackTrace();
             }
 
             return true;
@@ -142,7 +143,7 @@ class sfSimpleAutoload
     {
         if ($this->cacheChanged) {
             if (is_writable(dirname($this->cacheFile))) {
-                file_put_contents($this->cacheFile, serialize(array($this->classes, $this->dirs, $this->files)));
+                file_put_contents($this->cacheFile, serialize([$this->classes, $this->dirs, $this->files]));
             }
 
             $this->cacheChanged = false;
@@ -154,7 +155,7 @@ class sfSimpleAutoload
      */
     public function reload()
     {
-        $this->classes = array();
+        $this->classes = [];
         $this->cacheLoaded = false;
 
         foreach ($this->dirs as $dir) {
@@ -189,7 +190,7 @@ class sfSimpleAutoload
      */
     public function addDirectory($dir, $ext = '.php')
     {
-        $finder = sfFinder::type('file')->follow_link()->name('*'.$ext);
+        $finder = \sfFinder::type('file')->follow_link()->name('*'.$ext);
 
         if ($dirs = glob($dir)) {
             foreach ($dirs as $dir) {
@@ -275,7 +276,7 @@ class sfSimpleAutoload
      *
      * @param string $class A PHP class name
      *
-     * @return string|null An absolute path
+     * @return \string|null An absolute path
      */
     public function getClassPath($class)
     {
@@ -289,11 +290,11 @@ class sfSimpleAutoload
      *
      * @param array $files An array of autoload.yml files
      *
-     * @see sfAutoloadConfigHandler
+     * @see \sfAutoloadConfigHandler
      */
     public function loadConfiguration(array $files)
     {
-        $config = new sfAutoloadConfigHandler();
+        $config = new \sfAutoloadConfigHandler();
         foreach ($config->evaluate($files) as $class => $file) {
             $this->setClassPath($class, $file);
         }

@@ -1,20 +1,12 @@
 <?php
 
-/**
- * sfMessageSource_Database class file.
+/*
+ * This file is part of the Symfony1 package.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the BSD License.
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
- * Copyright(c) 2004 by Qiang Xue. All rights reserved.
- *
- * To contact the author write to {@link mailto:qiang.xue@gmail.com Qiang Xue}
- * The latest version of PRADO can be obtained from:
- * {@link http://prado.sourceforge.net/}
- *
- * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- *
- * @version    $Id$
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 /**
@@ -26,7 +18,7 @@
  *
  * @version v1.0, last update on Fri Dec 24 16:18:44 EST 2004
  */
-abstract class sfMessageSource_Database extends sfMessageSource
+abstract class sfMessageSource_Database extends \sfMessageSource
 {
     /**
      * Gets all the variants of a particular catalogue.
@@ -39,7 +31,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
     {
         $variants = explode('_', $this->culture);
 
-        $catalogues = array($catalogue);
+        $catalogues = [$catalogue];
 
         $variant = null;
 
@@ -73,7 +65,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
             return $dsn;
         }
 
-        $parsed = array(
+        $parsed = [
             'phptype' => false,
             'dbsyntax' => false,
             'username' => false,
@@ -83,7 +75,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
             'port' => false,
             'socket' => false,
             'database' => false,
-        );
+        ];
 
         // Find phptype and dbsyntax
         if (($pos = strpos($dsn, '://')) !== false) {
@@ -128,12 +120,12 @@ abstract class sfMessageSource_Database extends sfMessageSource
             $proto = $match[1];
             $proto_opts = (!empty($match[2])) ? $match[2] : false;
             $dsn = $match[3];
-        // $dsn => protocol+hostspec/database (old format)
+            // $dsn => protocol+hostspec/database (old format)
         } else {
-            if (false !== strpos($dsn, '+')) {
+            if (str_contains($dsn, '+')) {
                 list($proto, $dsn) = explode('+', $dsn, 2);
             }
-            if (false !== strpos($dsn, '/')) {
+            if (str_contains($dsn, '/')) {
                 list($proto_opts, $dsn) = explode('/', $dsn, 2);
             } else {
                 $proto_opts = $dsn;
@@ -145,7 +137,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
         $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
         $proto_opts = rawurldecode($proto_opts);
         if ('tcp' == $parsed['protocol']) {
-            if (false !== strpos($proto_opts, ':')) {
+            if (str_contains($proto_opts, ':')) {
                 list($parsed['hostspec'], $parsed['port']) = explode(':', $proto_opts);
             } else {
                 $parsed['hostspec'] = $proto_opts;
@@ -160,14 +152,14 @@ abstract class sfMessageSource_Database extends sfMessageSource
             // /database
             if (($pos = strpos($dsn, '?')) === false) {
                 $parsed['database'] = $dsn;
-            // /database?param1=value1&param2=value2
+                // /database?param1=value1&param2=value2
             } else {
                 $parsed['database'] = substr($dsn, 0, $pos);
                 $dsn = substr($dsn, $pos + 1);
-                if (false !== strpos($dsn, '&')) {
+                if (str_contains($dsn, '&')) {
                     $opts = explode('&', $dsn);
                 } else { // database?param1=value1
-                    $opts = array($dsn);
+                    $opts = [$dsn];
                 }
                 foreach ($opts as $opt) {
                     list($key, $value) = explode('=', $opt);

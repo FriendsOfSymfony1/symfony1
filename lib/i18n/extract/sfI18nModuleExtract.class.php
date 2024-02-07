@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +14,7 @@
  *
  * @version    SVN: $Id$
  */
-class sfI18nModuleExtract extends sfI18nExtract
+class sfI18nModuleExtract extends \sfI18nExtract
 {
     protected $module = '';
 
@@ -23,7 +24,7 @@ class sfI18nModuleExtract extends sfI18nExtract
     public function configure()
     {
         if (!isset($this->parameters['module'])) {
-            throw new sfException('You must give a "module" parameter when extracting for a module.');
+            throw new \sfException('You must give a "module" parameter when extracting for a module.');
         }
 
         $this->module = $this->parameters['module'];
@@ -41,17 +42,17 @@ class sfI18nModuleExtract extends sfI18nExtract
     public function extract()
     {
         // Extract from PHP files to find __() calls in actions/ lib/ and templates/ directories
-        $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$this->module;
-        $this->extractFromPhpFiles(array(
+        $moduleDir = \sfConfig::get('sf_app_module_dir').'/'.$this->module;
+        $this->extractFromPhpFiles([
             $moduleDir.'/actions',
             $moduleDir.'/lib',
             $moduleDir.'/templates',
-        ));
+        ]);
 
         // Extract from generator.yml files
         $generator = $moduleDir.'/config/generator.yml';
         if (file_exists($generator)) {
-            $yamlExtractor = new sfI18nYamlGeneratorExtractor();
+            $yamlExtractor = new \sfI18nYamlGeneratorExtractor();
             $this->updateMessages($yamlExtractor->extract(file_get_contents($generator)));
         }
 
@@ -59,7 +60,7 @@ class sfI18nModuleExtract extends sfI18nExtract
         $validateFiles = glob($moduleDir.'/validate/*.yml');
         if (is_array($validateFiles)) {
             foreach ($validateFiles as $validateFile) {
-                $yamlExtractor = new sfI18nYamlValidateExtractor();
+                $yamlExtractor = new \sfI18nYamlValidateExtractor();
                 $this->updateMessages($yamlExtractor->extract(file_get_contents($validateFile)));
             }
         }

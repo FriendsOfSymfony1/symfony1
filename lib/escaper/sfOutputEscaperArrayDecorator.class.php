@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,13 +12,13 @@
 /**
  * Output escaping decorator class for arrays.
  *
- * @see        sfOutputEscaper
+ * @see        \sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
  *
  * @version    SVN: $Id$
  */
-class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator implements Iterator, ArrayAccess, Countable
+class sfOutputEscaperArrayDecorator extends \sfOutputEscaperGetterDecorator implements \Iterator, \ArrayAccess, \Countable
 {
     /**
      * Used by the iterator to know if the current element is valid.
@@ -29,7 +30,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
     /**
      * Constructor.
      *
-     * @see sfOutputEscaper
+     * @see \sfOutputEscaper
      */
     public function __construct($escapingMethod, $value)
     {
@@ -71,7 +72,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
     #[\ReturnTypeWillChange]
     public function current()
     {
-        return sfOutputEscaper::escape($this->escapingMethod, current($this->value));
+        return \sfOutputEscaper::escape($this->escapingMethod, current($this->value));
     }
 
     /**
@@ -124,7 +125,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
     {
         $value = isset($this->value[$offset]) ? $this->value[$offset] : null;
 
-        return sfOutputEscaper::escape($this->escapingMethod, $value);
+        return \sfOutputEscaper::escape($this->escapingMethod, $value);
     }
 
     /**
@@ -137,12 +138,12 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
      * @param string $offset (ignored)
      * @param string $value  (ignored)
      *
-     * @throws sfException
+     * @throws \sfException
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
-        throw new sfException('Cannot set values.');
+        throw new \sfException('Cannot set values.');
     }
 
     /**
@@ -154,12 +155,12 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
      *
      * @param string $offset (ignored)
      *
-     * @throws sfException
+     * @throws \sfException
      */
     #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        throw new sfException('Cannot unset values.');
+        throw new \sfException('Cannot unset values.');
     }
 
     /**

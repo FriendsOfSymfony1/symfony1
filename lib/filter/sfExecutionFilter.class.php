@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,30 +18,30 @@
  *
  * @version    SVN: $Id$
  */
-class sfExecutionFilter extends sfFilter
+class sfExecutionFilter extends \sfFilter
 {
     /**
      * Executes this filter.
      *
-     * @param sfFilterChain $filterChain The filter chain
+     * @param \sfFilterChain $filterChain The filter chain
      *
-     * @throws sfInitializeException If an error occurs during view initialization
-     * @throws sfViewException       If an error occurs while executing the view
+     * @throws \sfInitializeException If an error occurs during view initialization
+     * @throws \sfViewException       If an error occurs while executing the view
      */
     public function execute($filterChain)
     {
         // get the current action instance
-        /** @var sfAction $actionInstance */
+        /** @var \sfAction $actionInstance */
         $actionInstance = $this->context->getController()->getActionStack()->getLastEntry()->getActionInstance();
 
         // execute the action, execute and render the view
-        if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled')) {
-            $timer = sfTimerManager::getTimer(sprintf('Action "%s/%s"', $actionInstance->getModuleName(), $actionInstance->getActionName()));
+        if (\sfConfig::get('sf_debug') && \sfConfig::get('sf_logging_enabled')) {
+            $timer = \sfTimerManager::getTimer(sprintf('Action "%s/%s"', $actionInstance->getModuleName(), $actionInstance->getActionName()));
 
             $viewName = $this->handleAction($filterChain, $actionInstance);
 
             $timer->addTime();
-            $timer = sfTimerManager::getTimer(sprintf('View "%s" for "%s/%s"', $viewName, $actionInstance->getModuleName(), $actionInstance->getActionName()));
+            $timer = \sfTimerManager::getTimer(sprintf('View "%s" for "%s/%s"', $viewName, $actionInstance->getModuleName(), $actionInstance->getActionName()));
 
             $this->handleView($filterChain, $actionInstance, $viewName);
 
@@ -55,18 +55,18 @@ class sfExecutionFilter extends sfFilter
     /**
      * Handles the action.
      *
-     * @param sfFilterChain $filterChain    The current filter chain
-     * @param sfAction      $actionInstance An sfAction instance
+     * @param \sfFilterChain $filterChain    The current filter chain
+     * @param \sfAction      $actionInstance An sfAction instance
      *
      * @return string The view type
      */
     protected function handleAction($filterChain, $actionInstance)
     {
-        if (sfConfig::get('sf_cache')) {
+        if (\sfConfig::get('sf_cache')) {
             $uri = $this->context->getViewCacheManager()->getCurrentCacheKey();
             if (null !== $uri && $this->context->getViewCacheManager()->hasActionCache($uri)) {
                 // action in cache, so go to the view
-                return sfView::SUCCESS;
+                return \sfView::SUCCESS;
             }
         }
 
@@ -76,7 +76,7 @@ class sfExecutionFilter extends sfFilter
     /**
      * Executes the execute method of an action.
      *
-     * @param sfAction $actionInstance An sfAction instance
+     * @param \sfAction $actionInstance An sfAction instance
      *
      * @return string The view type
      */
@@ -87,25 +87,25 @@ class sfExecutionFilter extends sfFilter
         $viewName = $actionInstance->execute($this->context->getRequest());
         $actionInstance->postExecute();
 
-        return null === $viewName ? sfView::SUCCESS : $viewName;
+        return null === $viewName ? \sfView::SUCCESS : $viewName;
     }
 
     /**
      * Handles the view.
      *
-     * @param sfFilterChain $filterChain    The current filter chain
-     * @param sfAction      $actionInstance An sfAction instance
-     * @param string        $viewName       The view name
+     * @param \sfFilterChain $filterChain    The current filter chain
+     * @param \sfAction      $actionInstance An sfAction instance
+     * @param string         $viewName       The view name
      */
     protected function handleView($filterChain, $actionInstance, $viewName)
     {
         switch ($viewName) {
-            case sfView::HEADER_ONLY:
+            case \sfView::HEADER_ONLY:
                 $this->context->getResponse()->setHeaderOnly(true);
 
                 return;
 
-            case sfView::NONE:
+            case \sfView::NONE:
                 return;
         }
 
@@ -143,16 +143,16 @@ class sfExecutionFilter extends sfFilter
 
         // render the view
         switch ($controller->getRenderMode()) {
-            case sfView::RENDER_NONE:
+            case \sfView::RENDER_NONE:
                 break;
 
-            case sfView::RENDER_CLIENT:
+            case \sfView::RENDER_CLIENT:
                 $viewData = $view->render();
                 $this->context->getResponse()->setContent($viewData);
 
                 break;
 
-            case sfView::RENDER_VAR:
+            case \sfView::RENDER_VAR:
                 $viewData = $view->render();
                 $controller->getActionStack()->getLastEntry()->setPresentation($viewData);
 

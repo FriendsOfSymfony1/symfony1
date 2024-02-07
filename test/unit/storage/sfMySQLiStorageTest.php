@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2008 Dejan Spasic <spasic.dejan@yahoo.de>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 ob_start();
 $plan = 12;
-$t = new lime_test($plan);
+$t = new \lime_test($plan);
 
 if (!extension_loaded('mysqli')) {
     $t->skip('Mysqli extension must be loaded', $plan);
@@ -22,10 +22,10 @@ if (!extension_loaded('mysqli')) {
 }
 
 // Configure your database with the settings below in order to run the test
-$mysqli_config = array(
+$mysqli_config = [
     'host' => 'localhost',
     'username' => 'root',
-    'password' => '', );
+    'password' => '', ];
 
 if (!isset($mysqli_config)) {
     $t->skip('Mysql credentials needed to run these tests', $plan);
@@ -35,9 +35,9 @@ if (!isset($mysqli_config)) {
 
 try {
     // Creating mysql database connection
-    $database = new sfMySQLiDatabase($mysqli_config);
+    $database = new \sfMySQLiDatabase($mysqli_config);
     $connection = $database->getResource();
-} catch (sfDatabaseException $e) {
+} catch (\sfDatabaseException $e) {
     $t->diag($e->getMessage());
     $t->skip('Unable to connect to MySQL database, skipping', $plan);
 
@@ -58,15 +58,15 @@ mysqli_query($connection, "CREATE TABLE `session` (
 ini_set('session.use_cookies', 0);
 $session_id = '1';
 
-$storage = new sfMySQLiSessionStorage(
-    array(
+$storage = new \sfMySQLiSessionStorage(
+    [
         'db_table' => 'session',
         'session_id' => $session_id,
-        'database' => $database)
+        'database' => $database]
 );
 
-$t->ok($storage instanceof sfStorage, 'sfMySQLSessionStorage is an instance of sfStorage');
-$t->ok($storage instanceof sfDatabaseSessionStorage, 'sfMySQLSessionStorage is an instance of sfDatabaseSessionStorage');
+$t->ok($storage instanceof \sfStorage, 'sfMySQLSessionStorage is an instance of sfStorage');
+$t->ok($storage instanceof \sfDatabaseSessionStorage, 'sfMySQLSessionStorage is an instance of sfDatabaseSessionStorage');
 
 // regenerate()
 $storage->regenerate(false);
@@ -95,7 +95,7 @@ unset($thisSessData, $result);
 try {
     $retrieved_data = $storage->sessionRead($session_id);
     $t->pass('sessionRead() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionRead() does not throw an exception');
 }
 $t->is($retrieved_data, $session_data, 'sessionRead() reads session data');
@@ -107,7 +107,7 @@ $session_data = session_encode();
 try {
     $write = $storage->sessionWrite($session_id, $session_data);
     $t->pass('sessionWrite() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionWrite() does not throw an exception');
 }
 
@@ -118,7 +118,7 @@ $t->is($storage->sessionRead($session_id), $session_data, 'sessionWrite() wrote 
 try {
     $storage->sessionDestroy($session_id);
     $t->pass('sessionDestroy() does not throw an exception');
-} catch (Exception $e) {
+} catch (\Exception $e) {
     $t->fail('sessionDestroy() does not throw an exception');
 }
 

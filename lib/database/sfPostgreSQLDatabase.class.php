@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * (c) 2004-2006 Sean Kerr <sean@code-box.org>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,12 +26,12 @@
  *
  * @version    SVN: $Id$
  */
-class sfPostgreSQLDatabase extends sfDatabase
+class sfPostgreSQLDatabase extends \sfDatabase
 {
     /**
      * Connects to the database.
      *
-     * @throws sfDatabaseException If a connection could not be created
+     * @throws \sfDatabaseException If a connection could not be created
      */
     public function connect()
     {
@@ -57,7 +57,7 @@ class sfPostgreSQLDatabase extends sfDatabase
         // make sure the connection went through
         if (false === $this->connection) {
             // the connection's foobar'd
-            throw new sfDatabaseException('Failed to create a PostgreSQLDatabase connection.');
+            throw new \sfDatabaseException('Failed to create a PostgreSQLDatabase connection.');
         }
 
         // since we're not an abstraction layer, we copy the connection
@@ -68,7 +68,7 @@ class sfPostgreSQLDatabase extends sfDatabase
     /**
      * Executes the shutdown procedure.
      *
-     * @throws sfDatabaseException If an error occurs while shutting down this database
+     * @throws \sfDatabaseException If an error occurs while shutting down this database
      */
     public function shutdown()
     {

@@ -1,8 +1,9 @@
 <?php
 
 /*
- * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,9 +13,9 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 require_once $_test_dir.'/unit/sfContextMock.class.php';
 
-$t = new lime_test(21);
+$t = new \lime_test(21);
 
-$context = sfContext::getInstance();
+$context = \sfContext::getInstance();
 
 require_once __DIR__.'/../../../lib/helper/TagHelper.php';
 
@@ -23,9 +24,9 @@ $t->diag('tag()');
 $t->is(tag(''), '', 'tag() returns an empty string with empty input');
 $t->is(tag('br'), '<br />', 'tag() takes a tag as its first parameter');
 $t->is(tag('p', null, true), '<p>', 'tag() takes a boolean parameter as its third parameter');
-$t->is(tag('br', array('class' => 'foo'), false), '<br class="foo" />', 'tag() takes an array of options as its second parameters');
+$t->is(tag('br', ['class' => 'foo'], false), '<br class="foo" />', 'tag() takes an array of options as its second parameters');
 $t->is(tag('br', 'class=foo', false), '<br class="foo" />', 'tag() takes a string of options as its second parameters');
-$t->is(tag('p', array('class' => 'foo', 'id' => 'bar'), true), '<p class="foo" id="bar">', 'tag() takes a boolean parameter as its third parameter');
+$t->is(tag('p', ['class' => 'foo', 'id' => 'bar'], true), '<p class="foo" id="bar">', 'tag() takes a boolean parameter as its third parameter');
 // $t->is(tag('br', array('class' => '"foo"')), '<br class="&quot;foo&quot;" />');
 
 // content_tag()
@@ -46,10 +47,10 @@ $t->is(escape_javascript("alert('foo');\nalert(\"bar\");"), 'alert(\\\'foo\\\');
 
 // _get_option()
 $t->diag('_get_option()');
-$options = array(
+$options = [
     'foo' => 'bar',
     'bar' => 'foo',
-);
+];
 $t->is(_get_option($options, 'foo'), 'bar', '_get_option() returns the value for the given key');
 $t->ok(!isset($options['foo']), '_get_option() removes the key from the original array');
 $t->is(_get_option($options, 'nofoo', 'nobar'), 'nobar', '_get_option() returns the default value if the key does not exist');
