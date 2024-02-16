@@ -23,5 +23,11 @@
         <include>
             <directory>./lib/</directory>
         </include>
+        <exclude>
+            <directory>./lib/plugins/sfDoctrinePlugin/data/**</directory>
+            <directory>./lib/plugins/sfDoctrinePlugin/lib/vendor/**</directory>
+            <directory>./lib/task/generator/skeleton/**</directory>
+            <directory>./lib/vendor/swiftmailer/**</directory>
+        </exclude>
     </coverage>
 </phpunit>
