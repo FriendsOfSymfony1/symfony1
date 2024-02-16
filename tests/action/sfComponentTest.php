@@ -15,8 +15,6 @@ require_once __DIR__.'/../sfEventDispatcherTestCase.php';
 
 /**
  * @internal
- *
- * @coversNothing
  */
 class sfComponentTest extends sfEventDispatcherTestCase
 {
