@@ -128,7 +128,23 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
         }
 
         // error settings
-        ini_set('display_errors', $this->isDebug() ? 'on' : 'off');
+        // Based on the debug setting ($this->isDebug()), it controls if errors should be displayed
+        // (display_errors). If the application is not in the debug mode or if it's running in a
+        // CLI, PHPDBG, or embed server API, then errors are not displayed (display_errors is set
+        // to 0). However, if the application is in debug mode and errors are not already logged to
+        // the error log, then errors are displayed (display_errors is set to 1).
+        if (
+            !$this->isDebug()
+            || !in_array(PHP_SAPI, array('cli', 'phpdbg', 'embed'), true)
+        ) {
+            ini_set('display_errors', 0);
+        } elseif (
+            !filter_var(ini_get('log_errors'), FILTER_VALIDATE_BOOLEAN)
+            || ini_get('error_log')
+        ) {
+            // CLI - display errors only if they're not already logged to STDERR
+            ini_set('display_errors', 1);
+        }
         error_reporting(sfConfig::get('sf_error_reporting'));
 
         // initialize plugin configuration objects
