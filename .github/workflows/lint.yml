@@ -10,7 +10,7 @@ jobs:
     name: 'PHP-CS-Fixer'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -18,7 +18,7 @@ jobs:
           php-version: 8.2
           tools: php-cs-fixer:3.45, cs2pr
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: '.php-cs-fixer.cache'
           key: ${{ github.repository }}-8.2-phpcsfixer-${{ github.ref_name }}
