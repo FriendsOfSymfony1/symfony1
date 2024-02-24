@@ -33,7 +33,7 @@
             "@test:phpunit"
         ],
         "test:lime": "php data/bin/symfony symfony:test --trace",
-        "test:phpunit": "phpunit-9"
+        "test:phpunit": "./bin/phpunit"
     },
     "bin": ["data/bin/symfony"]
 }
