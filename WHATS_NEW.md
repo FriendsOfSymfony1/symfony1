@@ -1,3 +1,13 @@
+Composer support
+----------------
+
+Using [Composer](https://getcomposer.org/doc/00-intro.md) as dependency management:
+
+    composer require friendsofsymfony1/symfony1 "1.5.*"
+    composer install
+
+**[BC Break]** Installation of symfony1 and it's dependency is no longer possible as a git submodule. If this is a must for you, consider sticking to an earlier commit of this repo, but you should consider using composer!
+
 Service container
 -----------------
 
