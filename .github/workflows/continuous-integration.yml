@@ -31,8 +31,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          submodules: "true"
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -54,6 +52,9 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist
+
+      - name: Install doctrine1
+        run: composer require --dev friendsofsymfony1/doctrine1
 
       - name: Run Check configuration
         run: php data/bin/check_configuration.php
