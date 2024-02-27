@@ -1,0 +1,7 @@
+[submodule "lib/vendor/swiftmailer"]
+	path = lib/vendor/swiftmailer
+	url = https://github.com/swiftmailer/swiftmailer.git
+	branch = 5.x
+[submodule "lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine"]
+	path = lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine
+	url = https://github.com/FriendsOfSymfony1/doctrine1.git
