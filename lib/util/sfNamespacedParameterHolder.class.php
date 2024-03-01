@@ -53,11 +53,19 @@ class sfNamespacedParameterHolder extends sfParameterHolder
 
     /**
      * Unserializes a sfParameterHolder instance for PHP 7.4+.
+     * [CVE-2024-28861] Check type of returned data to avoid deserialization vulnerabilities.
      *
      * @param array $data
      */
     public function __unserialize($data)
     {
+        if (!is_array($data) || 2 !== \count($data)) {
+            $this->default_namespace = null;
+            $this->parameters = [];
+
+            return;
+        }
+
         $this->default_namespace = $data[0];
         $this->parameters = $data[1];
     }
