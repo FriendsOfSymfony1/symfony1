@@ -114,7 +114,7 @@ configureWithArguments ()
     # Default Options
     #
     DEPENDENCY_PREFERENCES='highest'
-    PHP_VERSIONS='all'
+    PHP_VERSIONS='php74 php81 php82 php83'
     PHP_TEST_RUNTIME='data/bin/symfony symfony:test --trace'
     hasHelpOption=false
 
