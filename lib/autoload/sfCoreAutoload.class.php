@@ -43,7 +43,6 @@ class sfCoreAutoload
         'sfsimpleautoload' => 'autoload/sfSimpleAutoload.class.php',
         'sfapcucache' => 'cache/sfAPCuCache.class.php',
         'sfcache' => 'cache/sfCache.class.php',
-        'sfeacceleratorcache' => 'cache/sfEAcceleratorCache.class.php',
         'sffilecache' => 'cache/sfFileCache.class.php',
         'sffunctioncache' => 'cache/sfFunctionCache.class.php',
         'sfmemcachecache' => 'cache/sfMemcacheCache.class.php',
