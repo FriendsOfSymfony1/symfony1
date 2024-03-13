@@ -21,7 +21,7 @@ $config
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
     ])
-    ->setCacheFile('.php-cs-fixer.cache')
+    ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)
 ;
 
