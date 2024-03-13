@@ -38,7 +38,7 @@ class sfPearDownloaderTest extends sfPearDownloader
         }
 
         if (false === $lastmodified || $lastmodified) {
-            return array($file, 0, array());
+            return [$file, 0, []];
         }
 
         return $file;

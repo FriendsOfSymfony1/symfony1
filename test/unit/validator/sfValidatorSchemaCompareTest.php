@@ -16,63 +16,63 @@ $v = new sfValidatorSchemaCompare('left', sfValidatorSchemaCompare::EQUAL, 'righ
 
 // ->clean()
 $t->diag('->clean()');
-foreach (array(
-    array(array('left' => 'foo', 'right' => 'foo'), sfValidatorSchemaCompare::EQUAL),
-    array(array(), sfValidatorSchemaCompare::EQUAL),
-    array(null, sfValidatorSchemaCompare::EQUAL),
-    array(array('left' => 1, 'right' => 2), sfValidatorSchemaCompare::LESS_THAN),
-    array(array('left' => 2, 'right' => 2), sfValidatorSchemaCompare::LESS_THAN_EQUAL),
-    array(array('left' => 2, 'right' => 1), sfValidatorSchemaCompare::GREATER_THAN),
-    array(array('left' => 2, 'right' => 2), sfValidatorSchemaCompare::GREATER_THAN_EQUAL),
-    array(array('left' => 'foo', 'right' => 'bar'), sfValidatorSchemaCompare::NOT_EQUAL),
-    array(array('left' => '0000', 'right' => '0'), sfValidatorSchemaCompare::NOT_IDENTICAL),
-    array(array('left' => '0000', 'right' => '0'), sfValidatorSchemaCompare::EQUAL),
-    array(array('left' => '0000', 'right' => '0000'), sfValidatorSchemaCompare::IDENTICAL),
+foreach ([
+    [['left' => 'foo', 'right' => 'foo'], sfValidatorSchemaCompare::EQUAL],
+    [[], sfValidatorSchemaCompare::EQUAL],
+    [null, sfValidatorSchemaCompare::EQUAL],
+    [['left' => 1, 'right' => 2], sfValidatorSchemaCompare::LESS_THAN],
+    [['left' => 2, 'right' => 2], sfValidatorSchemaCompare::LESS_THAN_EQUAL],
+    [['left' => 2, 'right' => 1], sfValidatorSchemaCompare::GREATER_THAN],
+    [['left' => 2, 'right' => 2], sfValidatorSchemaCompare::GREATER_THAN_EQUAL],
+    [['left' => 'foo', 'right' => 'bar'], sfValidatorSchemaCompare::NOT_EQUAL],
+    [['left' => '0000', 'right' => '0'], sfValidatorSchemaCompare::NOT_IDENTICAL],
+    [['left' => '0000', 'right' => '0'], sfValidatorSchemaCompare::EQUAL],
+    [['left' => '0000', 'right' => '0000'], sfValidatorSchemaCompare::IDENTICAL],
 
-    array(array('left' => 'foo', 'right' => 'foo'), '=='),
-    array(array(), '=='),
-    array(null, '=='),
-    array(array('left' => 1, 'right' => 2), '<'),
-    array(array('left' => 2, 'right' => 2), '<='),
-    array(array('left' => 2, 'right' => 1), '>'),
-    array(array('left' => 2, 'right' => 2), '>='),
-    array(array('left' => 'foo', 'right' => 'bar'), '!='),
-    array(array('left' => '0000', 'right' => '0'), '!=='),
-    array(array('left' => '0000', 'right' => '0'), '=='),
-    array(array('left' => '0000', 'right' => '0000'), '==='),
-) as $values) {
+    [['left' => 'foo', 'right' => 'foo'], '=='],
+    [[], '=='],
+    [null, '=='],
+    [['left' => 1, 'right' => 2], '<'],
+    [['left' => 2, 'right' => 2], '<='],
+    [['left' => 2, 'right' => 1], '>'],
+    [['left' => 2, 'right' => 2], '>='],
+    [['left' => 'foo', 'right' => 'bar'], '!='],
+    [['left' => '0000', 'right' => '0'], '!=='],
+    [['left' => '0000', 'right' => '0'], '=='],
+    [['left' => '0000', 'right' => '0000'], '==='],
+] as $values) {
     $v->setOption('operator', $values[1]);
     $t->is($v->clean($values[0]), $values[0], '->clean() checks that the values match the comparison');
 }
 
-foreach (array(
-    array(array('left' => 'foo', 'right' => 'foo'), sfValidatorSchemaCompare::NOT_EQUAL),
-    array(array(), sfValidatorSchemaCompare::NOT_EQUAL),
-    array(null, sfValidatorSchemaCompare::NOT_EQUAL),
-    array(array('left' => 1, 'right' => 2), sfValidatorSchemaCompare::GREATER_THAN),
-    array(array('left' => 2, 'right' => 3), sfValidatorSchemaCompare::GREATER_THAN_EQUAL),
-    array(array('left' => 2, 'right' => 1), sfValidatorSchemaCompare::LESS_THAN),
-    array(array('left' => 3, 'right' => 2), sfValidatorSchemaCompare::LESS_THAN_EQUAL),
-    array(array('left' => 'foo', 'right' => 'bar'), sfValidatorSchemaCompare::EQUAL),
-    array(array('left' => '0000', 'right' => '0'), sfValidatorSchemaCompare::IDENTICAL),
-    array(array('left' => '0000', 'right' => '0'), sfValidatorSchemaCompare::NOT_EQUAL),
-    array(array('left' => '0000', 'right' => '0000'), sfValidatorSchemaCompare::NOT_IDENTICAL),
+foreach ([
+    [['left' => 'foo', 'right' => 'foo'], sfValidatorSchemaCompare::NOT_EQUAL],
+    [[], sfValidatorSchemaCompare::NOT_EQUAL],
+    [null, sfValidatorSchemaCompare::NOT_EQUAL],
+    [['left' => 1, 'right' => 2], sfValidatorSchemaCompare::GREATER_THAN],
+    [['left' => 2, 'right' => 3], sfValidatorSchemaCompare::GREATER_THAN_EQUAL],
+    [['left' => 2, 'right' => 1], sfValidatorSchemaCompare::LESS_THAN],
+    [['left' => 3, 'right' => 2], sfValidatorSchemaCompare::LESS_THAN_EQUAL],
+    [['left' => 'foo', 'right' => 'bar'], sfValidatorSchemaCompare::EQUAL],
+    [['left' => '0000', 'right' => '0'], sfValidatorSchemaCompare::IDENTICAL],
+    [['left' => '0000', 'right' => '0'], sfValidatorSchemaCompare::NOT_EQUAL],
+    [['left' => '0000', 'right' => '0000'], sfValidatorSchemaCompare::NOT_IDENTICAL],
 
-    array(array('left' => 'foo', 'right' => 'foo'), '!='),
-    array(array(), '!='),
-    array(null, '!='),
-    array(array('left' => 1, 'right' => 2), '>'),
-    array(array('left' => 2, 'right' => 3), '>='),
-    array(array('left' => 2, 'right' => 1), '<'),
-    array(array('left' => 3, 'right' => 2), '<='),
-    array(array('left' => 'foo', 'right' => 'bar'), '=='),
-    array(array('left' => '0000', 'right' => '0'), '==='),
-    array(array('left' => '0000', 'right' => '0'), '!='),
-    array(array('left' => '0000', 'right' => '0000'), '!=='),
-) as $values) {
+    [['left' => 'foo', 'right' => 'foo'], '!='],
+    [[], '!='],
+    [null, '!='],
+    [['left' => 1, 'right' => 2], '>'],
+    [['left' => 2, 'right' => 3], '>='],
+    [['left' => 2, 'right' => 1], '<'],
+    [['left' => 3, 'right' => 2], '<='],
+    [['left' => 'foo', 'right' => 'bar'], '=='],
+    [['left' => '0000', 'right' => '0'], '==='],
+    [['left' => '0000', 'right' => '0'], '!='],
+    [['left' => '0000', 'right' => '0000'], '!=='],
+] as $values) {
     $v->setOption('operator', $values[1]);
 
-    foreach (array(true, false) as $globalError) {
+    foreach ([true, false] as $globalError) {
         $v->setOption('throw_global_error', $globalError);
 
         try {
@@ -96,7 +96,7 @@ try {
 $v = new sfValidatorSchemaCompare('left', 'foo', 'right');
 
 try {
-    $v->clean(array());
+    $v->clean([]);
     $t->fail('->clean() throws an InvalidArgumentException exception if the operator does not exist');
 } catch (InvalidArgumentException $e) {
     $t->pass('->clean() throws an InvalidArgumentException exception if the operator does not exist');
@@ -107,5 +107,5 @@ $t->diag('->asString()');
 $v = new sfValidatorSchemaCompare('left', sfValidatorSchemaCompare::EQUAL, 'right');
 $t->is($v->asString(), 'left == right', '->asString() returns a string representation of the validator');
 
-$v = new sfValidatorSchemaCompare('left', sfValidatorSchemaCompare::EQUAL, 'right', array(), array('required' => 'This is required.'));
+$v = new sfValidatorSchemaCompare('left', sfValidatorSchemaCompare::EQUAL, 'right', [], ['required' => 'This is required.']);
 $t->is($v->asString(), 'left ==({}, { required: \'This is required.\' }) right', '->asString() returns a string representation of the validator');

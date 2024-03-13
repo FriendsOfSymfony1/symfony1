@@ -16,7 +16,7 @@ class FormFormatterStub extends sfWidgetFormSchemaFormatter
     {
     }
 
-    public function translate($subject, $parameters = array())
+    public function translate($subject, $parameters = [])
     {
         return sprintf('translation[%s]', $subject);
     }

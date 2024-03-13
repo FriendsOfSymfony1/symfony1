@@ -46,7 +46,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
             return $choices;
         }
 
-        $results = array();
+        $results = [];
         foreach ($choices as $key => $choice) {
             if (is_array($choice)) {
                 $results[$this->translate($key)] = $this->translateAll($choice);
@@ -70,7 +70,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addRequiredOption('choices');
         $this->addOption('translate_choices', true);

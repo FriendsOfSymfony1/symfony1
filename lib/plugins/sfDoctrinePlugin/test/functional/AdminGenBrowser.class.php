@@ -2,10 +2,10 @@
 
 class AdminGenBrowser extends sfTestBrowser
 {
-    protected $_modules = array('Article' => 'articles',
+    protected $_modules = ['Article' => 'articles',
         'Author' => 'authors',
         'Subscription' => 'subscriptions',
-        'User' => 'users');
+        'User' => 'users'];
 
     public function __construct()
     {
@@ -64,7 +64,7 @@ class AdminGenBrowser extends sfTestBrowser
     {
         $this->info('Test valid sort_type parameter');
 
-        foreach (array('asc', 'desc', 'ASC', 'DESC') as $sortType) {
+        foreach (['asc', 'desc', 'ASC', 'DESC'] as $sortType) {
             $this->get('/users?sort=username&sort_type='.$sortType);
 
             $matches = 0;
@@ -110,7 +110,7 @@ class AdminGenBrowser extends sfTestBrowser
     {
         $this->info('Testing "articles" module embeds I18n');
 
-        $info = array('author_id' => 1, 'is_on_homepage' => false, 'en' => array('title' => 'Test English title', 'body' => 'Test English body'), 'fr' => array('title' => 'Test French title', 'body' => 'Test French body'), 'created_at' => array('month' => '1', 'day' => '12', 'year' => '2009', 'hour' => '10', 'minute' => '03'), 'updated_at' => array('month' => '1', 'day' => '12', 'year' => '2009', 'hour' => '10', 'minute' => '03'));
+        $info = ['author_id' => 1, 'is_on_homepage' => false, 'en' => ['title' => 'Test English title', 'body' => 'Test English body'], 'fr' => ['title' => 'Test French title', 'body' => 'Test French body'], 'created_at' => ['month' => '1', 'day' => '12', 'year' => '2009', 'hour' => '10', 'minute' => '03'], 'updated_at' => ['month' => '1', 'day' => '12', 'year' => '2009', 'hour' => '10', 'minute' => '03']];
 
         $this->
           get('/articles/new')->
@@ -127,15 +127,15 @@ class AdminGenBrowser extends sfTestBrowser
               isParameter('module', 'articles')->
               isParameter('action', 'new')->
             end()->
-          click('Save', array('article' => $info))->
+          click('Save', ['article' => $info])->
             with('response')->begin()->
               isRedirected()->
               followRedirect()->
             end()->
             with('doctrine')->begin()->
-              check('Article', array('is_on_homepage' => $info['is_on_homepage']))->
-              check('ArticleTranslation', array('lang' => 'fr', 'title' => 'Test French title'))->
-              check('ArticleTranslation', array('lang' => 'en', 'title' => 'Test English title'))->
+              check('Article', ['is_on_homepage' => $info['is_on_homepage']])->
+              check('ArticleTranslation', ['lang' => 'fr', 'title' => 'Test French title'])->
+              check('ArticleTranslation', ['lang' => 'en', 'title' => 'Test English title'])->
             end();
     }
 
@@ -164,18 +164,18 @@ class AdminGenBrowser extends sfTestBrowser
 
         $this->info('Test the Profile form saves and attached to user properly');
 
-        $userInfo = array(
-            'user' => array(
+        $userInfo = [
+            'user' => [
                 'username' => 'test',
                 'password' => 'test',
-                'groups_list' => array(1, 2),
-                'permissions_list' => array(3, 4),
-                'Profile' => array(
+                'groups_list' => [1, 2],
+                'permissions_list' => [3, 4],
+                'Profile' => [
                     'first_name' => 'Test',
                     'last_name' => 'Test',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $this->click('Save', $userInfo);
 
@@ -188,12 +188,12 @@ class AdminGenBrowser extends sfTestBrowser
               followRedirect()->
             end()->
             with('doctrine')->begin()->
-              check('User', array('username' => $userInfo['user']['username']))->
+              check('User', ['username' => $userInfo['user']['username']])->
               check('Profile', $userInfo['user']['Profile'])->
-              check('UserGroup', array('user_id' => $user->id, 'group_id' => $user->Groups[0]->id))->
-              check('UserGroup', array('user_id' => $user->id, 'group_id' => $user->Groups[1]->id))->
-              check('UserPermission', array('user_id' => $user->id, 'permission_id' => $user->Permissions[0]->id))->
-              check('UserPermission', array('user_id' => $user->id, 'permission_id' => $user->Permissions[1]->id))->
+              check('UserGroup', ['user_id' => $user->id, 'group_id' => $user->Groups[0]->id])->
+              check('UserGroup', ['user_id' => $user->id, 'group_id' => $user->Groups[1]->id])->
+              check('UserPermission', ['user_id' => $user->id, 'permission_id' => $user->Permissions[0]->id])->
+              check('UserPermission', ['user_id' => $user->id, 'permission_id' => $user->Permissions[1]->id])->
             end();
 
         unset($userInfo['user']['Profile']['user_id']);
@@ -232,7 +232,7 @@ class AdminGenBrowser extends sfTestBrowser
     {
         $this->info('Generating admin gen module "'.$module.'"');
         $task = new sfDoctrineGenerateAdminTask($this->getContext()->getEventDispatcher(), new sfFormatter());
-        $task->run(array('application' => 'backend', 'route_or_model' => $model));
+        $task->run(['application' => 'backend', 'route_or_model' => $model]);
     }
 
     protected function _generateAdminGenModules()
@@ -259,7 +259,7 @@ class AdminGenBrowser extends sfTestBrowser
 
     protected function _getQueryExecutionEvents()
     {
-        $events = array();
+        $events = [];
 
         $databaseManager = $this->browser->getContext()->getDatabaseManager();
         foreach ($databaseManager->getNames() as $name) {

@@ -7,7 +7,7 @@ class sfValidatorFileMulti extends sfValidatorFile
      */
     protected function doClean($value)
     {
-        $clean = array();
+        $clean = [];
 
         foreach ($value as $file) {
             $clean[] = parent::doClean($file);

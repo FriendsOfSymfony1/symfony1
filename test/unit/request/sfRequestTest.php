@@ -30,7 +30,7 @@ $dispatcher = new sfEventDispatcher();
 $t->diag('->initialize()');
 $request = new myRequest($dispatcher);
 $t->is($dispatcher, $request->getEventDispatcher(), '->initialize() takes a sfEventDispatcher object as its first argument');
-$request->initialize($dispatcher, array('foo' => 'bar'));
+$request->initialize($dispatcher, ['foo' => 'bar']);
 $t->is($request->getParameter('foo'), 'bar', '->initialize() takes an array of parameters as its second argument');
 
 $options = $request->getOptions();
@@ -50,10 +50,10 @@ try {
 
 // ->extractParameters()
 $t->diag('->extractParameters()');
-$request->initialize($dispatcher, array('foo' => 'foo', 'bar' => 'bar'));
-$t->is($request->extractParameters(array()), array(), '->extractParameters() returns parameters');
-$t->is($request->extractParameters(array('foo')), array('foo' => 'foo'), '->extractParameters() returns parameters for keys in its first parameter');
-$t->is($request->extractParameters(array('bar')), array('bar' => 'bar'), '->extractParameters() returns parameters for keys in its first parameter');
+$request->initialize($dispatcher, ['foo' => 'foo', 'bar' => 'bar']);
+$t->is($request->extractParameters([]), [], '->extractParameters() returns parameters');
+$t->is($request->extractParameters(['foo']), ['foo' => 'foo'], '->extractParameters() returns parameters for keys in its first parameter');
+$t->is($request->extractParameters(['bar']), ['bar' => 'bar'], '->extractParameters() returns parameters for keys in its first parameter');
 
 // array access for request parameters
 $t->diag('Array access for request parameters');
@@ -70,7 +70,7 @@ $t->is(isset($request['foo2']), false, '->offsetUnset() unsets parameter by name
 
 // ->getOption()
 $t->diag('->getOption()');
-$request = new myRequest($dispatcher, array(), array(), array('val_1' => 'value', 'val_2' => false));
+$request = new myRequest($dispatcher, [], [], ['val_1' => 'value', 'val_2' => false]);
 $t->is($request->getOption('val_1'), 'value', '->getOption() returns the option value if exists');
 $t->is($request->getOption('val_2'), false, '->getOption() returns the option value if exists');
 $t->is($request->getOption('none'), null, '->getOption() returns the option value if not exists');

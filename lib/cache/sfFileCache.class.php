@@ -32,7 +32,7 @@ class sfFileCache extends sfCache
      *
      * @see sfCache
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
@@ -105,7 +105,7 @@ class sfFileCache extends sfCache
             $pattern = str_replace(sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION;
 
             $regexp = self::patternToRegexp($pattern);
-            $paths = array();
+            $paths = [];
             foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->getOption('cache_dir'))) as $path) {
                 if (preg_match($regexp, str_replace($this->getOption('cache_dir').DIRECTORY_SEPARATOR, '', $path))) {
                     $paths[] = $path;

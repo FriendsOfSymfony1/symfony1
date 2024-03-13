@@ -73,7 +73,7 @@ $filesystem->copy(getcwd().'/package.xml.tmpl', getcwd().'/package.xml');
 // add class files
 $finder = sfFinder::type('file')->relative();
 $xml_classes = '';
-$dirs = array('lib' => 'php', 'data' => 'data');
+$dirs = ['lib' => 'php', 'data' => 'data'];
 foreach ($dirs as $dir => $role) {
     $class_files = $finder->in($dir);
     foreach ($class_files as $file) {
@@ -82,12 +82,12 @@ foreach ($dirs as $dir => $role) {
 }
 
 // replace tokens
-$filesystem->replaceTokens(getcwd().DIRECTORY_SEPARATOR.'package.xml', '##', '##', array(
+$filesystem->replaceTokens(getcwd().DIRECTORY_SEPARATOR.'package.xml', '##', '##', [
     'SYMFONY_VERSION' => $version,
     'CURRENT_DATE' => date('Y-m-d'),
     'CLASS_FILES' => $xml_classes,
     'STABILITY' => $stability,
-));
+]);
 
 list($results) = $filesystem->execute('pear package');
 echo $results;

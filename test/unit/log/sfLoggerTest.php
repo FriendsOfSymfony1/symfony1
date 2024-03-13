@@ -27,7 +27,7 @@ class notaLogger
 }
 
 $dispatcher = new sfEventDispatcher();
-$logger = new myLogger($dispatcher, array('log_dir_name' => '/tmp'));
+$logger = new myLogger($dispatcher, ['log_dir_name' => '/tmp']);
 
 $options = $logger->getOptions();
 $t->is($options['log_dir_name'], '/tmp', '->getOptions() returns the options for the logger instance');
@@ -42,7 +42,7 @@ $t->is($logger->getLogLevel(), sfLogger::ERR, '->setLogLevel() accepts a class c
 
 // ->initialize()
 $t->diag('->initialize()');
-$logger->initialize($dispatcher, array('level' => sfLogger::ERR));
+$logger->initialize($dispatcher, ['level' => sfLogger::ERR]);
 $t->is($logger->getLogLevel(), sfLogger::ERR, '->initialize() takes an array of options as its second argument');
 
 // ::getPriorityName()
@@ -64,10 +64,10 @@ $t->is($logger->log, 'message', '->log() logs a message');
 
 // log level
 $t->diag('log levels');
-foreach (array('emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug') as $level) {
+foreach (['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'] as $level) {
     $levelConstant = 'sfLogger::'.strtoupper($level);
 
-    foreach (array('emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug') as $logLevel) {
+    foreach (['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'] as $logLevel) {
         $logLevelConstant = 'sfLogger::'.strtoupper($logLevel);
         $logger->setLogLevel(constant($logLevelConstant));
 
@@ -80,10 +80,10 @@ foreach (array('emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'de
 
 // shortcuts
 $t->diag('log shortcuts');
-foreach (array('emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug') as $level) {
+foreach (['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'] as $level) {
     $levelConstant = 'sfLogger::'.strtoupper($level);
 
-    foreach (array('emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug') as $logLevel) {
+    foreach (['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'] as $logLevel) {
         $logger->setLogLevel(constant('sfLogger::'.strtoupper($logLevel)));
 
         $logger->log = '';

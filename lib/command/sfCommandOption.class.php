@@ -143,7 +143,7 @@ class sfCommandOption
 
         if ($this->isArray()) {
             if (null === $default) {
-                $default = array();
+                $default = [];
             } elseif (!is_array($default)) {
                 throw new sfCommandException('A default value for an array option must be an array.');
             }

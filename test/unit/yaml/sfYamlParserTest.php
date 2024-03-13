@@ -41,12 +41,12 @@ foreach ($files as $file) {
 }
 
 // test tabs in YAML
-$yamls = array(
+$yamls = [
     "foo:\n	bar",
     "foo:\n 	bar",
     "foo:\n	 bar",
     "foo:\n 	 bar",
-);
+];
 
 foreach ($yamls as $yaml) {
     try {
@@ -71,7 +71,7 @@ class A
 {
     public $a = 'foo';
 }
-$a = array('foo' => new A(), 'bar' => 1);
+$a = ['foo' => new A(), 'bar' => 1];
 $t->is($parser->parse(
     <<<'EOF'
 foo: !!php/object:O:1:"A":1:{s:1:"a";s:3:"foo";}

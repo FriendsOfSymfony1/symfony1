@@ -86,11 +86,11 @@ $t->is($languages_en['fr'], 'French', '->getLanguages() returns a list of langua
 $t->is($languages_fr['fr'], 'français', '->getLanguages() returns a list of languages in the language of the localized version');
 $t->is($languages_en, $c_en->Languages, '->getLanguages() is equivalent to ->Languages');
 
-$languages = $c_en->getLanguages(array('fr', 'es'));
-$t->is(array_keys($languages), array('fr', 'es'), '->getLanguages() takes an array of languages as its first argument');
+$languages = $c_en->getLanguages(['fr', 'es']);
+$t->is(array_keys($languages), ['fr', 'es'], '->getLanguages() takes an array of languages as its first argument');
 
 try {
-    $c_en->getLanguages(array('fr', 'gb'));
+    $c_en->getLanguages(['fr', 'gb']);
     $t->fail('->getLanguages() throws an Exception if the list of given languages contains some invalid ones.');
 } catch (Exception $e) {
     $t->pass('->getLanguages() throws an Exception if the list of given languages contains some invalid ones.');
@@ -104,11 +104,11 @@ $t->is($currencies_en['EUR'], 'Euro', '->getCurrencies() returns a list of curre
 $t->is($currencies_fr['EUR'], 'euro', '->getCurrencies() returns a list of currencies in the language of the localized version');
 $t->is($currencies_en, $c_en->Currencies, '->getCurrencies() is equivalent to ->Currencies');
 
-$currencies = $c_en->getCurrencies(array('USD', 'EUR'));
-$t->is(array_keys($currencies), array('EUR', 'USD'), '->getCurrencies() takes an array of currencies as its first argument');
+$currencies = $c_en->getCurrencies(['USD', 'EUR']);
+$t->is(array_keys($currencies), ['EUR', 'USD'], '->getCurrencies() takes an array of currencies as its first argument');
 
 try {
-    $c_en->getCurrencies(array('USD', 'FRANCS'));
+    $c_en->getCurrencies(['USD', 'FRANCS']);
     $t->fail('->getCurrencies() throws an Exception if the list of given currencies contains some invalid ones.');
 } catch (Exception $e) {
     $t->pass('->getCurrencies() throws an Exception if the list of given currencies contains some invalid ones.');
@@ -122,11 +122,11 @@ $t->is($countries_en['ES'], 'Spain', '->getCountries() returns a list of countri
 $t->is($countries_fr['ES'], 'Espagne', '->getCountries() returns a list of countries in the language of the localized version');
 $t->is($countries_en, $c_en->Countries, '->getCountries() is equivalent to ->Countries');
 
-$countries = $c_en->getCountries(array('FR', 'ES'));
-$t->is(array_keys($countries), array('FR', 'ES'), '->getCountries() takes an array of countries as its first argument');
+$countries = $c_en->getCountries(['FR', 'ES']);
+$t->is(array_keys($countries), ['FR', 'ES'], '->getCountries() takes an array of countries as its first argument');
 
 try {
-    $c_en->getCountries(array('FR', 'EN'));
+    $c_en->getCountries(['FR', 'EN']);
     $t->fail('->getCountries() throws an Exception if the list of given countries contains some invalid ones.');
 } catch (Exception $e) {
     $t->pass('->getCountries() throws an Exception if the list of given countries contains some invalid ones.');
@@ -153,7 +153,7 @@ $t->is($time_zones_en, $c_en->TimeZones, '->getTimeZones() is equivalent to ->Ti
 $t->diag('->validCulture()');
 $t->is($c->validCulture('fr'), true, '->validCulture() returns true if the culture is valid');
 $t->is($c->validCulture('fr_FR'), true, '->validCulture() returns true if the culture is valid');
-foreach (array('xxx', 'pp', 'frFR') as $culture) {
+foreach (['xxx', 'pp', 'frFR'] as $culture) {
     $t->is($c->validCulture($culture), false, '->validCulture() returns false if the culture does not exist');
 }
 

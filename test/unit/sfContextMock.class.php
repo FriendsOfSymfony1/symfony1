@@ -26,13 +26,13 @@ class sfContext
         sfToolkit::clearDirectory($this->sessionPath);
     }
 
-    public static function getInstance($factories = array(), $force = false)
+    public static function getInstance($factories = [], $force = false)
     {
         if (!isset(self::$instance) || $force) {
             self::$instance = new sfContext();
 
             self::$instance->sessionPath = sys_get_temp_dir().'/sessions_'.rand(11111, 99999);
-            self::$instance->storage = new sfSessionTestStorage(array('session_path' => self::$instance->sessionPath));
+            self::$instance->storage = new sfSessionTestStorage(['session_path' => self::$instance->sessionPath]);
 
             self::$instance->dispatcher = new sfEventDispatcher();
 
@@ -99,7 +99,7 @@ class sfContext
         return $this->controller;
     }
 
-    public function inject($type, $class, $parameters = array())
+    public function inject($type, $class, $parameters = [])
     {
         switch ($type) {
             case 'routing':

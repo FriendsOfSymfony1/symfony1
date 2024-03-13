@@ -29,7 +29,7 @@ $filter = new myFilter($context);
 $t->diag('->initialize()');
 $filter = new myFilter($context);
 $t->is($filter->getContext(), $context, '->initialize() takes a sfContext object as its first argument');
-$filter->initialize($context, array('foo' => 'bar'));
+$filter->initialize($context, ['foo' => 'bar']);
 $t->is($filter->getParameter('foo'), 'bar', '->initialize() takes an array of parameters as its second argument');
 
 // ->getContext()

@@ -17,7 +17,7 @@
  */
 class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
 {
-    protected $fields = array();
+    protected $fields = [];
     protected $preValidator;
     protected $postValidator;
 
@@ -35,7 +35,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      *
      * @see sfValidatorBase
      */
-    public function __construct($fields = null, $options = array(), $messages = array())
+    public function __construct($fields = null, $options = [], $messages = [])
     {
         if (is_array($fields)) {
             foreach ($fields as $name => $validator) {
@@ -251,7 +251,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addOption('allow_extra_fields', false);
         $this->addOption('filter_extra_fields', true);
@@ -266,14 +266,14 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
     protected function doClean($values)
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
 
         if (!is_array($values)) {
             throw new InvalidArgumentException('You must pass an array parameter to the clean() method');
         }
 
-        $clean = array();
+        $clean = [];
         $unused = array_keys($this->fields);
         $errorSchema = new sfValidatorErrorSchema($this);
 
@@ -298,7 +298,7 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
             // field exists in our schema?
             if (!array_key_exists($name, $this->fields)) {
                 if (!$this->options['allow_extra_fields']) {
-                    $errorSchema->addError(new sfValidatorError($this, 'extra_fields', array('field' => $name)));
+                    $errorSchema->addError(new sfValidatorError($this, 'extra_fields', ['field' => $name]));
                 } elseif (!$this->options['filter_extra_fields']) {
                     $clean[$name] = $value;
                 }
@@ -356,11 +356,11 @@ class sfValidatorSchema extends sfValidatorBase implements ArrayAccess
         $number = (float) $value;
         $modifier = strtolower($value[strlen($value) - 1]);
 
-        $exp_by_modifier = array(
+        $exp_by_modifier = [
             'k' => 1,
             'm' => 2,
             'g' => 3,
-        );
+        ];
 
         if (array_key_exists($modifier, $exp_by_modifier)) {
             $exp = $exp_by_modifier[$modifier];

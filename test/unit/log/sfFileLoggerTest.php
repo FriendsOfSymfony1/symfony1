@@ -32,7 +32,7 @@ try {
 
 // ->log()
 $t->diag('->log()');
-$logger = new sfFileLogger($dispatcher, array('file' => $file));
+$logger = new sfFileLogger($dispatcher, ['file' => $file]);
 $logger->log('foo');
 $lines = explode("\n", file_get_contents($file));
 $t->like($lines[0], '/foo/', '->log() logs a message to the file');
@@ -56,26 +56,26 @@ class TestLogger extends sfFileLogger
 // option: format
 $t->diag('option: format');
 unlink($file);
-$logger = new TestLogger($dispatcher, array('file' => $file));
+$logger = new TestLogger($dispatcher, ['file' => $file]);
 $logger->log('foo');
 $t->is(file_get_contents($file), TestLogger::strftime($logger->getTimeFormat()).' symfony [*6*] foo'.PHP_EOL, '->initialize() can take a format option');
 
 unlink($file);
-$logger = new TestLogger($dispatcher, array('file' => $file, 'format' => '%message%'));
+$logger = new TestLogger($dispatcher, ['file' => $file, 'format' => '%message%']);
 $logger->log('foo');
 $t->is(file_get_contents($file), 'foo', '->initialize() can take a format option');
 
 // option: time_format
 $t->diag('option: time_format');
 unlink($file);
-$logger = new TestLogger($dispatcher, array('file' => $file, 'time_format' => '%Y %m %d'));
+$logger = new TestLogger($dispatcher, ['file' => $file, 'time_format' => '%Y %m %d']);
 $logger->log('foo');
 $t->is(file_get_contents($file), TestLogger::strftime($logger->getTimeFormat()).' symfony [*6*] foo'.PHP_EOL, '->initialize() can take a format option');
 
 // option: type
 $t->diag('option: type');
 unlink($file);
-$logger = new TestLogger($dispatcher, array('file' => $file, 'type' => 'foo'));
+$logger = new TestLogger($dispatcher, ['file' => $file, 'type' => 'foo']);
 $logger->log('foo');
 $t->is(file_get_contents($file), TestLogger::strftime($logger->getTimeFormat()).' foo [*6*] foo'.PHP_EOL, '->initialize() can take a format option');
 

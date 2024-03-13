@@ -18,6 +18,6 @@ $tmpDir = sys_get_temp_dir().DIRECTORY_SEPARATOR.'sf_'.rand(11111, 99999);
 mkdir($tmpDir, 0777, true);
 chdir($tmpDir);
 
-$application = new sfSymfonyCommandApplication(new sfEventDispatcher(), new sfFormatter(), array(
+$application = new sfSymfonyCommandApplication(new sfEventDispatcher(), new sfFormatter(), [
     'symfony_lib_dir' => sfConfig::get('sf_symfony_lib_dir'),
-));
+]);

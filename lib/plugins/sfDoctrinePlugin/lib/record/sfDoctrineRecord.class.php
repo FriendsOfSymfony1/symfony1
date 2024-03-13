@@ -27,12 +27,12 @@ abstract class sfDoctrineRecord extends Doctrine_Record
      */
     public function __toString()
     {
-        $guesses = array('name',
+        $guesses = ['name',
             'title',
             'description',
             'subject',
             'keywords',
-            'id');
+            'id'];
 
         // we try to guess a column which would give a good description of the object
         foreach ($guesses as $descriptionColumn) {
@@ -58,7 +58,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
         $failed = false;
 
         try {
-            if (in_array($verb = substr($method, 0, 3), array('set', 'get'))) {
+            if (in_array($verb = substr($method, 0, 3), ['set', 'get'])) {
                 $name = substr($method, 3);
 
                 $table = $this->getTable();
@@ -89,8 +89,8 @@ abstract class sfDoctrineRecord extends Doctrine_Record
                 }
 
                 return call_user_func_array(
-                    array($this, $verb),
-                    array_merge(array($entityName), $arguments)
+                    [$this, $verb],
+                    array_merge([$entityName], $arguments)
                 );
             }
             $failed = true;

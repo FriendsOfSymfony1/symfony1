@@ -31,7 +31,7 @@ function format_daterange($start_date, $end_date, $format = 'd', $full_text = ''
 
 function format_date($date, $format = 'd', $culture = null, $charset = null)
 {
-    static $dateFormats = array();
+    static $dateFormats = [];
 
     if (null === $date) {
         return null;
@@ -65,7 +65,7 @@ function distance_of_time_in_words($from_time, $to_time = null, $include_seconds
     $distance_in_seconds = floor(abs($to_time - $from_time));
 
     $string = '';
-    $parameters = array();
+    $parameters = [];
 
     if ($distance_in_minutes <= 1) {
         if (!$include_seconds) {

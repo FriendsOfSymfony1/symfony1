@@ -17,16 +17,16 @@ $t = new lime_test(64);
 $dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
-$w = new sfWidgetFormDateTime(array('with_time' => true, 'time' => array('with_seconds' => true)));
+$w = new sfWidgetFormDateTime(['with_time' => true, 'time' => ['with_seconds' => true]]);
 
 // ->render()
 $t->diag('->render()');
 
-foreach (array(
-    $year.'-10-15 12:30:35' => array('year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35),
-    time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d'), 'hour' => date('G'), 'minute' => date('i'), 'second' => date('s')),
-    'tomorrow 12:30:35' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400), 'hour' => 12, 'minute' => 30, 'second' => 35),
-) as $date => $values) {
+foreach ([
+    $year.'-10-15 12:30:35' => ['year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35],
+    time() => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d'), 'hour' => date('G'), 'minute' => date('i'), 'second' => date('s')],
+    'tomorrow 12:30:35' => ['year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400), 'hour' => 12, 'minute' => 30, 'second' => 35],
+] as $date => $values) {
     $dom->loadHTML($w->render('foo', $date));
     $css = new sfDomCssSelector($dom);
 
@@ -41,7 +41,7 @@ foreach (array(
 
 // selected date / time
 $t->diag('selected date / time');
-$values = array('year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35);
+$values = ['year' => $year, 'month' => 10, 'day' => 15, 'hour' => 12, 'minute' => 30, 'second' => 35];
 $dom->loadHTML($w->render('foo', $values));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
@@ -53,7 +53,7 @@ $t->is($css->matchSingle('#foo_second option[value="'.$values['second'].'"][sele
 
 // invalid date / time
 $t->diag('invalid date / time');
-$values = array('year' => null, 'month' => 10, 'hour' => null, 'minute' => 30);
+$values = ['year' => null, 'month' => 10, 'hour' => null, 'minute' => 30];
 $dom->loadHTML($w->render('foo', $values));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the year');
@@ -91,8 +91,8 @@ $t->is($css->matchSingle('#foo_hour')->getNode()->nextSibling->nodeValue, ':', '
 $t->is($css->matchSingle('#foo_minute')->getNode()->nextSibling->nodeValue, ':', '->render() renders 3 selects with a default : as a format');
 
 $t->diag('change date and time format option');
-$w->setOption('date', array('format' => '%month%-%day%-%year%'));
-$w->setOption('time', array('format' => '%hour%!%minute%!%second%', 'with_seconds' => true));
+$w->setOption('date', ['format' => '%month%-%day%-%year%']);
+$w->setOption('time', ['format' => '%hour%!%minute%!%second%', 'with_seconds' => true]);
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_day')->getNode()->nextSibling->nodeValue, '-', '__construct() can change the default format');
@@ -103,14 +103,14 @@ $t->is($css->matchSingle('#foo_minute')->getNode()->nextSibling->nodeValue, '!',
 // with_time option
 $t->diag('with_time option');
 
-$w = new sfWidgetFormDateTime(array('with_time' => false));
+$w = new sfWidgetFormDateTime(['with_time' => false]);
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo_hour')->getNodes()), 0, '->render() does not render the time if the with_time option is disabled');
 
 // date and time options as array
 $t->diag('date and time options as array');
-$w = new sfWidgetFormDateTime(array('date' => 'a string'));
+$w = new sfWidgetFormDateTime(['date' => 'a string']);
 
 try {
     $w->render('foo');
@@ -122,11 +122,11 @@ try {
 // attributes
 $t->diag('attributes');
 $w = new sfWidgetFormDateTime();
-$dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35', array('date' => array('disabled' => 'disabled'), 'time' => array('disabled' => 'disabled'))));
+$dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35', ['date' => ['disabled' => 'disabled'], 'time' => ['disabled' => 'disabled']]));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 5, '->render() takes the attributes into account for all the five embedded widgets');
 
-$w->setAttribute('date', array('disabled' => 'disabled'));
-$w->setAttribute('time', array('disabled' => 'disabled'));
+$w->setAttribute('date', ['disabled' => 'disabled']);
+$w->setAttribute('time', ['disabled' => 'disabled']);
 $dom->loadHTML($w->render('foo', $year.'-10-15 12:30:35'));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 5, '->render() takes the attributes into account for all the five embedded widgets');
 
@@ -141,8 +141,8 @@ $t->is(count($css->matchAll('#id_foo_year')), 1, '->render() year considers id_f
 $t->is(count($css->matchAll('#id_foo_hour')), 1, '->render() hour considers id_format');
 $t->is(count($css->matchAll('#id_foo_minute')), 1, '->render() minute considers id_format');
 
-$w->setOption('date', array('id_format' => 'override_%s'));
-$w->setOption('time', array('id_format' => 'override_%s'));
+$w->setOption('date', ['id_format' => 'override_%s']);
+$w->setOption('time', ['id_format' => 'override_%s']);
 $dom->loadHTML($w->render('foo'));
 $t->is(count($css->matchAll('#override_foo_month')), 1, '->render() month does not override subwidget id_format');
 $t->is(count($css->matchAll('#override_foo_day')), 1, '->render() day does not override subwidget id_format');

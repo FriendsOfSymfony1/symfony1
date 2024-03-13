@@ -19,9 +19,9 @@ $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfFilterConfi
 
 // parse errors
 $t->diag('parse errors');
-$files = array(
+$files = [
     $dir.'no_class.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);
@@ -31,10 +31,10 @@ try {
 }
 
 // no execution/rendering filter
-foreach (array('execution', 'rendering') as $key) {
-    $files = array(
+foreach (['execution', 'rendering'] as $key) {
+    $files = [
         $dir.sprintf('no_%s.yml', $key),
-    );
+    ];
 
     try {
         $data = $handler->execute($files);
@@ -46,10 +46,10 @@ foreach (array('execution', 'rendering') as $key) {
 
 // filter inheritance
 $t->diag('filter inheritance');
-$files = array(
+$files = [
     $dir.'default_filters.yml',
     $dir.'not_disabled.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);
@@ -60,17 +60,17 @@ try {
 
 // disabling a filter
 $t->diag('disabling a filter');
-$files = array(
+$files = [
     $dir.'disable.yml',
-);
+];
 
 $t->unlike($handler->execute($files), '/defaultFilterClass/', 'you can disable a filter by settings "enabled" to false');
 
 // condition support
 $t->diag('condition support');
-$files = array(
+$files = [
     $dir.'condition.yml',
-);
+];
 
 sfConfig::set('default_test', true);
 $t->like($handler->execute($files), '/defaultFilterClass/', 'you can add a "condition" key to the filter parameters');
@@ -80,10 +80,10 @@ $t->unlike($handler->execute($files), '/defaultFilterClass/', 'you can add a "co
 
 // usual configuration
 $t->diag('usual configuration');
-$files = array(
+$files = [
     $dir.'default_filters.yml',
     $dir.'filters.yml',
-);
+];
 
 $data = $handler->execute($files);
 $data = preg_replace('#date\: \d+/\d+/\d+ \d+\:\d+\:\d+\n#', '', $data);

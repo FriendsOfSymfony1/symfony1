@@ -16,9 +16,9 @@ $dispatcher = new sfEventDispatcher();
 $formatter = new sfFormatter();
 
 $task = new sfGenerateProjectTask($dispatcher, $formatter);
-$task->run(array('test'));
+$task->run(['test']);
 $task = new sfGenerateAppTask($dispatcher, $formatter);
-$task->run(array('frontend'));
+$task->run(['frontend']);
 
 require_once sfConfig::get('sf_root_dir').'/config/ProjectConfiguration.class.php';
 $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true);

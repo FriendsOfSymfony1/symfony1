@@ -9,7 +9,7 @@
  */
 class TestSpool implements Swift_Spool
 {
-    protected $messages = array();
+    protected $messages = [];
 
     public function __construct()
     {
@@ -41,7 +41,7 @@ class TestSpool implements Swift_Spool
             $transport->send($message);
         }
 
-        $this->messages = array();
+        $this->messages = [];
     }
 
     public function getMessages()
@@ -56,6 +56,6 @@ class TestSpool implements Swift_Spool
 
     public function reset()
     {
-        $this->messages = array();
+        $this->messages = [];
     }
 }

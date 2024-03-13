@@ -20,35 +20,35 @@ $foo2 = new sfCommandArgument('foo2', sfCommandArgument::REQUIRED);
 // __construct()
 $t->diag('__construct()');
 $argumentSet = new sfCommandArgumentSet();
-$t->is($argumentSet->getArguments(), array(), '__construct() creates a new sfCommandArgumentSet object');
+$t->is($argumentSet->getArguments(), [], '__construct() creates a new sfCommandArgumentSet object');
 
-$argumentSet = new sfCommandArgumentSet(array($foo, $bar));
-$t->is($argumentSet->getArguments(), array('foo' => $foo, 'bar' => $bar), '__construct() takes an array of sfCommandArgument objects as its first argument');
+$argumentSet = new sfCommandArgumentSet([$foo, $bar]);
+$t->is($argumentSet->getArguments(), ['foo' => $foo, 'bar' => $bar], '__construct() takes an array of sfCommandArgument objects as its first argument');
 
 // ->setArguments()
 $t->diag('->setArguments()');
 $argumentSet = new sfCommandArgumentSet();
-$argumentSet->setArguments(array($foo));
-$t->is($argumentSet->getArguments(), array('foo' => $foo), '->setArguments() sets the array of sfCommandArgument objects');
-$argumentSet->setArguments(array($bar));
+$argumentSet->setArguments([$foo]);
+$t->is($argumentSet->getArguments(), ['foo' => $foo], '->setArguments() sets the array of sfCommandArgument objects');
+$argumentSet->setArguments([$bar]);
 
-$t->is($argumentSet->getArguments(), array('bar' => $bar), '->setArguments() clears all sfCommandArgument objects');
+$t->is($argumentSet->getArguments(), ['bar' => $bar], '->setArguments() clears all sfCommandArgument objects');
 
 // ->addArguments()
 $t->diag('->addArguments()');
 $argumentSet = new sfCommandArgumentSet();
-$argumentSet->addArguments(array($foo));
-$t->is($argumentSet->getArguments(), array('foo' => $foo), '->addArguments() adds an array of sfCommandArgument objects');
-$argumentSet->addArguments(array($bar));
-$t->is($argumentSet->getArguments(), array('foo' => $foo, 'bar' => $bar), '->addArguments() does not clear existing sfCommandArgument objects');
+$argumentSet->addArguments([$foo]);
+$t->is($argumentSet->getArguments(), ['foo' => $foo], '->addArguments() adds an array of sfCommandArgument objects');
+$argumentSet->addArguments([$bar]);
+$t->is($argumentSet->getArguments(), ['foo' => $foo, 'bar' => $bar], '->addArguments() does not clear existing sfCommandArgument objects');
 
 // ->addArgument()
 $t->diag('->addArgument()');
 $argumentSet = new sfCommandArgumentSet();
 $argumentSet->addArgument($foo);
-$t->is($argumentSet->getArguments(), array('foo' => $foo), '->addArgument() adds a sfCommandArgument object');
+$t->is($argumentSet->getArguments(), ['foo' => $foo], '->addArgument() adds a sfCommandArgument object');
 $argumentSet->addArgument($bar);
-$t->is($argumentSet->getArguments(), array('foo' => $foo, 'bar' => $bar), '->addArgument() adds a sfCommandArgument object');
+$t->is($argumentSet->getArguments(), ['foo' => $foo, 'bar' => $bar], '->addArgument() adds a sfCommandArgument object');
 
 // arguments must have different names
 try {
@@ -82,7 +82,7 @@ try {
 // ->getArgument()
 $t->diag('->getArgument()');
 $argumentSet = new sfCommandArgumentSet();
-$argumentSet->addArguments(array($foo));
+$argumentSet->addArguments([$foo]);
 $t->is($argumentSet->getArgument('foo'), $foo, '->getArgument() returns a sfCommandArgument by its name');
 
 try {
@@ -95,7 +95,7 @@ try {
 // ->hasArgument()
 $t->diag('->hasArgument()');
 $argumentSet = new sfCommandArgumentSet();
-$argumentSet->addArguments(array($foo));
+$argumentSet->addArguments([$foo]);
 $t->is($argumentSet->hasArgument('foo'), true, '->hasArgument() returns true if a sfCommandArgument exists for the given name');
 $t->is($argumentSet->hasArgument('bar'), false, '->hasArgument() returns false if a sfCommandArgument exists for the given name');
 
@@ -118,16 +118,16 @@ $t->is($argumentSet->getArgumentCount(), 2, '->getArgumentCount() returns the nu
 // ->getDefaults()
 $t->diag('->getDefaults()');
 $argumentSet = new sfCommandArgumentSet();
-$argumentSet->addArguments(array(
+$argumentSet->addArguments([
     new sfCommandArgument('foo1', sfCommandArgument::OPTIONAL),
     new sfCommandArgument('foo2', sfCommandArgument::OPTIONAL, '', 'default'),
     new sfCommandArgument('foo3', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
     //  new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', array(1, 2)),
-));
-$t->is($argumentSet->getDefaults(), array('foo1' => null, 'foo2' => 'default', 'foo3' => array()), '->getDefaults() return the default values for each argument');
+]);
+$t->is($argumentSet->getDefaults(), ['foo1' => null, 'foo2' => 'default', 'foo3' => []], '->getDefaults() return the default values for each argument');
 
 $argumentSet = new sfCommandArgumentSet();
-$argumentSet->addArguments(array(
-    new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', array(1, 2)),
-));
-$t->is($argumentSet->getDefaults(), array('foo4' => array(1, 2)), '->getDefaults() return the default values for each argument');
+$argumentSet->addArguments([
+    new sfCommandArgument('foo4', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, '', [1, 2]),
+]);
+$t->is($argumentSet->getDefaults(), ['foo4' => [1, 2]], '->getDefaults() return the default values for each argument');

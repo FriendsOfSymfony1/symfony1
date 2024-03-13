@@ -27,7 +27,7 @@ class sfWidgetFormI18nDateTime extends sfWidgetFormDateTime
      *
      * @see sfWidgetFormDateTime
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -36,22 +36,22 @@ class sfWidgetFormI18nDateTime extends sfWidgetFormDateTime
         $culture = isset($options['culture']) ? $options['culture'] : 'en';
 
         // format
-        $this->setOption('format', str_replace(array('{0}', '{1}'), array('%time%', '%date%'), sfDateTimeFormatInfo::getInstance($culture)->getDateTimeOrderPattern()));
+        $this->setOption('format', str_replace(['{0}', '{1}'], ['%time%', '%date%'], sfDateTimeFormatInfo::getInstance($culture)->getDateTimeOrderPattern()));
     }
 
     /**
      * @see sfWidgetFormDateTime
      */
-    protected function getDateWidget($attributes = array())
+    protected function getDateWidget($attributes = [])
     {
-        return new sfWidgetFormI18nDate(array_merge(array('culture' => $this->getOption('culture')), $this->getOptionsFor('date')), $this->getAttributesFor('date', $attributes));
+        return new sfWidgetFormI18nDate(array_merge(['culture' => $this->getOption('culture')], $this->getOptionsFor('date')), $this->getAttributesFor('date', $attributes));
     }
 
     /**
      * @see sfWidgetFormDateTime
      */
-    protected function getTimeWidget($attributes = array())
+    protected function getTimeWidget($attributes = [])
     {
-        return new sfWidgetFormI18nTime(array_merge(array('culture' => $this->getOption('culture')), $this->getOptionsFor('time')), $this->getAttributesFor('time', $attributes));
+        return new sfWidgetFormI18nTime(array_merge(['culture' => $this->getOption('culture')], $this->getOptionsFor('time')), $this->getAttributesFor('time', $attributes));
     }
 }

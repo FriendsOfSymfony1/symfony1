@@ -22,17 +22,17 @@ class sfPluginInstallTask extends sfPluginBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('stability', 's', sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
             new sfCommandOption('release', 'r', sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
             new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
             new sfCommandOption('install_deps', 'd', sfCommandOption::PARAMETER_NONE, 'Whether to force installation of required dependencies', null),
             new sfCommandOption('force-license', null, sfCommandOption::PARAMETER_NONE, 'Whether to force installation even if the license is not MIT like'),
-        ));
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'install';
@@ -87,7 +87,7 @@ EOF;
     /**
      * @see sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('installing plugin "%s"', $arguments['name']));
 
@@ -104,7 +104,7 @@ EOF;
 
             if (false !== $license) {
                 $temp = trim(str_replace('license', '', strtolower($license)));
-                if (null !== $license && !in_array($temp, array('mit', 'bsd', 'lgpl', 'php', 'apache'))) {
+                if (null !== $license && !in_array($temp, ['mit', 'bsd', 'lgpl', 'php', 'apache'])) {
                     throw new sfCommandException(sprintf('The license of this plugin "%s" is not MIT like (use --force-license to force installation).', $license));
                 }
             }

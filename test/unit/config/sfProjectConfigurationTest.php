@@ -16,7 +16,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
     public function setup()
     {
-        $this->enablePlugins(array('sfAutoloadPlugin', 'sfConfigPlugin'));
+        $this->enablePlugins(['sfAutoloadPlugin', 'sfConfigPlugin']);
         $this->setPluginPath('sfConfigPlugin', $this->rootDir.'/lib/plugins/sfConfigPlugin');
     }
 }
@@ -26,9 +26,9 @@ $configuration = new ProjectConfiguration(__DIR__.'/../../functional/fixtures');
 // ->setPlugins() ->disablePlugins() ->enablePlugins() ->enableAllPluginsExcept()
 $t->diag('->setPlugins() ->disablePlugins() ->enablePlugins() ->enableAllPluginsExcept()');
 
-foreach (array('setPlugins', 'disablePlugins', 'enablePlugins', 'enableAllPluginsExcept') as $method) {
+foreach (['setPlugins', 'disablePlugins', 'enablePlugins', 'enableAllPluginsExcept'] as $method) {
     try {
-        $configuration->{$method}(array());
+        $configuration->{$method}([]);
         $t->fail('->'.$method.'() throws an exception if called too late');
     } catch (Exception $e) {
         $t->pass('->'.$method.'() throws an exception if called too late');
@@ -44,7 +44,7 @@ class ProjectConfiguration2 extends sfProjectConfiguration
 }
 
 $configuration = new ProjectConfiguration2(__DIR__.'/../../functional/fixtures');
-$t->is_deeply($configuration->getPlugins(), array('sfAutoloadPlugin', 'sfConfigPlugin'), '->enablePlugins() can enable plugins passed as arguments instead of array');
+$t->is_deeply($configuration->getPlugins(), ['sfAutoloadPlugin', 'sfConfigPlugin'], '->enablePlugins() can enable plugins passed as arguments instead of array');
 
 // ->__construct()
 $t->diag('->__construct()');

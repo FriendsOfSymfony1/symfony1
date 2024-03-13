@@ -78,5 +78,5 @@ function get_source($temp1, $temp2)
     $source1 = sfMessageSource::factory('XLIFF', $temp1);
     $source2 = sfMessageSource::factory('XLIFF', $temp2);
 
-    return sfMessageSource::factory('Aggregate', array($source1, $source2));
+    return sfMessageSource::factory('Aggregate', [$source1, $source2]);
 }

@@ -19,7 +19,7 @@ class myRequest extends sfWebRequest
     public $acceptableContentTypes;
     protected static $initialPathArrayKeys;
 
-    public function initialize(sfEventDispatcher $dispatcher, $parameters = array(), $attributes = array(), $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $parameters = [], $attributes = [], $options = [])
     {
         if (isset($options['content_custom_only_for_test'])) {
             $this->content = $options['content_custom_only_for_test'];
@@ -54,80 +54,80 @@ $request = new myRequest($dispatcher);
 // ->getLanguages()
 $t->diag('->getLanguages()');
 
-$t->is($request->getLanguages(), array(), '->getLanguages() returns an empty array if the client do not send an ACCEPT_LANGUAGE header');
+$t->is($request->getLanguages(), [], '->getLanguages() returns an empty array if the client do not send an ACCEPT_LANGUAGE header');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-$t->is($request->getLanguages(), array(), '->getLanguages() returns an empty array if the client send an empty ACCEPT_LANGUAGE header');
+$t->is($request->getLanguages(), [], '->getLanguages() returns an empty array if the client send an empty ACCEPT_LANGUAGE header');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-us,en;q=0.5,fr;q=0.3';
-$t->is($request->getLanguages(), array('en_US', 'en', 'fr'), '->getLanguages() returns an array with all accepted languages');
+$t->is($request->getLanguages(), ['en_US', 'en', 'fr'], '->getLanguages() returns an array with all accepted languages');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'i-cherokee';
-$t->is($request->getLanguages(), array('cherokee'), '->getLanguages() returns an array with all accepted languages');
+$t->is($request->getLanguages(), ['cherokee'], '->getLanguages() returns an array with all accepted languages');
 
 // ->getPreferredCulture()
 $t->diag('->getPreferredCulture()');
 
-$request->languages = array('fr');
+$request->languages = ['fr'];
 $t->is($request->getPreferredCulture(), 'fr', '->getPreferredCulture() returns the first given languages if no parameter given');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-$t->is($request->getPreferredCulture(array('fr', 'en')), 'fr', '->getPreferredCulture() returns the first given culture if the client do not send an ACCEPT_LANGUAGE header');
+$t->is($request->getPreferredCulture(['fr', 'en']), 'fr', '->getPreferredCulture() returns the first given culture if the client do not send an ACCEPT_LANGUAGE header');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-us,en;q=0.5,fr;q=0.3';
-$t->is($request->getPreferredCulture(array('fr', 'en')), 'en', '->getPreferredCulture() returns the preferred culture');
+$t->is($request->getPreferredCulture(['fr', 'en']), 'en', '->getPreferredCulture() returns the preferred culture');
 
 $request->languages = null;
 $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-us,en;q=0.5,fr';
-$t->is($request->getPreferredCulture(array('fr', 'en')), 'fr', '->getPreferredCulture() returns the preferred culture');
+$t->is($request->getPreferredCulture(['fr', 'en']), 'fr', '->getPreferredCulture() returns the preferred culture');
 
 // ->getCharsets()
 $t->diag('->getCharsets()');
 
-$t->is($request->getCharsets(), array(), '->getCharsets() returns an empty array if the client do not send an ACCEPT_CHARSET header');
+$t->is($request->getCharsets(), [], '->getCharsets() returns an empty array if the client do not send an ACCEPT_CHARSET header');
 
-$request->charsets = array('ISO-8859-1');
-$t->is($request->getCharsets(), array('ISO-8859-1'), '->getCharsets() returns an empty array if charsets are already defined');
+$request->charsets = ['ISO-8859-1'];
+$t->is($request->getCharsets(), ['ISO-8859-1'], '->getCharsets() returns an empty array if charsets are already defined');
 
 $request->charsets = null;
 $_SERVER['HTTP_ACCEPT_CHARSET'] = '';
-$t->is($request->getCharsets(), array(), '->getCharsets() returns an empty array if the client send an empty ACCEPT_CHARSET header');
+$t->is($request->getCharsets(), [], '->getCharsets() returns an empty array if the client send an empty ACCEPT_CHARSET header');
 
 $request->charsets = null;
 $_SERVER['HTTP_ACCEPT_CHARSET'] = 'ISO-8859-1,utf-8;q=0.7,*;q=0.3';
-$t->is($request->getCharsets(), array('ISO-8859-1', 'utf-8', '*'), '->getCharsets() returns an array with all accepted charsets');
+$t->is($request->getCharsets(), ['ISO-8859-1', 'utf-8', '*'], '->getCharsets() returns an array with all accepted charsets');
 
 // ->getAcceptableContentTypes()
 $t->diag('->getAcceptableContentTypes()');
 
-$t->is($request->getAcceptableContentTypes(), array(), '->getAcceptableContentTypes() returns an empty array if the client do not send an ACCEPT header');
+$t->is($request->getAcceptableContentTypes(), [], '->getAcceptableContentTypes() returns an empty array if the client do not send an ACCEPT header');
 
-$request->acceptableContentTypes = array('text/xml');
-$t->is($request->getAcceptableContentTypes(), array('text/xml'), '->getAcceptableContentTypes() returns an empty array if acceptableContentTypes are already set');
+$request->acceptableContentTypes = ['text/xml'];
+$t->is($request->getAcceptableContentTypes(), ['text/xml'], '->getAcceptableContentTypes() returns an empty array if acceptableContentTypes are already set');
 
 $request->acceptableContentTypes = null;
 $_SERVER['HTTP_ACCEPT'] = '';
-$t->is($request->getAcceptableContentTypes(), array(), '->getAcceptableContentTypes() returns an empty array if the client send an empty ACCEPT header');
+$t->is($request->getAcceptableContentTypes(), [], '->getAcceptableContentTypes() returns an empty array if the client send an empty ACCEPT header');
 
 $request->acceptableContentTypes = null;
 $_SERVER['HTTP_ACCEPT'] = 'text/xml,application/xhtml+xml,application/xml,text/html;q=0.9,text/plain;q=0.8,*/*;q=0.5';
-$t->is($request->getAcceptableContentTypes(), array('text/xml', 'application/xhtml+xml', 'application/xml', 'text/html', 'text/plain', '*/*'), '->getAcceptableContentTypes() returns an array with all accepted content types');
+$t->is($request->getAcceptableContentTypes(), ['text/xml', 'application/xhtml+xml', 'application/xml', 'text/html', 'text/plain', '*/*'], '->getAcceptableContentTypes() returns an array with all accepted content types');
 
 // ->splitHttpAcceptHeader()
 $t->diag('->splitHttpAcceptHeader()');
 
-$t->is($request->splitHttpAcceptHeader(''), array(), '->splitHttpAcceptHeader() returns an empty array if the header is empty');
-$t->is($request->splitHttpAcceptHeader('a,b,c'), array('a', 'b', 'c'), '->splitHttpAcceptHeader() returns an array of values');
-$t->is($request->splitHttpAcceptHeader('a,b;q=0.7,c;q=0.3'), array('a', 'b', 'c'), '->splitHttpAcceptHeader() strips the q value');
-$t->is($request->splitHttpAcceptHeader('a;q=0.1,b,c;q=0.3'), array('b', 'c', 'a'), '->splitHttpAcceptHeader() sorts values by the q value');
-$t->is($request->splitHttpAcceptHeader('a;q=0.3,b,c;q=0.3'), array('b', 'a', 'c'), '->splitHttpAcceptHeader() sorts values by the q value including equal values');
-$t->is($request->splitHttpAcceptHeader('a; q=0.1, b, c; q=0.3'), array('b', 'c', 'a'), '->splitHttpAcceptHeader() trims whitespaces');
-$t->is($request->splitHttpAcceptHeader('a; q=0, b'), array('b'), '->splitHttpAcceptHeader() removes values when q = 0 (as per the RFC)');
+$t->is($request->splitHttpAcceptHeader(''), [], '->splitHttpAcceptHeader() returns an empty array if the header is empty');
+$t->is($request->splitHttpAcceptHeader('a,b,c'), ['a', 'b', 'c'], '->splitHttpAcceptHeader() returns an array of values');
+$t->is($request->splitHttpAcceptHeader('a,b;q=0.7,c;q=0.3'), ['a', 'b', 'c'], '->splitHttpAcceptHeader() strips the q value');
+$t->is($request->splitHttpAcceptHeader('a;q=0.1,b,c;q=0.3'), ['b', 'c', 'a'], '->splitHttpAcceptHeader() sorts values by the q value');
+$t->is($request->splitHttpAcceptHeader('a;q=0.3,b,c;q=0.3'), ['b', 'a', 'c'], '->splitHttpAcceptHeader() sorts values by the q value including equal values');
+$t->is($request->splitHttpAcceptHeader('a; q=0.1, b, c; q=0.3'), ['b', 'c', 'a'], '->splitHttpAcceptHeader() trims whitespaces');
+$t->is($request->splitHttpAcceptHeader('a; q=0, b'), ['b'], '->splitHttpAcceptHeader() removes values when q = 0 (as per the RFC)');
 
 // ->getRequestFormat() ->setRequestFormat()
 $t->diag('->getRequestFormat() ->setRequestFormat()');
@@ -142,12 +142,12 @@ $t->is($request->getRequestFormat(), 'css', '->setRequestFormat() sets the reque
 // ->getFormat() ->setFormat()
 $t->diag('->getFormat() ->setFormat()');
 
-$customRequest = new myRequest($dispatcher, array(), array(), array('formats' => array('custom' => 'application/custom')));
+$customRequest = new myRequest($dispatcher, [], [], ['formats' => ['custom' => 'application/custom']]);
 $t->is($customRequest->getFormat('application/custom'), 'custom', '->getFormat() returns the format for the given mime type if when is set as initialisation option');
 
 $request->setFormat('js', 'application/x-javascript');
 $t->is($request->getFormat('application/x-javascript'), 'js', '->getFormat() returns the format for the given mime type');
-$request->setFormat('js', array('application/x-javascript', 'text/js'));
+$request->setFormat('js', ['application/x-javascript', 'text/js']);
 $t->is($request->getFormat('text/js'), 'js', '->setFormat() can take an array of mime types');
 $t->is($request->getFormat('foo/bar'), null, '->getFormat() returns null if the mime type does not exist');
 
@@ -266,7 +266,7 @@ $t->diag('->getForwardedFor()');
 
 $t->is($request->getForwardedFor(), null, '->getForwardedFor() returns null if the request was not forwarded.');
 $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
-$t->is_deeply($request->getForwardedFor(), array('10.0.0.1', '10.0.0.2'), '->getForwardedFor() returns the value from HTTP_X_FORWARDED_FOR');
+$t->is_deeply($request->getForwardedFor(), ['10.0.0.1', '10.0.0.2'], '->getForwardedFor() returns the value from HTTP_X_FORWARDED_FOR');
 
 // ->getClientIp()
 $t->diag('->getClientIp()');
@@ -300,7 +300,7 @@ $t->diag('->getGetParameters() ->getGetParameter()');
 
 $_GET['get_param'] = 'value';
 $request = new myRequest($dispatcher);
-$t->is($request->getGetParameters(), array('get_param' => 'value'), '->getGetParameters() returns GET parameters');
+$t->is($request->getGetParameters(), ['get_param' => 'value'], '->getGetParameters() returns GET parameters');
 $t->is($request->getGetParameter('get_param'), 'value', '->getGetParameter() returns GET parameter by name');
 unset($_GET['get_param']);
 
@@ -309,7 +309,7 @@ $t->diag('->getPostParameters() ->getPostParameter()');
 
 $_POST['post_param'] = 'value';
 $request = new myRequest($dispatcher);
-$t->is($request->getPostParameters(), array('post_param' => 'value'), '->getPostParameters() returns POST parameters');
+$t->is($request->getPostParameters(), ['post_param' => 'value'], '->getPostParameters() returns POST parameters');
 $t->is($request->getPostParameter('post_param'), 'value', '->getPostParameter() returns POST parameter by name');
 unset($_POST['post_param']);
 
@@ -330,7 +330,7 @@ $t->is($request->getMethod(), 'PUT', '->getMethod() returns PUT if the method is
 
 $_SERVER['REQUEST_METHOD'] = 'PUT';
 $_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-$request = new myRequest($dispatcher, array(), array(), array('content_custom_only_for_test' => 'first=value'));
+$request = new myRequest($dispatcher, [], [], ['content_custom_only_for_test' => 'first=value']);
 $t->is($request->getPostParameter('first'), 'value', '->getMethod() set POST parameters from parsed content if content type is "application/x-www-form-urlencoded" and the method is PUT');
 unset($_POST['first'], $_SERVER['CONTENT_TYPE']);
 
@@ -340,7 +340,7 @@ $t->is($request->getMethod(), 'DELETE', '->getMethod() returns DELETE if the met
 
 $_SERVER['REQUEST_METHOD'] = 'DELETE';
 $_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-$request = new myRequest($dispatcher, array(), array(), array('content_custom_only_for_test' => 'first=value'));
+$request = new myRequest($dispatcher, [], [], ['content_custom_only_for_test' => 'first=value']);
 $t->is($request->getPostParameter('first'), 'value', '->getMethod() set POST parameters from parsed content if content type is "application/x-www-form-urlencoded" and the method is DELETE');
 unset($_POST['first'], $_SERVER['CONTENT_TYPE']);
 
@@ -422,7 +422,7 @@ $_SERVER['PATH_INFO'] = '/test/klaus';
 $_SERVER['REQUEST_URI'] = '/test/klaus2';
 $t->is($request->getPathInfo(), '/test/klaus', '->getPathInfo() returns the url path value');
 
-$request = new myRequest($dispatcher, array(), array(), array('path_info_key' => 'SPECIAL'));
+$request = new myRequest($dispatcher, [], [], ['path_info_key' => 'SPECIAL']);
 $_SERVER['SPECIAL'] = '/special';
 $t->is($request->getPathInfo(), '/special', '->getPathInfo() returns the url path value use path_info_key');
 $request->resetPathInfoArray();
@@ -453,16 +453,16 @@ $t->is($request->getRelativeUrlRoot(), 'toto', '->getRelativeUrlRoot() return pr
 $t->diag('->addRequestParameters() ->getRequestParameters() ->fixParameters()');
 
 $request = new myRequest($dispatcher);
-$t->is($request->getRequestParameters(), array(), '->getRequestParameters() returns the request parameters default array');
+$t->is($request->getRequestParameters(), [], '->getRequestParameters() returns the request parameters default array');
 
-$request->addRequestParameters(array('test' => 'test'));
-$t->is($request->getRequestParameters(), array('test' => 'test'), '->getRequestParameters() returns the request parameters');
+$request->addRequestParameters(['test' => 'test']);
+$t->is($request->getRequestParameters(), ['test' => 'test'], '->getRequestParameters() returns the request parameters');
 
-$request->addRequestParameters(array('test' => 'test'));
-$t->is($request->getRequestParameters(), array('test' => 'test'), '->getRequestParameters() returns the request parameters allready exists');
+$request->addRequestParameters(['test' => 'test']);
+$t->is($request->getRequestParameters(), ['test' => 'test'], '->getRequestParameters() returns the request parameters allready exists');
 
-$request->addRequestParameters(array('_sf_ignore_cache' => 1, 'test2' => 'test2'));
-$t->is($request->getRequestParameters(), array('test' => 'test', 'test2' => 'test2', '_sf_ignore_cache' => 1), '->getRequestParameters() returns the request parameters check fixParameters call for special _sf_ params');
+$request->addRequestParameters(['_sf_ignore_cache' => 1, 'test2' => 'test2']);
+$t->is($request->getRequestParameters(), ['test' => 'test', 'test2' => 'test2', '_sf_ignore_cache' => 1], '->getRequestParameters() returns the request parameters check fixParameters call for special _sf_ params');
 $t->is($request->getAttribute('sf_ignore_cache'), 1, '->getAttribute() check special param is set as attribute');
 
 // ->getUrlParameter
@@ -538,34 +538,34 @@ unset($_SERVER['HTTP_X_FORWARDED_HOST']);
 // ->getFiles()
 $t->diag('->getFiles()');
 
-$_FILES = array(
-    'article' => array(
-        'name' => array(
+$_FILES = [
+    'article' => [
+        'name' => [
             'media' => '1.png',
-        ),
-        'type' => array(
+        ],
+        'type' => [
             'media' => 'image/png',
-        ),
-        'tmp_name' => array(
+        ],
+        'tmp_name' => [
             'media' => '/private/var/tmp/phpnTrAJG',
-        ),
-        'error' => array(
+        ],
+        'error' => [
             'media' => 0,
-        ),
-        'size' => array(
+        ],
+        'size' => [
             'media' => 899,
-        ),
-    ),
-);
-$taintedFiles = array(
-    'article' => array(
-        'media' => array(
+        ],
+    ],
+];
+$taintedFiles = [
+    'article' => [
+        'media' => [
             'error' => 0,
             'name' => '1.png',
             'type' => 'image/png',
             'tmp_name' => '/private/var/tmp/phpnTrAJG',
             'size' => 899,
-        ),
-    ),
-);
+        ],
+    ],
+];
 $t->is_deeply($request->getFiles(), $taintedFiles, '->getFiles() return clean array extracted from $_FILES');

@@ -16,7 +16,7 @@ class FormFormatterStub extends sfWidgetFormSchemaFormatter
     {
     }
 
-    public function translate($subject, $parameters = array())
+    public function translate($subject, $parameters = [])
     {
         return sprintf('translation[%s]', $subject);
     }
@@ -28,7 +28,7 @@ class WidgetFormStub extends sfWidget
     {
     }
 
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         return sprintf('##%s##', __CLASS__);
     }
@@ -45,7 +45,7 @@ $t->diag('->render()');
 $ws = new sfWidgetFormSchema();
 $ws->addFormFormatter('stub', new FormFormatterStub());
 $ws->setFormFormatterName('stub');
-$w = new sfWidgetFormFilterDate(array('from_date' => new WidgetFormStub(), 'to_date' => new WidgetFormStub()));
+$w = new sfWidgetFormFilterDate(['from_date' => new WidgetFormStub(), 'to_date' => new WidgetFormStub()]);
 $w->setParent($ws);
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);

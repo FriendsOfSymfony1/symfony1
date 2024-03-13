@@ -40,14 +40,14 @@ $t->is($v->clean(time()), date('H:i:s', time()), '->clean() accepts timestamps a
 
 // validate date array
 $t->diag('validate date array');
-$t->is($v->clean(array('hour' => 20, 'minute' => 10, 'second' => 15)), '20:10:15', '->clean() accepts an array as an input');
-$t->is($v->clean(array('hour' => '20', 'minute' => '10', 'second' => '15')), '20:10:15', '->clean() accepts an array as an input');
-$t->is($v->clean(array('hour' => '', 'minute' => '', 'second' => '')), null, '->clean() accepts an array as an input');
-$t->is($v->clean(array('hour' => 0, 'minute' => 0, 'second' => 0)), '00:00:00', '->clean() accepts an array as an input');
-$t->is($v->clean(array('hour' => '0', 'minute' => '0', 'second' => '0')), '00:00:00', '->clean() accepts an array as an input');
+$t->is($v->clean(['hour' => 20, 'minute' => 10, 'second' => 15]), '20:10:15', '->clean() accepts an array as an input');
+$t->is($v->clean(['hour' => '20', 'minute' => '10', 'second' => '15']), '20:10:15', '->clean() accepts an array as an input');
+$t->is($v->clean(['hour' => '', 'minute' => '', 'second' => '']), null, '->clean() accepts an array as an input');
+$t->is($v->clean(['hour' => 0, 'minute' => 0, 'second' => 0]), '00:00:00', '->clean() accepts an array as an input');
+$t->is($v->clean(['hour' => '0', 'minute' => '0', 'second' => '0']), '00:00:00', '->clean() accepts an array as an input');
 
 try {
-    $v->clean(array('hour' => '', 'minute' => 0, 'second' => 0));
+    $v->clean(['hour' => '', 'minute' => 0, 'second' => 0]);
     $t->fail('->clean() throws a sfValidatorError if time date is not valid');
     $t->skip('', 1);
 } catch (sfValidatorError $e) {
@@ -56,7 +56,7 @@ try {
 }
 
 try {
-    $v->clean(array('hour' => '', 'minute' => 1, 'second' => 15));
+    $v->clean(['hour' => '', 'minute' => 1, 'second' => 15]);
     $t->fail('->clean() throws a sfValidatorError if time date is not valid');
     $t->skip('', 1);
 } catch (sfValidatorError $e) {
@@ -65,7 +65,7 @@ try {
 }
 
 try {
-    $v->clean(array('hour' => -2, 'minute' => 1, 'second' => 15));
+    $v->clean(['hour' => -2, 'minute' => 1, 'second' => 15]);
     $t->fail('->clean() throws a sfValidatorError if the time is not valid');
     $t->skip('', 1);
 } catch (sfValidatorError $e) {
@@ -106,12 +106,12 @@ $t->is($v->clean(time()), time(), '->clean() output format can be change with th
 
 // required
 $v = new sfValidatorTime();
-foreach (array(
-    array('hour' => '', 'minute' => '', 'second' => ''),
-    array('hour' => null, 'minute' => null, 'second' => null),
+foreach ([
+    ['hour' => '', 'minute' => '', 'second' => ''],
+    ['hour' => null, 'minute' => null, 'second' => null],
     '',
     null,
-) as $input) {
+] as $input) {
     try {
         $v->clean($input);
         $t->fail('->clean() throws an exception if the time is empty and required is true');

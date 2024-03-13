@@ -40,7 +40,7 @@ class sfValidatorRegex extends sfValidatorString
      *
      * @see sfValidatorString
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 
@@ -61,7 +61,7 @@ class sfValidatorRegex extends sfValidatorString
             ($this->getOption('must_match') && !preg_match($pattern, $clean))
             || (!$this->getOption('must_match') && preg_match($pattern, $clean))
         ) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         return $clean;

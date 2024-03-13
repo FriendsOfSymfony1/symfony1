@@ -30,10 +30,10 @@ class TrimTest
     }
 }
 
-$c = new sfCallable(array('TrimTest', 'trimStatic'));
+$c = new sfCallable(['TrimTest', 'trimStatic']);
 $t->is($c->call('  foo  '), 'foo', '->call() calls the callable with the given arguments');
 
-$c = new sfCallable(array(new TrimTest(), 'trim'));
+$c = new sfCallable([new TrimTest(), 'trim']);
 $t->is($c->call('  foo  '), 'foo', '->call() calls the callable with the given arguments');
 
 $c = new sfCallable('nonexistantcallable');

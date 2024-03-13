@@ -15,7 +15,7 @@ $t = new lime_test(1);
 $dispatcher = new sfEventDispatcher();
 
 $buffer = fopen('php://memory', 'rw');
-$logger = new sfStreamLogger($dispatcher, array('stream' => $buffer));
+$logger = new sfStreamLogger($dispatcher, ['stream' => $buffer]);
 
 $logger->log('foo');
 rewind($buffer);

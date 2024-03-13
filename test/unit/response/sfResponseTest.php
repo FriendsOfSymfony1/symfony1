@@ -39,7 +39,7 @@ $dispatcher = new sfEventDispatcher();
 
 // ->initialize()
 $t->diag('->initialize()');
-$response = new myResponse($dispatcher, array('foo' => 'bar'));
+$response = new myResponse($dispatcher, ['foo' => 'bar']);
 $options = $response->getOptions();
 $t->is($options['foo'], 'bar', '->initialize() takes an array of options as its second argument');
 $t->is($options['logging'], false, '->getOptions() returns options for response instance');

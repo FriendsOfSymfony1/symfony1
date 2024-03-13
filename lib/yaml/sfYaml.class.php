@@ -24,7 +24,7 @@ class sfYaml
      */
     public static function setSpecVersion($version)
     {
-        if (!in_array($version, array('1.1', '1.2'))) {
+        if (!in_array($version, ['1.1', '1.2'])) {
             throw new InvalidArgumentException(sprintf('Version %s of the YAML specifications is not supported', $version));
         }
 
@@ -130,7 +130,7 @@ class sfYaml
      */
     protected static function arrayConvertEncoding(array $result, $encoding)
     {
-        $convertedResult = array();
+        $convertedResult = [];
         foreach ($result as $key => $value) {
             if (is_string($key)) {
                 $key = mb_convert_encoding($key, $encoding, 'UTF-8');

@@ -27,7 +27,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
 
     public function getPanelContent()
     {
-        $config = array(
+        $config = [
             'debug' => sfConfig::get('sf_debug') ? 'on' : 'off',
             'xdebug' => extension_loaded('xdebug') ? 'on' : 'off',
             'logging' => sfConfig::get('sf_logging_enabled') ? 'on' : 'off',
@@ -35,7 +35,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
             'compression' => sfConfig::get('sf_compressed') ? 'on' : 'off',
             'tokenizer' => function_exists('token_get_all') ? 'on' : 'off',
             'apc' => extension_loaded('apc') && ini_get('apc.enabled') ? 'on' : 'off',
-        );
+        ];
 
         $html = '<ul id="sfWebDebugConfigSummary">';
         foreach ($config as $key => $value) {

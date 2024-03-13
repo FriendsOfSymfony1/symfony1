@@ -4,9 +4,9 @@ class frontendConfiguration extends sfApplicationConfiguration
 {
     public function configure()
     {
-        $this->dispatcher->connect('view.configure_format', array($this, 'configure_format_foo'));
-        $this->dispatcher->connect('request.filter_parameters', array($this, 'filter_parameters'));
-        $this->dispatcher->connect('view.configure_format', array($this, 'configure_iphone_format'));
+        $this->dispatcher->connect('view.configure_format', [$this, 'configure_format_foo']);
+        $this->dispatcher->connect('request.filter_parameters', [$this, 'filter_parameters']);
+        $this->dispatcher->connect('view.configure_format', [$this, 'configure_iphone_format']);
     }
 
     public function filter_parameters(sfEvent $event, $parameters)

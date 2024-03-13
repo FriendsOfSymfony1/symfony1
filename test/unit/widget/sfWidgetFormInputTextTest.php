@@ -18,8 +18,8 @@ $w = new sfWidgetFormInputText();
 $t->diag('->render()');
 $t->is($w->render('foo'), '<input type="text" name="foo" id="foo" />', '->render() renders the widget as HTML');
 $t->is($w->render('foo', 'bar'), '<input type="text" name="foo" value="bar" id="foo" />', '->render() can take a value for the input');
-$t->is($w->render('foo', '', array('type' => 'password', 'class' => 'foobar')), '<input type="password" name="foo" value="" class="foobar" id="foo" />', '->render() can take HTML attributes as its third argument');
+$t->is($w->render('foo', '', ['type' => 'password', 'class' => 'foobar']), '<input type="password" name="foo" value="" class="foobar" id="foo" />', '->render() can take HTML attributes as its third argument');
 
-$w = new sfWidgetFormInputText(array(), array('class' => 'foobar'));
+$w = new sfWidgetFormInputText([], ['class' => 'foobar']);
 $t->is($w->render('foo'), '<input class="foobar" type="text" name="foo" id="foo" />', '__construct() can take default HTML attributes');
-$t->is($w->render('foo', null, array('class' => 'barfoo')), '<input class="barfoo" type="text" name="foo" id="foo" />', '->render() can override default attributes');
+$t->is($w->render('foo', null, ['class' => 'barfoo']), '<input class="barfoo" type="text" name="foo" id="foo" />', '->render() can override default attributes');

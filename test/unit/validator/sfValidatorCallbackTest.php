@@ -31,7 +31,7 @@ try {
     $t->pass('__construct() throws an RuntimeException if you don\'t pass a callback option');
 }
 
-$v = new sfValidatorCallback(array('callback' => 'clean_test'));
+$v = new sfValidatorCallback(['callback' => 'clean_test']);
 
 // ->configure()
 $t->diag('->configure()');
@@ -51,10 +51,10 @@ try {
 }
 
 $t->diag('callback with arguments');
-$v = new sfValidatorCallback(array('callback' => 'clean_test', 'arguments' => array('fabien', 'symfony')));
+$v = new sfValidatorCallback(['callback' => 'clean_test', 'arguments' => ['fabien', 'symfony']]);
 $t->is($v->clean('foo'), '*foo*fabien-symfony', '->configure() can take an arguments option');
 
 // ->asString()
 $t->diag('->asString()');
-$v = new sfValidatorCallback(array('callback' => 'clean_test'));
+$v = new sfValidatorCallback(['callback' => 'clean_test']);
 $t->is($v->asString(), 'Callback({ callback: clean_test })', '->asString() returns a string representation of the validator');

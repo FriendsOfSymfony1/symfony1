@@ -22,7 +22,7 @@ if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
 }
 
 try {
-    new sfSQLiteCache(array('database' => ':memory:'));
+    new sfSQLiteCache(['database' => ':memory:']);
 } catch (sfInitializationException $e) {
     $t->skip($e->getMessage(), $plan);
 
@@ -40,13 +40,13 @@ try {
 }
 
 // database in memory
-$cache = new sfSQLiteCache(array('database' => ':memory:'));
+$cache = new sfSQLiteCache(['database' => ':memory:']);
 
 sfCacheDriverTests::launch($t, $cache);
 
 // database on disk
 $database = tempnam('/tmp/cachedir', 'tmp');
 unlink($database);
-$cache = new sfSQLiteCache(array('database' => $database));
+$cache = new sfSQLiteCache(['database' => $database]);
 sfCacheDriverTests::launch($t, $cache);
 unlink($database);

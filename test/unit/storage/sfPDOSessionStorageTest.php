@@ -21,14 +21,14 @@ if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
 }
 
 // initialize the storage
-$database = new sfPDODatabase(array('dsn' => 'sqlite::memory:'));
+$database = new sfPDODatabase(['dsn' => 'sqlite::memory:']);
 $connection = $database->getConnection();
 $connection->exec('CREATE TABLE session (sess_id, sess_data, sess_time)');
 
 ini_set('session.use_cookies', 0);
 $session_id = '1';
 
-$storage = new sfPDOSessionStorage(array('db_table' => 'session', 'session_id' => $session_id, 'database' => $database));
+$storage = new sfPDOSessionStorage(['db_table' => 'session', 'session_id' => $session_id, 'database' => $database]);
 $t->ok($storage instanceof sfStorage, 'sfPDOSessionStorage is an instance of sfStorage');
 $t->ok($storage instanceof sfDatabaseSessionStorage, 'sfPDOSessionStorage is an instance of sfDatabaseSessionStorage');
 
