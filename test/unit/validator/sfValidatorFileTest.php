@@ -81,11 +81,7 @@ if (!function_exists('mime_content_type')) {
 } else {
     $v = new testValidatorFile();
     $mimeType = $v->guessFromMimeContentType($tmpDir.'/test.txt');
-    if (version_compare(PHP_VERSION, '5.3', '<') && false === $mimeType) {
-        $t->skip('mime_content_type has some issue with php 5.2', 1);
-    } else {
-        $t->is($mimeType, 'text/plain', '->guessFromMimeContentType() guesses the type of a given file');
-    }
+    $t->is($mimeType, 'text/plain', '->guessFromMimeContentType() guesses the type of a given file');
     $t->is($v->guessFromMimeContentType($tmpDir.'/foo.txt'), null, '->guessFromMimeContentType() returns null if the file type is not guessable');
 }
 
