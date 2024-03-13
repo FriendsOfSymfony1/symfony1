@@ -67,18 +67,9 @@ Tests
 
     test/bin/test
 
-### For PHP 7.3 and for lowest dependencies versions?
+### Want to do specific test ? Ask help with the option.
 
-    test/bin/test php73 lowest
-
-### For PHP 7.3 and for highest dependencies versions?
-
-    test/bin/test php73 highest
-
-### For executing a dedicated test file?
-
-    test/bin/test php73 highest test/unit/cache/sfAPCCacheTest.php
-
+    test/bin/test --help
 
 ### When you finish your work day, do not forget to clean up your desk
 

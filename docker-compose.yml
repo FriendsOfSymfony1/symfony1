@@ -4,52 +4,19 @@ volumes:
   db_socket:
 
 services:
-  composer:
-    image: composer
-    working_dir: /app
-    volumes:
-      - .:/app
-    entrypoint:
-      - sh
-      - -c
-      - |
-        exec tail -f /dev/null
-
-  php53:
-    build: .docker/php53
-    working_dir: /app
-    volumes:
-      - .:/app
-      - db_socket:/var/run/mysqld
-    entrypoint:
-      - sh
-      - -c
-      - |
-        {
-          echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
-          echo 'memory_limit = -1'
-          echo 'short_open_tag = off'
-          echo 'magic_quotes_gpc = off'
-          echo 'date.timezone = "UTC"'
-          echo 'apc.enable_cli = on'
-          echo 'apc.use_request_time = 0'
-        } | tee -a /usr/local/lib/php.ini
-
-        exec tail -f /dev/null
-    depends_on:
-      - db
-
-  php54: &services_php54
+  php53: &services_php
     build:
-      context: .docker/php54
+      context: .docker/php53
       args:
         MEMCACHE_VERSION: '3.0.8'
-    environment:
-      MEMCACHED_HOST: memcached
+        APC_VERSION: '3.1.13'
     working_dir: /app
     volumes:
       - .:/app
       - db_socket:/var/run/mysqld
+    environment:
+      COMPOSER_HOME: /app/var/cache/composer
+      MEMCACHED_HOST: memcached
     entrypoint:
       - sh
       - -c
@@ -61,7 +28,7 @@ services:
           echo 'magic_quotes_gpc = off'
           echo 'date.timezone = "UTC"'
           echo 'apc.enable_cli = on'
-          echo 'apc.use_request_time = 0'
+          echo 'apc.use_request_time = off'
         } | tee -a /usr/local/etc/php/php.ini
 
         exec tail -f /dev/null
@@ -69,8 +36,16 @@ services:
       - db
       - memcached
 
+  php54:
+    <<: *services_php
+    build:
+      context: .docker/php54
+      args:
+        MEMCACHE_VERSION: '3.0.8'
+        APC_VERSION: '3.1.13'
+
   php55:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php55_71
       args:
@@ -79,7 +54,7 @@ services:
         APCU_VERSION: '4.0.11'
 
   php56:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php55_71
       args:
@@ -88,7 +63,7 @@ services:
         APCU_VERSION: '4.0.11'
 
   php70:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php55_71
       args:
@@ -97,7 +72,7 @@ services:
         APCU_VERSION: '5.1.23'
 
   php71:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php55_71
       args:
@@ -105,9 +80,8 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php72:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php72_73
       args:
@@ -115,9 +89,8 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php73:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php72_73
       args:
@@ -125,9 +98,8 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php74:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php74_83
       args:
@@ -135,9 +107,8 @@ services:
         MEMCACHE_VERSION: '4.0.5.2'
         APCU_VERSION: '5.1.23'
 
-
   php80:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php74_83
       args:
@@ -145,9 +116,8 @@ services:
         MEMCACHE_VERSION: '8.0'
         APCU_VERSION: '5.1.23'
 
-
   php81:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php74_83
       args:
@@ -156,7 +126,7 @@ services:
         APCU_VERSION: '5.1.23'
 
   php82:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php74_83
       args:
@@ -165,7 +135,7 @@ services:
         APCU_VERSION: '5.1.23'
 
   php83:
-    <<: *services_php54
+    <<: *services_php
     build:
       context: .docker/php74_83
       args:
