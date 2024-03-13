@@ -51,8 +51,8 @@ class sfSymfonyPluginManager extends sfPluginManager
         $this->registerSymfonyPackage();
 
         // register callbacks to manage web content
-        $this->dispatcher->connect('plugin.post_install', array($this, 'listenToPluginPostInstall'));
-        $this->dispatcher->connect('plugin.post_uninstall', array($this, 'listenToPluginPostUninstall'));
+        $this->dispatcher->connect('plugin.post_install', [$this, 'listenToPluginPostInstall']);
+        $this->dispatcher->connect('plugin.post_uninstall', [$this, 'listenToPluginPostUninstall']);
     }
 
     /**
@@ -64,7 +64,7 @@ class sfSymfonyPluginManager extends sfPluginManager
     {
         $webDir = $sourceDirectory.DIRECTORY_SEPARATOR.$plugin.DIRECTORY_SEPARATOR.'web';
         if (is_dir($webDir)) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Installing web data for plugin')));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Installing web data for plugin']));
 
             $filesystem = new sfFilesystem();
             $filesystem->relativeSymlink($webDir, $this->environment->getOption('web_dir').DIRECTORY_SEPARATOR.$plugin, true);
@@ -80,7 +80,7 @@ class sfSymfonyPluginManager extends sfPluginManager
     {
         $targetDir = $this->environment->getOption('web_dir').DIRECTORY_SEPARATOR.$plugin;
         if (is_dir($targetDir)) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Uninstalling web data for plugin')));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Uninstalling web data for plugin']));
 
             $filesystem = new sfFilesystem();
 

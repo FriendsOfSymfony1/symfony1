@@ -19,17 +19,17 @@ $file = sys_get_temp_dir().DIRECTORY_SEPARATOR.'sf_log_file.txt';
 if (file_exists($file)) {
     unlink($file);
 }
-$fileLogger = new sfFileLogger($dispatcher, array('file' => $file));
+$fileLogger = new sfFileLogger($dispatcher, ['file' => $file]);
 $buffer = fopen('php://memory', 'rw');
-$streamLogger = new sfStreamLogger($dispatcher, array('stream' => $buffer));
+$streamLogger = new sfStreamLogger($dispatcher, ['stream' => $buffer]);
 
 // ->initialize()
 $t->diag('->initialize()');
-$logger = new sfAggregateLogger($dispatcher, array('loggers' => $fileLogger));
-$t->is($logger->getLoggers(), array($fileLogger), '->initialize() can take a "loggers" parameter');
+$logger = new sfAggregateLogger($dispatcher, ['loggers' => $fileLogger]);
+$t->is($logger->getLoggers(), [$fileLogger], '->initialize() can take a "loggers" parameter');
 
-$logger = new sfAggregateLogger($dispatcher, array('loggers' => array($fileLogger, $streamLogger)));
-$t->is($logger->getLoggers(), array($fileLogger, $streamLogger), '->initialize() can take a "loggers" parameter');
+$logger = new sfAggregateLogger($dispatcher, ['loggers' => [$fileLogger, $streamLogger]]);
+$t->is($logger->getLoggers(), [$fileLogger, $streamLogger], '->initialize() can take a "loggers" parameter');
 
 // ->log()
 $t->diag('->log()');
@@ -43,11 +43,11 @@ $t->is($content, 'foo'.PHP_EOL, '->log() logs a message to all loggers');
 // ->getLoggers() ->addLoggers() ->addLogger()
 $logger = new sfAggregateLogger($dispatcher);
 $logger->addLogger($fileLogger);
-$t->is($logger->getLoggers(), array($fileLogger), '->addLogger() adds a new sfLogger instance');
+$t->is($logger->getLoggers(), [$fileLogger], '->addLogger() adds a new sfLogger instance');
 
 $logger = new sfAggregateLogger($dispatcher);
-$logger->addLoggers(array($fileLogger, $streamLogger));
-$t->is($logger->getLoggers(), array($fileLogger, $streamLogger), '->addLoggers() adds an array of sfLogger instances');
+$logger->addLoggers([$fileLogger, $streamLogger]);
+$t->is($logger->getLoggers(), [$fileLogger, $streamLogger], '->addLoggers() adds an array of sfLogger instances');
 
 // ->shutdown()
 $t->diag('->shutdown()');

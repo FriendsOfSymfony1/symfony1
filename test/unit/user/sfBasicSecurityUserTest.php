@@ -24,7 +24,7 @@ class MySessionStorage extends sfSessionTestStorage
 
 $dispatcher = new sfEventDispatcher();
 $sessionPath = sys_get_temp_dir().'/sessions_'.rand(11111, 99999);
-$storage = new MySessionStorage(array('session_path' => $sessionPath));
+$storage = new MySessionStorage(['session_path' => $sessionPath]);
 
 $user = new sfBasicSecurityUser($dispatcher, $storage);
 
@@ -36,7 +36,7 @@ $t->todo('->initialize() times out the user if no request made for a long time')
 $t->diag('->getCredentials()');
 $user->clearCredentials();
 $user->addCredential('user');
-$t->is($user->getCredentials(), array('user'), '->getCredentials() returns user credentials as an array');
+$t->is($user->getCredentials(), ['user'], '->getCredentials() returns user credentials as an array');
 
 // ->setAuthenticated() ->isAuthenticated()
 $t->diag('->setAuthenticated() ->isAuthenticated()');
@@ -76,20 +76,20 @@ $user->addCredential('admin');
 $t->is($user->hasCredential('admin'), true, '->addCredential() takes a credential as its first argument');
 
 // admin AND user
-$t->is($user->hasCredential(array('admin', 'user')), false, '->hasCredential() can takes an array of credential as a parameter');
+$t->is($user->hasCredential(['admin', 'user']), false, '->hasCredential() can takes an array of credential as a parameter');
 
 // admin OR user
-$t->is($user->hasCredential(array(array('admin', 'user'))), true, '->hasCredential() can takes an array of credential as a parameter');
+$t->is($user->hasCredential([['admin', 'user']]), true, '->hasCredential() can takes an array of credential as a parameter');
 
 // (admin OR user) AND owner
-$t->is($user->hasCredential(array(array('admin', 'user'), 'owner')), false, '->hasCredential() can takes an array of credential as a parameter');
+$t->is($user->hasCredential([['admin', 'user'], 'owner']), false, '->hasCredential() can takes an array of credential as a parameter');
 $user->addCredential('owner');
-$t->is($user->hasCredential(array(array('admin', 'user'), 'owner')), true, '->hasCredential() can takes an array of credential as a parameter');
+$t->is($user->hasCredential([['admin', 'user'], 'owner']), true, '->hasCredential() can takes an array of credential as a parameter');
 
 // [[root, admin, editor, [supplier, owner], [supplier, group], accounts]]
 // root OR admin OR editor OR (supplier AND owner) OR (supplier AND group) OR accounts
 $user->clearCredentials();
-$credential = array(array('root', 'admin', 'editor', array('supplier', 'owner'), array('supplier', 'group'), 'accounts'));
+$credential = [['root', 'admin', 'editor', ['supplier', 'owner'], ['supplier', 'group'], 'accounts']];
 $t->is($user->hasCredential($credential), false, '->hasCredential() can takes an array of credential as a parameter');
 $user->addCredential('admin');
 $t->is($user->hasCredential($credential), true, '->hasCredential() can takes an array of credential as a parameter');
@@ -102,7 +102,7 @@ $t->is($user->hasCredential($credential), true, '->hasCredential() can takes an 
 // [[root, [supplier, [owner, quasiowner]], accounts]]
 // root OR (supplier AND (owner OR quasiowner)) OR accounts
 $user->clearCredentials();
-$credential = array(array('root', array('supplier', array('owner', 'quasiowner')), 'accounts'));
+$credential = [['root', ['supplier', ['owner', 'quasiowner']], 'accounts']];
 $t->is($user->hasCredential($credential), false, '->hasCredential() can takes an array of credential as a parameter');
 $user->addCredential('root');
 $t->is($user->hasCredential($credential), true, '->hasCredential() can takes an array of credential as a parameter');
@@ -129,22 +129,22 @@ $t->is($user->hasCredential('subscriber'), true);
 $t->is($user->hasCredential('superadmin'), true);
 
 // admin and (user or subscriber)
-$t->is($user->hasCredential(array(array('admin', array('user', 'subscriber')))), true);
+$t->is($user->hasCredential([['admin', ['user', 'subscriber']]]), true);
 
-$user->addCredentials(array('superadmin1', 'subscriber1'));
+$user->addCredentials(['superadmin1', 'subscriber1']);
 $t->is($user->hasCredential('subscriber1'), true);
 $t->is($user->hasCredential('superadmin1'), true);
 
 // admin and (user or subscriber) and (superadmin1 or subscriber1)
-$t->is($user->hasCredential(array(array('admin', array('user', 'subscriber'), array('superadmin1', 'subscriber1')))), true);
+$t->is($user->hasCredential([['admin', ['user', 'subscriber'], ['superadmin1', 'subscriber1']]]), true);
 
 // numerical credentials
 $user->clearCredentials();
-$user->addCredentials(array('1', 2));
+$user->addCredentials(['1', 2]);
 $t->is($user->hasCredential(1), true, '->hasCrendential() supports numerical credentials');
 $t->is($user->hasCredential('2'), true, '->hasCrendential() supports numerical credentials');
-$t->is($user->hasCredential(array('1', 2)), true, '->hasCrendential() supports numerical credentials');
-$t->is($user->hasCredential(array(1, '2')), true, '->hasCrendential() supports numerical credentials');
+$t->is($user->hasCredential(['1', 2]), true, '->hasCrendential() supports numerical credentials');
+$t->is($user->hasCredential([1, '2']), true, '->hasCrendential() supports numerical credentials');
 
 // ->removeCredential()
 $t->diag('->removeCredential()');
@@ -160,10 +160,10 @@ $t->is($user->hasCredential('superadmin'), false);
 // timeout
 $user->setAuthenticated(true);
 $user->shutdown();
-$user = new sfBasicSecurityUser($dispatcher, $storage, array('timeout' => 0));
+$user = new sfBasicSecurityUser($dispatcher, $storage, ['timeout' => 0]);
 $t->is($user->isTimedOut(), true, '->initialize() times out the user if no request made for a long time');
 
-$user = new sfBasicSecurityUser($dispatcher, $storage, array('timeout' => false));
+$user = new sfBasicSecurityUser($dispatcher, $storage, ['timeout' => false]);
 $t->is($user->isTimedOut(), false, '->initialize() takes a timeout parameter which can be false to disable session timeout');
 
 sfToolkit::clearDirectory($sessionPath);

@@ -25,7 +25,7 @@ abstract class sfWebController extends sfController
      *
      * @return string A URL to a symfony resource
      */
-    public function genUrl($parameters = array(), $absolute = false)
+    public function genUrl($parameters = [], $absolute = false)
     {
         $route = '';
         $fragment = '';
@@ -82,7 +82,7 @@ abstract class sfWebController extends sfController
     {
         $givenUrl = $url;
 
-        $params = array();
+        $params = [];
         $queryString = '';
         $route = '';
 
@@ -137,7 +137,7 @@ abstract class sfWebController extends sfController
             }
         }
 
-        return array($route, $params);
+        return [$route, $params];
     }
 
     /**
@@ -161,7 +161,7 @@ abstract class sfWebController extends sfController
         $url = str_replace('&amp;', '&', $url);
 
         if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Redirect to "%s"', $url))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Redirect to "%s"', $url)]));
         }
 
         // redirect

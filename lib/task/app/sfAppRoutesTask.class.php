@@ -15,17 +15,17 @@
  */
 class sfAppRoutesTask extends sfBaseTask
 {
-    protected $routes = array();
+    protected $routes = [];
 
     /**
      * @see sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
             new sfCommandArgument('name', sfCommandArgument::OPTIONAL, 'A route name'),
-        ));
+        ]);
 
         $this->namespace = 'app';
         $this->name = 'routes';
@@ -41,7 +41,7 @@ EOF;
     /**
      * @see sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->routes = $this->getRouting()->getRoutes();
 

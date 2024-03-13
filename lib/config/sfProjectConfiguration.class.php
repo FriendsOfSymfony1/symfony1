@@ -25,16 +25,16 @@ class sfProjectConfiguration
     protected $dispatcher;
 
     /** @var array */
-    protected $plugins = array();
+    protected $plugins = [];
 
     /** @var array */
-    protected $pluginPaths = array();
+    protected $pluginPaths = [];
 
     /** @var array */
-    protected $overriddenPluginPaths = array();
+    protected $overriddenPluginPaths = [];
 
     /** @var sfPluginConfiguration[] */
-    protected $pluginConfigurations = array();
+    protected $pluginConfigurations = [];
 
     /** @var bool */
     protected $pluginsLoaded = false;
@@ -85,7 +85,7 @@ class sfProjectConfiguration
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'configuration.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'configuration.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
             throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
@@ -144,7 +144,7 @@ class sfProjectConfiguration
     {
         $this->rootDir = $rootDir;
 
-        sfConfig::add(array(
+        sfConfig::add([
             'sf_root_dir' => $rootDir,
 
             // global directory structure
@@ -155,7 +155,7 @@ class sfProjectConfiguration
             'sf_config_dir' => $rootDir.DIRECTORY_SEPARATOR.'config',
             'sf_test_dir' => $rootDir.DIRECTORY_SEPARATOR.'test',
             'sf_plugins_dir' => $rootDir.DIRECTORY_SEPARATOR.'plugins',
-        ));
+        ]);
 
         $this->setWebDir($rootDir.DIRECTORY_SEPARATOR.'web');
         $this->setCacheDir($rootDir.DIRECTORY_SEPARATOR.'cache');
@@ -198,11 +198,11 @@ class sfProjectConfiguration
      */
     public function setWebDir($webDir)
     {
-        sfConfig::add(array(
+        sfConfig::add([
             'sf_web_dir' => $webDir,
             'sf_upload_dir_name' => $uploadDirName = 'uploads',
             'sf_upload_dir' => $webDir.DIRECTORY_SEPARATOR.$uploadDirName,
-        ));
+        ]);
     }
 
     /**
@@ -215,7 +215,7 @@ class sfProjectConfiguration
     {
         return array_merge(
             $this->getPluginSubPaths('/lib/model'),     // plugins
-            array(sfConfig::get('sf_lib_dir').'/model') // project
+            [sfConfig::get('sf_lib_dir').'/model'] // project
         );
     }
 
@@ -230,9 +230,9 @@ class sfProjectConfiguration
     public function getGeneratorTemplateDirs($class, $theme)
     {
         return array_merge(
-            array(sfConfig::get('sf_data_dir').'/generator/'.$class.'/'.$theme.'/template'), // project
+            [sfConfig::get('sf_data_dir').'/generator/'.$class.'/'.$theme.'/template'], // project
             $this->getPluginSubPaths('/data/generator/'.$class.'/'.$theme.'/template'),      // plugins
-            array(sfConfig::get('sf_data_dir').'/generator/'.$class.'/default/template'),    // project (default theme)
+            [sfConfig::get('sf_data_dir').'/generator/'.$class.'/default/template'],    // project (default theme)
             $this->getPluginSubPaths('/data/generator/'.$class.'/default/template')          // plugins (default theme)
         );
     }
@@ -248,9 +248,9 @@ class sfProjectConfiguration
     public function getGeneratorSkeletonDirs($class, $theme)
     {
         return array_merge(
-            array(sfConfig::get('sf_data_dir').'/generator/'.$class.'/'.$theme.'/skeleton'), // project
+            [sfConfig::get('sf_data_dir').'/generator/'.$class.'/'.$theme.'/skeleton'], // project
             $this->getPluginSubPaths('/data/generator/'.$class.'/'.$theme.'/skeleton'),      // plugins
-            array(sfConfig::get('sf_data_dir').'/generator/'.$class.'/default/skeleton'),    // project (default theme)
+            [sfConfig::get('sf_data_dir').'/generator/'.$class.'/default/skeleton'],    // project (default theme)
             $this->getPluginSubPaths('/data/generator/'.$class.'/default/skeleton')          // plugins (default theme)
         );
     }
@@ -289,9 +289,9 @@ class sfProjectConfiguration
     {
         $globalConfigPath = basename(dirname($configPath)).'/'.basename($configPath);
 
-        $files = array(
+        $files = [
             $this->getSymfonyLibDir().'/config/'.$globalConfigPath, // symfony
-        );
+        ];
 
         foreach ($this->getPluginPaths() as $path) {
             if (is_file($file = $path.'/'.$globalConfigPath)) {
@@ -299,10 +299,10 @@ class sfProjectConfiguration
             }
         }
 
-        $files = array_merge($files, array(
+        $files = array_merge($files, [
             $this->getRootDir().'/'.$globalConfigPath,              // project
             $this->getRootDir().'/'.$configPath,                    // project
-        ));
+        ]);
 
         foreach ($this->getPluginPaths() as $path) {
             if (is_file($file = $path.'/'.$configPath)) {
@@ -310,7 +310,7 @@ class sfProjectConfiguration
             }
         }
 
-        $configs = array();
+        $configs = [];
         foreach (array_unique($files) as $file) {
             if (is_readable($file)) {
                 $configs[] = $file;
@@ -335,7 +335,7 @@ class sfProjectConfiguration
 
         $this->plugins = $plugins;
 
-        $this->pluginPaths = array();
+        $this->pluginPaths = [];
     }
 
     /**
@@ -349,7 +349,7 @@ class sfProjectConfiguration
             if (func_num_args() > 1) {
                 $plugins = func_get_args();
             } else {
-                $plugins = array($plugins);
+                $plugins = [$plugins];
             }
         }
 
@@ -370,7 +370,7 @@ class sfProjectConfiguration
         }
 
         if (!is_array($plugins)) {
-            $plugins = array($plugins);
+            $plugins = [$plugins];
         }
 
         foreach ($plugins as $plugin) {
@@ -381,7 +381,7 @@ class sfProjectConfiguration
             }
         }
 
-        $this->pluginPaths = array();
+        $this->pluginPaths = [];
     }
 
     /**
@@ -391,7 +391,7 @@ class sfProjectConfiguration
      *
      * @throws LogicException If plugins have already been loaded
      */
-    public function enableAllPluginsExcept($plugins = array())
+    public function enableAllPluginsExcept($plugins = [])
     {
         if ($this->pluginsLoaded) {
             throw new LogicException('Plugins have already been loaded.');
@@ -427,7 +427,7 @@ class sfProjectConfiguration
             return $this->pluginPaths[$subPath];
         }
 
-        $this->pluginPaths[$subPath] = array();
+        $this->pluginPaths[$subPath] = [];
         $pluginPaths = $this->getPluginPaths();
         foreach ($pluginPaths as $pluginPath) {
             if (is_dir($pluginPath.$subPath)) {
@@ -450,7 +450,7 @@ class sfProjectConfiguration
         if (!isset($this->pluginPaths[''])) {
             $pluginPaths = $this->getAllPluginPaths();
 
-            $this->pluginPaths[''] = array();
+            $this->pluginPaths[''] = [];
             foreach ($this->getPlugins() as $plugin) {
                 if (isset($pluginPaths[$plugin])) {
                     $this->pluginPaths[''][] = $pluginPaths[$plugin];
@@ -470,15 +470,15 @@ class sfProjectConfiguration
      */
     public function getAllPluginPaths()
     {
-        $pluginPaths = array();
+        $pluginPaths = [];
 
         // search for *Plugin directories representing plugins
         // follow links and do not recurse. No need to exclude VC because they do not end with *Plugin
         $finder = sfFinder::type('dir')->maxdepth(0)->ignore_version_control(false)->follow_link()->name('*Plugin');
-        $dirs = array(
+        $dirs = [
             $this->getSymfonyLibDir().'/plugins',
             sfConfig::get('sf_plugins_dir'),
-        );
+        ];
 
         foreach ($finder->in($dirs) as $path) {
             $pluginPaths[basename($path)] = $path;

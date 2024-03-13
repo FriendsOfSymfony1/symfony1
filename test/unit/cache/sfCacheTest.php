@@ -54,5 +54,5 @@ $t = new lime_test(1);
 // ->initialize()
 $t->diag('->initialize()');
 $cache = new myCache();
-$cache->initialize(array('foo' => 'bar'));
+$cache->initialize(['foo' => 'bar']);
 $t->is($cache->getOption('foo'), 'bar', '->initialize() takes an array of options as its first argument');

@@ -61,9 +61,9 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
      *
      * @return string
      */
-    public function render($name, $values = array(), $attributes = array(), $errors = array())
+    public function render($name, $values = [], $attributes = [], $errors = [])
     {
-        return strtr($this->decorator, array('%content%' => $this->widget->render($name, $values, $attributes, $errors)));
+        return strtr($this->decorator, ['%content%' => $this->widget->render($name, $values, $attributes, $errors)]);
     }
 
     /**
@@ -241,7 +241,7 @@ class sfWidgetFormSchemaDecorator extends sfWidgetFormSchema
      *
      * @param mixed|null $value
      */
-    public function renderField($name, $value = null, $attributes = array(), $errors = array())
+    public function renderField($name, $value = null, $attributes = [], $errors = [])
     {
         return $this->widget->renderField($name, $value, $attributes, $errors);
     }

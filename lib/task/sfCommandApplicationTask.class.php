@@ -109,7 +109,7 @@ abstract class sfCommandApplicationTask extends sfTask
      *
      * @see createTask()
      */
-    protected function runTask($name, $arguments = array(), $options = array())
+    protected function runTask($name, $arguments = [], $options = [])
     {
         return $this->createTask($name)->run($arguments, $options);
     }
@@ -178,7 +178,7 @@ abstract class sfCommandApplicationTask extends sfTask
     protected function initializeRouting()
     {
         $config = $this->getFactoryConfiguration();
-        $params = array_merge($config['routing']['param'], array('load_configuration' => false, 'logging' => false));
+        $params = array_merge($config['routing']['param'], ['load_configuration' => false, 'logging' => false]);
 
         $handler = new sfRoutingConfigHandler();
         $routes = $handler->evaluate($this->configuration->getConfigPaths('config/routing.yml'));

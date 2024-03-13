@@ -17,7 +17,7 @@
  */
 abstract class sfStorage
 {
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Class constructor.
@@ -26,12 +26,12 @@ abstract class sfStorage
      *
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->initialize($options);
 
         if ($this->options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
@@ -46,11 +46,11 @@ abstract class sfStorage
      *
      * @throws sfInitializationException If an error occurs while initializing this sfStorage
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'auto_shutdown' => true,
-        ), $options);
+        ], $options);
     }
 
     /**

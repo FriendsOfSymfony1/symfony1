@@ -20,10 +20,10 @@ $handler->initialize();
 $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfGeneratorConfigHandler'.DIRECTORY_SEPARATOR;
 
 $t->diag('parse errors');
-$files = array(
+$files = [
     $dir.'empty.yml',
     $dir.'no_generator_class.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);
@@ -32,10 +32,10 @@ try {
     $t->like($e->getMessage(), '/must specify a generator class section under the generator section/', 'generator.yml must have a "class" section');
 }
 
-$files = array(
+$files = [
     $dir.'empty.yml',
     $dir.'no_generator_section.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);
@@ -44,10 +44,10 @@ try {
     $t->like($e->getMessage(), '/must specify a generator section/', 'generator.yml must have a "generator" section');
 }
 
-$files = array(
+$files = [
     $dir.'empty.yml',
     $dir.'root_fields_section.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);
@@ -56,10 +56,10 @@ try {
     $t->like($e->getMessage(), '/can specify a "fields" section but only under the param section/', 'generator.yml can have a "fields" section but only under "param"');
 }
 
-$files = array(
+$files = [
     $dir.'empty.yml',
     $dir.'root_list_section.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);
@@ -68,10 +68,10 @@ try {
     $t->like($e->getMessage(), '/can specify a "list" section but only under the param section/', 'generator.yml can have a "list" section but only under "param"');
 }
 
-$files = array(
+$files = [
     $dir.'empty.yml',
     $dir.'root_edit_section.yml',
-);
+];
 
 try {
     $data = $handler->execute($files);

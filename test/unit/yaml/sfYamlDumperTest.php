@@ -45,20 +45,20 @@ foreach ($files as $file) {
 }
 
 // inline level
-$array = array(
+$array = [
     '' => 'bar',
     'foo' => '#bar',
-    'foo\'bar' => array(),
-    'bar' => array(1, 'foo'),
-    'foobar' => array(
+    'foo\'bar' => [],
+    'bar' => [1, 'foo'],
+    'foobar' => [
         'foo' => 'bar',
-        'bar' => array(1, 'foo'),
-        'foobar' => array(
+        'bar' => [1, 'foo'],
+        'foobar' => [
             'foo' => 'bar',
-            'bar' => array(1, 'foo'),
-        ),
-    ),
-);
+            'bar' => [1, 'foo'],
+        ],
+    ],
+];
 
 $expected = <<<'EOF'
 { '': bar, foo: '#bar', 'foo''bar': {  }, bar: [1, foo], foobar: { foo: bar, bar: [1, foo], foobar: { foo: bar, bar: [1, foo] } } }
@@ -138,5 +138,5 @@ class A
 {
     public $a = 'foo';
 }
-$a = array('foo' => new A(), 'bar' => 1);
+$a = ['foo' => new A(), 'bar' => 1];
 $t->is($dumper->dump($a), '{ foo: !!php/object:O:1:"A":1:{s:1:"a";s:3:"foo";}, bar: 1 }', '->dump() is able to dump objects');

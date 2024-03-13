@@ -44,11 +44,11 @@ $t->is($manager->getOptionSet(), $optionSet, '->setOptionSet() sets the manager 
 
 // ->process()
 $t->diag('->process()');
-$argumentSet = new sfCommandArgumentSet(array(
+$argumentSet = new sfCommandArgumentSet([
     new sfCommandArgument('foo1', sfCommandArgument::REQUIRED),
     new sfCommandArgument('foo2', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
-));
-$optionSet = new sfCommandOptionSet(array(
+]);
+$optionSet = new sfCommandOptionSet([
     new sfCommandOption('foo1', null, sfCommandOption::PARAMETER_NONE),
     new sfCommandOption('foo2', 'f', sfCommandOption::PARAMETER_NONE),
     new sfCommandOption('foo3', null, sfCommandOption::PARAMETER_OPTIONAL, '', 'default3'),
@@ -60,10 +60,10 @@ $optionSet = new sfCommandOptionSet(array(
     new sfCommandOption('foo9', 's', sfCommandOption::PARAMETER_OPTIONAL, '', 'default9'),
     new sfCommandOption('foo10', 'u', sfCommandOption::PARAMETER_OPTIONAL, '', 'default10'),
     new sfCommandOption('foo11', 'v', sfCommandOption::PARAMETER_OPTIONAL, '', 'default11'),
-));
+]);
 $manager = new sfCommandManager($argumentSet, $optionSet);
 $manager->process('--foo1 -f --foo3 --foo4="foo4" --foo5=foo5 -r"foo6 foo6" -t foo7 --foo8="foo" --foo8=bar -s -u foo10 -vfoo11 foo1 foo2 foo3 foo4');
-$options = array(
+$options = [
     'foo1' => true,
     'foo2' => true,
     'foo3' => 'default3',
@@ -71,15 +71,15 @@ $options = array(
     'foo5' => 'foo5',
     'foo6' => 'foo6 foo6',
     'foo7' => 'foo7',
-    'foo8' => array('foo', 'bar'),
+    'foo8' => ['foo', 'bar'],
     'foo9' => 'default9',
     'foo10' => 'foo10',
     'foo11' => 'foo11',
-);
-$arguments = array(
+];
+$arguments = [
     'foo1' => 'foo1',
-    'foo2' => array('foo2', 'foo3', 'foo4'),
-);
+    'foo2' => ['foo2', 'foo3', 'foo4'],
+];
 $t->ok($manager->isValid(), '->process() processes CLI options');
 $t->is($manager->getOptionValues(), $options, '->process() processes CLI options');
 $t->is($manager->getArgumentValues(), $arguments, '->process() processes CLI options');
@@ -118,25 +118,25 @@ $manager->process('foo');
 $t->ok(!$manager->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($manager->getErrors()), 1, '->getErrors() returns an array of errors');
 
-$argumentSet = new sfCommandArgumentSet(array(new sfCommandArgument('foo', sfCommandArgument::REQUIRED)));
+$argumentSet = new sfCommandArgumentSet([new sfCommandArgument('foo', sfCommandArgument::REQUIRED)]);
 $manager = new sfCommandManager($argumentSet);
 $manager->process('');
 $t->ok(!$manager->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($manager->getErrors()), 1, '->getErrors() returns an array of errors');
 
-$optionSet = new sfCommandOptionSet(array(new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED)));
+$optionSet = new sfCommandOptionSet([new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED)]);
 $manager = new sfCommandManager(null, $optionSet);
 $manager->process('--foo');
 $t->ok(!$manager->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($manager->getErrors()), 1, '->getErrors() returns an array of errors');
 
-$optionSet = new sfCommandOptionSet(array(new sfCommandOption('foo', 'f', sfCommandOption::PARAMETER_REQUIRED)));
+$optionSet = new sfCommandOptionSet([new sfCommandOption('foo', 'f', sfCommandOption::PARAMETER_REQUIRED)]);
 $manager = new sfCommandManager(null, $optionSet);
 $manager->process('-f');
 $t->ok(!$manager->isValid(), '->isValid() returns false if the options are not valid');
 $t->is(count($manager->getErrors()), 1, '->getErrors() returns an array of errors');
 
-$optionSet = new sfCommandOptionSet(array(new sfCommandOption('foo', null, sfCommandOption::PARAMETER_NONE)));
+$optionSet = new sfCommandOptionSet([new sfCommandOption('foo', null, sfCommandOption::PARAMETER_NONE)]);
 $manager = new sfCommandManager(null, $optionSet);
 $manager->process('--foo="bar"');
 $t->ok(!$manager->isValid(), '->isValid() returns false if the options are not valid');

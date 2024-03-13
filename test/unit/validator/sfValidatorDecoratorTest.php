@@ -16,15 +16,15 @@ class MyValidator extends sfValidatorDecorator
 {
     public function getValidator()
     {
-        return new sfValidatorString(array('min_length' => 2, 'trim' => true), array('required' => 'This string is required.'));
+        return new sfValidatorString(['min_length' => 2, 'trim' => true], ['required' => 'This string is required.']);
     }
 }
 
 // __construct()
 $t->diag('__construct()');
-$v = new MyValidator(array('required' => false));
+$v = new MyValidator(['required' => false]);
 $t->is($v->clean(null), null, '__construct() options override the embedded validator options');
-$v = new MyValidator(array(), array('required' => 'This is required.'));
+$v = new MyValidator([], ['required' => 'This is required.']);
 
 try {
     $v->clean(null);
@@ -58,18 +58,18 @@ $t->diag('->getMessage() ->getMessages() ->setMessage() ->setMessages()');
 $v = new MyValidator();
 $t->is($v->getMessage('required'), 'This string is required.', '->getMessage() returns a message from the embedded validator');
 $v->setMessage('invalid', 'This string is invalid.');
-$t->is($v->getMessages(), array('required' => 'This string is required.', 'invalid' => 'This string is invalid.', 'max_length' => '"%value%" is too long (%max_length% characters max).', 'min_length' => '"%value%" is too short (%min_length% characters min).'), '->getMessages() returns messages from the embedded validator');
-$v->setMessages(array('required' => 'Required...'));
-$t->is($v->getMessages(), array('required' => 'Required...', 'invalid' => 'Invalid.'), '->setMessages() sets all messages for the embedded validator');
+$t->is($v->getMessages(), ['required' => 'This string is required.', 'invalid' => 'This string is invalid.', 'max_length' => '"%value%" is too long (%max_length% characters max).', 'min_length' => '"%value%" is too short (%min_length% characters min).'], '->getMessages() returns messages from the embedded validator');
+$v->setMessages(['required' => 'Required...']);
+$t->is($v->getMessages(), ['required' => 'Required...', 'invalid' => 'Invalid.'], '->setMessages() sets all messages for the embedded validator');
 
 // ->getOption() ->getOptions() ->hasOption() ->getOptions() ->setOptions()
 $v = new MyValidator();
 $t->is($v->getOption('trim'), true, '->getOption() returns an option from the embedded validator');
 $v->setOption('trim', false);
-$t->is($v->getOptions(), array('required' => true, 'trim' => false, 'empty_value' => '', 'min_length' => 2, 'max_length' => null), '->getOptions() returns an array of options from the embedded validator');
+$t->is($v->getOptions(), ['required' => true, 'trim' => false, 'empty_value' => '', 'min_length' => 2, 'max_length' => null], '->getOptions() returns an array of options from the embedded validator');
 $t->is($v->hasOption('min_length'), true, '->hasOption() returns true if the embedded validator has a given option');
-$v->setOptions(array('min_length' => 10));
-$t->is($v->getOptions(), array('required' => true, 'trim' => false, 'empty_value' => null, 'min_length' => 10), '->setOptions() sets all options for the embedded validator');
+$v->setOptions(['min_length' => 10]);
+$t->is($v->getOptions(), ['required' => true, 'trim' => false, 'empty_value' => null, 'min_length' => 10], '->setOptions() sets all options for the embedded validator');
 
 $v = new MyValidator();
 

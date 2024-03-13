@@ -40,7 +40,7 @@ generator:
           name: { name: "Edit Field Name", help: "Edit Help for Name" }
 EOF;
 
-$t->is($e->extract($content), array(
+$t->is($e->extract($content), [
     'List title',
     'Edit title',
     'Global Field Name',
@@ -51,7 +51,7 @@ $t->is($e->extract($content), array(
     'Edit Help for Name',
     'First category',
     'Last category',
-), '->extract() extracts strings from generator.yml files');
+], '->extract() extracts strings from generator.yml files');
 
 $content = <<<'EOF'
 generator:
@@ -60,4 +60,4 @@ generator:
       display: [first_name, last_name]
 EOF;
 
-$t->is($e->extract($content), array(), '->extract() extracts strings from generator.yml files');
+$t->is($e->extract($content), [], '->extract() extracts strings from generator.yml files');

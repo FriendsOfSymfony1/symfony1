@@ -12,19 +12,19 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(25);
 
-$v1 = new sfValidatorString(array('max_length' => 3));
-$v2 = new sfValidatorString(array('min_length' => 3));
+$v1 = new sfValidatorString(['max_length' => 3]);
+$v2 = new sfValidatorString(['min_length' => 3]);
 
-$v = new sfValidatorAnd(array($v1, $v2));
+$v = new sfValidatorAnd([$v1, $v2]);
 
 // __construct()
 $t->diag('__construct()');
 $v = new sfValidatorAnd();
-$t->is($v->getValidators(), array(), '->__construct() can take no argument');
+$t->is($v->getValidators(), [], '->__construct() can take no argument');
 $v = new sfValidatorAnd($v1);
-$t->is($v->getValidators(), array($v1), '->__construct() can take a validator as its first argument');
-$v = new sfValidatorAnd(array($v1, $v2));
-$t->is($v->getValidators(), array($v1, $v2), '->__construct() can take an array of validators as its first argument');
+$t->is($v->getValidators(), [$v1], '->__construct() can take a validator as its first argument');
+$v = new sfValidatorAnd([$v1, $v2]);
+$t->is($v->getValidators(), [$v1, $v2], '->__construct() can take an array of validators as its first argument');
 
 try {
     $v = new sfValidatorAnd('string');
@@ -38,7 +38,7 @@ $t->diag('->addValidator()');
 $v = new sfValidatorAnd();
 $v->addValidator($v1);
 $v->addValidator($v2);
-$t->is($v->getValidators(), array($v1, $v2), '->addValidator() adds a validator');
+$t->is($v->getValidators(), [$v1, $v2], '->addValidator() adds a validator');
 
 // ->clean()
 $t->diag('->clean()');
@@ -106,10 +106,10 @@ try {
 
 // ->asString()
 $t->diag('->asString()');
-$v1 = new sfValidatorString(array('max_length' => 3));
-$v2 = new sfValidatorString(array('min_length' => 3));
-$v = new sfValidatorAnd(array($v1, $v2));
+$v1 = new sfValidatorString(['max_length' => 3]);
+$v2 = new sfValidatorString(['min_length' => 3]);
+$v = new sfValidatorAnd([$v1, $v2]);
 $t->is($v->asString(), "(\n  String({ max_length: 3 })\n  and\n  String({ min_length: 3 })\n)", '->asString() returns a string representation of the validator');
 
-$v = new sfValidatorAnd(array($v1, $v2), array(), array('required' => 'This is required.'));
+$v = new sfValidatorAnd([$v1, $v2], [], ['required' => 'This is required.']);
 $t->is($v->asString(), "(\n  String({ max_length: 3 })\n  and({}, { required: 'This is required.' })\n  String({ min_length: 3 })\n)", '->asString() returns a string representation of the validator');

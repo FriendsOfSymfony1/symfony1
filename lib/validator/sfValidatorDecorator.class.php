@@ -24,7 +24,7 @@ abstract class sfValidatorDecorator extends sfValidatorBase
     /**
      * @see sfValidatorBase
      */
-    public function __construct($options = array(), $messages = array())
+    public function __construct($options = [], $messages = [])
     {
         $this->validator = $this->getValidator();
 

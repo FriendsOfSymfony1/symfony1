@@ -14,27 +14,27 @@ $t = new lime_test(96);
 
 // ::stringToArray()
 $t->diag('::stringToArray()');
-$tests = array(
-    'foo=bar' => array('foo' => 'bar'),
-    'foo1=bar1 foo=bar   ' => array('foo1' => 'bar1', 'foo' => 'bar'),
-    'foo1="bar1 foo1"' => array('foo1' => 'bar1 foo1'),
-    'foo1="bar1 foo1" foo=bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
-    'foo1 = "bar1=foo1" foo=bar' => array('foo1' => 'bar1=foo1', 'foo' => 'bar'),
-    'foo1= \'bar1 foo1\'    foo  =     bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
-    'foo1=\'bar1=foo1\' foo = bar' => array('foo1' => 'bar1=foo1', 'foo' => 'bar'),
-    'foo1=  bar1 foo1 foo=bar' => array('foo1' => 'bar1 foo1', 'foo' => 'bar'),
-    'foo1="l\'autre" foo=bar' => array('foo1' => 'l\'autre', 'foo' => 'bar'),
-    'foo1="l"autre" foo=bar' => array('foo1' => 'l"autre', 'foo' => 'bar'),
-    'foo_1=bar_1' => array('foo_1' => 'bar_1'),
-    'data-foo=bar' => array('data-foo' => 'bar'),
-    'data-foo-bar=baz' => array('data-foo-bar' => 'baz'),
-);
+$tests = [
+    'foo=bar' => ['foo' => 'bar'],
+    'foo1=bar1 foo=bar   ' => ['foo1' => 'bar1', 'foo' => 'bar'],
+    'foo1="bar1 foo1"' => ['foo1' => 'bar1 foo1'],
+    'foo1="bar1 foo1" foo=bar' => ['foo1' => 'bar1 foo1', 'foo' => 'bar'],
+    'foo1 = "bar1=foo1" foo=bar' => ['foo1' => 'bar1=foo1', 'foo' => 'bar'],
+    'foo1= \'bar1 foo1\'    foo  =     bar' => ['foo1' => 'bar1 foo1', 'foo' => 'bar'],
+    'foo1=\'bar1=foo1\' foo = bar' => ['foo1' => 'bar1=foo1', 'foo' => 'bar'],
+    'foo1=  bar1 foo1 foo=bar' => ['foo1' => 'bar1 foo1', 'foo' => 'bar'],
+    'foo1="l\'autre" foo=bar' => ['foo1' => 'l\'autre', 'foo' => 'bar'],
+    'foo1="l"autre" foo=bar' => ['foo1' => 'l"autre', 'foo' => 'bar'],
+    'foo_1=bar_1' => ['foo_1' => 'bar_1'],
+    'data-foo=bar' => ['data-foo' => 'bar'],
+    'data-foo-bar=baz' => ['data-foo-bar' => 'baz'],
+];
 
 foreach ($tests as $string => $attributes) {
     $t->is(sfToolkit::stringToArray($string), $attributes, '->stringToArray()');
 }
 
-$t->is(sfToolkit::stringToArray(null), array(), '->stringToArray() can accept a null value');
+$t->is(sfToolkit::stringToArray(null), [], '->stringToArray() can accept a null value');
 
 // ::isUTF8()
 $t->diag('::isUTF8()');
@@ -47,7 +47,7 @@ $t->is(sfToolkit::isUTF8($string), true, '::isUTF8() can operate on very large s
 
 // ::literalize()
 $t->diag('::literalize()');
-foreach (array('true', 'on', '+', 'yes') as $param) {
+foreach (['true', 'on', '+', 'yes'] as $param) {
     $t->is(sfToolkit::literalize($param), true, sprintf('::literalize() returns true with "%s"', $param));
     if (strtoupper($param) != $param) {
         $t->is(sfToolkit::literalize(strtoupper($param)), true, sprintf('::literalize() returns true with "%s"', strtoupper($param)));
@@ -55,7 +55,7 @@ foreach (array('true', 'on', '+', 'yes') as $param) {
     $t->is(sfToolkit::literalize(' '.$param.' '), true, sprintf('::literalize() returns true with "%s"', ' '.$param.' '));
 }
 
-foreach (array('false', 'off', '-', 'no') as $param) {
+foreach (['false', 'off', '-', 'no'] as $param) {
     $t->is(sfToolkit::literalize($param), false, sprintf('::literalize() returns false with "%s"', $param));
     if (strtoupper($param) != $param) {
         $t->is(sfToolkit::literalize(strtoupper($param)), false, sprintf('::literalize() returns false with "%s"', strtoupper($param)));
@@ -63,7 +63,7 @@ foreach (array('false', 'off', '-', 'no') as $param) {
     $t->is(sfToolkit::literalize(' '.$param.' '), false, sprintf('::literalize() returns false with "%s"', ' '.$param.' '));
 }
 
-foreach (array('null', '~', '') as $param) {
+foreach (['null', '~', ''] as $param) {
     $t->is(sfToolkit::literalize($param), null, sprintf('::literalize() returns null with "%s"', $param));
     if (strtoupper($param) != $param) {
         $t->is(sfToolkit::literalize(strtoupper($param)), null, sprintf('::literalize() returns null with "%s"', strtoupper($param)));
@@ -125,8 +125,8 @@ $t->is(sfToolkit::stripComments($php), $php, '::stripComments() correctly handle
 $t->diag('::stripslashesDeep()');
 $t->is(sfToolkit::stripslashesDeep('foo'), 'foo', '::stripslashesDeep() strip slashes on string');
 $t->is(sfToolkit::stripslashesDeep(addslashes("foo's bar")), "foo's bar", '::stripslashesDeep() strip slashes on array');
-$t->is(sfToolkit::stripslashesDeep(array(addslashes("foo's bar"), addslashes("foo's bar"))), array("foo's bar", "foo's bar"), '::stripslashesDeep() strip slashes on deep arrays');
-$t->is(sfToolkit::stripslashesDeep(array(array('foo' => addslashes("foo's bar")), addslashes("foo's bar"))), array(array('foo' => "foo's bar"), "foo's bar"), '::stripslashesDeep() strip slashes on deep arrays');
+$t->is(sfToolkit::stripslashesDeep([addslashes("foo's bar"), addslashes("foo's bar")]), ["foo's bar", "foo's bar"], '::stripslashesDeep() strip slashes on deep arrays');
+$t->is(sfToolkit::stripslashesDeep([['foo' => addslashes("foo's bar")], addslashes("foo's bar")]), [['foo' => "foo's bar"], "foo's bar"], '::stripslashesDeep() strip slashes on deep arrays');
 
 // ::clearDirectory()
 $t->diag('::clearDirectory()');
@@ -160,39 +160,39 @@ rmdir($tmp_dir);
 // ::arrayDeepMerge()
 $t->diag('::arrayDeepMerge()');
 $t->is(
-    sfToolkit::arrayDeepMerge(array('d' => 'due', 't' => 'tre'), array('d' => 'bis', 'q' => 'quattro')),
-    array('d' => 'bis', 't' => 'tre', 'q' => 'quattro'),
+    sfToolkit::arrayDeepMerge(['d' => 'due', 't' => 'tre'], ['d' => 'bis', 'q' => 'quattro']),
+    ['d' => 'bis', 't' => 'tre', 'q' => 'quattro'],
     '::arrayDeepMerge() merges linear arrays preserving literal keys'
 );
 $t->is(
-    sfToolkit::arrayDeepMerge(array('d' => 'due', 't' => 'tre', 'c' => array('c' => 'cinco')), array('d' => array('due', 'bis'), 'q' => 'quattro', 'c' => array('c' => 'cinque', 'c2' => 'cinco'))),
-    array('d' => array('due', 'bis'), 't' => 'tre', 'q' => 'quattro', 'c' => array('c' => 'cinque', 'c2' => 'cinco')),
+    sfToolkit::arrayDeepMerge(['d' => 'due', 't' => 'tre', 'c' => ['c' => 'cinco']], ['d' => ['due', 'bis'], 'q' => 'quattro', 'c' => ['c' => 'cinque', 'c2' => 'cinco']]),
+    ['d' => ['due', 'bis'], 't' => 'tre', 'q' => 'quattro', 'c' => ['c' => 'cinque', 'c2' => 'cinco']],
     '::arrayDeepMerge() recursively merges arrays preserving literal keys'
 );
 $t->is(
-    sfToolkit::arrayDeepMerge(array(2 => 'due', 3 => 'tre'), array(2 => 'bis', 4 => 'quattro')),
-    array(2 => 'bis', 3 => 'tre', 4 => 'quattro'),
+    sfToolkit::arrayDeepMerge([2 => 'due', 3 => 'tre'], [2 => 'bis', 4 => 'quattro']),
+    [2 => 'bis', 3 => 'tre', 4 => 'quattro'],
     '::arrayDeepMerge() merges linear arrays preserving numerical keys'
 );
 $t->is(
-    sfToolkit::arrayDeepMerge(array(2 => array('due'), 3 => 'tre'), array(2 => array('bis', 'bes'), 4 => 'quattro')),
-    array(2 => array('bis', 'bes'), 3 => 'tre', 4 => 'quattro'),
+    sfToolkit::arrayDeepMerge([2 => ['due'], 3 => 'tre'], [2 => ['bis', 'bes'], 4 => 'quattro']),
+    [2 => ['bis', 'bes'], 3 => 'tre', 4 => 'quattro'],
     '::arrayDeepMerge() recursively merges arrays preserving numerical keys'
 );
 
-$arr = array(
+$arr = [
     'foobar' => 'foo',
-    'foo' => array(
-        'bar' => array(
+    'foo' => [
+        'bar' => [
             'baz' => 'foo bar',
-        ),
-    ),
-    'bar' => array(
+        ],
+    ],
+    'bar' => [
         'foo',
         'bar',
-    ),
+    ],
     'simple' => 'string',
-);
+];
 
 // ::getArrayValueForPath()
 $t->diag('::getArrayValueForPath()');
@@ -205,7 +205,7 @@ $t->is(sfToolkit::getArrayValueForPath($arr, 'foo[bar][baz]'), 'foo bar', '::get
 $t->is(sfToolkit::getArrayValueForPath($arr, 'foo[bar][bar]'), false, '::getArrayValueForPath() works with deep paths');
 $t->is(sfToolkit::getArrayValueForPath($arr, 'foo[bar][bar]', 'bar'), 'bar', '::getArrayValueForPath() works with deep paths');
 
-$t->is(sfToolkit::getArrayValueForPath($arr, 'foo[]'), array('bar' => array('baz' => 'foo bar')), '::getArrayValueForPath() accepts a [] at the end to check for an array');
+$t->is(sfToolkit::getArrayValueForPath($arr, 'foo[]'), ['bar' => ['baz' => 'foo bar']], '::getArrayValueForPath() accepts a [] at the end to check for an array');
 $t->is(sfToolkit::getArrayValueForPath($arr, 'foobar[]'), null, '::getArrayValueForPath() accepts a [] at the end to check for an array');
 $t->is(sfToolkit::getArrayValueForPath($arr, 'barfoo[]'), null, '::getArrayValueForPath() accepts a [] at the end to check for an array');
 $t->is(sfToolkit::getArrayValueForPath($arr, 'foobar[]', 'foo'), 'foo', '::getArrayValueForPath() accepts a [] at the end to check for an array');
@@ -225,16 +225,16 @@ $t->is(get_include_path(), __DIR__.PATH_SEPARATOR.$path, '::addIncludePath() add
 sfToolkit::addIncludePath(__DIR__, 'back');
 $t->is(get_include_path(), $path.PATH_SEPARATOR.__DIR__, '::addIncludePath() moves a path to the end of include_path');
 
-sfToolkit::addIncludePath(array(
+sfToolkit::addIncludePath([
     __DIR__,
     __DIR__.'/..',
-));
+]);
 $t->is(get_include_path(), __DIR__.PATH_SEPARATOR.__DIR__.'/..'.PATH_SEPARATOR.$path, '::addIncludePath() adds multiple paths the the front of include_path');
 
-sfToolkit::addIncludePath(array(
+sfToolkit::addIncludePath([
     __DIR__,
     __DIR__.'/..',
-), 'back');
+], 'back');
 $t->is(get_include_path(), $path.PATH_SEPARATOR.__DIR__.PATH_SEPARATOR.__DIR__.'/..', '::addIncludePath() adds multiple paths the the back of include_path');
 
 try {

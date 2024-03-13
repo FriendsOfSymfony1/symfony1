@@ -29,7 +29,7 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
      *
      * @see sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -42,7 +42,7 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $timezones = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $timezones);
+            $timezones = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $timezones);
         }
 
         $this->setOption('choices', $timezones);

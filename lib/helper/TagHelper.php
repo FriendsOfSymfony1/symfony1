@@ -25,7 +25,7 @@
  *
  * @return string
  */
-function tag($name, $options = array(), $open = false)
+function tag($name, $options = [], $open = false)
 {
     if (!$name) {
         return '';
@@ -34,7 +34,7 @@ function tag($name, $options = array(), $open = false)
     return '<'.$name._tag_options($options).($open ? '>' : ' />');
 }
 
-function content_tag($name, $content = '', $options = array())
+function content_tag($name, $content = '', $options = [])
 {
     if (!$name) {
         return '';
@@ -97,7 +97,7 @@ function fix_double_escape($escaped)
     return preg_replace('/&amp;([a-z]+|(#\d+)|(#x[\da-f]+));/i', '&$1;', $escaped);
 }
 
-function _tag_options($options = array())
+function _tag_options($options = [])
 {
     $options = _parse_attributes($options);
 
@@ -152,7 +152,7 @@ function get_id_from_name($name, $value = null)
 {
     // check to see if we have an array variable for a field name
     if (false !== strpos($name, '[')) {
-        $name = str_replace(array('[]', '][', '[', ']'), array((null != $value) ? '_'.$value : '', '_', '_', ''), $name);
+        $name = str_replace(['[]', '][', '[', ']'], [(null != $value) ? '_'.$value : '', '_', '_', ''], $name);
     }
 
     return $name;
@@ -169,7 +169,7 @@ function _convert_options($options)
 {
     $options = _parse_attributes($options);
 
-    foreach (array('disabled', 'readonly', 'multiple') as $attribute) {
+    foreach (['disabled', 'readonly', 'multiple'] as $attribute) {
         if (array_key_exists($attribute, $options)) {
             if ($options[$attribute]) {
                 $options[$attribute] = $attribute;

@@ -46,7 +46,7 @@ class OutputEscaperTest
 
     public function getTitles()
     {
-        return array(1, 2, '<strong>escaped!</strong>');
+        return [1, 2, '<strong>escaped!</strong>'];
     }
 }
 

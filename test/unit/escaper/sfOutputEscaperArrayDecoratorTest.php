@@ -32,7 +32,7 @@ sfConfig::set('sf_charset', 'UTF-8');
 
 $t = new lime_test(11);
 
-$a = array('<strong>escaped!</strong>', 1, null, array(2, '<strong>escaped!</strong>'));
+$a = ['<strong>escaped!</strong>', 1, null, [2, '<strong>escaped!</strong>']];
 $escaped = sfOutputEscaper::escape('esc_entities', $a);
 
 // ->getRaw()
@@ -93,5 +93,5 @@ foreach ($escaped as $key => $value) {
 // ->valid()
 $t->diag('->valid()');
 
-$escaped = sfOutputEscaper::escape('esc_entities', array(1, 2, 3));
+$escaped = sfOutputEscaper::escape('esc_entities', [1, 2, 3]);
 $t->is($escaped->valid(), true, '->valid() returns true if called before iteration');

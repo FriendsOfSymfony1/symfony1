@@ -53,7 +53,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
             $escapingMethod = $this->escapingMethod;
         }
 
-        $value = call_user_func_array(array($this->value, $method), $args);
+        $value = call_user_func_array([$this->value, $method], $args);
 
         return sfOutputEscaper::escape($escapingMethod, $value);
     }
@@ -92,7 +92,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
      */
     public function getRaw($key)
     {
-        if (!is_callable(array($this->value, 'get'))) {
+        if (!is_callable([$this->value, 'get'])) {
             throw new sfException('Object does not have a callable get() method.');
         }
 

@@ -24,10 +24,10 @@ class sfDoctrineGenerateMigrationsDiffTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'generate-migrations-diff';
@@ -44,7 +44,7 @@ EOF;
     /**
      * @see sfTask
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
@@ -55,10 +55,10 @@ EOF;
             $this->getFilesystem()->mkdirs($config['migrations_path']);
         }
 
-        spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
+        spl_autoload_register(['Doctrine_Core', 'modelsAutoload']);
 
-        $this->callDoctrineCli('generate-migrations-diff', array(
+        $this->callDoctrineCli('generate-migrations-diff', [
             'yaml_schema_path' => $this->prepareSchemaFile($config['yaml_schema_path']),
-        ));
+        ]);
     }
 }

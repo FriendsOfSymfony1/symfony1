@@ -12,11 +12,11 @@ class lime_symfony extends lime_harness
 {
     protected function get_relative_file($file)
     {
-        $file = str_replace(DIRECTORY_SEPARATOR, '/', str_replace(array(
+        $file = str_replace(DIRECTORY_SEPARATOR, '/', str_replace([
             realpath($this->base_dir).DIRECTORY_SEPARATOR,
             realpath($this->base_dir.'/../lib/plugins').DIRECTORY_SEPARATOR,
             $this->extension,
-        ), '', $file));
+        ], '', $file));
 
         return preg_replace('#^(.*?)Plugin/test/(unit|functional)/#', '[$1] $2/', $file);
     }

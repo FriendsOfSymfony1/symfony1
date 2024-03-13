@@ -70,8 +70,8 @@ $t->is(isset($safe->boolValue), false, '->__unset() unsets the embedded property
 // Iterator
 $t->diag('Iterator');
 
-$input = array('one' => 1, 'two' => 2, 'three' => 3, 'children' => array(1, 2, 3));
-$output = array();
+$input = ['one' => 1, 'two' => 2, 'three' => 3, 'children' => [1, 2, 3]];
+$output = [];
 
 $safe = new sfOutputEscaperSafe($input);
 foreach ($safe as $key => $value) {
@@ -82,7 +82,7 @@ $t->is_deeply($output, $input, '"Iterator" implementation imitates an array');
 // ArrayAccess
 $t->diag('ArrayAccess');
 
-$safe = new sfOutputEscaperSafe(array('foo' => 'bar'));
+$safe = new sfOutputEscaperSafe(['foo' => 'bar']);
 
 $t->is($safe['foo'], 'bar', '"ArrayAccess" implementation returns a value from the embedded array');
 $safe['foo'] = 'baz';

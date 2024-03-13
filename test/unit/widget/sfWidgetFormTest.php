@@ -14,9 +14,9 @@ $t = new lime_test(35);
 
 class MyWidgetForm extends sfWidgetForm
 {
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
-        return $this->renderTag('input', array_merge(array('name' => $name), $attributes)).$this->renderContentTag('textarea', null, array_merge(array('name' => $name), $attributes));
+        return $this->renderTag('input', array_merge(['name' => $name], $attributes)).$this->renderContentTag('textarea', null, array_merge(['name' => $name], $attributes));
     }
 
     public function generateId($name, $value = null)
@@ -27,18 +27,18 @@ class MyWidgetForm extends sfWidgetForm
 
 // __construct()
 $t->diag('__construct()');
-$w = new MyWidgetForm(array('id_format' => '%s'));
+$w = new MyWidgetForm(['id_format' => '%s']);
 $t->is($w->render('foo'), '<input name="foo" id="foo" /><textarea name="foo" id="foo"></textarea>', '__construct() takes a id_format argument');
-$t->is($w->render('foo', null, array('id' => 'id_foo')), '<input name="foo" id="id_foo" /><textarea name="foo" id="id_foo"></textarea>', '->render() id attributes takes precedence over auto generated ids');
+$t->is($w->render('foo', null, ['id' => 'id_foo']), '<input name="foo" id="id_foo" /><textarea name="foo" id="id_foo"></textarea>', '->render() id attributes takes precedence over auto generated ids');
 
-$w = new MyWidgetForm(array('id_format' => false));
+$w = new MyWidgetForm(['id_format' => false]);
 $t->is($w->render('foo'), '<input name="foo" /><textarea name="foo"></textarea>', '__construct() can disable id generation');
 
 // ->getLabel() ->setLabel()
 $t->diag('->getLabel() ->setLabel()');
 $w = new MyWidgetForm();
 $t->is($w->getLabel(), null, '->getLabel() returns null if no label has been defined');
-$w = new MyWidgetForm(array('label' => 'foo'));
+$w = new MyWidgetForm(['label' => 'foo']);
 $t->is($w->getLabel(), 'foo', '->getLabel() returns the label');
 $w->setLabel('bar');
 $t->is($w->getLabel(), 'bar', '->setLabel() changes the label');
@@ -47,7 +47,7 @@ $t->is($w->getLabel(), 'bar', '->setLabel() changes the label');
 $t->diag('->getDefault() ->setDefault()');
 $w = new MyWidgetForm();
 $t->is($w->getDefault(), null, '->getDefault() returns null if no default value has been defined');
-$w = new MyWidgetForm(array('default' => 'foo'));
+$w = new MyWidgetForm(['default' => 'foo']);
 $t->is($w->getDefault(), 'foo', '->getDefault() returns the default value');
 $w->setDefault('bar');
 $t->is($w->getDefault(), 'bar', '->setDefault() changes the default value for the widget');
@@ -74,17 +74,17 @@ $t->is($w->isHidden(), true, '->isHidden() returns true if a widget is hidden');
 // ->needsMultipartForm()
 $t->diag('->needsMultipartForm()');
 $t->is($w->needsMultipartForm(), false, '->needsMultipartForm() returns false if the widget does not need a multipart form');
-$w = new MyWidgetForm(array('needs_multipart' => true));
+$w = new MyWidgetForm(['needs_multipart' => true]);
 $t->is($w->needsMultipartForm(), true, '->needsMultipartForm() returns false if the widget needs a multipart form');
 
 // ->renderTag()
 $t->diag('->renderTag()');
 $w = new MyWidgetForm();
 $t->is($w->renderTag('input'), '<input />', '->renderTag() does not add an id if no name is given');
-$t->is($w->renderTag('input', array('id' => 'foo')), '<input id="foo" />', '->renderTag() does not add an id if one is given');
-$t->is($w->renderTag('input', array('name' => 'foo')), '<input name="foo" id="foo" />', '->renderTag() adds an id if none is given and a name is given');
+$t->is($w->renderTag('input', ['id' => 'foo']), '<input id="foo" />', '->renderTag() does not add an id if one is given');
+$t->is($w->renderTag('input', ['name' => 'foo']), '<input name="foo" id="foo" />', '->renderTag() adds an id if none is given and a name is given');
 $w->setIdFormat('id_%s');
-$t->is($w->renderTag('input', array('name' => 'foo')), '<input name="foo" id="id_foo" />', '->renderTag() uses the id_format to generate an id');
+$t->is($w->renderTag('input', ['name' => 'foo']), '<input name="foo" id="id_foo" />', '->renderTag() uses the id_format to generate an id');
 sfWidget::setXhtml(false);
 $t->is($w->renderTag('input'), '<input>', '->renderTag() does not close tag if not in XHTML mode');
 sfWidget::setXhtml(true);
@@ -93,10 +93,10 @@ sfWidget::setXhtml(true);
 $t->diag('->renderContentTag()');
 $w = new MyWidgetForm();
 $t->is($w->renderContentTag('textarea'), '<textarea></textarea>', '->renderContentTag() does not add an id if no name is given');
-$t->is($w->renderContentTag('textarea', '', array('id' => 'foo')), '<textarea id="foo"></textarea>', '->renderContentTag() does not add an id if one is given');
-$t->is($w->renderContentTag('textarea', '', array('name' => 'foo')), '<textarea name="foo" id="foo"></textarea>', '->renderContentTag() adds an id if none is given and a name is given');
+$t->is($w->renderContentTag('textarea', '', ['id' => 'foo']), '<textarea id="foo"></textarea>', '->renderContentTag() does not add an id if one is given');
+$t->is($w->renderContentTag('textarea', '', ['name' => 'foo']), '<textarea name="foo" id="foo"></textarea>', '->renderContentTag() adds an id if none is given and a name is given');
 $w->setIdFormat('id_%s');
-$t->is($w->renderContentTag('textarea', '', array('name' => 'foo')), '<textarea name="foo" id="id_foo"></textarea>', '->renderContentTag() uses the id_format to generate an id');
+$t->is($w->renderContentTag('textarea', '', ['name' => 'foo']), '<textarea name="foo" id="id_foo"></textarea>', '->renderContentTag() uses the id_format to generate an id');
 
 // ->generateId()
 $t->diag('->generateId()');
@@ -110,7 +110,7 @@ $t->is($w->generateId('_foo[bar][]', 'test'), 'id_for__foo_bar_test_works', '->g
 
 $w->setIdFormat('id');
 $t->is($w->generateId('foo[bar][]', 'test'), 'foo_bar_test', '->generateId() returns the name if the id format does not contain %s');
-$t->is($w->generateId('foo[bar][]', array('test1', 'test2')), 'foo_bar', '->generateId() ignore the value if not a string');
+$t->is($w->generateId('foo[bar][]', ['test1', 'test2']), 'foo_bar', '->generateId() ignore the value if not a string');
 
 $w->setIdFormat('%s');
 $t->is($w->generateId('_foo[bar][]', 'test'), 'foo_bar_test', '->generateId() removes invalid characters');

@@ -30,19 +30,19 @@ __('bar')
 <?php __("I\'m so \"happy\"") ?>
 EOF;
 
-$t->is($e->extract($content), array('foo', 'I\'m "happy"', 'I\'m very "happy"', 'I\\\'m so "happy"'), '->extract() extracts strings from PHP files');
+$t->is($e->extract($content), ['foo', 'I\'m "happy"', 'I\'m very "happy"', 'I\\\'m so "happy"'], '->extract() extracts strings from PHP files');
 
 $content = <<<'EOF'
 <?php format_number_choice('foo') ?>
 EOF;
 
-$t->is($e->extract($content), array('foo'), '->extract() takes into account the format_number_choice() helper');
+$t->is($e->extract($content), ['foo'], '->extract() takes into account the format_number_choice() helper');
 
 $content = <<<'EOF'
 <?php $this->getContext()->getI18N()->__('foo') ?>
 EOF;
 
-$t->is($e->extract($content), array('foo'), '->extract() takes into account calls in an action file');
+$t->is($e->extract($content), ['foo'], '->extract() takes into account calls in an action file');
 
 $content = <<<'EOF'
 <?php
@@ -53,7 +53,7 @@ $content = <<<'EOF'
 ?>
 EOF;
 
-$t->is($e->extract($content), array('foo', 'bar', 'foobar', 'foo %a% bar'), '->extract() extracts strings from \'\' and "" quoted strings');
+$t->is($e->extract($content), ['foo', 'bar', 'foobar', 'foo %a% bar'], '->extract() extracts strings from \'\' and "" quoted strings');
 
 $content = <<<'EOF'
 <?php
@@ -65,7 +65,7 @@ $content = <<<'EOF'
 ?>
 EOF;
 
-$t->is($e->extract($content), array('foo', 'bar'), '->extract() does not care if you add some whitespaces');
+$t->is($e->extract($content), ['foo', 'bar'], '->extract() does not care if you add some whitespaces');
 
 $content = <<<'EOF'
 <?php
@@ -80,4 +80,4 @@ EOD
 );
 EOF;
 
-$t->is(fix_linebreaks($e->extract($content)), array("foo\n", "bar\n"), '->extract() extracts strings from HEREDOC quoted strings');
+$t->is(fix_linebreaks($e->extract($content)), ["foo\n", "bar\n"], '->extract() extracts strings from HEREDOC quoted strings');

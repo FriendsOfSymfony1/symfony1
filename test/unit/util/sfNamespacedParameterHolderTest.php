@@ -44,8 +44,8 @@ $ph->set('foo', 'bar');
 $ph->set('yourfoo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 
-$t->is($ph->getNames(), array('foo', 'yourfoo'), '->getNames() returns all key names for the default namespace');
-$t->is($ph->getNames('symfony/mynamespace'), array('myfoo'), '->getNames() takes a namepace as its first argument');
+$t->is($ph->getNames(), ['foo', 'yourfoo'], '->getNames() returns all key names for the default namespace');
+$t->is($ph->getNames('symfony/mynamespace'), ['myfoo'], '->getNames() takes a namepace as its first argument');
 
 // ->getNamespaces()
 $t->diag('->getNamespaces()');
@@ -54,7 +54,7 @@ $ph->set('foo', 'bar');
 $ph->set('yourfoo', 'bar');
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
 
-$t->is($ph->getNamespaces(), array($ph->getDefaultNamespace(), 'symfony/mynamespace'), '->getNamespaces() returns all non empty namespaces');
+$t->is($ph->getNamespaces(), [$ph->getDefaultNamespace(), 'symfony/mynamespace'], '->getNamespaces() returns all non empty namespaces');
 
 // ->setDefaultNamespace()
 $t->diag('->setDefaultNamespace()');
@@ -77,7 +77,7 @@ $t->is($ph->get('foo', null, 'foonamespace'), 'bar', '->setDefaultNamespace() do
 
 // ->getAll()
 $t->diag('->getAll()');
-$parameters = array('foo' => 'bar', 'myfoo' => 'bar');
+$parameters = ['foo' => 'bar', 'myfoo' => 'bar'];
 $ph = new sfNamespacedParameterHolder();
 $ph->add($parameters);
 $ph->set('myfoo', 'bar', 'symfony/mynamespace');
@@ -181,8 +181,8 @@ $t->is($ph->get('myfoo', null, 'symfony/mynamespace'), $myfoo, '->setByRef() tak
 // ->add()
 $t->diag('->add()');
 $foo = 'bar';
-$parameters = array('foo' => $foo, 'bar' => 'bar');
-$myparameters = array('myfoo' => 'bar', 'mybar' => 'bar');
+$parameters = ['foo' => $foo, 'bar' => 'bar'];
+$myparameters = ['myfoo' => 'bar', 'mybar' => 'bar'];
 
 $ph = new sfNamespacedParameterHolder();
 $ph->add($parameters);
@@ -197,8 +197,8 @@ $t->is($ph->getAll(), $parameters, '->add() adds an array of parameters, not a r
 // ->addByRef()
 $t->diag('->addByRef()');
 $foo = 'bar';
-$parameters = array('foo' => &$foo, 'bar' => 'bar');
-$myparameters = array('myfoo' => 'bar', 'mybar' => 'bar');
+$parameters = ['foo' => &$foo, 'bar' => 'bar'];
+$myparameters = ['myfoo' => 'bar', 'mybar' => 'bar'];
 
 $ph = new sfNamespacedParameterHolder();
 $ph->addByRef($parameters);

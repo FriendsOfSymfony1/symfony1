@@ -34,11 +34,11 @@ class sfPearRestTest extends sfPearRest
             return PEAR::raiseError($e->getMessage());
         }
 
-        $headers = array(
+        $headers = [
             'content-type' => preg_match('/\.xml$/', $file) ? 'text/xml' : 'text/plain',
-        );
+        ];
 
-        return array(file_get_contents($file), 0, $headers);
+        return [file_get_contents($file), 0, $headers];
     }
 
     // Disable caching for testing

@@ -33,7 +33,7 @@ class sfValidatorNumber extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addMessage('max', '"%value%" must be at most %max%.');
         $this->addMessage('min', '"%value%" must be at least %min%.');
@@ -50,17 +50,17 @@ class sfValidatorNumber extends sfValidatorBase
     protected function doClean($value)
     {
         if (!is_numeric($value)) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         $clean = (float) $value;
 
         if ($this->hasOption('max') && $clean > $this->getOption('max')) {
-            throw new sfValidatorError($this, 'max', array('value' => $value, 'max' => $this->getOption('max')));
+            throw new sfValidatorError($this, 'max', ['value' => $value, 'max' => $this->getOption('max')]);
         }
 
         if ($this->hasOption('min') && $clean < $this->getOption('min')) {
-            throw new sfValidatorError($this, 'min', array('value' => $value, 'min' => $this->getOption('min')));
+            throw new sfValidatorError($this, 'min', ['value' => $value, 'min' => $this->getOption('min')]);
         }
 
         return $clean;

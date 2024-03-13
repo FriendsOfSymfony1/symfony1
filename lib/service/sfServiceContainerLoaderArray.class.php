@@ -21,8 +21,8 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
     {
         $this->validate($content);
 
-        $parameters = array();
-        $definitions = array();
+        $parameters = [];
+        $definitions = [];
 
         // parameters
         if (isset($content['parameters'])) {
@@ -38,7 +38,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
             }
         }
 
-        return array($definitions, $parameters);
+        return [$definitions, $parameters];
     }
 
     protected function validate($content)
@@ -48,7 +48,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
         }
 
         foreach (array_keys($content) as $key) {
-            if (!in_array($key, array('parameters', 'services'))) {
+            if (!in_array($key, ['parameters', 'services'])) {
                 throw new InvalidArgumentException(sprintf('The service defintion is not valid ("%s" is not recognized).', $key));
             }
         }
@@ -84,7 +84,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
             if (is_string($service['configurator'])) {
                 $definition->setConfigurator($service['configurator']);
             } else {
-                $definition->setConfigurator(array($this->resolveServices($service['configurator'][0]), $service['configurator'][1]));
+                $definition->setConfigurator([$this->resolveServices($service['configurator'][0]), $service['configurator'][1]]);
             }
         }
 
@@ -100,7 +100,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
     protected function resolveServices($value)
     {
         if (is_array($value)) {
-            $value = array_map(array($this, 'resolveServices'), $value);
+            $value = array_map([$this, 'resolveServices'], $value);
         } elseif (is_string($value) && 0 === strpos($value, '@')) {
             $value = new sfServiceReference(substr($value, 1));
         }

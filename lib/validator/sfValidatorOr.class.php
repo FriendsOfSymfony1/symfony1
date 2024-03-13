@@ -15,7 +15,7 @@
  */
 class sfValidatorOr extends sfValidatorBase
 {
-    protected $validators = array();
+    protected $validators = [];
 
     /**
      * Constructor.
@@ -32,7 +32,7 @@ class sfValidatorOr extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    public function __construct($validators = null, $options = array(), $messages = array())
+    public function __construct($validators = null, $options = [], $messages = [])
     {
         if ($validators instanceof sfValidatorBase) {
             $this->addValidator($validators);
@@ -100,7 +100,7 @@ class sfValidatorOr extends sfValidatorBase
     /**
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->setMessage('invalid', null);
     }
@@ -120,7 +120,7 @@ class sfValidatorOr extends sfValidatorBase
         }
 
         if ($this->getMessage('invalid')) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         throw $errors;

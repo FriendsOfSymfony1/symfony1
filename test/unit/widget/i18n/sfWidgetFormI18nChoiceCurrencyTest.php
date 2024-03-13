@@ -19,18 +19,18 @@ $dom->validateOnParse = true;
 $t->diag('->configure()');
 
 try {
-    new sfWidgetFormI18nChoiceCurrency(array('culture' => 'en', 'currencies' => array('xx')));
+    new sfWidgetFormI18nChoiceCurrency(['culture' => 'en', 'currencies' => ['xx']]);
     $t->fail('->configure() throws an InvalidArgumentException if a currency does not exist');
 } catch (InvalidArgumentException $e) {
     $t->pass('->configure() throws an InvalidArgumentException if a currency does not exist');
 }
 
-$v = new sfWidgetFormI18nChoiceCurrency(array('culture' => 'en', 'currencies' => array('EUR', 'USD')));
-$t->is(array_keys($v->getOption('choices')), array('EUR', 'USD'), '->configure() can restrict the number of currencies with the currencies option');
+$v = new sfWidgetFormI18nChoiceCurrency(['culture' => 'en', 'currencies' => ['EUR', 'USD']]);
+$t->is(array_keys($v->getOption('choices')), ['EUR', 'USD'], '->configure() can restrict the number of currencies with the currencies option');
 
 // ->render()
 $t->diag('->render()');
-$w = new sfWidgetFormI18nChoiceCurrency(array('culture' => 'fr'));
+$w = new sfWidgetFormI18nChoiceCurrency(['culture' => 'fr']);
 $dom->loadHTML($w->render('currency', 'EUR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#currency option[value="EUR"]')->getValue(), 'euro', '->render() renders all currencies as option tags');
@@ -42,12 +42,12 @@ $t->is(count($css->matchAll('#currency option[value="XXX"]')), 1, '->render() do
 
 // add_empty
 $t->diag('add_empty');
-$w = new sfWidgetFormI18nChoiceCurrency(array('culture' => 'fr', 'add_empty' => true));
+$w = new sfWidgetFormI18nChoiceCurrency(['culture' => 'fr', 'add_empty' => true]);
 $dom->loadHTML($w->render('currency', 'EUR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#currency option[value=""]')->getValue(), '', '->render() renders an empty option if add_empty is true');
 
-$w = new sfWidgetFormI18nChoiceCurrency(array('culture' => 'fr', 'add_empty' => 'foo'));
+$w = new sfWidgetFormI18nChoiceCurrency(['culture' => 'fr', 'add_empty' => 'foo']);
 $dom->loadHTML($w->render('currency', 'EUR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#currency option[value=""]')->getValue(), 'foo', '->render() renders an empty option if add_empty is true');

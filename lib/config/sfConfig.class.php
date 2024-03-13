@@ -15,7 +15,7 @@
  */
 class sfConfig
 {
-    protected static $config = array();
+    protected static $config = [];
 
     /**
      * Retrieves a config parameter.
@@ -63,7 +63,7 @@ class sfConfig
      *
      * @param array $parameters An associative array of config parameters and their associated values
      */
-    public static function add($parameters = array())
+    public static function add($parameters = [])
     {
         self::$config = array_merge(self::$config, $parameters);
     }
@@ -83,6 +83,6 @@ class sfConfig
      */
     public static function clear()
     {
-        self::$config = array();
+        self::$config = [];
     }
 }

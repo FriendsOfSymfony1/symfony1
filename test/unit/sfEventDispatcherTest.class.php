@@ -21,7 +21,7 @@ class sfEventDispatcherTest
     public function launchTests($dispatcher, $object, $class)
     {
         $this->t->diag('New methods via sfEventDispatcher');
-        $dispatcher->connect($class.'.method_not_found', array('myEventDispatcherTest', 'newMethod'));
+        $dispatcher->connect($class.'.method_not_found', ['myEventDispatcherTest', 'newMethod']);
         $this->t->is($object->newMethod('ok'), 'ok', '__call() accepts new methods via sfEventDispatcher');
 
         try {

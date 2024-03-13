@@ -33,10 +33,10 @@ try {
         $memcachedHost = null;
     }
 
-    $cache = new sfMemcacheCache(array(
+    $cache = new sfMemcacheCache([
         'storeCacheInfo' => true,
         'host' => $memcachedHost,
-    ));
+    ]);
 } catch (sfInitializationException $e) {
     $t->skip('Memcached must be active to run these tests', $plan);
 

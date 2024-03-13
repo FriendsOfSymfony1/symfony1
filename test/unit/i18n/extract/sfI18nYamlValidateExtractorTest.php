@@ -36,9 +36,9 @@ validators:
       max_error: The name is really too long
 EOF;
 
-$t->is($e->extract($content), array(
+$t->is($e->extract($content), [
     'Name is required',
     'The name is too short',
     'The name is really too short',
     'The name is really too long',
-), '->extract() extracts strings from generator.yml files');
+], '->extract() extracts strings from generator.yml files');

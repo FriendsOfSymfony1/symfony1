@@ -16,20 +16,20 @@ $v = new sfValidatorEmail();
 
 // ->clean()
 $t->diag('->clean()');
-foreach (array(
+foreach ([
     'fabien.potencier@symfony-project.com',
     'example@example.co.uk',
     'fabien_potencier@example.fr',
-) as $url) {
+] as $url) {
     $t->is($v->clean($url), $url, '->clean() checks that the value is a valid email');
 }
 
-foreach (array(
+foreach ([
     'example',
     'example@',
     'example@localhost',
     'example@example.com@example.com',
-) as $nonUrl) {
+] as $nonUrl) {
     try {
         $v->clean($nonUrl);
         $t->fail('->clean() throws an sfValidatorError if the value is not a valid email');

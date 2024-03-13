@@ -40,7 +40,7 @@ function sf_functional_test_shutdown_cleanup()
 
     $sessions = glob(sys_get_temp_dir().'/sessions*');
     $tmp_files = glob(sys_get_temp_dir().'/sf*');
-    $files = array_merge(empty($sessions) ? array() : $sessions, empty($tmp_files) ? array() : $tmp_files);
+    $files = array_merge(empty($sessions) ? [] : $sessions, empty($tmp_files) ? [] : $tmp_files);
     foreach ($files as $file) {
         if (is_dir($file)) {
             sfToolkit::clearDirectory($file);

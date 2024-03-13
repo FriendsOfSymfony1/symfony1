@@ -27,12 +27,12 @@ class sfWidgetFormInputRead extends sfWidgetFormInput
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         $attributes = array_merge($this->attributes, $attributes);
-        $this->attributes = array();
+        $this->attributes = [];
 
-        $tag = parent::render($name, $value, array(), $errors);
+        $tag = parent::render($name, $value, [], $errors);
 
         $style = 'border: 0;';
         if (isset($attributes['style'])) {
@@ -40,12 +40,12 @@ class sfWidgetFormInputRead extends sfWidgetFormInput
             unset($attributes['style']);
         }
 
-        return $tag.$this->renderTag('input', array_merge(array(
+        return $tag.$this->renderTag('input', array_merge([
             'type' => 'text',
             'value' => $this->getOption('text', $value),
             'readonly' => 'readonly',
             'style' => $style,
-        ), $attributes));
+        ], $attributes));
     }
 
     /**
@@ -56,7 +56,7 @@ class sfWidgetFormInputRead extends sfWidgetFormInput
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

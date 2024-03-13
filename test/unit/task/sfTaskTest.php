@@ -13,8 +13,8 @@ $t = new lime_test(16);
 
 abstract class BaseTestTask extends sfTask
 {
-    public $lastArguments = array();
-    public $lastOptions = array();
+    public $lastArguments = [];
+    public $lastOptions = [];
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ abstract class BaseTestTask extends sfTask
         parent::__construct(new sfEventDispatcher(), new sfFormatter());
     }
 
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->lastArguments = $arguments;
         $this->lastOptions = $options;
@@ -36,83 +36,83 @@ class ArgumentsTest1Task extends BaseTestTask
 {
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('foo', sfCommandArgument::REQUIRED),
             new sfCommandArgument('bar', sfCommandArgument::OPTIONAL),
-        ));
+        ]);
     }
 }
 
 $task = new ArgumentsTest1Task();
-$task->run(array('FOO'));
-$t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => null), '->run() accepts an indexed array of arguments');
+$task->run(['FOO']);
+$t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() accepts an indexed array of arguments');
 
-$task->run(array('foo' => 'FOO'));
-$t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => null), '->run() accepts an associative array of arguments');
+$task->run(['foo' => 'FOO']);
+$t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() accepts an associative array of arguments');
 
-$task->run(array('bar' => 'BAR', 'foo' => 'FOO'));
-$t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => 'BAR'), '->run() accepts an unordered associative array of arguments');
+$task->run(['bar' => 'BAR', 'foo' => 'FOO']);
+$t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => 'BAR'], '->run() accepts an unordered associative array of arguments');
 
 $task->run('FOO BAR');
-$t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => 'BAR'), '->run() accepts a string of arguments');
+$t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => 'BAR'], '->run() accepts a string of arguments');
 
-$task->run(array('foo' => 'FOO', 'bar' => null));
-$t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => null), '->run() accepts an associative array of arguments when optional arguments are passed as null');
+$task->run(['foo' => 'FOO', 'bar' => null]);
+$t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() accepts an associative array of arguments when optional arguments are passed as null');
 
-$task->run(array('bar' => null, 'foo' => 'FOO'));
-$t->is_deeply($task->lastArguments, array('foo' => 'FOO', 'bar' => null), '->run() accepts an unordered associative array of arguments when optional arguments are passed as null');
+$task->run(['bar' => null, 'foo' => 'FOO']);
+$t->is_deeply($task->lastArguments, ['foo' => 'FOO', 'bar' => null], '->run() accepts an unordered associative array of arguments when optional arguments are passed as null');
 
 class ArgumentsTest2Task extends BaseTestTask
 {
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('foo', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
-        ));
+        ]);
     }
 }
 
 $task = new ArgumentsTest2Task();
-$task->run(array('arg1', 'arg2', 'arg3'));
-$t->is_deeply($task->lastArguments, array('foo' => array('arg1', 'arg2', 'arg3')), '->run() accepts an indexed array of an IS_ARRAY argument');
+$task->run(['arg1', 'arg2', 'arg3']);
+$t->is_deeply($task->lastArguments, ['foo' => ['arg1', 'arg2', 'arg3']], '->run() accepts an indexed array of an IS_ARRAY argument');
 
-$task->run(array('foo' => array('arg1', 'arg2', 'arg3')));
-$t->is_deeply($task->lastArguments, array('foo' => array('arg1', 'arg2', 'arg3')), '->run() accepts an associative array of an IS_ARRAY argument');
+$task->run(['foo' => ['arg1', 'arg2', 'arg3']]);
+$t->is_deeply($task->lastArguments, ['foo' => ['arg1', 'arg2', 'arg3']], '->run() accepts an associative array of an IS_ARRAY argument');
 
 class OptionsTest1Task extends BaseTestTask
 {
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('none', null, sfCommandOption::PARAMETER_NONE),
             new sfCommandOption('required', null, sfCommandOption::PARAMETER_REQUIRED),
             new sfCommandOption('optional', null, sfCommandOption::PARAMETER_OPTIONAL),
             new sfCommandOption('array', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY),
-        ));
+        ]);
     }
 }
 
 $task = new OptionsTest1Task();
 $task->run();
-$t->is_deeply($task->lastOptions, array('none' => false, 'required' => null, 'optional' => null, 'array' => array()), '->run() sets empty option values');
+$t->is_deeply($task->lastOptions, ['none' => false, 'required' => null, 'optional' => null, 'array' => []], '->run() sets empty option values');
 
-$task->run(array(), array('--none', '--required=TEST1', '--array=one', '--array=two', '--array=three'));
-$t->is_deeply($task->lastOptions, array('none' => true, 'required' => 'TEST1', 'optional' => null, 'array' => array('one', 'two', 'three')), '->run() accepts an indexed array of option values');
+$task->run([], ['--none', '--required=TEST1', '--array=one', '--array=two', '--array=three']);
+$t->is_deeply($task->lastOptions, ['none' => true, 'required' => 'TEST1', 'optional' => null, 'array' => ['one', 'two', 'three']], '->run() accepts an indexed array of option values');
 
-$task->run(array(), array('none', 'required=TEST1', 'array=one', 'array=two', 'array=three'));
-$t->is_deeply($task->lastOptions, array('none' => true, 'required' => 'TEST1', 'optional' => null, 'array' => array('one', 'two', 'three')), '->run() accepts an indexed array of unflagged option values');
+$task->run([], ['none', 'required=TEST1', 'array=one', 'array=two', 'array=three']);
+$t->is_deeply($task->lastOptions, ['none' => true, 'required' => 'TEST1', 'optional' => null, 'array' => ['one', 'two', 'three']], '->run() accepts an indexed array of unflagged option values');
 
-$task->run(array(), array('none' => false, 'required' => 'TEST1', 'array' => array('one', 'two', 'three')));
-$t->is_deeply($task->lastOptions, array('none' => false, 'required' => 'TEST1', 'optional' => null, 'array' => array('one', 'two', 'three')), '->run() accepts an associative array of option values');
+$task->run([], ['none' => false, 'required' => 'TEST1', 'array' => ['one', 'two', 'three']]);
+$t->is_deeply($task->lastOptions, ['none' => false, 'required' => 'TEST1', 'optional' => null, 'array' => ['one', 'two', 'three']], '->run() accepts an associative array of option values');
 
-$task->run(array(), array('optional' => null, 'array' => array()));
-$t->is_deeply($task->lastOptions, array('none' => false, 'required' => null, 'optional' => null, 'array' => array()), '->run() accepts an associative array of options when optional values are passed as empty');
+$task->run([], ['optional' => null, 'array' => []]);
+$t->is_deeply($task->lastOptions, ['none' => false, 'required' => null, 'optional' => null, 'array' => []], '->run() accepts an associative array of options when optional values are passed as empty');
 
 $task->run('--none --required=TEST1 --array=one --array=two --array=three');
-$t->is_deeply($task->lastOptions, array('none' => true, 'required' => 'TEST1', 'optional' => null, 'array' => array('one', 'two', 'three')), '->run() accepts a string of options');
+$t->is_deeply($task->lastOptions, ['none' => true, 'required' => 'TEST1', 'optional' => null, 'array' => ['one', 'two', 'three']], '->run() accepts a string of options');
 
-$task->run(array(), array('array' => 'one'));
-$t->is_deeply($task->lastOptions, array('none' => false, 'required' => null, 'optional' => null, 'array' => array('one')), '->run() accepts an associative array of options with a scalar array option value');
+$task->run([], ['array' => 'one']);
+$t->is_deeply($task->lastOptions, ['none' => false, 'required' => null, 'optional' => null, 'array' => ['one']], '->run() accepts an associative array of options with a scalar array option value');
 
 // ->getDetailedDescription()
 $t->diag('->getDetailedDescription()');

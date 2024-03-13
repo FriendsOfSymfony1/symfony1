@@ -50,7 +50,7 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
      *
      * @see sfValidatorBase
      */
-    public function __construct($leftField, $operator, $rightField, $options = array(), $messages = array())
+    public function __construct($leftField, $operator, $rightField, $options = [], $messages = [])
     {
         $this->addOption('left_field', $leftField);
         $this->addOption('operator', $operator);
@@ -95,7 +95,7 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
     protected function doClean($values)
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
 
         if (!is_array($values)) {
@@ -151,11 +151,11 @@ class sfValidatorSchemaCompare extends sfValidatorSchema
         }
 
         if (!$valid) {
-            $error = new sfValidatorError($this, 'invalid', array(
+            $error = new sfValidatorError($this, 'invalid', [
                 'left_field' => $leftValue,
                 'right_field' => $rightValue,
                 'operator' => $this->getOption('operator'),
-            ));
+            ]);
             if ($this->getOption('throw_global_error')) {
                 throw $error;
             }

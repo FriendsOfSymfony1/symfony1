@@ -28,10 +28,10 @@ class sfValidatorCallback extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('callback');
-        $this->addOption('arguments', array());
+        $this->addOption('arguments', []);
 
         $this->setOption('required', false);
     }

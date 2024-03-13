@@ -18,7 +18,7 @@ class sfPartialView extends sfPHPView
     protected $viewCache;
     protected $checkCache = false;
     protected $cacheKey;
-    protected $partialVars = array();
+    protected $partialVars = [];
 
     /**
      * Constructor.

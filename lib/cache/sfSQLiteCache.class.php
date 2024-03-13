@@ -30,7 +30,7 @@ class sfSQLiteCache extends sfCache
      *
      * @see sfCache
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
             throw new sfConfigurationException('sfSQLiteCache class needs "sqlite" or "pdo_sqlite" extension to be loaded.');
@@ -196,8 +196,8 @@ class sfSQLiteCache extends sfCache
     public function getMany($keys)
     {
         if ($this->isSqLite3()) {
-            $data = array();
-            if ($results = $this->dbh->query(sprintf("SELECT key, data FROM cache WHERE key IN ('%s') AND timeout > %d", implode('\', \'', array_map(array($this->dbh, 'escapeString'), $keys)), time()))) {
+            $data = [];
+            if ($results = $this->dbh->query(sprintf("SELECT key, data FROM cache WHERE key IN ('%s') AND timeout > %d", implode('\', \'', array_map([$this->dbh, 'escapeString'], $keys)), time()))) {
                 while ($row = $results->fetchArray()) {
                     $data[$row['key']] = $row['data'];
                 }
@@ -208,7 +208,7 @@ class sfSQLiteCache extends sfCache
 
         $rows = $this->dbh->arrayQuery(sprintf("SELECT key, data FROM cache WHERE key IN ('%s') AND timeout > %d", implode('\', \'', array_map('sqlite_escape_string', $keys)), time()));
 
-        $data = array();
+        $data = [];
         foreach ($rows as $row) {
             $data[$row['key']] = $row['data'];
         }
@@ -255,7 +255,7 @@ class sfSQLiteCache extends sfCache
             }
         }
 
-        $this->dbh->createFunction('regexp', array($this, 'removePatternRegexpCallback'), 2);
+        $this->dbh->createFunction('regexp', [$this, 'removePatternRegexpCallback'], 2);
 
         if ($new) {
             $this->createSchema();
@@ -269,7 +269,7 @@ class sfSQLiteCache extends sfCache
      */
     protected function createSchema()
     {
-        $statements = array(
+        $statements = [
             'CREATE TABLE [cache] (
         [key] VARCHAR(255),
         [data] LONGVARCHAR,
@@ -277,7 +277,7 @@ class sfSQLiteCache extends sfCache
         [last_modified] TIMESTAMP
       )',
             'CREATE UNIQUE INDEX [cache_unique] ON [cache] ([key])',
-        );
+        ];
 
         foreach ($statements as $statement) {
             if (false === $this->dbh->query($statement)) {

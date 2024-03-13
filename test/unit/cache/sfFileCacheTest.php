@@ -30,7 +30,7 @@ try {
     $t->pass('->initialize() throws an sfInitializationException exception if you don\'t pass a "cache_dir" parameter');
 }
 
-$cache = new sfFileCache(array('cache_dir' => $temp));
+$cache = new sfFileCache(['cache_dir' => $temp]);
 
 sfCacheDriverTests::launch($t, $cache);
 

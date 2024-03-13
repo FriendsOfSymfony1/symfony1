@@ -18,24 +18,24 @@ class sfI18nFindTask extends sfBaseTask
     /**
      * @see sfTask
      */
-    public function execute($arguments = array(), $options = array())
+    public function execute($arguments = [], $options = [])
     {
         $this->logSection('i18n', sprintf('find non "i18n ready" strings in the "%s" application', $arguments['application']));
 
         // Look in templates
-        $dirs = array();
+        $dirs = [];
         $moduleNames = sfFinder::type('dir')->maxdepth(0)->relative()->in(sfConfig::get('sf_app_module_dir'));
         foreach ($moduleNames as $moduleName) {
             $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
         }
         $dirs[] = sfConfig::get('sf_app_dir').'/templates';
 
-        $strings = array();
+        $strings = [];
         foreach ($dirs as $dir) {
             $templates = sfFinder::type('file')->name('*.php')->in($dir);
             foreach ($templates as $template) {
                 if (!isset($strings[$template])) {
-                    $strings[$template] = array();
+                    $strings[$template] = [];
                 }
 
                 $dom = new DOMDocument('1.0', sfConfig::get('sf_charset', 'UTF-8'));
@@ -46,7 +46,7 @@ class sfI18nFindTask extends sfBaseTask
 
                 @$dom->loadXML('<doc>'.$content.'</doc>');
 
-                $nodes = array($dom);
+                $nodes = [$dom];
                 while ($nodes) {
                     $node = array_shift($nodes);
 
@@ -92,13 +92,13 @@ class sfI18nFindTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'i18n';
         $this->name = 'find';

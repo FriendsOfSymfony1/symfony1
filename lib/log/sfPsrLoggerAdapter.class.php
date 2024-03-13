@@ -21,7 +21,7 @@ class sfPsrLoggerAdapter extends sfLogger
      *
      * @var array
      */
-    private $buffer = array();
+    private $buffer = [];
 
     /**
      * The logger that will the log will be forward to.
@@ -47,14 +47,14 @@ class sfPsrLoggerAdapter extends sfLogger
      *
      * @param array $options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         if (isset($options['logger_service_id'])) {
             $this->loggerServiceId = $options['logger_service_id'];
         }
 
         if (!isset($options['auto_connect']) || $options['auto_connect']) {
-            $dispatcher->connect('context.load_factories', array($this, 'listenContextLoadFactoriesEvent'));
+            $dispatcher->connect('context.load_factories', [$this, 'listenContextLoadFactoriesEvent']);
         }
 
         parent::initialize($dispatcher, $options);
@@ -68,7 +68,7 @@ class sfPsrLoggerAdapter extends sfLogger
         $context = $event->getSubject();
         // @var $context sfContext
         $this->setLogger($context->getService($this->loggerServiceId));
-        $this->dispatcher->disconnect('context.load_factories', array($this, 'listenContextLoadFactoriesEvent'));
+        $this->dispatcher->disconnect('context.load_factories', [$this, 'listenContextLoadFactoriesEvent']);
     }
 
     /**
@@ -86,7 +86,7 @@ class sfPsrLoggerAdapter extends sfLogger
     public function flushBuffer()
     {
         if (!$this->logger) {
-            $this->buffer = array();
+            $this->buffer = [];
 
             return;
         }
@@ -95,7 +95,7 @@ class sfPsrLoggerAdapter extends sfLogger
             $this->log($log['message'], $log['priority']);
         }
 
-        $this->buffer = array();
+        $this->buffer = [];
     }
 
     /**

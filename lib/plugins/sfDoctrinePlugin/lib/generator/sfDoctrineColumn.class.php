@@ -20,7 +20,7 @@ class sfDoctrineColumn implements ArrayAccess
     /**
      * Array mapping Doctrine column types to the native symfony type.
      */
-    public static $doctrineToSymfony = array(
+    public static $doctrineToSymfony = [
         'boolean' => 'BOOLEAN',
         'string' => 'LONGVARCHAR',
         'integer' => 'INTEGER',
@@ -35,7 +35,7 @@ class sfDoctrineColumn implements ArrayAccess
         'object' => 'LONGVARCHAR',
         'array' => 'LONGVARCHAR',
         'decimal' => 'DECIMAL',
-    );
+    ];
 
     /**
      * Store the name of the related class for this column if it is
@@ -72,7 +72,7 @@ class sfDoctrineColumn implements ArrayAccess
      *
      * @var array
      */
-    protected $definition = array();
+    protected $definition = [];
 
     /**
      * Constructor.

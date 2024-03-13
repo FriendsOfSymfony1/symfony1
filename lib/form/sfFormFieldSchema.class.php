@@ -16,8 +16,8 @@
 class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Countable
 {
     protected $count = 0;
-    protected $fieldNames = array();
-    protected $fields = array();
+    protected $fieldNames = [];
+    protected $fields = [];
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      */
     public function getHiddenFields($recursive = true)
     {
-        $fields = array();
+        $fields = [];
 
         foreach ($this as $name => $field) {
             if ($field instanceof sfFormFieldSchema && $recursive) {

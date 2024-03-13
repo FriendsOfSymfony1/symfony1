@@ -14,7 +14,7 @@ $t = new lime_test(8);
 
 class FormListener
 {
-    public $events = array();
+    public $events = [];
 
     public function listen(sfEvent $event)
     {
@@ -30,16 +30,16 @@ class FormListener
 
     public function reset()
     {
-        $this->events = array();
+        $this->events = [];
     }
 }
 
 $listener = new FormListener();
 $dispatcher = new sfEventDispatcher();
 
-$dispatcher->connect('form.post_configure', array($listener, 'listen'));
-$dispatcher->connect('form.filter_values', array($listener, 'filter'));
-$dispatcher->connect('form.validation_error', array($listener, 'listen'));
+$dispatcher->connect('form.post_configure', [$listener, 'listen']);
+$dispatcher->connect('form.filter_values', [$listener, 'filter']);
+$dispatcher->connect('form.validation_error', [$listener, 'listen']);
 
 sfFormSymfony::setEventDispatcher($dispatcher);
 
@@ -47,10 +47,10 @@ class TestForm extends sfFormSymfony
 {
     public function configure()
     {
-        $this->setValidators(array(
+        $this->setValidators([
             'first_name' => new sfValidatorString(),
             'last_name' => new sfValidatorString(),
-        ));
+        ]);
     }
 }
 
@@ -67,14 +67,14 @@ $t->diag('->bind()');
 
 $form = new TestForm();
 $listener->reset();
-$form->bind(array(
+$form->bind([
     'first_name' => 'John',
     'last_name' => 'Doe',
-));
+]);
 
 $t->is(count($listener->events), 1, '->bind() notifies one event when validation is successful');
 $t->is($listener->events[0][0]->getName(), 'form.filter_values', '->bind() notifies the "form.filter_values" event');
-$t->is_deeply($listener->events[0][1], array('first_name' => 'John', 'last_name' => 'Doe'), '->bind() filters the tainted values');
+$t->is_deeply($listener->events[0][1], ['first_name' => 'John', 'last_name' => 'Doe'], '->bind() filters the tainted values');
 
 $form = new TestForm();
 $listener->reset();

@@ -25,7 +25,7 @@ class ObjectRoute extends sfObjectRoute
 {
     protected function doConvertObjectToArray($object)
     {
-        $parameters = array();
+        $parameters = [];
         foreach ($this->getRealVariables() as $variable) {
             if (method_exists($object, $method = 'get'.$variable)) {
                 $parameters[$variable] = $object->{$method}();
@@ -38,5 +38,5 @@ class ObjectRoute extends sfObjectRoute
 
 // ->generate()
 $t->diag('->generate()');
-$route = new ObjectRoute('/:id', array(), array(), array('model' => 'Foo', 'type' => 'object'));
-$t->is($route->generate(array('sf_subject' => new Foo())), '/1', '->generate() generates a URL with the given parameters');
+$route = new ObjectRoute('/:id', [], [], ['model' => 'Foo', 'type' => 'object']);
+$t->is($route->generate(['sf_subject' => new Foo()]), '/1', '->generate() generates a URL with the given parameters');

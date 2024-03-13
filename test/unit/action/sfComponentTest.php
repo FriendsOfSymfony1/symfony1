@@ -23,10 +23,10 @@ class myComponent extends sfComponent
     }
 }
 
-$context = sfContext::getInstance(array(
+$context = sfContext::getInstance([
     'routing' => 'sfNoRouting',
     'request' => 'sfWebRequest',
-));
+]);
 
 // ->initialize()
 $t->diag('->initialize()');
@@ -52,9 +52,9 @@ $t->is($component->getResponse(), $context->getResponse(), '->getResponse() retu
 
 // __set()
 $t->diag('__set()');
-$component->foo = array();
+$component->foo = [];
 $component->foo[] = 'bar';
-$t->is($component->foo, array('bar'), '__set() populates component variables');
+$t->is($component->foo, ['bar'], '__set() populates component variables');
 
 // new methods via sfEventDispatcher
 require_once $_test_dir.'/unit/sfEventDispatcherTest.class.php';
