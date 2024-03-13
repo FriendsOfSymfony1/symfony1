@@ -22,7 +22,7 @@ function check($boolean, $message, $help = '', $fatal = false)
 }
 
 /**
- * Gets the php.ini path used by the current PHP interpretor.
+ * Gets the php.ini path used by the current PHP interpreter.
  *
  * @return string the php.ini path
  */
