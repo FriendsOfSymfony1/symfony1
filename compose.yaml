@@ -1,0 +1,13 @@
+services:
+
+    php:
+        environment:
+            COMPOSER_HOME: "/var/composer"
+            COMPOSER_CACHE_DIR: "/var/composer/cache"
+        build:
+            context: .docker/
+        volumes:
+            - ".:/var/www/html:rw,z"
+
+#     memcached:
+#         image: memcached:1.6.13-alpine3.15
