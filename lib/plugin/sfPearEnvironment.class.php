@@ -80,7 +80,7 @@ class sfPearEnvironment
         }
 
         if (!is_dir($options['cache_dir']) && !@mkdir($options['cache_dir'], 0777, true) && !is_dir($options['cache_dir'])) {
-            throw new \RuntimeException(sprintf('Pear was not able to create a directory "%s"', $options['cache_dir']));
+            throw new RuntimeException(sprintf('Pear was not able to create a directory "%s"', $options['cache_dir']));
         }
 
         if (!isset($options['rest_base_class'])) {

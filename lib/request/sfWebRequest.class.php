@@ -398,7 +398,7 @@ class sfWebRequest extends sfRequest
      *
      * @return string The preferred culture
      */
-    public function getPreferredCulture(array $cultures = null)
+    public function getPreferredCulture(?array $cultures = null)
     {
         $preferredCultures = $this->getLanguages();
 

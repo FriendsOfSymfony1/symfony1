@@ -30,7 +30,7 @@ abstract class sfTestFunctionalBase
      * @param sfBrowserBase $browser A sfBrowserBase instance
      * @param lime_test     $lime    A lime instance
      */
-    public function __construct(sfBrowserBase $browser, lime_test $lime = null, $testers = array())
+    public function __construct(sfBrowserBase $browser, ?lime_test $lime = null, $testers = array())
     {
         $this->browser = $browser;
 

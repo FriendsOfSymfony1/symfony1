@@ -24,7 +24,7 @@ class sfFilesystem
      * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
      * @param sfFormatter       $formatter  An sfFormatter instance
      */
-    public function __construct(sfEventDispatcher $dispatcher = null, sfFormatter $formatter = null)
+    public function __construct(?sfEventDispatcher $dispatcher = null, ?sfFormatter $formatter = null)
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = $formatter;

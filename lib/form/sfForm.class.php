@@ -214,7 +214,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
      * @param array $taintedValues An array of input values
      * @param array $taintedFiles  An array of uploaded files (in the $_FILES or $_GET format)
      */
-    public function bind(array $taintedValues = null, array $taintedFiles = null)
+    public function bind(?array $taintedValues = null, ?array $taintedFiles = null)
     {
         $this->taintedValues = $taintedValues;
         $this->taintedFiles = $taintedFiles;
@@ -254,7 +254,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
     /**
      * Bind embedded forms (recursivly).
      */
-    public function bindEmbeddedForms(array $taintedValues = null, array $taintedFiles = null)
+    public function bindEmbeddedForms(?array $taintedValues = null, ?array $taintedFiles = null)
     {
         foreach ($this->embeddedForms as $name => $form) {
             // remove CSRF token
@@ -519,7 +519,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
      *
      * @param sfValidatorBase $validator A validator to be merged
      */
-    public function mergePreValidator(sfValidatorBase $validator = null)
+    public function mergePreValidator(?sfValidatorBase $validator = null)
     {
         if (null === $validator) {
             return;
@@ -540,7 +540,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
      *
      * @param sfValidatorBase $validator A validator to be merged
      */
-    public function mergePostValidator(sfValidatorBase $validator = null)
+    public function mergePostValidator(?sfValidatorBase $validator = null)
     {
         if (null === $validator) {
             return;

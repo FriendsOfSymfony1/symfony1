@@ -313,7 +313,7 @@ class sfConfigCache
         $current_umask = umask(0000);
         $cacheDir = dirname($cache);
         if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true) && !is_dir($cacheDir)) {
-            throw new \sfCacheException(sprintf('Failed to make cache directory "%s" while generating cache for configuration file "%s".', $cacheDir, $config));
+            throw new sfCacheException(sprintf('Failed to make cache directory "%s" while generating cache for configuration file "%s".', $cacheDir, $config));
         }
 
         $tmpFile = tempnam($cacheDir, basename($cache));
