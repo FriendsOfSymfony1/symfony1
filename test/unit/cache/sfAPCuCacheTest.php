@@ -13,9 +13,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 $plan = 64;
 $t = new lime_test($plan);
 
-if (extension_loaded('apc')) {
-    $cacheClass = 'sfAPCCache';
-} elseif (extension_loaded('apcu')) {
+if (extension_loaded('apcu')) {
     if ('5.1.22' === phpversion('apcu')) {
         $t->skip('APCu 5.1.22 has a regression and shouldn\'t be used', $plan);
 
@@ -37,7 +35,7 @@ try {
 }
 
 if (!ini_get('apc.enable_cli')) {
-    $t->skip('APC must be enable on CLI to run these tests', $plan);
+    $t->skip('APCu must be enable on CLI to run these tests', $plan);
 
     return;
 }
