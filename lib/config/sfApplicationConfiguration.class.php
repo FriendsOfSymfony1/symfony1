@@ -33,7 +33,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
      * @param string            $rootDir     The project root directory
      * @param sfEventDispatcher $dispatcher  An event dispatcher
      */
-    public function __construct($environment, $debug, $rootDir = null, sfEventDispatcher $dispatcher = null)
+    public function __construct($environment, $debug, $rootDir = null, ?sfEventDispatcher $dispatcher = null)
     {
         $this->environment = $environment;
         $this->debug = (bool) $debug;

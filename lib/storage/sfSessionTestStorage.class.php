@@ -146,7 +146,7 @@ class sfSessionTestStorage extends sfStorage
             $current_umask = umask(0000);
             $sessionsDir = $this->options['session_path'];
             if (!is_dir($sessionsDir) && !@mkdir($sessionsDir, 0777, true) && !is_dir($sessionsDir)) {
-                throw new \RuntimeException(sprintf('Logger was not able to create a directory "%s"', $sessionsDir));
+                throw new RuntimeException(sprintf('Logger was not able to create a directory "%s"', $sessionsDir));
             }
             umask($current_umask);
             file_put_contents($sessionsDir.DIRECTORY_SEPARATOR.$this->sessionId.'.session', serialize($this->sessionData));

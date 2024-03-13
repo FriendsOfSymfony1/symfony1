@@ -28,7 +28,7 @@ class sfI18N
      *
      * @see initialize()
      */
-    public function __construct(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = array())
+    public function __construct(sfApplicationConfiguration $configuration, ?sfCache $cache = null, $options = array())
     {
         $this->initialize($configuration, $cache, $options);
     }
@@ -63,7 +63,7 @@ class sfI18N
      * @param sfCache                    $cache         A sfCache instance
      * @param array                      $options       An array of options
      */
-    public function initialize(sfApplicationConfiguration $configuration, sfCache $cache = null, $options = array())
+    public function initialize(sfApplicationConfiguration $configuration, ?sfCache $cache = null, $options = array())
     {
         $this->configuration = $configuration;
         $this->dispatcher = $configuration->getEventDispatcher();

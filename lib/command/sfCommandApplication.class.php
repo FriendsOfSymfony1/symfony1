@@ -60,7 +60,7 @@ abstract class sfCommandApplication
      * @param sfFormatter       $formatter  A sfFormatter instance
      * @param array             $options    An array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfFormatter $formatter = null, $options = array())
+    public function __construct(sfEventDispatcher $dispatcher, ?sfFormatter $formatter = null, $options = array())
     {
         $this->dispatcher = $dispatcher;
         $this->formatter = null === $formatter ? $this->guessBestFormatter(STDOUT) : $formatter;

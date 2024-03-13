@@ -66,7 +66,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
      *
      * @throws InvalidArgumentException If a requested database is not a Doctrine database
      */
-    protected function getDoctrineDatabases(sfDatabaseManager $databaseManager, array $names = null)
+    protected function getDoctrineDatabases(sfDatabaseManager $databaseManager, ?array $names = null)
     {
         $databases = array();
 

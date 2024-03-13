@@ -61,7 +61,7 @@ class sfFormSymfony extends sfForm
     /**
      * Sets the event dispatcher to be used by all forms.
      */
-    public static function setEventDispatcher(sfEventDispatcher $dispatcher = null)
+    public static function setEventDispatcher(?sfEventDispatcher $dispatcher = null)
     {
         self::$dispatcher = $dispatcher;
     }
