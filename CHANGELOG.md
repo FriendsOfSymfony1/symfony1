@@ -12,14 +12,14 @@ xx/xx/xxxx: Version 1.5.xx
 
 * Set min versions of swiftmailer to 5.4.13 and 6.2.5 and updated swiftmailer submodule by @thirsch in #331
 
-28/02/2024: Version 1.5.17
+23/02/2024: Version 1.5.17
 --------------------------
 
 * Update min PHP requirement to v7.4 or v8.1 by @thePanz in #325
 * Updated gh workflow to use latest actions by @thirsch in #330
 * Backported display_errors-handling to sf1 by @thirsch in #328
 
-12/01/2023: Version 1.5.16
+15/02/2024: Version 1.5.16
 --------------------------
 
 * Fix(deprecations) Fix deprecations in sfMessageSource_Aggregate, by @thePanz in #277
