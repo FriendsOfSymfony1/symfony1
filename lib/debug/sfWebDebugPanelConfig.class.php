@@ -35,12 +35,11 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
             'compression' => sfConfig::get('sf_compressed') ? 'on' : 'off',
             'tokenizer' => function_exists('token_get_all') ? 'on' : 'off',
             'apc' => extension_loaded('apc') && ini_get('apc.enabled') ? 'on' : 'off',
-            'xcache' => extension_loaded('xcache') && ini_get('xcache.cacher') ? 'on' : 'off',
         );
 
         $html = '<ul id="sfWebDebugConfigSummary">';
         foreach ($config as $key => $value) {
-            $html .= '<li class="is'.$value.('xcache' == $key ? ' last' : '').'">'.$key.'</li>';
+            $html .= '<li class="is'.$value.'">'.$key.'</li>';
         }
         $html .= '</ul>';
 

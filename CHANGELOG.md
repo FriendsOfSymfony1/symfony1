@@ -6,6 +6,7 @@ CHANGELOG
 xx/xx/xxxx: Version 1.5.xx
 --------------------------
 
+* Remove sfXCacheCache as the extension is not available on PHP v7.4 anymore.
 * Remove sfEAcceleratorCache as the extension is not available on PHP v7.4 anymore.
 * Remove sfAPCCache as it uses the `apc` extension, which is not available on PHP v7.4 anymore.
   [BC-Break] Use `sfAPCUCache` class instead, available on Symfony1 v1.5.16
