@@ -306,7 +306,7 @@ class sfSQLiteCache extends sfCache
     protected function getSqLiteVersion()
     {
         if (null === $this->sqlLiteVersion) {
-            $this->sqlLiteVersion = version_compare(PHP_VERSION, '5.3', '>') ? 3 : 2;
+            $this->sqlLiteVersion = 3;
         }
 
         return $this->sqlLiteVersion;

@@ -92,23 +92,12 @@ function init_fixtures($temp)
         "INSERT INTO trans_unit (msg_id, cat_id, id, source, target, translated) VALUES (2, 1, 2, 'another english sentence', 'une autre phrase en français', 1)",
     );
 
-    if (version_compare(PHP_VERSION, '5.3', '>')) {
-        $db = new SQLite3($temp);
-
-        foreach ($queries as $query) {
-            $db->exec($query);
-        }
-
-        $db->close();
-    } else {
-        $db = sqlite_open($temp);
-
-        foreach ($queries as $query) {
-            sqlite_query($query, $db);
-        }
-
-        sqlite_close($db);
+    $db = new SQLite3($temp);
+    foreach ($queries as $query) {
+        $db->exec($query);
     }
+
+    $db->close();
 
     return sfMessageSource::factory('SQLite', 'sqlite://localhost/'.$temp);
 }
