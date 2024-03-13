@@ -5,8 +5,7 @@ prod:
 
 dev:
   .settings:
-    # E_ALL | E_STRICT = 4095
-    error_reporting:        4095
+    error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
     web_debug:              true
     cache:                  true
     no_script_name:         false
@@ -14,8 +13,7 @@ dev:
 
 test:
   .settings:
-    # E_ALL | E_STRICT = 4095
-    error_reporting:        4095
+    error_reporting:        <?php echo ((E_ALL | E_STRICT) ^ E_USER_DEPRECATED ^ E_DEPRECATED ^ E_STRICT ^ E_USER_NOTICE ^ E_NOTICE)."\n" ?>
     web_debug:              false
     cache:                  true
     no_script_name:         false

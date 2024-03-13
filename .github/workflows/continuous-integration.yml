@@ -27,6 +27,8 @@ jobs:
     services:
       memcached:
         image: "memcached:${{ matrix.memcached-version }}"
+        ports:
+          - 11211:11211
 
     steps:
       - name: Checkout
@@ -39,7 +41,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: apcu
-          ini-values: apc.enable_cli=1
+          ini-values: error_reporting=5111,apc.enable_cli=on,apc.use_request_time=off,memory_limit=-1,short_open_tag=off,magic_quotes_gpc=off,date.timezone="UTC"
 
       - name: Get composer cache directory
         id: composer-cache

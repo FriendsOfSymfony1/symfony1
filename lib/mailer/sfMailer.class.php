@@ -56,7 +56,7 @@ class sfMailer extends Swift_Mailer
             'logging' => false,
             'delivery_strategy' => self::REALTIME,
             'transport' => array(
-                'class' => 'Swift_MailTransport',
+                'class' => class_exists('Swift_MailTransport') ? 'Swift_MailTransport' : 'Swift_SmtpTransport',
                 'param' => array(),
             ),
         ), $options);
@@ -260,7 +260,7 @@ class sfMailer extends Swift_Mailer
      *
      * @return false|int The number of sent emails
      */
-    public function send($message, &$failedRecipients = null)
+    public function send(sfMailerSwiftMessage $message, &$failedRecipients = null)
     {
         if ($this->force) {
             $this->force = false;

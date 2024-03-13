@@ -192,6 +192,7 @@ class sfCoreAutoload
         'sfwebdebuglogger' => 'log/sfWebDebugLogger.class.php',
         'sfmailer' => 'mailer/sfMailer.class.php',
         'sfmailermessageloggerplugin' => 'mailer/sfMailerMessageLoggerPlugin.class.php',
+        'sfmailerswiftmessage' => 'mailer/sfMailerSwiftMessage.php',
         'sfnomailer' => 'mailer/sfNoMailer.class.php',
         'sfpearconfig' => 'plugin/sfPearConfig.class.php',
         'sfpeardownloader' => 'plugin/sfPearDownloader.class.php',
@@ -371,8 +372,8 @@ class sfCoreAutoload
         'sfwidgetforminput' => 'widget/sfWidgetFormInput.class.php',
         'sfwidgetforminputcheckbox' => 'widget/sfWidgetFormInputCheckbox.class.php',
         'sfwidgetforminputfile' => 'widget/sfWidgetFormInputFile.class.php',
-        'sfwidgetforminputfilemulti' => 'widget/sfWidgetFormInputFileMulti.class.php',
         'sfwidgetforminputfileeditable' => 'widget/sfWidgetFormInputFileEditable.class.php',
+        'sfwidgetforminputfilemulti' => 'widget/sfWidgetFormInputFileMulti.class.php',
         'sfwidgetforminputhidden' => 'widget/sfWidgetFormInputHidden.class.php',
         'sfwidgetforminputpassword' => 'widget/sfWidgetFormInputPassword.class.php',
         'sfwidgetforminputread' => 'widget/sfWidgetFormInputRead.class.php',
@@ -519,11 +520,11 @@ class sfCoreAutoload
             if (false !== stripos($contents, 'class '.$class)
                 || false !== stripos($contents, 'interface '.$class)
                 || false !== stripos($contents, 'trait '.$class)) {
-                $classes .= sprintf("    '%s' => '%s',\n", strtolower($class), substr(str_replace($libDir, '', $file), 1));
+                $classes .= sprintf("        '%s' => '%s',\n", strtolower($class), substr(str_replace($libDir, '', $file), 1));
             }
         }
 
-        $content = preg_replace('/protected \$classes = array *\(.*?\);/s', sprintf("protected \$classes = array(\n%s  );", $classes), file_get_contents(__FILE__));
+        $content = preg_replace('/protected \$classes = array *\(.*?\);/s', sprintf("protected \$classes = array(\n%s    );", $classes), file_get_contents(__FILE__));
 
         file_put_contents(__FILE__, $content);
     }

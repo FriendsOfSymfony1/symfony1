@@ -7,13 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class TestMailMessage
-{
-    public function setMessage(sfMailerSwiftMessage $message)
-    {
-    }
 
-    public function getMessage()
-    {
-    }
-}
+define('SF_TEST_WITHOUT_COMPOSER', 1);
+
+require_once __DIR__.'/sfMailerTest.php';

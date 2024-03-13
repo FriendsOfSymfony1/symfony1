@@ -99,11 +99,7 @@ class sfCacheSessionStorage extends sfStorage
         }
 
         if (empty($this->id)) {
-            $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'localhost';
-            $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
-
-            // generate new id based on random # / ip / user agent / secret
-            $this->id = md5(mt_rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
+            $this->id = $this->generateId();
 
             if (sfConfig::get('sf_logging_enabled')) {
                 $this->dispatcher->notify(new sfEvent($this, 'application.log', array('New session created')));
@@ -224,10 +220,7 @@ class sfCacheSessionStorage extends sfStorage
             $this->cache->remove($this->id);
         }
 
-        // generate session id
-        $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
-
-        $this->id = md5(mt_rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
+        $this->id = $this->generateId();
 
         // save data to cache
         $this->cache->set($this->id, serialize($this->data));
@@ -274,5 +267,17 @@ class sfCacheSessionStorage extends sfStorage
                 $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Storing session to cache')));
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function generateId()
+    {
+        $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'localhost';
+        $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
+
+        // generate new id based on random # / ip / user agent / secret
+        return md5(mt_rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
     }
 }

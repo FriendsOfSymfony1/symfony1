@@ -8,6 +8,10 @@
  * file that was distributed with this source code.
  */
 
+if (!defined('SF_TEST_WITHOUT_COMPOSER')) {
+    require_once __DIR__.'/../../vendor/autoload.php';
+}
+
 // setup expected test environment (per check_configuration.php)
 ini_set('magic_quotes_runtime', 'off');
 ini_set('session.auto_start', 'off');

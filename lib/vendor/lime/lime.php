@@ -24,9 +24,13 @@ class lime_test
   protected $options = array();
 
   static protected $all_results = array();
+  static private $instanceCount = 0;
+  static private $allExitCode = 0;
 
   public function __construct($plan = null, $options = array())
   {
+    ++self::$instanceCount;
+
     // for BC
     if (!is_array($options))
     {
@@ -37,7 +41,7 @@ class lime_test
       'force_colors'    => false,
       'output'          => null,
       'verbose'         => false,
-      'error_reporting' => false,
+      'error_reporting' => true,
     ), $options);
 
     $this->output = $this->options['output'] ? $this->options['output'] : new lime_output($this->options['force_colors']);
@@ -130,9 +134,12 @@ class lime_test
 
   public function __destruct()
   {
+    --self::$instanceCount;
+
     $plan = $this->results['stats']['plan'];
     $passed = count($this->results['stats']['passed']);
     $failed = count($this->results['stats']['failed']);
+    $errors = count($this->results['stats']['errors']);
     $total = $this->results['stats']['total'];
     is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
 
@@ -149,12 +156,42 @@ class lime_test
     {
       $this->output->red_bar(sprintf("# Looks like you failed %d tests of %d.", $failed, $passed + $failed));
     }
+    else if ($errors)
+    {
+      $this->output->red_bar(sprintf("# Looks like test pass but with %d errors.", $errors));
+    }
     else if ($total == $plan)
     {
       $this->output->green_bar("# Looks like everything went fine.");
     }
 
     flush();
+
+    self::$allExitCode |= $this->getExitCode();
+
+    if (0 === self::$instanceCount) {
+        exit(self::$allExitCode);
+    }
+  }
+
+  private function getExitCode()
+  {
+    $plan = $this->results['stats']['plan'];
+    $failed = count($this->results['stats']['failed']);
+    $errors = count($this->results['stats']['errors']);
+    $total = $this->results['stats']['total'];
+    is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
+
+    if ($failed || $errors)
+    {
+      return 1;
+    }
+    else if ($total == $plan)
+    {
+      return 0;
+    }
+
+    return 1;
   }
 
   /**
@@ -575,6 +612,12 @@ class lime_test
     {
       case E_WARNING:
         $type = 'Warning';
+        break;
+      case E_STRICT:
+        $type = 'Strict';
+        break;
+      case E_DEPRECATED:
+        $type = 'Deprecated';
         break;
       default:
         $type = 'Notice';
