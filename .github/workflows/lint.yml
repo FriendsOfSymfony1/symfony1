@@ -1,9 +1,21 @@
 name: "Code Linting"
 on:
   push:
+    paths:
+      - .php-cs-fixer.dist.php
+      - autoload.php
+      - lib/**
+      - data/**
+      - tests/**
     branches:
       - master
   pull_request:
+    paths:
+      - .php-cs-fixer.dist.php
+      - autoload.php
+      - lib/**
+      - data/**
+      - tests/**
 
 jobs:
   php-cs-fixer:
