@@ -15,17 +15,17 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 7.4
           tools: php-cs-fixer:3.51, cs2pr
 
       - uses: actions/cache@v4
         with:
           path: '.php-cs-fixer.cache'
-          key: ${{ github.repository }}-8.2-phpcsfixer-${{ github.ref_name }}
+          key: ${{ github.repository }}-7.4-phpcsfixer-${{ github.ref_name }}
           restore-keys: |
-            ${{ github.repository }}-8.2-phpcsfixer-master
-            ${{ github.repository }}-8.2-phpcsfixer-
+            ${{ github.repository }}-7.4-phpcsfixer-master
+            ${{ github.repository }}-7.4-phpcsfixer-
 
       - name: Run PHP-CS-Fixer
         # Using cs2pr settings, see: https://github.com/shivammathur/setup-php#tools-with-checkstyle-support
-        run: 'php-cs-fixer fix --dry-run --format checkstyle | cs2pr'
+        run: 'php-cs-fixer fix --dry-run --format=checkstyle | cs2pr'
