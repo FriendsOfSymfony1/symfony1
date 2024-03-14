@@ -40,6 +40,7 @@ jobs:
           php-version: "${{ matrix.php-version }}"
           extensions: apcu
           ini-values: apc.enable_cli=1
+          tools: phpunit:9
 
       - name: Get composer cache directory
         id: composer-cache
@@ -58,5 +59,8 @@ jobs:
       - name: Run Check configuration
         run: php data/bin/check_configuration.php
 
-      - name: Run Tests
+      - name: Run Lime Tests
         run: php data/bin/symfony symfony:test --trace
+
+      - name: Run PHPUnit Tests
+        run: phpunit

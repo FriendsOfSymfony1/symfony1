@@ -8,7 +8,8 @@
         "friendsofsymfony1/swiftmailer": "^5.4.13 || ^6.2.5"
     },
     "require-dev": {
-        "psr/log": "*"
+        "psr/log": "*",
+        "symfony/phpunit-bridge": "^7.0"
     },
     "autoload": {
         "files": ["autoload.php"]
@@ -25,6 +26,14 @@
     },
     "replace": {
         "lexpress/symfony1": "^1.5"
+    },
+    "scripts": {
+        "test": [
+            "@test:lime",
+            "@test:phpunit"
+        ],
+        "test:lime": "php data/bin/symfony symfony:test --trace",
+        "test:phpunit": "./bin/phpunit"
     },
     "bin": ["data/bin/symfony"]
 }
