@@ -9,6 +9,15 @@ $finder = PhpCsFixer\Finder::create()
     // Exclude PHP classes templates/generators, which are not valid PHP files
     ->exclude('task/generator/skeleton/')
     ->exclude('plugins/sfDoctrinePlugin/data/generator/')
+    ->exclude('plugins/sfDoctrinePlugin/test/functional/fixtures/')
+
+    // Exclude sub-modules folders
+    ->exclude('plugins/sfDoctrinePlugin/lib/vendor/doctrine')
+
+    // Exclude generated files (whole directories)
+    ->exclude('functional/fixtures/cache')
+    ->exclude('functional/fixtures/log')
+
     // Exclude generated files (single files)
     ->notPath('unit/config/fixtures/sfDefineEnvironmentConfigHandler/prefix_result.php')
     ->notPath('unit/config/fixtures/sfFilterConfigHandler/result.php')
