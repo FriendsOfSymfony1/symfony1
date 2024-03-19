@@ -23,18 +23,19 @@ class sfDoctrineBuildTask extends sfDoctrineBaseTask
     public const BUILD_FILTERS = 4;
     public const BUILD_SQL = 8;
     public const BUILD_DB = 16;
+    // model, forms
     public const OPTION_MODEL = 1;
     public const OPTION_FORMS = 3;
-    public const // model, forms
-      OPTION_FILTERS = 5;
-    public const // model, filters
-      OPTION_SQL = 9;
-    public const // model, sql
-      OPTION_DB = 25;
-    public const // model, sql, db
-      OPTION_ALL_CLASSES = 7;
-    public const // model, forms, filters
-      OPTION_ALL = 31; // model, forms, filters, sql, db
+    // model, filters
+    public const OPTION_FILTERS = 5;
+    // model, sql
+    public const OPTION_SQL = 9;
+    // model, sql, db
+    public const OPTION_DB = 25;
+    // model, forms, filters
+    public const OPTION_ALL_CLASSES = 7;
+    // model, forms, filters, sql, db
+    public const OPTION_ALL = 31;
 
     /**
      * @see sfTask
