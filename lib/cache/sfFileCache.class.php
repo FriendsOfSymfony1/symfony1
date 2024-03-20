@@ -122,6 +122,8 @@ class sfFileCache extends sfCache
                 @unlink($path);
             }
         }
+
+        return true;
     }
 
     /**
