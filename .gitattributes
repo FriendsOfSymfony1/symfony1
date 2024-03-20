@@ -8,7 +8,6 @@ compose.yaml           export-ignore
 compose.override.yaml  export-ignore
 .php-cs-fixer.dist.php export-ignore
 Justfile               export-ignore
-docker-compose.yml     export-ignore
 phpstan.neon           export-ignore
 phpunit.xml            export-ignore
 tests/                 export-ignore
