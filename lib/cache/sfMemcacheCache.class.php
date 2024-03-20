@@ -145,6 +145,8 @@ class sfMemcacheCache extends sfCache
         if (sfCache::ALL === $mode) {
             return $this->memcache->flush();
         }
+
+        return true;
     }
 
     /**
@@ -188,6 +190,8 @@ class sfMemcacheCache extends sfCache
                 $this->remove(substr($key, strlen($this->getOption('prefix'))));
             }
         }
+
+        return true;
     }
 
     /**
