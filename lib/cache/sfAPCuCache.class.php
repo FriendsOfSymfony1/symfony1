@@ -102,6 +102,8 @@ class sfAPCuCache extends sfCache
         if (sfCache::ALL === $mode) {
             return apcu_clear_cache();
         }
+
+        return true;
     }
 
     /**
@@ -139,16 +141,18 @@ class sfAPCuCache extends sfCache
 
         $infos = apcu_cache_info();
         if (!is_array($infos['cache_list'])) {
-            return;
+            return true;
         }
 
-        $regexp = self::patternToRegexp($this->getOption('prefix').$pattern);
+        $regexp = $this->patternToRegexp($this->getOption('prefix').$pattern);
 
         foreach ($infos['cache_list'] as $info) {
             if (preg_match($regexp, $info['info'])) {
                 apcu_delete($info['info']);
             }
         }
+
+        return true;
     }
 
     /**
@@ -156,7 +160,7 @@ class sfAPCuCache extends sfCache
      *
      * @param string $key The cache key
      *
-     * @return string
+     * @return string|false|array
      */
     protected function getCacheInfo($key)
     {
@@ -177,6 +181,13 @@ class sfAPCuCache extends sfCache
         return null;
     }
 
+    /**
+     * @param string $key
+     *
+     * @param-out bool $success
+     *
+     * @return false|mixed
+     */
     private function fetch($key, &$success)
     {
         $has = null;
