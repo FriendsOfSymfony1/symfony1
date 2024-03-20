@@ -153,5 +153,7 @@ EOF;
 
         // Create test dir
         $this->getFilesystem()->mkdirs(sfConfig::get('sf_test_dir').'/functional/'.$app);
+
+        return 0;
     }
 }

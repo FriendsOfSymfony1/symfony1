@@ -38,5 +38,7 @@ EOF;
     {
         $logs = sfFinder::type('file')->in(sfConfig::get('sf_log_dir'));
         $this->getFilesystem()->remove($logs);
+
+        return 0;
     }
 }

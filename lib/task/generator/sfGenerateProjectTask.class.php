@@ -137,6 +137,8 @@ EOF;
         $fixPerms->run();
 
         $this->replaceTokens();
+
+        return 0;
     }
 
     protected function canRunInstaller($installer)

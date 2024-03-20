@@ -66,6 +66,8 @@ class sfI18nExtractTask extends sfBaseTask
 
             $extract->deleteOldMessages();
         }
+
+        return 0;
     }
 
     /**

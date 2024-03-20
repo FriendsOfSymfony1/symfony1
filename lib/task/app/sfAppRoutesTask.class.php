@@ -47,6 +47,8 @@ EOF;
 
         // display
         $arguments['name'] ? $this->outputRoute($arguments['application'], $arguments['name']) : $this->outputRoutes($arguments['application']);
+
+        return 0;
     }
 
     protected function outputRoutes($application)

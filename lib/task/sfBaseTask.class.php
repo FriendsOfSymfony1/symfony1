@@ -59,6 +59,8 @@ abstract class sfBaseTask extends sfCommandApplicationTask
         if (!file_exists('symfony')) {
             throw new sfException('You must be in a symfony project directory.');
         }
+
+        return true;
     }
 
     /**
@@ -75,6 +77,8 @@ abstract class sfBaseTask extends sfCommandApplicationTask
         if (!is_dir(sfConfig::get('sf_apps_dir').'/'.$app)) {
             throw new sfException(sprintf('Application "%s" does not exist', $app));
         }
+
+        return true;
     }
 
     /**
@@ -92,6 +96,8 @@ abstract class sfBaseTask extends sfCommandApplicationTask
         if (!is_dir(sfConfig::get('sf_apps_dir').'/'.$app.'/modules/'.$module)) {
             throw new sfException(sprintf('Module "%s/%s" does not exist.', $app, $module));
         }
+
+        return true;
     }
 
     /**

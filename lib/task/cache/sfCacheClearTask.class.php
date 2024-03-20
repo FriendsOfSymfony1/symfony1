@@ -154,6 +154,8 @@ EOF;
         if (null === $options['app'] && 'all' == $options['type']) {
             $this->getFilesystem()->remove(sfFinder::type('file')->discard('.*')->in(sfConfig::get('sf_cache_dir')));
         }
+
+        return 0;
     }
 
     protected function getClearCacheMethod($type)

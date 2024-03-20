@@ -73,6 +73,8 @@ EOF;
         } else {
             $this->outputAsText($arguments['namespace'], $tasks);
         }
+
+        return 0;
     }
 
     protected function outputAsText($namespace, $tasks)

@@ -170,6 +170,8 @@ EOF;
         $this->getFilesystem()->execute($command, $options['trace'] ? [$this, 'logOutput'] : null, [$this, 'logErrors']);
 
         $this->clearBuffers();
+
+        return 0;
     }
 
     protected function clearBuffers()

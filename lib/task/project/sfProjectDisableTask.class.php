@@ -65,5 +65,7 @@ EOF;
                 $this->logSection('enable', sprintf('%s [%s] has been DISABLED', $app, $env));
             }
         }
+
+        return 0;
     }
 }

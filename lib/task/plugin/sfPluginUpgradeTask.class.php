@@ -59,5 +59,7 @@ EOF;
         $this->logSection('plugin', sprintf('upgrading plugin "%s"', $arguments['name']));
 
         $this->getPluginManager()->installPlugin($arguments['name'], $options);
+
+        return 0;
     }
 }

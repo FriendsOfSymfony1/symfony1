@@ -66,6 +66,8 @@ EOF;
 
             $this->log($v->getExplanation());
         }
+
+        return 0;
     }
 
     protected function formatFile($file)

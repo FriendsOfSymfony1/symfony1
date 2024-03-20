@@ -83,6 +83,8 @@ EOF;
                 }
             } else {
                 $this->logSection('functional', 'no controller found', null, 'ERROR');
+
+                return 1;
             }
         } else {
             require_once __DIR__.'/sfLimeHarness.class.php';

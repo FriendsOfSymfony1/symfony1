@@ -85,6 +85,8 @@ class sfI18nFindTask extends sfBaseTask
                 $this->log("  {$message}\n");
             }
         }
+
+        return 0;
     }
 
     /**
