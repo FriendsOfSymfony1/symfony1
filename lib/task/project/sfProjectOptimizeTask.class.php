@@ -90,6 +90,8 @@ EOF;
         file_put_contents($target, '<?php return '.var_export($data, true).';');
 
         umask($current_umask);
+
+        return 0;
     }
 
     protected function optimizeGetControllerDirs($modules)

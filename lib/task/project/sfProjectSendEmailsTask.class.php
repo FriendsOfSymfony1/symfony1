@@ -58,5 +58,7 @@ EOF;
         $sent = $this->getMailer()->flushQueue();
 
         $this->logSection('project', sprintf('sent %s emails', $sent));
+
+        return 0;
     }
 }

@@ -57,6 +57,8 @@ EOF;
         } else {
             $this->outputAsText($task);
         }
+
+        return 0;
     }
 
     protected function outputAsText(sfTask $task)

@@ -79,7 +79,11 @@ EOF;
                 ['Permissions on the following file(s) could not be fixed:', ''],
                 array_map(function ($f) { return ' - '.sfDebug::shortenFilePath($f); }, $this->failed)
             ), 'ERROR_LARGE');
+
+            return 1;
         }
+
+        return 0;
     }
 
     /**

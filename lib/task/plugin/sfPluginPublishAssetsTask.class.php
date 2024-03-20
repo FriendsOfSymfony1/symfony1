@@ -77,6 +77,8 @@ EOF;
             $this->logSection('plugin', 'Configuring plugin - '.$plugin);
             $this->installPluginAssets($plugin, $pluginConfiguration->getRootDir(), $options['relative']);
         }
+
+        return 0;
     }
 
     /**

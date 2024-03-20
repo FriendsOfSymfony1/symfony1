@@ -178,5 +178,7 @@ HED;
 
         $this->logSection('task', sprintf('Creating "%s" task file', $taskFile));
         file_put_contents($taskFile, $content);
+
+        return 0;
     }
 }

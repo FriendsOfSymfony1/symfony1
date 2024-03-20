@@ -111,5 +111,7 @@ EOF;
         }
 
         $this->getPluginManager()->installPlugin($arguments['name'], $options);
+
+        return 0;
     }
 }

@@ -65,6 +65,8 @@ EOF;
 
         $coveredFiles = $this->getFiles(sfConfig::get('sf_root_dir').'/'.$arguments['lib_name']);
         $coverage->output($coveredFiles);
+
+        return 0;
     }
 
     protected function getTestHarness($harnessOptions = [])

@@ -143,5 +143,7 @@ EOF;
     protected function execute($arguments = [], $options = [])
     {
         $this->rotate($arguments['application'], $arguments['env'], $options['period'], $options['history'], true);
+
+        return 0;
     }
 }

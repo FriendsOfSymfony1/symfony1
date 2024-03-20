@@ -104,5 +104,7 @@ EOF;
         // customize php and yml files
         $finder = sfFinder::type('file')->name('*.php', '*.yml');
         $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $constants);
+
+        return 0;
     }
 }

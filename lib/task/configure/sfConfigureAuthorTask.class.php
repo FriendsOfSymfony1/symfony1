@@ -63,5 +63,7 @@ EOF;
         }
 
         file_put_contents($file, $ini);
+
+        return 0;
     }
 }
