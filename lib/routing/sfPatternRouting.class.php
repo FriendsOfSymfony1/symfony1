@@ -39,7 +39,7 @@ class sfPatternRouting extends sfRouting
      *  * extra_parameters_as_query_string: Whether to generate extra parameters as a query string
      *  * lookup_cache_dedicated_keys:      Whether to use dedicated keys for parse/generate cache (false by default)
      *                                      WARNING: When this option is activated, do not use sfFileCache; use a fast access
-     *                                      cache backend (like sfAPCCache).
+     *                                      cache backend (like sfAPCuCache).
      *
      * @see sfRouting
      */
