@@ -372,26 +372,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/mailer/sfNoMailer.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to an undefined property sfPearRest10\\:\\:\\$_rest\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugin/sfPearRest10.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property sfPearRest11\\:\\:\\$_rest\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugin/sfPearRest11.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property sfPearRestPlugin\\:\\:\\$_rest\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugin/sfPearRestPlugin.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfPearRestPlugin\\:\\:betterStates\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugin/sfPearRestPlugin.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Call to an undefined method sfPearRestPlugin\\:\\:getDownloadURL\\(\\)\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugin/sfPearRestPlugin.class.php',
@@ -468,11 +448,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method Swift_DoctrineSpool\\:\\:queueMessage\\(\\) should return bool but return statement is missing\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/mailer/Swift_DoctrineSpool.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$message of method Swift_DoctrineSpool\\:\\:queueMessage\\(\\) has invalid type Swift_Mime_Message\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/mailer/Swift_DoctrineSpool.class.php',
 ];
