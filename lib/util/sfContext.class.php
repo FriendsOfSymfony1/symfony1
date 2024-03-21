@@ -359,8 +359,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the module name for this context.
      *
-     * @return string|null the currently executing module name, if one is set,
-     *                     otherwise null
+     * @return string|null the currently executing module name if one is set, null otherwise
      */
     public function getModuleName()
     {
