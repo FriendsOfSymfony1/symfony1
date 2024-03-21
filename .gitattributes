@@ -7,6 +7,6 @@
 .gitignore             export-ignore
 .php-cs-fixer.dist.php export-ignore
 docker-compose.yml     export-ignore
-phpstan.neon.dist      export-ignore
+phpstan.dist.neon      export-ignore
 phpunit.xml            export-ignore
 tests/                 export-ignore
