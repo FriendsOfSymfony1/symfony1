@@ -235,8 +235,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the action name for this context.
      *
-     * @return string|null the currently executing action name, if one is set,
-     *                     otherwise null
+     * @return string|null the currently executing action name if one is set, null otherwise
      */
     public function getActionName()
     {
