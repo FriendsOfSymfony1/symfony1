@@ -343,8 +343,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the module directory for this context.
      *
-     * @return string|null an absolute filesystem path to the directory of the
-     *                     currently executing module, if one is set, otherwise null
+     * @return string|null an absolute filesystem path to the directory of the currently executing module if one is set, null otherwise
      */
     public function getModuleDirectory()
     {
