@@ -372,6 +372,11 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/mailer/sfNoMailer.class.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Access to an undefined property sfPearRest10\\:\\:\\$_rest\\.$#',
+	'count' => 1,
+	'path' => __DIR__ . '/lib/plugin/sfPearRest10.class.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Access to an undefined property sfPearRest11\\:\\:\\$_rest\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugin/sfPearRest11.class.php',
@@ -412,109 +417,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/installer.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_AUTOLOAD_TABLE_CLASSES on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_AUTO_ACCESSOR_OVERRIDE on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_EXPORT on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_RECURSIVE_MERGE_FIXTURES on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_VALIDATE on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant EXPORT_ALL on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant VALIDATE_NONE on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getInstance\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/sfDoctrinePluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineCli\\:\\:notify\\(\\) should return false but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/cli/sfDoctrineCli.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionListener\\:\\:postConnect\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionListener.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant CONN_EXEC on an unknown class Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant CONN_QUERY on an unknown class Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant STMT_EXECUTE on an unknown class Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfDoctrineConnectionProfiler\\:\\:__call\\(\\)\\.$#',
-	'count' => 6,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionProfiler\\:\\:postExec\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionProfiler\\:\\:postQuery\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionProfiler\\:\\:postStmtExecute\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionProfiler\\:\\:preExec\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionProfiler\\:\\:preQuery\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$event of method sfDoctrineConnectionProfiler\\:\\:preStmtExecute\\(\\) has invalid type Doctrine_Event\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineConnectionProfiler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getInstance\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineDatabase.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Variable \\$stringName might not be defined\\.$#',
@@ -522,94 +427,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineDatabase.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to constant VERSION on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/debug/sfWebDebugPanelDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Connection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/debug/sfWebDebugPanelDoctrine.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfWebDebugPanelDoctrine\\:\\:getTitle\\(\\) should return string but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/debug/sfWebDebugPanelDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ONE on an unknown class Doctrine_Relation\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getInstance\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Query not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfFormFilterDoctrine\\:\\:addBooleanQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfFormFilterDoctrine\\:\\:addDateQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfFormFilterDoctrine\\:\\:addEnumQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfFormFilterDoctrine\\:\\:addForeignKeyQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfFormFilterDoctrine\\:\\:addNumberQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfFormFilterDoctrine\\:\\:addTextQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/form/sfFormFilterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineColumn.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$table of method sfDoctrineColumn\\:\\:__construct\\(\\) has invalid type Doctrine_Table\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineColumn.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$table of method sfDoctrineColumn\\:\\:setTable\\(\\) has invalid type Doctrine_Table\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineColumn.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormFilterGenerator.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineFormFilterGenerator\\:\\:generate\\(\\) should return string but return statement is missing\\.$#',
@@ -627,42 +447,7 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormFilterGenerator.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to constant MANY on an unknown class Doctrine_Relation\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ONE on an unknown class Doctrine_Relation\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Call to an undefined method sfDoctrineFormGenerator\\:\\:isColumnNotNull\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method filterInvalidModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getLoadedModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 6,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method initializeModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method loadModels\\(\\) on an unknown class Doctrine_Core\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
 ];
@@ -677,29 +462,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to constant MANY on an unknown class Doctrine_Relation\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineGenerator.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$columns might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/mailer/Swift_DoctrineSpool.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Record not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/mailer/Swift_DoctrineSpool.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method Swift_DoctrineSpool\\:\\:queueMessage\\(\\) should return bool but return statement is missing\\.$#',
@@ -712,99 +477,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/mailer/Swift_DoctrineSpool.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/pager/sfDoctrinePager.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Collection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/pager/sfDoctrinePager.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfDoctrineRecord\\:\\:exists\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfDoctrineRecord\\:\\:get\\(\\)\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfDoctrineRecord\\:\\:getTable\\(\\)\\.$#',
-	'count' => 7,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfDoctrineRecord\\:\\:identifier\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfDoctrineRecord\\:\\:set\\(\\)\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Caught class Doctrine_Record_UnknownPropertyException not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Variable \\$e2 in isset\\(\\) always exists and is not nullable\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^sfDoctrineRecord\\:\\:__call\\(\\) calls parent\\:\\:__call\\(\\) but sfDoctrineRecord does not extend any class\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$record of method sfDoctrineRecordI18nFilter\\:\\:filterGet\\(\\) has invalid type Doctrine_Record\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecordI18nFilter.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$record of method sfDoctrineRecordI18nFilter\\:\\:filterSet\\(\\) has invalid type Doctrine_Record\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecordI18nFilter.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/routing/sfDoctrineRoute.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Collection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/routing/sfDoctrineRoute.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Record not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/routing/sfDoctrineRoute.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instantiated class Doctrine_Collection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/routing/sfDoctrineRoute.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method sfDoctrineRoute\\:\\:setListQuery\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/routing/sfDoctrineRoute.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getGlobalDefinitionKeys\\(\\) on an unknown class Doctrine_Import_Schema\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBaseTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class sfDoctrineCli does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBaseTask.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineBuildDbTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
@@ -820,11 +495,6 @@ $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineBuildFormsTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBuildFormsTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instantiated class Doctrine_Import_Schema not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBuildModelTask.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineBuildModelTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
@@ -852,24 +522,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBuildTask.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to static method getLoadedModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCleanModelFilesTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method loadModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCleanModelFilesTask.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineCleanModelFilesTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCleanModelFilesTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method compile\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCompileTask.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineCompileTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
@@ -880,21 +535,6 @@ $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineConfigureDatabaseTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineConfigureDatabaseTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method createTablesFromArray\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCreateModelTablesTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getInstance\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCreateModelTablesTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineCreateModelTablesTask.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineCreateModelTables\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
@@ -922,16 +562,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineDeleteModelFilesTask.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to constant HYDRATE_SCALAR on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineDqlTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method create\\(\\) on an unknown class Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineDqlTask.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineDqlTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineDqlTask.class.php',
@@ -940,11 +570,6 @@ $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineDropDbTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineDropDbTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineGenerateAdminTask.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineGenerateMigrationTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
@@ -977,49 +602,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineGenerateModuleTask.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Access to constant MODEL_LOADING_CONSERVATIVE on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineInsertSqlTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method createTablesFromArray\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineInsertSqlTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getLoadedModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineInsertSqlTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method loadModels\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineInsertSqlTask.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineInsertSqlTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineInsertSqlTask.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Instantiated class Doctrine_Migration not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineMigrateTask.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineMigrateTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineMigrateTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/test/sfTesterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Connection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/test/sfTesterDoctrine.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Instantiated class LogicConnection not found\\.$#',
@@ -1030,476 +620,6 @@ $ignoreErrors[] = [
 	'message' => '#^Variable \\$match might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/test/sfTesterDoctrine.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/validator/sfValidatorDoctrineChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/validator/sfValidatorDoctrineUnique.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$object of method sfValidatorDoctrineUnique\\:\\:isUpdate\\(\\) has invalid type Doctrine_Record\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/validator/sfValidatorDoctrineUnique.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/widget/sfWidgetFormDoctrineArrayChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/widget/sfWidgetFormDoctrineChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Collection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/widget/sfWidgetFormDoctrineChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Query not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/widget/sfWidgetFormDoctrineChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class Doctrine_Record not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/widget/sfWidgetFormDoctrineChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instantiated class Doctrine_Collection not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/widget/sfWidgetFormDoctrineChoice.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$app might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/bootstrap/functional.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method AdminGenBrowser\\:\\:getContext\\(\\)\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/AdminGenBrowser.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/AdminGenBrowser.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_EXPORT on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/EnvironmentSetupTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_VALIDATE on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/EnvironmentSetupTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant EXPORT_TABLES on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/EnvironmentSetupTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method create\\(\\) on an unknown class Doctrine_Query\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/EnvironmentSetupTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getInstance\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/EnvironmentSetupTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method UserGroupForm\\:\\:useFields\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/FormTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method create\\(\\) on an unknown class Doctrine_Query\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/FormTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class ProfileForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/FormTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class UserForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/FormTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property MyArticleForm\\:\\:\\$object\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/I18nTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method MyArticleForm\\:\\:embedForm\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/I18nTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method MyArticleForm\\:\\:embedI18n\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/I18nTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class AuthorForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/I18nTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class MyArticleForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/I18nTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant HYDRATE_ARRAY on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/PagerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method create\\(\\) on an unknown class Doctrine_Query\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/PagerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/RouteTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/SchemaMergeTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/Ticket/5269Test.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class TestUserForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/Ticket/5269Test.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_VALIDATE on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/config/ProjectConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^BlogArticleFormFilter\\:\\:configure\\(\\) calls parent\\:\\:configure\\(\\) but BlogArticleFormFilter does not extend any class\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/filter/doctrine/BlogArticleFormFilter.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^BlogAuthorFormFilter\\:\\:configure\\(\\) calls parent\\:\\:configure\\(\\) but BlogAuthorFormFilter does not extend any class\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/filter/doctrine/BlogAuthorFormFilter.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method ArticleForm\\:\\:embedI18n\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/ArticleForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property AttachmentForm\\:\\:\\$validatorSchema\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/AttachmentForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property AttachmentForm\\:\\:\\$widgetSchema\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/AttachmentForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method AttachmentForm\\:\\:getObject\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/AttachmentForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method AttachmentForm\\:\\:isNew\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/AttachmentForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^AuthorInheritanceConcreteForm\\:\\:configure\\(\\) calls parent\\:\\:configure\\(\\) but AuthorInheritanceConcreteForm does not extend any class\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/AuthorInheritanceConcreteForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^BlogArticleForm\\:\\:configure\\(\\) calls parent\\:\\:configure\\(\\) but BlogArticleForm does not extend any class\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/BlogArticleForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^BlogAuthorForm\\:\\:configure\\(\\) calls parent\\:\\:configure\\(\\) but BlogAuthorForm does not extend any class\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/BlogAuthorForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property UserForm\\:\\:\\$object\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/UserForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method UserForm\\:\\:embedForm\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/UserForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class ProfileForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/form/doctrine/UserForm.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property Article\\:\\:\\$slug\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/Article.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method ArticleTable\\:\\:createQuery\\(\\)\\.$#',
-	'count' => 5,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/ArticleTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method create\\(\\) on an unknown class Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/ArticleTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$q of method ArticleTable\\:\\:addOnHomepage\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/ArticleTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$q of method ArticleTable\\:\\:routeTest10\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/ArticleTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$q of method ArticleTable\\:\\:testAdminGenTableMethod\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/ArticleTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$query of method ArticleTable\\:\\:retrieveArticle1\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/ArticleTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Author\\:\\:_set\\(\\)\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/Author.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Author\\:\\:assignIdentifier\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/Author.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Author\\:\\:exists\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/Author.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/Author.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method AuthorTable\\:\\:createQuery\\(\\)\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/AuthorTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Parameter \\$q of method AuthorTable\\:\\:testTableMethod2\\(\\) has invalid type Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/AuthorTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/SettingsPlugin/SettingTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method User\\:\\:_set\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/User.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method UserTable\\:\\:createQuery\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/lib/model/doctrine/UserTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/fixtures/plugins/SettingsPlugin/lib/model/doctrine/PluginSettingTable.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/functional/sfDoctrineRecordTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property NumericFieldForm\\:\\:\\$validatorSchema\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to an undefined property NumericFieldForm\\:\\:\\$widgetSchema\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method DefaultValuesForm\\:\\:setDefault\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method NumericFieldForm\\:\\:setDefault\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class ArticleForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class AuthorForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class DefaultValuesForm does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method TestFormFilter\\:\\:setValidators\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormFilterDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method TestFormFilter\\:\\:setWidgets\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormFilterDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined static method ArticleFormFilter\\:\\:getFields\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormFilterDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method create\\(\\) on an unknown class Doctrine_Query\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormFilterDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Class ArticleFormFilter does not have a constructor and must be instantiated without any parameters\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/form/sfFormFilterDoctrineTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant HYDRATE_NONE on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/pager/sfDoctrinePagerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 4,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/pager/sfDoctrinePagerTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getInstance\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/record/sfDoctrineRecordTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/record/sfDoctrineRecordTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Test\\:\\:hasColumn\\(\\)\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method Test\\:\\:hasMany\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method TestRelation\\:\\:hasColumn\\(\\)\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method TestRelation\\:\\:hasOne\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method connection\\(\\) on an unknown class Doctrine_Manager\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 5,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Instantiated class Doctrine_Adapter_Mock not found\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineColumnTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_TBLNAME_FORMAT on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineDatabaseTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_USE_NATIVE_ENUM on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineDatabaseTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant ATTR_VALIDATE on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineDatabaseTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Access to constant VALIDATE_ALL on an unknown class Doctrine_Core\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/sfDoctrineDatabaseTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/validator/sfValidatorDoctrineChoiceTest.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to static method getTable\\(\\) on an unknown class Doctrine_Core\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/test/unit/widget/sfWidgetFormDoctrineChoiceTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfPatternRouting\\:\\:connect\\(\\) should return array but return statement is missing\\.$#',
