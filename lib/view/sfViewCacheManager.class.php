@@ -442,6 +442,8 @@ class sfViewCacheManager
         if ($this->cache->has($cacheKey)) {
             return $this->cache->remove($cacheKey);
         }
+
+        return false;
     }
 
     /**
