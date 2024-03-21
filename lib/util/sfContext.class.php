@@ -235,8 +235,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the action name for this context.
      *
-     * @return string the currently executing action name, if one is set,
-     *                otherwise null
+     * @return string|null the currently executing action name if one is set, null otherwise
      */
     public function getActionName()
     {
@@ -245,6 +244,8 @@ class sfContext implements ArrayAccess
             // @var $lastEntry sfActionStackEntry
             return $lastEntry->getActionName();
         }
+
+        return null;
     }
 
     /**
@@ -341,8 +342,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the module directory for this context.
      *
-     * @return string an absolute filesystem path to the directory of the
-     *                currently executing module, if one is set, otherwise null
+     * @return string|null an absolute filesystem path to the directory of the currently executing module if one is set, null otherwise
      */
     public function getModuleDirectory()
     {
@@ -351,13 +351,14 @@ class sfContext implements ArrayAccess
             // @var $lastEntry sfActionStackEntry
             return sfConfig::get('sf_app_module_dir').'/'.$lastEntry->getModuleName();
         }
+
+        return null;
     }
 
     /**
      * Retrieve the module name for this context.
      *
-     * @return string the currently executing module name, if one is set,
-     *                otherwise null
+     * @return string|null the currently executing module name if one is set, null otherwise
      */
     public function getModuleName()
     {
@@ -366,6 +367,8 @@ class sfContext implements ArrayAccess
             // @var $lastEntry sfActionStackEntry
             return $lastEntry->getModuleName();
         }
+
+        return null;
     }
 
     /**
