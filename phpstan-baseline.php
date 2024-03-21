@@ -7,11 +7,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/addon/sfData.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$position might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/autoload/sfAutoloadAgain.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfAPCCache\\:\\:clean\\(\\) should return bool but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/cache/sfAPCCache.class.php',
@@ -82,11 +77,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/cache/sfMemcacheCache.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Constant XC_TYPE_VAR not found\\.$#',
-	'count' => 6,
-	'path' => __DIR__ . '/lib/cache/sfXCacheCache.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfXCacheCache\\:\\:removePattern\\(\\) should return bool but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/cache/sfXCacheCache.class.php',
@@ -102,44 +92,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/config/sfApplicationConfiguration.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$included might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/config/sfApplicationConfiguration.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Instantiated class class not found\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/config/sfConfigCache.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$timer might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/config/sfConfigCache.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$directory might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/config/sfPluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$names might not be defined\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/config/sfPluginConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$viewName might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/config/sfViewConfigHandler.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$sf_content might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/controller/default/templates/defaultLayout.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$sf_params might not be defined\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/controller/default/templates/moduleSuccess.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Function mysql_close not found\\.$#',
@@ -207,16 +162,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/exception/sfException.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Function get_javascripts invoked with 1 parameter, 0 required\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/filter/sfCommonFilter.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Function get_stylesheets invoked with 1 parameter, 0 required\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/filter/sfCommonFilter.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfExecutionFilter\\:\\:executeView\\(\\) should return string but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/filter/sfExecutionFilter.class.php',
@@ -233,11 +178,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Undefined variable\\: \\$config$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/generator/sfModelGeneratorConfiguration.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$config in isset\\(\\) is never defined\\.$#',
 	'count' => 2,
 	'path' => __DIR__ . '/lib/generator/sfModelGeneratorConfiguration.class.php',
 ];
@@ -267,21 +207,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/helper/PartialHelper.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$timer might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/helper/PartialHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$pattern might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/helper/TextHelper.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$replacement might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/helper/TextHelper.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Undefined variable\\: \\$result$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/i18n/sfChoiceFormat.class.php',
@@ -295,11 +220,6 @@ $ignoreErrors[] = [
 	'message' => '#^Access to an undefined property sfMessageSource_File\\:\\:\\$dataExt\\.$#',
 	'count' => 6,
 	'path' => __DIR__ . '/lib/i18n/sfMessageSource_File.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Constant MYSQL_NUM not found\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/i18n/sfMessageSource_MySQL.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Function mysql_affected_rows not found\\.$#',
@@ -342,11 +262,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/i18n/sfMessageSource_MySQL.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$cat_id might not be defined\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/i18n/sfMessageSource_SQLite3.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Cannot unset offset \'strings\' on array\\{meta\\: array\\{PO\\-Revision\\-Date\\: non\\-falsy\\-string\\}\\}\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/i18n/sfMessageSource_gettext.class.php',
@@ -357,54 +272,14 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/i18n/sfNumberFormat.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$suffix might not be defined\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/i18n/sfNumberFormat.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Constructor of class sfNoMailer has an unused parameter \\$dispatcher\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/mailer/sfNoMailer.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Constructor of class sfNoMailer has an unused parameter \\$options\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/mailer/sfNoMailer.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfPearRestPlugin\\:\\:getDownloadURL\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugin/sfPearRestPlugin.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfPearRestPlugin\\:\\:packageInfo\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugin/sfPearRestPlugin.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$download might not be defined\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/plugin/sfPluginManager.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Call to sprintf contains 0 placeholders, 1 value given\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugin/sfSymfonyPluginManager.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$this might not be defined\\.$#',
-	'count' => 3,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/config/installer.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineCli\\:\\:notify\\(\\) should return false but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/cli/sfDoctrineCli.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$stringName might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/database/sfDoctrineDatabase.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfWebDebugPanelDoctrine\\:\\:getTitle\\(\\) should return string but return statement is missing\\.$#',
@@ -413,16 +288,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineFormFilterGenerator\\:\\:generate\\(\\) should return string but return statement is missing\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormFilterGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$name might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormFilterGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$pluginName might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormFilterGenerator.class.php',
 ];
@@ -437,24 +302,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$pluginName might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineFormGenerator.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$columns might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/generator/sfDoctrineGenerator.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Swift_DoctrineSpool\\:\\:queueMessage\\(\\) should return bool but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/mailer/Swift_DoctrineSpool.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$e2 in isset\\(\\) always exists and is not nullable\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/record/sfDoctrineRecord.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineBuildDbTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
@@ -474,11 +324,6 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Method sfDoctrineBuildModelTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
 	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBuildModelTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$match might not be defined\\.$#',
-	'count' => 2,
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/task/sfDoctrineBuildModelTask.class.php',
 ];
 $ignoreErrors[] = [
@@ -592,11 +437,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/test/sfTesterDoctrine.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Variable \\$match might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/plugins/sfDoctrinePlugin/lib/test/sfTesterDoctrine.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfPatternRouting\\:\\:connect\\(\\) should return array but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/routing/sfPatternRouting.class.php',
@@ -688,11 +528,6 @@ $ignoreErrors[] = [
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfListTask\\:\\:execute\\(\\) should return int but return statement is missing\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/task/help/sfListTask.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$namespacesXML might not be defined\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/task/help/sfListTask.class.php',
 ];
@@ -822,26 +657,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/task/test/sfTestUnitTask.class.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfTestFunctionalBase\\:\\:doClick\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/test/sfTestFunctionalBase.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfTestFunctionalBase\\:\\:doClickCssSelector\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/test/sfTestFunctionalBase.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfTestFunctionalBase\\:\\:doClickElement\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/test/sfTestFunctionalBase.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Call to an undefined method sfTestFunctionalBase\\:\\:resetCurrentException\\(\\)\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/test/sfTestFunctionalBase.class.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method sfContext\\:\\:getActionName\\(\\) should return string but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/util/sfContext.class.php',
@@ -855,16 +670,6 @@ $ignoreErrors[] = [
 	'message' => '#^Method sfContext\\:\\:getModuleName\\(\\) should return string but return statement is missing\\.$#',
 	'count' => 1,
 	'path' => __DIR__ . '/lib/util/sfContext.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$timer might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/util/sfContext.class.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$cleanTime might not be defined\\.$#',
-	'count' => 2,
-	'path' => __DIR__ . '/lib/validator/sfValidatorDate.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfValidatorDecorator\\:\\:setMessage\\(\\) should return sfValidatorBase but return statement is missing\\.$#',
@@ -907,24 +712,9 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/lib/vendor/lime/lime.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Offset \'output\' on array\\{\\} in isset\\(\\) does not exist\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/vendor/lime/lime.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Undefined variable\\: \\$result$#',
 	'count' => 2,
 	'path' => __DIR__ . '/lib/vendor/lime/lime.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$output might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/vendor/lime/lime.php',
-];
-$ignoreErrors[] = [
-	'message' => '#^Variable \\$timer might not be defined\\.$#',
-	'count' => 1,
-	'path' => __DIR__ . '/lib/view/sfPartialView.class.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method sfViewCacheManager\\:\\:remove\\(\\) should return bool but return statement is missing\\.$#',
