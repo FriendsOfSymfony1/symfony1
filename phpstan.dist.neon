@@ -19,6 +19,7 @@ parameters:
             # Templates for classes
             - lib/plugins/sfDoctrinePlugin/data/generator/
             - lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine/
+            - lib/plugins/sfDoctrinePlugin/test/
             # Templates for application
             - lib/plugins/sfDoctrinePlugin/test/functional/fixtures/apps/
 
