@@ -26,6 +26,8 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
     public function setIdFormat($format)
     {
         $this->options['renderer_options']['id_format'] = $format;
+
+        return $this;
     }
 
     /**
