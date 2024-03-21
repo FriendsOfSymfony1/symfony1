@@ -443,7 +443,7 @@ class sfViewCacheManager
             return $this->cache->remove($cacheKey);
         }
 
-        return false;
+        return true;
     }
 
     /**
