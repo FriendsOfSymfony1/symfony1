@@ -439,11 +439,11 @@ class sfViewCacheManager
         if (strpos($cacheKey, '*')) {
             return $this->cache->removePattern($cacheKey);
         }
-        if ($this->cache->has($cacheKey)) {
-            return $this->cache->remove($cacheKey);
+        if (!$this->cache->has($cacheKey)) {
+            return true;
         }
 
-        return true;
+        return $this->cache->remove($cacheKey);
     }
 
     /**
