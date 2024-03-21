@@ -35,10 +35,10 @@ jobs:
         with:
           coverage: none
           php-version: 7.4
-          tools: cs2pr
+          tools: cs2pr, phpstan:1.10.63
 
       - name: Install dependencies with Composer
         uses: ramsey/composer-install@v2
 
       - name: Run static analysis
-        run: vendor/bin/phpstan analyse --error-format=checkstyle | cs2pr
+        run: phpstan analyse --error-format=checkstyle | cs2pr
