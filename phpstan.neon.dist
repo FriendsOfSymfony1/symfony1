@@ -2,10 +2,21 @@ parameters:
     level: 1
     bootstrapFiles:
         - .phpstan/bootstrap.php
+
     paths:
         - lib
         - test
+
     excludePaths:
         analyse:
+            - lib/vendor/swiftmailer/
             - lib/task/symfony/lime_symfony.php
             - lib/task/symfony/sfSymfonyTestTask.class.php
+            - lib/task/generator/skeleton/
+            # Templates for errors
+            - lib/exception/data/
+            # Templates for classes
+            - lib/plugins/sfDoctrinePlugin/data/generator/
+            - lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine/
+            # Templates for application
+            - lib/plugins/sfDoctrinePlugin/test/functional/fixtures/apps/
