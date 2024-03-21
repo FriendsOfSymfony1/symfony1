@@ -67,6 +67,6 @@ EOF;
         $finder = sfFinder::type('file')->follow_link()->name('*Test.php');
         $h->register($finder->in($h->base_dir));
 
-        return $h->run();
+        return $h->run() ? 0 : 1;
     }
 }
