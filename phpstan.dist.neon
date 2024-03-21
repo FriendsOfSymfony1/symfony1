@@ -21,3 +21,6 @@ parameters:
             - lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine/
             # Templates for application
             - lib/plugins/sfDoctrinePlugin/test/functional/fixtures/apps/
+
+includes:
+    - phpstan-baseline.php
