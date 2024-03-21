@@ -4,6 +4,8 @@ parameters:
     bootstrapFiles:
         - .phpstan/bootstrap.php
 
+    tmpDir: .cache/phpstan
+
     paths:
         - lib
         - test
