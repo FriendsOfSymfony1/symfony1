@@ -34,7 +34,7 @@ class sfObjectRouteCollection extends sfRouteCollection
             'actions' => false,
             'module' => $this->options['name'],
             'prefix_path' => '/'.$this->options['name'],
-            'column' => isset($this->options['column']) ? $this->options['column'] : 'id',
+            'column' => $this->options['column'] ?? 'id',
             'with_show' => true,
             'segment_names' => ['edit' => 'edit', 'new' => 'new'],
             'model_methods' => [],

@@ -1,1 +1,1 @@
-<div class="component_<?php echo isset($varParam) ? $varParam : ''; ?>_<?php echo isset($componentParam) ? $componentParam : ''; ?>_<?php echo isset($requestParam) ? $requestParam : ''; ?>">OK</div>
+<div class="component_<?php echo $varParam ?? ''; ?>_<?php echo $componentParam ?? ''; ?>_<?php echo $requestParam ?? ''; ?>">OK</div>

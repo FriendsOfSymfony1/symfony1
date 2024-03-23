@@ -44,7 +44,7 @@ class myClickBrowser extends sfBrowser
 
     public function getDefaultServerArray($name)
     {
-        return isset($this->defaultServerArray[$name]) ? $this->defaultServerArray[$name] : false;
+        return $this->defaultServerArray[$name] ?? false;
     }
 }
 

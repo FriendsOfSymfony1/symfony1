@@ -118,7 +118,7 @@ class sfUser implements ArrayAccess
         //  - use the culture defined in the user session
         //  - use the default culture set in settings.yml
         $currentCulture = $storage->read(self::CULTURE_NAMESPACE);
-        $this->setCulture(null !== $this->options['culture'] ? $this->options['culture'] : (null !== $currentCulture ? $currentCulture : $this->options['default_culture']));
+        $this->setCulture($this->options['culture'] ?? $currentCulture ?? $this->options['default_culture']);
 
         // flag current flash to be removed at shutdown
         if ($this->options['use_flash'] && $names = $this->attributeHolder->getNames('symfony/user/sfUser/flash')) {

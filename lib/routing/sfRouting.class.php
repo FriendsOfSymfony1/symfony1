@@ -73,8 +73,8 @@ abstract class sfRouting
         // disable caching when in debug mode
         $this->cache = $options['debug'] ? null : $cache;
 
-        $this->setDefaultParameter('module', isset($options['default_module']) ? $options['default_module'] : 'default');
-        $this->setDefaultParameter('action', isset($options['default_action']) ? $options['default_action'] : 'index');
+        $this->setDefaultParameter('module', $options['default_module'] ?? 'default');
+        $this->setDefaultParameter('action', $options['default_action'] ?? 'index');
 
         if (!isset($options['logging'])) {
             $options['logging'] = false;
@@ -200,7 +200,7 @@ abstract class sfRouting
      */
     public function getDefaultParameter($key)
     {
-        return isset($this->defaultParameters[$key]) ? $this->defaultParameters[$key] : null;
+        return $this->defaultParameters[$key] ?? null;
     }
 
     /**

@@ -120,7 +120,7 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        $value = isset($this->value[$offset]) ? $this->value[$offset] : null;
+        $value = $this->value[$offset] ?? null;
 
         return sfOutputEscaper::escape($this->escapingMethod, $value);
     }

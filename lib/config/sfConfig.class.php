@@ -27,7 +27,7 @@ class sfConfig
      */
     public static function get($name, $default = null)
     {
-        return isset(self::$config[$name]) ? self::$config[$name] : $default;
+        return self::$config[$name] ?? $default;
     }
 
     /**

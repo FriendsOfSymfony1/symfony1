@@ -76,7 +76,7 @@ class sfModelGeneratorConfigurationField
      */
     public function isReal()
     {
-        return isset($this->config['is_real']) ? $this->config['is_real'] : false;
+        return $this->config['is_real'] ?? false;
     }
 
     /**
@@ -86,7 +86,7 @@ class sfModelGeneratorConfigurationField
      */
     public function isPartial()
     {
-        return isset($this->config['is_partial']) ? $this->config['is_partial'] : false;
+        return $this->config['is_partial'] ?? false;
     }
 
     /**
@@ -106,7 +106,7 @@ class sfModelGeneratorConfigurationField
      */
     public function isComponent()
     {
-        return isset($this->config['is_component']) ? $this->config['is_component'] : false;
+        return $this->config['is_component'] ?? false;
     }
 
     /**
@@ -126,7 +126,7 @@ class sfModelGeneratorConfigurationField
      */
     public function isLink()
     {
-        return isset($this->config['is_link']) ? $this->config['is_link'] : false;
+        return $this->config['is_link'] ?? false;
     }
 
     /**
@@ -156,7 +156,7 @@ class sfModelGeneratorConfigurationField
      */
     public function getRenderer()
     {
-        return isset($this->config['renderer']) ? $this->config['renderer'] : null;
+        return $this->config['renderer'] ?? null;
     }
 
     /**
@@ -176,7 +176,7 @@ class sfModelGeneratorConfigurationField
      */
     public function getRendererArguments()
     {
-        return isset($this->config['renderer_arguments']) ? $this->config['renderer_arguments'] : [];
+        return $this->config['renderer_arguments'] ?? [];
     }
 
     public static function splitFieldWithFlag($field)

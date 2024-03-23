@@ -77,14 +77,14 @@ class sfTesterResponse extends sfTester
         } elseif (is_int($value)) {
             $this->tester->is(count($values), $value, sprintf('response selector "%s" matches "%s" times', $selector, $value));
         } elseif (preg_match('/^(!)?([^a-zA-Z0-9\\\\]).+?\\2[ims]?$/', $value, $match)) {
-            $position = isset($options['position']) ? $options['position'] : 0;
+            $position = $options['position'] ?? 0;
             if ('!' == $match[1]) {
                 $this->tester->unlike(@$values[$position], substr($value, 1), sprintf('response selector "%s" does not match regex "%s"', $selector, substr($value, 1)));
             } else {
                 $this->tester->like(@$values[$position], $value, sprintf('response selector "%s" matches regex "%s"', $selector, $value));
             }
         } else {
-            $position = isset($options['position']) ? $options['position'] : 0;
+            $position = $options['position'] ?? 0;
             $this->tester->is(@$values[$position], $value, sprintf('response selector "%s" matches "%s"', $selector, $value));
         }
 

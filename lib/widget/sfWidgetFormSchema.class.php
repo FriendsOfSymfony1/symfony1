@@ -213,7 +213,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function getFormFormatterName()
     {
-        return null === $this->options['form_formatter'] ? self::$defaultFormatterName : $this->options['form_formatter'];
+        return $this->options['form_formatter'] ?? self::$defaultFormatterName;
     }
 
     /**
@@ -525,9 +525,9 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
         // render each field
         foreach ($this->positions as $name) {
             $widget = $this[$name];
-            $value = isset($values[$name]) ? $values[$name] : null;
-            $error = isset($errors[$name]) ? $errors[$name] : [];
-            $widgetAttributes = isset($attributes[$name]) ? $attributes[$name] : [];
+            $value = $values[$name] ?? null;
+            $error = $errors[$name] ?? [];
+            $widgetAttributes = $attributes[$name] ?? [];
 
             if ($widget instanceof sfWidgetForm && $widget->isHidden()) {
                 $hiddenRows[] = $this->renderField($name, $value, $widgetAttributes);
@@ -635,7 +635,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     #[\ReturnTypeWillChange]
     public function offsetGet($name)
     {
-        return isset($this->fields[$name]) ? $this->fields[$name] : null;
+        return $this->fields[$name] ?? null;
     }
 
     /**
