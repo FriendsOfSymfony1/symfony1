@@ -388,15 +388,7 @@ abstract class sfAction extends sfComponent
     {
         $actionName = strtolower($this->getActionName());
 
-        if (isset($this->security[$actionName][$name])) {
-            return $this->security[$actionName][$name];
-        }
-
-        if (isset($this->security['all'][$name])) {
-            return $this->security['all'][$name];
-        }
-
-        return $default;
+        return $this->security[$actionName][$name] ?? $this->security['all'][$name] ?? $default;
     }
 
     /**
