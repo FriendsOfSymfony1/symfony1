@@ -82,12 +82,12 @@ EOF;
         $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
 
         $this->constants = [
-            'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
+            'PROJECT_NAME' => $properties['symfony']['name'] ?? 'symfony',
             'APP_NAME' => $arguments['application'],
             'MODULE_NAME' => $arguments['module'],
             'UC_MODULE_NAME' => ucfirst($arguments['module']),
             'MODEL_CLASS' => $arguments['model'],
-            'AUTHOR_NAME' => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
+            'AUTHOR_NAME' => $properties['symfony']['author'] ?? 'Your name here',
         ];
 
         $method = $options['generate-in-cache'] ? 'executeInit' : 'executeGenerate';

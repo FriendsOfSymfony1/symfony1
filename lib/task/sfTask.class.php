@@ -412,7 +412,7 @@ abstract class sfTask
         if (false === $style) {
             $this->log($question);
         } else {
-            $this->logBlock($question, null === $style ? 'QUESTION' : $style);
+            $this->logBlock($question, $style ?? 'QUESTION');
         }
 
         $ret = trim(fgets(STDIN));

@@ -39,11 +39,11 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
         $this->addOption('add_empty', false);
 
         // populate choices with all currencies
-        $culture = isset($options['culture']) ? $options['culture'] : 'en';
+        $culture = $options['culture'] ?? 'en';
 
-        $currencies = sfCultureInfo::getInstance($culture)->getCurrencies(isset($options['currencies']) ? $options['currencies'] : null);
+        $currencies = sfCultureInfo::getInstance($culture)->getCurrencies($options['currencies'] ?? null);
 
-        $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
+        $addEmpty = $options['add_empty'] ?? false;
         if (false !== $addEmpty) {
             $currencies = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $currencies);
         }

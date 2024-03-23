@@ -199,7 +199,7 @@ class sfObjectRoute extends sfRequestRoute
 
     protected function doConvertObjectToArray($object)
     {
-        $method = isset($this->options['convert']) ? $this->options['convert'] : 'toParams';
+        $method = $this->options['convert'] ?? 'toParams';
 
         return $object->{$method}();
     }

@@ -121,7 +121,7 @@ class sfDoctrineColumn implements ArrayAccess
      */
     public function getDoctrineType()
     {
-        return isset($this->definition['type']) ? $this->definition['type'] : null;
+        return $this->definition['type'] ?? null;
     }
 
     /**

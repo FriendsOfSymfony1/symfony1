@@ -57,7 +57,7 @@ class sfFileLogger extends sfLogger
         }
 
         $dir = dirname($options['file']);
-        $dirMode = isset($options['dir_mode']) ? $options['dir_mode'] : 0777;
+        $dirMode = $options['dir_mode'] ?? 0777;
         if (!is_dir($dir) && !@mkdir($dir, $dirMode, true) && !is_dir($dir)) {
             throw new RuntimeException(sprintf('Logger was not able to create a directory "%s"', $dir));
         }
@@ -69,7 +69,7 @@ class sfFileLogger extends sfLogger
 
         $this->fp = fopen($options['file'], 'a');
         if (!$fileExists) {
-            chmod($options['file'], isset($options['file_mode']) ? $options['file_mode'] : 0666);
+            chmod($options['file'], $options['file_mode'] ?? 0666);
         }
 
         parent::initialize($dispatcher, $options);

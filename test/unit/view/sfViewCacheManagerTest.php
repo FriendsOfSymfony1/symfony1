@@ -78,7 +78,7 @@ class myCache extends sfCache
 
     public function get($key, $default = null)
     {
-        return isset(self::$cache[$key]) ? self::$cache[$key] : $default;
+        return self::$cache[$key] ?? $default;
     }
 
     public function has($key)

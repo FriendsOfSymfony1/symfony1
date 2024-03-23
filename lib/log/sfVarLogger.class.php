@@ -30,7 +30,7 @@ class sfVarLogger extends sfLogger
      */
     public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
-        $this->xdebugLogging = isset($options['xdebug_logging']) ? $options['xdebug_logging'] : false;
+        $this->xdebugLogging = $options['xdebug_logging'] ?? false;
 
         // disable xdebug when an HTTP debug session exists (crashes Apache, see #2438)
         if (isset($_GET['XDEBUG_SESSION_START']) || isset($_COOKIE['XDEBUG_SESSION'])) {
@@ -156,7 +156,7 @@ class sfVarLogger extends sfLogger
 
         // remove sfLogger and sfEventDispatcher from the top of the trace
         foreach ($traces as $i => $trace) {
-            $class = isset($trace['class']) ? $trace['class'] : substr($file = basename($trace['file']), 0, strpos($file, '.'));
+            $class = $trace['class'] ?? substr($file = basename($trace['file']), 0, strpos($file, '.'));
 
             if (
                 !class_exists($class)

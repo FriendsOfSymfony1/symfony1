@@ -39,11 +39,11 @@ class sfWidgetFormI18nChoiceCountry extends sfWidgetFormChoice
         $this->addOption('add_empty', false);
 
         // populate choices with all countries
-        $culture = isset($options['culture']) ? $options['culture'] : 'en';
+        $culture = $options['culture'] ?? 'en';
 
-        $countries = sfCultureInfo::getInstance($culture)->getCountries(isset($options['countries']) ? $options['countries'] : null);
+        $countries = sfCultureInfo::getInstance($culture)->getCountries($options['countries'] ?? null);
 
-        $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
+        $addEmpty = $options['add_empty'] ?? false;
         if (false !== $addEmpty) {
             $countries = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $countries);
         }
