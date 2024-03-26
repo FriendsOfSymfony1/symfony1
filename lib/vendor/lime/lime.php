@@ -952,8 +952,7 @@ EOF
       );
 
       ob_start();
-      // see http://trac.symfony-project.org/ticket/5437 for the explanation on the weird "cd" thing
-      passthru(sprintf('cd & %s %s 2>&1', escapeshellarg($this->php_cli), escapeshellarg($test_file)), $return);
+      $return = $this->executePhpFile($test_file);
       ob_end_clean();
       unlink($test_file);
 
@@ -1122,6 +1121,20 @@ EOF
   public function get_failed_files()
   {
     return isset($this->stats['failed_files']) ? $this->stats['failed_files'] : array();
+  }
+
+  /**
+   * The command fails if the path to php interpreter contains spaces.
+   * The only workaround is adding a "nop" command call before the quoted command.
+   * The weird "cd &".
+   *
+   * see http://trac.symfony-project.org/ticket/5437
+   */
+  public function executePhpFile(string $phpFile): int
+  {
+      passthru(sprintf('cd & %s %s 2>&1', escapeshellarg($this->php_cli), escapeshellarg($phpFile)), $return);
+
+      return $return;
   }
 }
 
