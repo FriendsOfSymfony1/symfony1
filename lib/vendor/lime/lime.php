@@ -16,17 +16,25 @@
  */
 class lime_test
 {
-  const EPSILON = 0.0000000001;
+  public const EPSILON = 0.0000000001;
 
   protected $test_nb = 0;
   protected $output  = null;
   protected $results = array();
   protected $options = array();
 
-  static protected $all_results = array();
+  protected static $all_results = array();
+
+  private const STATE_PASS = 0;
+  private const STATE_FAIL = 1;
+
+  private static $instanceCount = 0;
+  private static $finalState = self::STATE_PASS;
 
   public function __construct($plan = null, $options = array())
   {
+    ++self::$instanceCount;
+
     // for BC
     if (!is_array($options))
     {
@@ -130,31 +138,86 @@ class lime_test
 
   public function __destruct()
   {
-    $plan = $this->results['stats']['plan'];
-    $passed = count($this->results['stats']['passed']);
-    $failed = count($this->results['stats']['failed']);
-    $total = $this->results['stats']['total'];
-    is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
+    $testSuiteState = $this->determineAndPrintStateOfTestSuite();
 
-    if ($total > $plan)
-    {
-      $this->output->red_bar(sprintf("# Looks like you planned %d tests but ran %d extra.", $plan, $total - $plan));
+    flush();
+
+    $this->keepTheWorstState($testSuiteState);
+
+    $this->finalizeLastInstanceDestructorWithProcessExit();
+  }
+
+  private function determineAndPrintStateOfTestSuite(): int
+  {
+    $planState = $this->determineAndPrintStateOfPlan();
+    $failed = count($this->results['stats']['failed']);
+
+    if ($failed) {
+      $passed = count($this->results['stats']['passed']);
+
+      $this->output->red_bar(sprintf("# Looks like you failed %d tests of %d.", $failed, $passed + $failed));
+
+      return self::STATE_FAIL;
     }
-    elseif ($total < $plan)
-    {
+
+    if (self::STATE_FAIL === $planState) {
+      return self::STATE_FAIL;
+    }
+
+    $this->output->green_bar("# Looks like everything went fine.");
+
+    return self::STATE_PASS;
+  }
+
+  private function determineAndPrintStateOfPlan(): int
+  {
+    $plan = $this->results['stats']['plan'];
+    $total = $this->results['stats']['total'];
+
+    if (null === $plan) {
+      $plan = $total;
+
+      $this->output->echoln(sprintf("1..%d", $plan));
+    }
+
+    if ($total > $plan) {
+      $this->output->red_bar(sprintf("# Looks like you planned %d tests but ran %d extra.", $plan, $total - $plan));
+    } elseif ($total < $plan) {
       $this->output->red_bar(sprintf("# Looks like you planned %d tests but only ran %d.", $plan, $total));
     }
 
-    if ($failed)
-    {
-      $this->output->red_bar(sprintf("# Looks like you failed %d tests of %d.", $failed, $passed + $failed));
-    }
-    else if ($total == $plan)
-    {
-      $this->output->green_bar("# Looks like everything went fine.");
-    }
+    return $total === $plan ? self::STATE_PASS : self::STATE_FAIL;
+  }
 
-    flush();
+  private function keepTheWorstState(int $state): void
+  {
+    if ($this->stateIsTheWorst($state)) {
+      self::$finalState = $state;
+    }
+  }
+
+  private function stateIsTheWorst(int $state): bool
+  {
+    return self::$finalState < $state;
+  }
+
+  private function finalizeLastInstanceDestructorWithProcessExit(): void
+  {
+    --self::$instanceCount;
+
+    if (0 === self::$instanceCount) {
+      exit($this->determineExitCodeFromState(self::$finalState));
+    }
+  }
+
+  private function determineExitCodeFromState(int $state): int
+  {
+    switch ($state) {
+      case self::STATE_PASS:
+        return 0;
+      default:
+        return 1;
+    }
   }
 
   /**
@@ -969,7 +1032,7 @@ EOF
       $delta = 0;
       if ($return > 0)
       {
-        $stats['status'] = $file_stats['errors'] ? 'errors' : 'dubious';
+        $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'dubious');
         $stats['status_code'] = $return;
       }
       else
