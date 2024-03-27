@@ -38,9 +38,9 @@ $config
         '@PhpCsFixer' => true,
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
-//        'header_comment' => [
-//            'header' => $headerComment,
-//        ],
+        // 'header_comment' => [
+        //     'header' => $headerComment,
+        // ],
     ])
     ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)
