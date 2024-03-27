@@ -161,13 +161,11 @@ class lime_test
       return self::STATE_FAIL;
     }
 
-    if (self::STATE_FAIL === $planState) {
-      return self::STATE_PLAN_NOT_FOLLOW;
+    if (self::STATE_PASS === $planState) {
+      $this->output->green_bar("# Looks like everything went fine.");
     }
 
-    $this->output->green_bar("# Looks like everything went fine.");
-
-    return self::STATE_PASS;
+    return $planState;
   }
 
   private function determineAndPrintStateOfPlan(): int
@@ -187,7 +185,7 @@ class lime_test
       $this->output->red_bar(sprintf("# Looks like you planned %d tests but only ran %d.", $plan, $total));
     }
 
-    return $total === $plan ? self::STATE_PASS : self::STATE_FAIL;
+    return $total === $plan ? self::STATE_PASS : self::STATE_PLAN_NOT_FOLLOW;
   }
 
   private function keepTheWorstState(int $state): void
@@ -1033,6 +1031,15 @@ EOF
       $file_stats = &$stats['output'][0]['stats'];
 
       $delta = 0;
+      $this->stats['total'] += $file_stats['total'];
+
+      if (!$file_stats['plan'])
+      {
+        $file_stats['plan'] = $file_stats['total'];
+      }
+
+      $delta = $file_stats['plan'] - $file_stats['total'];
+
       if ($return > 0)
       {
         $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'dubious');
@@ -1040,14 +1047,6 @@ EOF
       }
       else
       {
-        $this->stats['total'] += $file_stats['total'];
-
-        if (!$file_stats['plan'])
-        {
-          $file_stats['plan'] = $file_stats['total'];
-        }
-
-        $delta = $file_stats['plan'] - $file_stats['total'];
         if (0 != $delta)
         {
           $stats['status'] = $file_stats['errors'] ? 'errors' : 'dubious';
