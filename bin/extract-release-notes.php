@@ -1,8 +1,19 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
+<?php
 
-if ($_SERVER['argc'] !== 2) {
-    echo sprintf('Usage: %s version', basename(__FILE__), ).PHP_EOL;
+declare(strict_types=1);
+
+/*
+ * This file is part of the Symfony1 package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+if (2 !== $_SERVER['argc']) {
+    echo sprintf('Usage: %s version', basename(__FILE__)).PHP_EOL;
     exit(1);
 }
 
@@ -25,23 +36,23 @@ foreach (file($changelogFilePath) as $line) {
         continue;
     }
 
-    if ($state === 'note_header') {
+    if ('note_header' === $state) {
         $state = 'note';
         continue;
     }
 
-    if ($state === 'note' && str_contains($line, 'Version ')) {
+    if ('note' === $state && str_contains($line, 'Version ')) {
         break;
     }
 
-    if ($state === 'note') {
+    if ('note' === $state) {
         $buffer .= $line;
     }
 }
 
 $buffer = trim($buffer);
 
-if ($buffer === '') {
+if ('' === $buffer) {
     echo 'Release note not found for the specified version.'.PHP_EOL;
     exit(1);
 }
