@@ -4,6 +4,7 @@ on:
     paths:
       - .php-cs-fixer.dist.php
       - autoload.php
+      - bin/**
       - lib/**
       - data/**
       - tests/**
@@ -13,6 +14,7 @@ on:
     paths:
       - .php-cs-fixer.dist.php
       - autoload.php
+      - bin/**
       - lib/**
       - data/**
       - tests/**
