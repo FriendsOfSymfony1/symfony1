@@ -15,8 +15,6 @@ if (!isset($argv[1])) {
     throw new \InvalidArgumentException('You must provide version.');
 }
 
-$filesystem = new sfFilesystem();
-
 $version = $argv[1];
 
 echo sprintf("Releasing symfony version \"%s\".\n", $version);
