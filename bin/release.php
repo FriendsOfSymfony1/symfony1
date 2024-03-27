@@ -9,22 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
- * Release script.
- *
- * Usage: php data/bin/release.php 1.3.0 stable
- *
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
- */
-require_once __DIR__.'/../../lib/exception/sfException.class.php';
-
-require_once __DIR__.'/../../lib/task/sfFilesystem.class.php';
-
-require_once __DIR__.'/../../lib/util/sfFinder.class.php';
-
-require_once __DIR__.'/../../lib/vendor/lime/lime.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 if (!isset($argv[1])) {
     throw new Exception('You must provide version prefix.');
