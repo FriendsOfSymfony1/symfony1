@@ -73,4 +73,70 @@ $rawVersion = substr($version, 1);
 
 echo sprintf("Prepare symfony version \"%s\".\n", $rawVersion);
 
+/**
+ * prepare sfCoreAutoload class
+ */
+$file = __DIR__.'/../lib/autoload/sfCoreAutoload.class.php';
+$content = file_get_contents($file);
+
+$content = preg_replace('/^define\(.*SYMFONY_VERSION.*$/m', 'define(\'SYMFONY_VERSION\', \''.$rawVersion.'\');', $content, -1, $count);
+
+if ($count !== 1) {
+    throw new \RuntimeException('Preparing sfCoreAutoload failed, SYMFONY_VERSION constant not found.');
+}
+
+file_put_contents($file, $content);
+
+/**
+ * prepare CHANGELOG.md
+ */
+$file = __DIR__.'/../CHANGELOG.md';
+$content = file_get_contents($file);
+
+$nextVersionHeader = <<<EOL
+xx/xx/xxxx: Version 1.5.xx
+--------------------------
+
+
+
+
+EOL;
+
+$changelogHeader = sprintf('%s: Version %s', date('d/m/Y'), $rawVersion);
+$content = preg_replace('/^xx\/xx\/xxxx.*$/m', $nextVersionHeader.$changelogHeader, $content, -1, $count);
+
+if ($count !== 1) {
+    throw new \RuntimeException('Preparing CHANGELOG.md failed. Template line not found.');
+}
+
+file_put_contents($file, $content);
+
+/**
+ * content prepare end
+ */
+
+echo "Please check the changes before commit and tagging.\n";
+
+passthru('git diff');
+
+echo "Is everything ok? (y/N)\n";
+
+$answer = readline();
+
+if (strtolower($answer) !== 'y') {
+    echo "Revert changes.\n";
+    exec('git checkout lib/autoload/sfCoreAutoload.class.php');
+    exec('git checkout CHANGELOG.md');
+    echo "Stopped.\n";
+    exit(1);
+}
+
+chdir(__DIR__.'/..');
+exec('git add lib/autoload/sfCoreAutoload.class.php');
+exec('git add CHANGELOG.md');
+exec('git commit -m "Prepare release '.$rawVersion.'"');
+exec('git tag -a '.$version.' -m "Release '.$rawVersion.'"');
+exec('git push origin '.$version);
+
+
 exit(0);
