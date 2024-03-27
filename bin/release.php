@@ -15,12 +15,6 @@ if (!isset($argv[1])) {
     throw new \InvalidArgumentException('You must provide version.');
 }
 
-if (!isset($argv[2])) {
-    throw new Exception('You must provide stability status (alpha/beta/stable).');
-}
-
-$stability = $argv[2];
-
 $filesystem = new sfFilesystem();
 
 $version = $argv[1];
