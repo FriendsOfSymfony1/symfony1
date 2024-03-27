@@ -12,6 +12,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+if (PHP_VERSION_ID < 80300) {
+    echo 'PHP 8.3 required'.PHP_EOL;
+    exit(1);
+}
+
 if (!isset($argv[1])) {
     throw new InvalidArgumentException('You must specify the version: v1.x.x or next.');
 }
