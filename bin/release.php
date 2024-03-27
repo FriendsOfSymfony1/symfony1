@@ -12,7 +12,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 if (!isset($argv[1])) {
-    throw new Exception('You must provide version prefix.');
+    throw new \InvalidArgumentException('You must provide version.');
 }
 
 if (!isset($argv[2])) {
@@ -23,23 +23,7 @@ $stability = $argv[2];
 
 $filesystem = new sfFilesystem();
 
-if (('beta' == $stability || 'alpha' == $stability) && count(explode('.', $argv[1])) < 2) {
-    $version_prefix = $argv[1];
-
-    list($result) = $filesystem->execute('svn status -u '.getcwd());
-    if (preg_match('/Status against revision\:\s+(\d+)\s*$/im', $result, $match)) {
-        $version = $match[1];
-    }
-
-    if (!isset($version)) {
-        throw new Exception('Unable to find last SVN revision.');
-    }
-
-    // make a PEAR compatible version
-    $version = $version_prefix.'.'.$version;
-} else {
-    $version = $argv[1];
-}
+$version = $argv[1];
 
 echo sprintf("Releasing symfony version \"%s\".\n", $version);
 
