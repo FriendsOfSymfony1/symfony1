@@ -168,7 +168,7 @@ abstract class sfWidgetFormSchemaFormatter
         $label = $this->widgetSchema->getLabel($name);
 
         if (!$label && false !== $label) {
-            $label = str_replace('_', ' ', ucfirst('_id' == substr($name, -3) ? substr($name, 0, -3) : $name));
+            $label = sfInflector::camelize('_id' == substr($name, -3) ? substr($name, 0, -3) : $name);
         }
 
         return $this->translate($label);
