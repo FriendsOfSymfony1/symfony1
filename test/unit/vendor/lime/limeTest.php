@@ -57,12 +57,10 @@ $expectedOverallSucceed = false;
 $expectedOutput = <<<'EOF'
 test/unit/vendor/lime/fixtures/failed................................not ok
     Failed tests: 1
-test/unit/vendor/lime/fixtures/failed_with_plan_less_than_total......dubious
-    Test returned status 255
+test/unit/vendor/lime/fixtures/failed_with_plan_less_than_total......not ok
     Looks like you planned 1 test but ran 1 extra.
     Failed tests: 1
-test/unit/vendor/lime/fixtures/failed_with_plan_more_than_total......dubious
-    Test returned status 255
+test/unit/vendor/lime/fixtures/failed_with_plan_more_than_total......not ok
     Looks like you planned 2 tests but only ran 1.
     Failed tests: 1
 test/unit/vendor/lime/fixtures/pass..................................ok
@@ -74,9 +72,9 @@ test/unit/vendor/lime/fixtures/pass_with_plan_more_than_total........dubious
     Looks like you planned 2 tests but only ran 1.
 Failed Test                     Stat  Total   Fail  Errors  List of Failed
 --------------------------------------------------------------------------
-it/vendor/lime/fixtures/failed     0      1      1      0  1
-iled_with_plan_less_than_total   255      2      1      0  1
-iled_with_plan_more_than_total   255      1      1      0  1
+it/vendor/lime/fixtures/failed     1      1      1      0  1
+iled_with_plan_less_than_total     1      2      1      0  1
+iled_with_plan_more_than_total     1      1      1      0  1
 pass_with_plan_less_than_total   255      2      0      0
 pass_with_plan_more_than_total   255      1      0      0
 Failed 5/6 test scripts, 16.67% okay. 5/10 subtests failed, 50.00% okay.
@@ -112,7 +110,7 @@ EOF;
 whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
 
 $name = 'failed';
-$expectedStatusCode = 0;
+$expectedStatusCode = 1;
 $expectedOutput = <<<'EOF'
 not ok 1
 #     Failed test (./test/unit/vendor/lime/fixtures/failed.php at line 7)
@@ -125,7 +123,7 @@ EOF;
 whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
 
 $name = 'failed_with_plan_less_than_total';
-$expectedStatusCode = 0;
+$expectedStatusCode = 1;
 $expectedOutput = <<<'EOF'
 1..1
 not ok 1
@@ -140,7 +138,7 @@ EOF;
 whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
 
 $name = 'failed_with_plan_more_than_total';
-$expectedStatusCode = 0;
+$expectedStatusCode = 1;
 $expectedOutput = <<<'EOF'
 1..2
 not ok 1
@@ -154,7 +152,7 @@ EOF;
 whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
 
 $name = 'pass_with_plan_less_than_total';
-$expectedStatusCode = 0;
+$expectedStatusCode = 255;
 $expectedOutput = <<<'EOF'
 1..1
 ok 1
@@ -165,7 +163,7 @@ EOF;
 whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
 
 $name = 'pass_with_plan_more_than_total';
-$expectedStatusCode = 0;
+$expectedStatusCode = 255;
 $expectedOutput = <<<'EOF'
 1..2
 ok 1
