@@ -27,6 +27,7 @@ class lime_test
 
   private const STATE_PASS = 0;
   private const STATE_FAIL = 1;
+  private const STATE_PLAN_NOT_FOLLOW = 2;
 
   private static $instanceCount = 0;
   private static $finalState = self::STATE_PASS;
@@ -161,7 +162,7 @@ class lime_test
     }
 
     if (self::STATE_FAIL === $planState) {
-      return self::STATE_FAIL;
+      return self::STATE_PLAN_NOT_FOLLOW;
     }
 
     $this->output->green_bar("# Looks like everything went fine.");
@@ -215,6 +216,8 @@ class lime_test
     switch ($state) {
       case self::STATE_PASS:
         return 0;
+      case self::STATE_PLAN_NOT_FOLLOW:
+        return 255;
       default:
         return 1;
     }
