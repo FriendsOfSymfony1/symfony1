@@ -21,8 +21,12 @@ jobs:
           - "8.1"
           - "8.2"
           - "8.3"
+          - "8.4"
         memcached-version:
           - "1.6"
+        include:
+          - php-version: 8.4
+            mode: experimental
 
     services:
       memcached:
