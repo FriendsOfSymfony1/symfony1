@@ -12,8 +12,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../vendor/autoload.php';
-
 if (!isset($argv[1])) {
     throw new InvalidArgumentException('You must specify the version: v1.x.x or next.');
 }
