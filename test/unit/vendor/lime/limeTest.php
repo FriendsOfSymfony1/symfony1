@@ -43,7 +43,7 @@ class lime_no_colorizer extends lime_colorizer
     }
 }
 
-$test = new lime_test(16);
+$test = new lime_test(18);
 
 $files = [
     __DIR__.'/fixtures/failed.php',
@@ -96,6 +96,21 @@ Failed 1/1 test scripts, 0.00% okay. 0/2 subtests failed, 100.00% okay.
 
 EOF;
 $message = 'with at least one test file that not follow the plan will fail the overall test suite';
+whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
+
+$files = [__DIR__.'/fixtures/pass_with_one_error.php'];
+$expectedOverallSucceed = false;
+$expectedOutput = <<<'EOF'
+test/unit/vendor/lime/fixtures/pass_with_one_error...................errors
+    Errors:
+    - Notice: some use error message
+Failed Test                     Stat  Total   Fail  Errors  List of Failed
+--------------------------------------------------------------------------
+e/fixtures/pass_with_one_error     1      1      0      1
+Failed 1/1 test scripts, 0.00% okay. 0/1 subtests failed, 100.00% okay.
+
+EOF;
+$message = 'with at least one error will fail the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
 
