@@ -16,17 +16,26 @@
  */
 class lime_test
 {
-  const EPSILON = 0.0000000001;
+  public const EPSILON = 0.0000000001;
 
   protected $test_nb = 0;
   protected $output  = null;
   protected $results = array();
   protected $options = array();
 
-  static protected $all_results = array();
+  protected static $all_results = array();
+
+  private const STATE_PASS = 0;
+  private const STATE_FAIL = 1;
+  private const STATE_PLAN_NOT_FOLLOW = 2;
+
+  private static $instanceCount = 0;
+  private static $finalState = self::STATE_PASS;
 
   public function __construct($plan = null, $options = array())
   {
+    ++self::$instanceCount;
+
     // for BC
     if (!is_array($options))
     {
@@ -130,31 +139,86 @@ class lime_test
 
   public function __destruct()
   {
-    $plan = $this->results['stats']['plan'];
-    $passed = count($this->results['stats']['passed']);
+    $testSuiteState = $this->determineAndPrintStateOfTestSuite();
+
+    flush();
+
+    $this->keepTheWorstState($testSuiteState);
+
+    $this->finalizeLastInstanceDestructorWithProcessExit();
+  }
+
+  private function determineAndPrintStateOfTestSuite(): int
+  {
+    $planState = $this->determineAndPrintStateOfPlan();
     $failed = count($this->results['stats']['failed']);
-    $total = $this->results['stats']['total'];
-    is_null($plan) and $plan = $total and $this->output->echoln(sprintf("1..%d", $plan));
 
-    if ($total > $plan)
-    {
-      $this->output->red_bar(sprintf("# Looks like you planned %d tests but ran %d extra.", $plan, $total - $plan));
-    }
-    elseif ($total < $plan)
-    {
-      $this->output->red_bar(sprintf("# Looks like you planned %d tests but only ran %d.", $plan, $total));
-    }
+    if ($failed) {
+      $passed = count($this->results['stats']['passed']);
 
-    if ($failed)
-    {
       $this->output->red_bar(sprintf("# Looks like you failed %d tests of %d.", $failed, $passed + $failed));
+
+      return self::STATE_FAIL;
     }
-    else if ($total == $plan)
-    {
+
+    if (self::STATE_PASS === $planState) {
       $this->output->green_bar("# Looks like everything went fine.");
     }
 
-    flush();
+    return $planState;
+  }
+
+  private function determineAndPrintStateOfPlan(): int
+  {
+    $plan = $this->results['stats']['plan'];
+    $total = $this->results['stats']['total'];
+
+    if (null === $plan) {
+      $plan = $total;
+
+      $this->output->echoln(sprintf("1..%d", $plan));
+    }
+
+    if ($total > $plan) {
+      $this->output->red_bar(sprintf("# Looks like you planned %d tests but ran %d extra.", $plan, $total - $plan));
+    } elseif ($total < $plan) {
+      $this->output->red_bar(sprintf("# Looks like you planned %d tests but only ran %d.", $plan, $total));
+    }
+
+    return $total === $plan ? self::STATE_PASS : self::STATE_PLAN_NOT_FOLLOW;
+  }
+
+  private function keepTheWorstState(int $state): void
+  {
+    if ($this->stateIsTheWorst($state)) {
+      self::$finalState = $state;
+    }
+  }
+
+  private function stateIsTheWorst(int $state): bool
+  {
+    return self::$finalState < $state;
+  }
+
+  private function finalizeLastInstanceDestructorWithProcessExit(): void
+  {
+    --self::$instanceCount;
+
+    if (0 === self::$instanceCount) {
+      exit($this->determineExitCodeFromState(self::$finalState));
+    }
+  }
+
+  private function determineExitCodeFromState(int $state): int
+  {
+    switch ($state) {
+      case self::STATE_PASS:
+        return 0;
+      case self::STATE_PLAN_NOT_FOLLOW:
+        return 255;
+      default:
+        return 1;
+    }
   }
 
   /**
@@ -952,8 +1016,7 @@ EOF
       );
 
       ob_start();
-      // see http://trac.symfony-project.org/ticket/5437 for the explanation on the weird "cd" thing
-      passthru(sprintf('cd & %s %s 2>&1', escapeshellarg($this->php_cli), escapeshellarg($test_file)), $return);
+      $return = $this->executePhpFile($test_file);
       ob_end_clean();
       unlink($test_file);
 
@@ -968,21 +1031,22 @@ EOF
       $file_stats = &$stats['output'][0]['stats'];
 
       $delta = 0;
+      $this->stats['total'] += $file_stats['total'];
+
+      if (!$file_stats['plan'])
+      {
+        $file_stats['plan'] = $file_stats['total'];
+      }
+
+      $delta = $file_stats['plan'] - $file_stats['total'];
+
       if ($return > 0)
       {
-        $stats['status'] = $file_stats['errors'] ? 'errors' : 'dubious';
+        $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'dubious');
         $stats['status_code'] = $return;
       }
       else
       {
-        $this->stats['total'] += $file_stats['total'];
-
-        if (!$file_stats['plan'])
-        {
-          $file_stats['plan'] = $file_stats['total'];
-        }
-
-        $delta = $file_stats['plan'] - $file_stats['total'];
         if (0 != $delta)
         {
           $stats['status'] = $file_stats['errors'] ? 'errors' : 'dubious';
@@ -990,7 +1054,7 @@ EOF
         }
         else
         {
-          $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'ok');
+          $stats['status'] = $file_stats['errors'] ? 'errors' : 'ok';
           $stats['status_code'] = 0;
         }
       }
@@ -1122,6 +1186,20 @@ EOF
   public function get_failed_files()
   {
     return isset($this->stats['failed_files']) ? $this->stats['failed_files'] : array();
+  }
+
+  /**
+   * The command fails if the path to php interpreter contains spaces.
+   * The only workaround is adding a "nop" command call before the quoted command.
+   * The weird "cd &".
+   *
+   * see http://trac.symfony-project.org/ticket/5437
+   */
+  public function executePhpFile(string $phpFile): int
+  {
+      passthru(sprintf('cd & %s %s 2>&1', escapeshellarg($this->php_cli), escapeshellarg($phpFile)), $return);
+
+      return $return;
   }
 }
 
