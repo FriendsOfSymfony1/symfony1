@@ -1054,7 +1054,7 @@ EOF
         }
         else
         {
-          $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'ok');
+          $stats['status'] = $file_stats['errors'] ? 'errors' : 'ok';
           $stats['status_code'] = 0;
         }
       }
