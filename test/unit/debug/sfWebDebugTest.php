@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -12,13 +12,18 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(10);
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class sfWebDebugTest extends sfWebDebug
 {
-  public function __construct()
-  {
-    $this->options['image_root_path'] = '';
-    $this->options['request_parameters'] = array();
-  }
+    public function __construct()
+    {
+        $this->options['image_root_path'] = '';
+        $this->options['request_parameters'] = [];
+    }
 }
 
 $debug = new sfWebDebugTest();
@@ -40,7 +45,7 @@ $t->unlike($after, '/<style type="text\/css">/', '->injectToolbar() does not add
 $t->unlike($after, '/<script type="text\/javascript">/', '->injectToolbar() does not add javascripts if there is no body');
 $t->like($after, '/<div id="sfWebDebug">/', '->injectToolbar() adds the toolbar if there is no body');
 
-$before = <<<HTML
+$before = <<<'HTML'
 <html>
 <head></head>
 <body>

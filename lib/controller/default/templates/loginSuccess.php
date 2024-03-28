@@ -1,7 +1,7 @@
-<?php decorate_with(__DIR__.'/defaultLayout.php') ?>
+<?php decorate_with(__DIR__.'/defaultLayout.php'); ?>
 
 <div class="sfTMessageContainer sfTLock"> 
-  <?php echo image_tag('/sf/sf_default/images/icons/lock48.png', array('alt' => 'login required', 'class' => 'sfTMessageIcon', 'size' => '48x48')) ?>
+  <?php echo image_tag('/sf/sf_default/images/icons/lock48.png', ['alt' => 'login required', 'class' => 'sfTMessageIcon', 'size' => '48x48']); ?>
   <div class="sfTMessageWrap">
     <h1>Login Required</h1>
     <h5>This page is not public.</h5>
@@ -14,7 +14,7 @@
   <dt>What's Next</dt>
   <dd>
     <ul class="sfTIconList">
-      <li class="sfTLinkMessage"><?php echo link_to('Proceed to login', sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action')) ?></li>
+      <li class="sfTLinkMessage"><?php echo link_to('Proceed to login', sfConfig::get('sf_login_module').'/'.sfConfig::get('sf_login_action')); ?></li>
       <li class="sfTLinkMessage"><a href="javascript:history.go(-1)">Back to previous page</a></li>
     </ul>
   </dd>

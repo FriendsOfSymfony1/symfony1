@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(18);
 
-$source = <<<EOF
+$source = <<<'EOF'
 <?php
 
 class Foo
@@ -35,7 +35,7 @@ class Foo
 }
 EOF;
 
-$sourceWithCodeBefore = <<<EOF
+$sourceWithCodeBefore = <<<'EOF'
 <?php
 
 class Foo
@@ -59,7 +59,7 @@ class Foo
 }
 EOF;
 
-$sourceWithCodeAfter = <<<EOF
+$sourceWithCodeAfter = <<<'EOF'
 <?php
 
 class Foo
@@ -83,7 +83,7 @@ class Foo
 }
 EOF;
 
-$sourceWithCodeBeforeAndAfter = <<<EOF
+$sourceWithCodeBeforeAndAfter = <<<'EOF'
 <?php
 
 class Foo
@@ -152,33 +152,34 @@ $t->diag('->filterMethod()');
 
 class MethodFilterer
 {
-  public $lines = array();
+    public $lines = [];
 
-  public function filter1($line)
-  {
-    $this->lines[] = $line;
-    return $line;
-  }
+    public function filter1($line)
+    {
+        $this->lines[] = $line;
 
-  public function filter2($line)
-  {
-    return str_replace(array(
-      'if (true)',
-      'function foo()',
-    ), array(
-      'if (false)',
-      'function foo($arg)',
-    ), $line);
-  }
+        return $line;
+    }
+
+    public function filter2($line)
+    {
+        return str_replace([
+            'if (true)',
+            'function foo()',
+        ], [
+            'if (false)',
+            'function foo($arg)',
+        ], $line);
+    }
 }
 $f = new MethodFilterer();
 
-$sourceFiltered = <<<EOF
+$sourceFiltered = <<<'EOF'
 <?php
 
 class Foo
 {
-  function foo(\$arg)
+  function foo($arg)
   {
     if (false)
     {
@@ -209,38 +210,38 @@ $sourceFilteredLF = str_replace('
 $t->diag('CRLF');
 
 $m = new sfClassManipulator($sourceCRLF);
-$f->lines = array();
-$m->filterMethod('foo', array($f, 'filter1'));
+$f->lines = [];
+$m->filterMethod('foo', [$f, 'filter1']);
 $t->is($m->getCode(), $sourceCRLF, '->filterMethod() does not change the code if the filter does nothing');
-$t->is_deeply($f->lines, array(
-  "  function foo()\r\n",
-  "  {\r\n",
-  "    if (true)\r\n",
-  "    {\r\n",
-  "      return;\r\n",
-  "    }\r\n",
-  "  }",
-), '->filterMethod() filters each line of the method');
-$m->filterMethod('foo', array($f, 'filter2'));
+$t->is_deeply($f->lines, [
+    "  function foo()\r\n",
+    "  {\r\n",
+    "    if (true)\r\n",
+    "    {\r\n",
+    "      return;\r\n",
+    "    }\r\n",
+    '  }',
+], '->filterMethod() filters each line of the method');
+$m->filterMethod('foo', [$f, 'filter2']);
 $t->is($m->getCode(), $sourceFilteredCRLF, '->filterMethod() modifies the method');
 
 // LF
 $t->diag('LF');
 
 $m = new sfClassManipulator($sourceLF);
-$f->lines = array();
-$m->filterMethod('foo', array($f, 'filter1'));
+$f->lines = [];
+$m->filterMethod('foo', [$f, 'filter1']);
 $t->is($m->getCode(), $sourceLF, '->filterMethod() does not change the code if the filter does nothing');
-$t->is_deeply($f->lines, array(
-  "  function foo()\n",
-  "  {\n",
-  "    if (true)\n",
-  "    {\n",
-  "      return;\n",
-  "    }\n",
-  "  }",
-), '->filterMethod() filters each line of the method');
-$m->filterMethod('foo', array($f, 'filter2'));
+$t->is_deeply($f->lines, [
+    "  function foo()\n",
+    "  {\n",
+    "    if (true)\n",
+    "    {\n",
+    "      return;\n",
+    "    }\n",
+    '  }',
+], '->filterMethod() filters each line of the method');
+$m->filterMethod('foo', [$f, 'filter2']);
 $t->is($m->getCode(), $sourceFilteredLF, '->filterMethod() modifies the method');
 
 // no EOL
@@ -248,9 +249,9 @@ $t->diag('no EOL');
 
 $sourceFlat = '<?php class Foo { function foo() { if (true) { return; } } function baz() { if (true) { return; } } }';
 $m = new sfClassManipulator($sourceFlat);
-$f->lines = array();
-$m->filterMethod('foo', array($f, 'filter1'));
-$t->is_deeply($f->lines, array('function foo() { if (true) { return; } }'), '->filterMethod() works when there are no line breaks');
+$f->lines = [];
+$m->filterMethod('foo', [$f, 'filter1']);
+$t->is_deeply($f->lines, ['function foo() { if (true) { return; } }'], '->filterMethod() works when there are no line breaks');
 $t->is($m->getCode(), $sourceFlat, '->filterMethod() works when there are no line breaks');
 
 // mixed EOL
@@ -258,14 +259,14 @@ $t->diag('mixed EOL');
 
 $sourceMixed = "<?php\r\n\nclass Foo\r\n{\n  function foo()\r\n  {\n    if (true)\r\n    {\n      return;\r\n    }\n  }\r\n\n  function baz()\r\n  {\n    if (true)\r\n    {\n      return;\r\n    }\n  }\r\n}";
 $m = new sfClassManipulator($sourceMixed);
-$f->lines = array();
-$m->filterMethod('foo', array($f, 'filter1'));
-$t->is_deeply($f->lines, array(
-  "  function foo()\r\n",
-  "  {\n",
-  "    if (true)\r\n",
-  "    {\n",
-  "      return;\r\n",
-  "    }\n",
-  "  }",
-), '->filterMethod() filters each line of a mixed EOL-style method');
+$f->lines = [];
+$m->filterMethod('foo', [$f, 'filter1']);
+$t->is_deeply($f->lines, [
+    "  function foo()\r\n",
+    "  {\n",
+    "    if (true)\r\n",
+    "    {\n",
+    "      return;\r\n",
+    "    }\n",
+    '  }',
+], '->filterMethod() filters each line of a mixed EOL-style method');

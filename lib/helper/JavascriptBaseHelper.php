@@ -12,18 +12,13 @@
 /**
  * JavascriptBaseHelper.
  *
- * @package    symfony
- * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     John Christopher <john.christopher@symfony-project.com>
  * @author     David Heinemeier Hansson
  * @author     Fabian Lange <fabian.lange@symfony-project.com>
- * @version    SVN: $Id$
  */
 
-/*
- * Provides a set basic of helpers for calling JavaScript functions.
- */
+// Provides a set basic of helpers for calling JavaScript functions.
 
 /**
  * Returns a link that will trigger a javascript function using the
@@ -33,20 +28,19 @@
  *   <?php echo link_to_function('Greeting', "alert('Hello world!')") ?>
  *   <?php echo link_to_function(image_tag('delete'), "do_delete()", array('confirm' => 'Really?')) ?>
  */
-function link_to_function($name, $function, $html_options = array())
+function link_to_function($name, $function, $html_options = [])
 {
-  $html_options = _parse_attributes($html_options);
+    $html_options = _parse_attributes($html_options);
 
-  $html_options['href'] = isset($html_options['href']) ? $html_options['href'] : '#';
-  if ( isset($html_options['confirm']) )
-  {
-    $confirm = escape_javascript($html_options['confirm']);
-    unset($html_options['confirm']);
-    $function = "if(window.confirm('$confirm')){ $function;}";
-  }
-  $html_options['onclick'] = $function.'; return false;';
+    $html_options['href'] = isset($html_options['href']) ? $html_options['href'] : '#';
+    if (isset($html_options['confirm'])) {
+        $confirm = escape_javascript($html_options['confirm']);
+        unset($html_options['confirm']);
+        $function = "if(window.confirm('{$confirm}')){ {$function};}";
+    }
+    $html_options['onclick'] = $function.'; return false;';
 
-  return content_tag('a', $name, $html_options);
+    return content_tag('a', $name, $html_options);
 }
 
 /**
@@ -56,15 +50,15 @@ function link_to_function($name, $function, $html_options = array())
  * Examples:
  *   <?php echo button_to_function('Greeting', "alert('Hello world!')") ?>
  */
-function button_to_function($name, $function, $html_options = array())
+function button_to_function($name, $function, $html_options = [])
 {
-  $html_options = _parse_attributes($html_options);
+    $html_options = _parse_attributes($html_options);
 
-  $html_options['onclick'] = $function.'; return false;';
-  $html_options['type']    = 'button';
-  $html_options['value']   = $name;
+    $html_options['onclick'] = $function.'; return false;';
+    $html_options['type'] = 'button';
+    $html_options['value'] = $name;
 
-  return tag('input', $html_options);
+    return tag('input', $html_options);
 }
 
 /**
@@ -73,28 +67,27 @@ function button_to_function($name, $function, $html_options = array())
  * Example:
  *   <?php echo javascript_tag("alert('All is good')") ?>
  *   => <script type="text/javascript">alert('All is good')</script>
- *   <?php javascript_tag() ?>alert('All is good')<?php end_javascript_tag() ?>
+ *   <?php javascript_tag() ?>alert('All is good')<?php end_javascript_tag() ?>.
+ *
+ * @param mixed|null $content
  */
 function javascript_tag($content = null)
 {
-  if (null !== $content)
-  {
-    return content_tag('script', javascript_cdata_section($content), array('type' => 'text/javascript'));
-  }
-  else
-  {
+    if (null !== $content) {
+        return content_tag('script', javascript_cdata_section($content), ['type' => 'text/javascript']);
+    }
+
     ob_start();
-  }
 }
 
 function end_javascript_tag()
 {
-  echo javascript_tag(ob_get_clean());
+    echo javascript_tag(ob_get_clean());
 }
 
 function javascript_cdata_section($content)
 {
-  return "\n//".cdata_section("\n$content\n//")."\n";
+    return "\n//".cdata_section("\n{$content}\n//")."\n";
 }
 
 /**
@@ -103,10 +96,9 @@ function javascript_cdata_section($content)
  */
 function if_javascript()
 {
-  if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest())
-  {
-    ob_start();
-  }
+    if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
+        ob_start();
+    }
 }
 
 /**
@@ -115,11 +107,10 @@ function if_javascript()
  */
 function end_if_javascript()
 {
-  if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest())
-  {
-    $content = ob_get_clean();
-    echo javascript_tag("document.write('" . esc_js_no_entities($content) . "');");
-  }
+    if (!sfContext::getInstance()->getRequest()->isXmlHttpRequest()) {
+        $content = ob_get_clean();
+        echo javascript_tag("document.write('".esc_js_no_entities($content)."');");
+    }
 }
 
 /**
@@ -127,41 +118,40 @@ function end_if_javascript()
  * javascript strings need to be single quoted.
  *
  * @param option (typically from option array)
+ *
  * @return string javascript string or array equivalent
  */
 function array_or_string_for_javascript($option)
 {
-  if (is_array($option))
-  {
-    return "['".implode('\',\'', $option)."']";
-  }
-  else if (is_string($option) && $option[0] != "'")
-  {
-    return "'$option'";
-  }
-  return $option;
+    if (is_array($option)) {
+        return "['".implode('\',\'', $option)."']";
+    }
+    if (is_string($option) && "'" != $option[0]) {
+        return "'{$option}'";
+    }
+
+    return $option;
 }
 
 /**
-* converts the the PHP options array into a javscript array
+ * converts the the PHP options array into a javscript array.
  *
  * @param array
+ *
  * @return string javascript arry equivalent
-*/
+ */
 function options_for_javascript($options)
 {
-  $opts = array();
-  foreach ($options as $key => $value)
-  {
-    if (is_array($value))
-    {
-     $value = options_for_javascript($value);
+    $opts = [];
+    foreach ($options as $key => $value) {
+        if (is_array($value)) {
+            $value = options_for_javascript($value);
+        }
+        $opts[] = $key.':'.boolean_for_javascript($value);
     }
-    $opts[] = $key.":".boolean_for_javascript($value);
-  }
-  sort($opts);
+    sort($opts);
 
-  return '{'.implode(', ', $opts).'}';
+    return '{'.implode(', ', $opts).'}';
 }
 
 /**
@@ -169,13 +159,14 @@ function options_for_javascript($options)
  * booleans need to be true or false (php would print 1 or nothing).
  *
  * @param bool (typically from option array)
+ *
  * @return string javascript boolean equivalent
  */
 function boolean_for_javascript($bool)
 {
-  if (is_bool($bool))
-  {
-    return ($bool===true ? 'true' : 'false');
-  }
-  return $bool;
+    if (is_bool($bool)) {
+        return true === $bool ? 'true' : 'false';
+    }
+
+    return $bool;
 }

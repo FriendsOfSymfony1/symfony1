@@ -1,1 +1,3 @@
-<?php echo $sf_params->get('filter') ?>
+<?php
+
+echo $sf_params->get('filter');

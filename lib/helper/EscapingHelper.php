@@ -25,23 +25,21 @@
  * For each function there is a define to avoid problems with strings being
  * incorrectly specified.
  *
- * @package    symfony
- * @subpackage helper
  * @author     Mike Squire <mike@somosis.co.uk>
- * @version    SVN: $Id$
  */
 
 /**
  * Runs the PHP function htmlentities on the value passed.
  *
  * @param string $value the value to escape
+ *
  * @return string the escaped value
  */
 function esc_entities($value)
 {
-  // Numbers and boolean values get turned into strings which can cause problems
-  // with type comparisons (e.g. === or is_int() etc).
-  return is_string($value) ? htmlentities($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
+    // Numbers and boolean values get turned into strings which can cause problems
+    // with type comparisons (e.g. === or is_int() etc).
+    return is_string($value) ? htmlentities($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
 }
 
 define('ESC_ENTITIES', 'esc_entities');
@@ -50,13 +48,14 @@ define('ESC_ENTITIES', 'esc_entities');
  * Runs the PHP function htmlspecialchars on the value passed.
  *
  * @param string $value the value to escape
+ *
  * @return string the escaped value
  */
 function esc_specialchars($value)
 {
-  // Numbers and boolean values get turned into strings which can cause problems
-  // with type comparisons (e.g. === or is_int() etc).
-  return is_string($value) ? htmlspecialchars($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
+    // Numbers and boolean values get turned into strings which can cause problems
+    // with type comparisons (e.g. === or is_int() etc).
+    return is_string($value) ? htmlspecialchars($value, ENT_QUOTES, sfConfig::get('sf_charset')) : $value;
 }
 
 define('ESC_SPECIALCHARS', 'esc_specialchars');
@@ -66,11 +65,12 @@ define('ESC_SPECIALCHARS', 'esc_specialchars');
  * being to be able to specify that the value is not to be escaped in any way.
  *
  * @param string $value the value to escape
+ *
  * @return string the escaped value
  */
 function esc_raw($value)
 {
-  return $value;
+    return $value;
 }
 
 define('ESC_RAW', 'esc_raw');
@@ -85,11 +85,12 @@ define('ESC_RAW', 'esc_raw');
  * that is ultimately not going to end up as text in an HTML document.
  *
  * @param string $value the value to escape
+ *
  * @return string the escaped value
  */
 function esc_js($value)
 {
-  return esc_js_no_entities(esc_entities($value));
+    return esc_js_no_entities(esc_entities($value));
 }
 
 define('ESC_JS', 'esc_js');
@@ -99,13 +100,16 @@ define('ESC_JS', 'esc_js');
  * JavaScript string.
  *
  * @param string $value the value to escape
+ *
  * @return string the escaped value
  */
 function esc_js_no_entities($value)
 {
-  return str_replace(array("\\"  , "\n"  , "\r" , "\""  , "'"  ),
-                     array("\\\\", "\\n" , "\\r", "\\\"", "\\'"),
-                     $value);
+    return str_replace(
+        ['\\', "\n", "\r", '"', "'"],
+        ['\\\\', '\\n', '\\r', '\\"', "\\'"],
+        $value
+    );
 }
 
 define('ESC_JS_NO_ENTITIES', 'esc_js_no_entities');

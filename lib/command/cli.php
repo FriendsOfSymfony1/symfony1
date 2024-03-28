@@ -9,41 +9,33 @@
  */
 
 // Try autoloading using composer if available.
-if (!file_exists($autoload = __DIR__.'/../../../../autoload.php'))
-{
-  $autoload = __DIR__.'/../../autoload.php';
+if (!file_exists($autoload = __DIR__.'/../../../../autoload.php')) {
+    $autoload = __DIR__.'/../../autoload.php';
 }
 
 // Fall back to classic Symfony loading
-if (!file_exists($autoload))
-{
-  require_once(__DIR__.'/../autoload/sfCoreAutoload.class.php');
-  sfCoreAutoload::register();
-}
-else
-{
-  require_once $autoload;
+if (!file_exists($autoload)) {
+    require_once __DIR__.'/../autoload/sfCoreAutoload.class.php';
+    sfCoreAutoload::register();
+} else {
+    require_once $autoload;
 }
 
-try
-{
-  $dispatcher = new sfEventDispatcher();
-  $logger = new sfCommandLogger($dispatcher);
+try {
+    $dispatcher = new sfEventDispatcher();
+    $logger = new sfCommandLogger($dispatcher);
 
-  $application = new sfSymfonyCommandApplication($dispatcher, null, array('symfony_lib_dir' => realpath(__DIR__.'/..')));
-  $statusCode = $application->run();
-}
-catch (Exception $e)
-{
-  if (!isset($application))
-  {
-    throw $e;
-  }
+    $application = new sfSymfonyCommandApplication($dispatcher, null, ['symfony_lib_dir' => realpath(__DIR__.'/..')]);
+    $statusCode = $application->run();
+} catch (Exception $e) {
+    if (!isset($application)) {
+        throw $e;
+    }
 
-  $application->renderException($e);
-  $statusCode = $e->getCode();
+    $application->renderException($e);
+    $statusCode = $e->getCode();
 
-  exit(is_numeric($statusCode) && $statusCode ? $statusCode : 1);
+    exit(is_numeric($statusCode) && $statusCode ? $statusCode : 1);
 }
 
 exit(is_numeric($statusCode) ? $statusCode : 0);

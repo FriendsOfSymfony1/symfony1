@@ -8,9 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../lib/vendor/lime/lime.php');
-require_once(__DIR__.'/../../../lib/helper/EscapingHelper.php');
-require_once(__DIR__.'/../../../lib/escaper/sfOutputEscaperSafe.class.php');
+require_once __DIR__.'/../../../lib/vendor/lime/lime.php';
+
+require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
+
+require_once __DIR__.'/../../../lib/escaper/sfOutputEscaperSafe.class.php';
 
 $t = new lime_test(13);
 
@@ -24,7 +26,7 @@ $t->diag('->__set() ->__get()');
 
 class TestClass1
 {
-  public $foo = 'bar';
+    public $foo = 'bar';
 }
 
 $safe = new sfOutputEscaperSafe(new TestClass1());
@@ -38,10 +40,10 @@ $t->diag('->__call()');
 
 class TestClass2
 {
-  public function doSomething()
-  {
-    return 'ok';
-  }
+    public function doSomething()
+    {
+        return 'ok';
+    }
 }
 
 $safe = new sfOutputEscaperSafe(new TestClass2());
@@ -52,9 +54,8 @@ $t->diag('->__isset() ->__unset()');
 
 class TestClass3
 {
-  public
-    $boolValue = true,
-    $nullValue = null;
+    public $boolValue = true;
+    public $nullValue;
 }
 
 $safe = new sfOutputEscaperSafe(new TestClass3());
@@ -69,20 +70,19 @@ $t->is(isset($safe->boolValue), false, '->__unset() unsets the embedded property
 // Iterator
 $t->diag('Iterator');
 
-$input = array('one' => 1, 'two' => 2, 'three' => 3, 'children' => array(1, 2, 3));
-$output = array();
+$input = ['one' => 1, 'two' => 2, 'three' => 3, 'children' => [1, 2, 3]];
+$output = [];
 
 $safe = new sfOutputEscaperSafe($input);
-foreach ($safe as $key => $value)
-{
-  $output[$key] = $value;
+foreach ($safe as $key => $value) {
+    $output[$key] = $value;
 }
 $t->is_deeply($output, $input, '"Iterator" implementation imitates an array');
 
 // ArrayAccess
 $t->diag('ArrayAccess');
 
-$safe = new sfOutputEscaperSafe(array('foo' => 'bar'));
+$safe = new sfOutputEscaperSafe(['foo' => 'bar']);
 
 $t->is($safe['foo'], 'bar', '"ArrayAccess" implementation returns a value from the embedded array');
 $safe['foo'] = 'baz';

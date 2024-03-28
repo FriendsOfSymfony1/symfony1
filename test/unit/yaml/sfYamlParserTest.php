@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 sfYaml::setSpecVersion('1.1');
 
@@ -18,56 +18,46 @@ $parser = new sfYamlParser();
 
 $path = __DIR__.'/fixtures';
 $files = $parser->parse(file_get_contents($path.'/index.yml'));
-foreach ($files as $file)
-{
-  $t->diag($file);
+foreach ($files as $file) {
+    $t->diag($file);
 
-  $yamls = file_get_contents($path.'/'.$file.'.yml');
+    $yamls = file_get_contents($path.'/'.$file.'.yml');
 
-  // split YAMLs documents
-  foreach (preg_split('/^---( %YAML\:1\.0)?/m', $yamls) as $yaml)
-  {
-    if (!$yaml)
-    {
-      continue;
+    // split YAMLs documents
+    foreach (preg_split('/^---( %YAML\:1\.0)?/m', $yamls) as $yaml) {
+        if (!$yaml) {
+            continue;
+        }
+
+        $test = $parser->parse($yaml);
+        if (isset($test['todo']) && $test['todo']) {
+            $t->todo($test['test']);
+        } else {
+            $expected = var_export(eval('return '.trim($test['php']).';'), true);
+
+            $t->is(var_export($parser->parse($test['yaml']), true), $expected, $test['test']);
+        }
     }
-
-    $test = $parser->parse($yaml);
-    if (isset($test['todo']) && $test['todo'])
-    {
-      $t->todo($test['test']);
-    }
-    else
-    {
-      $expected = var_export(eval('return '.trim($test['php']).';'), true);
-
-      $t->is(var_export($parser->parse($test['yaml']), true), $expected, $test['test']);
-    }
-  }
 }
 
 // test tabs in YAML
-$yamls = array(
-  "foo:\n	bar",
-  "foo:\n 	bar",
-  "foo:\n	 bar",
-  "foo:\n 	 bar",
-);
+$yamls = [
+    "foo:\n	bar",
+    "foo:\n 	bar",
+    "foo:\n	 bar",
+    "foo:\n 	 bar",
+];
 
-foreach ($yamls as $yaml)
-{
-  try
-  {
-    $content = $parser->parse($yaml);
-    $t->fail('YAML files must not contain tabs');
-  }
-  catch (InvalidArgumentException $e)
-  {
-    $t->pass('YAML files must not contain tabs');
-  }
+foreach ($yamls as $yaml) {
+    try {
+        $content = $parser->parse($yaml);
+        $t->fail('YAML files must not contain tabs');
+    } catch (InvalidArgumentException $e) {
+        $t->pass('YAML files must not contain tabs');
+    }
 }
 
-$yaml = <<<EOF
+$yaml = <<<'EOF'
 --- %YAML:1.0
 foo
 ...
@@ -79,10 +69,11 @@ $t->is('foo', $parser->parse($yaml));
 $t->diag('Objects support');
 class A
 {
-  public $a = 'foo';
+    public $a = 'foo';
 }
-$a = array('foo' => new A(), 'bar' => 1);
-$t->is($parser->parse(<<<EOF
+$a = ['foo' => new A(), 'bar' => 1];
+$t->is($parser->parse(
+    <<<'EOF'
 foo: !!php/object:O:1:"A":1:{s:1:"a";s:3:"foo";}
 bar: 1
 EOF

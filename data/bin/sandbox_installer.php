@@ -23,13 +23,11 @@ chmod(sfConfig::get('sf_data_dir'), 0777);
 chmod(sfConfig::get('sf_data_dir').'/sandbox.db', 0777);
 
 $this->logSection('install', 'add an empty file in empty directories');
-$seen = array();
-foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(sfConfig::get('sf_root_dir')), RecursiveIteratorIterator::CHILD_FIRST) as $path => $item)
-{
-  if (!isset($seen[$path]) && $item->isDir() && !$item->isLink())
-  {
-    touch($item->getRealPath().'/.sf');
-  }
+$seen = [];
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(sfConfig::get('sf_root_dir')), RecursiveIteratorIterator::CHILD_FIRST) as $path => $item) {
+    if (!isset($seen[$path]) && $item->isDir() && !$item->isLink()) {
+        touch($item->getRealPath().'/.sf');
+    }
 
-  $seen[$item->getPath()] = true;
+    $seen[$item->getPath()] = true;
 }

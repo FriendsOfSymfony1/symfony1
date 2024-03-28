@@ -5,8 +5,8 @@
     "keywords": ["framework", "symfony1", "doctrine1"],
     "license": "MIT",
     "require": {
-        "swiftmailer/swiftmailer": "~6.2",
-        "php" : ">=8.1.0"
+        "php" : "^7.4 || ^8.1",
+        "friendsofsymfony1/swiftmailer": "^6.2.5"
     },
     "require-dev": {
         "psr/log": "*"
@@ -24,7 +24,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-php81": "1.6-dev"
+            "dev-php82": "1.6-dev"
         }
     },
     "bin": ["data/bin/symfony"]

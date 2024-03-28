@@ -11,39 +11,36 @@
 /**
  * sfValidatorCallback validates an input value if the given callback does not throw a sfValidatorError.
  *
- * @package    symfony
- * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfValidatorCallback extends sfValidatorBase
 {
-  /**
-   * Configures the current validator.
-   *
-   * Available options:
-   *
-   *  * callback:  A valid PHP callback (required)
-   *  * arguments: An array of arguments to pass to the callback
-   *
-   * @param array $options    An array of options
-   * @param array $messages   An array of error messages
-   *
-   * @see sfValidatorBase
-   */
-  protected function configure($options = array(), $messages = array())
-  {
-    $this->addRequiredOption('callback');
-    $this->addOption('arguments', array());
+    /**
+     * Configures the current validator.
+     *
+     * Available options:
+     *
+     *  * callback:  A valid PHP callback (required)
+     *  * arguments: An array of arguments to pass to the callback
+     *
+     * @param array $options  An array of options
+     * @param array $messages An array of error messages
+     *
+     * @see sfValidatorBase
+     */
+    protected function configure($options = [], $messages = [])
+    {
+        $this->addRequiredOption('callback');
+        $this->addOption('arguments', []);
 
-    $this->setOption('required', false);
-  }
+        $this->setOption('required', false);
+    }
 
-  /**
-   * @see sfValidatorBase
-   */
-  protected function doClean($value)
-  {
-    return call_user_func($this->getOption('callback'), $this, $value, $this->getOption('arguments'));
-  }
+    /**
+     * @see sfValidatorBase
+     */
+    protected function doClean($value)
+    {
+        return call_user_func($this->getOption('callback'), $this, $value, $this->getOption('arguments'));
+    }
 }

@@ -11,222 +11,203 @@
 /**
  * sfWebDebug creates debug information for easy debugging in the browser.
  *
- * @package    symfony
- * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfWebDebug
 {
-  protected
-    $dispatcher = null,
-    $logger     = null,
-    $options    = array(),
-    $panels     = array();
+    protected $dispatcher;
+    protected $logger;
+    protected $options = [];
+    protected $panels = [];
 
-  /**
-   * Constructor.
-   *
-   * Available options:
-   *
-   *  * image_root_path:    The image root path
-   *  * request_parameters: The current request parameters
-   *
-   * @param sfEventDispatcher $dispatcher The event dispatcher
-   * @param sfVarLogger       $logger     The logger
-   * @param array             $options    An array of options
-   */
-  public function __construct(sfEventDispatcher $dispatcher, sfVarLogger $logger, array $options = array())
-  {
-    $this->dispatcher = $dispatcher;
-    $this->logger     = $logger;
-    $this->options    = $options;
-
-    if (!isset($this->options['image_root_path']))
+    /**
+     * Constructor.
+     *
+     * Available options:
+     *
+     *  * image_root_path:    The image root path
+     *  * request_parameters: The current request parameters
+     *
+     * @param sfEventDispatcher $dispatcher The event dispatcher
+     * @param sfVarLogger       $logger     The logger
+     * @param array             $options    An array of options
+     */
+    public function __construct(sfEventDispatcher $dispatcher, sfVarLogger $logger, array $options = [])
     {
-      $this->options['image_root_path'] = '';
-    }
+        $this->dispatcher = $dispatcher;
+        $this->logger = $logger;
+        $this->options = $options;
 
-    if (!isset($this->options['request_parameters']))
-    {
-      $this->options['request_parameters'] = array();
-    }
-
-    $this->configure();
-
-    $this->dispatcher->notify(new sfEvent($this, 'debug.web.load_panels'));
-  }
-
-  /**
-   * Configures the web debug toolbar.
-   */
-  public function configure()
-  {
-    $this->setPanel('symfony_version', new sfWebDebugPanelSymfonyVersion($this));
-    if (sfConfig::get('sf_debug') && sfConfig::get('sf_cache'))
-    {
-      $this->setPanel('cache', new sfWebDebugPanelCache($this));
-    }
-    if (sfConfig::get('sf_logging_enabled'))
-    {
-      $this->setPanel('config', new sfWebDebugPanelConfig($this));
-      $this->setPanel('view', new sfWebDebugPanelView($this));
-    }
-    $this->setPanel('logs', new sfWebDebugPanelLogs($this));
-    $this->setPanel('memory', new sfWebDebugPanelMemory($this));
-    if (sfConfig::get('sf_debug'))
-    {
-      $this->setPanel('time', new sfWebDebugPanelTimer($this));
-    }
-
-    $this->setPanel('mailer', new sfWebDebugPanelMailer($this));
-  }
-
-  /**
-   * Gets the logger.
-   *
-   * @return sfVarLogger The logger instance
-   */
-  public function getLogger()
-  {
-    return $this->logger;
-  }
-
-  /**
-   * Gets the event dispatcher.
-   *
-   * @return sfEventDispatcher The event dispatcher
-   */
-  public function getEventDispatcher()
-  {
-    return $this->dispatcher;
-  }
-
-  /**
-   * Gets the registered panels.
-   *
-   * @return array The panels
-   */
-  public function getPanels()
-  {
-    return $this->panels;
-  }
-
-  /**
-   * Sets a panel by name.
-   *
-   * @param string          $name  The panel name
-   * @param sfWebDebugPanel $panel The panel
-   */
-  public function setPanel($name, sfWebDebugPanel $panel)
-  {
-    $this->panels[$name] = $panel;
-  }
-
-  /**
-   * Removes a panel by name.
-   *
-   * @param string $name The panel name
-   */
-  public function removePanel($name)
-  {
-    unset($this->panels[$name]);
-  }
-
-  /**
-   * Gets an option value by name.
-   *
-   * @param string $name The option name
-   * @param mixed  $default
-   *
-   * @return mixed The option value
-   */
-  public function getOption($name, $default = null)
-  {
-    return isset($this->options[$name]) ? $this->options[$name] : $default;
-  }
-
-  /**
-   * Injects the web debug toolbar into a given HTML string.
-   *
-   * @param string $content The HTML content
-   *
-   * @return string The content with the web debug toolbar injected
-   */
-  public function injectToolbar($content)
-  {
-    if (function_exists('mb_stripos'))
-    {
-      $posFunction = 'mb_stripos';
-      $posrFunction = 'mb_strripos';
-      $substrFunction = 'mb_substr';
-    }
-    else
-    {
-      $posFunction = 'stripos';
-      $posrFunction = 'strripos';
-      $substrFunction = 'substr';
-    }
-
-    if (false !== $pos = $posFunction($content, '</head>'))
-    {
-      $styles = '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style>';
-      $content = $substrFunction($content, 0, $pos).$styles.$substrFunction($content, $pos);
-    }
-
-    $debug = $this->asHtml();
-    if (false === $pos = $posrFunction($content, '</body>'))
-    {
-      $content .= $debug;
-    }
-    else
-    {
-      $content = $substrFunction($content, 0, $pos).'<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.$substrFunction($content, $pos);
-    }
-
-    return $content;
-  }
-
-  /**
-   * Returns the web debug toolbar as HTML.
-   *
-   * @return string The web debug toolbar HTML
-   */
-  public function asHtml()
-  {
-    $current = isset($this->options['request_parameters']['sfWebDebugPanel']) ? $this->options['request_parameters']['sfWebDebugPanel'] : null;
-
-    $titles = array();
-    $panels = array();
-    foreach ($this->panels as $name => $panel)
-    {
-      if ($title = $panel->getTitle())
-      {
-        if (($content = $panel->getPanelContent()) || $panel->getTitleUrl())
-        {
-          $id = sprintf('sfWebDebug%sDetails', $name);
-          $titles[] = sprintf('<li%s><a title="%s" href="%s"%s>%s</a></li>',
-            $panel->getStatus() ? ' class="sfWebDebug'.ucfirst($this->getPriority($panel->getStatus())).'"' : '',
-            $panel->getPanelTitle(),
-            $panel->getTitleUrl() ?: '#',
-            $panel->getTitleUrl() ? '' : ' onclick="sfWebDebugShowDetailsFor(\''.$id.'\'); return false;"',
-            $title
-          );
-          $panels[] = sprintf('<div id="%s" class="sfWebDebugTop" style="display:%s"><h1>%s</h1>%s</div>',
-            $id,
-            $name == $current ? 'block' : 'none',
-            $panel->getPanelTitle(),
-            $content
-          );
+        if (!isset($this->options['image_root_path'])) {
+            $this->options['image_root_path'] = '';
         }
-        else
-        {
-          $titles[] = sprintf('<li>%s</li>', $title);
+
+        if (!isset($this->options['request_parameters'])) {
+            $this->options['request_parameters'] = [];
         }
-      }
+
+        $this->configure();
+
+        $this->dispatcher->notify(new sfEvent($this, 'debug.web.load_panels'));
     }
 
-    return '
+    /**
+     * Configures the web debug toolbar.
+     */
+    public function configure()
+    {
+        $this->setPanel('symfony_version', new sfWebDebugPanelSymfonyVersion($this));
+        if (sfConfig::get('sf_debug') && sfConfig::get('sf_cache')) {
+            $this->setPanel('cache', new sfWebDebugPanelCache($this));
+        }
+        if (sfConfig::get('sf_logging_enabled')) {
+            $this->setPanel('config', new sfWebDebugPanelConfig($this));
+            $this->setPanel('view', new sfWebDebugPanelView($this));
+        }
+        $this->setPanel('logs', new sfWebDebugPanelLogs($this));
+        $this->setPanel('memory', new sfWebDebugPanelMemory($this));
+        if (sfConfig::get('sf_debug')) {
+            $this->setPanel('time', new sfWebDebugPanelTimer($this));
+        }
+
+        $this->setPanel('mailer', new sfWebDebugPanelMailer($this));
+    }
+
+    /**
+     * Gets the logger.
+     *
+     * @return sfVarLogger The logger instance
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * Gets the event dispatcher.
+     *
+     * @return sfEventDispatcher The event dispatcher
+     */
+    public function getEventDispatcher()
+    {
+        return $this->dispatcher;
+    }
+
+    /**
+     * Gets the registered panels.
+     *
+     * @return array The panels
+     */
+    public function getPanels()
+    {
+        return $this->panels;
+    }
+
+    /**
+     * Sets a panel by name.
+     *
+     * @param string          $name  The panel name
+     * @param sfWebDebugPanel $panel The panel
+     */
+    public function setPanel($name, sfWebDebugPanel $panel)
+    {
+        $this->panels[$name] = $panel;
+    }
+
+    /**
+     * Removes a panel by name.
+     *
+     * @param string $name The panel name
+     */
+    public function removePanel($name)
+    {
+        unset($this->panels[$name]);
+    }
+
+    /**
+     * Gets an option value by name.
+     *
+     * @param string     $name    The option name
+     * @param mixed|null $default
+     *
+     * @return mixed The option value
+     */
+    public function getOption($name, $default = null)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : $default;
+    }
+
+    /**
+     * Injects the web debug toolbar into a given HTML string.
+     *
+     * @param string $content The HTML content
+     *
+     * @return string The content with the web debug toolbar injected
+     */
+    public function injectToolbar($content)
+    {
+        if (function_exists('mb_stripos')) {
+            $posFunction = 'mb_stripos';
+            $posrFunction = 'mb_strripos';
+            $substrFunction = 'mb_substr';
+        } else {
+            $posFunction = 'stripos';
+            $posrFunction = 'strripos';
+            $substrFunction = 'substr';
+        }
+
+        if (false !== $pos = $posFunction($content, '</head>')) {
+            $styles = '<style type="text/css">'.str_replace(["\r", "\n"], ' ', $this->getStylesheet()).'</style>';
+            $content = $substrFunction($content, 0, $pos).$styles.$substrFunction($content, $pos);
+        }
+
+        $debug = $this->asHtml();
+        if (false === $pos = $posrFunction($content, '</body>')) {
+            $content .= $debug;
+        } else {
+            $content = $substrFunction($content, 0, $pos).'<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.$substrFunction($content, $pos);
+        }
+
+        return $content;
+    }
+
+    /**
+     * Returns the web debug toolbar as HTML.
+     *
+     * @return string The web debug toolbar HTML
+     */
+    public function asHtml()
+    {
+        $current = isset($this->options['request_parameters']['sfWebDebugPanel']) ? $this->options['request_parameters']['sfWebDebugPanel'] : null;
+
+        $titles = [];
+        $panels = [];
+        foreach ($this->panels as $name => $panel) {
+            if ($title = $panel->getTitle()) {
+                if (($content = $panel->getPanelContent()) || $panel->getTitleUrl()) {
+                    $id = sprintf('sfWebDebug%sDetails', $name);
+                    $titles[] = sprintf(
+                        '<li%s><a title="%s" href="%s"%s>%s</a></li>',
+                        $panel->getStatus() ? ' class="sfWebDebug'.ucfirst($this->getPriority($panel->getStatus())).'"' : '',
+                        $panel->getPanelTitle(),
+                        $panel->getTitleUrl() ?: '#',
+                        $panel->getTitleUrl() ? '' : ' onclick="sfWebDebugShowDetailsFor(\''.$id.'\'); return false;"',
+                        $title
+                    );
+                    $panels[] = sprintf(
+                        '<div id="%s" class="sfWebDebugTop" style="display:%s"><h1>%s</h1>%s</div>',
+                        $id,
+                        $name == $current ? 'block' : 'none',
+                        $panel->getPanelTitle(),
+                        $content
+                    );
+                } else {
+                    $titles[] = sprintf('<li>%s</li>', $title);
+                }
+            }
+        }
+
+        return '
       <div id="sfWebDebug">
         <div id="sfWebDebugBar">
           <a href="#" onclick="sfWebDebugToggleMenu(); return false;"><img src="'.$this->options['image_root_path'].'/sf.png" alt="Debug toolbar" /></a>
@@ -242,39 +223,35 @@ class sfWebDebug
         '.implode("\n", $panels).'
       </div>
     ';
-  }
+    }
 
-  /**
-   * Converts a priority value to a string.
-   *
-   * @param integer $value The priority value
-   *
-   * @return string The priority as a string
-   */
-  public function getPriority($value)
-  {
-    if ($value >= sfLogger::INFO)
+    /**
+     * Converts a priority value to a string.
+     *
+     * @param int $value The priority value
+     *
+     * @return string The priority as a string
+     */
+    public function getPriority($value)
     {
-      return 'info';
-    }
-    else if ($value >= sfLogger::WARNING)
-    {
-      return 'warning';
-    }
-    else
-    {
-      return 'error';
-    }
-  }
+        if ($value >= sfLogger::INFO) {
+            return 'info';
+        }
+        if ($value >= sfLogger::WARNING) {
+            return 'warning';
+        }
 
-  /**
-   * Gets the javascript code to inject in the head tag.
-   *
-   * @return string The javascript code
-   */
-  public function getJavascript()
-  {
-    return <<<EOF
+        return 'error';
+    }
+
+    /**
+     * Gets the javascript code to inject in the head tag.
+     *
+     * @return string The javascript code
+     */
+    public function getJavascript()
+    {
+        return <<<'EOF'
 /* <![CDATA[ */
 function sfWebDebugGetElementsByClassName(strClass, strTag, objContElm)
 {
@@ -419,16 +396,16 @@ function sfWebDebugShowOnlyLogLines(type)
 }
 /* ]]> */
 EOF;
-  }
+    }
 
-  /**
-   * Gets the stylesheet code to inject in the head tag.
-   *
-   * @return string The stylesheet code
-   */
-  public function getStylesheet()
-  {
-    return <<<EOF
+    /**
+     * Gets the stylesheet code to inject in the head tag.
+     *
+     * @return string The stylesheet code
+     */
+    public function getStylesheet()
+    {
+        return <<<'EOF'
 #sfWebDebug
 {
   padding: 0;
@@ -817,5 +794,5 @@ EOF;
   background: #FFC;
 }
 EOF;
-  }
+    }
 }

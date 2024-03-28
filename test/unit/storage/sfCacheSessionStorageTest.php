@@ -3,42 +3,40 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 $app = 'frontend';
 
-require_once(__DIR__.'/../../bootstrap/functional.php');
+require_once __DIR__.'/../../bootstrap/functional.php';
+
+ob_start();
 
 $_test_dir = realpath(__DIR__.'/../../');
-require_once($_test_dir.'/../lib/vendor/lime/lime.php');
+
+require_once $_test_dir.'/../lib/vendor/lime/lime.php';
 
 sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
+
+// setup cache
+$temp = tempnam('/tmp/cache_dir', 'tmp');
+unlink($temp);
+mkdir($temp);
 
 $plan = 8;
 $t = new lime_test($plan);
 
-if (!ini_get('apc.enable_cli'))
-{
-  $t->skip('APC must be enable on CLI to run these tests', $plan);
-  return;
-}
-
 // initialize the storage
-try
-{
-  $storage = new sfCacheSessionStorage();
-  $t->fail('->__construct() does not throw an exception when not provided a cache option');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->__construct() throws an exception when not provided a cache option');
+try {
+    $storage = new sfCacheSessionStorage();
+    $t->fail('->__construct() does not throw an exception when not provided a cache option');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->__construct() throws an exception when not provided a cache option');
 }
 
-
-$storage = new sfCacheSessionStorage(array('cache' => array('class' => 'sfAPCCache', 'param' => array())));
+$storage = new sfCacheSessionStorage(['cache' => ['class' => 'sfFileCache', 'param' => ['cache_dir' => $temp]]]);
 $t->ok($storage instanceof sfStorage, '->__construct() is an instance of sfStorage');
 
 $storage->write('test', 123);
@@ -64,3 +62,7 @@ $t->is($storage->read($key), null, '->remove() removes data from the storage');
 
 // shutdown the storage
 $storage->shutdown();
+
+// clean up cache
+sfToolkit::clearDirectory($temp);
+rmdir($temp);

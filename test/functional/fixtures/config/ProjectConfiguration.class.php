@@ -5,9 +5,14 @@ sfCoreAutoload::register();
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
-  public function setup()
-  {
-    $this->enableAllPluginsExcept(array('sfDoctrinePlugin'));
-    $this->enablePlugins('sfAutoloadPlugin');
-  }
+    public function setup()
+    {
+        $this->enableAllPluginsExcept(['sfDoctrinePlugin']);
+        $this->enablePlugins('sfAutoloadPlugin');
+    }
+
+    public function isProduction()
+    {
+        return false;
+    }
 }

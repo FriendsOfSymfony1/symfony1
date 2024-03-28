@@ -11,36 +11,26 @@
 /**
  * I18NHelper.
  *
- * @package    symfony
- * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
-
-function __($text, $args = array(), $catalogue = 'messages')
+function __($text, $args = [], $catalogue = 'messages')
 {
-  if (sfConfig::get('sf_i18n'))
-  {
-    return sfContext::getInstance()->getI18N()->__($text, $args, $catalogue);
-  }
-  else
-  {
-    if (empty($args))
-    {
-      $args = array();
+    if (sfConfig::get('sf_i18n')) {
+        return sfContext::getInstance()->getI18N()->__($text, $args, $catalogue);
+    }
+
+    if (empty($args)) {
+        $args = [];
     }
 
     // replace object with strings
-    foreach ($args as $key => $value)
-    {
-      if (is_object($value) && method_exists($value, '__toString'))
-      {
-        $args[$key] = $value->__toString();
-      }
+    foreach ($args as $key => $value) {
+        if (is_object($value) && method_exists($value, '__toString')) {
+            $args[$key] = $value->__toString();
+        }
     }
 
     return strtr($text, $args);
-  }
 }
 
 /**
@@ -68,7 +58,7 @@ function format_number_choice($text, $args = [], $number = 0, $catalogue = 'mess
 
     $retval = $choice->format($translated, $number);
 
-    if ($retval === false) {
+    if (false === $retval) {
         throw new sfException(sprintf('Unable to parse your choice "%s".', $translated));
     }
 
@@ -77,16 +67,16 @@ function format_number_choice($text, $args = [], $number = 0, $catalogue = 'mess
 
 function format_country($country_iso, $culture = null)
 {
-  $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
-  $countries = $c->getCountries();
+    $c = sfCultureInfo::getInstance(null === $culture ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+    $countries = $c->getCountries();
 
-  return isset($countries[$country_iso]) ? $countries[$country_iso] : '';
+    return isset($countries[$country_iso]) ? $countries[$country_iso] : '';
 }
 
 function format_language($language_iso, $culture = null)
 {
-  $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
-  $languages = $c->getLanguages();
+    $c = sfCultureInfo::getInstance(null === $culture ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+    $languages = $c->getLanguages();
 
-  return isset($languages[$language_iso]) ? $languages[$language_iso] : '';
+    return isset($languages[$language_iso]) ? $languages[$language_iso] : '';
 }

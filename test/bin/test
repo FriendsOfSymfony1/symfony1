@@ -1,0 +1,89 @@
+#! /bin/sh -eu
+#
+# [<php-version>] [<dependency-preference>] [<php-test-runtime>]
+#
+# <php-version>  example: php70
+# <dependency-preference> One of highest (default), lowest
+#
+# Both arguments can be a space separated value.
+# Example: "lowest highest"
+#
+
+# Configuration
+#
+dependencyPreferences='highest'
+skipPHPVersions='php8'
+
+# Commands
+#
+dcexec="docker-compose exec -u `id -u`:`id -g`"
+installSubmodule='git submodule update --checkout --recursive --force'
+composerUpdate='composer update --prefer-dist --no-suggest --optimize-autoloader'
+symfonyTestSuite='data/bin/symfony symfony:test --trace'
+
+# Parse arguments
+#
+phpVersions="${1-}"
+dependencyPreferences="${2-${dependencyPreferences}}"
+phpTestRuntime="${3-${symfonyTestSuite}}"
+
+script ()
+{
+  echo
+  echo
+  echo $0 ${1} ${2}
+  echo
+  ${dcexec} ${1} php data/bin/check_configuration.php
+  ${dcexec} ${1} php ${phpTestRuntime}
+}
+
+scriptAll ()
+{
+  for dependencyPreference in ${dependencyPreferences}
+  do
+    install_${dependencyPreference}
+
+    for phpVersion in ${phpVersions}
+    do
+      script ${phpVersion} ${dependencyPreference}
+    done
+  done
+}
+
+fetchAllPHPVersions ()
+{
+  docker-compose 2>/dev/null ps --services --filter status=running \
+    | grep php \
+    | sort \
+    | grep -v ${skipPHPVersions}
+}
+
+install_highest ()
+{
+  ${installSubmodule} --remote
+  ${dcexec} composer ${composerUpdate}
+}
+
+install_lowest ()
+{
+  reset_submodules
+
+  ${installSubmodule}
+  ${dcexec} composer ${composerUpdate} --prefer-lowest
+}
+
+reset_submodules ()
+{
+  git submodule deinit --force --quiet -- .
+
+  git submodule init
+}
+
+echo '+ docker-compose build'
+docker-compose up -d --build --remove-orphans > /dev/null
+
+test x"" != x"${phpVersions}" || {
+  phpVersions=`fetchAllPHPVersions`
+}
+
+scriptAll

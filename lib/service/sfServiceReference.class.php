@@ -11,33 +11,29 @@
 /**
  * sfServiceReference represents a service reference.
  *
- * @package    symfony
- * @subpackage service
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfServiceReference.php 267 2009-03-26 19:56:18Z fabien $
  */
 class sfServiceReference
 {
-  protected
-    $id = null;
+    protected $id;
 
-  /**
-   * Constructor.
-   *
-   * @param string $id The service identifier
-   */
-  public function __construct($id)
-  {
-    $this->id = $id;
-  }
+    /**
+     * Constructor.
+     *
+     * @param string $id The service identifier
+     */
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
 
-  /**
-   * __toString.
-   *
-   * @return string The service identifier
-   */
-  public function __toString()
-  {
-    return (string) $this->id;
-  }
+    /**
+     * __toString.
+     *
+     * @return string The service identifier
+     */
+    public function __toString()
+    {
+        return (string) $this->id;
+    }
 }

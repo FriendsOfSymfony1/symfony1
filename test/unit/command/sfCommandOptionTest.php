@@ -3,12 +3,12 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(34);
 
@@ -51,14 +51,11 @@ $t->is($option->acceptParameter(), true, '__construct() can take "sfCommandOptio
 $t->is($option->isParameterRequired(), false, '__construct() can take "sfCommandOption::PARAMETER_OPTIONAL" as its mode');
 $t->is($option->isParameterOptional(), true, '__construct() can take "sfCommandOption::PARAMETER_OPTIONAL" as its mode');
 
-try
-{
-  $option = new sfCommandOption('foo', 'f', 'ANOTHER_ONE');
-  $t->fail('__construct() throws an sfCommandException if the mode is not valid');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('__construct() throws an sfCommandException if the mode is not valid');
+try {
+    $option = new sfCommandOption('foo', 'f', 'ANOTHER_ONE');
+    $t->fail('__construct() throws an sfCommandException if the mode is not valid');
+} catch (sfCommandException $e) {
+    $t->pass('__construct() throws an sfCommandException if the mode is not valid');
 }
 
 // ->isArray()
@@ -87,10 +84,10 @@ $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED);
 $t->ok(null === $option->getDefault(), '->getDefault() returns null if no default value is configured');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::IS_ARRAY);
-$t->is($option->getDefault(), array(), '->getDefault() returns an empty array if option is an array');
+$t->is($option->getDefault(), [], '->getDefault() returns an empty array if option is an array');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_NONE);
-$t->ok($option->getDefault() === false, '->getDefault() returns false if the option does not take a parameter');
+$t->ok(false === $option->getDefault(), '->getDefault() returns false if the option does not take a parameter');
 
 // ->setDefault()
 $t->diag('->setDefault()');
@@ -101,27 +98,21 @@ $option->setDefault('another');
 $t->is($option->getDefault(), 'another', '->setDefault() changes the default value');
 
 $option = new sfCommandOption('foo', null, sfCommandOption::PARAMETER_REQUIRED | sfCommandOption::IS_ARRAY);
-$option->setDefault(array(1, 2));
-$t->is($option->getDefault(), array(1, 2), '->setDefault() changes the default value');
+$option->setDefault([1, 2]);
+$t->is($option->getDefault(), [1, 2], '->setDefault() changes the default value');
 
-try
-{
-  $option = new sfCommandOption('foo', 'f', sfCommandOption::PARAMETER_NONE);
-  $option->setDefault('default');
-  $t->fail('->setDefault() throws an sfCommandException if you give a default value for a PARAMETER_NONE option');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->setDefault() throws an sfCommandException if you give a default value for a PARAMETER_NONE option');
+try {
+    $option = new sfCommandOption('foo', 'f', sfCommandOption::PARAMETER_NONE);
+    $option->setDefault('default');
+    $t->fail('->setDefault() throws an sfCommandException if you give a default value for a PARAMETER_NONE option');
+} catch (sfCommandException $e) {
+    $t->pass('->setDefault() throws an sfCommandException if you give a default value for a PARAMETER_NONE option');
 }
 
-try
-{
-  $option = new sfCommandOption('foo', 'f', sfCommandOption::IS_ARRAY);
-  $option->setDefault('default');
-  $t->fail('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
+try {
+    $option = new sfCommandOption('foo', 'f', sfCommandOption::IS_ARRAY);
+    $option->setDefault('default');
+    $t->fail('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
+} catch (sfCommandException $e) {
+    $t->pass('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
 }

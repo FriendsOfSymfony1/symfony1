@@ -11,80 +11,72 @@
 /**
  * sfWebDebugPanelTimer adds a panel to the web debug toolbar with timer information.
  *
- * @package    symfony
- * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelTimer extends sfWebDebugPanel
 {
-  static protected
-    $startTime = null;
+    protected static $startTime;
 
-  /**
-   * Constructor.
-   *
-   * @param sfWebDebug $webDebug The web debug toolbar instance
-   */
-  public function __construct(sfWebDebug $webDebug)
-  {
-    parent::__construct($webDebug);
-
-    $this->webDebug->getEventDispatcher()->connect('debug.web.filter_logs', array($this, 'filterLogs'));
-  }
-
-  public function getTitle()
-  {
-    return '<img src="'.$this->webDebug->getOption('image_root_path').'/time.png" alt="Time" /> '.$this->getTotalTime().' ms';
-  }
-
-  public function getPanelTitle()
-  {
-    return 'Timers';
-  }
-
-  public function getPanelContent()
-  {
-    if (sfTimerManager::getTimers())
+    /**
+     * Constructor.
+     *
+     * @param sfWebDebug $webDebug The web debug toolbar instance
+     */
+    public function __construct(sfWebDebug $webDebug)
     {
-      $totalTime = $this->getTotalTime();
-      $panel = '<table class="sfWebDebugLogs" style="width: 300px"><tr><th>type</th><th>calls</th><th>time (ms)</th><th>time (%)</th></tr>';
-      foreach (sfTimerManager::getTimers() as $name => $timer)
-      {
-        $panel .= sprintf('<tr><td class="sfWebDebugLogType">%s</td><td class="sfWebDebugLogNumber" style="text-align: right">%d</td><td style="text-align: right">%.2f</td><td style="text-align: right">%d</td></tr>', $name, $timer->getCalls(), $timer->getElapsedTime() * 1000, $totalTime ? ($timer->getElapsedTime() * 1000 * 100 / $totalTime) : 'N/A');
-      }
-      $panel .= '</table>';
+        parent::__construct($webDebug);
 
-      return $panel;
-    }
-  }
-
-  public function filterLogs(sfEvent $event, $logs)
-  {
-    $newLogs = array();
-    foreach ($logs as $log)
-    {
-      if ('sfWebDebugLogger' != $log['type'])
-      {
-        $newLogs[] = $log;
-      }
+        $this->webDebug->getEventDispatcher()->connect('debug.web.filter_logs', [$this, 'filterLogs']);
     }
 
-    return $newLogs;
-  }
+    public function getTitle()
+    {
+        return '<img src="'.$this->webDebug->getOption('image_root_path').'/time.png" alt="Time" /> '.$this->getTotalTime().' ms';
+    }
 
-  static public function startTime()
-  {
-    self::$startTime = microtime(true);
-  }
+    public function getPanelTitle()
+    {
+        return 'Timers';
+    }
 
-  static public function isStarted()
-  {
-    return null !== self::$startTime;
-  }
+    public function getPanelContent()
+    {
+        if (sfTimerManager::getTimers()) {
+            $totalTime = $this->getTotalTime();
+            $panel = '<table class="sfWebDebugLogs" style="width: 300px"><tr><th>type</th><th>calls</th><th>time (ms)</th><th>time (%)</th></tr>';
+            foreach (sfTimerManager::getTimers() as $name => $timer) {
+                $panel .= sprintf('<tr><td class="sfWebDebugLogType">%s</td><td class="sfWebDebugLogNumber" style="text-align: right">%d</td><td style="text-align: right">%.2f</td><td style="text-align: right">%d</td></tr>', $name, $timer->getCalls(), $timer->getElapsedTime() * 1000, $totalTime ? ($timer->getElapsedTime() * 1000 * 100 / $totalTime) : 'N/A');
+            }
+            $panel .= '</table>';
 
-  protected function getTotalTime()
-  {
-    return null !== self::$startTime ? sprintf('%.0f', (microtime(true) - self::$startTime) * 1000) : 0;
-  }
+            return $panel;
+        }
+    }
+
+    public function filterLogs(sfEvent $event, $logs)
+    {
+        $newLogs = [];
+        foreach ($logs as $log) {
+            if ('sfWebDebugLogger' != $log['type']) {
+                $newLogs[] = $log;
+            }
+        }
+
+        return $newLogs;
+    }
+
+    public static function startTime()
+    {
+        self::$startTime = microtime(true);
+    }
+
+    public static function isStarted()
+    {
+        return null !== self::$startTime;
+    }
+
+    protected function getTotalTime()
+    {
+        return null !== self::$startTime ? sprintf('%.0f', (microtime(true) - self::$startTime) * 1000) : 0;
+    }
 }

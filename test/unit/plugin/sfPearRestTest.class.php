@@ -11,37 +11,39 @@
 /**
  * sfPearRestTest is a class to be able to test a PEAR channel without the HTTP layer.
  *
- * @package    symfony
- * @subpackage plugin
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
  * @version    SVN: $Id$
+ *
+ * @internal
+ *
+ * @coversNothing
  */
 class sfPearRestTest extends sfPearRest
 {
-  /**
-   * @see PEAR_REST::downloadHttp()
-   */
-  public function downloadHttp($url, $lastmodified = null, $accept = false, $channel = false)
-  {
-    try
+    /**
+     * @see PEAR_REST::downloadHttp()
+     *
+     * @param mixed|null $lastmodified
+     */
+    public function downloadHttp($url, $lastmodified = null, $accept = false, $channel = false)
     {
-      $file = sfPluginTestHelper::convertUrlToFixture($url);
+        try {
+            $file = sfPluginTestHelper::convertUrlToFixture($url);
+        } catch (sfException $e) {
+            return PEAR::raiseError($e->getMessage());
+        }
+
+        $headers = [
+            'content-type' => preg_match('/\.xml$/', $file) ? 'text/xml' : 'text/plain',
+        ];
+
+        return [file_get_contents($file), 0, $headers];
     }
-    catch (sfException $e)
+
+    // Disable caching for testing
+    public function saveCache($url, $contents, $lastmodified, $nochange = false, $cacheid = null)
     {
-      return PEAR::raiseError($e->getMessage());
+        return false;
     }
-
-    $headers = array(
-      'content-type' => preg_match('/\.xml$/', $file) ? 'text/xml' : 'text/plain',
-    );
-
-    return array(file_get_contents($file), 0, $headers);
-  }
-
-  // Disable caching for testing
-  public function saveCache($url, $contents, $lastmodified, $nochange = false, $cacheid = null)
-  {
-    return false;
-  }
 }

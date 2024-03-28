@@ -11,32 +11,27 @@
 /**
  * sfNoLogger is a noop logger.
  *
- * @package    symfony
- * @subpackage log
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfNoLogger extends sfLogger
 {
-  /**
-   * Initializes this logger.
-   *
-   * @param  sfEventDispatcher $dispatcher  A sfEventDispatcher instance
-   * @param  array             $options     An array of options.
-   *
-   * @return void
-   */
-  public function initialize(sfEventDispatcher $dispatcher, $options = array())
-  {
-  }
+    /**
+     * Initializes this logger.
+     *
+     * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
+     * @param array             $options    an array of options
+     */
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
+    {
+    }
 
-  /**
-   * Logs a message.
-   *
-   * @param string $message   Message
-   * @param int    $priority  Message priority
-   */
-  protected function doLog($message, $priority)
-  {
-  }
+    /**
+     * Logs a message.
+     *
+     * @param string $message  Message
+     * @param int    $priority Message priority
+     */
+    protected function doLog($message, $priority)
+    {
+    }
 }

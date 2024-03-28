@@ -11,22 +11,19 @@
 /**
  * sfComponents.
  *
- * @package    symfony
- * @subpackage action
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 abstract class sfComponents extends sfComponent
 {
-  /**
-   * @param sfRequest $request
-   * @return mixed
-   * @throws sfInitializationException
-   *
-   * @see sfComponent
-   */
-  public function execute($request)
-  {
-    throw new sfInitializationException('sfComponents initialization failed.');
-  }
+    /**
+     * @param sfRequest $request
+     *
+     * @throws sfInitializationException
+     *
+     * @see sfComponent
+     */
+    public function execute($request)
+    {
+        throw new sfInitializationException('sfComponents initialization failed.');
+    }
 }

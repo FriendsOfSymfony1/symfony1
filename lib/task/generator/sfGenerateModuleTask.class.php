@@ -3,39 +3,36 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/sfGeneratorBaseTask.class.php');
+require_once __DIR__.'/sfGeneratorBaseTask.class.php';
 
 /**
  * Generates a new module.
  *
- * @package    symfony
- * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfGenerateModuleTask extends sfGeneratorBaseTask
 {
-  /**
-   * @see sfTask
-   */
-  protected function configure()
-  {
-    $this->addArguments(array(
-      new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-      new sfCommandArgument('module', sfCommandArgument::REQUIRED, 'The module name'),
-    ));
+    /**
+     * @see sfTask
+     */
+    protected function configure()
+    {
+        $this->addArguments([
+            new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
+            new sfCommandArgument('module', sfCommandArgument::REQUIRED, 'The module name'),
+        ]);
 
-    $this->namespace = 'generate';
-    $this->name = 'module';
+        $this->namespace = 'generate';
+        $this->name = 'module';
 
-    $this->briefDescription = 'Generates a new module';
+        $this->briefDescription = 'Generates a new module';
 
-    $this->detailedDescription = <<<EOF
+        $this->detailedDescription = <<<'EOF'
 The [generate:module|INFO] task creates the basic directory structure
 for a new module in an existing application:
 
@@ -58,59 +55,56 @@ that does not pass by default.
 If a module with the same name already exists in the application,
 it throws a [sfCommandException|COMMENT].
 EOF;
-  }
-
-  /**
-   * @see sfTask
-   */
-  protected function execute($arguments = array(), $options = array())
-  {
-    $app    = $arguments['application'];
-    $module = $arguments['module'];
-
-    // Validate the module name
-    if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $module))
-    {
-      throw new sfCommandException(sprintf('The module name "%s" is invalid.', $module));
     }
 
-    $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$module;
-
-    if (is_dir($moduleDir))
+    /**
+     * @see sfTask
+     */
+    protected function execute($arguments = [], $options = [])
     {
-      throw new sfCommandException(sprintf('The module "%s" already exists in the "%s" application.', $moduleDir, $app));
+        $app = $arguments['application'];
+        $module = $arguments['module'];
+
+        // Validate the module name
+        if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $module)) {
+            throw new sfCommandException(sprintf('The module name "%s" is invalid.', $module));
+        }
+
+        $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$module;
+
+        if (is_dir($moduleDir)) {
+            throw new sfCommandException(sprintf('The module "%s" already exists in the "%s" application.', $moduleDir, $app));
+        }
+
+        $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
+
+        $constants = [
+            'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
+            'APP_NAME' => $app,
+            'MODULE_NAME' => $module,
+            'AUTHOR_NAME' => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
+        ];
+
+        if (is_readable(sfConfig::get('sf_data_dir').'/skeleton/module')) {
+            $skeletonDir = sfConfig::get('sf_data_dir').'/skeleton/module';
+        } else {
+            $skeletonDir = __DIR__.'/skeleton/module';
+        }
+
+        // create basic application structure
+        $finder = sfFinder::type('any')->discard('.sf');
+        $this->getFilesystem()->mirror($skeletonDir.'/module', $moduleDir, $finder);
+
+        // create basic test
+        $this->getFilesystem()->copy($skeletonDir.'/test/actionsTest.php', sfConfig::get('sf_test_dir').'/functional/'.$app.'/'.$module.'ActionsTest.php');
+
+        // customize test file
+        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir').'/functional/'.$app.DIRECTORY_SEPARATOR.$module.'ActionsTest.php', '##', '##', $constants);
+
+        // customize php and yml files
+        $finder = sfFinder::type('file')->name('*.php', '*.yml');
+        $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $constants);
+
+        return 0;
     }
-
-    $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
-
-    $constants = array(
-      'PROJECT_NAME' => isset($properties['symfony']['name']) ? $properties['symfony']['name'] : 'symfony',
-      'APP_NAME'     => $app,
-      'MODULE_NAME'  => $module,
-      'AUTHOR_NAME'  => isset($properties['symfony']['author']) ? $properties['symfony']['author'] : 'Your name here',
-    );
-
-    if (is_readable(sfConfig::get('sf_data_dir').'/skeleton/module'))
-    {
-      $skeletonDir = sfConfig::get('sf_data_dir').'/skeleton/module';
-    }
-    else
-    {
-      $skeletonDir = __DIR__.'/skeleton/module';
-    }
-
-    // create basic application structure
-    $finder = sfFinder::type('any')->discard('.sf');
-    $this->getFilesystem()->mirror($skeletonDir.'/module', $moduleDir, $finder);
-
-    // create basic test
-    $this->getFilesystem()->copy($skeletonDir.'/test/actionsTest.php', sfConfig::get('sf_test_dir').'/functional/'.$app.'/'.$module.'ActionsTest.php');
-
-    // customize test file
-    $this->getFilesystem()->replaceTokens(sfConfig::get('sf_test_dir').'/functional/'.$app.DIRECTORY_SEPARATOR.$module.'ActionsTest.php', '##', '##', $constants);
-
-    // customize php and yml files
-    $finder = sfFinder::type('file')->name('*.php', '*.yml');
-    $this->getFilesystem()->replaceTokens($finder->in($moduleDir), '##', '##', $constants);
-  }
 }

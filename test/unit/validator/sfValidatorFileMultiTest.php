@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(9);
 
@@ -22,10 +22,10 @@ file_put_contents($tmpDir.'/test2.txt', $content2);
 $t->diag('->clean()');
 $v = new sfValidatorFileMulti();
 
-$f = $v->clean(array(
-  array('tmp_name' => $tmpDir.'/test.txt'),
-  array('tmp_name' => $tmpDir.'/test2.txt'),
-));
+$f = $v->clean([
+    ['tmp_name' => $tmpDir.'/test.txt'],
+    ['tmp_name' => $tmpDir.'/test2.txt'],
+]);
 
 $t->ok(is_array($f), '->clean() returns an array of sfValidatedFile instances');
 

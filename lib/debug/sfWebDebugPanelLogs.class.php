@@ -11,87 +11,82 @@
 /**
  * sfWebDebugPanelLogs adds a panel to the web debug toolbar with log messages.
  *
- * @package    symfony
- * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelLogs extends sfWebDebugPanel
 {
-  public function getTitle()
-  {
-    return '<img src="'.$this->webDebug->getOption('image_root_path').'/log.png" alt="Log" /> logs';
-  }
+    public function getTitle()
+    {
+        return '<img src="'.$this->webDebug->getOption('image_root_path').'/log.png" alt="Log" /> logs';
+    }
 
-  public function getPanelTitle()
-  {
-    return 'Logs';
-  }
+    public function getPanelTitle()
+    {
+        return 'Logs';
+    }
 
-  public function getPanelContent()
-  {
-    $event = $this->webDebug->getEventDispatcher()->filter(new sfEvent($this, 'debug.web.filter_logs'), $this->webDebug->getLogger()->getLogs());
-    $logs = $event->getReturnValue();
+    public function getPanelContent()
+    {
+        $event = $this->webDebug->getEventDispatcher()->filter(new sfEvent($this, 'debug.web.filter_logs'), $this->webDebug->getLogger()->getLogs());
+        $logs = $event->getReturnValue();
 
-    $html = '<table class="sfWebDebugLogs">
+        $html = '<table class="sfWebDebugLogs">
       <tr>
         <th>#</th>
         <th>time (s)</th>
         <th>type</th>
         <th>message</th>
       </tr>'."\n";
-    $line_nb = 0;
-    $numlogs = count($logs);
-    for ($i = 0; $i < $numlogs; $i++)
-    {
-      $log = $logs[$i];
+        $line_nb = 0;
+        $numlogs = count($logs);
+        for ($i = 0; $i < $numlogs; ++$i) {
+            $log = $logs[$i];
 
-      if ($i < $numlogs - 1) {
-        $time = $logs[$i + 1]['time'] - $log['time'];
-      } else {
-        $time = microtime(true) - $log['time'];
-      }
-      if ($time > 2) {
-        $colour = '#FF5555';
-      } elseif ($time > 1) {
-        $colour = 'orange';
-      } elseif ($time > 0.3) {
-        $colour = 'yellow';
-      } else {
-        $colour = '#AAFFAA';
-      }
-      $time = number_format($time, 3);
+            if ($i < $numlogs - 1) {
+                $time = $logs[$i + 1]['time'] - $log['time'];
+            } else {
+                $time = microtime(true) - $log['time'];
+            }
+            if ($time > 2) {
+                $colour = '#FF5555';
+            } elseif ($time > 1) {
+                $colour = 'orange';
+            } elseif ($time > 0.3) {
+                $colour = 'yellow';
+            } else {
+                $colour = '#AAFFAA';
+            }
+            $time = number_format($time, 3);
 
-      $priority = $this->webDebug->getPriority($log['priority']);
+            $priority = $this->webDebug->getPriority($log['priority']);
 
-      // increase status
-      if ($log['priority'] < $this->getStatus())
-      {
-        $this->setStatus($log['priority']);
-      }
+            // increase status
+            if ($log['priority'] < $this->getStatus()) {
+                $this->setStatus($log['priority']);
+            }
 
-      ++$line_nb;
-      $html .= sprintf("<tr class='sfWebDebugLogLine sfWebDebug%s %s'><td class=\"sfWebDebugLogNumber\">%s</td><td style=\"background-color:%s\">%s</td><td class=\"sfWebDebugLogType\">%s&nbsp;%s</td><td>%s %s</td></tr>\n",
-        ucfirst($priority),
-        $log['type'],
-        $line_nb,
-        $colour,
-        $time,
-        '<img src="'.$this->webDebug->getOption('image_root_path').'/'.$priority.'.png" alt="'.ucfirst($priority).'"/>',
-        class_exists($log['type'], false) ? $this->formatFileLink($log['type']) : $log['type'],
-        $this->formatLogLine($log['message']),
-        $this->getToggleableDebugStack($log['debug_backtrace'])
-      );
-    }
-    $html .= '</table>';
+            ++$line_nb;
+            $html .= sprintf(
+                "<tr class='sfWebDebugLogLine sfWebDebug%s %s'><td class=\"sfWebDebugLogNumber\">%s</td><td style=\"background-color:%s\">%s</td><td class=\"sfWebDebugLogType\">%s&nbsp;%s</td><td>%s %s</td></tr>\n",
+                ucfirst($priority),
+                $log['type'],
+                $line_nb,
+                $colour,
+                $time,
+                '<img src="'.$this->webDebug->getOption('image_root_path').'/'.$priority.'.png" alt="'.ucfirst($priority).'"/>',
+                class_exists($log['type'], false) ? $this->formatFileLink($log['type']) : $log['type'],
+                $this->formatLogLine($log['message']),
+                $this->getToggleableDebugStack($log['debug_backtrace'])
+            );
+        }
+        $html .= '</table>';
 
-    $types = array();
-    foreach ($this->webDebug->getLogger()->getTypes() as $type)
-    {
-      $types[] = '<a href="#" onclick="sfWebDebugToggleMessages(\''.$type.'\'); return false;">'.$type.'</a>';
-    }
+        $types = [];
+        foreach ($this->webDebug->getLogger()->getTypes() as $type) {
+            $types[] = '<a href="#" onclick="sfWebDebugToggleMessages(\''.$type.'\'); return false;">'.$type.'</a>';
+        }
 
-    return '
+        return '
       <ul id="sfWebDebugLogMenu">
         <li><a href="#" onclick="sfWebDebugToggleAllLogLines(true, \'sfWebDebugLogLine\'); return false;">[all]</a></li>
         <li><a href="#" onclick="sfWebDebugToggleAllLogLines(false, \'sfWebDebugLogLine\'); return false;">[none]</a></li>
@@ -102,45 +97,42 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
       </ul>
       <div id="sfWebDebugLogLines">'.$html.'</div>
     ';
-  }
-
-  /**
-   * Formats a log line.
-   *
-   * @param string $logLine The log line to format
-   *
-   * @return string The formatted log lin
-   */
-  protected function formatLogLine($logLine)
-  {
-    static $constants;
-
-    if (!$constants)
-    {
-      foreach (array('sf_app_dir', 'sf_root_dir', 'sf_symfony_lib_dir') as $constant)
-      {
-        $constants[realpath(sfConfig::get($constant)).DIRECTORY_SEPARATOR] = $constant.DIRECTORY_SEPARATOR;
-      }
     }
 
-    // escape HTML
-    $logLine = htmlspecialchars($logLine, ENT_QUOTES, sfConfig::get('sf_charset'));
-
-    // replace constants value with constant name
-    $logLine = str_replace(array_keys($constants), array_values($constants), $logLine);
-    $logLine = preg_replace('/&quot;(.+?)&quot;/s', "<span class=\"sfWebDebugLogInfo\">\\1</span>", $logLine);
-    $logLine = preg_replace('/^(.+?)\(\)\:/S', "<span class=\"sfWebDebugLogInfo\">\\1()</span>:", $logLine);
-    $logLine = preg_replace('/line (\d+)$/', "line <span class=\"sfWebDebugLogInfo\">\\1</span>", $logLine);
-
-    // special formatting for SQL lines
-    $logLine = $this->formatSql($logLine);
-
-    // remove username/password from DSN
-    if (strpos($logLine, 'DSN') !== false)
+    /**
+     * Formats a log line.
+     *
+     * @param string $logLine The log line to format
+     *
+     * @return string The formatted log lin
+     */
+    protected function formatLogLine($logLine)
     {
-      $logLine = preg_replace("/=&gt;\s+'?[^'\s,]+'?/", "=&gt; '****'", $logLine);
-    }
+        static $constants;
 
-    return $logLine;
-  }
+        if (!$constants) {
+            foreach (['sf_app_dir', 'sf_root_dir', 'sf_symfony_lib_dir'] as $constant) {
+                $constants[realpath(sfConfig::get($constant)).DIRECTORY_SEPARATOR] = $constant.DIRECTORY_SEPARATOR;
+            }
+        }
+
+        // escape HTML
+        $logLine = htmlspecialchars($logLine, ENT_QUOTES, sfConfig::get('sf_charset'));
+
+        // replace constants value with constant name
+        $logLine = str_replace(array_keys($constants), array_values($constants), $logLine);
+        $logLine = preg_replace('/&quot;(.+?)&quot;/s', '<span class="sfWebDebugLogInfo">\\1</span>', $logLine);
+        $logLine = preg_replace('/^(.+?)\(\)\:/S', '<span class="sfWebDebugLogInfo">\\1()</span>:', $logLine);
+        $logLine = preg_replace('/line (\d+)$/', 'line <span class="sfWebDebugLogInfo">\\1</span>', $logLine);
+
+        // special formatting for SQL lines
+        $logLine = $this->formatSql($logLine);
+
+        // remove username/password from DSN
+        if (false !== strpos($logLine, 'DSN')) {
+            $logLine = preg_replace("/=&gt;\\s+'?[^'\\s,]+'?/", "=&gt; '****'", $logLine);
+        }
+
+        return $logLine;
+    }
 }

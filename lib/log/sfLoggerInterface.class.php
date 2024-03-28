@@ -11,18 +11,15 @@
 /**
  * sfLoggerInterface is the interface all symfony loggers must implement.
  *
- * @package    symfony
- * @subpackage log
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 interface sfLoggerInterface
 {
-  /**
-   * Logs a message.
-   *
-   * @param string $message   Message
-   * @param int    $priority  Message priority
-   */
-  public function log($message, $priority = null);
+    /**
+     * Logs a message.
+     *
+     * @param string $message  Message
+     * @param int    $priority Message priority
+     */
+    public function log($message, $priority = null);
 }

@@ -1,0 +1,66 @@
+volumes:
+  db_socket:
+
+services:
+  composer:
+    image: composer
+    working_dir: /app
+    volumes:
+      - .:/app
+    entrypoint:
+      - sh
+      - -c
+      - |
+        exec tail -f /dev/null
+
+  php82: &services_php82
+    build:
+      context: .docker
+      args:
+        PHP_VERSION: '8.2'
+        MEMCACHE_VERSION: '8.2'
+        APCU_VERSION: '5.1.23'
+    environment:
+        MEMCACHED_HOST: memcached
+    working_dir: /app
+    volumes:
+        - .:/app
+        - db_socket:/var/run/mysqld
+    entrypoint:
+        - sh
+        - -c
+        - |
+            {
+              echo 'pdo_mysql.default_socket = /var/run/mysqld/mysql.sock'
+              echo 'memory_limit = -1'
+              echo 'short_open_tag = off'
+              echo 'magic_quotes_gpc = off'
+              echo 'date.timezone = "UTC"'
+              echo 'apc.enable_cli = on'
+              echo 'apc.use_request_time = 0'
+            } | tee -a /usr/local/etc/php/php.ini
+
+            exec tail -f /dev/null
+    depends_on:
+        - db
+        - memcached
+
+
+  db:
+    image: mysql:5.5.62
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - db_socket:/tmp
+    entrypoint:
+      - bash
+      - -c
+      - |
+        {
+            echo "CREATE DATABASE IF NOT EXISTS test;"
+        } | tee /docker-entrypoint-initdb.d/init.sql
+
+        exec /usr/local/bin/docker-entrypoint.sh mysqld
+
+  memcached:
+    image: memcached:1.6.13-alpine3.15

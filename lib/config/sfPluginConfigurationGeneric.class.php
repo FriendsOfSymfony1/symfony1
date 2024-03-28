@@ -11,18 +11,15 @@
 /**
  * sfPluginConfigurationGeneric represents a configuration for a plugin with no configuration class.
  *
- * @package    symfony
- * @subpackage config
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfPluginConfigurationGeneric extends sfPluginConfiguration
 {
-  /**
-   * @see sfPluginConfiguration
-   */
-  public function initialize()
-  {
-    return false;
-  }
+    /**
+     * @see sfPluginConfiguration
+     */
+    public function initialize()
+    {
+        return false;
+    }
 }

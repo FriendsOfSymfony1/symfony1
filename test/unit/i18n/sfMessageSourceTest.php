@@ -3,23 +3,40 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(3);
 
 class sfMessageSource_Simple extends sfMessageSource
 {
-  function __construct($source) {}
-  function delete($message, $catalogue = 'messages') {}
-  function update($text, $target, $comments, $catalogue = 'messages') {}
-  function catalogues() {}
-  function save($catalogue = 'messages') {}
-  function getId() {}
+    public function __construct($source)
+    {
+    }
+
+    public function delete($message, $catalogue = 'messages')
+    {
+    }
+
+    public function update($text, $target, $comments, $catalogue = 'messages')
+    {
+    }
+
+    public function catalogues()
+    {
+    }
+
+    public function save($catalogue = 'messages')
+    {
+    }
+
+    public function getId()
+    {
+    }
 }
 
 // ::factory()

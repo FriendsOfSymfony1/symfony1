@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(2);
 
@@ -16,18 +16,18 @@ $f = new sfWidgetFormSchemaFormatterList(new sfWidgetFormSchema());
 
 // ->formatRow()
 $t->diag('->formatRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <li>
   label
   <input /><br />help
 </li>
 
 EOF;
-$t->is($f->formatRow('label', '<input />', array(), 'help', ''), fix_linebreaks($output), '->formatRow() formats a field in a row');
+$t->is($f->formatRow('label', '<input />', [], 'help', ''), fix_linebreaks($output), '->formatRow() formats a field in a row');
 
 // ->formatErrorRow()
 $t->diag('->formatErrorRow()');
-$output = <<<EOF
+$output = <<<'EOF'
 <li>
   <ul class="error_list">
     <li>Global error</li>
@@ -37,4 +37,4 @@ $output = <<<EOF
 </li>
 
 EOF;
-$t->is($f->formatErrorRow(array('Global error', 'id' => 'required', array('sub_id' => 'required'))), fix_linebreaks($output), '->formatErrorRow() formats an array of errors in a row');
+$t->is($f->formatErrorRow(['Global error', 'id' => 'required', ['sub_id' => 'required']]), fix_linebreaks($output), '->formatErrorRow() formats an array of errors in a row');

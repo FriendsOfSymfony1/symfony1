@@ -12,38 +12,32 @@
  * sfWebDebugPanelCache adds a panel to the web debug toolbar with a link to ignore the cache
  * on the next request.
  *
- * @package    symfony
- * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelCache extends sfWebDebugPanel
 {
-  public function getTitle()
-  {
-    return '<img src="'.$this->webDebug->getOption('image_root_path').'/reload.png" alt="Reload" />';
-  }
-
-  public function getTitleUrl()
-  {
-    $queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-
-    if (false === strpos($queryString, '_sf_ignore_cache'))
+    public function getTitle()
     {
-      return sprintf('?%s_sf_ignore_cache=1', $queryString ? $queryString.'&' : '');
+        return '<img src="'.$this->webDebug->getOption('image_root_path').'/reload.png" alt="Reload" />';
     }
-    else
+
+    public function getTitleUrl()
     {
-      return '?'.$queryString;
+        $queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+
+        if (false === strpos($queryString, '_sf_ignore_cache')) {
+            return sprintf('?%s_sf_ignore_cache=1', $queryString ? $queryString.'&' : '');
+        }
+
+        return '?'.$queryString;
     }
-  }
 
-  public function getPanelTitle()
-  {
-    return 'reload and ignore cache';
-  }
+    public function getPanelTitle()
+    {
+        return 'reload and ignore cache';
+    }
 
-  public function getPanelContent()
-  {
-  }
+    public function getPanelContent()
+    {
+    }
 }

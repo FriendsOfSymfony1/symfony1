@@ -3,12 +3,12 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(16);
 
@@ -30,14 +30,11 @@ $t->is($argument->isRequired(), false, '__construct() can take "sfCommandArgumen
 $argument = new sfCommandArgument('foo', sfCommandArgument::REQUIRED);
 $t->is($argument->isRequired(), true, '__construct() can take "sfCommandArgument::PARAMETER_REQUIRED" as its mode');
 
-try
-{
-  $argument = new sfCommandArgument('foo', 'ANOTHER_ONE');
-  $t->fail('__construct() throws an sfCommandException if the mode is not valid');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('__construct() throws an sfCommandException if the mode is not valid');
+try {
+    $argument = new sfCommandArgument('foo', 'ANOTHER_ONE');
+    $t->fail('__construct() throws an sfCommandException if the mode is not valid');
+} catch (sfCommandException $e) {
+    $t->pass('__construct() throws an sfCommandException if the mode is not valid');
 }
 
 // ->isArray()
@@ -68,27 +65,21 @@ $argument->setDefault('another');
 $t->is($argument->getDefault(), 'another', '->setDefault() changes the default value');
 
 $argument = new sfCommandArgument('foo', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY);
-$argument->setDefault(array(1, 2));
-$t->is($argument->getDefault(), array(1, 2), '->setDefault() changes the default value');
+$argument->setDefault([1, 2]);
+$t->is($argument->getDefault(), [1, 2], '->setDefault() changes the default value');
 
-try
-{
-  $argument = new sfCommandArgument('foo', sfCommandArgument::REQUIRED);
-  $argument->setDefault('default');
-  $t->fail('->setDefault() throws an sfCommandException if you give a default value for a required argument');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->setDefault() throws an sfCommandException if you give a default value for a required argument');
+try {
+    $argument = new sfCommandArgument('foo', sfCommandArgument::REQUIRED);
+    $argument->setDefault('default');
+    $t->fail('->setDefault() throws an sfCommandException if you give a default value for a required argument');
+} catch (sfCommandException $e) {
+    $t->pass('->setDefault() throws an sfCommandException if you give a default value for a required argument');
 }
 
-try
-{
-  $argument = new sfCommandArgument('foo', sfCommandArgument::IS_ARRAY);
-  $argument->setDefault('default');
-  $t->fail('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
-}
-catch (sfCommandException $e)
-{
-  $t->pass('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
+try {
+    $argument = new sfCommandArgument('foo', sfCommandArgument::IS_ARRAY);
+    $argument->setDefault('default');
+    $t->fail('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
+} catch (sfCommandException $e) {
+    $t->pass('->setDefault() throws an sfCommandException if you give a default value which is not an array for a IS_ARRAY option');
 }

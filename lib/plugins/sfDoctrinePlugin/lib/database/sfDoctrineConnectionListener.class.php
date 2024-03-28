@@ -10,25 +10,25 @@
  */
 
 /**
- * Standard connection listener
+ * Standard connection listener.
  *
- * @package    symfony
- * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id$
  */
 class sfDoctrineConnectionListener extends Doctrine_EventListener
 {
-  public function __construct($connection, $encoding)
-  {
-    $this->connection = $connection;
-    $this->encoding = $encoding;
-  }
+    protected $connection;
+    protected $encoding;
 
-  public function postConnect(Doctrine_Event $event)
-  {
-    $this->connection->setCharset($this->encoding);
-    $this->connection->setDateFormat();
-  }
+    public function __construct($connection, $encoding)
+    {
+        $this->connection = $connection;
+        $this->encoding = $encoding;
+    }
+
+    public function postConnect(Doctrine_Event $event)
+    {
+        $this->connection->setCharset($this->encoding);
+        $this->connection->setDateFormat();
+    }
 }

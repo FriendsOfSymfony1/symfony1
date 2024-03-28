@@ -8,31 +8,29 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../bootstrap/unit.php');
+require_once __DIR__.'/../../../bootstrap/unit.php';
 
 $t = new lime_test(8);
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->configure()
 $t->diag('->configure()');
-try
-{
-  new sfWidgetFormI18nChoiceCountry(array('culture' => 'en', 'countries' => array('EN')));
-  $t->fail('->configure() throws an InvalidArgumentException if a country does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->configure() throws an InvalidArgumentException if a country does not exist');
+
+try {
+    new sfWidgetFormI18nChoiceCountry(['culture' => 'en', 'countries' => ['EN']]);
+    $t->fail('->configure() throws an InvalidArgumentException if a country does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->configure() throws an InvalidArgumentException if a country does not exist');
 }
 
-$v = new sfWidgetFormI18nChoiceCountry(array('culture' => 'en', 'countries' => array('FR', 'GB')));
-$t->is(array_keys($v->getOption('choices')), array('FR', 'GB'), '->configure() can restrict the number of countries with the countries option');
+$v = new sfWidgetFormI18nChoiceCountry(['culture' => 'en', 'countries' => ['FR', 'GB']]);
+$t->is(array_keys($v->getOption('choices')), ['FR', 'GB'], '->configure() can restrict the number of countries with the countries option');
 
 // ->render()
 $t->diag('->render()');
-$w = new sfWidgetFormI18nChoiceCountry(array('culture' => 'fr'));
+$w = new sfWidgetFormI18nChoiceCountry(['culture' => 'fr']);
 $dom->loadHTML($w->render('country', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#country option[value="FR"]')->getValue(), 'France', '->render() renders all countries as option tags');
@@ -45,12 +43,12 @@ $t->is(count($css->matchAll('#country option[value="419"]')), 0, '->render() doe
 
 // add_empty
 $t->diag('add_empty');
-$w = new sfWidgetFormI18nChoiceCountry(array('culture' => 'fr', 'add_empty' => true));
+$w = new sfWidgetFormI18nChoiceCountry(['culture' => 'fr', 'add_empty' => true]);
 $dom->loadHTML($w->render('country', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#country option[value=""]')->getValue(), '', '->render() renders an empty option if add_empty is true');
 
-$w = new sfWidgetFormI18nChoiceCountry(array('culture' => 'fr', 'add_empty' => 'foo'));
+$w = new sfWidgetFormI18nChoiceCountry(['culture' => 'fr', 'add_empty' => 'foo']);
 $dom->loadHTML($w->render('country', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#country option[value=""]')->getValue(), 'foo', '->render() renders an empty option if add_empty is true');

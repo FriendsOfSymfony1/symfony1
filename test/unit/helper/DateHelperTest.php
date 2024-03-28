@@ -3,33 +3,36 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 $t = new lime_test(592);
 
 class sfUser
 {
-  public $culture = 'en';
+    public $culture = 'en';
 
-  public function getCulture()
-  {
-    return $this->culture;
-  }
+    public function getCulture()
+    {
+        return $this->culture;
+    }
 }
 
 sfConfig::set('sf_charset', 'utf-8');
 
-$context = sfContext::getInstance(array('user' => 'sfUser'));
+$context = sfContext::getInstance(['user' => 'sfUser']);
 
-require_once(__DIR__.'/../../../lib/helper/UrlHelper.php');
-require_once(__DIR__.'/../../../lib/helper/TagHelper.php');
-require_once(__DIR__.'/../../../lib/helper/DateHelper.php');
+require_once __DIR__.'/../../../lib/helper/UrlHelper.php';
+
+require_once __DIR__.'/../../../lib/helper/TagHelper.php';
+
+require_once __DIR__.'/../../../lib/helper/DateHelper.php';
 
 // get a fixed timestamp to test with
 $now = time();
@@ -95,14 +98,12 @@ $df = new sfDateFormat('fr');
 $t->is($df->format(date('d/m/y', $now), 'i', 'd'), date('Y-m-d', $now), 'format two digit year from fr to iso');
 
 $cultures = sfCultureInfo::getCultures();
-foreach ($cultures as $culture)
-{
-  if (sfCultureInfo::validCulture($culture))
-  {
-    $df = new sfDateFormat($culture);
-    $shortDate = $df->format($now, 'd');
-    $t->is($df->format($shortDate, 'i', 'd'), date('Y-m-d', $now), sprintf('"%s": conversion "d" to "i"', $culture));
-    $dateTime = $df->format($now, $df->getInputPattern('g'));
-    $t->is($df->format($dateTime, 'I', $df->getInputPattern('g')), date('Y-m-d H:i:', $now).'00', sprintf('"%s": Conversion "g" to "I"', $culture));
-  }
+foreach ($cultures as $culture) {
+    if (sfCultureInfo::validCulture($culture)) {
+        $df = new sfDateFormat($culture);
+        $shortDate = $df->format($now, 'd');
+        $t->is($df->format($shortDate, 'i', 'd'), date('Y-m-d', $now), sprintf('"%s": conversion "d" to "i"', $culture));
+        $dateTime = $df->format($now, $df->getInputPattern('g'));
+        $t->is($df->format($dateTime, 'I', $df->getInputPattern('g')), date('Y-m-d H:i:', $now).'00', sprintf('"%s": Conversion "g" to "I"', $culture));
+    }
 }

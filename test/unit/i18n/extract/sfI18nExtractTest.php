@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../bootstrap/unit.php');
+require_once __DIR__.'/../../../bootstrap/unit.php';
 
 $t = new lime_test(3);
 
@@ -18,27 +18,32 @@ class ProjectConfiguration extends sfProjectConfiguration
 
 class TestConfiguration extends sfApplicationConfiguration
 {
-  public function getI18NGlobalDirs()
-  {
-    return array(__DIR__.'/../fixtures');
-  }
+    public function getI18NGlobalDirs()
+    {
+        return [__DIR__.'/../fixtures'];
+    }
 }
 
 $configuration = new TestConfiguration('test', true, sfConfig::get('sf_test_cache_dir', sys_get_temp_dir()));
 $cache = new sfNoCache();
 $i18n = new sfI18N($configuration, $cache);
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class sfI18nExtractTest extends sfI18nExtract
 {
-  public function extract()
-  {
-    $this->updateMessages($this->getMessages());
-  }
+    public function extract()
+    {
+        $this->updateMessages($this->getMessages());
+    }
 
-  public function getMessages()
-  {
-    return array('toto', 'an english sentence');
-  }
+    public function getMessages()
+    {
+        return ['toto', 'an english sentence'];
+    }
 }
 
 // ->initialize()

@@ -1,7 +1,7 @@
 [?php
 
-require_once(__DIR__.'/../lib/Base<?php echo ucfirst($this->moduleName) ?>GeneratorConfiguration.class.php');
-require_once(__DIR__.'/../lib/Base<?php echo ucfirst($this->moduleName) ?>GeneratorHelper.class.php');
+require_once(dirname(__FILE__).'/../lib/Base<?php echo ucfirst($this->moduleName) ?>GeneratorConfiguration.class.php');
+require_once(dirname(__FILE__).'/../lib/Base<?php echo ucfirst($this->moduleName) ?>GeneratorHelper.class.php');
 
 /**
  * <?php echo $this->getModuleName() ?> actions.
@@ -9,7 +9,6 @@ require_once(__DIR__.'/../lib/Base<?php echo ucfirst($this->moduleName) ?>Genera
  * @package    ##PROJECT_NAME##
  * @subpackage <?php echo $this->getModuleName()."\n" ?>
  * @author     ##AUTHOR_NAME##
- * @version    SVN: $Id$
  */
 abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?php echo $this->getActionsBaseClass()."\n" ?>
 {
@@ -29,33 +28,33 @@ abstract class <?php echo $this->getGeneratedModuleName() ?>Actions extends <?ph
     parent::preExecute();
   }
 
-<?php include __DIR__.'/../../parts/indexAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/indexAction.php' ?>
 
 <?php if ($this->configuration->hasFilterForm()): ?>
-<?php include __DIR__.'/../../parts/filterAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/filterAction.php' ?>
 <?php endif; ?>
 
-<?php include __DIR__.'/../../parts/newAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/newAction.php' ?>
 
-<?php include __DIR__.'/../../parts/createAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/createAction.php' ?>
 
-<?php include __DIR__.'/../../parts/editAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/editAction.php' ?>
 
-<?php include __DIR__.'/../../parts/updateAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/updateAction.php' ?>
 
-<?php include __DIR__.'/../../parts/deleteAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/deleteAction.php' ?>
 
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
-<?php include __DIR__.'/../../parts/batchAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/batchAction.php' ?>
 <?php endif; ?>
 
-<?php include __DIR__.'/../../parts/processFormAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/processFormAction.php' ?>
 
 <?php if ($this->configuration->hasFilterForm()): ?>
-<?php include __DIR__.'/../../parts/filtersAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/filtersAction.php' ?>
 <?php endif; ?>
 
-<?php include __DIR__.'/../../parts/paginationAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/paginationAction.php' ?>
 
-<?php include __DIR__.'/../../parts/sortingAction.php' ?>
+<?php include dirname(__FILE__).'/../../parts/sortingAction.php' ?>
 }

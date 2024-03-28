@@ -12,51 +12,47 @@
 /**
  * TagHelper defines some base helpers to construct html tags.
  *
- * @package    symfony
- * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
- * @version    SVN: $Id$
  */
 
 /**
  * Constructs an html tag.
  *
- * @param  string $name     tag name
- * @param  array  $options  tag options
- * @param  bool   $open     true to leave tag open
+ * @param string $name    tag name
+ * @param array  $options tag options
+ * @param bool   $open    true to leave tag open
+ *
  * @return string
  */
-function tag($name, $options = array(), $open = false)
+function tag($name, $options = [], $open = false)
 {
-  if (!$name)
-  {
-    return '';
-  }
+    if (!$name) {
+        return '';
+    }
 
-  return '<'.$name._tag_options($options).($open ? '>' : ' />');
+    return '<'.$name._tag_options($options).($open ? '>' : ' />');
 }
 
-function content_tag($name, $content = '', $options = array())
+function content_tag($name, $content = '', $options = [])
 {
-  if (!$name)
-  {
-    return '';
-  }
+    if (!$name) {
+        return '';
+    }
 
-  return '<'.$name._tag_options($options).'>'.$content.'</'.$name.'>';
+    return '<'.$name._tag_options($options).'>'.$content.'</'.$name.'>';
 }
 
 function cdata_section($content)
 {
-  return "<![CDATA[$content]]>";
+    return "<![CDATA[{$content}]]>";
 }
 
 /**
  * Wraps the content in conditional comments.
  *
- * @param  string $condition
- * @param  string $content
+ * @param string $condition
+ * @param string $content
  *
  * @return string
  *
@@ -64,7 +60,7 @@ function cdata_section($content)
  */
 function comment_as_conditional($condition, $content)
 {
-  return "<!--[if $condition]>$content<![endif]-->";
+    return "<!--[if {$condition}]>{$content}<![endif]-->";
 }
 
 /**
@@ -72,65 +68,62 @@ function comment_as_conditional($condition, $content)
  */
 function escape_javascript($javascript = '')
 {
-  $javascript = preg_replace('/\r\n|\n|\r/', "\\n", $javascript);
-  $javascript = preg_replace('/(["\'])/', '\\\\\1', $javascript);
+    $javascript = preg_replace('/\r\n|\n|\r/', '\\n', $javascript);
 
-  return $javascript;
+    return preg_replace('/(["\'])/', '\\\\\1', $javascript);
 }
 
 /**
  * Escapes an HTML string.
  *
- * @param  string $html HTML string to escape
+ * @param string $html HTML string to escape
+ *
  * @return string escaped string
  */
 function escape_once($html)
 {
-  return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, sfConfig::get('sf_charset')));
+    return fix_double_escape(htmlspecialchars($html, ENT_COMPAT, sfConfig::get('sf_charset')));
 }
 
 /**
  * Fixes double escaped strings.
  *
- * @param  string $escaped HTML string to fix
+ * @param string $escaped HTML string to fix
+ *
  * @return string fixed escaped string
  */
 function fix_double_escape($escaped)
 {
-  return preg_replace('/&amp;([a-z]+|(#\d+)|(#x[\da-f]+));/i', '&$1;', $escaped);
+    return preg_replace('/&amp;([a-z]+|(#\d+)|(#x[\da-f]+));/i', '&$1;', $escaped);
 }
 
-function _tag_options($options = array())
+function _tag_options($options = [])
 {
-  $options = _parse_attributes($options);
+    $options = _parse_attributes($options);
 
-  $html = '';
-  foreach ($options as $key => $value)
-  {
-    $html .= ' '.$key.'="'.escape_once($value).'"';
-  }
+    $html = '';
+    foreach ($options as $key => $value) {
+        $html .= ' '.$key.'="'.escape_once($value).'"';
+    }
 
-  return $html;
+    return $html;
 }
 
 function _parse_attributes($string)
 {
-  return is_array($string) ? $string : sfToolkit::stringToArray($string);
+    return is_array($string) ? $string : sfToolkit::stringToArray($string);
 }
 
 function _get_option(&$options, $name, $default = null)
 {
-  if (array_key_exists($name, $options))
-  {
-    $value = $options[$name];
-    unset($options[$name]);
-  }
-  else
-  {
-    $value = $default;
-  }
+    if (array_key_exists($name, $options)) {
+        $value = $options[$name];
+        unset($options[$name]);
+    } else {
+        $value = $default;
+    }
 
-  return $value;
+    return $value;
 }
 
 /**
@@ -150,46 +143,41 @@ function _get_option(&$options, $name, $default = null)
  *  echo get_id_from_name('status[]', '1');
  * </code>
  *
- * @param  string $name   field name
- * @param  string $value  field value
+ * @param string $name  field name
+ * @param string $value field value
  *
- * @return string <select> tag populated with all the languages in the world.
+ * @return string <select> tag populated with all the languages in the world
  */
 function get_id_from_name($name, $value = null)
 {
-  // check to see if we have an array variable for a field name
-  if (false !== strpos($name, '['))
-  {
-    $name = str_replace(array('[]', '][', '[', ']'), array((($value != null) ? '_'.$value : ''), '_', '_', ''), $name);
-  }
+    // check to see if we have an array variable for a field name
+    if (false !== strpos($name, '[')) {
+        $name = str_replace(['[]', '][', '[', ']'], [(null != $value) ? '_'.$value : '', '_', '_', ''], $name);
+    }
 
-  return $name;
+    return $name;
 }
 
 /**
- * Converts specific <i>$options</i> to their correct HTML format
+ * Converts specific <i>$options</i> to their correct HTML format.
  *
- * @param  array $options
+ * @param array $options
+ *
  * @return array returns properly formatted options
  */
 function _convert_options($options)
 {
-  $options = _parse_attributes($options);
+    $options = _parse_attributes($options);
 
-  foreach (array('disabled', 'readonly', 'multiple') as $attribute)
-  {
-    if (array_key_exists($attribute, $options))
-    {
-      if ($options[$attribute])
-      {
-        $options[$attribute] = $attribute;
-      }
-      else
-      {
-        unset($options[$attribute]);
-      }
+    foreach (['disabled', 'readonly', 'multiple'] as $attribute) {
+        if (array_key_exists($attribute, $options)) {
+            if ($options[$attribute]) {
+                $options[$attribute] = $attribute;
+            } else {
+                unset($options[$attribute]);
+            }
+        }
     }
-  }
 
-  return $options;
+    return $options;
 }

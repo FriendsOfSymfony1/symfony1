@@ -9,9 +9,8 @@
  */
 
 $app = 'frontend';
-if (!include(__DIR__.'/../bootstrap/functional.php'))
-{
-  return;
+if (!include __DIR__.'/../bootstrap/functional.php') {
+    return;
 }
 
 $b = new sfTestBrowser();
@@ -25,8 +24,7 @@ $b->
   with('response')->begin()->
     isStatusCode(200)->
     checkElement('body div', 'foo')->
-  end()
-;
+  end();
 
 $t = $b->test();
 

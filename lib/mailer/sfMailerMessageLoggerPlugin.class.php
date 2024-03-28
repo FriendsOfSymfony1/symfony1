@@ -11,75 +11,67 @@
 /**
  * sfMailerMessageLoggerPlugin is a Swift plugin to log all sent messages.
  *
- * @package    symfony
- * @subpackage mailer
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfMailerMessageLoggerPlugin implements Swift_Events_SendListener
 {
-  protected
-    $messages   = array(),
-    $dispatcher = null;
+    protected $messages = [];
+    protected $dispatcher;
 
-  /**
-   * Constructor.
-   *
-   * @param sfEventDispatcher $dispatcher An event dispatcher instance
-   */
-  public function __construct(sfEventDispatcher $dispatcher)
-  {
-    $this->dispatcher = $dispatcher;
-  }
+    /**
+     * Constructor.
+     *
+     * @param sfEventDispatcher $dispatcher An event dispatcher instance
+     */
+    public function __construct(sfEventDispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
 
-  /**
-   * Clears all the messages.
-   */
-  public function clear()
-  {
-    $this->messages = array();
-  }
+    /**
+     * Clears all the messages.
+     */
+    public function clear()
+    {
+        $this->messages = [];
+    }
 
-  /**
-   * Gets all logged messages.
-   *
-   * @return array An array of message instances
-   */
-  public function getMessages()
-  {
-    return $this->messages;
-  }
+    /**
+     * Gets all logged messages.
+     *
+     * @return array An array of message instances
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
 
-  /**
-   * Returns the number of logged messages.
-   *
-   * @return int The number if logged messages
-   */
-  public function countMessages()
-  {
-    return count($this->messages);
-  }
+    /**
+     * Returns the number of logged messages.
+     *
+     * @return int The number if logged messages
+     */
+    public function countMessages()
+    {
+        return count($this->messages);
+    }
 
-  /**
-   * Invoked immediately before the Message is sent.
-   * 
-   * @param Swift_Events_SendEvent $evt
-   */
-  public function beforeSendPerformed(Swift_Events_SendEvent $evt)
-  {
-    $this->messages[] = $message = clone $evt->getMessage();
+    /**
+     * Invoked immediately before the Message is sent.
+     */
+    public function beforeSendPerformed(Swift_Events_SendEvent $evt)
+    {
+        $this->messages[] = $message = clone $evt->getMessage();
 
-    $to = null === $message->getTo() ? '' : implode(', ', array_keys($message->getTo()));
+        $to = null === $message->getTo() ? '' : implode(', ', array_keys($message->getTo()));
 
-    $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Sending email "%s" to "%s"', $message->getSubject(), $to))));
-  }
+        $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Sending email "%s" to "%s"', $message->getSubject(), $to)]));
+    }
 
-  /**
-   * Invoked immediately after the Message is sent.
-   * 
-   * @param Swift_Events_SendEvent $evt
-   */
-  public function sendPerformed(Swift_Events_SendEvent $evt)
-  {
-  }
+    /**
+     * Invoked immediately after the Message is sent.
+     */
+    public function sendPerformed(Swift_Events_SendEvent $evt)
+    {
+    }
 }

@@ -12,120 +12,102 @@
 /**
  * sfValidatorDoctrineChoice validates that the value is one of the rows of a table.
  *
- * @package    symfony
- * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id$
  */
 class sfValidatorDoctrineChoice extends sfValidatorBase
 {
-  /**
-   * Configures the current validator.
-   *
-   * Available options:
-   *
-   *  * model:      The model class (required)
-   *  * query:      A query to use when retrieving objects
-   *  * column:     The column name (null by default which means we use the primary key)
-   *                must be in field name format
-   *  * multiple:   true if the select tag must allow multiple selections
-   *  * min:        The minimum number of values that need to be selected (this option is only active if multiple is true)
-   *  * max:        The maximum number of values that need to be selected (this option is only active if multiple is true)
-   *
-   * @see sfValidatorBase
-   */
-  protected function configure($options = array(), $messages = array())
-  {
-    $this->addRequiredOption('model');
-    $this->addOption('query', null);
-    $this->addOption('column', null);
-    $this->addOption('multiple', false);
-    $this->addOption('min');
-    $this->addOption('max');
-
-    $this->addMessage('min', 'At least %min% values must be selected (%count% values selected).');
-    $this->addMessage('max', 'At most %max% values must be selected (%count% values selected).');
-  }
-
-  /**
-   * @see sfValidatorBase
-   */
-  protected function doClean($value)
-  {
-    if ($query = $this->getOption('query'))
+    /**
+     * Configures the current validator.
+     *
+     * Available options:
+     *
+     *  * model:      The model class (required)
+     *  * query:      A query to use when retrieving objects
+     *  * column:     The column name (null by default which means we use the primary key)
+     *                must be in field name format
+     *  * multiple:   true if the select tag must allow multiple selections
+     *  * min:        The minimum number of values that need to be selected (this option is only active if multiple is true)
+     *  * max:        The maximum number of values that need to be selected (this option is only active if multiple is true)
+     *
+     * @see sfValidatorBase
+     */
+    protected function configure($options = [], $messages = [])
     {
-      $query = clone $query;
-    }
-    else
-    {
-      $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
+        $this->addRequiredOption('model');
+        $this->addOption('query', null);
+        $this->addOption('column', null);
+        $this->addOption('multiple', false);
+        $this->addOption('min');
+        $this->addOption('max');
+
+        $this->addMessage('min', 'At least %min% values must be selected (%count% values selected).');
+        $this->addMessage('max', 'At most %max% values must be selected (%count% values selected).');
     }
 
-    if ($this->getOption('multiple'))
+    /**
+     * @see sfValidatorBase
+     */
+    protected function doClean($value)
     {
-      if (!is_array($value))
-      {
-        $value = array($value);
-      }
+        if ($query = $this->getOption('query')) {
+            $query = clone $query;
+        } else {
+            $query = Doctrine_Core::getTable($this->getOption('model'))->createQuery();
+        }
 
-      if (isset($value[0]) && '' === $value[0])
-      {
-        unset($value[0]);
-      }
+        if ($this->getOption('multiple')) {
+            if (!is_array($value)) {
+                $value = [$value];
+            }
 
-      $count = count($value);
+            if (isset($value[0]) && '' === $value[0]) {
+                unset($value[0]);
+            }
 
-      if ($this->hasOption('min') && $count < $this->getOption('min'))
-      {
-        throw new sfValidatorError($this, 'min', array('count' => $count, 'min' => $this->getOption('min')));
-      }
+            $count = count($value);
 
-      if ($this->hasOption('max') && $count > $this->getOption('max'))
-      {
-        throw new sfValidatorError($this, 'max', array('count' => $count, 'max' => $this->getOption('max')));
-      }
+            if ($this->hasOption('min') && $count < $this->getOption('min')) {
+                throw new sfValidatorError($this, 'min', ['count' => $count, 'min' => $this->getOption('min')]);
+            }
 
-      $query->andWhereIn(sprintf('%s.%s', $query->getRootAlias(), $this->getColumn()), $value);
+            if ($this->hasOption('max') && $count > $this->getOption('max')) {
+                throw new sfValidatorError($this, 'max', ['count' => $count, 'max' => $this->getOption('max')]);
+            }
 
-      if ($query->count() != count($value))
-      {
-        throw new sfValidatorError($this, 'invalid', array('value' => $value));
-      }
-    }
-    else
-    {
-      $query->andWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $this->getColumn()), $value);
+            $query->andWhereIn(sprintf('%s.%s', $query->getRootAlias(), $this->getColumn()), $value);
 
-      if (!$query->count())
-      {
-        throw new sfValidatorError($this, 'invalid', array('value' => $value));
-      }
-    }
+            if ($query->count() != count($value)) {
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            }
+        } else {
+            $query->andWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $this->getColumn()), $value);
 
-    return $value;
-  }
+            if (!$query->count()) {
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
+            }
+        }
 
-  /**
-   * Returns the column to use for comparison.
-   *
-   * The primary key is used by default.
-   *
-   * @return string The column name
-   */
-  protected function getColumn()
-  {
-    $table = Doctrine_Core::getTable($this->getOption('model'));
-    if ($this->getOption('column'))
-    {
-      $columnName = $this->getOption('column');
-    }
-    else
-    {
-      $identifier = (array) $table->getIdentifier();
-      $columnName = current($identifier);
+        return $value;
     }
 
-    return $table->getColumnName($columnName);
-  }
+    /**
+     * Returns the column to use for comparison.
+     *
+     * The primary key is used by default.
+     *
+     * @return string The column name
+     */
+    protected function getColumn()
+    {
+        $table = Doctrine_Core::getTable($this->getOption('model'));
+        if ($this->getOption('column')) {
+            $columnName = $this->getOption('column');
+        } else {
+            $identifier = (array) $table->getIdentifier();
+            $columnName = current($identifier);
+        }
+
+        return $table->getColumnName($columnName);
+    }
 }

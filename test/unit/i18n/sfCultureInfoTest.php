@@ -3,12 +3,12 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(67);
 
@@ -26,14 +26,11 @@ $t->diag('__toString()');
 $c = sfCultureInfo::getInstance();
 $t->is($c->__toString(), 'en', '->__toString() returns the name of the culture');
 
-try
-{
-  $c = sfCultureInfo::getInstance('xxx');
-  $t->fail('->__construct() throws an exception if the culture is not valid');
-}
-catch (sfException $e)
-{
-  $t->pass('->__construct() throws an exception if the culture is not valid');
+try {
+    $c = sfCultureInfo::getInstance('xxx');
+    $t->fail('->__construct() throws an exception if the culture is not valid');
+} catch (sfException $e) {
+    $t->pass('->__construct() throws an exception if the culture is not valid');
 }
 
 $c_en = sfCultureInfo::getInstance();
@@ -46,14 +43,11 @@ $language_fr = $c_fr->getLanguage('fr');
 $t->is($language_en, 'French', '->getLanguage() returns the language name for the current culture');
 $t->is($language_fr, 'français', '->getLanguage() returns the language name for the current culture');
 
-try
-{
-  $c_en->getLanguage('gb');
-  $t->fail('->getLanguage() throws an Exception if the given language is invalid.');
-}
-catch (Exception $e)
-{
-  $t->pass('->getLanguage() throws an Exception if the given language is invalid.');
+try {
+    $c_en->getLanguage('gb');
+    $t->fail('->getLanguage() throws an Exception if the given language is invalid.');
+} catch (Exception $e) {
+    $t->pass('->getLanguage() throws an Exception if the given language is invalid.');
 }
 
 // ->getCurrency()
@@ -63,14 +57,11 @@ $currency_fr = $c_fr->getCurrency('EUR');
 $t->is($currency_en, 'Euro', '->getCurrency() returns the currency name for the current culture');
 $t->is($currency_fr, 'euro', '->getCurrency() returns the currency name for the current culture');
 
-try
-{
-  $c_en->getCurrency('FRANCS');
-  $t->fail('->getCurrency() throws an Exception if the given currency is invalid.');
-}
-catch (Exception $e)
-{
-  $t->pass('->getCurrency() throws an Exception if the given currency is invalid.');
+try {
+    $c_en->getCurrency('FRANCS');
+    $t->fail('->getCurrency() throws an Exception if the given currency is invalid.');
+} catch (Exception $e) {
+    $t->pass('->getCurrency() throws an Exception if the given currency is invalid.');
 }
 
 // ->getCountry()
@@ -80,14 +71,11 @@ $country_fr = $c_fr->getCountry('FR');
 $t->is($country_en, 'France', '->getCountry() returns the country name for the current culture');
 $t->is($country_fr, 'France', '->getCountry() returns the country name for the current culture');
 
-try
-{
-  $c_en->getCountry('en');
-  $t->fail('->getCountry() throws an Exception if the given country is invalid.');
-}
-catch (Exception $e)
-{
-  $t->pass('->getCountry() throws an Exception if the given country is invalid.');
+try {
+    $c_en->getCountry('en');
+    $t->fail('->getCountry() throws an Exception if the given country is invalid.');
+} catch (Exception $e) {
+    $t->pass('->getCountry() throws an Exception if the given country is invalid.');
 }
 
 // ->getLanguages()
@@ -98,17 +86,14 @@ $t->is($languages_en['fr'], 'French', '->getLanguages() returns a list of langua
 $t->is($languages_fr['fr'], 'français', '->getLanguages() returns a list of languages in the language of the localized version');
 $t->is($languages_en, $c_en->Languages, '->getLanguages() is equivalent to ->Languages');
 
-$languages = $c_en->getLanguages(array('fr', 'es'));
-$t->is(array_keys($languages), array('fr', 'es'), '->getLanguages() takes an array of languages as its first argument');
+$languages = $c_en->getLanguages(['fr', 'es']);
+$t->is(array_keys($languages), ['fr', 'es'], '->getLanguages() takes an array of languages as its first argument');
 
-try
-{
-  $c_en->getLanguages(array('fr', 'gb'));
-  $t->fail('->getLanguages() throws an Exception if the list of given languages contains some invalid ones.');
-}
-catch (Exception $e)
-{
-  $t->pass('->getLanguages() throws an Exception if the list of given languages contains some invalid ones.');
+try {
+    $c_en->getLanguages(['fr', 'gb']);
+    $t->fail('->getLanguages() throws an Exception if the list of given languages contains some invalid ones.');
+} catch (Exception $e) {
+    $t->pass('->getLanguages() throws an Exception if the list of given languages contains some invalid ones.');
 }
 
 // ->getCurrencies()
@@ -119,17 +104,14 @@ $t->is($currencies_en['EUR'], 'Euro', '->getCurrencies() returns a list of curre
 $t->is($currencies_fr['EUR'], 'euro', '->getCurrencies() returns a list of currencies in the language of the localized version');
 $t->is($currencies_en, $c_en->Currencies, '->getCurrencies() is equivalent to ->Currencies');
 
-$currencies = $c_en->getCurrencies(array('USD', 'EUR'));
-$t->is(array_keys($currencies), array('EUR', 'USD'), '->getCurrencies() takes an array of currencies as its first argument');
+$currencies = $c_en->getCurrencies(['USD', 'EUR']);
+$t->is(array_keys($currencies), ['EUR', 'USD'], '->getCurrencies() takes an array of currencies as its first argument');
 
-try
-{
-  $c_en->getCurrencies(array('USD', 'FRANCS'));
-  $t->fail('->getCurrencies() throws an Exception if the list of given currencies contains some invalid ones.');
-}
-catch (Exception $e)
-{
-  $t->pass('->getCurrencies() throws an Exception if the list of given currencies contains some invalid ones.');
+try {
+    $c_en->getCurrencies(['USD', 'FRANCS']);
+    $t->fail('->getCurrencies() throws an Exception if the list of given currencies contains some invalid ones.');
+} catch (Exception $e) {
+    $t->pass('->getCurrencies() throws an Exception if the list of given currencies contains some invalid ones.');
 }
 
 // ->getCountries()
@@ -140,17 +122,14 @@ $t->is($countries_en['ES'], 'Spain', '->getCountries() returns a list of countri
 $t->is($countries_fr['ES'], 'Espagne', '->getCountries() returns a list of countries in the language of the localized version');
 $t->is($countries_en, $c_en->Countries, '->getCountries() is equivalent to ->Countries');
 
-$countries = $c_en->getCountries(array('FR', 'ES'));
-$t->is(array_keys($countries), array('FR', 'ES'), '->getCountries() takes an array of countries as its first argument');
+$countries = $c_en->getCountries(['FR', 'ES']);
+$t->is(array_keys($countries), ['FR', 'ES'], '->getCountries() takes an array of countries as its first argument');
 
-try
-{
-  $c_en->getCountries(array('FR', 'EN'));
-  $t->fail('->getCountries() throws an Exception if the list of given countries contains some invalid ones.');
-}
-catch (Exception $e)
-{
-  $t->pass('->getCountries() throws an Exception if the list of given countries contains some invalid ones.');
+try {
+    $c_en->getCountries(['FR', 'EN']);
+    $t->fail('->getCountries() throws an Exception if the list of given countries contains some invalid ones.');
+} catch (Exception $e) {
+    $t->pass('->getCountries() throws an Exception if the list of given countries contains some invalid ones.');
 }
 
 // ->getScripts()
@@ -174,9 +153,8 @@ $t->is($time_zones_en, $c_en->TimeZones, '->getTimeZones() is equivalent to ->Ti
 $t->diag('->validCulture()');
 $t->is($c->validCulture('fr'), true, '->validCulture() returns true if the culture is valid');
 $t->is($c->validCulture('fr_FR'), true, '->validCulture() returns true if the culture is valid');
-foreach (array('xxx', 'pp', 'frFR') as $culture)
-{
-  $t->is($c->validCulture($culture), false, '->validCulture() returns false if the culture does not exist');
+foreach (['xxx', 'pp', 'frFR'] as $culture) {
+    $t->is($c->validCulture($culture), false, '->validCulture() returns false if the culture does not exist');
 }
 
 // ::getCultures()
@@ -232,26 +210,22 @@ $t->is($c->getCalendar(), $c->Calendar, '->getCalendar() is equivalent to ->Cale
 
 // __get()
 $t->diag('__get()');
-try
-{
-  $c->NonExistant;
-  $t->fail('__get() throws an exception if the property does not exist');
-}
-catch (sfException $e)
-{
-  $t->pass('__get() throws an exception if the property does not exist');
+
+try {
+    $c->NonExistant;
+    $t->fail('__get() throws an exception if the property does not exist');
+} catch (sfException $e) {
+    $t->pass('__get() throws an exception if the property does not exist');
 }
 
 // __set()
 $t->diag('__set()');
-try
-{
-  $c->NonExistant = 12;
-  $t->fail('__set() throws an exception if the property does not exist');
-}
-catch (sfException $e)
-{
-  $t->pass('__set() throws an exception if the property does not exist');
+
+try {
+    $c->NonExistant = 12;
+    $t->fail('__set() throws an exception if the property does not exist');
+} catch (sfException $e) {
+    $t->pass('__set() throws an exception if the property does not exist');
 }
 
 // ->getDateTimeFormat()

@@ -8,35 +8,35 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
-require_once($_test_dir.'/unit/sfContextMock.class.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
+
+require_once $_test_dir.'/unit/sfContextMock.class.php';
 
 $t = new lime_test(41);
 
 function get_cache_manager($context)
 {
-  myCache::clear();
-  $m = new myViewCacheManager($context, new myCache());
+    myCache::clear();
 
-  return $m;
+    return new myViewCacheManager($context, new myCache());
 }
 
 function get_cache_config($contextual = false)
 {
-  return array(
-    'withLayout'     => false,
-    'lifeTime'       => 86400,
-    'clientLifeTime' => 86400,
-    'contextual'     => $contextual,
-    'vary'           => array(),
-  );
+    return [
+        'withLayout' => false,
+        'lifeTime' => 86400,
+        'clientLifeTime' => 86400,
+        'contextual' => $contextual,
+        'vary' => [],
+    ];
 }
 
 class myViewCacheManager extends sfViewCacheManager
 {
-  public function registerConfiguration($moduleName)
-  {
-  }
+    public function registerConfiguration($moduleName)
+    {
+    }
 }
 
 class myController extends sfWebController
@@ -45,101 +45,99 @@ class myController extends sfWebController
 
 class myRequest
 {
-  public $getParameters = array('page' => 5, 'sort' => 'asc');
+    public $getParameters = ['page' => 5, 'sort' => 'asc'];
 
-  public function getHost()
-  {
-    return 'localhost';
-  }
+    public function getHost()
+    {
+        return 'localhost';
+    }
 
-  public function getScriptName()
-  {
-    return 'index.php';
-  }
+    public function getScriptName()
+    {
+        return 'index.php';
+    }
 
-  public function getHttpHeader($headerName)
-  {
-    return '/foo#|#/bar/';
-  }
+    public function getHttpHeader($headerName)
+    {
+        return '/foo#|#/bar/';
+    }
 
-  public function getGetParameters()
-  {
-    return $this->getParameters;
-  }
+    public function getGetParameters()
+    {
+        return $this->getParameters;
+    }
 }
 
 class myCache extends sfCache
 {
-  static public $cache = array();
+    public static $cache = [];
 
-  public function initialize($parameters = array())
-  {
-  }
-
-  public function get($key, $default = null)
-  {
-    return isset(self::$cache[$key]) ? self::$cache[$key] : $default;
-  }
-
-  public function has($key)
-  {
-    return isset(self::$cache[$key]);
-  }
-
-  public function set($key, $data, $lifetime = null)
-  {
-    self::$cache[$key] = $data;
-  }
-
-  public function remove($key)
-  {
-    unset(self::$cache[$key]);
-  }
-
-  public function removePattern($pattern, $delimiter = ':')
-  {
-    $pattern = '#^' . str_replace('*', '.*', $pattern) . '$#';
-    foreach(self::$cache as $key => $value)
+    public function initialize($parameters = [])
     {
-      if(preg_match($pattern, $key))
-      {
-        unset(self::$cache[$key]);
-      }
     }
-  }
 
-  public function clean($mode = sfCache::ALL)
-  {
-    self::$cache = array();
-  }
+    public function get($key, $default = null)
+    {
+        return isset(self::$cache[$key]) ? self::$cache[$key] : $default;
+    }
 
-  public function getTimeout($key)
-  {
-    return time() - 60;
-  }
+    public function has($key)
+    {
+        return isset(self::$cache[$key]);
+    }
 
-  public function getLastModified($key)
-  {
-    return time() - 600;
-  }
+    public function set($key, $data, $lifetime = null)
+    {
+        self::$cache[$key] = $data;
+    }
 
-  static public function clear()
-  {
-    self::$cache = array();
-  }
+    public function remove($key)
+    {
+        unset(self::$cache[$key]);
+    }
+
+    public function removePattern($pattern, $delimiter = ':')
+    {
+        $pattern = '#^'.str_replace('*', '.*', $pattern).'$#';
+        foreach (self::$cache as $key => $value) {
+            if (preg_match($pattern, $key)) {
+                unset(self::$cache[$key]);
+            }
+        }
+    }
+
+    public function clean($mode = sfCache::ALL)
+    {
+        self::$cache = [];
+    }
+
+    public function getTimeout($key)
+    {
+        return time() - 60;
+    }
+
+    public function getLastModified($key)
+    {
+        return time() - 600;
+    }
+
+    public static function clear()
+    {
+        self::$cache = [];
+    }
 }
 
 class myRouting extends sfPatternRouting
 {
-  public $currentInternalUri = 'currentModule/currentAction?currentKey=currentValue';
+    public $currentInternalUri = 'currentModule/currentAction?currentKey=currentValue';
 
-  public function getCurrentInternalUri($with_route_name = false)
-  {
-    return $this->currentInternalUri;
-  }
+    public function getCurrentInternalUri($with_route_name = false)
+    {
+        return $this->currentInternalUri;
+    }
 }
 
-$context = sfContext::getInstance(array('controller' => 'myController', 'routing' => 'myRouting', 'request' => 'myRequest'));
+$context = sfContext::getInstance(['controller' => 'myController', 'routing' => 'myRouting', 'request' => 'myRequest']);
 
 $r = $context->routing;
 $r->connect('default', new sfRoute('/:module/:action/*'));
@@ -158,32 +156,25 @@ $t->is($m->generateCacheKey('mymodule/myaction', null, 'bar'), '/localhost/bar/m
 $t->is($m->generateCacheKey('mymodule/myaction?key1=value1&key2=value2'), '/localhost/all/mymodule/myaction/key1/value1/key2/value2', '->generateCacheKey() includes request parameters as key/value pairs');
 $t->is($m->generateCacheKey('mymodule/myaction?akey=value1&ckey=value2&bkey=value3'), '/localhost/all/mymodule/myaction/akey/value1/bkey/value3/ckey/value2', '->generateCacheKey() reorders request parameters alphabetically');
 
-try
-{
-  $m->generateCacheKey('@rule?key=value');
-  $t->fail('->generateCacheKey() throws an sfException when passed an internal URI with a rule');
+try {
+    $m->generateCacheKey('@rule?key=value');
+    $t->fail('->generateCacheKey() throws an sfException when passed an internal URI with a rule');
+} catch (sfException $e) {
+    $t->pass('->generateCacheKey() throws an sfException when passed an internal URI with a rule');
 }
-catch(sfException $e)
-{
-  $t->pass('->generateCacheKey() throws an sfException when passed an internal URI with a rule');
+
+try {
+    $m->generateCacheKey('@sf_cache_partial?module=mymodule&action=myaction');
+    $t->pass('->generateCacheKey() does not throw an sfException when passed an internal URI with a @sf_cache_partial rule');
+} catch (sfException $e) {
+    $t->fail('->generateCacheKey() does not throw an sfException when passed an internal URI with a @sf_cache_partial rule');
 }
-try
-{
-  $m->generateCacheKey('@sf_cache_partial?module=mymodule&action=myaction');
-  $t->pass('->generateCacheKey() does not throw an sfException when passed an internal URI with a @sf_cache_partial rule');
-}
-catch(sfException $e)
-{
-  $t->fail('->generateCacheKey() does not throw an sfException when passed an internal URI with a @sf_cache_partial rule');
-}
-try
-{
-  $m->generateCacheKey('@sf_cache_partial?key=value');
-  $t->fail('->generateCacheKey() throws an sfException when passed an internal URI with a @sf_cache_partial rule with no module or action param');
-}
-catch(sfException $e)
-{
-  $t->pass('->generateCacheKey() throws an sfException when passed an internal URI with a @sf_cache_partial rule with no module or action param');
+
+try {
+    $m->generateCacheKey('@sf_cache_partial?key=value');
+    $t->fail('->generateCacheKey() throws an sfException when passed an internal URI with a @sf_cache_partial rule with no module or action param');
+} catch (sfException $e) {
+    $t->pass('->generateCacheKey() throws an sfException when passed an internal URI with a @sf_cache_partial rule with no module or action param');
 }
 
 $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_key=value'), '/localhost/all/sf_cache_partial/foo/bar/sf_cache_key/value', '->generateCacheKey() can deal with internal URIs to partials');
@@ -195,7 +186,7 @@ $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_ke
 $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_key=value', null, null, 'baz'), '/localhost/all/baz/foo/bar/value', '->generateCacheKey() can take a prefix for contextual partials as fourth parameter');
 
 $m = get_cache_manager($context);
-$m->addCache('module', 'action', array('vary' => array('myheader', 'secondheader')));
+$m->addCache('module', 'action', ['vary' => ['myheader', 'secondheader']]);
 $t->is($m->generateCacheKey('module/action'), '/localhost/myheader-_foo_bar_-secondheader-_foo_bar_/module/action', '->generateCacheKey() creates a directory friendly vary cache key');
 
 // ->generateNamespace()
@@ -283,13 +274,13 @@ $t->is($m->has('module/action?key1=value2'), false, '->remove() accepts wildcard
 $t->is($m->has('module/action?key2=value1'), true, '->remove() accepts wildcards in URIs and lets keys not matching the pattern unchanged');
 
 $t->diag('Cache key generation options');
-$m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_vary_headers' => false));
+$m = new myViewCacheManager($context, $cache = new myCache(), ['cache_key_use_vary_headers' => false]);
 $t->is($m->generateCacheKey('mymodule/myaction'), '/localhost/mymodule/myaction', '->generateCacheKey() uses "cache_key_use_vary_headers" option to know if vary headers changes cache key.');
 
-$m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_host_name' => false));
+$m = new myViewCacheManager($context, $cache = new myCache(), ['cache_key_use_host_name' => false]);
 $t->is($m->generateCacheKey('mymodule/myaction'), '/all/mymodule/myaction', '->generateCacheKey() uses "cache_key_use_host_name" option to know if vary headers changes cache key.');
 
-$m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_host_name' => false, 'cache_key_use_vary_headers' => false));
+$m = new myViewCacheManager($context, $cache = new myCache(), ['cache_key_use_host_name' => false, 'cache_key_use_vary_headers' => false]);
 $t->is($m->generateCacheKey('mymodule/myaction'), '/mymodule/myaction', '->generateCacheKey() allows the use of both "cache_key_use_host_name" and "cache_key_use_vary_headers" options.');
 
 $m = new myViewCacheManager($context, new myCache());

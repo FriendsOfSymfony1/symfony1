@@ -1,78 +1,78 @@
 <?php
 
 $_test_dir = realpath(__DIR__.'/..');
-require_once($_test_dir.'/../lib/vendor/lime/lime.php');
-require_once($_test_dir.'/../lib/util/sfToolkit.class.php');
+
+require_once $_test_dir.'/../lib/vendor/lime/lime.php';
+
+require_once $_test_dir.'/../lib/util/sfToolkit.class.php';
 
 define('DS', DIRECTORY_SEPARATOR);
 
 class sf_test_project
 {
-  public $php_cli = null;
-  public $tmp_dir = null;
-  public $t = null;
-  public $current_dir = null;
+    public $php_cli;
+    public $tmp_dir;
+    public $t;
+    public $current_dir;
 
-  public function initialize($t)
-  {
-    $this->t = $t;
-
-    $this->tmp_dir = sys_get_temp_dir().DS.'sf_test_project';
-
-    if (is_dir($this->tmp_dir))
+    public function initialize($t)
     {
-      $this->clearTmpDir();
-      rmdir($this->tmp_dir);
+        $this->t = $t;
+
+        $this->tmp_dir = sys_get_temp_dir().DS.'sf_test_project';
+
+        if (is_dir($this->tmp_dir)) {
+            $this->clearTmpDir();
+            rmdir($this->tmp_dir);
+        }
+
+        mkdir($this->tmp_dir, 0777);
+
+        $this->current_dir = getcwd();
+        chdir($this->tmp_dir);
+
+        $this->php_cli = sfToolkit::getPhpCli();
     }
 
-    mkdir($this->tmp_dir, 0777);
+    public function shutdown()
+    {
+        $this->clearTmpDir();
+        rmdir($this->tmp_dir);
+        chdir($this->current_dir);
+    }
 
-    $this->current_dir = getcwd();
-    chdir($this->tmp_dir);
+    public function execute_command($cmd, $awaited_return = 0)
+    {
+        chdir($this->tmp_dir);
+        $symfony = file_exists('symfony') ? 'symfony' : __DIR__.'/../../data/bin/symfony';
 
-    $this->php_cli = sfToolkit::getPhpCli();
-  }
+        ob_start();
+        passthru(sprintf('%s "%s" %s 2>&1', $this->php_cli, $symfony, $cmd), $return);
+        $content = ob_get_clean();
+        $this->t->cmp_ok($return, '==', $awaited_return, sprintf('"symfony %s" returns awaited value (%d)', $cmd, $awaited_return));
 
-  public function shutdown()
-  {
-    $this->clearTmpDir();
-    rmdir($this->tmp_dir);
-    chdir($this->current_dir);
-  }
+        return $content;
+    }
 
-  protected function clearTmpDir()
-  {
-    require_once(__DIR__.'/../../lib/util/sfToolkit.class.php');
-    sfToolkit::clearDirectory($this->tmp_dir);
-  }
+    public function get_fixture_content($file)
+    {
+        return str_replace("\r\n", "\n", file_get_contents(__DIR__.'/fixtures/'.$file));
+    }
 
-  public function execute_command($cmd, $awaited_return=0)
-  {
-    chdir($this->tmp_dir);
-    $symfony = file_exists('symfony') ? 'symfony' : __DIR__.'/../../data/bin/symfony';
-
-    ob_start();
-    passthru(sprintf('%s "%s" %s 2>&1', $this->php_cli, $symfony, $cmd), $return);
-    $content = ob_get_clean();
-    $this->t->cmp_ok($return, '==', $awaited_return, sprintf('"symfony %s" returns awaited value (%d)', $cmd, $awaited_return));
-
-    return $content;
-  }
-
-  public function get_fixture_content($file)
-  {
-    return str_replace("\r\n", "\n", file_get_contents(__DIR__.'/fixtures/'.$file));
-  }
+    protected function clearTmpDir()
+    {
+        require_once __DIR__.'/../../lib/util/sfToolkit.class.php';
+        sfToolkit::clearDirectory($this->tmp_dir);
+    }
 }
 
 $plan = 18;
 $t = new lime_test($plan);
 
-if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite'))
-{
-  $t->skip('You need SQLite to run these tests', $plan);
+if (!extension_loaded('SQLite') && !extension_loaded('pdo_SQLite')) {
+    $t->skip('You need SQLite to run these tests', $plan);
 
-  return;
+    return;
 }
 
 $c = new sf_test_project();
@@ -119,12 +119,12 @@ mkdir($c->tmp_dir.DS.'lib'.DS.'task');
 mkdir($pluginDir = $c->tmp_dir.DS.'plugins'.DS.'myFooPlugin'.DS.'lib'.DS.'task', 0777, true);
 copy(__DIR__.'/fixtures/task/myPluginTask.class.php', $pluginDir.DS.'myPluginTask.class.php');
 file_put_contents(
-  $projectConfigurationFile = $c->tmp_dir.DS.'config'.DS.'ProjectConfiguration.class.php',
-  str_replace(
-    '$this->enablePlugins(\'sfDoctrinePlugin\')',
-    '$this->enablePlugins(array(\'sfDoctrinePlugin\', \'myFooPlugin\'))',
-    file_get_contents($projectConfigurationFile)
-  )
+    $projectConfigurationFile = $c->tmp_dir.DS.'config'.DS.'ProjectConfiguration.class.php',
+    str_replace(
+        '$this->enablePlugins(\'sfDoctrinePlugin\')',
+        '$this->enablePlugins(array(\'sfDoctrinePlugin\', \'myFooPlugin\'))',
+        file_get_contents($projectConfigurationFile)
+    )
 );
 
 $c->execute_command('p:run');

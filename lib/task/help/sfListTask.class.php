@@ -11,29 +11,26 @@
 /**
  * Lists tasks.
  *
- * @package    symfony
- * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfListTask extends sfCommandApplicationTask
 {
-  /**
-   * @see sfTask
-   */
-  protected function configure()
-  {
-    $this->addArguments(array(
-      new sfCommandArgument('namespace', sfCommandArgument::OPTIONAL, 'The namespace name'),
-    ));
+    /**
+     * @see sfTask
+     */
+    protected function configure()
+    {
+        $this->addArguments([
+            new sfCommandArgument('namespace', sfCommandArgument::OPTIONAL, 'The namespace name'),
+        ]);
 
-    $this->addOptions(array(
-      new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
-    ));
+        $this->addOptions([
+            new sfCommandOption('xml', null, sfCommandOption::PARAMETER_NONE, 'To output help as XML'),
+        ]);
 
-    $this->briefDescription = 'Lists tasks';
+        $this->briefDescription = 'Lists tasks';
 
-    $this->detailedDescription = <<<EOF
+        $this->detailedDescription = <<<'EOF'
 The [list|INFO] task lists all tasks:
 
   [./symfony list|INFO]
@@ -46,132 +43,115 @@ You can also output the information as XML by using the [--xml|COMMENT] option:
 
   [./symfony list --xml|INFO]
 EOF;
-  }
-
-  /**
-   * @see sfTask
-   */
-  protected function execute($arguments = array(), $options = array())
-  {
-    $tasks = array();
-    foreach ($this->commandApplication->getTasks() as $name => $task)
-    {
-      if ($arguments['namespace'] && $arguments['namespace'] != $task->getNamespace())
-      {
-        continue;
-      }
-
-      if ($name != $task->getFullName())
-      {
-        // it is an alias
-        continue;
-      }
-
-      if (!$task->getNamespace())
-      {
-        $name = '_default:'.$name;
-      }
-
-      $tasks[$name] = $task;
     }
 
-    if ($options['xml'])
+    /**
+     * @see sfTask
+     */
+    protected function execute($arguments = [], $options = [])
     {
-      $this->outputAsXml($arguments['namespace'], $tasks);
-    }
-    else
-    {
-      $this->outputAsText($arguments['namespace'], $tasks);
-    }
-  }
+        $tasks = [];
+        foreach ($this->commandApplication->getTasks() as $name => $task) {
+            if ($arguments['namespace'] && $arguments['namespace'] != $task->getNamespace()) {
+                continue;
+            }
 
-  protected function outputAsText($namespace, $tasks)
-  {
-    $this->commandApplication->help();
-    $this->log('');
+            if ($name != $task->getFullName()) {
+                // it is an alias
+                continue;
+            }
 
-    $width = 0;
-    foreach ($tasks as $name => $task)
-    {
-      $width = strlen($task->getName()) > $width ? strlen($task->getName()) : $width;
-    }
-    $width += strlen($this->formatter->format('  ', 'INFO'));
+            if (!$task->getNamespace()) {
+                $name = '_default:'.$name;
+            }
 
-    $messages = array();
-    if ($namespace)
-    {
-      $messages[] = $this->formatter->format(sprintf("Available tasks for the \"%s\" namespace:", $namespace), 'COMMENT');
-    }
-    else
-    {
-      $messages[] = $this->formatter->format('Available tasks:', 'COMMENT');
-    }
+            $tasks[$name] = $task;
+        }
 
-    // display tasks
-    ksort($tasks);
-    $currentNamespace = '';
-    foreach ($tasks as $name => $task)
-    {
-      if (!$namespace && $currentNamespace != $task->getNamespace())
-      {
-        $currentNamespace = $task->getNamespace();
-        $messages[] = $this->formatter->format($task->getNamespace(), 'COMMENT');
-      }
+        if ($options['xml']) {
+            $this->outputAsXml($arguments['namespace'], $tasks);
+        } else {
+            $this->outputAsText($arguments['namespace'], $tasks);
+        }
 
-      $aliases = $task->getAliases() ? $this->formatter->format(' ('.implode(', ', $task->getAliases()).')', 'COMMENT') : '';
-
-      $messages[] = sprintf("  %-${width}s %s%s", $this->formatter->format(':'.$task->getName(), 'INFO'), $task->getBriefDescription(), $aliases);
+        return 0;
     }
 
-    $this->log($messages);
-  }
-
-  protected function outputAsXml($namespace, $tasks)
-  {
-    $dom = new DOMDocument('1.0', 'UTF-8');
-    $dom->formatOutput = true;
-    $dom->appendChild($symfonyXML = $dom->createElement('symfony'));
-
-    $symfonyXML->appendChild($tasksXML = $dom->createElement('tasks'));
-
-    if ($namespace)
+    protected function outputAsText($namespace, $tasks)
     {
-      $tasksXML->setAttribute('namespace', $namespace);
-    }
-    else
-    {
-      $symfonyXML->appendChild($namespacesXML = $dom->createElement('namespaces'));
-    }
+        $this->commandApplication->help();
+        $this->log('');
 
-    // display tasks
-    ksort($tasks);
-    $currentNamespace = 'foobar';
-    $namespaceArrayXML = array();
-    foreach ($tasks as $name => $task)
-    {
-      if (!$namespace && $currentNamespace != $task->getNamespace())
-      {
-        $currentNamespace = $task->getNamespace();
-        $namespacesXML->appendChild($namespaceArrayXML[$task->getNamespace()] = $dom->createElement('namespace'));
+        $width = 0;
+        foreach ($tasks as $name => $task) {
+            $width = strlen($task->getName()) > $width ? strlen($task->getName()) : $width;
+        }
+        $width += strlen($this->formatter->format('  ', 'INFO'));
 
-        $namespaceArrayXML[$task->getNamespace()]->setAttribute('id', $task->getNamespace() ?: '_global');
-      }
+        $messages = [];
+        if ($namespace) {
+            $messages[] = $this->formatter->format(sprintf('Available tasks for the "%s" namespace:', $namespace), 'COMMENT');
+        } else {
+            $messages[] = $this->formatter->format('Available tasks:', 'COMMENT');
+        }
 
-      if (!$namespace)
-      {
-        $namespaceArrayXML[$task->getNamespace()]->appendChild($taskXML = $dom->createElement('task'));
-        $taskXML->appendChild($dom->createTextNode($task->getName()));
-      }
+        // display tasks
+        ksort($tasks);
+        $currentNamespace = '';
+        foreach ($tasks as $name => $task) {
+            if (!$namespace && $currentNamespace != $task->getNamespace()) {
+                $currentNamespace = $task->getNamespace();
+                $messages[] = $this->formatter->format($task->getNamespace(), 'COMMENT');
+            }
 
-      $taskXML = new DOMDocument('1.0', 'UTF-8');
-      $taskXML->formatOutput = true;
-      $taskXML->loadXML($task->asXml());
-      $node = $taskXML->getElementsByTagName('task')->item(0);
-      $node = $dom->importNode($node, true);
+            $aliases = $task->getAliases() ? $this->formatter->format(' ('.implode(', ', $task->getAliases()).')', 'COMMENT') : '';
 
-      $tasksXML->appendChild($node);
+            $messages[] = sprintf("  %-{$width}s %s%s", $this->formatter->format(':'.$task->getName(), 'INFO'), $task->getBriefDescription(), $aliases);
+        }
+
+        $this->log($messages);
     }
 
-    echo $dom->saveXML();
-  }
+    protected function outputAsXml($namespace, $tasks)
+    {
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->formatOutput = true;
+        $dom->appendChild($symfonyXML = $dom->createElement('symfony'));
+
+        $symfonyXML->appendChild($tasksXML = $dom->createElement('tasks'));
+
+        if ($namespace) {
+            $tasksXML->setAttribute('namespace', $namespace);
+        } else {
+            $symfonyXML->appendChild($namespacesXML = $dom->createElement('namespaces'));
+        }
+
+        // display tasks
+        ksort($tasks);
+        $currentNamespace = 'foobar';
+        $namespaceArrayXML = [];
+        foreach ($tasks as $name => $task) {
+            if (!$namespace && $currentNamespace != $task->getNamespace()) {
+                $currentNamespace = $task->getNamespace();
+                $namespacesXML->appendChild($namespaceArrayXML[$task->getNamespace()] = $dom->createElement('namespace'));
+
+                $namespaceArrayXML[$task->getNamespace()]->setAttribute('id', $task->getNamespace() ?: '_global');
+            }
+
+            if (!$namespace) {
+                $namespaceArrayXML[$task->getNamespace()]->appendChild($taskXML = $dom->createElement('task'));
+                $taskXML->appendChild($dom->createTextNode($task->getName()));
+            }
+
+            $taskXML = new DOMDocument('1.0', 'UTF-8');
+            $taskXML->formatOutput = true;
+            $taskXML->loadXML($task->asXml());
+            $node = $taskXML->getElementsByTagName('task')->item(0);
+            $node = $dom->importNode($node, true);
+
+            $tasksXML->appendChild($node);
+        }
+
+        echo $dom->saveXML();
+    }
 }

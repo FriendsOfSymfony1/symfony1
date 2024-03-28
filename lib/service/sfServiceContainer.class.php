@@ -36,188 +36,177 @@
  *   <li>symfony.mysql_session_storage -> getSymfony_MysqlSessionStorageService()</li>
  * </ul>
  *
- * @package    symfony
- * @subpackage service
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfServiceContainer implements sfServiceContainerInterface
 {
-  protected
-    $serviceIds = array(),
-    $parameters = array(),
-    $services   = array(),
-    $count      = 0;
+    protected $serviceIds = [];
+    protected $parameters = [];
+    protected $services = [];
+    protected $count = 0;
 
-  /**
-   * Constructor.
-   *
-   * @param array $parameters An array of parameters
-   */
-  public function __construct(array $parameters = array())
-  {
-    $this->setParameters($parameters);
-    $this->setService('service_container', $this);
-  }
-
-  /**
-   * Sets the service container parameters.
-   *
-   * @param array $parameters An array of parameters
-   */
-  public function setParameters(array $parameters)
-  {
-    $this->parameters = array();
-    foreach ($parameters as $key => $value)
+    /**
+     * Constructor.
+     *
+     * @param array $parameters An array of parameters
+     */
+    public function __construct(array $parameters = [])
     {
-      $this->parameters[strtolower($key)] = $value;
-    }
-  }
-
-  /**
-   * Adds parameters to the service container parameters.
-   *
-   * @param array $parameters An array of parameters
-   */
-  public function addParameters(array $parameters)
-  {
-    $this->setParameters(array_merge($this->parameters, $parameters));
-  }
-
-  /**
-   * Gets the service container parameters.
-   *
-   * @return array An array of parameters
-   */
-  public function getParameters()
-  {
-    return $this->parameters;
-  }
-
-  /**
-   * Gets a service container parameter.
-   *
-   * @param  string $name The parameter name
-   *
-   * @return mixed  The parameter value
-   *
-   * @throw  InvalidArgumentException if the parameter is not defined
-   */
-  public function getParameter($name)
-  {
-    if ($this->hasParameter($name))
-    {
-      return $this->parameters[strtolower($name)];
+        $this->setParameters($parameters);
+        $this->setService('service_container', $this);
     }
 
-    if (sfConfig::has($name))
+    /**
+     * Sets the service container parameters.
+     *
+     * @param array $parameters An array of parameters
+     */
+    public function setParameters(array $parameters)
     {
-      return sfConfig::get($name);
+        $this->parameters = [];
+        foreach ($parameters as $key => $value) {
+            $this->parameters[strtolower($key)] = $value;
+        }
     }
 
-    throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
-  }
-
-  /**
-   * Sets a service container parameter.
-   *
-   * @param string $name   The parameter name
-   * @param mixed  $value  The parameter value
-   */
-  public function setParameter($name, $value)
-  {
-    $this->parameters[strtolower($name)] = $value;
-  }
-
-  /**
-   * Returns true if a parameter name is defined.
-   *
-   * @param  string  $name       The parameter name
-   *
-   * @return Boolean true if the parameter name is defined, false otherwise
-   */
-  public function hasParameter($name)
-  {
-    return array_key_exists(strtolower($name), $this->parameters);
-  }
-
-  /**
-   * Sets a service.
-   *
-   * @param string $id      The service identifier
-   * @param object $service The service instance
-   */
-  public function setService($id, $service)
-  {
-    $this->services[$id] = $service;
-  }
-
-  /**
-   * Returns true if the given service is defined.
-   *
-   * @param  string  $id      The service identifier
-   *
-   * @return Boolean true if the service is defined, false otherwise
-   */
-  public function hasService($id)
-  {
-    return isset($this->services[$id]) || method_exists($this, 'get'.self::camelize($id).'Service');
-  }
-
-  /**
-   * Gets a service.
-   *
-   * If a service is both defined through a setService() method and
-   * with a set*Service() method, the former has always precedence.
-   *
-   * @param  string $id The service identifier
-   *
-   * @return object The associated service
-   *
-   * @throw InvalidArgumentException if the service is not defined
-   */
-  public function getService($id)
-  {
-    if (isset($this->services[$id]))
+    /**
+     * Adds parameters to the service container parameters.
+     *
+     * @param array $parameters An array of parameters
+     */
+    public function addParameters(array $parameters)
     {
-      return $this->services[$id];
+        $this->setParameters(array_merge($this->parameters, $parameters));
     }
 
-    if (method_exists($this, $method = 'get'.self::camelize($id).'Service'))
+    /**
+     * Gets the service container parameters.
+     *
+     * @return array An array of parameters
+     */
+    public function getParameters()
     {
-      return $this->$method();
+        return $this->parameters;
     }
 
-    throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
-  }
-
-  /**
-   * Gets all service ids.
-   *
-   * @return array An array of all defined service ids
-   */
-  public function getServiceIds()
-  {
-    $ids = array();
-    $r = new ReflectionClass($this);
-    foreach ($r->getMethods() as $method)
+    /**
+     * Gets a service container parameter.
+     *
+     * @param string $name The parameter name
+     *
+     * @return mixed The parameter value
+     *
+     * @throw  InvalidArgumentException if the parameter is not defined
+     */
+    public function getParameter($name)
     {
-      if (preg_match('/^get(.+)Service$/', $name = $method->getName(), $match))
-      {
-        $ids[] = self::underscore($match[1]);
-      }
+        if ($this->hasParameter($name)) {
+            return $this->parameters[strtolower($name)];
+        }
+
+        if (sfConfig::has($name)) {
+            return sfConfig::get($name);
+        }
+
+        throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
     }
 
-    return array_merge($ids, array_keys($this->services));
-  }
+    /**
+     * Sets a service container parameter.
+     *
+     * @param string $name  The parameter name
+     * @param mixed  $value The parameter value
+     */
+    public function setParameter($name, $value)
+    {
+        $this->parameters[strtolower($name)] = $value;
+    }
 
-  static public function camelize($id)
-  {
-    return strtr(ucwords(strtr($id, array('_' => ' ', '-' => ' ', '.' => '_ '))), array(' ' => ''));
-  }
+    /**
+     * Returns true if a parameter name is defined.
+     *
+     * @param string $name The parameter name
+     *
+     * @return bool true if the parameter name is defined, false otherwise
+     */
+    public function hasParameter($name)
+    {
+        return array_key_exists(strtolower($name), $this->parameters);
+    }
 
-  static public function underscore($id)
-  {
-    return strtolower(preg_replace(array('/_/', '/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('.', '\\1_\\2', '\\1_\\2'), $id));
-  }
+    /**
+     * Sets a service.
+     *
+     * @param string $id      The service identifier
+     * @param object $service The service instance
+     */
+    public function setService($id, $service)
+    {
+        $this->services[$id] = $service;
+    }
+
+    /**
+     * Returns true if the given service is defined.
+     *
+     * @param string $id The service identifier
+     *
+     * @return bool true if the service is defined, false otherwise
+     */
+    public function hasService($id)
+    {
+        return isset($this->services[$id]) || method_exists($this, 'get'.self::camelize($id).'Service');
+    }
+
+    /**
+     * Gets a service.
+     *
+     * If a service is both defined through a setService() method and
+     * with a set*Service() method, the former has always precedence.
+     *
+     * @param string $id The service identifier
+     *
+     * @return object The associated service
+     *
+     * @throw InvalidArgumentException if the service is not defined
+     */
+    public function getService($id)
+    {
+        if (isset($this->services[$id])) {
+            return $this->services[$id];
+        }
+
+        if (method_exists($this, $method = 'get'.self::camelize($id).'Service')) {
+            return $this->{$method}();
+        }
+
+        throw new InvalidArgumentException(sprintf('The service "%s" does not exist.', $id));
+    }
+
+    /**
+     * Gets all service ids.
+     *
+     * @return array An array of all defined service ids
+     */
+    public function getServiceIds()
+    {
+        $ids = [];
+        $r = new ReflectionClass($this);
+        foreach ($r->getMethods() as $method) {
+            if (preg_match('/^get(.+)Service$/', $name = $method->getName(), $match)) {
+                $ids[] = self::underscore($match[1]);
+            }
+        }
+
+        return array_merge($ids, array_keys($this->services));
+    }
+
+    public static function camelize($id)
+    {
+        return strtr(ucwords(strtr($id, ['_' => ' ', '-' => ' ', '.' => '_ '])), [' ' => '']);
+    }
+
+    public static function underscore($id)
+    {
+        return strtolower(preg_replace(['/_/', '/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'], ['.', '\\1_\\2', '\\1_\\2'], $id));
+    }
 }

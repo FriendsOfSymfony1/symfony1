@@ -9,22 +9,22 @@
  */
 
 $app = 'frontend';
-if (!include(__DIR__.'/../bootstrap/functional.php'))
-{
-  return;
+if (!include __DIR__.'/../bootstrap/functional.php') {
+    return;
 }
 
 class TestBrowser extends sfTestBrowser
 {
-  public $events = array();
-  public function listen(sfEvent $event)
-  {
-    $this->events[] = $event;
-  }
+    public $events = [];
+
+    public function listen(sfEvent $event)
+    {
+        $this->events[] = $event;
+    }
 }
 
 $b = new TestBrowser();
-$b->addListener('context.load_factories', array($b, 'listen'));
+$b->addListener('context.load_factories', [$b, 'listen']);
 
 // listeners
 $b->get('/');
@@ -89,8 +89,7 @@ $b->
     isParameter('action', 'throwsSfException')->
   end()->
   with('response')->isStatusCode(500)->
-  throwsException('sfException', 'sfException message')
-;
+  throwsException('sfException', 'sfException message');
 
 $b->
   get('/browser')->
@@ -102,17 +101,13 @@ $b->
   get('/browser/text')->
   with('response')->begin()->
     matches('/text/')->
-  end()
-;
+  end();
 
-try
-{
-  $b->with('response')->checkElement('h1', 'text');
-  $b->test()->fail('The DOM is not accessible if the response content type is not HTML');
-}
-catch (LogicException $e)
-{
-  $b->test()->pass('The DOM is not accessible if the response content type is not HTML');
+try {
+    $b->with('response')->checkElement('h1', 'text');
+    $b->test()->fail('The DOM is not accessible if the response content type is not HTML');
+} catch (LogicException $e) {
+    $b->test()->pass('The DOM is not accessible if the response content type is not HTML');
 }
 
 // check response headers
@@ -125,8 +120,7 @@ $b->
     isHeader('content-type', '!#text/html#')->
     isHeader('foo', 'bar')->
     isHeader('foo', 'foobar')->
-  end()
-;
+  end();
 
 // cookies
 $b->
@@ -164,8 +158,7 @@ $b->
     hasCookie('foo', false)->
     hasCookie('bar', false)->
   end()->
-  with('response')->checkElement('p', '.-')
-;
+  with('response')->checkElement('p', '.-');
 
 $b->
   setCookie('foo', 'bar')->
@@ -214,8 +207,7 @@ $b->
     hasCookie('foo', false)->
     hasCookie('bar', false)->
   end()->
-  with('response')->checkElement('p', '.-')
-;
+  with('response')->checkElement('p', '.-');
 
 $b->
   get('/browser')->
@@ -223,8 +215,7 @@ $b->
   post('/browser')->
   with('request')->isMethod('post')->
   call('/browser', 'put')->
-  with('request')->isMethod('put')
-;
+  with('request')->isMethod('put');
 
 // sfBrowser: clean the custom view templates
 $b->
@@ -235,29 +226,21 @@ $b->
   with('response')->checkElement('#test', 'template 1')->
 
   get('/browser/templateCustom')->
-  with('response')->checkElement('#test', 'template')
-;
+  with('response')->checkElement('#test', 'template');
 
 $b
-  ->getAndCheck('browser', 'redirect1', null, 302)
-
-  ->followRedirect()
-
-  ->with('request')->begin()
+    ->getAndCheck('browser', 'redirect1', null, 302)
+    ->followRedirect()
+    ->with('request')->begin()
     ->isParameter('module', 'browser')
     ->isParameter('action', 'redirectTarget1')
-  ->end()
-
-  ->with('response')->isStatusCode(200)
-
-  ->getAndCheck('browser', 'redirect2', null, 302)
-
-  ->followRedirect()
-
-  ->with('request')->begin()
+    ->end()
+    ->with('response')->isStatusCode(200)
+    ->getAndCheck('browser', 'redirect2', null, 302)
+    ->followRedirect()
+    ->with('request')->begin()
     ->isParameter('module', 'browser')
     ->isParameter('action', 'redirectTarget2')
-  ->end()
-
-  ->with('response')->isStatusCode(200)
+    ->end()
+    ->with('response')->isStatusCode(200)
 ;

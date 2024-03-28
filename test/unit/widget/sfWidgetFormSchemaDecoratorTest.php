@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(16);
 
 $w1 = new sfWidgetFormInputText();
 $w2 = new sfWidgetFormInputText();
-$ws = new sfWidgetFormSchema(array('w1' => $w1));
+$ws = new sfWidgetFormSchema(['w1' => $w1]);
 
 $w = new sfWidgetFormSchemaDecorator($ws, "<table>\n%content%</table>");
 
@@ -24,7 +24,7 @@ $t->is($w->getWidget(), $ws, '->getWidget() returns the decorated widget');
 
 // ->render()
 $t->diag('->render()');
-$output = <<<EOF
+$output = <<<'EOF'
 <table>
 <tr>
   <th><label for="w1">W1</label></th>
@@ -37,18 +37,16 @@ $t->is($w->render(null), fix_linebreaks($output), '->render() decorates the widg
 // implements ArrayAccess
 $t->diag('implements ArrayAccess');
 $w['w2'] = $w2;
-$w1->setParent($ws); $w2->setParent($ws);
-$t->ok($w->getFields() == array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
-$t->ok($ws->getFields() == array('w1' => $w1, 'w2' => $w2), 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
+$w1->setParent($ws);
+$w2->setParent($ws);
+$t->ok($w->getFields() == ['w1' => $w1, 'w2' => $w2], 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
+$t->ok($ws->getFields() == ['w1' => $w1, 'w2' => $w2], 'sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
 
-try
-{
-  $w['w1'] = 'string';
-  $t->fail('sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
-}
-catch (LogicException $e)
-{
-  $t->pass('sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
+try {
+    $w['w1'] = 'string';
+    $t->fail('sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
+} catch (LogicException $e) {
+    $t->pass('sfWidgetFormSchemaDecorator implements the ArrayAccess interface for the fields');
 }
 
 $w = new sfWidgetFormSchemaDecorator($ws, "<table>\n%content%</table>");
@@ -72,4 +70,4 @@ $t->is($ws['w1'], null, 'sfWidgetFormSchemaDecorator implements the ArrayAccess 
 $t->diag('__clone()');
 $w1 = clone $w;
 $t->ok($w1->getWidget() !== $w->getWidget(), '__clone() clones the embedded widget');
-//$t->ok($w1->getWidget() == $w->getWidget(), '__clone() clones the embedded widget');
+// $t->ok($w1->getWidget() == $w->getWidget(), '__clone() clones the embedded widget');

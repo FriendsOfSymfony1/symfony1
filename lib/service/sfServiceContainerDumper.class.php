@@ -11,34 +11,31 @@
 /**
  * sfServiceContainerDumper is the abstract class for all built-in dumpers.
  *
- * @package    symfony
- * @subpackage service
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 abstract class sfServiceContainerDumper implements sfServiceContainerDumperInterface
 {
-  protected $container;
+    protected $container;
 
-  /**
-   * Constructor.
-   *
-   * @param sfServiceContainerBuilder $container The service container to dump
-   */
-  public function __construct(sfServiceContainerBuilder $container)
-  {
-    $this->container = $container;
-  }
+    /**
+     * Constructor.
+     *
+     * @param sfServiceContainerBuilder $container The service container to dump
+     */
+    public function __construct(sfServiceContainerBuilder $container)
+    {
+        $this->container = $container;
+    }
 
-  /**
-   * Dumps the service container.
-   *
-   * @param  array  $options An array of options
-   *
-   * @return string The representation of the service container
-   */
-  public function dump(array $options = array())
-  {
-    throw new LogicException('You must extend this abstract class and implement the dump() method.');
-  }
+    /**
+     * Dumps the service container.
+     *
+     * @param array $options An array of options
+     *
+     * @return string The representation of the service container
+     */
+    public function dump(array $options = [])
+    {
+        throw new LogicException('You must extend this abstract class and implement the dump() method.');
+    }
 }

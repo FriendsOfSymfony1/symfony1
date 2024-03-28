@@ -8,41 +8,38 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../bootstrap/unit.php');
+require_once __DIR__.'/../../../bootstrap/unit.php';
 
 $t = new lime_test(7);
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->configure()
 $t->diag('->configure()');
 
-$w = new sfWidgetFormI18nDate(array('culture' => 'fr'));
+$w = new sfWidgetFormI18nDate(['culture' => 'fr']);
 $t->is($w->getOption('format'), '%day%/%month%/%year%', '->configure() automatically changes the date format for the given culture');
-$w = new sfWidgetFormI18nDate(array('culture' => 'en_US'));
+$w = new sfWidgetFormI18nDate(['culture' => 'en_US']);
 $t->is($w->getOption('format'), '%month%/%day%/%year%', '->configure() automatically changes the date format for the given culture');
-$w = new sfWidgetFormI18nDate(array('culture' => 'sr'));
+$w = new sfWidgetFormI18nDate(['culture' => 'sr']);
 $t->is($w->getOption('format'), '%day%.%month%.%year%.', '->configure() automatically changes the date format for the given culture');
 
-$w = new sfWidgetFormI18nDate(array('culture' => 'fr', 'month_format' => 'name'));
+$w = new sfWidgetFormI18nDate(['culture' => 'fr', 'month_format' => 'name']);
 $months = $w->getOption('months');
 $t->is($months[2], 'février', '->configure() automatically changes the date format for the given culture');
 
-$w = new sfWidgetFormI18nDate(array('culture' => 'fr', 'month_format' => 'short_name'));
+$w = new sfWidgetFormI18nDate(['culture' => 'fr', 'month_format' => 'short_name']);
 $months = $w->getOption('months');
 $t->is($months[2], 'févr.', '->configure() automatically changes the date format for the given culture');
 
-$w = new sfWidgetFormI18nDate(array('culture' => 'fr', 'month_format' => 'number'));
+$w = new sfWidgetFormI18nDate(['culture' => 'fr', 'month_format' => 'number']);
 $months = $w->getOption('months');
 $t->is($months[2], '02', '->configure() automatically changes the date format for the given culture');
 
-try
-{
-  new sfWidgetFormI18nDate(array('culture' => 'fr', 'month_format' => 'nonexistant'));
-  $t->fail('->configure() throws an InvalidArgumentException if the month_format type does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->configure() throws an InvalidArgumentException if the month_format type does not exist');
+try {
+    new sfWidgetFormI18nDate(['culture' => 'fr', 'month_format' => 'nonexistant']);
+    $t->fail('->configure() throws an InvalidArgumentException if the month_format type does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->configure() throws an InvalidArgumentException if the month_format type does not exist');
 }

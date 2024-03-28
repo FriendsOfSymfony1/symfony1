@@ -12,103 +12,84 @@
 /**
  * sfPDODatabase provides connectivity for the PDO database abstraction layer.
  *
- * @package    symfony
- * @subpackage database
- * @author     Daniel Swarbrick (daniel@pressure.net.nz)
+ * @author     Daniel Swarbrick <daniel@pressure.net.nz>
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfPDODatabase extends sfDatabase
 {
-  /**
-   * Connects to the database.
-   *
-   * @throws <b>sfDatabaseException</b> If a connection could not be created
-   */
-  public function connect()
-  {
-    if (!$dsn = $this->getParameter('dsn'))
+    /**
+     * Magic method for calling PDO directly via sfPDODatabase.
+     *
+     * @param string $method
+     * @param array  $arguments
+     */
+    public function __call($method, $arguments)
     {
-      // missing required dsn parameter
-      throw new sfDatabaseException('Database configuration is missing the "dsn" parameter.');
+        return call_user_func_array([$this->getConnection(), $method], $arguments);
     }
 
-    try
+    /**
+     * Connects to the database.
+     *
+     * @throws sfDatabaseException If a connection could not be created
+     */
+    public function connect()
     {
-      $pdo_class  = $this->getParameter('class', 'PDO');
-      $username   = $this->getParameter('username');
-      $password   = $this->getParameter('password');
-      $persistent = $this->getParameter('persistent');
+        if (!$dsn = $this->getParameter('dsn')) {
+            // missing required dsn parameter
+            throw new sfDatabaseException('Database configuration is missing the "dsn" parameter.');
+        }
 
-      $options = $persistent ? array(PDO::ATTR_PERSISTENT => true) : array();
+        try {
+            $pdo_class = $this->getParameter('class', 'PDO');
+            $username = $this->getParameter('username');
+            $password = $this->getParameter('password');
+            $persistent = $this->getParameter('persistent');
 
-      $this->connection = new $pdo_class($dsn, $username, $password, $options);
+            $options = $persistent ? [PDO::ATTR_PERSISTENT => true] : [];
 
+            $this->connection = new $pdo_class($dsn, $username, $password, $options);
+        } catch (PDOException $e) {
+            throw new sfDatabaseException($e->getMessage());
+        }
+
+        // lets generate exceptions instead of silent failures
+        if (sfConfig::get('sf_debug')) {
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } else {
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+        }
+
+        // compatability
+        $compatability = $this->getParameter('compat');
+        if ($compatability) {
+            $this->connection->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        }
+
+        // nulls
+        $nulls = $this->getParameter('nulls');
+        if ($nulls) {
+            $this->connection->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
+        }
+
+        // auto commit
+        $autocommit = $this->getParameter('autocommit');
+        if ($autocommit) {
+            $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+        }
+
+        $this->resource = $this->connection;
     }
-    catch (PDOException $e)
+
+    /**
+     * Execute the shutdown procedure.
+     */
+    public function shutdown()
     {
-      throw new sfDatabaseException($e->getMessage());
+        if (null !== $this->connection) {
+            @$this->connection = null;
+        }
     }
-
-    // lets generate exceptions instead of silent failures
-    if (sfConfig::get('sf_debug'))
-    {
-      $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    else
-    {
-      $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
-    }
-
-    // compatability
-    $compatability = $this->getParameter('compat');
-    if ($compatability)
-    {
-      $this->connection->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
-    }
-
-    // nulls
-    $nulls = $this->getParameter('nulls');
-    if ($nulls)
-    {
-      $this->connection->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
-    }
-
-    // auto commit
-    $autocommit = $this->getParameter('autocommit');
-    if ($autocommit)
-    {
-      $this->connection->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
-    }
-
-    $this->resource = $this->connection;
-
-  }
-
-  /**
-   * Execute the shutdown procedure.
-   *
-   * @return void
-   */
-  public function shutdown()
-  {
-    if ($this->connection !== null)
-    {
-      @$this->connection = null;
-    }
-  }
-
-  /**
-   * Magic method for calling PDO directly via sfPDODatabase
-   *
-   * @param string $method
-   * @param array $arguments
-   * @return mixed
-   */
-  public function __call($method, $arguments)
-  {
-    return call_user_func_array(array($this->getConnection(), $method), $arguments);
-  }
 }

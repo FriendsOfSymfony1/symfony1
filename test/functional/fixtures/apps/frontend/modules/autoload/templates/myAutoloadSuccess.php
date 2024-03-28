@@ -1,1 +1,1 @@
-<div><?php echo $o->getFoo() ?></div>
+<div><?php echo $o->getFoo(); ?></div>

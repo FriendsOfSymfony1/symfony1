@@ -165,8 +165,7 @@ This allow you to remove all stylesheets and/or all javascripts added into the g
 Configuration
 -------------
 
-* A new configuration `sf_upload_dir_name` contains 'uploads' has been added.
-* A new settings `sf_display_errors` has been added to change display_errors from stdout to stderr for example.
+A new configuration `sf_upload_dir_name` contains 'uploads' has been added.
 
 Performance
 -----------

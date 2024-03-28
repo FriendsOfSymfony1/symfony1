@@ -14,9 +14,8 @@
  *
  * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author     Jérôme Macias <jmacias@groupe-exp.com>
+ *
  * @version    $Id$
- * @package    symfony
- * @subpackage i18n
  */
 
 /**
@@ -82,337 +81,320 @@
  *  </database>
  *
  * @author Xiang Wei Zhuo <weizhuo[at]gmail[dot]com>
+ *
  * @version v1.0, last update on Fri Dec 24 16:58:58 EST 2004
- * @package    symfony
- * @subpackage i18n
  */
 class sfMessageSource_SQLite3 extends sfMessageSource_Database
 {
-  /**
-   * The SQLite datasource, the filename of the database.
-   * @var string
-   */
-  protected $source;
+    /**
+     * The SQLite datasource, the filename of the database.
+     *
+     * @var string
+     */
+    protected $source;
 
-  /**
-   * Constructor.
-   * Creates a new message source using SQLite.
-   * @see MessageSource::factory();
-   * @param string $source SQLite datasource, in PEAR's DB DSN format.
-   */
-  function __construct($source)
-  {
-    $dsn = $this->parseDSN((string) $source);
-    $this->source = $dsn['database'];
-  }
+    /**
+     * Constructor.
+     * Creates a new message source using SQLite.
+     *
+     * @see MessageSource::factory();
+     *
+     * @param string $source SQLite datasource, in PEAR's DB DSN format
+     */
+    public function __construct($source)
+    {
+        $dsn = $this->parseDSN((string) $source);
+        $this->source = $dsn['database'];
+    }
 
-  /**
-   * Gets an array of messages for a particular catalogue and cultural variant.
-   *
-   * @param string $variant the catalogue name + variant
-   * @return array translation messages.
-   */
-  public function &loadData($variant)
-  {
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+    /**
+     * Gets an array of messages for a particular catalogue and cultural variant.
+     *
+     * @param string $variant the catalogue name + variant
+     *
+     * @return array translation messages
+     */
+    public function &loadData($variant)
+    {
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
 
-    $variant = $db->escapeString($variant);
+        $variant = $db->escapeString($variant);
 
-    $statement =
-      "SELECT t.id, t.source, t.target, t.comments
+        $statement =
+          "SELECT t.id, t.source, t.target, t.comments
         FROM trans_unit t, catalogue c
         WHERE c.cat_id =  t.cat_id
           AND c.name = '{$variant}'
         ORDER BY id ASC";
 
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-    $rs = $db->query($statement);
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $rs = $db->query($statement);
 
-    $result = array();
+        $result = [];
 
-    while ($row = $rs->fetchArray(SQLITE3_NUM))
-    {
-      $source = $row[1];
-      $result[$source][] = $row[2]; //target
-      $result[$source][] = $row[0]; //id
-      $result[$source][] = $row[3]; //comments
+        while ($row = $rs->fetchArray(SQLITE3_NUM)) {
+            $source = $row[1];
+            $result[$source][] = $row[2]; // target
+            $result[$source][] = $row[0]; // id
+            $result[$source][] = $row[3]; // comments
+        }
+
+        $db->close();
+
+        return $result;
     }
 
-    $db->close();
-
-    return $result;
-  }
-
-  /**
-   * Gets the last modified unix-time for this particular catalogue+variant.
-   * We need to query the database to get the date_modified.
-   *
-   * @param string $source catalogue+variant
-   * @return int last modified in unix-time format.
-   */
-  protected function getLastModified($source)
-  {
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-
-    $source = $db->escapeString($source);
-    $rs = $db->querySingle("SELECT date_modified FROM catalogue WHERE name = '{$source}'");
-    $result = null !== $rs ? (int) $rs : 0;
-
-    $db->close();
-
-    return $result;
-  }
-
-  /**
-   * Checks if a particular catalogue+variant exists in the database.
-   *
-   * @param string $variant catalogue+variant
-   * @return boolean true if the catalogue+variant is in the database, false otherwise.
-   */
-  public function isValidSource($variant)
-  {
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-
-    $variant = $db->escapeString($variant);
-    $rs = $db->querySingle("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'");
-    $result = null !== $rs && (int) $rs;
-
-    $db->close();
-
-    return $result;
-  }
-
-  /**
-   * Retrieves catalogue details, array($cat_id, $variant, $count).
-   *
-   * @param string $catalogue catalogue
-   * @return array catalogue details, array($cat_id, $variant, $count).
-   */
-  protected function getCatalogueDetails($catalogue = 'messages')
-  {
-    if (empty($catalogue))
+    /**
+     * Checks if a particular catalogue+variant exists in the database.
+     *
+     * @param string $variant catalogue+variant
+     *
+     * @return bool true if the catalogue+variant is in the database, false otherwise
+     */
+    public function isValidSource($variant)
     {
-      $catalogue = 'messages';
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+
+        $variant = $db->escapeString($variant);
+        $rs = $db->querySingle("SELECT COUNT(*) FROM catalogue WHERE name = '{$variant}'");
+        $result = null !== $rs && (int) $rs;
+
+        $db->close();
+
+        return $result;
     }
 
-    $variant = $catalogue.'.'.$this->culture;
-
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-
-    $name = $db->escapeString($this->getSource($variant));
-
-    $rs = $db->query("SELECT cat_id FROM catalogue WHERE name = '{$name}'");
-
-    $i = 0;
-    while ($row = $rs->fetchArray(SQLITE3_NUM))
+    /**
+     * Saves the list of untranslated blocks to the translation source.
+     * If the translation was not found, you should add those
+     * strings to the translation source via the <b>append()</b> method.
+     *
+     * @param string $catalogue the catalogue to add to
+     *
+     * @return bool true if saved successfuly, false otherwise
+     */
+    public function save($catalogue = 'messages')
     {
-      if (0 == $i)
-      {
-        $cat_id = (int) $row[0];
-      }
+        $messages = $this->untranslated;
 
-      if (1 == $i)
-      {
-        return false;
-      }
+        if (count($messages) <= 0) {
+            return false;
+        }
 
-      ++$i;
+        $details = $this->getCatalogueDetails($catalogue);
+
+        if ($details) {
+            list($cat_id, $variant, $count) = $details;
+        } else {
+            return false;
+        }
+
+        if ($cat_id <= 0) {
+            return false;
+        }
+        $inserted = 0;
+
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $time = time();
+
+        foreach ($messages as $message) {
+            $message = $db->escapeString($message);
+            $db->exec("INSERT INTO trans_unit (cat_id, id, source, date_added) VALUES ({$cat_id}, {$count}, '{$message}', {$time})");
+            if ($db->changes()) {
+                ++$count;
+                ++$inserted;
+            }
+        }
+        if ($inserted > 0) {
+            $this->updateCatalogueTime($cat_id, $variant);
+        }
+
+        $db->close();
+
+        return $inserted > 0;
     }
 
-    // first get the catalogue ID
-    $rs = $db->querySingle("SELECT count(msg_id) FROM trans_unit WHERE cat_id = {$cat_id}");
-
-    $count = (int) $rs;
-
-    $db->close();
-
-    return array($cat_id, $variant, $count);
-  }
-
-  /**
-   * Updates the catalogue last modified time.
-   *
-   * @return boolean true if updated, false otherwise.
-   */
-  protected function updateCatalogueTime($cat_id, $variant)
-  {
-    $time = time();
-
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-    $result = $db->exec("UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}");
-    $res = (boolean) $db->changes();
-    $db->close();
-
-    if ($this->cache)
+    /**
+     * Updates the translation.
+     *
+     * @param string $text      the source string
+     * @param string $target    the new translation string
+     * @param string $comments  comments
+     * @param string $catalogue the catalogue of the translation
+     *
+     * @return bool true if translation was updated, false otherwise
+     */
+    public function update($text, $target, $comments, $catalogue = 'messages')
     {
-      $this->cache->remove($variant.':'.$this->culture);
+        if ($details = $this->getCatalogueDetails($catalogue)) {
+            list($cat_id, $variant, $count) = $details;
+        } else {
+            return false;
+        }
+
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+
+        $comments = $db->escapeString($comments);
+        $target = $db->escapeString($target);
+        $text = $db->escapeString($text);
+
+        $time = time();
+
+        $db->exec("UPDATE trans_unit SET target = '{$target}', comments = '{$comments}', date_modified = '{$time}' WHERE cat_id = {$cat_id} AND source = '{$text}'");
+
+        $updated = false;
+        if ($db->changes()) {
+            $this->updateCatalogueTime($cat_id, $variant);
+            $updated = true;
+        }
+
+        $db->close();
+
+        return $updated;
     }
 
-    return $res;
-  }
-
-  /**
-   * Saves the list of untranslated blocks to the translation source.
-   * If the translation was not found, you should add those
-   * strings to the translation source via the <b>append()</b> method.
-   *
-   * @param string $catalogue the catalogue to add to
-   * @return boolean true if saved successfuly, false otherwise.
-   */
-  public function save($catalogue = 'messages')
-  {
-    $messages = $this->untranslated;
-
-    if (count($messages) <= 0)
+    /**
+     * Deletes a particular message from the specified catalogue.
+     *
+     * @param string $message   the source message to delete
+     * @param string $catalogue the catalogue to delete from
+     *
+     * @return bool true if deleted, false otherwise
+     */
+    public function delete($message, $catalogue = 'messages')
     {
-      return false;
+        $details = $this->getCatalogueDetails($catalogue);
+        if ($details) {
+            list($cat_id, $variant, $count) = $details;
+        } else {
+            return false;
+        }
+
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $text = $db->escapeString($message);
+
+        $db->exec("DELETE FROM trans_unit WHERE cat_id = {$cat_id} AND source = '{$message}'");
+
+        if ($db->changes()) {
+            $this->updateCatalogueTime($cat_id, $variant);
+            $deleted = true;
+        } else {
+            $deleted = false;
+        }
+
+        $db->close();
+
+        return $deleted;
     }
 
-    $details = $this->getCatalogueDetails($catalogue);
+    /**
+     * Returns a list of catalogue as key and all it variants as value.
+     *
+     * @return array list of catalogues
+     */
+    public function catalogues()
+    {
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $statement = 'SELECT name FROM catalogue ORDER BY name';
+        $rs = $db->query($statement);
 
-    if ($details)
-    {
-      list($cat_id, $variant, $count) = $details;
-    }
-    else
-    {
-      return false;
-    }
+        $result = [];
+        while ($row = $rs->fetchArray(SQLITE3_NUM)) {
+            $details = explode('.', $row[0]);
+            if (!isset($details[1])) {
+                $details[1] = null;
+            }
 
-    if ($cat_id <= 0)
-    {
-      return false;
-    }
-    $inserted = 0;
+            $result[] = $details;
+        }
+        $db->close();
 
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-    $time = time();
-
-    foreach ($messages as $message)
-    {
-      $message = $db->escapeString($message);
-      $db->exec("INSERT INTO trans_unit (cat_id, id, source, date_added) VALUES ({$cat_id}, {$count}, '{$message}', $time)");
-      if ($db->changes())
-      {
-        ++$count;
-        ++$inserted;
-      }
-    }
-    if ($inserted > 0)
-    {
-      $this->updateCatalogueTime($cat_id, $variant);
+        return $result;
     }
 
-    $db->close();
-
-    return $inserted > 0;
-  }
-
-  /**
-   * Updates the translation.
-   *
-   * @param string $text      the source string.
-   * @param string $target    the new translation string.
-   * @param string $comments  comments
-   * @param string $catalogue the catalogue of the translation.
-   * @return boolean true if translation was updated, false otherwise.
-   */
-  function update($text, $target, $comments, $catalogue = 'messages')
-  {
-    if ($details = $this->getCatalogueDetails($catalogue))
+    /**
+     * Gets the last modified unix-time for this particular catalogue+variant.
+     * We need to query the database to get the date_modified.
+     *
+     * @param string $source catalogue+variant
+     *
+     * @return int last modified in unix-time format
+     */
+    protected function getLastModified($source)
     {
-      list($cat_id, $variant, $count) = $details;
-    }
-    else
-    {
-      return false;
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+
+        $source = $db->escapeString($source);
+        $rs = $db->querySingle("SELECT date_modified FROM catalogue WHERE name = '{$source}'");
+        $result = null !== $rs ? (int) $rs : 0;
+
+        $db->close();
+
+        return $result;
     }
 
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-
-    $comments = $db->escapeString($comments);
-    $target = $db->escapeString($target);
-    $text = $db->escapeString($text);
-
-    $time = time();
-
-    $db->exec("UPDATE trans_unit SET target = '{$target}', comments = '{$comments}', date_modified = '{$time}' WHERE cat_id = {$cat_id} AND source = '{$text}'");
-
-    $updated = false;
-    if ($db->changes())
+    /**
+     * Retrieves catalogue details, array($cat_id, $variant, $count).
+     *
+     * @param string $catalogue catalogue
+     *
+     * @return array catalogue details, array($cat_id, $variant, $count)
+     */
+    protected function getCatalogueDetails($catalogue = 'messages')
     {
-      $this->updateCatalogueTime($cat_id, $variant);
-      $updated = true;
+        if (empty($catalogue)) {
+            $catalogue = 'messages';
+        }
+
+        $variant = $catalogue.'.'.$this->culture;
+
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+
+        $name = $db->escapeString($this->getSource($variant));
+
+        $rs = $db->query("SELECT cat_id FROM catalogue WHERE name = '{$name}'");
+
+        $i = 0;
+        while ($row = $rs->fetchArray(SQLITE3_NUM)) {
+            if (0 == $i) {
+                $cat_id = (int) $row[0];
+            }
+
+            if (1 == $i) {
+                return false;
+            }
+
+            ++$i;
+        }
+
+        // first get the catalogue ID
+        $rs = $db->querySingle("SELECT count(msg_id) FROM trans_unit WHERE cat_id = {$cat_id}");
+
+        $count = (int) $rs;
+
+        $db->close();
+
+        return [$cat_id, $variant, $count];
     }
 
-    $db->close();
-
-    return $updated;
-  }
-
-  /**
-   * Deletes a particular message from the specified catalogue.
-   *
-   * @param string  $message    the source message to delete.
-   * @param string  $catalogue  the catalogue to delete from.
-   * @return boolean true if deleted, false otherwise.
-   */
-  function delete($message, $catalogue = 'messages')
-  {
-    $details = $this->getCatalogueDetails($catalogue);
-    if ($details)
+    /**
+     * Updates the catalogue last modified time.
+     *
+     * @return bool true if updated, false otherwise
+     */
+    protected function updateCatalogueTime($cat_id, $variant)
     {
-      list($cat_id, $variant, $count) = $details;
+        $time = time();
+
+        $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
+        $result = $db->exec("UPDATE catalogue SET date_modified = {$time} WHERE cat_id = {$cat_id}");
+        $res = (bool) $db->changes();
+        $db->close();
+
+        if ($this->cache) {
+            $this->cache->remove($variant.':'.$this->culture);
+        }
+
+        return $res;
     }
-    else
-    {
-      return false;
-    }
-
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-    $text = $db->escapeString($message);
-
-    $db->exec("DELETE FROM trans_unit WHERE cat_id = {$cat_id} AND source = '{$message}'");
-
-    if ($db->changes())
-    {
-      $this->updateCatalogueTime($cat_id, $variant);
-      $deleted = true;
-    }
-    else
-    {
-      $deleted = false;
-    }
-
-    $db->close();
-
-    return $deleted;
-  }
-
-  /**
-   * Returns a list of catalogue as key and all it variants as value.
-   *
-   * @return array list of catalogues
-   */
-  function catalogues()
-  {
-    $db = new SQLite3($this->source, SQLITE3_OPEN_READWRITE);
-    $statement = 'SELECT name FROM catalogue ORDER BY name';
-    $rs = $db->query($statement);
-
-    $result = array();
-    while ($row = $rs->fetchArray(SQLITE3_NUM))
-    {
-      $details = explode('.', $row[0]);
-      if (!isset($details[1]))
-      {
-        $details[1] = null;
-      }
-
-      $result[] = $details;
-    }
-    $db->close();
-
-    return $result;
-  }
 }

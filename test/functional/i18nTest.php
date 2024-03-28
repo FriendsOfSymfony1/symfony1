@@ -3,41 +3,39 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 $app = 'i18n';
-if (!include(__DIR__.'/../bootstrap/functional.php'))
-{
-  return;
+if (!include __DIR__.'/../bootstrap/functional.php') {
+    return;
 }
 
 class myTestBrowser extends sfTestBrowser
 {
-  public function checkResponseForCulture($culture = 'fr')
-  {
-    return $this->
-      with('response')->begin()->
-        // messages in the global directories
-        checkElement('#action', '/une phrase en français/i')->
-        checkElement('#template', '/une phrase en français/i')->
+    public function checkResponseForCulture($culture = 'fr')
+    {
+        return $this->
+          with('response')->begin()->
+            // messages in the global directories
+            checkElement('#action', '/une phrase en français/i')->
+            checkElement('#template', '/une phrase en français/i')->
 
-        // messages in the module directories
-        checkElement('#action_local', '/une phrase locale en français/i')->
-        checkElement('#template_local', '/une phrase locale en français/i')->
+            // messages in the module directories
+            checkElement('#action_local', '/une phrase locale en français/i')->
+            checkElement('#template_local', '/une phrase locale en français/i')->
 
-        // messages in another global catalogue
-        checkElement('#action_other', '/une autre phrase en français/i')->
-        checkElement('#template_other', '/une autre phrase en français/i')->
+            // messages in another global catalogue
+            checkElement('#action_other', '/une autre phrase en français/i')->
+            checkElement('#template_other', '/une autre phrase en français/i')->
 
-        // messages in another module catalogue
-        checkElement('#action_other_local', '/une autre phrase locale en français/i')->
-        checkElement('#template_other_local', '/une autre phrase locale en français/i')->
-      end()
-    ;
-  }
+            // messages in another module catalogue
+            checkElement('#action_other_local', '/une autre phrase locale en français/i')->
+            checkElement('#template_other_local', '/une autre phrase locale en français/i')->
+          end();
+    }
 }
 
 $b = new myTestBrowser();
@@ -54,8 +52,7 @@ $b->
     checkElement('#action', '/an english sentence/i')->
     checkElement('#template', '/an english sentence/i')->
   end()->
-  with('user')->isCulture('en')
-;
+  with('user')->isCulture('en');
 
 $b->
   get('/fr/i18n/index')->
@@ -65,8 +62,7 @@ $b->
   end()->
   with('response')->isStatusCode(200)->
   with('user')->isCulture('fr')->
-  checkResponseForCulture('fr')
-;
+  checkResponseForCulture('fr');
 
 // change user culture in the action
 $b->
@@ -77,8 +73,7 @@ $b->
   end()->
   with('response')->isStatusCode(200)->
   with('user')->isCulture('fr')->
-  checkResponseForCulture('fr')
-;
+  checkResponseForCulture('fr');
 
 // messages for a module plugin
 $b->
@@ -100,5 +95,4 @@ $b->
     checkElement('#template_yetAnother', '/encore une autre phrase en français - from plugin but translation overridden in the application/i')->
     checkElement('#action_testForPluginI18N', '/une phrase en français depuis un plugin - global/i')->
     checkElement('#template_testForPluginI18N', '/une phrase en français depuis un plugin - global/i')->
-  end()
-;
+  end();

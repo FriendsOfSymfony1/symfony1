@@ -11,26 +11,23 @@
 /**
  * sfWidgetFormInputFile represents an upload HTML input tag.
  *
- * @package    symfony
- * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputFile extends sfWidgetFormInput
 {
-  /**
-   * Configures the current widget.
-   *
-   * @param array $options     An array of options
-   * @param array $attributes  An array of default HTML attributes
-   *
-   * @see sfWidgetFormInput
-   */
-  protected function configure($options = array(), $attributes = array())
-  {
-    parent::configure($options, $attributes);
+    /**
+     * Configures the current widget.
+     *
+     * @param array $options    An array of options
+     * @param array $attributes An array of default HTML attributes
+     *
+     * @see sfWidgetFormInput
+     */
+    protected function configure($options = [], $attributes = [])
+    {
+        parent::configure($options, $attributes);
 
-    $this->setOption('type', 'file');
-    $this->setOption('needs_multipart', true);
-  }
+        $this->setOption('type', 'file');
+        $this->setOption('needs_multipart', true);
+    }
 }

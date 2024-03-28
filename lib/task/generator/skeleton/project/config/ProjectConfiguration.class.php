@@ -8,4 +8,9 @@ class ProjectConfiguration extends sfProjectConfiguration
   public function setup()
   {
   }
+
+  public function isProduction()
+  {
+    return false;
+  }
 }

@@ -3,35 +3,37 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 include __DIR__.'/../../bootstrap/unit.php';
+
 require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
 
 class TestTask extends sfBaseTask
 {
-  protected function execute($arguments = array(), $options = array())
-  {
-  }
+    public function reloadAutoload()
+    {
+        parent::reloadAutoload();
+    }
 
-  public function reloadAutoload()
-  {
-    parent::reloadAutoload();
-  }
+    public function initializeAutoload(sfProjectConfiguration $configuration, $reload = false)
+    {
+        parent::initializeAutoload($configuration, $reload);
+    }
 
-  public function initializeAutoload(sfProjectConfiguration $configuration, $reload = false)
-  {
-    parent::initializeAutoload($configuration, $reload);
-  }
+    protected function execute($arguments = [], $options = [])
+    {
+    }
 }
 
 $rootDir = __DIR__.'/../../functional/fixtures';
 sfToolkit::clearDirectory($rootDir.'/cache');
 
 $dispatcher = new sfEventDispatcher();
+
 require_once $rootDir.'/config/ProjectConfiguration.class.php';
 $configuration = new ProjectConfiguration($rootDir, $dispatcher);
 $autoload = sfSimpleAutoload::getInstance();
@@ -58,60 +60,55 @@ $t->diag('->run()');
 
 class ApplicationTask extends sfBaseTask
 {
-  protected function configure()
-  {
-    $this->addOption('application', null, sfCommandOption::PARAMETER_REQUIRED, '', true);
-  }
-
-  protected function execute($arguments = array(), $options = array())
-  {
-    if (!$this->configuration instanceof sfApplicationConfiguration)
+    public function getServiceContainer()
     {
-      throw new Exception('This task requires an application configuration be loaded.');
+        return parent::getServiceContainer();
     }
-  }
 
-  public function getServiceContainer()
-  {
-    return parent::getServiceContainer();
-  }
+    public function getRouting()
+    {
+        return parent::getRouting();
+    }
 
-  public function getRouting()
-  {
-    return parent::getRouting();
-  }
+    public function getMailer()
+    {
+        return parent::getMailer();
+    }
 
-  public function getMailer()
-  {
-    return parent::getMailer();
-  }
+    protected function configure()
+    {
+        $this->addOption('application', null, sfCommandOption::PARAMETER_REQUIRED, '', true);
+    }
+
+    protected function execute($arguments = [], $options = [])
+    {
+        if (!$this->configuration instanceof sfApplicationConfiguration) {
+            throw new Exception('This task requires an application configuration be loaded.');
+        }
+    }
 }
 
 chdir($rootDir);
 
 $task = new ApplicationTask($dispatcher, new sfFormatter());
-try
-{
-  $task->run();
-  $t->pass('->run() creates an application configuration if none is set');
-}
-catch (Exception $e)
-{
-  $t->diag($e->getMessage());
-  $t->fail('->run() creates an application configuration if none is set');
+
+try {
+    $task->run();
+    $t->pass('->run() creates an application configuration if none is set');
+} catch (Exception $e) {
+    $t->diag($e->getMessage());
+    $t->fail('->run() creates an application configuration if none is set');
 }
 
 $task = new ApplicationTask($dispatcher, new sfFormatter());
 $task->setConfiguration($configuration);
-try
-{
-  $task->run();
-  $t->pass('->run() creates an application configuration if only a project configuration is set');
-}
-catch (Exception $e)
-{
-  $t->diag($e->getMessage());
-  $t->fail('->run() creates an application configuration if only a project configuration is set');
+
+try {
+    $task->run();
+    $t->pass('->run() creates an application configuration if only a project configuration is set');
+} catch (Exception $e) {
+    $t->diag($e->getMessage());
+    $t->fail('->run() creates an application configuration if only a project configuration is set');
 }
 
 // ->getServiceContainer()

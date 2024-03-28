@@ -11,33 +11,29 @@
 /**
  * sfServiceParameter represents a parameter reference.
  *
- * @package    symfony
- * @subpackage service
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfServiceReference.php 267 2009-03-26 19:56:18Z fabien $
  */
 class sfServiceParameter
 {
-  protected
-    $id = null;
+    protected $id;
 
-  /**
-   * Constructor.
-   *
-   * @param string $id The parameter key
-   */
-  public function __construct($id)
-  {
-    $this->id = $id;
-  }
+    /**
+     * Constructor.
+     *
+     * @param string $id The parameter key
+     */
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
 
-  /**
-   * __toString.
-   *
-   * @return string The parameter key
-   */
-  public function __toString()
-  {
-    return (string) $this->id;
-  }
+    /**
+     * __toString.
+     *
+     * @return string The parameter key
+     */
+    public function __toString()
+    {
+        return (string) $this->id;
+    }
 }

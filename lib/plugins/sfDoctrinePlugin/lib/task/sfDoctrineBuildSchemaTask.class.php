@@ -9,50 +9,47 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/sfDoctrineBaseTask.class.php');
+require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
 
 /**
  * Creates a schema.yml from an existing database.
  *
- * @package    symfony
- * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id$
  */
 class sfDoctrineBuildSchemaTask extends sfDoctrineBaseTask
 {
-  /**
-   * @see sfTask
-   */
-  protected function configure()
-  {
-    $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-    ));
+    /**
+     * @see sfTask
+     */
+    protected function configure()
+    {
+        $this->addOptions([
+            new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
+            new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+        ]);
 
-    $this->namespace = 'doctrine';
-    $this->name = 'build-schema';
-    $this->briefDescription = 'Creates a schema from an existing database';
+        $this->namespace = 'doctrine';
+        $this->name = 'build-schema';
+        $this->briefDescription = 'Creates a schema from an existing database';
 
-    $this->detailedDescription = <<<EOF
+        $this->detailedDescription = <<<'EOF'
 The [doctrine:build-schema|INFO] task introspects a database to create a schema:
 
   [./symfony doctrine:build-schema|INFO]
 
 The task creates a yml file in [config/doctrine|COMMENT]
 EOF;
-  }
+    }
 
-  /**
-   * @see sfTask
-   */
-  protected function execute($arguments = array(), $options = array())
-  {
-    $this->logSection('doctrine', 'generating yaml schema from database');
+    /**
+     * @see sfTask
+     */
+    protected function execute($arguments = [], $options = [])
+    {
+        $this->logSection('doctrine', 'generating yaml schema from database');
 
-    $databaseManager = new sfDatabaseManager($this->configuration);
-    $this->callDoctrineCli('generate-yaml-db');
-  }
+        $databaseManager = new sfDatabaseManager($this->configuration);
+        $this->callDoctrineCli('generate-yaml-db');
+    }
 }

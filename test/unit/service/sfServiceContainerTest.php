@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(27);
 
@@ -17,28 +17,28 @@ $t->diag('__construct()');
 $sc = new sfServiceContainer();
 $t->is(spl_object_hash($sc->getService('service_container')), spl_object_hash($sc), '__construct() automatically registers itself as a service');
 
-$sc = new sfServiceContainer(array('foo' => 'bar'));
-$t->is($sc->getParameters(), array('foo' => 'bar'), '__construct() takes an array of parameters as its first argument');
+$sc = new sfServiceContainer(['foo' => 'bar']);
+$t->is($sc->getParameters(), ['foo' => 'bar'], '__construct() takes an array of parameters as its first argument');
 
 // ->setParameters() ->getParameters()
 $t->diag('->setParameters() ->getParameters()');
 
 $sc = new sfServiceContainer();
-$t->is($sc->getParameters(), array(), '->getParameters() returns an empty array if no parameter has been defined');
+$t->is($sc->getParameters(), [], '->getParameters() returns an empty array if no parameter has been defined');
 
-$sc->setParameters(array('foo' => 'bar'));
-$t->is($sc->getParameters(), array('foo' => 'bar'), '->setParameters() sets the parameters');
+$sc->setParameters(['foo' => 'bar']);
+$t->is($sc->getParameters(), ['foo' => 'bar'], '->setParameters() sets the parameters');
 
-$sc->setParameters(array('bar' => 'foo'));
-$t->is($sc->getParameters(), array('bar' => 'foo'), '->setParameters() overrides the previous defined parameters');
+$sc->setParameters(['bar' => 'foo']);
+$t->is($sc->getParameters(), ['bar' => 'foo'], '->setParameters() overrides the previous defined parameters');
 
-$sc->setParameters(array('Bar' => 'foo'));
-$t->is($sc->getParameters(), array('bar' => 'foo'), '->setParameters() converts the key to lowercase');
+$sc->setParameters(['Bar' => 'foo']);
+$t->is($sc->getParameters(), ['bar' => 'foo'], '->setParameters() converts the key to lowercase');
 
 // ->setParameter() ->getParameter()
 $t->diag('->setParameter() ->getParameter() ');
 
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(['foo' => 'bar']);
 $sc->setParameter('bar', 'foo');
 $t->is($sc->getParameter('bar'), 'foo', '->setParameter() sets the value of a new parameter');
 $t->is($sc->getParameter('bar'), 'foo', '->getParameter() gets the value of a parameter');
@@ -50,30 +50,27 @@ $sc->setParameter('Foo', 'baz1');
 $t->is($sc->getParameter('foo'), 'baz1', '->setParameter() converts the key to lowercase');
 $t->is($sc->getParameter('FOO'), 'baz1', '->getParameter() converts the key to lowercase');
 
-try
-{
-  $sc->getParameter('baba');
-  $t->fail('->getParameter() thrown an InvalidArgumentException if the key does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getParameter() thrown an InvalidArgumentException if the key does not exist');
+try {
+    $sc->getParameter('baba');
+    $t->fail('->getParameter() thrown an InvalidArgumentException if the key does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getParameter() thrown an InvalidArgumentException if the key does not exist');
 }
 
 // ->hasParameter()
 $t->diag('->hasParameter()');
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(['foo' => 'bar']);
 $t->ok($sc->hasParameter('foo'), '->hasParameter() returns true if a parameter is defined');
 $t->ok($sc->hasParameter('Foo'), '->hasParameter() converts the key to lowercase');
 $t->ok(!$sc->hasParameter('bar'), '->hasParameter() returns false if a parameter is not defined');
 
 // ->addParameters()
 $t->diag('->addParameters()');
-$sc = new sfServiceContainer(array('foo' => 'bar'));
-$sc->addParameters(array('bar' => 'foo'));
-$t->is($sc->getParameters(), array('foo' => 'bar', 'bar' => 'foo'), '->addParameters() adds parameters to the existing ones');
-$sc->addParameters(array('Bar' => 'fooz'));
-$t->is($sc->getParameters(), array('foo' => 'bar', 'bar' => 'fooz'), '->addParameters() converts keys to lowercase');
+$sc = new sfServiceContainer(['foo' => 'bar']);
+$sc->addParameters(['bar' => 'foo']);
+$t->is($sc->getParameters(), ['foo' => 'bar', 'bar' => 'foo'], '->addParameters() adds parameters to the existing ones');
+$sc->addParameters(['Bar' => 'fooz']);
+$t->is($sc->getParameters(), ['foo' => 'bar', 'bar' => 'fooz'], '->addParameters() converts keys to lowercase');
 
 // ->setService() ->hasService() ->getService()
 $t->diag('->setService() ->hasService() ->getService()');
@@ -90,35 +87,37 @@ $t->diag('->getServiceIds()');
 $sc = new sfServiceContainer();
 $sc->setService('foo', $obj = new stdClass());
 $sc->setService('bar', $obj = new stdClass());
-$t->is($sc->getServiceIds(), array('service_container', 'foo', 'bar'), '->getServiceIds() returns all defined service ids');
+$t->is($sc->getServiceIds(), ['service_container', 'foo', 'bar'], '->getServiceIds() returns all defined service ids');
 
 class ProjectServiceContainer extends sfServiceContainer
 {
-  public $__bar, $__foo_bar, $__foo_baz;
+    public $__bar;
+    public $__foo_bar;
+    public $__foo_baz;
 
-  public function __construct()
-  {
-    parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-    $this->__bar = new stdClass();
-    $this->__foo_bar = new stdClass();
-    $this->__foo_baz = new stdClass();
-  }
+        $this->__bar = new stdClass();
+        $this->__foo_bar = new stdClass();
+        $this->__foo_baz = new stdClass();
+    }
 
-  protected function getBarService()
-  {
-    return $this->__bar;
-  }
+    protected function getBarService()
+    {
+        return $this->__bar;
+    }
 
-  protected function getFooBarService()
-  {
-    return $this->__foo_bar;
-  }
+    protected function getFooBarService()
+    {
+        return $this->__foo_bar;
+    }
 
-  protected function getFoo_BazService()
-  {
-    return $this->__foo_baz;
-  }
+    protected function getFoo_BazService()
+    {
+        return $this->__foo_baz;
+    }
 }
 
 $sc = new ProjectServiceContainer();
@@ -128,14 +127,11 @@ $t->ok($sc->hasService('bar'), '->hasService() returns true if the service has b
 $sc->setService('bar', $bar = new stdClass());
 $t->is(spl_object_hash($sc->getService('bar')), spl_object_hash($bar), '->getService() prefers to return a service defined with setService() than one defined with a getXXXService() method');
 
-try
-{
-  $sc->getService('baba');
-  $t->fail('->getService() thrown an InvalidArgumentException if the service does not exist');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->getService() thrown an InvalidArgumentException if the service does not exist');
+try {
+    $sc->getService('baba');
+    $t->fail('->getService() thrown an InvalidArgumentException if the service does not exist');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->getService() thrown an InvalidArgumentException if the service does not exist');
 }
 
 $t->is(spl_object_hash($sc->getService('foo_bar')), spl_object_hash($sc->__foo_bar), '->getService() camelizes the service id when looking for a method');

@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../../bootstrap/unit.php');
+require_once __DIR__.'/../../../bootstrap/unit.php';
 
 $t = new lime_test(4);
 
-$dom = new DomDocument('1.0', 'utf-8');
+$dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
 
 // ->render()
@@ -25,12 +25,12 @@ $t->is(count($css->matchAll('#timezone option[value="Europe/Paris"][selected="se
 
 // add_empty
 $t->diag('add_empty');
-$w = new sfWidgetFormI18nChoiceTimezone(array('culture' => 'fr', 'add_empty' => true));
+$w = new sfWidgetFormI18nChoiceTimezone(['culture' => 'fr', 'add_empty' => true]);
 $dom->loadHTML($w->render('language', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#language option[value=""]')->getValue(), '', '->render() renders an empty option if add_empty is true');
 
-$w = new sfWidgetFormI18nChoiceTimezone(array('culture' => 'fr', 'add_empty' => 'foo'));
+$w = new sfWidgetFormI18nChoiceTimezone(['culture' => 'fr', 'add_empty' => 'foo']);
 $dom->loadHTML($w->render('language', 'FR'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#language option[value=""]')->getValue(), 'foo', '->render() renders an empty option if add_empty is true');

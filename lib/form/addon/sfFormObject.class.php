@@ -11,281 +11,256 @@
 /**
  * Base class for forms that deal with a single object.
  *
- * @package    symfony
- * @subpackage form
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- * @version    SVN: $Id$
  */
 abstract class sfFormObject extends BaseForm
 {
-  protected
-    $isNew  = true,
-    $object = null;
+    protected $isNew = true;
+    protected $object;
 
-  /**
-   * Returns the current model name.
-   *
-   * @return string
-   */
-  abstract public function getModelName();
+    /**
+     * Returns the current model name.
+     *
+     * @return string
+     */
+    abstract public function getModelName();
 
-  /**
-   * Returns the default connection for the current model.
-   *
-   * @return mixed A database connection
-   */
-  abstract public function getConnection();
+    /**
+     * Returns the default connection for the current model.
+     *
+     * @return mixed A database connection
+     */
+    abstract public function getConnection();
 
-  /**
-   * Updates the values of the object with the cleaned up values.
-   *
-   * If you want to add some logic before updating or update other associated
-   * objects, this is the method to override.
-   *
-   * @param array $values An array of values
-   */
-  abstract protected function doUpdateObject($values);
+    /**
+     * Processes cleaned up values.
+     *
+     * @param array $values An array of values
+     *
+     * @return array An array of cleaned up values
+     */
+    abstract public function processValues($values);
 
-  /**
-   * Processes cleaned up values.
-   *
-   * @param  array $values An array of values
-   *
-   * @return array An array of cleaned up values
-   */
-  abstract public function processValues($values);
-
-  /**
-   * Returns true if the current form embeds a new object.
-   *
-   * @return Boolean true if the current form embeds a new object, false otherwise
-   */
-  public function isNew()
-  {
-    return $this->isNew;
-  }
-
-  /**
-   * Returns the current object for this form.
-   *
-   * @return mixed The current object
-   */
-  public function getObject()
-  {
-    return $this->object;
-  }
-
-  /**
-   * Binds the current form and saves the object to the database in one step.
-   *
-   * @param  array $taintedValues An array of tainted values to use to bind the form
-   * @param  array $taintedFiles An array of uploaded files (in the $_FILES or $_GET format)
-   * @param  mixed $con An optional connection object
-   *
-   * @return Boolean true if the form is valid, false otherwise
-   */
-  public function bindAndSave($taintedValues, $taintedFiles = null, $con = null)
-  {
-    $this->bind($taintedValues, $taintedFiles);
-    if ($this->isValid())
+    /**
+     * Returns true if the current form embeds a new object.
+     *
+     * @return bool true if the current form embeds a new object, false otherwise
+     */
+    public function isNew()
     {
-      $this->save($con);
-
-      return true;
+        return $this->isNew;
     }
 
-    return false;
-  }
-
-
-  /**
-   * Saves the current object to the database.
-   *
-   * The object saving is done in a transaction and handled by the doSave() method.
-   *
-   * @param mixed $con An optional connection object
-   *
-   * @return mixed The current saved object
-   *
-   * @throws Exception
-   * @throws sfValidatorErrorSchema
-   *
-   * @see doSave()
-   */
-  public function save($con = null)
-  {
-    if (!$this->isValid())
+    /**
+     * Returns the current object for this form.
+     *
+     * @return mixed The current object
+     */
+    public function getObject()
     {
-      throw $this->getErrorSchema();
+        return $this->object;
     }
 
-    if (null === $con)
+    /**
+     * Binds the current form and saves the object to the database in one step.
+     *
+     * @param array $taintedValues An array of tainted values to use to bind the form
+     * @param array $taintedFiles  An array of uploaded files (in the $_FILES or $_GET format)
+     * @param mixed $con           An optional connection object
+     *
+     * @return bool true if the form is valid, false otherwise
+     */
+    public function bindAndSave($taintedValues, $taintedFiles = null, $con = null)
     {
-      $con = $this->getConnection();
+        $this->bind($taintedValues, $taintedFiles);
+        if ($this->isValid()) {
+            $this->save($con);
+
+            return true;
+        }
+
+        return false;
     }
 
-    $con->beginTransaction();
-    try
+    /**
+     * Saves the current object to the database.
+     *
+     * The object saving is done in a transaction and handled by the doSave() method.
+     *
+     * @param mixed $con An optional connection object
+     *
+     * @return mixed The current saved object
+     *
+     * @throws Exception
+     * @throws sfValidatorErrorSchema
+     *
+     * @see doSave()
+     */
+    public function save($con = null)
     {
-      $this->doSave($con);
+        if (!$this->isValid()) {
+            throw $this->getErrorSchema();
+        }
 
-      $con->commit();
-    }
-    catch (Exception $e)
-    {
-      $con->rollBack();
+        if (null === $con) {
+            $con = $this->getConnection();
+        }
 
-      throw $e;
-    }
+        $con->beginTransaction();
 
-    return $this->getObject();
-  }
+        try {
+            $this->doSave($con);
 
-  /**
-   * Updates and saves the current object.
-   *
-   * If you want to add some logic before saving or save other associated
-   * objects, this is the method to override.
-   *
-   * @param mixed $con An optional connection object
-   */
-  protected function doSave($con = null)
-  {
-    $this->updateObject();
-    $this->saveObject($con);
-  }
+            $con->commit();
+        } catch (Exception $e) {
+            $con->rollBack();
 
-  /**
-   * Save form object
-   *
-   * @param  mixed $con An optional connection object
-   */
-  public function saveObject($con = null)
-  {
-    if (null === $con)
-    {
-      $con = $this->getConnection();
+            throw $e;
+        }
+
+        return $this->getObject();
     }
 
-    $this->getObject()->save($con);
-
-    // embedded forms
-    $this->saveObjectEmbeddedForms($con);
-  }
-
-  /**
-   * Updates the values of the object with the cleaned up values.
-   *
-   * @param  array $values An array of values
-   *
-   * @return mixed The current updated object
-   */
-  public function updateObject($values = null)
-  {
-    if (null === $values)
+    /**
+     * Save form object.
+     *
+     * @param mixed $con An optional connection object
+     */
+    public function saveObject($con = null)
     {
-      $values = $this->values;
+        if (null === $con) {
+            $con = $this->getConnection();
+        }
+
+        $this->getObject()->save($con);
+
+        // embedded forms
+        $this->saveObjectEmbeddedForms($con);
     }
 
-    $values = $this->processValues($values);
-
-    $this->doUpdateObject($values);
-
-    // embedded forms
-    $this->updateObjectEmbeddedForms($values);
-
-    return $this->getObject();
-  }
-
-  /**
-   * Updates the values of the objects in embedded forms.
-   *
-   * @param array $values An array of values
-   * @param array $forms  An array of forms
-   */
-  public function updateObjectEmbeddedForms($values, $forms = null)
-  {
-    if (null === $forms)
+    /**
+     * Updates the values of the object with the cleaned up values.
+     *
+     * @param array $values An array of values
+     *
+     * @return mixed The current updated object
+     */
+    public function updateObject($values = null)
     {
-      $forms = $this->embeddedForms;
+        if (null === $values) {
+            $values = $this->values;
+        }
+
+        $values = $this->processValues($values);
+
+        $this->doUpdateObject($values);
+
+        // embedded forms
+        $this->updateObjectEmbeddedForms($values);
+
+        return $this->getObject();
     }
 
-    foreach ($forms as $name => $form)
+    /**
+     * Updates the values of the objects in embedded forms.
+     *
+     * @param array $values An array of values
+     * @param array $forms  An array of forms
+     */
+    public function updateObjectEmbeddedForms($values, $forms = null)
     {
-      if (!isset($values[$name]) || !is_array($values[$name]))
-      {
-        continue;
-      }
+        if (null === $forms) {
+            $forms = $this->embeddedForms;
+        }
 
-      if ($form instanceof sfFormObject)
-      {
-        $form->updateObject($values[$name]);
-      }
-      else
-      {
-        $this->updateObjectEmbeddedForms($values[$name], $form->getEmbeddedForms());
-      }
-    }
-  }
+        foreach ($forms as $name => $form) {
+            if (!isset($values[$name]) || !is_array($values[$name])) {
+                continue;
+            }
 
-  /**
-   * Saves embedded form objects.
-   *
-   * @param mixed $con   An optional connection object
-   * @param array $forms An array of forms
-   */
-  public function saveObjectEmbeddedForms($con = null, $forms = null)
-  {
-    if (null === $con)
-    {
-      $con = $this->getConnection();
+            if ($form instanceof sfFormObject) {
+                $form->updateObject($values[$name]);
+            } else {
+                $this->updateObjectEmbeddedForms($values[$name], $form->getEmbeddedForms());
+            }
+        }
     }
 
-    if (null === $forms)
+    /**
+     * Saves embedded form objects.
+     *
+     * @param mixed $con   An optional connection object
+     * @param array $forms An array of forms
+     */
+    public function saveObjectEmbeddedForms($con = null, $forms = null)
     {
-      $forms = $this->embeddedForms;
+        if (null === $con) {
+            $con = $this->getConnection();
+        }
+
+        if (null === $forms) {
+            $forms = $this->embeddedForms;
+        }
+
+        foreach ($forms as $form) {
+            if ($form instanceof sfFormObject) {
+                $form->saveObject($con);
+            } else {
+                $this->saveObjectEmbeddedForms($con, $form->getEmbeddedForms());
+            }
+        }
     }
 
-    foreach ($forms as $form)
+    /**
+     * Renders a form tag suitable for the related object.
+     *
+     * The method is automatically guessed based on the Doctrine object:
+     *
+     *  * if the object is new, the method is POST
+     *  * if the object already exists, the method is PUT
+     *
+     * @param string $url        The URL for the action
+     * @param array  $attributes An array of HTML attributes
+     *
+     * @return string An HTML representation of the opening form tag
+     *
+     * @see sfForm
+     */
+    public function renderFormTag($url, array $attributes = [])
     {
-      if ($form instanceof sfFormObject)
-      {
-        $form->saveObject($con);
-      }
-      else
-      {
-        $this->saveObjectEmbeddedForms($con, $form->getEmbeddedForms());
-      }
-    }
-  }
+        if (!isset($attributes['method'])) {
+            $attributes['method'] = $this->isNew() ? 'post' : 'put';
+        }
 
-  /**
-   * Renders a form tag suitable for the related object.
-   *
-   * The method is automatically guessed based on the Doctrine object:
-   *
-   *  * if the object is new, the method is POST
-   *  * if the object already exists, the method is PUT
-   *
-   * @param  string $url         The URL for the action
-   * @param  array  $attributes  An array of HTML attributes
-   *
-   * @return string An HTML representation of the opening form tag
-   *
-   * @see sfForm
-   */
-  public function renderFormTag($url, array $attributes = array())
-  {
-    if (!isset($attributes['method']))
-    {
-      $attributes['method'] = $this->isNew() ? 'post' : 'put';
+        return parent::renderFormTag($url, $attributes);
     }
 
-    return parent::renderFormTag($url, $attributes);
-  }
+    /**
+     * Updates the values of the object with the cleaned up values.
+     *
+     * If you want to add some logic before updating or update other associated
+     * objects, this is the method to override.
+     *
+     * @param array $values An array of values
+     */
+    abstract protected function doUpdateObject($values);
 
-  protected function camelize($text)
-  {
-    return strtr(ucwords(strtr($text, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
-  }
+    /**
+     * Updates and saves the current object.
+     *
+     * If you want to add some logic before saving or save other associated
+     * objects, this is the method to override.
+     *
+     * @param mixed $con An optional connection object
+     */
+    protected function doSave($con = null)
+    {
+        $this->updateObject();
+        $this->saveObject($con);
+    }
+
+    protected function camelize($text)
+    {
+        return strtr(ucwords(strtr($text, ['/' => ':: ', '_' => ' ', '-' => ' '])), [' ' => '']);
+    }
 }

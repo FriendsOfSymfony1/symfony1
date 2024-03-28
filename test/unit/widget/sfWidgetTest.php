@@ -8,62 +8,56 @@
  * file that was distributed with this source code.
  */
 
-require_once(__DIR__.'/../../bootstrap/unit.php');
+require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(33);
 
 class MyWidget extends sfWidget
 {
-  protected function configure($options = array(), $attributes = array())
-  {
-    $this->addOption('foo');
-  }
+    public function render($name, $value = null, $attributes = [], $errors = [])
+    {
+        return $this->attributesToHtml(array_merge($this->attributes, $attributes));
+    }
 
-  public function render($name, $value = null, $attributes = array(), $errors = array())
-  {
-    return $this->attributesToHtml(array_merge($this->attributes, $attributes));
-  }
+    protected function configure($options = [], $attributes = [])
+    {
+        $this->addOption('foo');
+    }
 }
 
 class MyWidgetWithRequired extends MyWidget
 {
-  protected function configure($options = array(), $attributes = array())
-  {
-    $this->addRequiredOption('foo');
-  }
+    protected function configure($options = [], $attributes = [])
+    {
+        $this->addRequiredOption('foo');
+    }
 }
 
 // __construct()
 $t->diag('__construct()');
 $w = new MyWidget();
-$t->is($w->getAttributes(), array(), '->__construct() can take no argument');
-$w = new MyWidget(array(), array('class' => 'foo'));
-$t->is($w->getAttributes(), array('class' => 'foo'), '->__construct() can take an array of default HTML attributes');
+$t->is($w->getAttributes(), [], '->__construct() can take no argument');
+$w = new MyWidget([], ['class' => 'foo']);
+$t->is($w->getAttributes(), ['class' => 'foo'], '->__construct() can take an array of default HTML attributes');
 
-try
-{
-  new MyWidget(array('nonexistant' => false));
-  $t->fail('__construct() throws an InvalidArgumentException if you pass some non existant options');
-  $t->skip();
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('__construct() throws an InvalidArgumentException if you pass some non existant options');
-  $t->like($e->getMessage(), '/ \'nonexistant\'/', 'The exception contains the non existant option names');
+try {
+    new MyWidget(['nonexistant' => false]);
+    $t->fail('__construct() throws an InvalidArgumentException if you pass some non existant options');
+    $t->skip();
+} catch (InvalidArgumentException $e) {
+    $t->pass('__construct() throws an InvalidArgumentException if you pass some non existant options');
+    $t->like($e->getMessage(), '/ \'nonexistant\'/', 'The exception contains the non existant option names');
 }
 
 $t->diag('getRequiredOptions');
-$w = new MyWidgetWithRequired(array('foo' => 'bar'));
-$t->is($w->getRequiredOptions(), array('foo'), '->getRequiredOptions() returns an array of required option names');
+$w = new MyWidgetWithRequired(['foo' => 'bar']);
+$t->is($w->getRequiredOptions(), ['foo'], '->getRequiredOptions() returns an array of required option names');
 
-try
-{
-  new MyWidgetWithRequired();
-  $t->fail('__construct() throws an RuntimeException if you don\'t pass a required option');
-}
-catch (RuntimeException $e)
-{
-  $t->pass('__construct() throws an RuntimeException if you don\'t pass a required option');
+try {
+    new MyWidgetWithRequired();
+    $t->fail('__construct() throws an RuntimeException if you don\'t pass a required option');
+} catch (RuntimeException $e) {
+    $t->pass('__construct() throws an RuntimeException if you don\'t pass a required option');
 }
 
 $w = new MyWidget();
@@ -76,14 +70,12 @@ $t->is($w->getOption('nonexistant'), null, '->getOption() returns null if the op
 $t->is($w->getOption('nonexistant', 'default value'), 'default value', '->getOption() returns default value if the option does not exist');
 $t->is($w->hasOption('foo'), true, '->hasOption() returns true if the option exist');
 $t->is($w->hasOption('nonexistant'), false, '->hasOption() returns false if the option does not exist');
-try
-{
-  $w->setOption('foobar', 'foo');
-  $t->fail('->setOption() throws an InvalidArgumentException if the option is not registered');
-}
-catch (InvalidArgumentException $e)
-{
-  $t->pass('->setOption() throws an InvalidArgumentException if the option is not registered');
+
+try {
+    $w->setOption('foobar', 'foo');
+    $t->fail('->setOption() throws an InvalidArgumentException if the option is not registered');
+} catch (InvalidArgumentException $e) {
+    $t->pass('->setOption() throws an InvalidArgumentException if the option is not registered');
 }
 
 // ->addOption()
@@ -93,8 +85,8 @@ $w->setOption('foobar', 'bar');
 $t->is($w->getOption('foobar'), 'bar', '->addOption() adds a new option');
 
 $w = new MyWidget();
-$w->setOptions(array('foo' => 'bar'));
-$t->is($w->getOptions(), array('foo' => 'bar'), '->getOptions() returns an array of all options');
+$w->setOptions(['foo' => 'bar']);
+$t->is($w->getOptions(), ['foo' => 'bar'], '->getOptions() returns an array of all options');
 
 $w = new MyWidget();
 
@@ -105,28 +97,28 @@ $t->is($w->getAttribute('foo'), 'bar', '->setAttribute() sets a new default attr
 
 // ->getAttributes()
 $t->diag('->getAttributes()');
-$t->is($w->getAttributes(), array('foo' => 'bar'), '->getAttributes() returns an array of attributes');
+$t->is($w->getAttributes(), ['foo' => 'bar'], '->getAttributes() returns an array of attributes');
 
 // ->setAttributes()
 $t->diag('->setAttributes()');
-$w->setAttributes(array('foo' => 'bar'));
-$t->is($w->getAttributes(), array('foo' => 'bar'), '->setAttributes() sets attributes');
+$w->setAttributes(['foo' => 'bar']);
+$t->is($w->getAttributes(), ['foo' => 'bar'], '->setAttributes() sets attributes');
 
 // ->attributesToHtml()
 $t->diag('->attributesToHtml()');
-$w = new MyWidget(array(), array('foo' => 'bar', 'foobar' => '<strong>été</strong>'));
+$w = new MyWidget([], ['foo' => 'bar', 'foobar' => '<strong>été</strong>']);
 $t->is($w->render('foo', 'bar'), ' foo="bar" foobar="&lt;strong&gt;été&lt;/strong&gt;"', '->attributesToHtml() converts an attribute array to an HTML attribute string');
 
 // ->renderTag()
 $t->diag('->renderTag()');
-$w = new MyWidget(array(), array('foo' => 'bar'));
-$t->is($w->renderTag('input', array('bar' => 'foo')), '<input foo="bar" bar="foo" />', '->renderTag() renders a HTML tag with attributes');
+$w = new MyWidget([], ['foo' => 'bar']);
+$t->is($w->renderTag('input', ['bar' => 'foo']), '<input foo="bar" bar="foo" />', '->renderTag() renders a HTML tag with attributes');
 $t->is($w->renderTag(''), '', '->renderTag() renders an empty string if the tag name is empty');
 
 // ->renderContentTag()
 $t->diag('->renderContentTag()');
-$w = new MyWidget(array(), array('foo' => 'bar'));
-$t->is($w->renderContentTag('textarea', 'content', array('bar' => 'foo')), '<textarea foo="bar" bar="foo">content</textarea>', '->renderContentTag() renders a HTML tag with content and attributes');
+$w = new MyWidget([], ['foo' => 'bar']);
+$t->is($w->renderContentTag('textarea', 'content', ['bar' => 'foo']), '<textarea foo="bar" bar="foo">content</textarea>', '->renderContentTag() renders a HTML tag with content and attributes');
 $t->is($w->renderContentTag(''), '', '->renderContentTag() renders an empty string if the tag name is empty');
 
 // ::escapeOnce()
@@ -137,10 +129,10 @@ $t->is(sfWidget::escapeOnce('This a &gt; text to "escape"'), 'This a &gt; text t
 
 class MyClass
 {
-  public function __toString()
-  {
-    return 'mycontent';
-  }
+    public function __toString()
+    {
+        return 'mycontent';
+    }
 }
 $t->is(sfWidget::escapeOnce(new MyClass()), 'mycontent', '::escapeOnce() converts objects to string');
 
@@ -159,10 +151,10 @@ $t->diag('::setXhtml() ::isXhtml()');
 $w = new MyWidget();
 $t->is(sfWidget::isXhtml(), true, '::isXhtml() return true if the widget must returns XHTML tags');
 sfWidget::setXhtml(false);
-$t->is($w->renderTag('input', array('value' => 'Test')), '<input value="Test">', '::setXhtml() changes the value of the XHTML tag');
+$t->is($w->renderTag('input', ['value' => 'Test']), '<input value="Test">', '::setXhtml() changes the value of the XHTML tag');
 
 // ->getJavaScripts() ->getStylesheets()
 $t->diag('->getJavaScripts() ->getStylesheets()');
 $w = new MyWidget();
-$t->is($w->getJavaScripts(), array(), '->getJavaScripts() returns an array of stylesheets');
-$t->is($w->getStylesheets(), array(), '->getStylesheets() returns an array of JavaScripts');
+$t->is($w->getJavaScripts(), [], '->getJavaScripts() returns an array of stylesheets');
+$t->is($w->getStylesheets(), [], '->getStylesheets() returns an array of JavaScripts');

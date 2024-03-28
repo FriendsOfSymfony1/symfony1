@@ -11,96 +11,87 @@
 /**
  * sfWebDebugPanelMailer adds a panel to the web debug toolbar with sent emails.
  *
- * @package    symfony
- * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelMailer extends sfWebDebugPanel
 {
-  /** @var sfMailer */
-  protected $mailer = null;
+    /** @var sfMailer */
+    protected $mailer;
 
-  /**
-   * Constructor.
-   *
-   * @param sfWebDebug $webDebug The web debug toolbar instance
-   */
-  public function __construct(sfWebDebug $webDebug)
-  {
-    parent::__construct($webDebug);
-
-    $this->webDebug->getEventDispatcher()->connect('mailer.configure', array($this, 'listenForMailerConfigure'));
-  }
-
-  public function getTitle()
-  {
-    if ($this->mailer && ($logger = $this->mailer->getLogger()) && $logger->countMessages())
+    /**
+     * Constructor.
+     *
+     * @param sfWebDebug $webDebug The web debug toolbar instance
+     */
+    public function __construct(sfWebDebug $webDebug)
     {
-      return '<img src="'.$this->webDebug->getOption('image_root_path').'/email.png" alt="Emailer" /> '.$logger->countMessages();
-    }
-  }
+        parent::__construct($webDebug);
 
-  public function getPanelTitle()
-  {
-    return 'Emails';
-  }
-
-  public function getPanelContent()
-  {
-    $logger = $this->mailer->getLogger();
-
-    if (!$logger || !$messages = $logger->getMessages())
-    {
-      return false;
+        $this->webDebug->getEventDispatcher()->connect('mailer.configure', [$this, 'listenForMailerConfigure']);
     }
 
-    $html = array();
-
-    // configuration information
-    $strategy = $this->mailer->getDeliveryStrategy();
-    $html[] = '<h2>Configuration</h2>';
-    $html[] = '<em>Delivery strategy</em>: '.$strategy;
-
-    if (sfMailer::SINGLE_ADDRESS == $strategy)
+    public function getTitle()
     {
-      $html[] = ' - <em>all emails are delivered to</em>: '.$this->mailer->getDeliveryAddress();
+        if ($this->mailer && ($logger = $this->mailer->getLogger()) && $logger->countMessages()) {
+            return '<img src="'.$this->webDebug->getOption('image_root_path').'/email.png" alt="Emailer" /> '.$logger->countMessages();
+        }
     }
 
-    // email sent
-    $html[] = '<h2>Email sent</h2>';
-    foreach ($messages as $message)
+    public function getPanelTitle()
     {
-      $html[] = $this->renderMessageInformation($message);
+        return 'Emails';
     }
 
-    return implode("\n", $html);
-  }
+    public function getPanelContent()
+    {
+        $logger = $this->mailer->getLogger();
 
-  protected function renderMessageInformation(Swift_Message $message)
-  {
-    static $i = 0;
+        if (!$logger || !$messages = $logger->getMessages()) {
+            return false;
+        }
 
-    $i++;
+        $html = [];
 
-    $to = null === $message->getTo() ? '' : implode(', ', array_keys($message->getTo()));
+        // configuration information
+        $strategy = $this->mailer->getDeliveryStrategy();
+        $html[] = '<h2>Configuration</h2>';
+        $html[] = '<em>Delivery strategy</em>: '.$strategy;
 
-    $html = array();
-    $html[] = sprintf('<h3>%s (to: %s) %s</h3>', $message->getSubject(), $to, $this->getToggler('sfWebDebugMailTemplate'.$i));
-    $html[] = '<div id="sfWebDebugMailTemplate'.$i.'" style="display:'.(1 == $i ? 'block' : 'none').'">';
-    $html[] = '<pre>'.htmlentities($message->toString(), ENT_QUOTES, $message->getCharset()).'</pre>';
-    $html[] = '</div>';
+        if (sfMailer::SINGLE_ADDRESS == $strategy) {
+            $html[] = ' - <em>all emails are delivered to</em>: '.$this->mailer->getDeliveryAddress();
+        }
 
-    return implode("\n", $html);
-  }
+        // email sent
+        $html[] = '<h2>Email sent</h2>';
+        foreach ($messages as $message) {
+            $html[] = $this->renderMessageInformation($message);
+        }
 
-  /**
-   * Listens for the mailer.configure event and captures a reference to the mailer.
-   *
-   * @param sfEvent $event
-   */
-  public function listenForMailerConfigure(sfEvent $event)
-  {
-    $this->mailer = $event->getSubject();
-  }
+        return implode("\n", $html);
+    }
+
+    /**
+     * Listens for the mailer.configure event and captures a reference to the mailer.
+     */
+    public function listenForMailerConfigure(sfEvent $event)
+    {
+        $this->mailer = $event->getSubject();
+    }
+
+    protected function renderMessageInformation(Swift_Message $message)
+    {
+        static $i = 0;
+
+        ++$i;
+
+        $to = null === $message->getTo() ? '' : implode(', ', array_keys($message->getTo()));
+
+        $html = [];
+        $html[] = sprintf('<h3>%s (to: %s) %s</h3>', $message->getSubject(), $to, $this->getToggler('sfWebDebugMailTemplate'.$i));
+        $html[] = '<div id="sfWebDebugMailTemplate'.$i.'" style="display:'.(1 == $i ? 'block' : 'none').'">';
+        $html[] = '<pre>'.htmlentities($message->toString(), ENT_QUOTES, $message->getCharset()).'</pre>';
+        $html[] = '</div>';
+
+        return implode("\n", $html);
+    }
 }

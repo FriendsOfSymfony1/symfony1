@@ -6,43 +6,48 @@
  * This class stores the session data in via sfCache instance and with an id issued in a
  * signed cookie. Useful when you don't want to store the session.
  *
- * @package    symfony
- * @subpackage storage
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
  */
 class sfCacheSessionStorage extends sfStorage
 {
-  /** @var string */
-  protected $id = null;
-  /** @var sfContext */
-  protected $context = null;
-  /** @var sfEventDispatcher */
-  protected $dispatcher = null;
-  /** @var sfWebRequest */
-  protected $request = null;
-  /** @var sfWebResponse */
-  protected $response = null;
-  /** @var sfCache|null */
-  protected $cache = null;
-  /** @var array */
-  protected $data = array();
-  /** @var bool */
-  protected $dataChanged = false;
+    /** @var string */
+    protected $id;
+
+    /** @var sfContext */
+    protected $context;
+
+    /** @var sfEventDispatcher */
+    protected $dispatcher;
+
+    /** @var sfWebRequest */
+    protected $request;
+
+    /** @var sfWebResponse */
+    protected $response;
+
+    /** @var sfCache|null */
+    protected $cache;
+
+    /** @var array */
+    protected $data = [];
+
+    /** @var bool */
+    protected $dataChanged = false;
 
     /**
      * Initialize this Storage.
      *
-     * @param array $options  An associative array of initialization parameters.
-     *                        session_name [required] name of session to use
-     *                        session_cookie_path [required] cookie path
-     *                        session_cookie_domain [required] cookie domain
-     *                        session_cookie_lifetime [required] liftime of cookie
-     *                        session_cookie_secure [required] send only if secure connection
-     *                        session_cookie_http_only [required] accessible only via http protocol
+     * @param array $options An associative array of initialization parameters.
+     *                       session_name [required] name of session to use
+     *                       session_cookie_path [required] cookie path
+     *                       session_cookie_domain [required] cookie domain
+     *                       session_cookie_lifetime [required] liftime of cookie
+     *                       session_cookie_secure [required] send only if secure connection
+     *                       session_cookie_http_only [required] accessible only via http protocol
      *
-     * @return bool true, when initialization completes successfully.
+     * @return bool true, when initialization completes successfully
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this Storage.
+     * @throws sfInitializationException If an error occurs while initializing this Storage
      */
     public function initialize($options = [])
     {
@@ -62,7 +67,7 @@ class sfCacheSessionStorage extends sfStorage
                 'session_cookie_domain' => null,
                 'session_cookie_secure' => false,
                 'session_cookie_httponly' => true,
-                'session_cookie_secret' => 'sf$ecret'
+                'session_cookie_secret' => 'sf$ecret',
             ],
             $options
         ));
@@ -74,15 +79,15 @@ class sfCacheSessionStorage extends sfStorage
             throw new InvalidArgumentException('sfCacheSessionStorage requires cache option.');
         }
 
-        $this->context     = sfContext::getInstance();
+        $this->context = sfContext::getInstance();
 
-        $this->dispatcher  = $this->context->getEventDispatcher();
-        $this->request     = $this->context->getRequest();
-        $this->response    = $this->context->getResponse();
+        $this->dispatcher = $this->context->getEventDispatcher();
+        $this->request = $this->context->getRequest();
+        $this->response = $this->context->getResponse();
 
         $cookie = $this->request->getCookie($this->options['session_name']);
 
-        if (empty($cookie) || strpos($cookie, ':') === false) {
+        if (empty($cookie) || false === strpos($cookie, ':')) {
             $this->id = null;
         } else {
             // split cookie data id:signature(id+secret)
@@ -102,7 +107,7 @@ class sfCacheSessionStorage extends sfStorage
             $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
 
             // generate new id based on random # / ip / user agent / secret
-            $this->id = md5(mt_rand(0, 999999) . $ip . $ua . $this->options['session_cookie_secret']);
+            $this->id = md5(mt_rand(0, 999999).$ip.$ua.$this->options['session_cookie_secret']);
 
             if (sfConfig::get('sf_logging_enabled')) {
                 $this->dispatcher->notify(new sfEvent($this, 'application.log', ['New session created']));
@@ -111,7 +116,7 @@ class sfCacheSessionStorage extends sfStorage
             // only send cookie when id is issued
             $this->response->setCookie(
                 $this->options['session_name'],
-                "{$this->id}:" . sha1("{$this->id}:{$this->options['session_cookie_secret']}"),
+                "{$this->id}:".sha1("{$this->id}:{$this->options['session_cookie_secret']}"),
                 $this->options['session_cookie_lifetime'],
                 $this->options['session_cookie_path'],
                 $this->options['session_cookie_domain'],
@@ -132,7 +137,7 @@ class sfCacheSessionStorage extends sfStorage
                 // We test 'b:0' special case, because such a string would result
                 // in $data being === false, while raw is serialized
                 // see http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
-                if ($raw === 'b:0;' || $data !== false) {
+                if ('b:0;' === $raw || false !== $data) {
                     $this->data = $data;
                 } else {
                     // Probably an old cached value (BC)
@@ -150,134 +155,129 @@ class sfCacheSessionStorage extends sfStorage
         return true;
     }
 
-  /**
-   * Write data to this storage.
-   *
-   * The preferred format for a key is directory style so naming conflicts can be avoided.
-   *
-   * @param string $key  A unique key identifying your data.
-   * @param mixed  $data Data associated with your key.
-   *
-   * @return void
-   */
-  public function write($key, $data)
-  {
-    $this->dataChanged = true;
-
-    $this->data[$key] =& $data;
-  }
-
-  /**
-   * Read data from this storage.
-   *
-   * The preferred format for a key is directory style so naming conflicts can be avoided.
-   *
-   * @param string $key A unique key identifying your data.
-   *
-   * @return mixed Data associated with the key.
-   */
-  public function read($key)
-  {
-    $retval = null;
-
-    if (isset($this->data[$key]))
+    /**
+     * Write data to this storage.
+     *
+     * The preferred format for a key is directory style so naming conflicts can be avoided.
+     *
+     * @param string $key  a unique key identifying your data
+     * @param mixed  $data data associated with your key
+     */
+    public function write($key, $data)
     {
-      $retval =& $this->data[$key];
+        $this->dataChanged = true;
+
+        $this->data[$key] = &$data;
     }
 
-    return $retval;
-  }
-
-  /**
-   * Remove data from this storage.
-   *
-   * The preferred format for a key is directory style so naming conflicts can be avoided.
-   *
-   * @param string $key A unique key identifying your data.
-   *
-   * @return mixed Data associated with the key.
-   */
-  public function remove($key)
-  {
-    $retval = null;
-
-    if (isset($this->data[$key]))
+    /**
+     * Read data from this storage.
+     *
+     * The preferred format for a key is directory style so naming conflicts can be avoided.
+     *
+     * @param string $key a unique key identifying your data
+     *
+     * @return mixed data associated with the key
+     */
+    public function read($key)
     {
-      $this->dataChanged = true;
+        $retval = null;
 
-      $retval =& $this->data[$key];
-      unset($this->data[$key]);
+        if (isset($this->data[$key])) {
+            $retval = &$this->data[$key];
+        }
+
+        return $retval;
     }
 
-    return $retval;
-  }
-
-  /**
-   * Regenerates id that represents this storage.
-   *
-   * @param boolean $destroy Destroy session when regenerating?
-   *
-   * @return boolean True if session regenerated, false if error
-   *
-   * @throws <b>sfStorageException</b> If an error occurs while regenerating this storage
-   */
-  public function regenerate($destroy = false)
-  {
-    if($destroy)
+    /**
+     * Remove data from this storage.
+     *
+     * The preferred format for a key is directory style so naming conflicts can be avoided.
+     *
+     * @param string $key a unique key identifying your data
+     *
+     * @return mixed data associated with the key
+     */
+    public function remove($key)
     {
-      $this->data = array();
-      $this->cache->remove($this->id);
+        $retval = null;
+
+        if (isset($this->data[$key])) {
+            $this->dataChanged = true;
+
+            $retval = &$this->data[$key];
+            unset($this->data[$key]);
+        }
+
+        return $retval;
     }
 
-    // generate session id
-    $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
-
-    $this->id = md5(mt_rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
-
-    // save data to cache
-    $this->cache->set($this->id, serialize($this->data));
-
-    // update session id in signed cookie
-    $this->response->setCookie($this->options['session_name'],
-                               $this->id.':'.sha1($this->id.':'.$this->options['session_cookie_secret']),
-                               $this->options['session_cookie_lifetime'],
-                               $this->options['session_cookie_path'],
-                               $this->options['session_cookie_domain'],
-                               $this->options['session_cookie_secure'],
-                               $this->options['session_cookie_httponly']);
-    session_id($this->id);
-    return true;
-  }
-
-  /**
-   * Expires the session storage instance.
-   */
-  public function expire()
-  {
-    // destroy data and regenerate id
-    $this->regenerate(true);
-
-    if(sfConfig::get('sf_logging_enabled'))
+    /**
+     * Regenerates id that represents this storage.
+     *
+     * @param bool $destroy Destroy session when regenerating?
+     *
+     * @return bool True if session regenerated, false if error
+     *
+     * @throws sfStorageException If an error occurs while regenerating this storage
+     */
+    public function regenerate($destroy = false)
     {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array('new session created due to expiraton')));
-    }
-  }
+        if ($destroy) {
+            $this->data = [];
+            $this->cache->remove($this->id);
+        }
 
-  /**
-   * Executes the shutdown procedure.
-   *
-   * @throws <b>sfStorageException</b> If an error occurs while shutting down this storage
-   */
-  public function shutdown()
-  {
-    // only update cache if session has changed
-    if($this->dataChanged === true)
-    {
-      $this->cache->set($this->id, serialize($this->data));
-      if(sfConfig::get('sf_logging_enabled'))
-      {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Storing session to cache')));
-      }
+        // generate session id
+        $ua = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'ua';
+
+        $this->id = md5(mt_rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
+
+        // save data to cache
+        $this->cache->set($this->id, serialize($this->data));
+
+        // update session id in signed cookie
+        $this->response->setCookie(
+            $this->options['session_name'],
+            $this->id.':'.sha1($this->id.':'.$this->options['session_cookie_secret']),
+            $this->options['session_cookie_lifetime'],
+            $this->options['session_cookie_path'],
+            $this->options['session_cookie_domain'],
+            $this->options['session_cookie_secure'],
+            $this->options['session_cookie_httponly']
+        );
+        session_id($this->id);
+
+        return true;
     }
-  }
+
+    /**
+     * Expires the session storage instance.
+     */
+    public function expire()
+    {
+        // destroy data and regenerate id
+        $this->regenerate(true);
+
+        if (sfConfig::get('sf_logging_enabled')) {
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', ['new session created due to expiraton']));
+        }
+    }
+
+    /**
+     * Executes the shutdown procedure.
+     *
+     * @throws sfStorageException If an error occurs while shutting down this storage
+     */
+    public function shutdown()
+    {
+        // only update cache if session has changed
+        if (true === $this->dataChanged) {
+            $this->cache->set($this->id, serialize($this->data));
+            if (sfConfig::get('sf_logging_enabled')) {
+                $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Storing session to cache']));
+            }
+        }
+    }
 }

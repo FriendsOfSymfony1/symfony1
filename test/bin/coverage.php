@@ -11,14 +11,14 @@
 $name = '*';
 $verbose = false;
 
-if (isset($argv[1]))
-{
-  $name = $argv[1];
-  $verbose = true;
+if (isset($argv[1])) {
+    $name = $argv[1];
+    $verbose = true;
 }
 
-require_once(__DIR__.'/../../lib/vendor/lime/lime.php');
-require_once(__DIR__.'/../../lib/util/sfFinder.class.php');
+require_once __DIR__.'/../../lib/vendor/lime/lime.php';
+
+require_once __DIR__.'/../../lib/util/sfFinder.class.php';
 
 $h = new lime_harness();
 $h->base_dir = realpath(__DIR__.'/..');

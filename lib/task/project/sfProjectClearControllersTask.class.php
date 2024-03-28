@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -11,23 +11,20 @@
 /**
  * Clears all non production environment controllers.
  *
- * @package    symfony
- * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfProjectClearControllersTask extends sfBaseTask
 {
-  /**
-   * @see sfTask
-   */
-  protected function configure()
-  {
-    $this->namespace = 'project';
-    $this->name = 'clear-controllers';
-    $this->briefDescription = 'Clears all non production environment controllers';
+    /**
+     * @see sfTask
+     */
+    protected function configure()
+    {
+        $this->namespace = 'project';
+        $this->name = 'clear-controllers';
+        $this->briefDescription = 'Clears all non production environment controllers';
 
-    $this->detailedDescription = <<<EOF
+        $this->detailedDescription = <<<'EOF'
 The [project:clear-controllers|INFO] task clears all non production environment
 controllers:
 
@@ -53,26 +50,25 @@ controller scripts are left in [web/|COMMENT]:
 Those two controllers are safe because debug mode and the web debug
 toolbar are disabled.
 EOF;
-  }
-
-  /**
-   * @see sfTask
-   */
-  protected function execute($arguments = array(), $options = array())
-  {
-    $finder = sfFinder::type('file')->maxdepth(1)->name('*.php');
-    foreach ($finder->in(sfConfig::get('sf_web_dir')) as $controller)
-    {
-      $content = file_get_contents($controller);
-
-      if (preg_match('/ProjectConfiguration::getApplicationConfiguration\(\'(.*?)\', \'(.*?)\'/', $content, $match))
-      {
-        // Remove file if it has found an application and the environment is not production
-        if ($match[2] != 'prod')
-        {
-          $this->getFilesystem()->remove($controller);
-        }
-      }
     }
-  }
+
+    /**
+     * @see sfTask
+     */
+    protected function execute($arguments = [], $options = [])
+    {
+        $finder = sfFinder::type('file')->maxdepth(1)->name('*.php');
+        foreach ($finder->in(sfConfig::get('sf_web_dir')) as $controller) {
+            $content = file_get_contents($controller);
+
+            if (preg_match('/ProjectConfiguration::getApplicationConfiguration\(\'(.*?)\', \'(.*?)\'/', $content, $match)) {
+                // Remove file if it has found an application and the environment is not production
+                if ('prod' != $match[2]) {
+                    $this->getFilesystem()->remove($controller);
+                }
+            }
+        }
+
+        return 0;
+    }
 }

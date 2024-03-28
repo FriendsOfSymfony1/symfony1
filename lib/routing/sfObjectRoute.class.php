@@ -13,233 +13,209 @@
  *
  * An object route can represent a single object or a list of objects.
  *
- * @package    symfony
- * @subpackage routing
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id$
  */
 class sfObjectRoute extends sfRequestRoute
 {
-  /** @var bool|object */
-  protected $object = false;
-  /** @var bool|array */
-  protected $objects = false;
+    /** @var bool|object */
+    protected $object = false;
 
-  /**
-   * Constructor.
-   *
-   * @param string $pattern       The pattern to match
-   * @param array  $defaults      An array of default parameter values
-   * @param array  $requirements  An array of requirements for parameters (regexes)
-   * @param array  $options       An array of options
-   *
-   * @see sfRoute
-   */
-  public function __construct($pattern, array $defaults = array(), array $requirements = array(), array $options = array())
-  {
-    if (!isset($options['model']))
+    /** @var array|bool */
+    protected $objects = false;
+
+    /**
+     * Constructor.
+     *
+     * @param string $pattern      The pattern to match
+     * @param array  $defaults     An array of default parameter values
+     * @param array  $requirements An array of requirements for parameters (regexes)
+     * @param array  $options      An array of options
+     *
+     * @see sfRoute
+     */
+    public function __construct($pattern, array $defaults = [], array $requirements = [], array $options = [])
     {
-      throw new InvalidArgumentException(sprintf('You must pass a "model" option for a %s object (%s).', get_class($this), $pattern));
+        if (!isset($options['model'])) {
+            throw new InvalidArgumentException(sprintf('You must pass a "model" option for a %s object (%s).', get_class($this), $pattern));
+        }
+
+        if (!isset($options['type'])) {
+            throw new InvalidArgumentException(sprintf('You must pass a "type" option for a %s object (%s).', get_class($this), $pattern));
+        }
+
+        if (!in_array($options['type'], ['object', 'list'])) {
+            throw new InvalidArgumentException(sprintf('The "type" option can only be "object" or "list", "%s" given (%s).', $options['type'], $pattern));
+        }
+
+        parent::__construct($pattern, $defaults, $requirements, $options);
     }
 
-    if (!isset($options['type']))
+    /**
+     * Returns true if the parameters matches this route, false otherwise.
+     *
+     * @param mixed $params  The parameters
+     * @param array $context The context
+     *
+     * @return bool true if the parameters matches this route, false otherwise
+     */
+    public function matchesParameters($params, $context = [])
     {
-      throw new InvalidArgumentException(sprintf('You must pass a "type" option for a %s object (%s).', get_class($this), $pattern));
+        return parent::matchesParameters('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params);
     }
 
-    if (!in_array($options['type'], array('object', 'list')))
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param mixed $params   The parameter values
+     * @param array $context  The context
+     * @param bool  $absolute Whether to generate an absolute URL
+     *
+     * @return string The generated URL
+     */
+    public function generate($params, $context = [], $absolute = false)
     {
-      throw new InvalidArgumentException(sprintf('The "type" option can only be "object" or "list", "%s" given (%s).', $options['type'], $pattern));
+        return parent::generate('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params, $context, $absolute);
     }
 
-    parent::__construct($pattern, $defaults, $requirements, $options);
-  }
-
-  /**
-   * Returns true if the parameters matches this route, false otherwise.
-   *
-   * @param  mixed  $params  The parameters
-   * @param  array  $context The context
-   *
-   * @return Boolean         true if the parameters matches this route, false otherwise.
-   */
-  public function matchesParameters($params, $context = array())
-  {
-    return parent::matchesParameters('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params);
-  }
-
-  /**
-   * Generates a URL from the given parameters.
-   *
-   * @param  mixed   $params    The parameter values
-   * @param  array   $context   The context
-   * @param  Boolean $absolute  Whether to generate an absolute URL
-   *
-   * @return string The generated URL
-   */
-  public function generate($params, $context = array(), $absolute = false)
-  {
-    return parent::generate('object' == $this->options['type'] ? $this->convertObjectToArray($params) : $params, $context, $absolute);
-  }
-
-  /**
-   * Gets the object related to the current route and parameters.
-   *
-   * This method is only accessible if the route is bound and of type "object".
-   *
-   * @return Object The related object
-   *
-   * @throws sfError404Exception
-   */
-  public function getObject()
-  {
-    if (!$this->isBound())
+    /**
+     * Gets the object related to the current route and parameters.
+     *
+     * This method is only accessible if the route is bound and of type "object".
+     *
+     * @return object The related object
+     *
+     * @throws sfError404Exception
+     */
+    public function getObject()
     {
-      throw new LogicException('The route is not bound.');
+        if (!$this->isBound()) {
+            throw new LogicException('The route is not bound.');
+        }
+
+        if ('object' != $this->options['type']) {
+            throw new LogicException(sprintf('The route "%s" is not of type "object".', $this->pattern));
+        }
+
+        if (false !== $this->object) {
+            return $this->object;
+        }
+
+        // check the related object
+        if (!($this->object = $this->getObjectForParameters($this->parameters)) && (!isset($this->options['allow_empty']) || !$this->options['allow_empty'])) {
+            throw new sfError404Exception(sprintf('Unable to find the %s object with the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
+        }
+
+        return $this->object;
     }
 
-    if ('object' != $this->options['type'])
+    /**
+     * Gets the list of objects related to the current route and parameters.
+     *
+     * This method is only accessible if the route is bound and of type "list".
+     *
+     * @return array And array of related objects
+     *
+     * @throws sfError404Exception
+     */
+    public function getObjects()
     {
-      throw new LogicException(sprintf('The route "%s" is not of type "object".', $this->pattern));
+        if (!$this->isBound()) {
+            throw new LogicException('The route is not bound.');
+        }
+
+        if ('list' != $this->options['type']) {
+            throw new LogicException(sprintf('The route "%s" is not of type "list".', $this->pattern));
+        }
+
+        if (false !== $this->objects) {
+            return $this->objects;
+        }
+
+        $this->objects = $this->getObjectsForParameters($this->parameters);
+
+        if (!count($this->objects) && isset($this->options['allow_empty']) && !$this->options['allow_empty']) {
+            throw new sfError404Exception(sprintf('No %s object found for the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
+        }
+
+        return $this->objects;
     }
 
-    if (false !== $this->object)
+    protected function getObjectForParameters($parameters)
     {
-      return $this->object;
+        $className = $this->options['model'];
+
+        if (!isset($this->options['method'])) {
+            throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
+        }
+
+        return call_user_func([$className, $this->options['method']], $this->filterParameters($parameters));
     }
 
-    // check the related object
-    if (!($this->object = $this->getObjectForParameters($this->parameters)) && (!isset($this->options['allow_empty']) || !$this->options['allow_empty']))
+    protected function getObjectsForParameters($parameters)
     {
-      throw new sfError404Exception(sprintf('Unable to find the %s object with the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
+        $className = $this->options['model'];
+
+        if (!isset($this->options['method'])) {
+            throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
+        }
+
+        return call_user_func([$className, $this->options['method']], $this->filterParameters($parameters));
     }
 
-    return $this->object;
-  }
-
-  /**
-   * Gets the list of objects related to the current route and parameters.
-   *
-   * This method is only accessible if the route is bound and of type "list".
-   *
-   * @return array And array of related objects
-   *
-   * @throws sfError404Exception
-   */
-  public function getObjects()
-  {
-    if (!$this->isBound())
+    protected function filterParameters($parameters)
     {
-      throw new LogicException('The route is not bound.');
+        if (!is_array($parameters)) {
+            return $parameters;
+        }
+
+        $params = [];
+        foreach (array_keys($this->variables) as $variable) {
+            $params[$variable] = $parameters[$variable];
+        }
+
+        return $params;
     }
 
-    if ('list' != $this->options['type'])
+    protected function convertObjectToArray($object)
     {
-      throw new LogicException(sprintf('The route "%s" is not of type "list".', $this->pattern));
+        if (!$this->compiled) {
+            $this->compile();
+        }
+
+        if (is_array($object)) {
+            if (!isset($object['sf_subject'])) {
+                return $object;
+            }
+
+            $parameters = $object;
+            $object = $parameters['sf_subject'];
+            unset($parameters['sf_subject']);
+        } else {
+            $parameters = [];
+        }
+
+        return array_merge($parameters, $this->doConvertObjectToArray($object));
     }
 
-    if (false !== $this->objects)
+    protected function doConvertObjectToArray($object)
     {
-      return $this->objects;
+        $method = isset($this->options['convert']) ? $this->options['convert'] : 'toParams';
+
+        return $object->{$method}();
     }
 
-    $this->objects = $this->getObjectsForParameters($this->parameters);
-
-    if (!count($this->objects) && isset($this->options['allow_empty']) && !$this->options['allow_empty'])
+    protected function getRealVariables()
     {
-      throw new sfError404Exception(sprintf('No %s object found for the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
+        $variables = [];
+
+        foreach (array_keys($this->variables) as $variable) {
+            if (0 === strpos($variable, 'sf_') || in_array($variable, ['module', 'action'])) {
+                continue;
+            }
+
+            $variables[] = $variable;
+        }
+
+        return $variables;
     }
-
-    return $this->objects;
-  }
-
-  protected function getObjectForParameters($parameters)
-  {
-    $className = $this->options['model'];
-
-    if (!isset($this->options['method']))
-    {
-      throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
-    }
-
-    return call_user_func(array($className, $this->options['method']), $this->filterParameters($parameters));
-  }
-
-  protected function getObjectsForParameters($parameters)
-  {
-    $className = $this->options['model'];
-
-    if (!isset($this->options['method']))
-    {
-      throw new InvalidArgumentException(sprintf('You must pass a "method" option for a %s object.', get_class($this)));
-    }
-
-    return call_user_func(array($className, $this->options['method']), $this->filterParameters($parameters));
-  }
-
-  protected function filterParameters($parameters)
-  {
-    if (!is_array($parameters))
-    {
-      return $parameters;
-    }
-
-    $params = array();
-    foreach (array_keys($this->variables) as $variable)
-    {
-      $params[$variable] = $parameters[$variable];
-    }
-
-    return $params;
-  }
-
-  protected function convertObjectToArray($object)
-  {
-    if (!$this->compiled)
-    {
-      $this->compile();
-    }
-
-    if (is_array($object))
-    {
-      if (!isset($object['sf_subject']))
-      {
-        return $object;
-      }
-
-      $parameters = $object;
-      $object = $parameters['sf_subject'];
-      unset($parameters['sf_subject']);
-    }
-    else
-    {
-      $parameters = array();
-    }
-
-    return array_merge($parameters, $this->doConvertObjectToArray($object));
-  }
-
-  protected function doConvertObjectToArray($object)
-  {
-    $method = isset($this->options['convert']) ? $this->options['convert'] : 'toParams';
-
-    return $object->$method();
-  }
-
-  protected function getRealVariables()
-  {
-    $variables = array();
-
-    foreach (array_keys($this->variables) as $variable)
-    {
-      if (0 === strpos($variable, 'sf_') || in_array($variable, array('module', 'action')))
-      {
-        continue;
-      }
-
-      $variables[] = $variable;
-    }
-
-    return $variables;
-  }
 }

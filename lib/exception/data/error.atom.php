@@ -1,1 +1,3 @@
-<?php include sfException::getTemplatePathForError('xml', false) ?>
+<?php
+
+include sfException::getTemplatePathForError('xml', false);

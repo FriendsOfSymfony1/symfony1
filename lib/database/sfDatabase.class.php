@@ -13,162 +13,155 @@
  * sfDatabase is a base abstraction class that allows you to setup any type of
  * database connection via a configuration file.
  *
- * @package    symfony
- * @subpackage database
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id$
  */
 abstract class sfDatabase
 {
-  /** @var sfParameterHolder */
-  protected $parameterHolder = null;
-  /** @var resource|PDO */
-  protected $connection = null;
-  /** @var resource|PDO (It's interchangeable with $connection. Can be dropped at all.) */
-  protected $resource = null;
-  
-  /**
-   * Class constructor.
-   *
-   * @see initialize()
-   *
-   * @param array $parameters An associative array of initialization parameters
-   */
-  public function __construct($parameters = array())
-  {
-    $this->initialize($parameters);
-  }
+    /** @var sfParameterHolder */
+    protected $parameterHolder;
 
-  /**
-   * Initializes this sfDatabase object.
-   *
-   * @param array $parameters An associative array of initialization parameters
-   *
-   * @return void
-   *
-   * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabase object
-   */
-  public function initialize($parameters = array())
-  {
-    $this->parameterHolder = new sfParameterHolder();
-    $this->parameterHolder->add($parameters);
-  }
+    /** @var PDO|resource */
+    protected $connection;
 
-  /**
-   * Connects to the database.
-   *
-   * @throws <b>sfDatabaseException</b> If a connection could not be created
-   */
-  abstract function connect();
+    /** @var PDO|resource (It's interchangeable with. Can be dropped at all.) */
+    protected $resource;
 
-  /**
-   * Retrieves the database connection associated with this sfDatabase implementation.
-   *
-   * When this is executed on a Database implementation that isn't an
-   * abstraction layer, a copy of the resource will be returned.
-   *
-   * @return mixed A database connection
-   *
-   * @throws <b>sfDatabaseException</b> If a connection could not be retrieved
-   */
-  public function getConnection()
-  {
-    if (null === $this->connection)
+    /**
+     * Class constructor.
+     *
+     * @see initialize()
+     *
+     * @param array $parameters An associative array of initialization parameters
+     */
+    public function __construct($parameters = [])
     {
-      $this->connect();
+        $this->initialize($parameters);
     }
 
-    return $this->connection;
-  }
-
-  /**
-   * Retrieves a raw database resource associated with this sfDatabase implementation.
-   *
-   * @return mixed A database resource
-   *
-   * @throws <b>sfDatabaseException</b> If a resource could not be retrieved
-   */
-  public function getResource()
-  {
-    if (null === $this->resource)
+    /**
+     * Initializes this sfDatabase object.
+     *
+     * @param array $parameters An associative array of initialization parameters
+     *
+     * @throws sfInitializationException If an error occurs while initializing this sfDatabase object
+     */
+    public function initialize($parameters = [])
     {
-      $this->connect();
+        $this->parameterHolder = new sfParameterHolder();
+        $this->parameterHolder->add($parameters);
     }
 
-    return $this->resource;
-  }
+    /**
+     * Connects to the database.
+     *
+     * @throws sfDatabaseException If a connection could not be created
+     */
+    abstract public function connect();
 
-  /**
-   * Gets the parameter holder for this object.
-   *
-   * @return sfParameterHolder A sfParameterHolder instance
-   */
-  public function getParameterHolder()
-  {
-    return $this->parameterHolder;
-  }
+    /**
+     * Retrieves the database connection associated with this sfDatabase implementation.
+     *
+     * When this is executed on a Database implementation that isn't an
+     * abstraction layer, a copy of the resource will be returned.
+     *
+     * @return mixed A database connection
+     *
+     * @throws sfDatabaseException If a connection could not be retrieved
+     */
+    public function getConnection()
+    {
+        if (null === $this->connection) {
+            $this->connect();
+        }
 
-  /**
-   * Gets the parameter associated with the given key.
-   *
-   * This is a shortcut for:
-   *
-   * <code>$this->getParameterHolder()->get()</code>
-   *
-   * @param string $name    The key name
-   * @param string $default The default value
-   *
-   * @return string The value associated with the key
-   *
-   * @see sfParameterHolder
-   */
-  public function getParameter($name, $default = null)
-  {
-    return $this->parameterHolder->get($name, $default);
-  }
+        return $this->connection;
+    }
 
-  /**
-   * Returns true if the given key exists in the parameter holder.
-   *
-   * This is a shortcut for:
-   *
-   * <code>$this->getParameterHolder()->has()</code>
-   *
-   * @param string $name The key name
-   *
-   * @return boolean true if the given key exists, false otherwise
-   *
-   * @see sfParameterHolder
-   */
-  public function hasParameter($name)
-  {
-    return $this->parameterHolder->has($name);
-  }
+    /**
+     * Retrieves a raw database resource associated with this sfDatabase implementation.
+     *
+     * @return mixed A database resource
+     *
+     * @throws sfDatabaseException If a resource could not be retrieved
+     */
+    public function getResource()
+    {
+        if (null === $this->resource) {
+            $this->connect();
+        }
 
-  /**
-   * Sets the value for the given key.
-   *
-   * This is a shortcut for:
-   *
-   * <code>$this->getParameterHolder()->set()</code>
-   *
-   * @param string $name  The key name
-   * @param string $value The value
-   *
-   * @see sfParameterHolder
-   */
-  public function setParameter($name, $value)
-  {
-    $this->parameterHolder->set($name, $value);
-  }
+        return $this->resource;
+    }
 
-  /**
-   * Executes the shutdown procedure.
-   *
-   * @return void
-   *
-   * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this database
-   */
-  abstract function shutdown();
+    /**
+     * Gets the parameter holder for this object.
+     *
+     * @return sfParameterHolder A sfParameterHolder instance
+     */
+    public function getParameterHolder()
+    {
+        return $this->parameterHolder;
+    }
+
+    /**
+     * Gets the parameter associated with the given key.
+     *
+     * This is a shortcut for:
+     *
+     * <code>$this->getParameterHolder()->get()</code>
+     *
+     * @param string $name    The key name
+     * @param string $default The default value
+     *
+     * @return string The value associated with the key
+     *
+     * @see sfParameterHolder
+     */
+    public function getParameter($name, $default = null)
+    {
+        return $this->parameterHolder->get($name, $default);
+    }
+
+    /**
+     * Returns true if the given key exists in the parameter holder.
+     *
+     * This is a shortcut for:
+     *
+     * <code>$this->getParameterHolder()->has()</code>
+     *
+     * @param string $name The key name
+     *
+     * @return bool true if the given key exists, false otherwise
+     *
+     * @see sfParameterHolder
+     */
+    public function hasParameter($name)
+    {
+        return $this->parameterHolder->has($name);
+    }
+
+    /**
+     * Sets the value for the given key.
+     *
+     * This is a shortcut for:
+     *
+     * <code>$this->getParameterHolder()->set()</code>
+     *
+     * @param string $name  The key name
+     * @param string $value The value
+     *
+     * @see sfParameterHolder
+     */
+    public function setParameter($name, $value)
+    {
+        $this->parameterHolder->set($name, $value);
+    }
+
+    /**
+     * Executes the shutdown procedure.
+     *
+     * @throws sfDatabaseException If an error occurs while shutting down this database
+     */
+    abstract public function shutdown();
 }
