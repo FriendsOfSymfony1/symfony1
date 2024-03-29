@@ -9,81 +9,118 @@
 # Example: "lowest highest"
 #
 
-# Configuration
-#
-dependencyPreferences='highest'
-skipPHPVersions='php8'
+main ()
+{
+    # Configuration
+    #
+    dependencyPreferences='highest'
 
-# Commands
-#
-dcexec="docker-compose exec -u `id -u`:`id -g`"
-installSubmodule='git submodule update --checkout --recursive --force'
-composerUpdate='composer update --prefer-dist --no-suggest --optimize-autoloader'
-symfonyTestSuite='data/bin/symfony symfony:test --trace'
+    # Commands
+    #
+    dcexec="docker-compose exec -u `id -u`:`id -g`"
+    installSubmodule='git submodule update --checkout --recursive --force'
+    composerUpdate='composer update --prefer-dist --no-suggest --optimize-autoloader'
+    symfonyTestSuite='data/bin/symfony symfony:test --trace'
 
-# Parse arguments
-#
-phpVersions="${1-}"
-dependencyPreferences="${2-${dependencyPreferences}}"
-phpTestRuntime="${3-${symfonyTestSuite}}"
+    # Parse arguments
+    #
+    phpVersions="${1-}"
+    dependencyPreferences="${2-${dependencyPreferences}}"
+    phpTestRuntime="${3-${symfonyTestSuite}}"
+
+    echo '+ docker-compose build'
+    docker-compose up -d --build --remove-orphans > /dev/null
+
+    test x"" != x"${phpVersions}" || {
+        phpVersions=`fetchAllPHPVersions`
+    }
+
+    tearDownRegisterFunction reset_submodules
+
+    scriptAll
+}
 
 script ()
 {
-  echo
-  echo
-  echo $0 ${1} ${2}
-  echo
-  ${dcexec} ${1} php data/bin/check_configuration.php
-  ${dcexec} ${1} php ${phpTestRuntime}
+    echo
+    echo
+    echo $0 ${1} ${2}
+    echo
+    clearCacheOfMemcached
+    ${dcexec} ${1} php data/bin/check_configuration.php
+    ${dcexec} ${1} php ${phpTestRuntime}
 }
 
 scriptAll ()
 {
-  for dependencyPreference in ${dependencyPreferences}
-  do
-    install_${dependencyPreference}
-
-    for phpVersion in ${phpVersions}
+    for dependencyPreference in ${dependencyPreferences}
     do
-      script ${phpVersion} ${dependencyPreference}
+        install_${dependencyPreference}
+
+        for phpVersion in ${phpVersions}
+        do
+            script ${phpVersion} ${dependencyPreference}
+        done
     done
-  done
 }
 
 fetchAllPHPVersions ()
 {
-  docker-compose 2>/dev/null ps --services --filter status=running \
-    | grep php \
-    | sort \
-    | grep -v ${skipPHPVersions}
+    docker-compose 2>/dev/null ps --services --filter status=running \
+        | grep php \
+        | sort
 }
 
 install_highest ()
 {
-  ${installSubmodule} --remote
-  ${dcexec} composer ${composerUpdate}
+    ${installSubmodule} --remote
+    ${dcexec} composer ${composerUpdate}
 }
 
 install_lowest ()
 {
-  reset_submodules
+    reset_submodules
 
-  ${installSubmodule}
-  ${dcexec} composer ${composerUpdate} --prefer-lowest
+    ${installSubmodule}
+    ${dcexec} composer ${composerUpdate} --prefer-lowest
 }
 
 reset_submodules ()
 {
-  git submodule deinit --force --quiet -- .
+    git submodule deinit --force --quiet -- .
 
-  git submodule init
+    git submodule init
 }
 
-echo '+ docker-compose build'
-docker-compose up -d --build --remove-orphans > /dev/null
-
-test x"" != x"${phpVersions}" || {
-  phpVersions=`fetchAllPHPVersions`
+clearCacheOfMemcached ()
+{
+    echo 'Clearing cache of memcached'
+    ${dcexec} memcached sh -c 'echo 'flush_all' | nc localhost 11211'
 }
 
-scriptAll
+tearDownRegisterFunction()
+{
+    test x"" != x"${tearDown_functions-}" || {
+        trap 'tearDown' 2 # CTRL-C
+        trap 'tearDown' QUIT TERM EXIT INT KILL SEGV
+    }
+
+    case ${tearDown_functions-} in #(
+        ?*) tearDown_functions="${tearDown_functions} $1" ;; #(
+        *) tearDown_functions=$1 ;;
+    esac
+}
+
+tearDown()
+{
+    test x"" != x"${tearDown_functions-}" || {
+        return 0
+    }
+
+    for tearDown_function in ${tearDown_functions}
+    do
+        ${tearDown_function}
+    done
+}
+
+main ${1+"$@"}
