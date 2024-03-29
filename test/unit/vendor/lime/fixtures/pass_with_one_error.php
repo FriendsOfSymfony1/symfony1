@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../../../../bootstrap/unit.php';
 
-error_reporting(-1);
+error_reporting(E_USER_ERROR);
 
 $test = new lime_test(null, [
     'error_reporting' => true,

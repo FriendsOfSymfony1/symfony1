@@ -161,6 +161,10 @@ class lime_test
       return self::STATE_FAIL;
     }
 
+    if ($this->results['stats']['errors']) {
+      return self::STATE_FAIL;
+    }
+
     if (self::STATE_PASS === $planState) {
       $this->output->green_bar("# Looks like everything went fine.");
     }
