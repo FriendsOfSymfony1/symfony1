@@ -1024,11 +1024,24 @@ EOF
       ob_end_clean();
       unlink($test_file);
 
+      $stats['status_code'] = $return;
       $output = file_get_contents($result_file);
       $stats['output'] = $output ? unserialize($output) : '';
-      if (!$stats['output'])
-      {
-        $stats['output'] = array(array('file' => $file, 'tests' => array(), 'stats' => array('plan' => 1, 'total' => 1, 'failed' => array(0), 'passed' => array(), 'skipped' => array(), 'errors' => array())));
+      if (!$stats['output']) {
+        $stats['output'] = array(
+          array(
+            'file' => $file,
+            'tests' => array(),
+            'stats' => array(
+              'plan' => 1,
+              'total' => 1,
+              'failed' => array(0),
+              'passed' => array(),
+              'skipped' => array(),
+              'errors' => array(),
+            ),
+          ),
+        );
       }
       unlink($result_file);
 
@@ -1037,23 +1050,10 @@ EOF
 
       $delta = $this->computePlanDeltaFromFileStats($file_stats);
 
-      if ($return > 0)
-      {
+      if (0 === $stats['status_code']) {
+        $stats['status'] = 'ok';
+      } else {
         $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'dubious');
-        $stats['status_code'] = $return;
-      }
-      else
-      {
-        if (0 != $delta)
-        {
-          $stats['status'] = $file_stats['errors'] ? 'errors' : 'dubious';
-          $stats['status_code'] = 255;
-        }
-        else
-        {
-          $stats['status'] = $file_stats['errors'] ? 'errors' : 'ok';
-          $stats['status_code'] = 0;
-        }
       }
 
       if (true === $this->full_output)
@@ -1125,7 +1125,15 @@ EOF
 
         if (isset($stat['output'][0]))
         {
-          $this->output->echoln(sprintf($format, substr($relative_file, -min(30, strlen($relative_file))), $stat['status_code'], count($stat['output'][0]['stats']['failed']) + count($stat['output'][0]['stats']['passed']), count($stat['output'][0]['stats']['failed']), count($stat['output'][0]['stats']['errors']), implode(' ', $stat['output'][0]['stats']['failed'])));
+          $this->output->echoln(sprintf($format,
+            substr($relative_file, -min(30, strlen($relative_file))),
+            $stat['status_code'],
+            count($stat['output'][0]['stats']['failed'])
+              + count($stat['output'][0]['stats']['passed']),
+            count($stat['output'][0]['stats']['failed']),
+            count($stat['output'][0]['stats']['errors']),
+            implode(' ', $stat['output'][0]['stats']['failed'])
+          ));
         }
         else
         {

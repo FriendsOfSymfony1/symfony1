@@ -43,7 +43,7 @@ class lime_no_colorizer extends lime_colorizer
     }
 }
 
-$test = new lime_test(20);
+$test = new lime_test(22);
 
 $files = [
     __DIR__.'/fixtures/failed.php',
@@ -128,6 +128,16 @@ EOF;
 $message = 'with at least one thrown Exception will fail the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
+$files = [__DIR__.'/fixtures/pass.php'];
+$expectedOverallSucceed = true;
+$expectedOutput = <<<'EOF'
+test/unit/vendor/lime/fixtures/pass..................................ok
+ All tests successful.
+ Files=1, Tests=1
+
+EOF;
+$message = 'with all tests passes without error or exception will succeed the overall test suite';
+whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
 $name = 'pass';
 $expectedStatusCode = 0;
