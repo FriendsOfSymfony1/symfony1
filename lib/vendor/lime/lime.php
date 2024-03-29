@@ -1026,24 +1026,7 @@ EOF
       $output = file_get_contents($result_file);
       $stats['output'] = $output ? unserialize($output) : '';
       if (!$stats['output']) {
-        $stats['output'] = array(
-          array(
-            'file' => $file,
-            'tests' => array(),
-            'stats' => array(
-              'plan' => null,
-              'total' => 0,
-              'failed' => array(),
-              'passed' => array(),
-              'skipped' => array(),
-              'errors' => array(
-                array(
-                  'message' => 'Missing test report. It is probably due to a Parse error.',
-                )
-              ),
-            ),
-          ),
-        );
+        $stats['output'] = $this->makeOutputForMissingTestReport($file);
       }
       unlink($result_file);
 
@@ -1152,6 +1135,28 @@ EOF
     }
 
     return $this->stats['failed_files'] ? false : true;
+  }
+
+  private function makeOutputForMissingTestReport(string $file): array
+  {
+    return array(
+      array(
+        'file' => $file,
+        'tests' => array(),
+        'stats' => array(
+          'plan' => null,
+          'total' => 0,
+          'failed' => array(),
+          'passed' => array(),
+          'skipped' => array(),
+          'errors' => array(
+            array(
+              'message' => 'Missing test report. It is probably due to a Parse error.',
+            )
+          ),
+        ),
+      ),
+    );
   }
 
   private function computePlanDeltaFromFileStats(array $fileStats): int
