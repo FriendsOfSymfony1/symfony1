@@ -7,19 +7,6 @@ function removeTrailingSpaces(string $output): string
     return preg_replace("/ *\n/", "\n", $output);
 }
 
-function whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput)
-{
-    $test->diag($name);
-
-    ob_start();
-    $exitCode = (new lime_harness())->executePhpFile(__DIR__.'/fixtures/'.$name.'.php');
-    $output = ob_get_clean();
-
-    $test->is($exitCode, $expectedStatusCode, 'with test '.$name.' will exit with status code '.$expectedStatusCode);
-
-    $test->is(removeTrailingSpaces($output), $expectedOutput, 'test '.$name.' output');
-}
-
 function whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message)
 {
     $harness = new lime_harness();
@@ -33,7 +20,7 @@ function whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expe
 
     $test->is($expectedOverallSucceed, $allTestsSucceed, $message);
 
-    $test->is(removeTrailingSpaces($output), $expectedOutput, 'test harness result');
+    $test->is(removeTrailingSpaces($output), $expectedOutput, 'test harness result output');
 }
 
 class lime_no_colorizer extends lime_colorizer
@@ -43,7 +30,7 @@ class lime_no_colorizer extends lime_colorizer
     }
 }
 
-$test = new lime_test(22);
+$test = new lime_test(12);
 
 $files = [
     __DIR__.'/fixtures/failed.php',
@@ -83,6 +70,7 @@ EOF;
 $message = 'with at least one failed test file will fail the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
+
 $files = [__DIR__.'/fixtures/pass_with_plan_less_than_total.php'];
 $expectedOverallSucceed = false;
 $expectedOutput = <<<'EOF'
@@ -98,12 +86,13 @@ EOF;
 $message = 'with at least one test file that not follow the plan will fail the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
+
 $files = [__DIR__.'/fixtures/pass_with_one_error.php'];
 $expectedOverallSucceed = false;
 $expectedOutput = <<<'EOF'
 test/unit/vendor/lime/fixtures/pass_with_one_error...................errors
     Errors:
-    - Notice: some use error message
+    - Notice: some user error message
 Failed Test                     Stat  Total   Fail  Errors  List of Failed
 --------------------------------------------------------------------------
 e/fixtures/pass_with_one_error     1      1      0      1
@@ -112,6 +101,7 @@ Failed 1/1 test scripts, 0.00% okay. 0/1 subtests failed, 100.00% okay.
 EOF;
 $message = 'with at least one error will fail the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
+
 
 $files = [__DIR__.'/fixtures/pass_with_one_throw_exception.php'];
 $expectedOverallSucceed = false;
@@ -128,6 +118,7 @@ EOF;
 $message = 'with at least one thrown Exception will fail the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
+
 $files = [__DIR__.'/fixtures/pass.php'];
 $expectedOverallSucceed = true;
 $expectedOutput = <<<'EOF'
@@ -136,78 +127,21 @@ test/unit/vendor/lime/fixtures/pass..................................ok
  Files=1, Tests=1
 
 EOF;
-$message = 'with all tests passes without error or exception will succeed the overall test suite';
+$message = 'with all tests passes without error and exception will succeed the overall test suite';
 whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);
 
-$name = 'pass';
-$expectedStatusCode = 0;
+
+$files = [__DIR__.'/fixtures/pass_with_one_parse_error.php'];
+$expectedOverallSucceed = false;
 $expectedOutput = <<<'EOF'
-ok 1
-1..1
-# Looks like everything went fine.
+test/unit/vendor/lime/fixtures/pass_with_one_parse_error.............errors
+    Errors:
+    - Missing test report. It is probably due to a Parse error.
+Failed Test                     Stat  Total   Fail  Errors  List of Failed
+--------------------------------------------------------------------------
+ures/pass_with_one_parse_error   255      0      0      1
+Failed 1/1 test scripts, 0.00% okay. 0/0 subtests failed, 0.00% okay.
 
 EOF;
-whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
-
-$name = 'failed';
-$expectedStatusCode = 1;
-$expectedOutput = <<<'EOF'
-not ok 1
-#     Failed test (./test/unit/vendor/lime/fixtures/failed.php at line 7)
-#            got: false
-#       expected: true
-1..1
-# Looks like you failed 1 tests of 1.
-
-EOF;
-whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
-
-$name = 'failed_with_plan_less_than_total';
-$expectedStatusCode = 1;
-$expectedOutput = <<<'EOF'
-1..1
-not ok 1
-#     Failed test (./test/unit/vendor/lime/fixtures/failed_with_plan_less_than_total.php at line 7)
-#            got: false
-#       expected: true
-ok 2
-# Looks like you planned 1 tests but ran 1 extra.
-# Looks like you failed 1 tests of 2.
-
-EOF;
-whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
-
-$name = 'failed_with_plan_more_than_total';
-$expectedStatusCode = 1;
-$expectedOutput = <<<'EOF'
-1..2
-not ok 1
-#     Failed test (./test/unit/vendor/lime/fixtures/failed_with_plan_more_than_total.php at line 7)
-#            got: false
-#       expected: true
-# Looks like you planned 2 tests but only ran 1.
-# Looks like you failed 1 tests of 1.
-
-EOF;
-whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
-
-$name = 'pass_with_plan_less_than_total';
-$expectedStatusCode = 255;
-$expectedOutput = <<<'EOF'
-1..1
-ok 1
-ok 2
-# Looks like you planned 1 tests but ran 1 extra.
-
-EOF;
-whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
-
-$name = 'pass_with_plan_more_than_total';
-$expectedStatusCode = 255;
-$expectedOutput = <<<'EOF'
-1..2
-ok 1
-# Looks like you planned 2 tests but only ran 1.
-
-EOF;
-whenExecutePhpFileWillHaveStatusCodeAndOutput($harness, $test, $name, $expectedStatusCode, $expectedOutput);
+$message = 'with parse error will fail the overall test suite';
+whenExecuteHarnessWithFilesWillHaveResultAndOutput($test, $files, $expectedOverallSucceed, $expectedOutput, $message);

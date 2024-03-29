@@ -1004,8 +1004,6 @@ class lime_harness extends lime_registration
       $this->stats['files'][$file] = array();
       $stats = &$this->stats['files'][$file];
 
-      $relative_file = $this->get_relative_file($file);
-
       $test_file = tempnam($this->options['test_path'], 'lime_test').'.php';
       $result_file = tempnam($this->options['test_path'], 'lime_result');
       file_put_contents($test_file, <<<EOF
@@ -1033,12 +1031,16 @@ EOF
             'file' => $file,
             'tests' => array(),
             'stats' => array(
-              'plan' => 1,
-              'total' => 1,
-              'failed' => array(0),
+              'plan' => null,
+              'total' => 0,
+              'failed' => array(),
               'passed' => array(),
               'skipped' => array(),
-              'errors' => array(),
+              'errors' => array(
+                array(
+                  'message' => 'Missing test report. It is probably due to a Parse error.',
+                )
+              ),
             ),
           ),
         );
@@ -1046,68 +1048,32 @@ EOF
       unlink($result_file);
 
       $file_stats = &$stats['output'][0]['stats'];
-      $this->stats['total'] += $file_stats['total'];
 
       $delta = $this->computePlanDeltaFromFileStats($file_stats);
 
-      if (0 === $stats['status_code']) {
-        $stats['status'] = 'ok';
-      } else {
-        $stats['status'] = $file_stats['failed'] ? 'not ok' : ($file_stats['errors'] ? 'errors' : 'dubious');
-      }
+      $stats['status'] = $this->computeStatusWithCodeAndFileStats(
+        $stats['status_code'],
+        $file_stats
+      );
 
-      if (true === $this->full_output)
-      {
-        $this->output->echoln(sprintf('%s%s%s', $relative_file, '.....', $stats['status']));
-      }
-      else
-      {
-        $this->output->echoln(sprintf('%s%s%s', substr($relative_file, -min(67, strlen($relative_file))), str_repeat('.', 70 - min(67, strlen($relative_file))), $stats['status']));
-      }
-
-      if ('dubious' == $stats['status'])
-      {
-        $this->output->echoln(sprintf('    Test returned status %s', $stats['status_code']));
-      }
-
-      if ('ok' != $stats['status'])
-      {
+      if ('ok' !== $stats['status']) {
         $this->stats['failed_files'][] = $file;
       }
 
-      if ($delta > 0)
-      {
-        $this->output->echoln(sprintf('    Looks like you planned %d tests but only ran %d.', $file_stats['plan'], $file_stats['total']));
+      $this->stats['total'] += $file_stats['total'];
 
+      if ($delta > 0) {
         $this->stats['failed_tests'] += $delta;
         $this->stats['total'] += $delta;
       }
-      else if ($delta < 0)
-      {
-        $this->output->echoln(sprintf('    Looks like you planned %s test but ran %s extra.', $file_stats['plan'], $file_stats['total'] - $file_stats['plan']));
-      }
 
-      if (false !== $file_stats && $file_stats['failed'])
-      {
+      if ($file_stats['failed']) {
         $this->stats['failed_tests'] += count($file_stats['failed']);
-
-        $this->output->echoln(sprintf("    Failed tests: %s", implode(', ', $file_stats['failed'])));
       }
 
-      if (false !== $file_stats && $file_stats['errors'])
-      {
-        $this->output->echoln('    Errors:');
+      $this->writeFileSummary($file, $stats['status']);
 
-        $error_count = count($file_stats['errors']);
-        for ($i = 0; $i < 3 && $i < $error_count; ++$i)
-        {
-          $this->output->echoln('    - ' . $file_stats['errors'][$i]['message'], null, false);
-        }
-        if ($error_count > 3)
-        {
-          $this->output->echoln(sprintf('    ... and %s more', $error_count-3));
-        }
-      }
+      $this->writeFileDetails($stats, $file_stats, $delta);
     }
 
     if (count($this->stats['failed_files']))
@@ -1195,6 +1161,75 @@ EOF
       } else {
         return 0;
       }
+  }
+
+  private function computeStatusWithCodeAndFileStats(int $statusCode, array $fileStats): string
+  {
+    if (0 === $statusCode) {
+      return 'ok';
+    }
+
+    if ($fileStats['failed']) {
+      return 'not ok';
+    }
+
+    if ($fileStats['errors']) {
+      return 'errors';
+    }
+
+    return 'dubious';
+  }
+
+  private function writeFileSummary(string $file, string $status): void
+  {
+    $relativeFile = $this->get_relative_file($file);
+
+    if (true === $this->full_output) {
+      $this->output->echoln(sprintf('%s%s%s', $relativeFile, '.....', $status));
+    } else {
+      $this->output->echoln(sprintf('%s%s%s',
+        substr($relativeFile, -min(67, strlen($relativeFile))),
+        str_repeat('.', 70 - min(67, strlen($relativeFile))),
+        $status
+      ));
+    }
+  }
+
+  private function writeFileDetails(array $stats, array $fileStats, int $delta): void
+  {
+    if ('dubious' === $stats['status'])
+    {
+      $this->output->echoln(sprintf('    Test returned status %s', $stats['status_code']));
+    }
+
+    if ($delta > 0)
+    {
+      $this->output->echoln(sprintf('    Looks like you planned %d tests but only ran %d.', $fileStats['plan'], $fileStats['total']));
+    }
+    else if ($delta < 0)
+    {
+      $this->output->echoln(sprintf('    Looks like you planned %s test but ran %s extra.', $fileStats['plan'], $fileStats['total'] - $fileStats['plan']));
+    }
+
+    if (false !== $fileStats && $fileStats['failed'])
+    {
+      $this->output->echoln(sprintf("    Failed tests: %s", implode(', ', $fileStats['failed'])));
+    }
+
+    if (false !== $fileStats && $fileStats['errors'])
+    {
+      $this->output->echoln('    Errors:');
+
+      $error_count = count($fileStats['errors']);
+      for ($i = 0; $i < 3 && $i < $error_count; ++$i)
+      {
+        $this->output->echoln('    - ' . $fileStats['errors'][$i]['message'], null, false);
+      }
+      if ($error_count > 3)
+      {
+        $this->output->echoln(sprintf('    ... and %s more', $error_count-3));
+      }
+    }
   }
 
   public function get_failed_files()

@@ -8,6 +8,6 @@ $test = new lime_test(null, [
     'error_reporting' => true,
 ]);
 
-trigger_error('some use error message', E_USER_ERROR);
+trigger_error('some user error message', E_USER_ERROR);
 
 $test->is(true, true);
