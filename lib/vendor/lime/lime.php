@@ -1033,16 +1033,9 @@ EOF
       unlink($result_file);
 
       $file_stats = &$stats['output'][0]['stats'];
-
-      $delta = 0;
       $this->stats['total'] += $file_stats['total'];
 
-      if (!$file_stats['plan'])
-      {
-        $file_stats['plan'] = $file_stats['total'];
-      }
-
-      $delta = $file_stats['plan'] - $file_stats['total'];
+      $delta = $this->computePlanDeltaFromFileStats($file_stats);
 
       if ($return > 0)
       {
@@ -1185,6 +1178,15 @@ EOF
     }
 
     return $this->stats['failed_files'] ? false : true;
+  }
+
+  private function computePlanDeltaFromFileStats(array $fileStats): int
+  {
+      if ($fileStats['plan']) {
+        return $fileStats['plan'] - $fileStats['total'];
+      } else {
+        return 0;
+      }
   }
 
   public function get_failed_files()
