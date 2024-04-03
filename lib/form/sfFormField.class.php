@@ -35,13 +35,13 @@ class sfFormField
     /**
      * Constructor.
      *
-     * @param sfWidgetForm     $widget A sfWidget instance
-     * @param sfFormField      $parent The sfFormField parent instance (null for the root widget)
-     * @param string           $name   The field name
-     * @param string           $value  The field value
-     * @param sfValidatorError $error  A sfValidatorError instance
+     * @param sfWidgetForm          $widget A sfWidget instance
+     * @param sfFormField|null      $parent The sfFormField parent instance (null for the root widget)
+     * @param string                $name   The field name
+     * @param mixed                 $value  The field value
+     * @param sfValidatorError|null $error  A sfValidatorError instance
      */
-    public function __construct(sfWidgetForm $widget, ?sfFormField $parent = null, $name, $value, ?sfValidatorError $error = null)
+    public function __construct(sfWidgetForm $widget, ?sfFormField $parent = null, $name = '', $value = null, ?sfValidatorError $error = null)
     {
         $this->widget = $widget;
         $this->parent = $parent;
