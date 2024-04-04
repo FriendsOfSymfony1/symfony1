@@ -8,4 +8,5 @@
 docker-compose.yml     export-ignore
 phpstan.neon           export-ignore
 phpunit.xml            export-ignore
+test/                  export-ignore
 tests/                 export-ignore
