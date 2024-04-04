@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+require_once __DIR__.'/../../vendor/autoload.php';
+
 // Try autoloading using composer if available.
 if (!file_exists($autoload = __DIR__.'/../../../../autoload.php')) {
     $autoload = __DIR__.'/../../autoload.php';
