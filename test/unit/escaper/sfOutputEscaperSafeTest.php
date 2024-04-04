@@ -8,11 +8,6 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../../../lib/vendor/lime/lime.php';
-
-require_once __DIR__.'/../../../lib/helper/EscapingHelper.php';
-
-require_once __DIR__.'/../../../lib/escaper/sfOutputEscaperSafe.class.php';
 
 $t = new lime_test(13);
 

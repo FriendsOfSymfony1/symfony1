@@ -18,15 +18,10 @@ ini_set('allow_url_fopen', 'on');
 
 $_test_dir = realpath(__DIR__.'/..');
 
-require_once $_test_dir.'/../lib/vendor/lime/lime.php';
-
-require_once $_test_dir.'/../lib/config/sfConfig.class.php';
 sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
 
-require_once __DIR__.'/../../lib/autoload/sfCoreAutoload.class.php';
 sfCoreAutoload::register();
 
-require_once __DIR__.'/../../lib/util/sfToolkit.class.php';
 sfConfig::set('sf_test_cache_dir', sys_get_temp_dir().'/sf_test_project');
 
 // remove all test cache
