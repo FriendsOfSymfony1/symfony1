@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 class sfException extends Exception
 {
 }

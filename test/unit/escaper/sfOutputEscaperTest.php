@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-
 sfConfig::set('sf_charset', 'UTF-8');
 
 $t = new lime_test(39);

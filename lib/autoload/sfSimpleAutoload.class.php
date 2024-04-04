@@ -35,6 +35,8 @@ class sfSimpleAutoload
 
     /**
      * @deprecated
+     *
+     * @param mixed|null $cacheFile
      */
     public static function getInstance($cacheFile = null)
     {
