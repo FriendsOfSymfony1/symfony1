@@ -17,7 +17,6 @@ if (!file_exists($autoload = __DIR__.'/../../../../autoload.php')) {
 
 // Fall back to classic Symfony loading
 if (!file_exists($autoload)) {
-    require_once __DIR__.'/../autoload/sfCoreAutoload.class.php';
     sfCoreAutoload::register();
 } else {
     require_once $autoload;
