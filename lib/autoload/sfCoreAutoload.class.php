@@ -417,6 +417,8 @@ class sfCoreAutoload
      */
     public static function register()
     {
+        self::$registered = true;
+
         if (self::$registered) {
             return;
         }
