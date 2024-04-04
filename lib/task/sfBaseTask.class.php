@@ -48,11 +48,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     }
 
     /**
-     * Checks if the current directory is a symfony project directory.
-     *
-     * @return true if the current directory is a symfony project directory, false otherwise
-     *
-     * @throws sfException
+     * @deprecated
      */
     public function checkProjectExists()
     {
