@@ -15,6 +15,8 @@
  */
 class sfProjectConfiguration
 {
+    public const SYMFONY_VERSION = '1.5.20-dev';
+
     /** @var string */
     protected $rootDir;
 
