@@ -108,8 +108,6 @@ abstract class sfBaseTask extends sfCommandApplicationTask
             return $event->getReturnValue();
         }
 
-        $this->checkProjectExists();
-
         $requiresApplication = $commandManager->getArgumentSet()->hasArgument('application') || $commandManager->getOptionSet()->hasOption('application');
         if (null === $this->configuration || ($requiresApplication && !$this->configuration instanceof sfApplicationConfiguration)) {
             $application = $commandManager->getArgumentSet()->hasArgument('application') ? $commandManager->getArgumentValue('application') : ($commandManager->getOptionSet()->hasOption('application') ? $commandManager->getOptionValue('application') : null);
