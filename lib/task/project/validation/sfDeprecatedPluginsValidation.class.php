@@ -40,10 +40,10 @@ class sfDeprecatedPluginsValidation extends sfValidation
             $content = sfToolkit::stripComments(file_get_contents($file));
 
             $matches = [];
-            if (false !== strpos($content, 'sfCompat10Plugin')) {
+            if (str_contains($content, 'sfCompat10Plugin')) {
                 $matches[] = 'sfCompat10Plugin';
             }
-            if (false !== strpos($content, 'sfProtoculousPlugin')) {
+            if (str_contains($content, 'sfProtoculousPlugin')) {
                 $matches[] = 'sfProtoculousPlugin';
             }
 

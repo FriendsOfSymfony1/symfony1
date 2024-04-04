@@ -144,7 +144,7 @@ abstract class sfTask
             }
 
             // add -- before each option if needed
-            if (0 !== strpos($value, '--')) {
+            if (!str_starts_with($value, '--')) {
                 $value = '--'.$value;
             }
 

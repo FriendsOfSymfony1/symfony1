@@ -140,7 +140,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
                         $models[$model]['package'] = $plugin->getName().'.lib.model.doctrine';
                     }
 
-                    if (!isset($models[$model]['package_custom_path']) && 0 === strpos($models[$model]['package'], $plugin->getName())) {
+                    if (!isset($models[$model]['package_custom_path']) && str_starts_with($models[$model]['package'], $plugin->getName())) {
                         $models[$model]['package_custom_path'] = $plugin->getRootDir().'/lib/model/doctrine';
                     }
                 }

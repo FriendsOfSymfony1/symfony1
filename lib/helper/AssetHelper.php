@@ -353,13 +353,13 @@ function image_tag($source, $options = [])
 
 function _compute_public_path($source, $dir, $ext, $absolute = false)
 {
-    if (strpos($source, '://') || 0 === strpos($source, '//')) {
+    if (strpos($source, '://') || str_starts_with($source, '//')) {
         return $source;
     }
 
     $request = sfContext::getInstance()->getRequest();
     $sf_relative_url_root = $request->getRelativeUrlRoot();
-    if (0 !== strpos($source, '/')) {
+    if (!str_starts_with($source, '/')) {
         $source = $sf_relative_url_root.'/'.$dir.'/'.$source;
     }
 
@@ -369,11 +369,11 @@ function _compute_public_path($source, $dir, $ext, $absolute = false)
         $source = substr($source, 0, $pos);
     }
 
-    if (false === strpos(basename($source), '.')) {
+    if (!str_contains(basename($source), '.')) {
         $source .= '.'.$ext;
     }
 
-    if ($sf_relative_url_root && 0 !== strpos($source, $sf_relative_url_root)) {
+    if ($sf_relative_url_root && !str_starts_with($source, $sf_relative_url_root)) {
         $source = $sf_relative_url_root.$source;
     }
 
@@ -588,7 +588,7 @@ function use_dynamic_stylesheet($css, $position = '', $options = [])
 
 function _dynamic_path($uri, $format, $absolute = false)
 {
-    return url_for($uri.(false === strpos($uri, '?') ? '?' : '&').'sf_format='.$format, $absolute);
+    return url_for($uri.(!str_contains($uri, '?') ? '?' : '&').'sf_format='.$format, $absolute);
 }
 
 /**

@@ -636,7 +636,7 @@ abstract class sfBrowserBase
      */
     public function doClick($name, $arguments = [], $options = [])
     {
-        if (false !== strpos($name, '[') || false !== strpos($name, ']')) {
+        if (str_contains($name, '[') || str_contains($name, ']')) {
             throw new InvalidArgumentException(sprintf('The name "%s" is not valid', $name));
         }
 
@@ -812,7 +812,7 @@ abstract class sfBrowserBase
         }
 
         $queryString = is_array($arguments) ? http_build_query($arguments, '', '&') : '';
-        $sep = false === strpos($url, '?') ? '?' : '&';
+        $sep = !str_contains($url, '?') ? '?' : '&';
 
         return [$url.($queryString ? $sep.$queryString : ''), 'get', []];
     }
@@ -853,9 +853,9 @@ abstract class sfBrowserBase
     public function fixUri($uri)
     {
         // remove absolute information if needed (to be able to do follow redirects, click on links, ...)
-        if (0 === strpos($uri, 'http')) {
+        if (str_starts_with($uri, 'http')) {
             // detect secure request
-            if (0 === strpos($uri, 'https')) {
+            if (str_starts_with($uri, 'https')) {
                 $this->defaultServerArray['HTTPS'] = 'on';
             } else {
                 unset($this->defaultServerArray['HTTPS']);

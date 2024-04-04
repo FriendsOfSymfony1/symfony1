@@ -151,7 +151,7 @@ function _get_option(&$options, $name, $default = null)
 function get_id_from_name($name, $value = null)
 {
     // check to see if we have an array variable for a field name
-    if (false !== strpos($name, '[')) {
+    if (str_contains($name, '[')) {
         $name = str_replace(['[]', '][', '[', ']'], [(null != $value) ? '_'.$value : '', '_', '_', ''], $name);
     }
 

@@ -25,7 +25,7 @@ class sfWebDebugPanelCache extends sfWebDebugPanel
     {
         $queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 
-        if (false === strpos($queryString, '_sf_ignore_cache')) {
+        if (!str_contains($queryString, '_sf_ignore_cache')) {
             return sprintf('?%s_sf_ignore_cache=1', $queryString ? $queryString.'&' : '');
         }
 

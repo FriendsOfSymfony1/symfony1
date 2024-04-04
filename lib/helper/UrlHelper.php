@@ -108,7 +108,7 @@ function url_for()
 {
     // for BC with 1.1
     $arguments = func_get_args();
-    if (is_array($arguments[0]) || '@' == substr($arguments[0], 0, 1) || false !== strpos($arguments[0], '/')) {
+    if (is_array($arguments[0]) || '@' == substr($arguments[0], 0, 1) || str_contains($arguments[0], '/')) {
         return call_user_func_array('url_for1', $arguments);
     }
 
@@ -156,7 +156,7 @@ function link_to()
 {
     // for BC with 1.1
     $arguments = func_get_args();
-    if (empty($arguments[1]) || is_array($arguments[1]) || '@' == substr($arguments[1], 0, 1) || false !== strpos($arguments[1], '/')) {
+    if (empty($arguments[1]) || is_array($arguments[1]) || '@' == substr($arguments[1], 0, 1) || str_contains($arguments[1], '/')) {
         return call_user_func_array('link_to1', $arguments);
     }
 
@@ -215,7 +215,7 @@ function form_tag_for(sfForm $form, $routePrefix, $attributes = [])
 function link_to_if()
 {
     $arguments = func_get_args();
-    if (empty($arguments[2]) || '@' == substr($arguments[2], 0, 1) || false !== strpos($arguments[2], '/')) {
+    if (empty($arguments[2]) || '@' == substr($arguments[2], 0, 1) || str_contains($arguments[2], '/')) {
         list($condition, $name, $params, $options) = array_pad($arguments, 4, null);
     } else {
         list($condition, $name, $routeName, $params, $options) = array_pad($arguments, 5, null);

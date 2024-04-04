@@ -316,7 +316,7 @@ class sfCommandManager
      */
     protected function parseLongOption($argument)
     {
-        if (false !== strpos($argument, '=')) {
+        if (str_contains($argument, '=')) {
             list($name, $value) = explode('=', $argument, 2);
 
             if (!$this->optionSet->hasOption($name)) {
