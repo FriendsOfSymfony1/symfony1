@@ -8,18 +8,16 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/../../vendor/autoload.php';
+$composerAutoloadLocations = [
+    __DIR__.'/../../../../autoload.php',
+    __DIR__.'/../../vendor/autoload.php',
+];
 
 // Try autoloading using composer if available.
-if (!file_exists($autoload = __DIR__.'/../../../../autoload.php')) {
-    $autoload = __DIR__.'/../../autoload.php';
-}
-
-// Fall back to classic Symfony loading
-if (!file_exists($autoload)) {
-    sfCoreAutoload::register();
-} else {
-    require_once $autoload;
+foreach ($composerAutoloadLocations as $composerAutoloadLocation) {
+    if (file_exists($composerAutoloadLocation) && is_readable($composerAutoloadLocation)) {
+        require_once $composerAutoloadLocation;
+    }
 }
 
 try {
