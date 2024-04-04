@@ -5,7 +5,8 @@
     "license": "MIT",
     "require": {
         "php" : "^7.4 || ^8.1",
-        "friendsofsymfony1/swiftmailer": "^5.4.13 || ^6.2.5"
+        "friendsofsymfony1/swiftmailer": "^5.4.13 || ^6.2.5",
+        "symfony/polyfill-php80": "^1.29"
     },
     "require-dev": {
         "psr/log": "*"
