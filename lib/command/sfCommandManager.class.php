@@ -132,7 +132,7 @@ class sfCommandManager
                 break;
             }
 
-            if ('--' == substr($argument, 0, 2)) {
+            if (str_starts_with($argument, '--')) {
                 $this->parseLongOption(substr($argument, 2));
             } elseif ('-' == $argument[0]) {
                 $this->parseShortOption(substr($argument, 1));

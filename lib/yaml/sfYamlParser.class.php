@@ -106,7 +106,7 @@ class sfYamlParser
                 $key = sfYamlInline::parseScalar($values['key']);
 
                 if ('<<' === $key) {
-                    if (isset($values['value']) && '*' === substr($values['value'], 0, 1)) {
+                    if (isset($values['value']) && str_starts_with($values['value'], '*')) {
                         $isInPlace = substr($values['value'], 1);
                         if (!array_key_exists($isInPlace, $this->refs)) {
                             throw new InvalidArgumentException(sprintf('Reference "%s" does not exist at line %s (%s).', $isInPlace, $this->getRealCurrentLineNb() + 1, $this->currentLine));
@@ -174,7 +174,7 @@ class sfYamlParser
                     $value = sfYamlInline::load($this->lines[0]);
                     if (is_array($value)) {
                         $first = reset($value);
-                        if ('*' === substr($first, 0, 1)) {
+                        if (str_starts_with($first, '*')) {
                             $data = [];
                             foreach ($value as $alias) {
                                 $data[] = $this->refs[substr($alias, 1)];
@@ -337,7 +337,7 @@ class sfYamlParser
      */
     protected function parseValue($value)
     {
-        if ('*' === substr($value, 0, 1)) {
+        if (str_starts_with($value, '*')) {
             if (false !== $pos = strpos($value, '#')) {
                 $value = substr($value, 1, $pos - 2);
             } else {

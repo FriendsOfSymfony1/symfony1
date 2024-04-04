@@ -253,7 +253,7 @@ abstract class sfTask
 
         $name = get_class($this);
 
-        if ('sf' == substr($name, 0, 2)) {
+        if (str_starts_with($name, 'sf')) {
             $name = substr($name, 2);
         }
 

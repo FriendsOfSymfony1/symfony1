@@ -179,7 +179,7 @@ class lime_test
     }
     $this->results['tests'][$this->test_nb]['message'] = $message;
     $this->results['tests'][$this->test_nb]['status'] = $result;
-    $this->output->echoln(sprintf("%s %d%s", $result ? 'ok' : 'not ok', $this->test_nb, $message = $message ? sprintf('%s %s', 0 === strpos($message, '#') ? '' : ' -', $message) : ''));
+    $this->output->echoln(sprintf("%s %d%s", $result ? 'ok' : 'not ok', $this->test_nb, $message = $message ? sprintf('%s %s', str_starts_with($message, '#') ? '' : ' -', $message) : ''));
 
     if (!$result)
     {

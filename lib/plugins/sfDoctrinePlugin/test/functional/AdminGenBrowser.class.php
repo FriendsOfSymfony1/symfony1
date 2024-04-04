@@ -26,7 +26,7 @@ class AdminGenBrowser extends sfTestBrowser
 
         $methods = get_class_methods($this);
         foreach ($methods as $method) {
-            if ('_test' == substr($method, 0, 5)) {
+            if (str_starts_with($method, '_test')) {
                 $this->{$method}();
             }
         }

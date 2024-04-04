@@ -100,7 +100,7 @@ class sfFinder
     {
         $name = strtolower($name);
 
-        if ('dir' === substr($name, 0, 3)) {
+        if (str_starts_with($name, 'dir')) {
             $this->type = 'directory';
 
             return $this;
