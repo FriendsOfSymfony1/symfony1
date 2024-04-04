@@ -259,7 +259,7 @@ class sfDomCssSelector implements Countable, Iterator
                                     break;
 
                                 case '$': // Match ends with value
-                                    $ok = $attrValue == substr($found->getAttribute($attrName), -strlen($attrValue));
+                                    $ok = str_ends_with($found->getAttribute($attrName), $attrValue);
 
                                     break;
 

@@ -756,7 +756,7 @@ class sfRoute implements Serializable
             if ('^' == $regex[0]) {
                 $regex = substr($regex, 1);
             }
-            if ('$' == substr($regex, -1)) {
+            if (str_ends_with($regex, '$')) {
                 $regex = substr($regex, 0, -1);
             }
 

@@ -257,7 +257,7 @@ abstract class sfTask
             $name = substr($name, 2);
         }
 
-        if ('Task' == substr($name, -4)) {
+        if (str_ends_with($name, 'Task')) {
             $name = substr($name, 0, -4);
         }
 

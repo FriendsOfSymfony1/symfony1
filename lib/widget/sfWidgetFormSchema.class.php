@@ -599,7 +599,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     {
         $format = $this->getNameFormat();
 
-        if ('[%s]' == substr($format, -4) && preg_match('/^(.+?)\[(.+)\]$/', $name, $match)) {
+        if (str_ends_with($format, '[%s]') && preg_match('/^(.+?)\[(.+)\]$/', $name, $match)) {
             $name = sprintf('%s[%s][%s]', substr($format, 0, -4), $match[1], $match[2]);
         } elseif (false !== $format) {
             $name = sprintf($format, $name);

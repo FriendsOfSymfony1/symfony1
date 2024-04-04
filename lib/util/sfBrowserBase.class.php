@@ -893,7 +893,7 @@ abstract class sfBrowserBase
             foreach ($tmps as $tmp) {
                 $var = &$var[$tmp];
             }
-            if ($var && '[]' === substr($name, -2)) {
+            if ($var && str_ends_with($name, '[]')) {
                 if (!is_array($var)) {
                     $var = [$var];
                 }
