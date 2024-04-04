@@ -56,10 +56,6 @@ abstract class sfBaseTask extends sfCommandApplicationTask
      */
     public function checkProjectExists()
     {
-        if (!file_exists('symfony')) {
-            throw new sfException('You must be in a symfony project directory.');
-        }
-
         return true;
     }
 
