@@ -436,7 +436,7 @@ class sfCoreAutoload
      */
     public static function unregister()
     {
-        spl_autoload_unregister([self::getInstance(), 'autoload']);
+        // spl_autoload_unregister([self::getInstance(), 'autoload']);
         self::$registered = false;
     }
 
