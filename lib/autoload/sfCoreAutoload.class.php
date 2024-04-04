@@ -12,12 +12,7 @@
 define('SYMFONY_VERSION', '1.5.20-dev');
 
 /**
- * sfCoreAutoload class.
- *
- * This class is a singleton as PHP seems to be unable to register 2 autoloaders that are instances
- * of the same class (why?).
- *
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @deprecated
  */
 class sfCoreAutoload
 {
@@ -397,9 +392,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Retrieves the singleton instance of this class.
-     *
-     * @return sfCoreAutoload a sfCoreAutoload implementation instance
+     * @deprecated
      */
     public static function getInstance()
     {
@@ -411,9 +404,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Register sfCoreAutoload in spl autoloader.
-     *
-     * @throws sfException If unable to register SPL autoload function
+     * @deprecated
      */
     public static function register()
     {
@@ -432,7 +423,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Unregister sfCoreAutoload from spl autoloader.
+     * @deprecated
      */
     public static function unregister()
     {
@@ -441,11 +432,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Handles autoloading of classes.
-     *
-     * @param string $class a class name
-     *
-     * @return bool Returns true if the class has been loaded
+     * @deprecated
      */
     public function autoload($class)
     {
@@ -459,11 +446,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Returns the filename of the supplied class.
-     *
-     * @param string $class The class name (case insensitive)
-     *
-     * @return string|null An absolute path or null
+     * @deprecated
      */
     public function getClassPath($class)
     {
@@ -477,9 +460,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Returns the base directory this autoloader is working on.
-     *
-     * @return string The path to the symfony core lib directory
+     * @deprecated
      */
     public function getBaseDir()
     {
@@ -487,9 +468,7 @@ class sfCoreAutoload
     }
 
     /**
-     * Rebuilds the association array between class names and paths.
-     *
-     * This method overrides this file (__FILE__)
+     * @deprecated
      */
     public static function make()
     {

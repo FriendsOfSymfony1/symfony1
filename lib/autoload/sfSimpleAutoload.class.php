@@ -9,12 +9,7 @@
  */
 
 /**
- * sfSimpleAutoload class.
- *
- * This class is a singleton as PHP seems to be unable to register 2 autoloaders that are instances
- * of the same class (why?).
- *
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @deprecated
  */
 class sfSimpleAutoload
 {
@@ -39,11 +34,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Retrieves the singleton instance of this class.
-     *
-     * @param string $cacheFile The file path to save the cache
-     *
-     * @return sfSimpleAutoload a sfSimpleAutoload implementation instance
+     * @deprecated
      */
     public static function getInstance($cacheFile = null)
     {
@@ -55,9 +46,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Register sfSimpleAutoload in spl autoloader.
-     *
-     * @throws sfException
+     * @deprecated
      */
     public static function register()
     {
@@ -78,7 +67,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Unregister sfSimpleAutoload from spl autoloader.
+     * @deprecated
      */
     public static function unregister()
     {
@@ -87,11 +76,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Handles autoloading of classes.
-     *
-     * @param string $class a class name
-     *
-     * @return bool Returns true if the class has been loaded
+     * @deprecated
      */
     public function autoload($class)
     {
@@ -119,7 +104,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Loads the cache.
+     * @deprecated
      */
     public function loadCache()
     {
@@ -134,7 +119,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Saves the cache.
+     * @deprecated
      */
     public function saveCache()
     {
@@ -148,7 +133,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Reloads cache.
+     * @deprecated
      */
     public function reload()
     {
@@ -172,7 +157,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Removes the cache.
+     * @deprecated
      */
     public function removeCache()
     {
@@ -180,10 +165,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Adds a directory to the autoloading system if not yet present and give it the highest possible precedence.
-     *
-     * @param string $dir The directory to look for classes
-     * @param string $ext The extension to look for
+     * @deprecated
      */
     public function addDirectory($dir, $ext = '.php')
     {
@@ -209,10 +191,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Adds files to the autoloading system.
-     *
-     * @param array $files    An array of files
-     * @param bool  $register Whether to register those files as single entities (used when reloading)
+     * @deprecated
      */
     public function addFiles(array $files, $register = true)
     {
@@ -222,10 +201,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Adds a file to the autoloading system.
-     *
-     * @param string $file     A file path
-     * @param bool   $register Whether to register those files as single entities (used when reloading)
+     * @deprecated
      */
     public function addFile($file, $register = true)
     {
@@ -254,10 +230,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Sets the path for a particular class.
-     *
-     * @param string $class A PHP class name
-     * @param string $path  An absolute path
+     * @deprecated
      */
     public function setClassPath($class, $path)
     {
@@ -269,11 +242,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Returns the path where a particular class can be found.
-     *
-     * @param string $class A PHP class name
-     *
-     * @return string|null An absolute path
+     * @deprecated
      */
     public function getClassPath($class)
     {
@@ -283,11 +252,7 @@ class sfSimpleAutoload
     }
 
     /**
-     * Loads configuration from the supplied files.
-     *
-     * @param array $files An array of autoload.yml files
-     *
-     * @see sfAutoloadConfigHandler
+     * @deprecated
      */
     public function loadConfiguration(array $files)
     {
