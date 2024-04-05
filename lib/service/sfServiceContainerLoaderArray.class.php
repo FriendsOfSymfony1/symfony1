@@ -58,7 +58,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
 
     protected function parseDefinition($service)
     {
-        if (is_string($service) && 0 === strpos($service, '@')) {
+        if (is_string($service) && str_starts_with($service, '@')) {
             return substr($service, 1);
         }
 
@@ -101,7 +101,7 @@ class sfServiceContainerLoaderArray extends sfServiceContainerLoader
     {
         if (is_array($value)) {
             $value = array_map([$this, 'resolveServices'], $value);
-        } elseif (is_string($value) && 0 === strpos($value, '@')) {
+        } elseif (is_string($value) && str_starts_with($value, '@')) {
             $value = new sfServiceReference(substr($value, 1));
         }
 

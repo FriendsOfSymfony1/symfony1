@@ -266,14 +266,14 @@ abstract class sfRouting
     protected function fixGeneratedUrl($url, $absolute = false)
     {
         if (isset($this->options['context']['prefix'])) {
-            if (0 === strpos($url, 'http')) {
+            if (str_starts_with($url, 'http')) {
                 $url = preg_replace('#https?\://[^/]+#', '$0'.$this->options['context']['prefix'], $url);
             } else {
                 $url = $this->options['context']['prefix'].$url;
             }
         }
 
-        if ($absolute && isset($this->options['context']['host']) && 0 !== strpos($url, 'http')) {
+        if ($absolute && isset($this->options['context']['host']) && !str_starts_with($url, 'http')) {
             $url = 'http'.(isset($this->options['context']['is_secure']) && $this->options['context']['is_secure'] ? 's' : '').'://'.$this->options['context']['host'].$url;
         }
 
