@@ -157,9 +157,9 @@ class sfConfigCache
     /**
      * Registers a configuration handler.
      *
-     * @param string       $handler The handler to use when parsing a configuration file
-     * @param class-string $class   A configuration handler class
-     * @param string       $params  An array of options for the handler class initialization
+     * @param string                        $handler The handler to use when parsing a configuration file
+     * @param class-string<sfConfigHandler> $class   A configuration handler class
+     * @param string[]                      $params  An array of options for the handler class initialization
      */
     public function registerConfigHandler($handler, $class, $params = [])
     {
