@@ -13,13 +13,11 @@
  * as headers, cookies and content.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfResponse implements Serializable
 {
     /** @var array */
-    protected $options = array();
+    protected $options = [];
 
     /** @var sfEventDispatcher */
     protected $dispatcher;
@@ -34,7 +32,7 @@ abstract class sfResponse implements Serializable
      *
      * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $options = array())
+    public function __construct(sfEventDispatcher $dispatcher, $options = [])
     {
         $this->initialize($dispatcher, $options);
     }
@@ -47,11 +45,11 @@ abstract class sfResponse implements Serializable
      *
      * @return mixed The returned value of the called method
      *
-     * @throws <b>sfException</b> If the calls fails
+     * @throws sfException If the calls fails
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'response.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'response.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
             throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
         }
@@ -66,7 +64,7 @@ abstract class sfResponse implements Serializable
      */
     public function __serialize()
     {
-        return array('content' => $this->content);
+        return ['content' => $this->content];
     }
 
     /**
@@ -89,9 +87,9 @@ abstract class sfResponse implements Serializable
      * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
      * @param array             $options    An array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfResponse
+     * @throws sfInitializationException If an error occurs while initializing this sfResponse
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->options = $options;
@@ -140,7 +138,7 @@ abstract class sfResponse implements Serializable
         $content = $event->getReturnValue();
 
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send content (%s o)', strlen($content)))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send content (%s o)', strlen($content))]));
         }
 
         echo $content;

@@ -12,8 +12,6 @@
  * sfWebDebugPanelConfig adds a panel to the web debug toolbar with the current configuration.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelConfig extends sfWebDebugPanel
 {
@@ -29,21 +27,19 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
 
     public function getPanelContent()
     {
-        $config = array(
+        $config = [
             'debug' => sfConfig::get('sf_debug') ? 'on' : 'off',
             'xdebug' => extension_loaded('xdebug') ? 'on' : 'off',
             'logging' => sfConfig::get('sf_logging_enabled') ? 'on' : 'off',
             'cache' => sfConfig::get('sf_cache') ? 'on' : 'off',
             'compression' => sfConfig::get('sf_compressed') ? 'on' : 'off',
             'tokenizer' => function_exists('token_get_all') ? 'on' : 'off',
-            'eaccelerator' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable') ? 'on' : 'off',
             'apc' => extension_loaded('apc') && ini_get('apc.enabled') ? 'on' : 'off',
-            'xcache' => extension_loaded('xcache') && ini_get('xcache.cacher') ? 'on' : 'off',
-        );
+        ];
 
         $html = '<ul id="sfWebDebugConfigSummary">';
         foreach ($config as $key => $value) {
-            $html .= '<li class="is'.$value.('xcache' == $key ? ' last' : '').'">'.$key.'</li>';
+            $html .= '<li class="is'.$value.'">'.$key.'</li>';
         }
         $html .= '</ul>';
 

@@ -2,8 +2,6 @@
 
 /**
  * User form.
- *
- * @version    SVN: $Id$
  */
 class UserForm extends BaseUserForm
 {

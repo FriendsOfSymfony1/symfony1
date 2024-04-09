@@ -22,7 +22,7 @@ try {
     $t->pass('->__construct() throws an "RuntimeException" if you don\'t pass a "value" option');
 }
 
-$v = new sfValidatorEqual(array('value' => 'foo'));
+$v = new sfValidatorEqual(['value' => 'foo']);
 
 // ->clean()
 $t->diag('->clean()');

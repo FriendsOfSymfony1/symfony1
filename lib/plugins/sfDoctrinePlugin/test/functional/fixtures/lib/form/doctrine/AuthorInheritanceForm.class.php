@@ -2,8 +2,6 @@
 
 /**
  * AuthorInheritance form.
- *
- * @version    SVN: $Id$
  */
 class AuthorInheritanceForm extends BaseAuthorInheritanceForm
 {

@@ -12,8 +12,6 @@
  * sfCache is an abstract class for all cache classes in symfony.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfCache
 {
@@ -21,7 +19,7 @@ abstract class sfCache
     public const ALL = 2;
     public const SEPARATOR = ':';
 
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Class constructor.
@@ -30,7 +28,7 @@ abstract class sfCache
      *
      * @param array $options
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->initialize($options);
     }
@@ -50,15 +48,15 @@ abstract class sfCache
      *
      * * lifetime (optional): The default life time (default value: 86400)
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfCache instance
+     * @throws sfInitializationException If an error occurs while initializing this sfCache instance
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
-        $this->options = array_merge(array(
+        $this->options = array_merge([
             'automatic_cleaning_factor' => 1000,
             'lifetime' => 86400,
             'prefix' => md5(__DIR__),
-        ), $options);
+        ], $options);
 
         $this->options['prefix'] .= self::SEPARATOR;
     }
@@ -151,7 +149,7 @@ abstract class sfCache
      */
     public function getMany($keys)
     {
-        $data = array();
+        $data = [];
         foreach ($keys as $key) {
             $data[$key] = $this->get($key);
         }
@@ -201,8 +199,6 @@ abstract class sfCache
      *
      * @param string $name  The option name
      * @param mixed  $value The option value
-     *
-     * @return mixed
      */
     public function setOption($name, $value)
     {
@@ -224,8 +220,8 @@ abstract class sfCache
     protected function patternToRegexp($pattern)
     {
         $regexp = str_replace(
-            array('\\*\\*', '\\*'),
-            array('.+?', '[^'.preg_quote(sfCache::SEPARATOR, '#').']+'),
+            ['\\*\\*', '\\*'],
+            ['.+?', '[^'.preg_quote(sfCache::SEPARATOR, '#').']+'],
             preg_quote($pattern, '#')
         );
 

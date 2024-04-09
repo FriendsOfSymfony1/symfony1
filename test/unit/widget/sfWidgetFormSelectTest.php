@@ -16,7 +16,7 @@ class FormFormatterStub extends sfWidgetFormSchemaFormatter
     {
     }
 
-    public function translate($subject, $parameters = array())
+    public function translate($subject, $parameters = [])
     {
         return sprintf('translation[%s]', $subject);
     }
@@ -29,7 +29,7 @@ $dom->validateOnParse = true;
 
 // ->render()
 $t->diag('->render()');
-$w = new sfWidgetFormSelect(array('choices' => array('foo' => 'bar', 'foobar' => 'foo')));
+$w = new sfWidgetFormSelect(['choices' => ['foo' => 'bar', 'foobar' => 'foo']]);
 $dom->loadHTML($w->render('foo', 'foobar'));
 $css = new sfDomCssSelector($dom);
 
@@ -37,32 +37,32 @@ $t->is($css->matchSingle('#foo option[value="foobar"][selected="selected"]')->ge
 $t->is(count($css->matchAll('#foo option')->getNodes()), 2, '->render() renders all choices as option tags');
 
 // value attribute is always mandatory
-$w = new sfWidgetFormSelect(array('choices' => array('' => 'bar')));
+$w = new sfWidgetFormSelect(['choices' => ['' => 'bar']]);
 $t->like($w->render('foo', 'foobar'), '/<option value="">/', '->render() always generate a value attribute, even for empty keys');
 
 // other attributes are removed is empty
-$w = new sfWidgetFormSelect(array('choices' => array('' => 'bar')));
-$t->like($w->render('foo', 'foobar', array('class' => '', 'style' => null)), '/<option value="">/', '->render() always generate a value attribute, even for empty keys');
+$w = new sfWidgetFormSelect(['choices' => ['' => 'bar']]);
+$t->like($w->render('foo', 'foobar', ['class' => '', 'style' => null]), '/<option value="">/', '->render() always generate a value attribute, even for empty keys');
 
 // multiple select
 $t->diag('multiple select');
-$w = new sfWidgetFormSelect(array('multiple' => true, 'choices' => array('foo' => 'bar', 'foobar' => 'foo')));
-$dom->loadHTML($w->render('foo', array('foo', 'foobar')));
+$w = new sfWidgetFormSelect(['multiple' => true, 'choices' => ['foo' => 'bar', 'foobar' => 'foo']]);
+$dom->loadHTML($w->render('foo', ['foo', 'foobar']));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('select[multiple="multiple"]')->getNodes()), 1, '->render() automatically adds a multiple HTML attributes if multiple is true');
 $t->is(count($css->matchAll('select[name="foo[]"]')->getNodes()), 1, '->render() automatically adds a [] at the end of the name if multiple is true');
 $t->is($css->matchSingle('#foo option[value="foobar"][selected="selected"]')->getValue(), 'foo', '->render() renders a select tag with the value selected');
 $t->is($css->matchSingle('#foo option[value="foo"][selected="selected"]')->getValue(), 'bar', '->render() renders a select tag with the value selected');
 
-$dom->loadHTML($w->render('foo[]', array('foo', 'foobar')));
+$dom->loadHTML($w->render('foo[]', ['foo', 'foobar']));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('select[name="foo[]"]')->getNodes()), 1, '->render() automatically does not add a [] at the end of the name if multiple is true and the name already has one');
 
 // optgroup support
 $t->diag('optgroup support');
-$w = new sfWidgetFormSelect(array('choices' => array('foo' => array('foo' => 'bar', 'bar' => 'foo'), 'foobar' => 'foo')));
+$w = new sfWidgetFormSelect(['choices' => ['foo' => ['foo' => 'bar', 'bar' => 'foo'], 'foobar' => 'foo']]);
 
-$dom->loadHTML($w->render('foo', array('foo', 'foobar')));
+$dom->loadHTML($w->render('foo', ['foo', 'foobar']));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo optgroup[label="foo"] option')->getNodes()), 2, '->render() has support for optgroups tags');
 
@@ -79,7 +79,7 @@ $t->diag('choices are translated');
 $ws = new sfWidgetFormSchema();
 $ws->addFormFormatter('stub', new FormFormatterStub());
 $ws->setFormFormatterName('stub');
-$w = new sfWidgetFormSelect(array('choices' => array('foo' => 'bar', 'foobar' => 'foo')));
+$w = new sfWidgetFormSelect(['choices' => ['foo' => 'bar', 'foobar' => 'foo']]);
 $w->setParent($ws);
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
@@ -92,7 +92,7 @@ $t->diag('optgroup support with translated choices');
 $ws = new sfWidgetFormSchema();
 $ws->addFormFormatter('stub', new FormFormatterStub());
 $ws->setFormFormatterName('stub');
-$w = new sfWidgetFormSelect(array('choices' => array('group' => array('foo' => 'bar', 'foobar' => 'foo'))));
+$w = new sfWidgetFormSelect(['choices' => ['group' => ['foo' => 'bar', 'foobar' => 'foo']]]);
 $w->setParent($ws);
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
@@ -104,22 +104,22 @@ $t->diag('choices as a callable');
 
 function choice_callable()
 {
-    return array(1, 2, 3);
+    return [1, 2, 3];
 }
-$w = new sfWidgetFormSelect(array('choices' => new sfCallable('choice_callable')));
+$w = new sfWidgetFormSelect(['choices' => new sfCallable('choice_callable')]);
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo option')->getNodes()), 3, '->render() accepts a sfCallable as a choices option');
 
 // attributes
 $t->diag('attributes');
-$w = new sfWidgetFormSelect(array('choices' => array(0, 1, 2)));
-$dom->loadHTML($w->render('foo', null, array('disabled' => 'disabled')));
+$w = new sfWidgetFormSelect(['choices' => [0, 1, 2]]);
+$dom->loadHTML($w->render('foo', null, ['disabled' => 'disabled']));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 1, '->render() does not pass the select HTML attributes to the option tag');
 $t->is(count($css->matchAll('option[disabled="disabled"]')->getNodes()), 0, '->render() does not pass the select HTML attributes to the option tag');
 
-$w = new sfWidgetFormSelect(array('choices' => array(0, 1, 2)), array('disabled' => 'disabled'));
+$w = new sfWidgetFormSelect(['choices' => [0, 1, 2]], ['disabled' => 'disabled']);
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 1, '->render() does not pass the select HTML attributes to the option tag');
@@ -127,12 +127,12 @@ $t->is(count($css->matchAll('option[disabled="disabled"]')->getNodes()), 0, '->r
 
 // __clone()
 $t->diag('__clone()');
-$w = new sfWidgetFormSelect(array('choices' => new sfCallable(array($w, 'foo'))));
+$w = new sfWidgetFormSelect(['choices' => new sfCallable([$w, 'foo'])]);
 $w1 = clone $w;
 $callable = $w1->getOption('choices')->getCallable();
 $t->is(spl_object_hash($callable[0]), spl_object_hash($w1), '__clone() changes the choices is a callable and the object is an instance of the current object');
 
-$w = new sfWidgetFormSelect(array('choices' => new sfCallable(array($a = new stdClass(), 'foo'))));
+$w = new sfWidgetFormSelect(['choices' => new sfCallable([$a = new stdClass(), 'foo'])]);
 $w1 = clone $w;
 $callable = $w1->getOption('choices')->getCallable();
 $t->is(spl_object_hash($callable[0]), spl_object_hash($a), '__clone() changes nothing if the choices is a callable and the object is not an instance of the current object');

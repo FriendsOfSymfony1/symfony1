@@ -16,8 +16,6 @@
  * The options and messages are proxied from the decorated validator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfValidatorDecorator extends sfValidatorBase
 {
@@ -25,11 +23,8 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $options
-     * @param mixed $messages
      */
-    public function __construct($options = array(), $messages = array())
+    public function __construct($options = [], $messages = [])
     {
         $this->validator = $this->getValidator();
 
@@ -48,8 +43,6 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     public function clean($value)
     {
@@ -58,8 +51,6 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $name
      */
     public function getMessage($name)
     {
@@ -68,13 +59,12 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function setMessage($name, $value)
     {
         $this->validator->setMessage($name, $value);
+
+        return $this;
     }
 
     /**
@@ -87,8 +77,6 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $values
      */
     public function setMessages($values)
     {
@@ -97,8 +85,6 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $name
      */
     public function getOption($name)
     {
@@ -107,19 +93,16 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function setOption($name, $value)
     {
         $this->validator->setOption($name, $value);
+
+        return $this;
     }
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $name
      */
     public function hasOption($name)
     {
@@ -136,18 +119,16 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $values
      */
     public function setOptions($values)
     {
         $this->validator->setOptions($values);
+
+        return $this;
     }
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $indent
      */
     public function asString($indent = 0)
     {
@@ -181,8 +162,6 @@ abstract class sfValidatorDecorator extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {

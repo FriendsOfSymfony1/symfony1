@@ -12,8 +12,6 @@
  * sfWidgetFormInputCheckbox represents an HTML checkbox tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputCheckbox extends sfWidgetFormInput
 {
@@ -29,7 +27,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      *
      * @see sfWidgetFormInput
      */
-    public function __construct($options = array(), $attributes = array())
+    public function __construct($options = [], $attributes = [])
     {
         $this->addOption('value_attribute_value');
 
@@ -48,7 +46,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if (null !== $value && false !== $value) {
             $attributes['checked'] = 'checked';
@@ -67,7 +65,7 @@ class sfWidgetFormInputCheckbox extends sfWidgetFormInput
      *
      * @see sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

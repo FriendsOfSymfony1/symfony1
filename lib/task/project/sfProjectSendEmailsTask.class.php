@@ -12,8 +12,6 @@
  * Send emails stored in a queue.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectSendEmailsTask extends sfBaseTask
 {
@@ -22,12 +20,12 @@ class sfProjectSendEmailsTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
             new sfCommandOption('message-limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'The maximum number of messages to send', 0),
             new sfCommandOption('time-limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'The time limit for sending messages (in seconds)', 0),
-        ));
+        ]);
 
         $this->namespace = 'project';
         $this->name = 'send-emails';
@@ -49,7 +47,7 @@ Or limit to time (in seconds):
 EOF;
     }
 
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
 
@@ -60,5 +58,7 @@ EOF;
         $sent = $this->getMailer()->flushQueue();
 
         $this->logSection('project', sprintf('sent %s emails', $sent));
+
+        return 0;
     }
 }

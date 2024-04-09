@@ -9,7 +9,7 @@
  */
 
 $app = 'frontend';
-if (!include(__DIR__.'/../bootstrap/functional.php')) {
+if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
@@ -24,8 +24,7 @@ $b->
   with('response')->begin()->
     isStatusCode(200)->
     checkElement('body div', 'foo')->
-  end()
-;
+  end();
 
 $t = $b->test();
 

@@ -15,8 +15,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfDoctrineRecord extends Doctrine_Record
 {
@@ -29,12 +27,12 @@ abstract class sfDoctrineRecord extends Doctrine_Record
      */
     public function __toString()
     {
-        $guesses = array('name',
+        $guesses = ['name',
             'title',
             'description',
             'subject',
             'keywords',
-            'id');
+            'id'];
 
         // we try to guess a column which would give a good description of the object
         foreach ($guesses as $descriptionColumn) {
@@ -60,7 +58,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
         $failed = false;
 
         try {
-            if (in_array($verb = substr($method, 0, 3), array('set', 'get'))) {
+            if (in_array($verb = substr($method, 0, 3), ['set', 'get'])) {
                 $name = substr($method, 3);
 
                 $table = $this->getTable();
@@ -91,8 +89,8 @@ abstract class sfDoctrineRecord extends Doctrine_Record
                 }
 
                 return call_user_func_array(
-                    array($this, $verb),
-                    array_merge(array($entityName), $arguments)
+                    [$this, $verb],
+                    array_merge([$entityName], $arguments)
                 );
             }
             $failed = true;
@@ -223,7 +221,7 @@ abstract class sfDoctrineRecord extends Doctrine_Record
      *
      * @throws sfException if the field is not one of date, datetime, or timestamp types
      */
-    public function setDateTimeObject($dateFieldName, DateTime $dateTimeObject = null)
+    public function setDateTimeObject($dateFieldName, ?DateTime $dateTimeObject = null)
     {
         $type = $this->getTable()->getTypeOf($dateFieldName);
         if ('date' == $type || 'timestamp' == $type || 'datetime' == $type) {

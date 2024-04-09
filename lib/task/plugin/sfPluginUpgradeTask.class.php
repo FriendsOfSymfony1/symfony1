@@ -14,8 +14,6 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  * Upgrades a plugin.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPluginUpgradeTask extends sfPluginBaseTask
 {
@@ -24,15 +22,15 @@ class sfPluginUpgradeTask extends sfPluginBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('name', sfCommandArgument::REQUIRED, 'The plugin name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('stability', 's', sfCommandOption::PARAMETER_REQUIRED, 'The preferred stability (stable, beta, alpha)', null),
             new sfCommandOption('release', 'r', sfCommandOption::PARAMETER_REQUIRED, 'The preferred version', null),
             new sfCommandOption('channel', 'c', sfCommandOption::PARAMETER_REQUIRED, 'The PEAR channel name', null),
-        ));
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'upgrade';
@@ -55,14 +53,13 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('plugin', sprintf('upgrading plugin "%s"', $arguments['name']));
 
         $this->getPluginManager()->installPlugin($arguments['name'], $options);
+
+        return 0;
     }
 }

@@ -23,14 +23,14 @@ class Test extends sfDoctrineRecord
 {
     public function setUp()
     {
-        $this->hasMany('TestRelation as TestRelations', array('local' => 'id', 'foreign' => 'test_id'));
+        $this->hasMany('TestRelation as TestRelations', ['local' => 'id', 'foreign' => 'test_id']);
     }
 
     public function setTableDefinition()
     {
-        $this->hasColumn('name', 'string', 255, array('notblank' => true));
+        $this->hasColumn('name', 'string', 255, ['notblank' => true]);
         $this->hasColumn('test as TEST', 'string', 255);
-        $this->hasColumn('email', 'string', 255, array('email' => true, 'notnull' => true));
+        $this->hasColumn('email', 'string', 255, ['email' => true, 'notnull' => true]);
     }
 }
 
@@ -38,7 +38,7 @@ class TestRelation extends sfDoctrineRecord
 {
     public function setUp()
     {
-        $this->hasOne('Test', array('local' => 'test_id', 'foreign' => 'id'));
+        $this->hasOne('Test', ['local' => 'test_id', 'foreign' => 'id']);
     }
 
     public function setTableDefinition()

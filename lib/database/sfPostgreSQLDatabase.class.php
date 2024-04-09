@@ -23,15 +23,13 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfPostgreSQLDatabase extends sfDatabase
 {
     /**
      * Connects to the database.
      *
-     * @throws <b>sfDatabaseException</b> If a connection could not be created
+     * @throws sfDatabaseException If a connection could not be created
      */
     public function connect()
     {
@@ -68,7 +66,7 @@ class sfPostgreSQLDatabase extends sfDatabase
     /**
      * Executes the shutdown procedure.
      *
-     * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this database
+     * @throws sfDatabaseException If an error occurs while shutting down this database
      */
     public function shutdown()
     {

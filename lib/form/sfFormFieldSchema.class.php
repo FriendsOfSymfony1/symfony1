@@ -12,14 +12,12 @@
  * sfFormFieldSchema represents an array of widgets bind to names and values.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Countable
 {
     protected $count = 0;
-    protected $fieldNames = array();
-    protected $fields = array();
+    protected $fieldNames = [];
+    protected $fields = [];
 
     /**
      * Constructor.
@@ -30,7 +28,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      * @param string             $value  The field value
      * @param sfValidatorError   $error  A sfValidatorError instance
      */
-    public function __construct(sfWidgetFormSchema $widget, sfFormField $parent = null, $name, $value, sfValidatorError $error = null)
+    public function __construct(sfWidgetFormSchema $widget, ?sfFormField $parent = null, $name, $value, ?sfValidatorError $error = null)
     {
         parent::__construct($widget, $parent, $name, $value, $error);
 
@@ -64,7 +62,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      */
     public function getHiddenFields($recursive = true)
     {
-        $fields = array();
+        $fields = [];
 
         foreach ($this as $name => $field) {
             if ($field instanceof sfFormFieldSchema && $recursive) {

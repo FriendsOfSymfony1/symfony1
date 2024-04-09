@@ -65,8 +65,8 @@ $argument->setDefault('another');
 $t->is($argument->getDefault(), 'another', '->setDefault() changes the default value');
 
 $argument = new sfCommandArgument('foo', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY);
-$argument->setDefault(array(1, 2));
-$t->is($argument->getDefault(), array(1, 2), '->setDefault() changes the default value');
+$argument->setDefault([1, 2]);
+$t->is($argument->getDefault(), [1, 2], '->setDefault() changes the default value');
 
 try {
     $argument = new sfCommandArgument('foo', sfCommandArgument::REQUIRED);

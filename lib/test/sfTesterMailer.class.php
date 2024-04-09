@@ -12,8 +12,6 @@
  * sfTesterMailer implements tests for the symfony mailer object.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTesterMailer extends sfTester
 {
@@ -180,7 +178,7 @@ class sfTesterMailer extends sfTester
             $this->tester->fail('unable to test as no email were sent');
         }
 
-        $headers = array();
+        $headers = [];
         foreach ($this->message->getHeaders()->getAll($key) as $header) {
             $headers[] = $header->getFieldBody();
         }

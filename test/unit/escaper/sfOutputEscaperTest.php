@@ -66,10 +66,10 @@ $t->is(sfOutputEscaper::escape('esc_entities', '<strong>escaped!</strong>'), '&l
 $t->is(sfOutputEscaper::escape('esc_entities', '<strong>échappé</strong>'), '&lt;strong&gt;&eacute;chapp&eacute;&lt;/strong&gt;', '::escape() returns an escaped string if the value to escape is a string');
 
 $t->diag('::escape() escapes arrays');
-$input = array(
+$input = [
     'foo' => '<strong>escaped!</strong>',
-    'bar' => array('foo' => '<strong>escaped!</strong>'),
-);
+    'bar' => ['foo' => '<strong>escaped!</strong>'],
+];
 $output = sfOutputEscaper::escape('esc_entities', $input);
 $t->isa_ok($output, 'sfOutputEscaperArrayDecorator', '::escape() returns a sfOutputEscaperArrayDecorator object if the value to escape is an array');
 $t->is($output['foo'], '&lt;strong&gt;escaped!&lt;/strong&gt;', '::escape() escapes all elements of the original array');
@@ -117,10 +117,10 @@ $t->is(sfOutputEscaper::unescape('&lt;strong&gt;escaped!&lt;/strong&gt;'), '<str
 $t->is(sfOutputEscaper::unescape('&lt;strong&gt;&eacute;chapp&eacute;&lt;/strong&gt;'), '<strong>échappé</strong>', '::unescape() returns an unescaped string if the value to unescape is a string');
 
 $t->diag('::unescape() unescapes arrays');
-$input = sfOutputEscaper::escape('esc_entities', array(
+$input = sfOutputEscaper::escape('esc_entities', [
     'foo' => '<strong>escaped!</strong>',
-    'bar' => array('foo' => '<strong>escaped!</strong>'),
-));
+    'bar' => ['foo' => '<strong>escaped!</strong>'],
+]);
 $output = sfOutputEscaper::unescape($input);
 $t->ok(is_array($output), '::unescape() returns an array if the input is a sfOutputEscaperArrayDecorator object');
 $t->is($output['foo'], '<strong>escaped!</strong>', '::unescape() unescapes all elements of the original array');
@@ -150,14 +150,14 @@ $t->is(sfOutputEscaper::unescape($fh), $fh, '::unescape() do nothing to resource
 
 $t->diag('::unescape() unescapes mixed arrays');
 $object = new OutputEscaperTestClass();
-$input = array(
+$input = [
     'foo' => 'bar',
     'bar' => sfOutputEscaper::escape('esc_entities', '<strong>bar</strong>'),
     'foobar' => sfOutputEscaper::escape('esc_entities', $object),
-);
-$output = array(
+];
+$output = [
     'foo' => 'bar',
     'bar' => '<strong>bar</strong>',
     'foobar' => $object,
-);
+];
 $t->is(sfOutputEscaper::unescape($input), $output, '::unescape() unescapes values with some escaped and unescaped values');

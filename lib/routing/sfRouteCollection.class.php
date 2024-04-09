@@ -12,14 +12,12 @@
  * sfRouteCollection represents a collection of routes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfRouteCollection implements Iterator
 {
     protected $count = 0;
-    protected $options = array();
-    protected $routes = array();
+    protected $options = [];
+    protected $routes = [];
 
     /**
      * Constructor.

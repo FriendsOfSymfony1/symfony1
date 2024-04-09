@@ -12,8 +12,6 @@
  * Abstract class for validation classes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfValidation extends sfBaseTask
 {
@@ -26,7 +24,7 @@ abstract class sfValidation extends sfBaseTask
 
     abstract public function getHeader();
 
-    public function execute($arguments = array(), $options = array())
+    public function execute($arguments = [], $options = [])
     {
         throw new sfException('You can\'t execute this task.');
     }
@@ -83,10 +81,10 @@ abstract class sfValidation extends sfBaseTask
         return array_merge(
             glob(sfConfig::get('sf_apps_dir').'/*/modules/*/lib'.$subdirectory),
             glob(sfConfig::get('sf_apps_dir').'/*/lib'.$subdirectory),
-            array(
+            [
                 sfConfig::get('sf_apps_dir').'/lib'.$subdirectory,
                 sfConfig::get('sf_lib_dir').$subdirectory,
-            )
+            ]
         );
     }
 

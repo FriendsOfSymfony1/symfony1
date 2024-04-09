@@ -17,10 +17,10 @@ $config->initialize();
 
 $dir = __DIR__.DIRECTORY_SEPARATOR.'fixtures'.DIRECTORY_SEPARATOR.'sfSimpleYamlConfigHandler'.DIRECTORY_SEPARATOR;
 
-$array = get_retval($config, array($dir.'config.yml'));
+$array = get_retval($config, [$dir.'config.yml']);
 $t->is($array['article']['title'], 'foo', '->execute() returns configuration file as an array');
 
-$array = get_retval($config, array($dir.'config.yml', $dir.'config_bis.yml'));
+$array = get_retval($config, [$dir.'config.yml', $dir.'config_bis.yml']);
 $t->is($array['article']['title'], 'bar', '->execute() returns configuration file as an array');
 
 function get_retval($config, $files)

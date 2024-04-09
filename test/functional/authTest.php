@@ -9,7 +9,7 @@
  */
 
 $app = 'frontend';
-if (!include(__DIR__.'/../bootstrap/functional.php')) {
+if (!include __DIR__.'/../bootstrap/functional.php') {
     return;
 }
 
@@ -28,8 +28,7 @@ class sfAuthTestBrowser extends sfTestBrowser
             checkElement('#user', '')->
             checkElement('#password', '')->
             checkElement('#msg', 'KO')->
-          end()
-        ;
+          end();
     }
 
     public function checkAuth()
@@ -45,8 +44,7 @@ class sfAuthTestBrowser extends sfTestBrowser
             checkElement('#user', 'foo')->
             checkElement('#password', 'bar')->
             checkElement('#msg', 'OK')->
-          end()
-        ;
+          end();
     }
 }
 
@@ -62,5 +60,4 @@ $b->
 
   restart()->
 
-  checkNonAuth()
-;
+  checkNonAuth();

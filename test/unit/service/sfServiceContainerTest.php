@@ -17,28 +17,28 @@ $t->diag('__construct()');
 $sc = new sfServiceContainer();
 $t->is(spl_object_hash($sc->getService('service_container')), spl_object_hash($sc), '__construct() automatically registers itself as a service');
 
-$sc = new sfServiceContainer(array('foo' => 'bar'));
-$t->is($sc->getParameters(), array('foo' => 'bar'), '__construct() takes an array of parameters as its first argument');
+$sc = new sfServiceContainer(['foo' => 'bar']);
+$t->is($sc->getParameters(), ['foo' => 'bar'], '__construct() takes an array of parameters as its first argument');
 
 // ->setParameters() ->getParameters()
 $t->diag('->setParameters() ->getParameters()');
 
 $sc = new sfServiceContainer();
-$t->is($sc->getParameters(), array(), '->getParameters() returns an empty array if no parameter has been defined');
+$t->is($sc->getParameters(), [], '->getParameters() returns an empty array if no parameter has been defined');
 
-$sc->setParameters(array('foo' => 'bar'));
-$t->is($sc->getParameters(), array('foo' => 'bar'), '->setParameters() sets the parameters');
+$sc->setParameters(['foo' => 'bar']);
+$t->is($sc->getParameters(), ['foo' => 'bar'], '->setParameters() sets the parameters');
 
-$sc->setParameters(array('bar' => 'foo'));
-$t->is($sc->getParameters(), array('bar' => 'foo'), '->setParameters() overrides the previous defined parameters');
+$sc->setParameters(['bar' => 'foo']);
+$t->is($sc->getParameters(), ['bar' => 'foo'], '->setParameters() overrides the previous defined parameters');
 
-$sc->setParameters(array('Bar' => 'foo'));
-$t->is($sc->getParameters(), array('bar' => 'foo'), '->setParameters() converts the key to lowercase');
+$sc->setParameters(['Bar' => 'foo']);
+$t->is($sc->getParameters(), ['bar' => 'foo'], '->setParameters() converts the key to lowercase');
 
 // ->setParameter() ->getParameter()
 $t->diag('->setParameter() ->getParameter() ');
 
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(['foo' => 'bar']);
 $sc->setParameter('bar', 'foo');
 $t->is($sc->getParameter('bar'), 'foo', '->setParameter() sets the value of a new parameter');
 $t->is($sc->getParameter('bar'), 'foo', '->getParameter() gets the value of a parameter');
@@ -59,18 +59,18 @@ try {
 
 // ->hasParameter()
 $t->diag('->hasParameter()');
-$sc = new sfServiceContainer(array('foo' => 'bar'));
+$sc = new sfServiceContainer(['foo' => 'bar']);
 $t->ok($sc->hasParameter('foo'), '->hasParameter() returns true if a parameter is defined');
 $t->ok($sc->hasParameter('Foo'), '->hasParameter() converts the key to lowercase');
 $t->ok(!$sc->hasParameter('bar'), '->hasParameter() returns false if a parameter is not defined');
 
 // ->addParameters()
 $t->diag('->addParameters()');
-$sc = new sfServiceContainer(array('foo' => 'bar'));
-$sc->addParameters(array('bar' => 'foo'));
-$t->is($sc->getParameters(), array('foo' => 'bar', 'bar' => 'foo'), '->addParameters() adds parameters to the existing ones');
-$sc->addParameters(array('Bar' => 'fooz'));
-$t->is($sc->getParameters(), array('foo' => 'bar', 'bar' => 'fooz'), '->addParameters() converts keys to lowercase');
+$sc = new sfServiceContainer(['foo' => 'bar']);
+$sc->addParameters(['bar' => 'foo']);
+$t->is($sc->getParameters(), ['foo' => 'bar', 'bar' => 'foo'], '->addParameters() adds parameters to the existing ones');
+$sc->addParameters(['Bar' => 'fooz']);
+$t->is($sc->getParameters(), ['foo' => 'bar', 'bar' => 'fooz'], '->addParameters() converts keys to lowercase');
 
 // ->setService() ->hasService() ->getService()
 $t->diag('->setService() ->hasService() ->getService()');
@@ -87,7 +87,7 @@ $t->diag('->getServiceIds()');
 $sc = new sfServiceContainer();
 $sc->setService('foo', $obj = new stdClass());
 $sc->setService('bar', $obj = new stdClass());
-$t->is($sc->getServiceIds(), array('service_container', 'foo', 'bar'), '->getServiceIds() returns all defined service ids');
+$t->is($sc->getServiceIds(), ['service_container', 'foo', 'bar'], '->getServiceIds() returns all defined service ids');
 
 class ProjectServiceContainer extends sfServiceContainer
 {

@@ -25,13 +25,13 @@ foreach ($files as $file) {
 
 // symfony tests LOC
 $total_tests_loc = 0;
-$files = sfFinder::type('file')->name('*Test.php')->in(array(
+$files = sfFinder::type('file')->name('*Test.php')->in([
     $root_dir.'/lib/plugins/sfDoctrinePlugin/test/unit',
     $root_dir.'/lib/plugins/sfDoctrinePlugin/test/functional',
     $root_dir.'/test/unit',
     $root_dir.'/test/functional',
     $root_dir.'/test/other',
-));
+]);
 foreach ($files as $file) {
     $total_tests_loc += count(lime_coverage::get_php_lines($file));
 }

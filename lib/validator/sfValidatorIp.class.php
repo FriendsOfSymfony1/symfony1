@@ -12,8 +12,6 @@
  * sfValidatorIp validate an IP address.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorIp extends sfValidatorString
 {
@@ -36,7 +34,7 @@ class sfValidatorIp extends sfValidatorString
     public const IP_V6_ONLY_PUBLIC = '6_public';
     public const IP_ALL_ONLY_PUBLIC = 'all_public';
 
-    public function configure($options = array(), $messages = array())
+    public function configure($options = [], $messages = [])
     {
         $this->addOption('version', self::IP_ALL);
 
@@ -106,13 +104,13 @@ class sfValidatorIp extends sfValidatorString
                 break;
 
             default:
-                $flag = null;
+                $flag = 0;
 
                 break;
         }
 
         if (!filter_var($value, FILTER_VALIDATE_IP, $flag)) {
-            throw new sfValidatorError($this, 'invalid', array('value' => $value));
+            throw new sfValidatorError($this, 'invalid', ['value' => $value]);
         }
 
         return $value;

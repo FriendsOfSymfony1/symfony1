@@ -12,8 +12,6 @@
  * Marks a variable as being safe for output.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfOutputEscaperSafe extends ArrayIterator
 {
@@ -50,7 +48,7 @@ class sfOutputEscaperSafe extends ArrayIterator
 
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->value, $method), $arguments);
+        return call_user_func_array([$this->value, $method], $arguments);
     }
 
     public function __isset($key)

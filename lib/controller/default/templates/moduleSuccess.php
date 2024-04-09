@@ -1,7 +1,7 @@
 <?php decorate_with(__DIR__.'/defaultLayout.php'); ?>
 
 <div class="sfTMessageContainer sfTMessage"> 
-  <?php echo image_tag('/sf/sf_default/images/icons/ok48.png', array('alt' => 'module created', 'class' => 'sfTMessageIcon', 'size' => '48x48')); ?>
+  <?php echo image_tag('/sf/sf_default/images/icons/ok48.png', ['alt' => 'module created', 'class' => 'sfTMessageIcon', 'size' => '48x48']); ?>
   <div class="sfTMessageWrap">
     <h1>Module "<?php echo $sf_params->get('module'); ?>" created</h1>
     <h5>Congratulations! You have successfully created a symfony module.</h5>

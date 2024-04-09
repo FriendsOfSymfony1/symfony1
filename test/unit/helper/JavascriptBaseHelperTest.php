@@ -25,8 +25,8 @@ $t->is(boolean_for_javascript('dummy'), 'dummy', 'boolean_for_javascript() makes
 
 // options_for_javascript()
 $t->diag('options_for_javascript()');
-$t->is(options_for_javascript(array("'a'" => "'b'", "'c'" => false)), "{'a':'b', 'c':false}", 'options_for_javascript() makes a javascript representation of the passed array');
-$t->is(options_for_javascript(array("'a'" => array("'b'" => "'c'"))), "{'a':{'b':'c'}}", 'options_for_javascript() works with nested arrays');
+$t->is(options_for_javascript(["'a'" => "'b'", "'c'" => false]), "{'a':'b', 'c':false}", 'options_for_javascript() makes a javascript representation of the passed array');
+$t->is(options_for_javascript(["'a'" => ["'b'" => "'c'"]]), "{'a':{'b':'c'}}", 'options_for_javascript() works with nested arrays');
 
 // javascript_tag()
 $t->diag('javascript_tag()');
@@ -43,4 +43,4 @@ $t->is(javascript_tag('alert("foo");'), $expect, 'javascript_tag() takes the con
 $t->diag('link_to_function()');
 $t->is(link_to_function('foo', 'alert(\'bar\')'), '<a href="#" onclick="alert(\'bar\'); return false;">foo</a>', 'link_to_function generates a link with onClick handler for function');
 // #4152
-$t->is(link_to_function('foo', 'alert(\'bar\')', array('confirm' => 'sure?')), '<a href="#" onclick="if(window.confirm(\'sure?\')){ alert(\'bar\');}; return false;">foo</a>', 'link_to_function works fine with confirm dialog');
+$t->is(link_to_function('foo', 'alert(\'bar\')', ['confirm' => 'sure?']), '<a href="#" onclick="if(window.confirm(\'sure?\')){ alert(\'bar\');}; return false;">foo</a>', 'link_to_function works fine with confirm dialog');

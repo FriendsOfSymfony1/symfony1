@@ -15,8 +15,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfFactoryConfigHandler extends sfYamlConfigHandler
 {
@@ -27,8 +25,8 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws <b>sfConfigurationException</b> If a requested configuration file does not exist or is not readable
-     * @throws <b>sfParseException</b> If a requested configuration file is improperly formatted
+     * @throws sfConfigurationException If a requested configuration file does not exist or is not readable
+     * @throws sfParseException         If a requested configuration file is improperly formatted
      */
     public function execute($configFiles)
     {
@@ -36,11 +34,11 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
         $config = static::getConfiguration($configFiles);
 
         // init our data and includes arrays
-        $includes = array();
-        $instances = array();
+        $includes = [];
+        $instances = [];
 
         // available list of factories
-        $factories = array('view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer', 'service_container');
+        $factories = ['view_cache_manager', 'logger', 'i18n', 'controller', 'request', 'response', 'routing', 'storage', 'user', 'view_cache', 'mailer', 'service_container'];
 
         // let's do our fancy work
         foreach ($factories as $factory) {
@@ -66,7 +64,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
             }
 
             // parse parameters
-            $parameters = array();
+            $parameters = [];
             if (isset($keys['param'])) {
                 if (!is_array($keys['param'])) {
                     throw new InvalidArgumentException(sprintf('The "param" key for the "%s" factory must be an array (in %s).', $class, $configFiles[0]));
@@ -96,7 +94,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
                     break;
 
                 case 'storage':
-                    $defaultParameters = array();
+                    $defaultParameters = [];
                     $defaultParameters[] = sprintf("'auto_shutdown' => false, 'session_id' => \$this->getRequest()->getParameter('%s'),", $parameters['session_name']);
                     if (is_subclass_of($class, 'sfDatabaseSessionStorage')) {
                         $defaultParameters[] = sprintf("'database' => \$this->getDatabaseManager()->getDatabase('%s'),", isset($parameters['database']) ? $parameters['database'] : 'default');
@@ -260,7 +258,6 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
 
     /**
      * @see sfConfigHandler
-     * {@inheritdoc}
      */
     public static function getConfiguration(array $configFiles)
     {

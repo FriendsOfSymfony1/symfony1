@@ -22,11 +22,11 @@ $dom->validateOnParse = true;
 // ->render()
 $t->diag('->render()');
 
-foreach (array(
-    $year.'-10-15' => array('year' => $year, 'month' => 10, 'day' => 15),
-    time() => array('year' => date('Y'), 'month' => date('m'), 'day' => date('d')),
-    'tomorrow' => array('year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400)),
-) as $date => $values) {
+foreach ([
+    $year.'-10-15' => ['year' => $year, 'month' => 10, 'day' => 15],
+    time() => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
+    'tomorrow' => ['year' => date('Y', time() + 86400), 'month' => date('m', time() + 86400), 'day' => date('d', time() + 86400)],
+] as $date => $values) {
     $dom->loadHTML($w->render('foo', $date));
     $css = new sfDomCssSelector($dom);
 
@@ -39,7 +39,7 @@ foreach (array(
 // pre-epoch date
 $t->diag('pre-epoch date');
 $years = range(1901, 1920);
-$w1 = new sfWidgetFormDate(array('years' => array_combine($years, $years)));
+$w1 = new sfWidgetFormDate(['years' => array_combine($years, $years)]);
 $dom->loadHTML($w1->render('foo', '1910-01-15'));
 $css = new sfDomCssSelector($dom);
 
@@ -49,7 +49,7 @@ $t->is($css->matchSingle('#foo_day option[selected="selected"]')->getValue(), '1
 
 // date as an array
 $t->diag('date as an array');
-$values = array('year' => $year, 'month' => 10, 'day' => 15);
+$values = ['year' => $year, 'month' => 10, 'day' => 15];
 $dom->loadHTML($w->render('foo', $values));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[value="'.$values['year'].'"][selected="selected"]')->getValue(), $values['year'], '->render() renders a select tag for the year');
@@ -58,7 +58,7 @@ $t->is($css->matchSingle('#foo_day option[value="'.$values['day'].'"][selected="
 
 // invalid date
 $t->diag('invalid date');
-$dom->loadHTML($w->render('foo', array('year' => null, 'month' => 10)));
+$dom->loadHTML($w->render('foo', ['year' => null, 'month' => 10]));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the year');
 $t->is($css->matchSingle('#foo_month option[selected="selected"]')->getValue(), 10, '->render() renders a select tag for the month');
@@ -90,13 +90,13 @@ $w->setOption('can_be_empty', true);
 
 // empty_values
 $t->diag('empty_values option');
-$w->setOption('empty_values', array('year' => 'YEAR', 'month' => 'MONTH', 'day' => 'DAY'));
+$w->setOption('empty_values', ['year' => 'YEAR', 'month' => 'MONTH', 'day' => 'DAY']);
 $dom->loadHTML($w->render('foo', $year.'-10-15'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_year option')->getNode()->nodeValue, 'YEAR', '->configure() can change the empty values');
 $t->is($css->matchSingle('#foo_month option')->getNode()->nodeValue, 'MONTH', '->configure() can change the empty values');
 $t->is($css->matchSingle('#foo_day option')->getNode()->nodeValue, 'DAY', '->configure() can change the empty values');
-$w->setOption('empty_values', array('year' => '', 'month' => '', 'day' => ''));
+$w->setOption('empty_values', ['year' => '', 'month' => '', 'day' => '']);
 
 // format option
 $t->diag('format option');
@@ -116,9 +116,9 @@ $t->is($css->matchSingle('select')->getNode()->getAttribute('name'), 'foo[day]',
 
 // days / months / years options
 $t->diag('days / months / years options');
-$w->setOption('years', array(1998 => 1998, 1999 => 1999, 2000 => 2000, 2001 => 2001));
-$w->setOption('months', array(1 => 1, 2 => 2, 3 => 3));
-$w->setOption('days', array(1 => 1, 2 => 2));
+$w->setOption('years', [1998 => 1998, 1999 => 1999, 2000 => 2000, 2001 => 2001]);
+$w->setOption('months', [1 => 1, 2 => 2, 3 => 3]);
+$w->setOption('days', [1 => 1, 2 => 2]);
 $dom->loadHTML($w->render('foo', $year.'-10-15'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo_year option')->getNodes()), 5, '__construct() can change the default array used for years');
@@ -127,7 +127,7 @@ $t->is(count($css->matchAll('#foo_day option')->getNodes()), 3, '__construct() c
 
 // attributes
 $t->diag('attributes');
-$dom->loadHTML($w->render('foo', $year.'-10-15', array('disabled' => 'disabled')));
+$dom->loadHTML($w->render('foo', $year.'-10-15', ['disabled' => 'disabled']));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 3, '->render() takes the attributes into account for all the three embedded widgets');
 
 $w->setAttribute('disabled', 'disabled');

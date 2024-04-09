@@ -12,8 +12,6 @@
 /**
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfAutoloadConfigHandler extends sfYamlConfigHandler
 {
@@ -30,9 +28,9 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
     public function execute($configFiles)
     {
         // set our required categories list and initialize our handler
-        $this->initialize(array('required_categories' => array('autoload')));
+        $this->initialize(['required_categories' => ['autoload']]);
 
-        $data = array();
+        $data = [];
         foreach ($this->parse($configFiles) as $name => $mapping) {
             $data[] = sprintf("\n  // %s", $name);
 
@@ -53,7 +51,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
 
     public function evaluate($configFiles)
     {
-        $mappings = array();
+        $mappings = [];
         foreach ($this->parse($configFiles) as $mapping) {
             foreach ($mapping as $class => $file) {
                 $mappings[$class] = $file;
@@ -65,7 +63,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
 
     public static function parseFile($path, $file, $prefix)
     {
-        $mapping = array();
+        $mapping = [];
         preg_match_all('~^\s*(?:abstract\s+|final\s+)?(?:class|interface|trait)\s+(\w+)~mi', file_get_contents($file), $classes);
         foreach ($classes[1] as $class) {
             $localPrefix = '';
@@ -85,14 +83,13 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
 
     /**
      * @see sfConfigHandler
-     * {@inheritdoc}
      */
     public static function getConfiguration(array $configFiles)
     {
         $configuration = sfProjectConfiguration::getActive();
 
         $pluginPaths = $configuration->getPluginPaths();
-        $pluginConfigFiles = array();
+        $pluginConfigFiles = [];
 
         // move plugin files to front
         foreach ($configFiles as $i => $configFile) {
@@ -125,9 +122,9 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
         // parse the yaml
         $config = static::getConfiguration($configFiles);
 
-        $mappings = array();
+        $mappings = [];
         foreach ($config['autoload'] as $name => $entry) {
-            $mapping = array();
+            $mapping = [];
 
             // file mapping or directory mapping?
             if (isset($entry['files'])) {

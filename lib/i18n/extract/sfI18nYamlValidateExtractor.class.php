@@ -10,8 +10,6 @@
 
 /**
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfI18nYamlValidateExtractor extends sfI18nYamlExtractor
 {
@@ -24,7 +22,7 @@ class sfI18nYamlValidateExtractor extends sfI18nYamlExtractor
      */
     public function extract($content)
     {
-        $strings = array();
+        $strings = [];
 
         $config = sfYaml::load($content, sfConfig::get('sf_charset', 'UTF-8'));
 

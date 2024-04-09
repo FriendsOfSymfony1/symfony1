@@ -16,8 +16,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfFrontWebController extends sfWebController
 {
@@ -30,7 +28,7 @@ class sfFrontWebController extends sfWebController
     {
         try {
             // reinitialize filters (needed for unit and functional tests)
-            sfFilter::$filterCalled = array();
+            sfFilter::$filterCalled = [];
 
             // determine our module and action
             /** @var sfWebRequest $request */

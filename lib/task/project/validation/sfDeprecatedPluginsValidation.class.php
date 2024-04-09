@@ -12,8 +12,6 @@
  * Finds deprecated plugins usage.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfDeprecatedPluginsValidation extends sfValidation
 {
@@ -24,24 +22,24 @@ class sfDeprecatedPluginsValidation extends sfValidation
 
     public function getExplanation()
     {
-        return array(
+        return [
             '',
             '  The files above use deprecated plugins',
             '  that have been removed in symfony 1.4.',
             '',
             'You can probably remove those references safely.',
             '',
-        );
+        ];
     }
 
     public function validate()
     {
-        $found = array();
+        $found = [];
         $files = sfFinder::type('file')->name('*Configuration.class.php')->in($this->getProjectConfigDirectories());
         foreach ($files as $file) {
             $content = sfToolkit::stripComments(file_get_contents($file));
 
-            $matches = array();
+            $matches = [];
             if (false !== strpos($content, 'sfCompat10Plugin')) {
                 $matches[] = 'sfCompat10Plugin';
             }

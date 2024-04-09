@@ -14,18 +14,16 @@
  * It parses and generates URLs by delegating the work to an array of sfRoute objects.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPatternRouting extends sfRouting
 {
     /** @var string|null */
     protected $currentRouteName;
-    protected $currentInternalUri = array();
+    protected $currentInternalUri = [];
 
     /** @var sfRoute[] */
-    protected $routes = array();
-    protected $cacheData = array();
+    protected $routes = [];
+    protected $cacheData = [];
     protected $cacheChanged = false;
 
     /**
@@ -41,23 +39,22 @@ class sfPatternRouting extends sfRouting
      *  * extra_parameters_as_query_string: Whether to generate extra parameters as a query string
      *  * lookup_cache_dedicated_keys:      Whether to use dedicated keys for parse/generate cache (false by default)
      *                                      WARNING: When this option is activated, do not use sfFileCache; use a fast access
-     *                                      cache backend (like sfAPCCache).
+     *                                      cache backend (like sfAPCuCache).
      *
      * @see sfRouting
-     * {@inheritdoc}
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, ?sfCache $cache = null, $options = [])
     {
-        $options = array_merge(array(
-            'variable_prefixes' => array(':'),
-            'segment_separators' => array('/', '.'),
+        $options = array_merge([
+            'variable_prefixes' => [':'],
+            'segment_separators' => ['/', '.'],
             'variable_regex' => '[\w\d_]+',
             'load_configuration' => false,
             'suffix' => '',
             'generate_shortest_url' => true,
             'extra_parameters_as_query_string' => true,
             'lookup_cache_dedicated_keys' => false,
-        ), $options);
+        ], $options);
 
         // for BC
         if ('.' == $options['suffix']) {
@@ -73,7 +70,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function loadConfiguration()
     {
@@ -86,7 +82,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function setDefaultParameter($key, $value)
     {
@@ -101,7 +96,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function setDefaultParameters($parameters)
     {
@@ -116,7 +110,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function getCurrentInternalUri($withRouteName = false)
     {
@@ -135,7 +128,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function getRoutes()
     {
@@ -144,7 +136,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see  sfRouting
-     * {@inheritdoc}
      */
     public function getRoute($name)
     {
@@ -164,7 +155,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function setRoutes($routes)
     {
@@ -175,7 +165,6 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function hasRoutes()
     {
@@ -184,15 +173,14 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function clearRoutes()
     {
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Clear all current routes')));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Clear all current routes']));
         }
 
-        $this->routes = array();
+        $this->routes = [];
     }
 
     /**
@@ -218,7 +206,7 @@ class sfPatternRouting extends sfRouting
     public function prependRoute($name, $route)
     {
         $routes = $this->routes;
-        $this->routes = array();
+        $this->routes = [];
         $this->connect($name, $route);
         $this->routes = array_merge($this->routes, $routes);
     }
@@ -258,8 +246,8 @@ class sfPatternRouting extends sfRouting
         }
 
         $routes = $this->routes;
-        $this->routes = array();
-        $newroutes = array();
+        $this->routes = [];
+        $newroutes = [];
         foreach ($routes as $key => $value) {
             if ($key == $pivot) {
                 $this->connect($name, $route);
@@ -291,13 +279,13 @@ class sfPatternRouting extends sfRouting
      */
     public function connect($name, $route)
     {
-        $routes = $route instanceof sfRouteCollection ? $route : array($name => $route);
+        $routes = $route instanceof sfRouteCollection ? $route : [$name => $route];
         foreach (self::flattenRoutes($routes) as $name => $route) {
             $this->routes[$name] = $route;
             $this->configureRoute($route);
 
             if ($this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Connect %s "%s" (%s)', get_class($route), $name, $route->getPattern()))));
+                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Connect %s "%s" (%s)', get_class($route), $name, $route->getPattern())]));
             }
         }
     }
@@ -310,9 +298,8 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
-    public function generate($name, $params = array(), $absolute = false)
+    public function generate($name, $params = [], $absolute = false)
     {
         // fetch from cache
         if (null !== $this->cache) {
@@ -351,19 +338,18 @@ class sfPatternRouting extends sfRouting
 
     /**
      * @see sfRouting
-     * {@inheritdoc}
      */
     public function parse($url)
     {
         if (false === $info = $this->findRoute($url)) {
             $this->currentRouteName = null;
-            $this->currentInternalUri = array();
+            $this->currentInternalUri = [];
 
             return false;
         }
 
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Match route "%s" (%s) for %s with parameters %s', $info['name'], $info['pattern'], $url, str_replace("\n", '', var_export($info['parameters'], true))))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Match route "%s" (%s) for %s with parameters %s', $info['name'], $info['pattern'], $url, str_replace("\n", '', var_export($info['parameters'], true)))]));
         }
 
         // store the current internal URI
@@ -424,7 +410,7 @@ class sfPatternRouting extends sfRouting
 
     public static function flattenRoutes($routes)
     {
-        $flattenRoutes = array();
+        $flattenRoutes = [];
         foreach ($routes as $name => $route) {
             if ($route instanceof sfRouteCollection) {
                 $flattenRoutes = array_merge($flattenRoutes, self::flattenRoutes($route));
@@ -462,10 +448,10 @@ class sfPatternRouting extends sfRouting
         // store the route name
         $this->currentRouteName = $name;
 
-        $internalUri = array('@'.$this->currentRouteName, $parameters['module'].'/'.$parameters['action']);
+        $internalUri = ['@'.$this->currentRouteName, $parameters['module'].'/'.$parameters['action']];
         unset($parameters['module'], $parameters['action']);
 
-        $params = array();
+        $params = [];
         foreach ($parameters as $key => $value) {
             $params[] = $key.'='.$value;
         }
@@ -475,7 +461,7 @@ class sfPatternRouting extends sfRouting
 
         $params = $params ? '?'.implode('&', $params) : '';
 
-        $this->currentInternalUri = array($internalUri[0].$params, $internalUri[1].$params);
+        $this->currentInternalUri = [$internalUri[0].$params, $internalUri[1].$params];
     }
 
     protected function getParseCacheKey($url)
@@ -492,7 +478,7 @@ class sfPatternRouting extends sfRouting
                 continue;
             }
 
-            return array('name' => $name, 'pattern' => $route->getPattern(), 'parameters' => $parameters);
+            return ['name' => $name, 'pattern' => $route->getPattern(), 'parameters' => $parameters];
         }
 
         return false;

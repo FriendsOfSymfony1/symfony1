@@ -4,7 +4,7 @@ require_once __DIR__.'/../../vendor/lime/lime.php';
 
 class sfLimeHarness extends lime_harness
 {
-    protected $plugins = array();
+    protected $plugins = [];
 
     public function addPlugins($plugins)
     {
@@ -27,6 +27,6 @@ class sfLimeHarness extends lime_harness
             return $file;
         }
 
-        return str_replace(DIRECTORY_SEPARATOR, '/', str_replace(array(realpath($this->base_dir).DIRECTORY_SEPARATOR, $this->extension), '', $file));
+        return str_replace(DIRECTORY_SEPARATOR, '/', str_replace([realpath($this->base_dir).DIRECTORY_SEPARATOR, $this->extension], '', $file));
     }
 }

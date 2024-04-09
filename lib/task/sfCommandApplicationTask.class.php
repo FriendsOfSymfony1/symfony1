@@ -13,8 +13,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  *
- * @version    SVN: $Id$
- *
  * @property sfApplicationConfiguration $configuration
  */
 abstract class sfCommandApplicationTask extends sfTask
@@ -37,14 +35,13 @@ abstract class sfCommandApplicationTask extends sfTask
      *
      * @param sfCommandApplication $commandApplication A sfCommandApplication instance
      */
-    public function setCommandApplication(sfCommandApplication $commandApplication = null)
+    public function setCommandApplication(?sfCommandApplication $commandApplication = null)
     {
         $this->commandApplication = $commandApplication;
     }
 
     /**
      * @see sfTask
-     * {@inheritdoc}
      */
     public function log($messages)
     {
@@ -55,7 +52,8 @@ abstract class sfCommandApplicationTask extends sfTask
 
     /**
      * @see sfTask
-     * {@inheritdoc}
+     *
+     * @param mixed|null $size
      */
     public function logSection($section, $message, $size = null, $style = 'INFO')
     {
@@ -111,7 +109,7 @@ abstract class sfCommandApplicationTask extends sfTask
      *
      * @see createTask()
      */
-    protected function runTask($name, $arguments = array(), $options = array())
+    protected function runTask($name, $arguments = [], $options = [])
     {
         return $this->createTask($name)->run($arguments, $options);
     }
@@ -180,7 +178,7 @@ abstract class sfCommandApplicationTask extends sfTask
     protected function initializeRouting()
     {
         $config = $this->getFactoryConfiguration();
-        $params = array_merge($config['routing']['param'], array('load_configuration' => false, 'logging' => false));
+        $params = array_merge($config['routing']['param'], ['load_configuration' => false, 'logging' => false]);
 
         $handler = new sfRoutingConfigHandler();
         $routes = $handler->evaluate($this->configuration->getConfigPaths('config/routing.yml'));

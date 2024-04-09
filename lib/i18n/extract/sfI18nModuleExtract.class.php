@@ -10,8 +10,6 @@
 
 /**
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfI18nModuleExtract extends sfI18nExtract
 {
@@ -42,11 +40,11 @@ class sfI18nModuleExtract extends sfI18nExtract
     {
         // Extract from PHP files to find __() calls in actions/ lib/ and templates/ directories
         $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$this->module;
-        $this->extractFromPhpFiles(array(
+        $this->extractFromPhpFiles([
             $moduleDir.'/actions',
             $moduleDir.'/lib',
             $moduleDir.'/templates',
-        ));
+        ]);
 
         // Extract from generator.yml files
         $generator = $moduleDir.'/config/generator.yml';

@@ -30,7 +30,7 @@ try {
 // ->clean()
 $t->diag('->clean()');
 
-$v = new sfValidatorRegex(array('pattern' => '/^[0-9]+$/'));
+$v = new sfValidatorRegex(['pattern' => '/^[0-9]+$/']);
 $t->is($v->clean(12), '12', '->clean() checks that the value match the regex');
 
 try {
@@ -42,7 +42,7 @@ try {
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
 
-$v = new sfValidatorRegex(array('pattern' => '/^[0-9]+$/', 'must_match' => false));
+$v = new sfValidatorRegex(['pattern' => '/^[0-9]+$/', 'must_match' => false]);
 $t->is($v->clean('symfony'), 'symfony', '->clean() checks that the value does not match the regex if must_match is false');
 
 try {
@@ -54,7 +54,7 @@ try {
     $t->is($e->getCode(), 'invalid', '->clean() throws a sfValidatorError');
 }
 
-$v = new sfValidatorRegex(array('pattern' => new sfCallable('generate_regex')));
+$v = new sfValidatorRegex(['pattern' => new sfCallable('generate_regex')]);
 
 try {
     $v->clean('123');
@@ -66,13 +66,13 @@ try {
 // ->asString()
 $t->diag('->asString()');
 
-$v = new sfValidatorRegex(array('pattern' => '/^[0-9]+$/', 'must_match' => false));
+$v = new sfValidatorRegex(['pattern' => '/^[0-9]+$/', 'must_match' => false]);
 $t->is($v->asString(), 'Regex({ must_match: false, pattern: \'/^[0-9]+$/\' })', '->asString() returns a string representation of the validator');
 
 // ->getPattern()
 $t->diag('->getPattern()');
 
-$v = new sfValidatorRegex(array('pattern' => '/\w+/'));
+$v = new sfValidatorRegex(['pattern' => '/\w+/']);
 $t->is($v->getPattern(), '/\w+/', '->getPattern() returns the regular expression');
-$v = new sfValidatorRegex(array('pattern' => new sfCallable('generate_regex')));
+$v = new sfValidatorRegex(['pattern' => new sfCallable('generate_regex')]);
 $t->is($v->getPattern(), '/^123$/', '->getPattern() returns a regular expression from a sfCallable');

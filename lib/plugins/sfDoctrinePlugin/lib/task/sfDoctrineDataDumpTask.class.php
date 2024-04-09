@@ -16,8 +16,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineDataDumpTask extends sfDoctrineBaseTask
 {
@@ -26,14 +24,14 @@ class sfDoctrineDataDumpTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('target', sfCommandArgument::OPTIONAL, 'The target filename'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'data-dump';
@@ -55,18 +53,15 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $databaseManager = new sfDatabaseManager($this->configuration);
         $config = $this->getCliConfig();
 
-        $args = array(
+        $args = [
             'data_fixtures_path' => $config['data_fixtures_path'][0],
-        );
+        ];
 
         if (!is_dir($args['data_fixtures_path'])) {
             $this->getFilesystem()->mkdirs($args['data_fixtures_path']);

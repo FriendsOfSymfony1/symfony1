@@ -74,12 +74,12 @@ class sfDateTimeFormatInfo
     /**
      * ICU date time formatting data.
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * A list of properties that are accessable/writable.
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * Initializes a new writable instance of the sfDateTimeFormatInfo class
@@ -92,7 +92,7 @@ class sfDateTimeFormatInfo
      *
      * @see getInstance()
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
         $this->properties = get_class_methods($this);
 
@@ -106,10 +106,6 @@ class sfDateTimeFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to retrieve the value.
-     *
-     * @param mixed $name
-     *
-     * @return mixed
      */
     public function __get($name)
     {
@@ -124,9 +120,6 @@ class sfDateTimeFormatInfo
     /**
      * Allows functions that begins with 'set' to be called directly
      * as an attribute/property to set the value.
-     *
-     * @param mixed $name
-     * @param mixed $value
      */
     public function __set($name, $value)
     {
@@ -527,14 +520,11 @@ class sfDateTimeFormatInfo
      * Formats the date and time in a culture sensitive paterrn.
      * The default is "Date Time".
      *
-     * @param mixed $date
-     * @param mixed $time
-     *
      * @return string date and time formated
      */
     public function formatDateTime($date, $time)
     {
-        return str_replace(array('{0}', '{1}'), array($time, $date), $this->getDateTimeOrderPattern());
+        return str_replace(['{0}', '{1}'], [$time, $date], $this->getDateTimeOrderPattern());
     }
 
     /**

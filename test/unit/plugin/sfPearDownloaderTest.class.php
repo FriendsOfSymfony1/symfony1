@@ -26,13 +26,8 @@ class sfPearDownloaderTest extends sfPearDownloader
     /**
      * @see PEAR_REST::downloadHttp()
      *
-     * @param mixed      $url
-     * @param mixed      $ui
-     * @param mixed      $save_dir
      * @param mixed|null $callback
      * @param mixed|null $lastmodified
-     * @param mixed      $accept
-     * @param mixed      $channel
      */
     public function downloadHttp($url, &$ui, $save_dir = '.', $callback = null, $lastmodified = null, $accept = false, $channel = false)
     {
@@ -43,7 +38,7 @@ class sfPearDownloaderTest extends sfPearDownloader
         }
 
         if (false === $lastmodified || $lastmodified) {
-            return array($file, 0, array());
+            return [$file, 0, []];
         }
 
         return $file;

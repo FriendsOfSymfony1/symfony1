@@ -18,5 +18,5 @@ $dom->validateOnParse = true;
 // ->configure()
 $t->diag('->configure()');
 
-$w = new sfWidgetFormI18nDateTime(array('culture' => 'fr'));
+$w = new sfWidgetFormI18nDateTime(['culture' => 'fr']);
 $t->is($w->getOption('format'), '%date% %time%', '->configure() automatically changes the date format for the given culture');

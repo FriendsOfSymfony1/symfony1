@@ -32,7 +32,7 @@ class sfMySQLiDatabase extends sfMySQLDatabase
     /**
      * Execute the shutdown procedure.
      *
-     * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this database
+     * @throws sfDatabaseException If an error occurs while shutting down this database
      */
     public function shutdown()
     {

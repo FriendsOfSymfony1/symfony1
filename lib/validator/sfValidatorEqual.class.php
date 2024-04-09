@@ -12,8 +12,6 @@
  * sfValidatorEqual validates a value compared to another value.
  *
  * @author     Yvann Boucher <yboucher@groupe-exp.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorEqual extends sfValidatorBase
 {
@@ -35,7 +33,7 @@ class sfValidatorEqual extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('value');
         $this->addOption('strict', false);
@@ -46,15 +44,13 @@ class sfValidatorEqual extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {
         $isStrict = $this->getOption('strict');
 
         if (($isStrict && $value !== $this->getOption('value')) || (!$isStrict && $value != $this->getOption('value'))) {
-            throw new sfValidatorError($this, $isStrict ? 'not_strictly_equal' : 'not_equal', array('value' => $value, 'compared_value' => $this->getOption('value')));
+            throw new sfValidatorError($this, $isStrict ? 'not_strictly_equal' : 'not_equal', ['value' => $value, 'compared_value' => $this->getOption('value')]);
         }
 
         return $value;

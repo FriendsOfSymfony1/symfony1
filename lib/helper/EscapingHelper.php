@@ -26,10 +26,6 @@
  * incorrectly specified.
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
- *
- * @param mixed $value
  */
 
 /**
@@ -110,8 +106,8 @@ define('ESC_JS', 'esc_js');
 function esc_js_no_entities($value)
 {
     return str_replace(
-        array('\\', "\n", "\r", '"', "'"),
-        array('\\\\', '\\n', '\\r', '\\"', "\\'"),
+        ['\\', "\n", "\r", '"', "'"],
+        ['\\\\', '\\n', '\\r', '\\"', "\\'"],
         $value
     );
 }

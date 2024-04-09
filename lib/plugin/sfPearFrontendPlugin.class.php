@@ -16,8 +16,6 @@ require_once 'PEAR/Frontend/CLI.php';
  * The PEAR Frontend object.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPearFrontendPlugin extends PEAR_Frontend_CLI
 {
@@ -45,7 +43,7 @@ class sfPearFrontendPlugin extends PEAR_Frontend_CLI
 
     protected function splitLongLine($text)
     {
-        $lines = array();
+        $lines = [];
         foreach (explode("\n", $text) as $longline) {
             foreach (explode("\n", wordwrap($longline, 62)) as $line) {
                 if ($line = trim($line)) {

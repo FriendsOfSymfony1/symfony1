@@ -12,8 +12,6 @@
  * Represents a command line argument.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommandArgument
 {
@@ -97,7 +95,7 @@ class sfCommandArgument
 
         if ($this->isArray()) {
             if (null === $default) {
-                $default = array();
+                $default = [];
             } elseif (!is_array($default)) {
                 throw new sfCommandException('A default value for an array argument must be an array.');
             }

@@ -12,12 +12,10 @@
  * sfMessageSource_Aggregate aggregates several message source objects.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfMessageSource_Aggregate extends sfMessageSource
 {
-    protected $messageSources = array();
+    protected $messageSources = [];
 
     /**
      * Constructor.
@@ -46,9 +44,6 @@ class sfMessageSource_Aggregate extends sfMessageSource
     /**
      * Determines if the source is valid.
      *
-     * @param string $source  catalogue+variant
-     * @param mixed  $sources
-     *
      * @return bool true if valid, false otherwise
      */
     public function isValidSource($sources)
@@ -73,9 +68,9 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function getSource($variant)
     {
-        $sources = array();
+        $sources = [];
         foreach ($this->messageSources as $messageSource) {
-            $sources[] = array($messageSource, $messageSource->getSource(str_replace($messageSource->getId(), '', $variant)));
+            $sources[] = [$messageSource, $messageSource->getSource(str_replace($messageSource->getId(), '', $variant))];
         }
 
         return $sources;
@@ -85,13 +80,11 @@ class sfMessageSource_Aggregate extends sfMessageSource
      * Loads the message for a particular catalogue+variant.
      * This methods needs to implemented by subclasses.
      *
-     * @param mixed $sources
-     *
      * @return array of translation messages
      */
     public function &loadData($sources)
     {
-        $messages = array();
+        $messages = [];
         foreach ($sources as $source) {
             if (false === $source[0]->isValidSource($source[1])) {
                 continue;
@@ -116,7 +109,7 @@ class sfMessageSource_Aggregate extends sfMessageSource
      */
     public function getCatalogueList($catalogue)
     {
-        $variants = array();
+        $variants = [];
         foreach ($this->messageSources as $messageSource) {
             foreach ($messageSource->getCatalogueList($catalogue) as $variant) {
                 $variants[] = $messageSource->getId().$variant;
@@ -225,9 +218,6 @@ class sfMessageSource_Aggregate extends sfMessageSource
 
     /**
      * Gets the last modified unix-time for this particular catalogue+variant.
-     *
-     * @param string $source  catalogue+variant
-     * @param mixed  $sources
      *
      * @return int last modified in unix-time format
      */

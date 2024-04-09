@@ -33,11 +33,11 @@ $t->is($dumper->dump(), str_replace('%path%', __DIR__, file_get_contents($dir.'/
 
 $container = include __DIR__.'/fixtures/containers/container10.php';
 $dumper = new sfServiceContainerDumperGraphviz($container);
-$t->is($dumper->dump(array(
-    'graph' => array('ratio' => 'normal'),
-    'node' => array('fontsize' => 13, 'fontname' => 'Verdana', 'shape' => 'square'),
-    'edge' => array('fontsize' => 12, 'fontname' => 'Verdana', 'color' => 'white', 'arrowhead' => 'closed', 'arrowsize' => 1),
-    'node.instance' => array('fillcolor' => 'green', 'style' => 'empty'),
-    'node.definition' => array('fillcolor' => 'grey'),
-    'node.missing' => array('fillcolor' => 'red', 'style' => 'empty'),
-)), str_replace('%path%', __DIR__, file_get_contents($dir.'/services10-1.dot')), '->dump() dumps services');
+$t->is($dumper->dump([
+    'graph' => ['ratio' => 'normal'],
+    'node' => ['fontsize' => 13, 'fontname' => 'Verdana', 'shape' => 'square'],
+    'edge' => ['fontsize' => 12, 'fontname' => 'Verdana', 'color' => 'white', 'arrowhead' => 'closed', 'arrowsize' => 1],
+    'node.instance' => ['fillcolor' => 'green', 'style' => 'empty'],
+    'node.definition' => ['fillcolor' => 'grey'],
+    'node.missing' => ['fillcolor' => 'red', 'style' => 'empty'],
+]), str_replace('%path%', __DIR__, file_get_contents($dir.'/services10-1.dot')), '->dump() dumps services');

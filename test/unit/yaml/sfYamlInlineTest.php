@@ -17,7 +17,7 @@ $t = new lime_test(124);
 // ::load()
 $t->diag('::load()');
 
-$testsForLoad = array(
+$testsForLoad = [
     '' => '',
     'null' => null,
     'false' => false,
@@ -45,40 +45,40 @@ $testsForLoad = array(
 
     // sequences
     // urls are no key value mapping. see #3609. Valid yaml "key: value" mappings require a space after the colon
-    '[foo, http://urls.are/no/mappings, false, null, 12]' => array('foo', 'http://urls.are/no/mappings', false, null, 12),
-    '[  foo  ,   bar , false  ,  null     ,  12  ]' => array('foo', 'bar', false, null, 12),
-    '[\'foo,bar\', \'foo bar\']' => array('foo,bar', 'foo bar'),
+    '[foo, http://urls.are/no/mappings, false, null, 12]' => ['foo', 'http://urls.are/no/mappings', false, null, 12],
+    '[  foo  ,   bar , false  ,  null     ,  12  ]' => ['foo', 'bar', false, null, 12],
+    '[\'foo,bar\', \'foo bar\']' => ['foo,bar', 'foo bar'],
 
     // mappings
-    '{foo:bar,bar:foo,false:false,null:null,integer:12}' => array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12),
-    '{ foo  : bar, bar : foo,  false  :   false,  null  :   null,  integer :  12  }' => array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12),
-    '{foo: \'bar\', bar: \'foo: bar\'}' => array('foo' => 'bar', 'bar' => 'foo: bar'),
-    '{\'foo\': \'bar\', "bar": \'foo: bar\'}' => array('foo' => 'bar', 'bar' => 'foo: bar'),
-    '{\'foo\'\'\': \'bar\', "bar\"": \'foo: bar\'}' => array('foo\'' => 'bar', 'bar"' => 'foo: bar'),
-    '{\'foo: \': \'bar\', "bar: ": \'foo: bar\'}' => array('foo: ' => 'bar', 'bar: ' => 'foo: bar'),
+    '{foo:bar,bar:foo,false:false,null:null,integer:12}' => ['foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12],
+    '{ foo  : bar, bar : foo,  false  :   false,  null  :   null,  integer :  12  }' => ['foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12],
+    '{foo: \'bar\', bar: \'foo: bar\'}' => ['foo' => 'bar', 'bar' => 'foo: bar'],
+    '{\'foo\': \'bar\', "bar": \'foo: bar\'}' => ['foo' => 'bar', 'bar' => 'foo: bar'],
+    '{\'foo\'\'\': \'bar\', "bar\"": \'foo: bar\'}' => ['foo\'' => 'bar', 'bar"' => 'foo: bar'],
+    '{\'foo: \': \'bar\', "bar: ": \'foo: bar\'}' => ['foo: ' => 'bar', 'bar: ' => 'foo: bar'],
 
     // nested sequences and mappings
-    '[foo, [bar, foo]]' => array('foo', array('bar', 'foo')),
-    '[foo, {bar: foo}]' => array('foo', array('bar' => 'foo')),
-    '{ foo: {bar: foo} }' => array('foo' => array('bar' => 'foo')),
-    '{ foo: [bar, foo] }' => array('foo' => array('bar', 'foo')),
+    '[foo, [bar, foo]]' => ['foo', ['bar', 'foo']],
+    '[foo, {bar: foo}]' => ['foo', ['bar' => 'foo']],
+    '{ foo: {bar: foo} }' => ['foo' => ['bar' => 'foo']],
+    '{ foo: [bar, foo] }' => ['foo' => ['bar', 'foo']],
 
-    '[  foo, [  bar, foo  ]  ]' => array('foo', array('bar', 'foo')),
+    '[  foo, [  bar, foo  ]  ]' => ['foo', ['bar', 'foo']],
 
-    '[{ foo: {bar: foo} }]' => array(array('foo' => array('bar' => 'foo'))),
+    '[{ foo: {bar: foo} }]' => [['foo' => ['bar' => 'foo']]],
 
-    '[foo, [bar, [foo, [bar, foo]], foo]]' => array('foo', array('bar', array('foo', array('bar', 'foo')), 'foo')),
+    '[foo, [bar, [foo, [bar, foo]], foo]]' => ['foo', ['bar', ['foo', ['bar', 'foo']], 'foo']],
 
-    '[foo, {bar: foo, foo: [foo, {bar: foo}]}, [foo, {bar: foo}]]' => array('foo', array('bar' => 'foo', 'foo' => array('foo', array('bar' => 'foo'))), array('foo', array('bar' => 'foo'))),
+    '[foo, {bar: foo, foo: [foo, {bar: foo}]}, [foo, {bar: foo}]]' => ['foo', ['bar' => 'foo', 'foo' => ['foo', ['bar' => 'foo']]], ['foo', ['bar' => 'foo']]],
 
-    '[foo, bar: { foo: bar }]' => array('foo', '1' => array('bar' => array('foo' => 'bar'))),
-);
+    '[foo, bar: { foo: bar }]' => ['foo', '1' => ['bar' => ['foo' => 'bar']]],
+];
 
 foreach ($testsForLoad as $yaml => $value) {
     $t->is_deeply(sfYamlInline::load($yaml), $value, sprintf('::load() converts an inline YAML to a PHP structure (%s)', $yaml));
 }
 
-$testsForDump = array(
+$testsForDump = [
     'null' => null,
     'false' => false,
     'true' => true,
@@ -97,24 +97,24 @@ $testsForDump = array(
     "'a \"string\" with ''quoted strings inside'''" => 'a "string" with \'quoted strings inside\'',
 
     // sequences
-    '[foo, bar, false, null, 12]' => array('foo', 'bar', false, null, 12),
-    '[\'foo,bar\', \'foo bar\']' => array('foo,bar', 'foo bar'),
+    '[foo, bar, false, null, 12]' => ['foo', 'bar', false, null, 12],
+    '[\'foo,bar\', \'foo bar\']' => ['foo,bar', 'foo bar'],
 
     // mappings
-    '{ foo: bar, bar: foo, \'false\': false, \'null\': null, integer: 12 }' => array('foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12),
-    '{ foo: bar, bar: \'foo: bar\' }' => array('foo' => 'bar', 'bar' => 'foo: bar'),
+    '{ foo: bar, bar: foo, \'false\': false, \'null\': null, integer: 12 }' => ['foo' => 'bar', 'bar' => 'foo', 'false' => false, 'null' => null, 'integer' => 12],
+    '{ foo: bar, bar: \'foo: bar\' }' => ['foo' => 'bar', 'bar' => 'foo: bar'],
 
     // nested sequences and mappings
-    '[foo, [bar, foo]]' => array('foo', array('bar', 'foo')),
+    '[foo, [bar, foo]]' => ['foo', ['bar', 'foo']],
 
-    '[foo, [bar, [foo, [bar, foo]], foo]]' => array('foo', array('bar', array('foo', array('bar', 'foo')), 'foo')),
+    '[foo, [bar, [foo, [bar, foo]], foo]]' => ['foo', ['bar', ['foo', ['bar', 'foo']], 'foo']],
 
-    '{ foo: { bar: foo } }' => array('foo' => array('bar' => 'foo')),
+    '{ foo: { bar: foo } }' => ['foo' => ['bar' => 'foo']],
 
-    '[foo, { bar: foo }]' => array('foo', array('bar' => 'foo')),
+    '[foo, { bar: foo }]' => ['foo', ['bar' => 'foo']],
 
-    '[foo, { bar: foo, foo: [foo, { bar: foo }] }, [foo, { bar: foo }]]' => array('foo', array('bar' => 'foo', 'foo' => array('foo', array('bar' => 'foo'))), array('foo', array('bar' => 'foo'))),
-);
+    '[foo, { bar: foo, foo: [foo, { bar: foo }] }, [foo, { bar: foo }]]' => ['foo', ['bar' => 'foo', 'foo' => ['foo', ['bar' => 'foo']]], ['foo', ['bar' => 'foo']]],
+];
 
 // ::dump()
 $t->diag('::dump()');

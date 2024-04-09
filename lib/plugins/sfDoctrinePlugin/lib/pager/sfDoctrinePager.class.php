@@ -13,8 +13,6 @@
  * sfDoctrine pager class.
  *
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrinePager extends sfPager implements Serializable
 {
@@ -176,7 +174,7 @@ class sfDoctrinePager extends sfPager implements Serializable
      */
     public function getResults($hydrationMode = null)
     {
-        return $this->getQuery()->execute(array(), $hydrationMode);
+        return $this->getQuery()->execute([], $hydrationMode);
     }
 
     /**

@@ -12,8 +12,6 @@
  * Class to manage command line arguments and options.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommandManager
 {
@@ -21,22 +19,22 @@ class sfCommandManager
     protected $arguments = '';
 
     /** @var string[] */
-    protected $errors = array();
+    protected $errors = [];
 
     /** @var sfCommandOptionSet */
     protected $optionSet;
 
     /** @var sfCommandArgumentSet */
-    protected $argumentSet = array();
+    protected $argumentSet = [];
 
     /** @var array */
-    protected $optionValues = array();
+    protected $optionValues = [];
 
     /** @var array */
-    protected $argumentValues = array();
+    protected $argumentValues = [];
 
     /** @var array */
-    protected $parsedArgumentValues = array();
+    protected $parsedArgumentValues = [];
 
     /**
      * Constructor.
@@ -44,7 +42,7 @@ class sfCommandManager
      * @param sfCommandArgumentSet $argumentSet A sfCommandArgumentSet object
      * @param sfCommandOptionSet   $optionSet   A setOptionSet object
      */
-    public function __construct(sfCommandArgumentSet $argumentSet = null, sfCommandOptionSet $optionSet = null)
+    public function __construct(?sfCommandArgumentSet $argumentSet = null, ?sfCommandOptionSet $optionSet = null)
     {
         if (null === $argumentSet) {
             $argumentSet = new sfCommandArgumentSet();
@@ -123,10 +121,10 @@ class sfCommandManager
         $this->arguments = $arguments;
         $this->optionValues = $this->optionSet->getDefaults();
         $this->argumentValues = $this->argumentSet->getDefaults();
-        $this->parsedArgumentValues = array();
-        $this->errors = array();
+        $this->parsedArgumentValues = [];
+        $this->errors = [];
 
-        while (!in_array($argument = array_shift($this->arguments), array('', null))) {
+        while (!in_array($argument = array_shift($this->arguments), ['', null])) {
             if ('--' == $argument) {
                 // stop options parsing
                 $this->parsedArgumentValues = array_merge($this->parsedArgumentValues, $this->arguments);

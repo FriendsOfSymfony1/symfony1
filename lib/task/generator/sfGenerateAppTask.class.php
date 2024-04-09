@@ -14,8 +14,6 @@ require_once __DIR__.'/sfGeneratorBaseTask.class.php';
  * Generates a new application.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfGenerateAppTask extends sfGeneratorBaseTask
 {
@@ -24,14 +22,14 @@ class sfGenerateAppTask extends sfGeneratorBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('app', sfCommandArgument::REQUIRED, 'The application name'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('escaping-strategy', null, sfCommandOption::PARAMETER_REQUIRED, 'Output escaping strategy', true),
             new sfCommandOption('csrf-secret', null, sfCommandOption::PARAMETER_REQUIRED, 'Secret to use for CSRF protection', true),
-        ));
+        ]);
 
         $this->namespace = 'generate';
         $this->name = 'app';
@@ -76,11 +74,8 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $app = $arguments['app'];
 
@@ -118,24 +113,24 @@ EOF;
 
         // Set no_script_name value in settings.yml for production environment
         $finder = sfFinder::type('file')->name('settings.yml');
-        $this->getFilesystem()->replaceTokens($finder->in($appDir.'/config'), '##', '##', array(
+        $this->getFilesystem()->replaceTokens($finder->in($appDir.'/config'), '##', '##', [
             'NO_SCRIPT_NAME' => $firstApp ? 'true' : 'false',
             'CSRF_SECRET' => sfYamlInline::dump(sfYamlInline::parseScalar($options['csrf-secret'])),
             'ESCAPING_STRATEGY' => sfYamlInline::dump((bool) sfYamlInline::parseScalar($options['escaping-strategy'])),
             'USE_DATABASE' => sfConfig::has('sf_orm') ? 'true' : 'false',
-        ));
+        ]);
 
         $this->getFilesystem()->copy($skeletonDir.'/web/index.php', sfConfig::get('sf_web_dir').'/'.$indexName.'.php');
         $this->getFilesystem()->copy($skeletonDir.'/web/index.php', sfConfig::get('sf_web_dir').'/'.$app.'_dev.php');
 
-        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_web_dir').'/'.$indexName.'.php', '##', '##', array(
+        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_web_dir').'/'.$indexName.'.php', '##', '##', [
             'APP_NAME' => $app,
             'ENVIRONMENT' => 'prod',
             'IS_DEBUG' => 'false',
             'IP_CHECK' => '',
-        ));
+        ]);
 
-        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_web_dir').'/'.$app.'_dev.php', '##', '##', array(
+        $this->getFilesystem()->replaceTokens(sfConfig::get('sf_web_dir').'/'.$app.'_dev.php', '##', '##', [
             'APP_NAME' => $app,
             'ENVIRONMENT' => 'dev',
             'IS_DEBUG' => 'true',
@@ -145,11 +140,11 @@ EOF;
                              '{'.PHP_EOL.
                              '  die(\'You are not allowed to access this file. Check \'.basename(__FILE__).\' for more information.\');'.PHP_EOL.
                              '}'.PHP_EOL,
-        ));
+        ]);
 
         $this->getFilesystem()->rename($appDir.'/config/ApplicationConfiguration.class.php', $appDir.'/config/'.$app.'Configuration.class.php');
 
-        $this->getFilesystem()->replaceTokens($appDir.'/config/'.$app.'Configuration.class.php', '##', '##', array('APP_NAME' => $app));
+        $this->getFilesystem()->replaceTokens($appDir.'/config/'.$app.'Configuration.class.php', '##', '##', ['APP_NAME' => $app]);
 
         $fixPerms = new sfProjectPermissionsTask($this->dispatcher, $this->formatter);
         $fixPerms->setCommandApplication($this->commandApplication);
@@ -158,5 +153,7 @@ EOF;
 
         // Create test dir
         $this->getFilesystem()->mkdirs(sfConfig::get('sf_test_dir').'/functional/'.$app);
+
+        return 0;
     }
 }

@@ -23,13 +23,13 @@ function get_cache_manager($context)
 
 function get_cache_config($contextual = false)
 {
-    return array(
+    return [
         'withLayout' => false,
         'lifeTime' => 86400,
         'clientLifeTime' => 86400,
         'contextual' => $contextual,
-        'vary' => array(),
-    );
+        'vary' => [],
+    ];
 }
 
 class myViewCacheManager extends sfViewCacheManager
@@ -45,7 +45,7 @@ class myController extends sfWebController
 
 class myRequest
 {
-    public $getParameters = array('page' => 5, 'sort' => 'asc');
+    public $getParameters = ['page' => 5, 'sort' => 'asc'];
 
     public function getHost()
     {
@@ -70,9 +70,9 @@ class myRequest
 
 class myCache extends sfCache
 {
-    public static $cache = array();
+    public static $cache = [];
 
-    public function initialize($parameters = array())
+    public function initialize($parameters = [])
     {
     }
 
@@ -108,7 +108,7 @@ class myCache extends sfCache
 
     public function clean($mode = sfCache::ALL)
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 
     public function getTimeout($key)
@@ -123,7 +123,7 @@ class myCache extends sfCache
 
     public static function clear()
     {
-        self::$cache = array();
+        self::$cache = [];
     }
 }
 
@@ -137,7 +137,7 @@ class myRouting extends sfPatternRouting
     }
 }
 
-$context = sfContext::getInstance(array('controller' => 'myController', 'routing' => 'myRouting', 'request' => 'myRequest'));
+$context = sfContext::getInstance(['controller' => 'myController', 'routing' => 'myRouting', 'request' => 'myRequest']);
 
 $r = $context->routing;
 $r->connect('default', new sfRoute('/:module/:action/*'));
@@ -186,7 +186,7 @@ $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_ke
 $t->is($m->generateCacheKey('@sf_cache_partial?module=foo&action=bar&sf_cache_key=value', null, null, 'baz'), '/localhost/all/baz/foo/bar/value', '->generateCacheKey() can take a prefix for contextual partials as fourth parameter');
 
 $m = get_cache_manager($context);
-$m->addCache('module', 'action', array('vary' => array('myheader', 'secondheader')));
+$m->addCache('module', 'action', ['vary' => ['myheader', 'secondheader']]);
 $t->is($m->generateCacheKey('module/action'), '/localhost/myheader-_foo_bar_-secondheader-_foo_bar_/module/action', '->generateCacheKey() creates a directory friendly vary cache key');
 
 // ->generateNamespace()
@@ -274,13 +274,13 @@ $t->is($m->has('module/action?key1=value2'), false, '->remove() accepts wildcard
 $t->is($m->has('module/action?key2=value1'), true, '->remove() accepts wildcards in URIs and lets keys not matching the pattern unchanged');
 
 $t->diag('Cache key generation options');
-$m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_vary_headers' => false));
+$m = new myViewCacheManager($context, $cache = new myCache(), ['cache_key_use_vary_headers' => false]);
 $t->is($m->generateCacheKey('mymodule/myaction'), '/localhost/mymodule/myaction', '->generateCacheKey() uses "cache_key_use_vary_headers" option to know if vary headers changes cache key.');
 
-$m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_host_name' => false));
+$m = new myViewCacheManager($context, $cache = new myCache(), ['cache_key_use_host_name' => false]);
 $t->is($m->generateCacheKey('mymodule/myaction'), '/all/mymodule/myaction', '->generateCacheKey() uses "cache_key_use_host_name" option to know if vary headers changes cache key.');
 
-$m = new myViewCacheManager($context, $cache = new myCache(), array('cache_key_use_host_name' => false, 'cache_key_use_vary_headers' => false));
+$m = new myViewCacheManager($context, $cache = new myCache(), ['cache_key_use_host_name' => false, 'cache_key_use_vary_headers' => false]);
 $t->is($m->generateCacheKey('mymodule/myaction'), '/mymodule/myaction', '->generateCacheKey() allows the use of both "cache_key_use_host_name" and "cache_key_use_vary_headers" options.');
 
 $m = new myViewCacheManager($context, new myCache());

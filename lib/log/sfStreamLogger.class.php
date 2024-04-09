@@ -12,8 +12,6 @@
  * sfStreamLogger logs messages to a PHP stream.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfStreamLogger extends sfLogger
 {
@@ -32,7 +30,7 @@ class sfStreamLogger extends sfLogger
      *
      * @throws sfConfigurationException
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         if (!isset($options['stream'])) {
             throw new sfConfigurationException('You must provide a "stream" option for this logger.');

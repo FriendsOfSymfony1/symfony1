@@ -16,8 +16,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfContext implements ArrayAccess
 {
@@ -26,12 +24,12 @@ class sfContext implements ArrayAccess
 
     /** @var sfApplicationConfiguration */
     protected $configuration;
-    protected $mailerConfiguration = array();
-    protected $serviceContainerConfiguration = array();
-    protected $factories = array();
+    protected $mailerConfiguration = [];
+    protected $serviceContainerConfiguration = [];
+    protected $factories = [];
     protected $hasShutdownUserAndStorage = false;
 
-    protected static $instances = array();
+    protected static $instances = [];
     protected static $current = 'default';
 
     /**
@@ -45,11 +43,11 @@ class sfContext implements ArrayAccess
      *
      * @return mixed The returned value of the called method
      *
-     * @throws <b>sfException</b> if call fails
+     * @throws sfException if call fails
      */
     public function __call($method, $arguments)
     {
-        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'context.method_not_found', array('method' => $method, 'arguments' => $arguments)));
+        $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'context.method_not_found', ['method' => $method, 'arguments' => $arguments]));
         if (!$event->isProcessed()) {
             $verb = substr($method, 0, 3); // get | set
             $factory = strtolower(substr($method, 3)); // factory name
@@ -115,11 +113,11 @@ class sfContext implements ArrayAccess
             sfException::createFromException($e)->printStackTrace();
         }
 
-        $this->dispatcher->connect('template.filter_parameters', array($this, 'filterTemplateParameters'));
-        $this->dispatcher->connect('response.fastcgi_finish_request', array($this, 'shutdownUserAndStorage'));
+        $this->dispatcher->connect('template.filter_parameters', [$this, 'filterTemplateParameters']);
+        $this->dispatcher->connect('response.fastcgi_finish_request', [$this, 'shutdownUserAndStorage']);
 
         // register our shutdown function
-        register_shutdown_function(array($this, 'shutdown'));
+        register_shutdown_function([$this, 'shutdown']);
     }
 
     /**
@@ -168,7 +166,7 @@ class sfContext implements ArrayAccess
     {
         if (sfConfig::get('sf_use_database')) {
             // setup our database connections
-            $this->factories['databaseManager'] = new sfDatabaseManager($this->configuration, array('auto_shutdown' => false));
+            $this->factories['databaseManager'] = new sfDatabaseManager($this->configuration, ['auto_shutdown' => false]);
         }
 
         // create a new action stack
@@ -237,8 +235,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the action name for this context.
      *
-     * @return string the currently executing action name, if one is set,
-     *                otherwise null
+     * @return string|null the currently executing action name if one is set, null otherwise
      */
     public function getActionName()
     {
@@ -247,6 +244,8 @@ class sfContext implements ArrayAccess
             // @var $lastEntry sfActionStackEntry
             return $lastEntry->getActionName();
         }
+
+        return null;
     }
 
     /**
@@ -343,8 +342,7 @@ class sfContext implements ArrayAccess
     /**
      * Retrieve the module directory for this context.
      *
-     * @return string an absolute filesystem path to the directory of the
-     *                currently executing module, if one is set, otherwise null
+     * @return string|null an absolute filesystem path to the directory of the currently executing module if one is set, null otherwise
      */
     public function getModuleDirectory()
     {
@@ -353,13 +351,14 @@ class sfContext implements ArrayAccess
             // @var $lastEntry sfActionStackEntry
             return sfConfig::get('sf_app_module_dir').'/'.$lastEntry->getModuleName();
         }
+
+        return null;
     }
 
     /**
      * Retrieve the module name for this context.
      *
-     * @return string the currently executing module name, if one is set,
-     *                otherwise null
+     * @return string|null the currently executing module name if one is set, null otherwise
      */
     public function getModuleName()
     {
@@ -368,6 +367,8 @@ class sfContext implements ArrayAccess
             // @var $lastEntry sfActionStackEntry
             return $lastEntry->getModuleName();
         }
+
+        return null;
     }
 
     /**

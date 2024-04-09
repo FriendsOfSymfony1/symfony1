@@ -12,8 +12,6 @@
  * sfWidgetFormInput represents an HTML text input tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputText extends sfWidgetFormInput
 {
@@ -25,7 +23,7 @@ class sfWidgetFormInputText extends sfWidgetFormInput
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

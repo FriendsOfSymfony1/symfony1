@@ -12,8 +12,6 @@
  * sfEvent.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfEvent.class.php 8698 2008-04-30 16:35:28Z fabien $
  */
 class sfEvent implements ArrayAccess
 {
@@ -30,7 +28,7 @@ class sfEvent implements ArrayAccess
      * @param string $name       The event name
      * @param array  $parameters An array of parameters
      */
-    public function __construct($subject, $name, $parameters = array())
+    public function __construct($subject, $name, $parameters = [])
     {
         $this->subject = $subject;
         $this->name = $name;

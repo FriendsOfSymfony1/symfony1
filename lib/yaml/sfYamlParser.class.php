@@ -16,16 +16,14 @@ if (!defined('PREG_BAD_UTF8_OFFSET_ERROR')) {
  * sfYamlParser parses YAML strings to convert them to PHP arrays.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfYamlParser.class.php 10832 2008-08-13 07:46:08Z fabien $
  */
 class sfYamlParser
 {
     protected $offset = 0;
-    protected $lines = array();
+    protected $lines = [];
     protected $currentLineNb = -1;
     protected $currentLine = '';
-    protected $refs = array();
+    protected $refs = [];
 
     /**
      * Constructor.
@@ -61,7 +59,7 @@ class sfYamlParser
             mb_internal_encoding('UTF-8');
         }
 
-        $data = array();
+        $data = [];
         while ($this->moveToNextLine()) {
             if ($this->isCurrentLineEmpty()) {
                 continue;
@@ -124,7 +122,7 @@ class sfYamlParser
                         $parser->refs = &$this->refs;
                         $parsed = $parser->parse($value);
 
-                        $merged = array();
+                        $merged = [];
                         if (!is_array($parsed)) {
                             throw new InvalidArgumentException(sprintf('YAML merge keys used with a scalar value instead of an array at line %s (%s)', $this->getRealCurrentLineNb() + 1, $this->currentLine));
                         }
@@ -177,7 +175,7 @@ class sfYamlParser
                     if (is_array($value)) {
                         $first = reset($value);
                         if ('*' === substr($first, 0, 1)) {
-                            $data = array();
+                            $data = [];
                             foreach ($value as $alias) {
                                 $data[] = $this->refs[substr($alias, 1)];
                             }
@@ -278,7 +276,7 @@ class sfYamlParser
             $newIndent = $indentation;
         }
 
-        $data = array(substr($this->currentLine, $newIndent));
+        $data = [substr($this->currentLine, $newIndent)];
 
         while ($this->moveToNextLine()) {
             if ($this->isCurrentLineEmpty()) {
@@ -510,7 +508,7 @@ class sfYamlParser
      */
     protected function cleanup($value)
     {
-        $value = str_replace(array("\r\n", "\r"), "\n", $value);
+        $value = str_replace(["\r\n", "\r"], "\n", $value);
 
         if (!preg_match("#\n$#", $value)) {
             $value .= "\n";

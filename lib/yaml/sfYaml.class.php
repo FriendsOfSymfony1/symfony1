@@ -12,8 +12,6 @@
  * sfYaml offers convenience methods to load and dump YAML.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfYaml.class.php 8988 2008-05-15 20:24:26Z fabien $
  */
 class sfYaml
 {
@@ -26,7 +24,7 @@ class sfYaml
      */
     public static function setSpecVersion($version)
     {
-        if (!in_array($version, array('1.1', '1.2'))) {
+        if (!in_array($version, ['1.1', '1.2'])) {
             throw new InvalidArgumentException(sprintf('Version %s of the YAML specifications is not supported', $version));
         }
 
@@ -55,8 +53,7 @@ class sfYaml
      *   print_r($array);
      *  </code>
      *
-     * @param string $input    Path of YAML file or string containing YAML
-     * @param mixed  $encoding
+     * @param string $input Path of YAML file or string containing YAML
      *
      * @return array The YAML converted to a PHP array
      *
@@ -133,7 +130,7 @@ class sfYaml
      */
     protected static function arrayConvertEncoding(array $result, $encoding)
     {
-        $convertedResult = array();
+        $convertedResult = [];
         foreach ($result as $key => $value) {
             if (is_string($key)) {
                 $key = mb_convert_encoding($key, $encoding, 'UTF-8');

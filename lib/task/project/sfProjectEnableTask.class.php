@@ -12,8 +12,6 @@
  * Enables an application in a given environment.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfProjectEnableTask extends sfBaseTask
 {
@@ -22,10 +20,10 @@ class sfProjectEnableTask extends sfBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('env', sfCommandArgument::REQUIRED, 'The environment name'),
             new sfCommandArgument('app', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'The application name'),
-        ));
+        ]);
 
         $this->namespace = 'project';
         $this->name = 'enable';
@@ -45,15 +43,12 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         if (1 == count($arguments['app']) && !file_exists(sfConfig::get('sf_apps_dir').'/'.$arguments['app'][0])) {
             // support previous task signature
-            $applications = array($arguments['env']);
+            $applications = [$arguments['env']];
             $env = $arguments['app'][0];
         } else {
             $applications = count($arguments['app']) ? $arguments['app'] : sfFinder::type('dir')->relative()->maxdepth(0)->in(sfConfig::get('sf_apps_dir'));
@@ -70,10 +65,12 @@ EOF;
                 $clearCache = new sfCacheClearTask($this->dispatcher, $this->formatter);
                 $clearCache->setCommandApplication($this->commandApplication);
                 $clearCache->setConfiguration($this->configuration);
-                $clearCache->run(array(), array('--app='.$app, '--env='.$env));
+                $clearCache->run([], ['--app='.$app, '--env='.$env]);
 
                 $this->logSection('enable', sprintf('%s [%s] has been ENABLED', $app, $env));
             }
         }
+
+        return 0;
     }
 }

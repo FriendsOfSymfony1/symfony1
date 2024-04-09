@@ -57,7 +57,7 @@ class ArticleTable extends Doctrine_Table
         return $this->createQuery()->select('title, body');
     }
 
-    public function addOnHomepage(Doctrine_Query $q = null)
+    public function addOnHomepage(?Doctrine_Query $q = null)
     {
         if (is_null($q)) {
             $q = $this->createQuery('a');

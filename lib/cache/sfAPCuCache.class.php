@@ -9,13 +9,12 @@
  */
 
 /**
- * Cache class that stores cached content in APC.
+ * Cache class that stores cached content in APCu.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
+ * @author     Paulo M
  */
-class sfAPCCache extends sfCache
+class sfAPCuCache extends sfCache
 {
     protected $enabled;
 
@@ -27,18 +26,18 @@ class sfAPCCache extends sfCache
      * * see sfCache for options available for all drivers
      *
      * @see sfCache
-     * {@inheritdoc}
      */
-    public function initialize($options = array())
+    public function initialize($options = [])
     {
         parent::initialize($options);
 
-        $this->enabled = function_exists('apc_store') && ini_get('apc.enabled');
+        $this->enabled = function_exists('apcu_store') && ini_get('apc.enabled');
     }
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -53,7 +52,6 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -68,7 +66,8 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -76,12 +75,11 @@ class sfAPCCache extends sfCache
             return true;
         }
 
-        return apc_store($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
+        return apcu_store($this->getOption('prefix').$key, $data, $this->getLifetime($lifetime));
     }
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -89,12 +87,11 @@ class sfAPCCache extends sfCache
             return true;
         }
 
-        return apc_delete($this->getOption('prefix').$key);
+        return apcu_delete($this->getOption('prefix').$key);
     }
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function clean($mode = sfCache::ALL)
     {
@@ -103,13 +100,14 @@ class sfAPCCache extends sfCache
         }
 
         if (sfCache::ALL === $mode) {
-            return apc_clear_cache('user');
+            return apcu_clear_cache();
         }
+
+        return true;
     }
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getLastModified($key)
     {
@@ -122,7 +120,6 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getTimeout($key)
     {
@@ -135,7 +132,6 @@ class sfAPCCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function removePattern($pattern)
     {
@@ -143,18 +139,20 @@ class sfAPCCache extends sfCache
             return true;
         }
 
-        $infos = apc_cache_info('user');
+        $infos = apcu_cache_info();
         if (!is_array($infos['cache_list'])) {
-            return;
+            return true;
         }
 
-        $regexp = self::patternToRegexp($this->getOption('prefix').$pattern);
+        $regexp = $this->patternToRegexp($this->getOption('prefix').$pattern);
 
         foreach ($infos['cache_list'] as $info) {
             if (preg_match($regexp, $info['info'])) {
-                apc_delete($info['info']);
+                apcu_delete($info['info']);
             }
         }
+
+        return true;
     }
 
     /**
@@ -162,7 +160,7 @@ class sfAPCCache extends sfCache
      *
      * @param string $key The cache key
      *
-     * @return string
+     * @return string|false|array
      */
     protected function getCacheInfo($key)
     {
@@ -170,7 +168,7 @@ class sfAPCCache extends sfCache
             return false;
         }
 
-        $infos = apc_cache_info('user');
+        $infos = apcu_cache_info();
 
         if (is_array($infos['cache_list'])) {
             foreach ($infos['cache_list'] as $info) {
@@ -183,10 +181,17 @@ class sfAPCCache extends sfCache
         return null;
     }
 
+    /**
+     * @param string $key
+     *
+     * @param-out bool $success
+     *
+     * @return false|mixed
+     */
     private function fetch($key, &$success)
     {
         $has = null;
-        $value = apc_fetch($key, $has);
+        $value = apcu_fetch($key, $has);
         // the second argument was added in APC 3.0.17. If it is still null we fall back to the value returned
         if (null !== $has) {
             $success = $has;

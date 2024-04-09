@@ -4,8 +4,6 @@
  * BlogAuthor filter form.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class BlogAuthorFormFilter extends BaseBlogAuthorFormFilter
 {

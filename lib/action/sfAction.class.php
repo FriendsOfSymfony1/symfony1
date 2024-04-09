@@ -15,14 +15,12 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  *
- * @version    SVN: $Id$
- *
  * @method sfWebController getController()
  * @method sfWebResponse   getResponse()
  */
 abstract class sfAction extends sfComponent
 {
-    protected $security = array();
+    protected $security = [];
 
     /**
      * Initializes this action.
@@ -124,7 +122,7 @@ abstract class sfAction extends sfComponent
     public function forward($module, $action)
     {
         if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Forward to action "%s/%s"', $module, $action))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Forward to action "%s/%s"', $module, $action)]));
         }
 
         $this->getController()->forward($module, $action);
@@ -186,7 +184,7 @@ abstract class sfAction extends sfComponent
     {
         // compatibility with url_for2() style signature
         if (is_object($statusCode) || is_array($statusCode)) {
-            $url = array_merge(array('sf_route' => $url), is_object($statusCode) ? array('sf_subject' => $statusCode) : $statusCode);
+            $url = array_merge(['sf_route' => $url], is_object($statusCode) ? ['sf_subject' => $statusCode] : $statusCode);
             $statusCode = func_num_args() >= 3 ? func_get_arg(2) : 302;
         }
 
@@ -213,7 +211,7 @@ abstract class sfAction extends sfComponent
         if ($condition) {
             // compatibility with url_for2() style signature
             $arguments = func_get_args();
-            call_user_func_array(array($this, 'redirect'), array_slice($arguments, 1));
+            call_user_func_array([$this, 'redirect'], array_slice($arguments, 1));
         }
     }
 
@@ -235,7 +233,7 @@ abstract class sfAction extends sfComponent
         if (!$condition) {
             // compatibility with url_for2() style signature
             $arguments = func_get_args();
-            call_user_func_array(array($this, 'redirect'), array_slice($arguments, 1));
+            call_user_func_array([$this, 'redirect'], array_slice($arguments, 1));
         }
     }
 
@@ -385,8 +383,6 @@ abstract class sfAction extends sfComponent
      *
      * @param string $name    The name of the value to pull from security.yml
      * @param mixed  $default The default value to return if none is found in security.yml
-     *
-     * @return mixed
      */
     public function getSecurityValue($name, $default = null)
     {
@@ -434,7 +430,7 @@ abstract class sfAction extends sfComponent
     public function setTemplate($name, $module = null)
     {
         if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name)]));
         }
 
         if (null !== $module) {
@@ -472,7 +468,7 @@ abstract class sfAction extends sfComponent
     public function setLayout($name)
     {
         if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Change layout to "%s"', $name))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Change layout to "%s"', $name)]));
         }
 
         sfConfig::set('symfony.view.'.$this->getModuleName().'_'.$this->getActionName().'_layout', $name);

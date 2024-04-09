@@ -2,8 +2,6 @@
 
 /**
  * User filter form.
- *
- * @version    SVN: $Id$
  */
 class UserFormFilter extends BaseUserFormFilter
 {

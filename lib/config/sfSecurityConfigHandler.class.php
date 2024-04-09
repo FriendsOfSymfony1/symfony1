@@ -12,8 +12,6 @@
  * sfSecurityConfigHandler allows you to configure action security.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfSecurityConfigHandler extends sfYamlConfigHandler
 {
@@ -24,9 +22,9 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
      *
      * @return string Data to be written to a cache file
      *
-     * @throws <b>sfConfigurationException</b> If a requested configuration file does not exist or is not readable
-     * @throws <b>sfParseException</b> If a requested configuration file is improperly formatted
-     * @throws <b>sfInitializationException</b> If a view.yml key check fails
+     * @throws sfConfigurationException  If a requested configuration file does not exist or is not readable
+     * @throws sfParseException          If a requested configuration file is improperly formatted
+     * @throws sfInitializationException If a view.yml key check fails
      */
     public function execute($configFiles)
     {
@@ -47,7 +45,6 @@ class sfSecurityConfigHandler extends sfYamlConfigHandler
 
     /**
      * @see sfConfigHandler
-     * {@inheritdoc}
      */
     public static function getConfiguration(array $configFiles)
     {

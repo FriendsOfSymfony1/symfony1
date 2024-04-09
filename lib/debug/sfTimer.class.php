@@ -12,8 +12,6 @@
  * sfTimer class allows to time some PHP code.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTimer
 {

@@ -12,8 +12,6 @@
  * sfValidatorSchemaFilter executes non schema validator on a schema input value.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorSchemaFilter extends sfValidatorSchema
 {
@@ -27,7 +25,7 @@ class sfValidatorSchemaFilter extends sfValidatorSchema
      *
      * @see sfValidatorBase
      */
-    public function __construct($field, sfValidatorBase $validator, $options = array(), $messages = array())
+    public function __construct($field, sfValidatorBase $validator, $options = [], $messages = [])
     {
         $this->addOption('field', $field);
         $this->addOption('validator', $validator);
@@ -37,8 +35,6 @@ class sfValidatorSchemaFilter extends sfValidatorSchema
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $indent
      */
     public function asString($indent = 0)
     {
@@ -47,13 +43,11 @@ class sfValidatorSchemaFilter extends sfValidatorSchema
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $values
      */
     protected function doClean($values)
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
 
         if (!is_array($values)) {

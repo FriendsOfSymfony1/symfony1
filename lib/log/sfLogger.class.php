@@ -22,8 +22,6 @@
  * - DEBUG:   Debug-level messages
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfLogger implements sfLoggerInterface
 {
@@ -40,7 +38,7 @@ abstract class sfLogger implements sfLoggerInterface
     protected $dispatcher;
 
     /** @var array */
-    protected $options = array();
+    protected $options = [];
 
     /** @var int */
     protected $level = self::INFO;
@@ -53,12 +51,12 @@ abstract class sfLogger implements sfLoggerInterface
      * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
      * @param array             $options    an array of options
      */
-    public function __construct(sfEventDispatcher $dispatcher, $options = array())
+    public function __construct(sfEventDispatcher $dispatcher, $options = [])
     {
         $this->initialize($dispatcher, $options);
 
         if (!isset($options['auto_shutdown']) || $options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
@@ -72,9 +70,9 @@ abstract class sfLogger implements sfLoggerInterface
      * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
      * @param array             $options    an array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfLogger
+     * @throws sfInitializationException If an error occurs while initializing this sfLogger
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
         $this->options = $options;
@@ -83,7 +81,7 @@ abstract class sfLogger implements sfLoggerInterface
             $this->setLogLevel($this->options['level']);
         }
 
-        $dispatcher->connect('application.log', array($this, 'listenToLogEvent'));
+        $dispatcher->connect('application.log', [$this, 'listenToLogEvent']);
     }
 
     /**
@@ -100,7 +98,6 @@ abstract class sfLogger implements sfLoggerInterface
      * Returns the options for the logger instance.
      *
      * @param string $name
-     * @param mixed  $value
      */
     public function setOption($name, $value)
     {
@@ -268,7 +265,7 @@ abstract class sfLogger implements sfLoggerInterface
      */
     public static function getPriorityName($priority)
     {
-        static $levels = array(
+        static $levels = [
             self::EMERG => 'emerg',
             self::ALERT => 'alert',
             self::CRIT => 'crit',
@@ -277,7 +274,7 @@ abstract class sfLogger implements sfLoggerInterface
             self::NOTICE => 'notice',
             self::INFO => 'info',
             self::DEBUG => 'debug',
-        );
+        ];
 
         if (!isset($levels[$priority])) {
             throw new sfException(sprintf('The priority level "%s" does not exist.', $priority));

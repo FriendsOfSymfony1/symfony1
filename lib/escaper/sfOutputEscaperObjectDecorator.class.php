@@ -15,8 +15,6 @@
  * @see        sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
  */
 class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator implements Countable
 {
@@ -55,7 +53,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
             $escapingMethod = $this->escapingMethod;
         }
 
-        $value = call_user_func_array(array($this->value, $method), $args);
+        $value = call_user_func_array([$this->value, $method], $args);
 
         return sfOutputEscaper::escape($escapingMethod, $value);
     }
@@ -72,8 +70,6 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
 
     /**
      * Asks the wrapped object whether a property is set.
-     *
-     * @param mixed $key
      *
      * @return bool
      */
@@ -96,7 +92,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
      */
     public function getRaw($key)
     {
-        if (!is_callable(array($this->value, 'get'))) {
+        if (!is_callable([$this->value, 'get'])) {
             throw new sfException('Object does not have a callable get() method.');
         }
 

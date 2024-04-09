@@ -14,8 +14,6 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  * Publishes Web Assets for Core and third party plugins.
  *
  * @author     Fabian Lange <fabian.lange@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPluginPublishAssetsTask extends sfPluginBaseTask
 {
@@ -24,17 +22,17 @@ class sfPluginPublishAssetsTask extends sfPluginBaseTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('plugins', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY, 'Publish this plugin\'s assets'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('core-only', '', sfCommandOption::PARAMETER_NONE, 'If set only core plugins will publish their assets'),
-        ));
+        ]);
 
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('relative', '', sfCommandOption::PARAMETER_NONE, 'If set symlinks will be relative'),
-        ));
+        ]);
 
         $this->namespace = 'plugin';
         $this->name = 'publish-assets';
@@ -57,11 +55,8 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $enabledPlugins = $this->configuration->getPlugins();
 
@@ -82,14 +77,15 @@ EOF;
             $this->logSection('plugin', 'Configuring plugin - '.$plugin);
             $this->installPluginAssets($plugin, $pluginConfiguration->getRootDir(), $options['relative']);
         }
+
+        return 0;
     }
 
     /**
      * Installs web content for a plugin.
      *
-     * @param string $plugin   The plugin name
-     * @param string $dir      The plugin directory
-     * @param mixed  $relative
+     * @param string $plugin The plugin name
+     * @param string $dir    The plugin directory
      */
     protected function installPluginAssets($plugin, $dir, $relative)
     {

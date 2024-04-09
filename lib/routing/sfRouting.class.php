@@ -12,8 +12,6 @@
  * sfRouting class controls the generation and parsing of URLs.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfRouting
 {
@@ -22,23 +20,22 @@ abstract class sfRouting
 
     /** @var sfCache|null */
     protected $cache;
-    protected $defaultParameters = array();
-    protected $options = array();
+    protected $defaultParameters = [];
+    protected $options = [];
 
     /**
      * Class constructor.
      *
      * @see initialize()
      *
-     * @param sfCache $cache
-     * @param array   $options
+     * @param array $options
      */
-    public function __construct(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
+    public function __construct(sfEventDispatcher $dispatcher, ?sfCache $cache = null, $options = [])
     {
         $this->initialize($dispatcher, $cache, $options);
 
         if (!isset($this->options['auto_shutdown']) || $this->options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
@@ -67,7 +64,7 @@ abstract class sfRouting
      * @param sfCache           $cache      An sfCache instance
      * @param array             $options    an associative array of initialization options
      */
-    public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, ?sfCache $cache = null, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -84,13 +81,13 @@ abstract class sfRouting
         }
 
         if (!isset($options['context'])) {
-            $options['context'] = array();
+            $options['context'] = [];
         }
 
         $this->options = $options;
 
-        $this->dispatcher->connect('user.change_culture', array($this, 'listenToChangeCultureEvent'));
-        $this->dispatcher->connect('request.filter_parameters', array($this, 'filterParametersEvent'));
+        $this->dispatcher->connect('user.change_culture', [$this, 'listenToChangeCultureEvent']);
+        $this->dispatcher->connect('request.filter_parameters', [$this, 'filterParametersEvent']);
 
         $this->loadConfiguration();
     }
@@ -171,7 +168,7 @@ abstract class sfRouting
      *
      * @return string The generated URL
      */
-    abstract public function generate($name, $params = array(), $absolute = false);
+    abstract public function generate($name, $params = [], $absolute = false);
 
     /**
      * Parses a URL to find a matching route and sets internal state.

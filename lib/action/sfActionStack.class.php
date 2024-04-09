@@ -15,13 +15,11 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfActionStack
 {
     /** @var sfActionStackEntry[] */
-    protected $stack = array();
+    protected $stack = [];
 
     /**
      * Adds an entry to the action stack.

@@ -14,8 +14,6 @@
  * This class manages web responses. It supports cookies and headers management.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebResponse extends sfResponse
 {
@@ -25,19 +23,19 @@ class sfWebResponse extends sfResponse
     public const ALL = 'ALL';
     public const RAW = 'RAW';
 
-    protected $cookies = array();
+    protected $cookies = [];
     protected $statusCode = 200;
     protected $statusText = 'OK';
     protected $headerOnly = false;
-    protected $headers = array();
-    protected $metas = array();
-    protected $httpMetas = array();
-    protected $positions = array('first', '', 'last');
-    protected $stylesheets = array();
-    protected $javascripts = array();
-    protected $slots = array();
+    protected $headers = [];
+    protected $metas = [];
+    protected $httpMetas = [];
+    protected $positions = ['first', '', 'last'];
+    protected $stylesheets = [];
+    protected $javascripts = [];
+    protected $slots = [];
 
-    protected static $statusTexts = array(
+    protected static $statusTexts = [
         '100' => 'Continue',
         '101' => 'Switching Protocols',
         '200' => 'OK',
@@ -79,7 +77,7 @@ class sfWebResponse extends sfResponse
         '503' => 'Service Unavailable',
         '504' => 'Gateway Timeout',
         '505' => 'HTTP Version Not Supported',
-    );
+    ];
 
     /**
      * @see sfResponse
@@ -88,7 +86,7 @@ class sfWebResponse extends sfResponse
      */
     public function __serialize()
     {
-        return array($this->content, $this->statusCode, $this->statusText, $this->options, $this->headerOnly, $this->headers, $this->metas, $this->httpMetas, $this->stylesheets, $this->javascripts, $this->slots);
+        return [$this->content, $this->statusCode, $this->statusText, $this->options, $this->headerOnly, $this->headers, $this->metas, $this->httpMetas, $this->stylesheets, $this->javascripts, $this->slots];
     }
 
     /**
@@ -114,16 +112,16 @@ class sfWebResponse extends sfResponse
      * @param sfEventDispatcher $dispatcher An sfEventDispatcher instance
      * @param array             $options    An array of options
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfResponse
+     * @throws sfInitializationException If an error occurs while initializing this sfResponse
      *
      * @see sfResponse
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         parent::initialize($dispatcher, $options);
 
-        $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
-        $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+        $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), []));
+        $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), []));
 
         if (!isset($this->options['charset'])) {
             $this->options['charset'] = 'utf-8';
@@ -171,7 +169,7 @@ class sfWebResponse extends sfResponse
      * @param bool   $secure   If secure
      * @param bool   $httpOnly If uses only HTTP
      *
-     * @throws <b>sfException</b> If fails to set the cookie
+     * @throws sfException If fails to set the cookie
      */
     public function setCookie($name, $value, $expire = null, $path = '/', $domain = '', $secure = false, $httpOnly = false)
     {
@@ -186,7 +184,7 @@ class sfWebResponse extends sfResponse
             }
         }
 
-        $this->cookies[$name] = array(
+        $this->cookies[$name] = [
             'name' => $name,
             'value' => $value,
             'expire' => $expire,
@@ -194,7 +192,7 @@ class sfWebResponse extends sfResponse
             'domain' => $domain,
             'secure' => $secure ? true : false,
             'httpOnly' => $httpOnly,
-        );
+        ];
     }
 
     /**
@@ -341,7 +339,7 @@ class sfWebResponse extends sfResponse
         }
 
         if ($this->options['logging']) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send status "%s"', $status))));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send status "%s"', $status)]));
         }
 
         // headers
@@ -352,17 +350,18 @@ class sfWebResponse extends sfResponse
             header($name.': '.$value);
 
             if ('' != $value && $this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send header "%s: %s"', $name, $value))));
+                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send header "%s: %s"', $name, $value)]));
             }
         }
 
         // cookies
         foreach ($this->cookies as $cookie) {
             $expire = isset($cookie['expire']) ? $cookie['expire'] : 0;
-            setrawcookie($cookie['name'], $cookie['value'], $expire, $cookie['path'], $cookie['domain'], $cookie['secure'], $cookie['httpOnly']);
+            $domain = isset($cookie['domain']) ? $cookie['domain'] : '';
+            setrawcookie($cookie['name'], $cookie['value'], $expire, $cookie['path'], $domain, $cookie['secure'], $cookie['httpOnly']);
 
             if ($this->options['logging']) {
-                $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Send cookie "%s": "%s"', $cookie['name'], $cookie['value']))));
+                $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Send cookie "%s": "%s"', $cookie['name'], $cookie['value'])]));
             }
         }
         // prevent resending the headers
@@ -426,7 +425,7 @@ class sfWebResponse extends sfResponse
     public function addVaryHttpHeader($header)
     {
         $vary = $this->getHttpHeader('Vary');
-        $currentHeaders = array();
+        $currentHeaders = [];
         if ($vary) {
             $currentHeaders = preg_split('/\s*,\s*/', $vary);
         }
@@ -447,7 +446,7 @@ class sfWebResponse extends sfResponse
     public function addCacheControlHttpHeader($name, $value = null)
     {
         $cacheControl = $this->getHttpHeader('Cache-Control');
-        $currentHeaders = array();
+        $currentHeaders = [];
         if ($cacheControl) {
             foreach (preg_split('/\s*,\s*/', $cacheControl) as $tmp) {
                 $tmp = explode('=', $tmp);
@@ -456,7 +455,7 @@ class sfWebResponse extends sfResponse
         }
         $currentHeaders[str_replace('_', '-', strtolower($name))] = $value;
 
-        $headers = array();
+        $headers = [];
         foreach ($currentHeaders as $key => $value) {
             $headers[] = $key.(null !== $value ? '='.$value : '');
         }
@@ -612,7 +611,7 @@ class sfWebResponse extends sfResponse
     public function getStylesheets($position = self::ALL)
     {
         if (self::ALL === $position) {
-            $stylesheets = array();
+            $stylesheets = [];
             foreach ($this->getPositions() as $position) {
                 foreach ($this->stylesheets[$position] as $file => $options) {
                     $stylesheets[$file] = $options;
@@ -637,7 +636,7 @@ class sfWebResponse extends sfResponse
      * @param string $position Position
      * @param array  $options  Stylesheet options
      */
-    public function addStylesheet($file, $position = '', $options = array())
+    public function addStylesheet($file, $position = '', $options = [])
     {
         $this->validatePosition($position);
 
@@ -679,7 +678,7 @@ class sfWebResponse extends sfResponse
     public function getJavascripts($position = self::ALL)
     {
         if (self::ALL === $position) {
-            $javascripts = array();
+            $javascripts = [];
             foreach ($this->getPositions() as $position) {
                 foreach ($this->javascripts[$position] as $file => $options) {
                     $javascripts[$file] = $options;
@@ -704,7 +703,7 @@ class sfWebResponse extends sfResponse
      * @param string $position Position
      * @param array  $options  Javascript options
      */
-    public function addJavascript($file, $position = '', $options = array())
+    public function addJavascript($file, $position = '', $options = [])
     {
         $this->validatePosition($position);
 
@@ -779,7 +778,7 @@ class sfWebResponse extends sfResponse
      */
     public function clearHttpHeaders()
     {
-        $this->headers = array();
+        $this->headers = [];
     }
 
     /**
@@ -827,7 +826,6 @@ class sfWebResponse extends sfResponse
 
     /**
      * @see sfResponse
-     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
@@ -843,7 +841,7 @@ class sfWebResponse extends sfResponse
      */
     protected function normalizeHeaderName($name)
     {
-        return strtr(ucwords(strtr(strtolower($name), array('_' => ' ', '-' => ' '))), array(' ' => '-'));
+        return strtr(ucwords(strtr(strtolower($name), ['_' => ' ', '-' => ' '])), [' ' => '-']);
     }
 
     /**

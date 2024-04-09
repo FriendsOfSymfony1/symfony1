@@ -4,8 +4,6 @@
  * Attachment form.
  *
  * @author     Your name here
- *
- * @version    SVN: $Id$
  */
 class AttachmentForm extends BaseAttachmentForm
 {
@@ -13,15 +11,15 @@ class AttachmentForm extends BaseAttachmentForm
 
     public function configure()
     {
-        $this->widgetSchema['file_path'] = new sfWidgetFormInputFileEditable(array(
+        $this->widgetSchema['file_path'] = new sfWidgetFormInputFileEditable([
             'file_src' => sfConfig::get('sf_cache_dir').'/'.$this->getObject()->file_path,
             'edit_mode' => !$this->isNew(),
-        ));
-        $this->validatorSchema['file_path'] = new sfValidatorFile(array(
+        ]);
+        $this->validatorSchema['file_path'] = new sfValidatorFile([
             'path' => sfConfig::get('sf_cache_dir'),
-            'mime_type_guessers' => array(),
+            'mime_type_guessers' => [],
             'required' => false,
-        ));
+        ]);
         $this->validatorSchema['file_path_delete'] = new sfValidatorBoolean();
     }
 

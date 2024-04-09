@@ -17,8 +17,6 @@ require_once __DIR__.'/../vendor/lime/lime.php';
  * For new code, you can use the sfTestFunctional class directly.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTestBrowser extends sfTestFunctional
 {
@@ -29,7 +27,7 @@ class sfTestBrowser extends sfTestFunctional
      * @param string $remote   Remote address to spook
      * @param array  $options  Options for sfBrowser
      */
-    public function __construct($hostname = null, $remote = null, $options = array())
+    public function __construct($hostname = null, $remote = null, $options = [])
     {
         if (is_object($hostname)) {
             // new signature

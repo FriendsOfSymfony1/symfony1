@@ -16,8 +16,6 @@ require_once dirname(__FILE__).'/sfDoctrineBaseTask.class.php';
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineInsertSqlTask extends sfDoctrineBaseTask
 {
@@ -26,10 +24,10 @@ class sfDoctrineInsertSqlTask extends sfDoctrineBaseTask
      */
     protected function configure()
     {
-        $this->addOptions(array(
+        $this->addOptions([
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-        ));
+        ]);
 
         $this->namespace = 'doctrine';
         $this->name = 'insert-sql';
@@ -47,11 +45,8 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->logSection('doctrine', 'creating tables');
 

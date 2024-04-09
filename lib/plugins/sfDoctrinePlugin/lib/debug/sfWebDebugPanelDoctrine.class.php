@@ -14,8 +14,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfWebDebugPanelDoctrine extends sfWebDebugPanel
 {
@@ -73,7 +71,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
     {
         $databaseManager = sfContext::getInstance()->getDatabaseManager();
 
-        $events = array();
+        $events = [];
         if ($databaseManager) {
             foreach ($databaseManager->getNames() as $name) {
                 $database = $databaseManager->getDatabase($name);
@@ -100,7 +98,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
     {
         $logs = $this->webDebug->getLogger()->getLogs();
 
-        $html = array();
+        $html = [];
         foreach ($this->getDoctrineEvents() as $i => $event) {
             $conn = $event->getInvoker() instanceof Doctrine_Connection ? $event->getInvoker() : $event->getInvoker()->getConnection();
             $params = sfDoctrineConnectionProfiler::fixParams($event->getParams());

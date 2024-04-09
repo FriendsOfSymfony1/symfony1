@@ -12,8 +12,6 @@
  * sfValidatorChoice validates than the value is one of the expected values.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorChoice extends sfValidatorBase
 {
@@ -47,7 +45,7 @@ class sfValidatorChoice extends sfValidatorBase
      *
      * @see sfValidatorBase
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('choices');
         $this->addOption('multiple', false);
@@ -60,8 +58,6 @@ class sfValidatorChoice extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {
@@ -71,7 +67,7 @@ class sfValidatorChoice extends sfValidatorBase
             $value = $this->cleanMultiple($value, $choices);
         } else {
             if (!self::inChoices($value, $choices)) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 
@@ -81,31 +77,30 @@ class sfValidatorChoice extends sfValidatorBase
     /**
      * Cleans a value when multiple is true.
      *
-     * @param mixed $value   The submitted value
-     * @param mixed $choices
+     * @param mixed $value The submitted value
      *
      * @return array The cleaned value
      */
     protected function cleanMultiple($value, $choices)
     {
         if (!is_array($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         foreach ($value as $v) {
             if (!self::inChoices($v, $choices)) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $v));
+                throw new sfValidatorError($this, 'invalid', ['value' => $v]);
             }
         }
 
         $count = count($value);
 
         if ($this->hasOption('min') && $count < $this->getOption('min')) {
-            throw new sfValidatorError($this, 'min', array('count' => $count, 'min' => $this->getOption('min')));
+            throw new sfValidatorError($this, 'min', ['count' => $count, 'min' => $this->getOption('min')]);
         }
 
         if ($this->hasOption('max') && $count > $this->getOption('max')) {
-            throw new sfValidatorError($this, 'max', array('count' => $count, 'max' => $this->getOption('max')));
+            throw new sfValidatorError($this, 'max', ['count' => $count, 'max' => $this->getOption('max')]);
         }
 
         return $value;
@@ -148,7 +143,7 @@ class sfValidatorChoice extends sfValidatorBase
      *
      * @return bool
      */
-    protected static function inChoices($value, array $choices = array())
+    protected static function inChoices($value, array $choices = [])
     {
         foreach ($choices as $choice) {
             if ((string) $choice == (string) $value) {

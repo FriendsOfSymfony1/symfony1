@@ -12,8 +12,6 @@
  * sfConsoleLogger logs messages to the console.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfConsoleLogger extends sfStreamLogger
 {
@@ -23,7 +21,7 @@ class sfConsoleLogger extends sfStreamLogger
      * @param sfEventDispatcher $dispatcher A sfEventDispatcher instance
      * @param array             $options    an array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         $options['stream'] = defined('STDOUT') ? STDOUT : fopen('php://stdout', 'w');
 

@@ -14,8 +14,6 @@
  * @see        sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
  */
 class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator implements Iterator, ArrayAccess, Countable
 {
@@ -30,7 +28,6 @@ class sfOutputEscaperArrayDecorator extends sfOutputEscaperGetterDecorator imple
      * Constructor.
      *
      * @see sfOutputEscaper
-     * {@inheritdoc}
      */
     public function __construct($escapingMethod, $value)
     {

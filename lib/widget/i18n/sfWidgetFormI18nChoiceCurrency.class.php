@@ -12,8 +12,6 @@
  * sfWidgetFormI18nChoiceCurrency represents a currency choice widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
 {
@@ -32,7 +30,7 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
      *
      * @see sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -47,7 +45,7 @@ class sfWidgetFormI18nChoiceCurrency extends sfWidgetFormChoice
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $currencies = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $currencies);
+            $currencies = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $currencies);
         }
 
         $this->setOption('choices', $currencies);

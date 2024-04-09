@@ -12,8 +12,6 @@
  * This class can be used to cache the result and output of any PHP callable (function and method calls).
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfFunctionCache
 {
@@ -47,7 +45,7 @@ class sfFunctionCache
      * @throws Exception
      * @throws sfException
      */
-    public function call($callable, $arguments = array())
+    public function call($callable, $arguments = [])
     {
         // Generate a cache id
         $key = $this->computeCacheKey($callable, $arguments);
@@ -56,7 +54,7 @@ class sfFunctionCache
         if (null !== $serialized) {
             $data = unserialize($serialized);
         } else {
-            $data = array();
+            $data = [];
 
             if (!is_callable($callable)) {
                 throw new sfException('The first argument to call() must be a valid callable.');
@@ -101,7 +99,7 @@ class sfFunctionCache
      *
      * @return string The associated cache key
      */
-    public function computeCacheKey($callable, $arguments = array())
+    public function computeCacheKey($callable, $arguments = [])
     {
         return md5(serialize($callable).serialize($arguments));
     }

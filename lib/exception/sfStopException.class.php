@@ -12,8 +12,6 @@
  * sfStopException is thrown when you want to stop action flow.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfStopException extends sfException
 {

@@ -14,12 +14,10 @@
  * @see http://developer.apple.com/documentation/Cocoa/Conceptual/Notifications/index.html Apple's Cocoa framework
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id: sfEventDispatcher.class.php 10631 2008-08-03 16:50:47Z fabien $
  */
 class sfEventDispatcher
 {
-    protected $listeners = array();
+    protected $listeners = [];
 
     /**
      * Connects a listener to a given event name.
@@ -30,7 +28,7 @@ class sfEventDispatcher
     public function connect($name, $listener)
     {
         if (!isset($this->listeners[$name])) {
-            $this->listeners[$name] = array();
+            $this->listeners[$name] = [];
         }
 
         $this->listeners[$name][] = $listener;
@@ -104,7 +102,7 @@ class sfEventDispatcher
     public function filter(sfEvent $event, $value)
     {
         foreach ($this->getListeners($event->getName()) as $listener) {
-            $value = call_user_func_array($listener, array($event, $value));
+            $value = call_user_func_array($listener, [$event, $value]);
         }
 
         $event->setReturnValue($value);
@@ -122,7 +120,7 @@ class sfEventDispatcher
     public function hasListeners($name)
     {
         if (!isset($this->listeners[$name])) {
-            $this->listeners[$name] = array();
+            $this->listeners[$name] = [];
         }
 
         return (bool) count($this->listeners[$name]);
@@ -138,7 +136,7 @@ class sfEventDispatcher
     public function getListeners($name)
     {
         if (!isset($this->listeners[$name])) {
-            return array();
+            return [];
         }
 
         return $this->listeners[$name];

@@ -12,8 +12,6 @@
  * sfWidgetForm is the base class for all form widgets.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfWidgetForm extends sfWidget
 {
@@ -35,7 +33,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @see sfWidget
      */
-    public function __construct($options = array(), $attributes = array())
+    public function __construct($options = [], $attributes = [])
     {
         $this->addOption('id_format', '%s');
         $this->addOption('is_hidden', false);
@@ -163,7 +161,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @return string An HTML tag string
      */
-    public function renderTag($tag, $attributes = array())
+    public function renderTag($tag, $attributes = [])
     {
         if (empty($tag)) {
             return '';
@@ -186,7 +184,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @return string An HTML tag string
      */
-    public function renderContentTag($tag, $content = null, $attributes = array())
+    public function renderContentTag($tag, $content = null, $attributes = [])
     {
         return parent::renderContentTag($tag, $content, $this->fixFormId($attributes));
     }
@@ -222,7 +220,7 @@ abstract class sfWidgetForm extends sfWidget
 
         // check to see if we have an array variable for a field name
         if (false !== strpos($name, '[')) {
-            $name = str_replace(array('[]', '][', '[', ']'), array(null !== $value && !is_array($value) ? '_'.$value : '', '_', '_', ''), $name);
+            $name = str_replace(['[]', '][', '[', ']'], [null !== $value && !is_array($value) ? '_'.$value : '', '_', '_', ''], $name);
         }
 
         if (false !== strpos($this->getOption('id_format'), '%s')) {
@@ -230,7 +228,7 @@ abstract class sfWidgetForm extends sfWidget
         }
 
         // remove illegal characters
-        return preg_replace(array('/^[^A-Za-z]+/', '/[^A-Za-z0-9\:_\.\-]/'), array('', '_'), $name);
+        return preg_replace(['/^[^A-Za-z]+/', '/[^A-Za-z0-9\:_\.\-]/'], ['', '_'], $name);
     }
 
     /**
@@ -238,7 +236,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @return sfWidgetForm The current widget instance
      */
-    public function setParent(sfWidgetFormSchema $widgetSchema = null)
+    public function setParent(?sfWidgetFormSchema $widgetSchema = null)
     {
         $this->parent = $widgetSchema;
 
@@ -283,7 +281,7 @@ abstract class sfWidgetForm extends sfWidget
      */
     protected static function generateTwoCharsRange($start, $stop)
     {
-        $results = array();
+        $results = [];
         for ($i = $start; $i <= $stop; ++$i) {
             $results[$i] = sprintf('%02d', $i);
         }
@@ -301,7 +299,7 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @see sfWidgetFormSchemaFormatter::translate()
      */
-    protected function translate($text, array $parameters = array())
+    protected function translate($text, array $parameters = [])
     {
         if (null === $this->parent) {
             return $text;
@@ -320,13 +318,13 @@ abstract class sfWidgetForm extends sfWidget
      *
      * @see sfWidgetFormSchemaFormatter::translate()
      */
-    protected function translateAll(array $texts, array $parameters = array())
+    protected function translateAll(array $texts, array $parameters = [])
     {
         if (null === $this->parent) {
             return $texts;
         }
 
-        $result = array();
+        $result = [];
 
         foreach ($texts as $key => $text) {
             $result[$key] = $this->parent->getFormFormatter()->translate($text, $parameters);

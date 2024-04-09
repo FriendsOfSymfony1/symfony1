@@ -17,8 +17,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @author     Julien Garand <julien.garand@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfMySQLSessionStorage extends sfDatabaseSessionStorage
 {
@@ -29,7 +27,7 @@ class sfMySQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if the session was destroyed, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If the session cannot be destroyed
+     * @throws sfDatabaseException If the session cannot be destroyed
      */
     public function sessionDestroy($id)
     {
@@ -58,7 +56,7 @@ class sfMySQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if old sessions have been cleaned, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If any old sessions cannot be cleaned
+     * @throws sfDatabaseException If any old sessions cannot be cleaned
      */
     public function sessionGC($lifetime)
     {
@@ -66,7 +64,7 @@ class sfMySQLSessionStorage extends sfDatabaseSessionStorage
         $db_table = $this->options['db_table'];
         $db_time_col = $this->options['db_time_col'];
 
-    // delete the record older than the authorised session life time
+        // delete the record older than the authorised session life time
         $lifetime = $this->db_escape($lifetime); // We never know...
         $sql = "DELETE FROM {$db_table} WHERE {$db_time_col} + {$lifetime} < UNIX_TIMESTAMP()";
 
@@ -84,7 +82,7 @@ class sfMySQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return string The session data if the session was read or created, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If the session cannot be read
+     * @throws sfDatabaseException If the session cannot be read
      */
     public function sessionRead($id)
     {
@@ -127,7 +125,7 @@ class sfMySQLSessionStorage extends sfDatabaseSessionStorage
      *
      * @return bool true, if the session was written, otherwise an exception is thrown
      *
-     * @throws <b>sfDatabaseException</b> If the session data cannot be written
+     * @throws sfDatabaseException If the session data cannot be written
      */
     public function sessionWrite($id, $data)
     {

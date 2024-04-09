@@ -12,8 +12,6 @@
  * sfTesterForm implements tests for forms submitted by the user.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfTesterForm extends sfTester
 {
@@ -29,7 +27,7 @@ class sfTesterForm extends sfTester
     {
         parent::__construct($browser, $tester);
 
-        $this->browser->addListener('template.filter_parameters', array($this, 'filterTemplateParameters'));
+        $this->browser->addListener('template.filter_parameters', [$this, 'filterTemplateParameters']);
     }
 
     /**

@@ -12,13 +12,11 @@
  * sfSessionTestStorage is a fake sfSessionStorage implementation to allow easy testing.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfSessionTestStorage extends sfStorage
 {
     protected $sessionId;
-    protected $sessionData = array();
+    protected $sessionData = [];
 
     /**
      * Available options:.
@@ -36,9 +34,9 @@ class sfSessionTestStorage extends sfStorage
             throw new InvalidArgumentException('The "session_path" option is mandatory for the sfSessionTestStorage class.');
         }
 
-        $options = array_merge(array(
+        $options = array_merge([
             'session_id' => null,
-        ), $options);
+        ], $options);
 
         // initialize parent
         parent::initialize($options);
@@ -48,10 +46,10 @@ class sfSessionTestStorage extends sfStorage
         if ($this->sessionId) {
             // we read session data from temp file
             $file = $this->options['session_path'].DIRECTORY_SEPARATOR.$this->sessionId.'.session';
-            $this->sessionData = is_file($file) ? unserialize(file_get_contents($file)) : array();
+            $this->sessionData = is_file($file) ? unserialize(file_get_contents($file)) : [];
         } else {
             $this->sessionId = md5(uniqid(mt_rand(), true));
-            $this->sessionData = array();
+            $this->sessionData = [];
         }
     }
 
@@ -148,12 +146,12 @@ class sfSessionTestStorage extends sfStorage
             $current_umask = umask(0000);
             $sessionsDir = $this->options['session_path'];
             if (!is_dir($sessionsDir) && !@mkdir($sessionsDir, 0777, true) && !is_dir($sessionsDir)) {
-                throw new \RuntimeException(sprintf('Logger was not able to create a directory "%s"', $sessionsDir));
+                throw new RuntimeException(sprintf('Logger was not able to create a directory "%s"', $sessionsDir));
             }
             umask($current_umask);
             file_put_contents($sessionsDir.DIRECTORY_SEPARATOR.$this->sessionId.'.session', serialize($this->sessionData));
             $this->sessionId = '';
-            $this->sessionData = array();
+            $this->sessionData = [];
         }
     }
 }

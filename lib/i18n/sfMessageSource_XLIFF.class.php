@@ -58,7 +58,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
 
         $translationUnit = $xml->xpath('//trans-unit');
 
-        $translations = array();
+        $translations = [];
 
         foreach ($translationUnit as $unit) {
             $source = (string) $unit->source;
@@ -351,7 +351,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         foreach ($this->getCatalogueList($catalogue) as $variant) {
             $file = $this->getSource($variant);
             if (is_file($file)) {
-                return array($variant, $file);
+                return [$variant, $file];
             }
         }
 
@@ -381,7 +381,7 @@ class sfMessageSource_XLIFF extends sfMessageSource_File
         file_put_contents($file, $dom->saveXML());
         chmod($file, 0777);
 
-        return array($variant, $file);
+        return [$variant, $file];
     }
 
     protected function getTemplate($catalogue)

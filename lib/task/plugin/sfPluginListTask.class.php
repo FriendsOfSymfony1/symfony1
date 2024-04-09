@@ -14,8 +14,6 @@ require_once __DIR__.'/sfPluginBaseTask.class.php';
  * Lists installed plugins.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPluginListTask extends sfPluginBaseTask
 {
@@ -40,11 +38,8 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->log($this->formatter->format('Installed plugins:', 'COMMENT'));
 
@@ -52,5 +47,7 @@ EOF;
             $alias = $this->getPluginManager()->getEnvironment()->getRegistry()->getChannel($package->getChannel())->getAlias();
             $this->log(sprintf(' %-40s %10s-%-6s %s', $this->formatter->format($package->getPackage(), 'INFO'), $package->getVersion(), $package->getState() ?: null, $this->formatter->format(sprintf('# %s (%s)', $package->getChannel(), $alias), 'COMMENT')));
         }
+
+        return 0;
     }
 }

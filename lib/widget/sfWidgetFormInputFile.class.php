@@ -12,8 +12,6 @@
  * sfWidgetFormInputFile represents an upload HTML input tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputFile extends sfWidgetFormInput
 {
@@ -25,7 +23,7 @@ class sfWidgetFormInputFile extends sfWidgetFormInput
      *
      * @see sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

@@ -14,8 +14,6 @@
  * @see        sfOutputEscaper
  *
  * @author     Mike Squire <mike@somosis.co.uk>
- *
- * @version    SVN: $Id$
  */
 abstract class sfOutputEscaperGetterDecorator extends sfOutputEscaper
 {

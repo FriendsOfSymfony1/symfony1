@@ -2,9 +2,51 @@ CHANGELOG
 =========
 
 =======
-xx/xx/xxxx: Version 1.5.16
+
+xx/xx/xxxx: Version 1.5.xx
 --------------------------
 
+* Remove sfXCacheCache as the extension is not available on PHP v7.4 anymore.
+* Remove sfEAcceleratorCache as the extension is not available on PHP v7.4 anymore.
+* Remove sfAPCCache as it uses the `apc` extension, which is not available on PHP v7.4 anymore.  
+  **[BC-Break]** Use `sfAPCuCache` class instead, available from Symfony1 v1.5.16
+
+28/02/2024: Version 1.5.18
+--------------------------
+
+* Set min versions of swiftmailer to 5.4.13 and 6.2.5 and updated swiftmailer submodule by @thirsch in #331
+
+23/02/2024: Version 1.5.17
+--------------------------
+
+* Update min PHP requirement to v7.4 or v8.1 by @thePanz in #325
+* Updated gh workflow to use latest actions by @thirsch in #330
+* Backported display_errors-handling to sf1 by @thirsch in #328
+
+15/02/2024: Version 1.5.16
+--------------------------
+
+* Fix(deprecations) Fix deprecations in sfMessageSource_Aggregate, by @thePanz in #277
+* Add(linting) Add code linting to GitHub workflow, use php-cs-fixer by @thePanz in #283
+* Add(gitattributes) Add .gitattributes to repository by @thePanz in #287
+* fix: avoid creating dynamic property $options by @vimar in #290
+* Update(github) Update github workflows by @thePanz in #292
+* php8.3 in the party by @connorhu in #294
+* Fix(php-cs-fixer) Fix php-cs-fixer to v3.45 and apply code fixes by @thePanz in #300
+* 8.3 compat/string to array by @iricketson in #298
+* Fix APC tests and add APCu support by @mentalstring in #267
+* [8.x Compatiblity] sfDebug::shortenFilePath by @iricketson in #299
+* Fix strpos() deprecation on sfCacheSessionStorage check for cookie by @thePanz in #303
+* Fix setrawcookie() deprecation on null parameter by @thePanz in #304
+* Fix str_replace() deprecated null parameter on sfNumberFormat by @thePanz in #305
+* [PHP] Replace default $flags variable with 0 by @iricketson in #307
+* [PHP8] Declare sfDoctrineFormGenerator $params property by @iricketson in #306
+* Update README by @mentalstring in #310
+* minor fix: remove fourth argument by @connorhu in #308
+* Fix PHP8.1 sfForm - Unsupported operand types: array + null on sfForm by @Tybaze in #281
+* Fix link to GitHub pipeline badge by @thePanz in #311
+* fix(phpdoc) remove html code from throws phpdoc. phpstan don't like this by @connorhu in #309
+* fix(phpdoc) remove version tag by @connorhu in #313
 
 12/01/2023: Version 1.5.15
 --------------------------

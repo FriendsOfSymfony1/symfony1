@@ -44,20 +44,20 @@ class myResponse extends sfWebResponse
 {
     public function resetAssets()
     {
-        $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), array()));
-        $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), array()));
+        $this->javascripts = array_combine($this->positions, array_fill(0, count($this->positions), []));
+        $this->stylesheets = array_combine($this->positions, array_fill(0, count($this->positions), []));
     }
 }
 
 class myController
 {
-    public function genUrl($parameters = array(), $absolute = false)
+    public function genUrl($parameters = [], $absolute = false)
     {
         return ($absolute ? '/' : '').$parameters;
     }
 }
 
-$context = sfContext::getInstance(array('request' => 'myRequest', 'response' => 'myResponse', 'controller' => 'myController'));
+$context = sfContext::getInstance(['request' => 'myRequest', 'response' => 'myResponse', 'controller' => 'myController']);
 
 // _compute_public_path()
 $t->diag('_compute_public_path');
@@ -78,12 +78,12 @@ $t->is(image_tag('test.png'), '<img src="/images/test.png" />', 'image_tag() can
 $t->is(image_tag('/images/test.png'), '<img src="/images/test.png" />', 'image_tag() can take an absolute image path');
 $t->is(image_tag('/images/test'), '<img src="/images/test.png" />', 'image_tag() can take an absolute image path without extension');
 $t->is(image_tag('test.jpg'), '<img src="/images/test.jpg" />', 'image_tag() can take an image name with an extension');
-$t->is(image_tag('test', array('alt' => 'Foo')), '<img alt="Foo" src="/images/test.png" />', 'image_tag() takes an array of options as its second argument to override alt');
-$t->is(image_tag('test', array('size' => '10x10')), '<img src="/images/test.png" height="10" width="10" />', 'image_tag() takes a size option');
-$t->is(image_tag('test', array('absolute' => true)), '<img src="http://localhost/images/test.png" />', 'image_tag() can take an absolute parameter');
-$t->is(image_tag('test', array('class' => 'bar')), '<img class="bar" src="/images/test.png" />', 'image_tag() takes whatever option you want');
-$t->is(image_tag('test', array('alt_title' => 'Foo')), '<img src="/images/test.png" alt="Foo" title="Foo" />', 'image_tag() takes an array of options as its second argument to create alt and title');
-$t->is(image_tag('test', array('alt_title' => 'Foo', 'title' => 'Bar')), '<img title="Bar" src="/images/test.png" alt="Foo" />', 'image_tag() takes an array of options as its second argument to create alt and title');
+$t->is(image_tag('test', ['alt' => 'Foo']), '<img alt="Foo" src="/images/test.png" />', 'image_tag() takes an array of options as its second argument to override alt');
+$t->is(image_tag('test', ['size' => '10x10']), '<img src="/images/test.png" height="10" width="10" />', 'image_tag() takes a size option');
+$t->is(image_tag('test', ['absolute' => true]), '<img src="http://localhost/images/test.png" />', 'image_tag() can take an absolute parameter');
+$t->is(image_tag('test', ['class' => 'bar']), '<img class="bar" src="/images/test.png" />', 'image_tag() takes whatever option you want');
+$t->is(image_tag('test', ['alt_title' => 'Foo']), '<img src="/images/test.png" alt="Foo" title="Foo" />', 'image_tag() takes an array of options as its second argument to create alt and title');
+$t->is(image_tag('test', ['alt_title' => 'Foo', 'title' => 'Bar']), '<img title="Bar" src="/images/test.png" alt="Foo" />', 'image_tag() takes an array of options as its second argument to create alt and title');
 
 // stylesheet_tag()
 $t->diag('stylesheet_tag()');
@@ -99,22 +99,22 @@ $t->is(
     'stylesheet_tag() can takes n stylesheet names as its arguments'
 );
 $t->is(
-    stylesheet_tag('style', array('media' => 'all')),
+    stylesheet_tag('style', ['media' => 'all']),
     '<link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />'."\n",
     'stylesheet_tag() can take a media option'
 );
 $t->is(
-    stylesheet_tag('style', array('absolute' => true)),
+    stylesheet_tag('style', ['absolute' => true]),
     '<link rel="stylesheet" type="text/css" media="screen" href="http://localhost/css/style.css" />'."\n",
     'stylesheet_tag() can take an absolute option to output an absolute file name'
 );
 $t->is(
-    stylesheet_tag('style', array('raw_name' => true)),
+    stylesheet_tag('style', ['raw_name' => true]),
     '<link rel="stylesheet" type="text/css" media="screen" href="style" />'."\n",
     'stylesheet_tag() can take a raw_name option to bypass file name decoration'
 );
 $t->is(
-    stylesheet_tag('style', array('condition' => 'IE 6')),
+    stylesheet_tag('style', ['condition' => 'IE 6']),
     '<!--[if IE 6]><link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" /><![endif]-->'."\n",
     'stylesheet_tag() can take a condition option'
 );
@@ -133,22 +133,22 @@ $t->is(
     'javascript_include_tag() can takes n javascript file names as its arguments'
 );
 $t->is(
-    javascript_include_tag('xmlhr', array('absolute' => true)),
+    javascript_include_tag('xmlhr', ['absolute' => true]),
     '<script type="text/javascript" src="http://localhost/js/xmlhr.js"></script>'."\n",
     'javascript_include_tag() can take an absolute option to output an absolute file name'
 );
 $t->is(
-    javascript_include_tag('xmlhr', array('raw_name' => true)),
+    javascript_include_tag('xmlhr', ['raw_name' => true]),
     '<script type="text/javascript" src="xmlhr"></script>'."\n",
     'javascript_include_tag() can take a raw_name option to bypass file name decoration'
 );
 $t->is(
-    javascript_include_tag('xmlhr', array('defer' => 'defer')),
+    javascript_include_tag('xmlhr', ['defer' => 'defer']),
     '<script type="text/javascript" src="/js/xmlhr.js" defer="defer"></script>'."\n",
     'javascript_include_tag() can take additional html options like defer'
 );
 $t->is(
-    javascript_include_tag('xmlhr', array('condition' => 'IE 6')),
+    javascript_include_tag('xmlhr', ['condition' => 'IE 6']),
     '<!--[if IE 6]><script type="text/javascript" src="/js/xmlhr.js"></script><![endif]-->'."\n",
     'javascript_include_tag() can take a condition option'
 );
@@ -182,13 +182,13 @@ $t->is(
     '<script type="text/javascript" src="/js/xmlhr.js"></script>'."\n",
     'get_javascripts() returns a javascript previously added by use_javascript()'
 );
-use_javascript('xmlhr', '', array('raw_name' => true));
+use_javascript('xmlhr', '', ['raw_name' => true]);
 $t->is(
     get_javascripts(),
     '<script type="text/javascript" src="xmlhr"></script>'."\n",
     'use_javascript() accepts an array of options as a third parameter'
 );
-use_javascript('xmlhr', '', array('absolute' => true));
+use_javascript('xmlhr', '', ['absolute' => true]);
 $t->is(
     get_javascripts(),
     '<script type="text/javascript" src="http://localhost/js/xmlhr.js"></script>'."\n",
@@ -210,13 +210,13 @@ $t->is(
     '<link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />'."\n",
     'get_stylesheets() returns a stylesheet previously added by use_stylesheet()'
 );
-use_stylesheet('style', '', array('raw_name' => true));
+use_stylesheet('style', '', ['raw_name' => true]);
 $t->is(
     get_stylesheets(),
     '<link rel="stylesheet" type="text/css" media="screen" href="style" />'."\n",
     'use_stylesheet() accepts an array of options as a third parameter'
 );
-use_stylesheet('style', '', array('absolute' => true));
+use_stylesheet('style', '', ['absolute' => true]);
 $t->is(
     get_stylesheets(),
     '<link rel="stylesheet" type="text/css" media="screen" href="http://localhost/css/style.css" />'."\n",
@@ -240,7 +240,7 @@ $t->is(_dynamic_path('module/action', 'js', true), '/module/action?sf_format=js'
 $t->diag('dynamic_javascript_include_tag()');
 $t->is(dynamic_javascript_include_tag('module/action'), '<script type="text/javascript" src="module/action?sf_format=js"></script>'."\n", 'dynamic_javascript_include_tag() returns a tag relative to the given action');
 $t->is(dynamic_javascript_include_tag('module/action', true), '<script type="text/javascript" src="/module/action?sf_format=js"></script>'."\n", 'dynamic_javascript_include_tag() takes an absolute boolean as its second argument');
-$t->is(dynamic_javascript_include_tag('module/action', true, array('class' => 'foo')), '<script type="text/javascript" src="/module/action?sf_format=js" class="foo"></script>'."\n", 'dynamic_javascript_include_tag() takes an array of HTML attributes as its third argument');
+$t->is(dynamic_javascript_include_tag('module/action', true, ['class' => 'foo']), '<script type="text/javascript" src="/module/action?sf_format=js" class="foo"></script>'."\n", 'dynamic_javascript_include_tag() takes an array of HTML attributes as its third argument');
 
 $context->response = new myResponse($context->getEventDispatcher());
 
@@ -266,12 +266,12 @@ class MyForm extends sfForm
 {
     public function getStylesheets()
     {
-        return array('/path/to/a/foo.css' => 'all', '/path/to/a/bar.css' => 'print');
+        return ['/path/to/a/foo.css' => 'all', '/path/to/a/bar.css' => 'print'];
     }
 
     public function getJavaScripts()
     {
-        return array('/path/to/a/foo.js', '/path/to/a/bar.js');
+        return ['/path/to/a/foo.js', '/path/to/a/bar.js'];
     }
 }
 
@@ -299,11 +299,11 @@ $form = new MyForm();
 
 $response->resetAssets();
 use_stylesheets_for_form($form);
-$t->is_deeply($response->getStylesheets(), array('/path/to/a/foo.css' => array('media' => 'all'), '/path/to/a/bar.css' => array('media' => 'print')), 'use_stylesheets_for_form() adds stylesheets to the response');
+$t->is_deeply($response->getStylesheets(), ['/path/to/a/foo.css' => ['media' => 'all'], '/path/to/a/bar.css' => ['media' => 'print']], 'use_stylesheets_for_form() adds stylesheets to the response');
 
 $response->resetAssets();
 use_javascripts_for_form($form);
-$t->is_deeply($response->getJavaScripts(), array('/path/to/a/foo.js' => array(), '/path/to/a/bar.js' => array()), 'use_javascripts_for_form() adds javascripts to the response');
+$t->is_deeply($response->getJavaScripts(), ['/path/to/a/foo.js' => [], '/path/to/a/bar.js' => []], 'use_javascripts_for_form() adds javascripts to the response');
 
 // custom web paths
 $t->diag('Custom asset path handling');

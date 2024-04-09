@@ -12,8 +12,6 @@
  * sfTester is the base class for all tester classes.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfTester
 {
@@ -35,7 +33,7 @@ abstract class sfTester
 
     public function __call($method, $arguments)
     {
-        call_user_func_array(array($this->browser, $method), $arguments);
+        call_user_func_array([$this->browser, $method], $arguments);
 
         return $this->getObjectToReturn();
     }

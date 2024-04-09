@@ -12,8 +12,6 @@
  * sfWidgetFormChoice represents a choice widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormChoice extends sfWidgetFormChoiceBase
 {
@@ -28,6 +26,8 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
     public function setIdFormat($format)
     {
         $this->options['renderer_options']['id_format'] = $format;
+
+        return $this;
     }
 
     /**
@@ -42,7 +42,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if ($this->getOption('multiple')) {
             $attributes['multiple'] = 'multiple';
@@ -91,7 +91,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
         }
 
         $options = $this->options['renderer_options'];
-        $options['choices'] = new sfCallable(array($this, 'getChoices'));
+        $options['choices'] = new sfCallable([$this, 'getChoices']);
 
         $renderer = new $class($options, $this->getAttributes());
 
@@ -126,14 +126,14 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
      *
      * @see sfWidgetFormChoiceBase
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
         $this->addOption('multiple', false);
         $this->addOption('expanded', false);
         $this->addOption('renderer_class', false);
-        $this->addOption('renderer_options', array());
+        $this->addOption('renderer_options', []);
         $this->addOption('renderer', false);
     }
 }

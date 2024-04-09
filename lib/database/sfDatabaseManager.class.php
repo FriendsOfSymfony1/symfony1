@@ -16,14 +16,12 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfDatabaseManager
 {
     /** @var sfProjectConfiguration */
     protected $configuration;
-    protected $databases = array();
+    protected $databases = [];
 
     /**
      * Class constructor.
@@ -32,12 +30,12 @@ class sfDatabaseManager
      *
      * @param array $options
      */
-    public function __construct(sfProjectConfiguration $configuration, $options = array())
+    public function __construct(sfProjectConfiguration $configuration, $options = [])
     {
         $this->initialize($configuration);
 
         if (!isset($options['auto_shutdown']) || $options['auto_shutdown']) {
-            register_shutdown_function(array($this, 'shutdown'));
+            register_shutdown_function([$this, 'shutdown']);
         }
     }
 
@@ -46,7 +44,7 @@ class sfDatabaseManager
      *
      * @param sfProjectConfiguration $configuration A sfProjectConfiguration instance
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabaseManager object
+     * @throws sfInitializationException If an error occurs while initializing this sfDatabaseManager object
      */
     public function initialize(sfProjectConfiguration $configuration)
     {
@@ -64,7 +62,7 @@ class sfDatabaseManager
             $databases = include $this->configuration->getConfigCache()->checkConfig('config/databases.yml');
         } else {
             $configHandler = new sfDatabaseConfigHandler();
-            $databases = $configHandler->evaluate(array($this->configuration->getRootDir().'/config/databases.yml'));
+            $databases = $configHandler->evaluate([$this->configuration->getRootDir().'/config/databases.yml']);
         }
 
         foreach ($databases as $name => $database) {
@@ -90,7 +88,7 @@ class sfDatabaseManager
      *
      * @return mixed A Database instance
      *
-     * @throws <b>sfDatabaseException</b> If the requested database name does not exist
+     * @throws sfDatabaseException If the requested database name does not exist
      */
     public function getDatabase($name = 'default')
     {
@@ -115,7 +113,7 @@ class sfDatabaseManager
     /**
      * Executes the shutdown procedure.
      *
-     * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this DatabaseManager
+     * @throws sfDatabaseException If an error occurs while shutting down this DatabaseManager
      */
     public function shutdown()
     {

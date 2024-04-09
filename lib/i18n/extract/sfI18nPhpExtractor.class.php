@@ -10,8 +10,6 @@
 
 /**
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfI18nPhpExtractor implements sfI18nExtractorInterface
 {
@@ -26,7 +24,7 @@ class sfI18nPhpExtractor implements sfI18nExtractorInterface
     {
         $tokens = token_get_all($content);
 
-        $strings = array();
+        $strings = [];
         $i18n_function = 0;
         $line = 0;
         $heredoc = false;

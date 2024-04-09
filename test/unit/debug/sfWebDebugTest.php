@@ -22,7 +22,7 @@ class sfWebDebugTest extends sfWebDebug
     public function __construct()
     {
         $this->options['image_root_path'] = '';
-        $this->options['request_parameters'] = array();
+        $this->options['request_parameters'] = [];
     }
 }
 

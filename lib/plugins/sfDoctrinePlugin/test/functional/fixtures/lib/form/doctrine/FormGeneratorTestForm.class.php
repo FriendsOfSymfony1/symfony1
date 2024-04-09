@@ -2,8 +2,6 @@
 
 /**
  * FormGeneratorTest form.
- *
- * @version    SVN: $Id$
  */
 class FormGeneratorTestForm extends BaseFormGeneratorTestForm
 {

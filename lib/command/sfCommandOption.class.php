@@ -12,8 +12,6 @@
  * Represents a command line option.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommandOption
 {
@@ -145,7 +143,7 @@ class sfCommandOption
 
         if ($this->isArray()) {
             if (null === $default) {
-                $default = array();
+                $default = [];
             } elseif (!is_array($default)) {
                 throw new sfCommandException('A default value for an array option must be an array.');
             }

@@ -14,8 +14,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfDoctrineCli extends Doctrine_Cli
 {
@@ -52,7 +50,7 @@ class sfDoctrineCli extends Doctrine_Cli
      */
     public function notify($notification = null, $style = 'HEADER')
     {
-        $this->symfonyDispatcher->notify(new sfEvent($this, 'command.log', array($this->symfonyFormatter->formatSection('doctrine', $notification))));
+        $this->symfonyDispatcher->notify(new sfEvent($this, 'command.log', [$this->symfonyFormatter->formatSection('doctrine', $notification)]));
     }
 
     /**

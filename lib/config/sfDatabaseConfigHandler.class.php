@@ -16,8 +16,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfDatabaseConfigHandler extends sfYamlConfigHandler
 {
@@ -62,7 +60,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             require_once $include;
         }
 
-        $databases = array();
+        $databases = [];
         foreach ($data as $name => $database) {
             $databases[$name] = new $database[0]($database[1]);
         }
@@ -72,7 +70,6 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
 
     /**
      * @see sfConfigHandler
-     * {@inheritdoc}
      */
     public static function getConfiguration(array $configFiles)
     {
@@ -93,9 +90,9 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
         $config = static::getConfiguration($configFiles);
 
         // init our data and includes arrays
-        $data = array();
-        $databases = array();
-        $includes = array();
+        $data = [];
+        $databases = [];
+        $includes = [];
 
         // get a list of database connections
         foreach ($config as $name => $dbConfig) {
@@ -126,16 +123,16 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
             }
 
             // parse parameters
-            $parameters = array();
+            $parameters = [];
             if (isset($dbConfig['param'])) {
                 $parameters = $dbConfig['param'];
             }
             $parameters['name'] = $name;
 
             // append new data
-            $data[$name] = array($dbConfig['class'], $parameters);
+            $data[$name] = [$dbConfig['class'], $parameters];
         }
 
-        return array($includes, $data);
+        return [$includes, $data];
     }
 }

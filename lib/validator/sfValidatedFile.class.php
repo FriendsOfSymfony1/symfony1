@@ -12,8 +12,6 @@
  * sfValidatedFile represents a validated uploaded file.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatedFile
 {
@@ -87,7 +85,7 @@ class sfValidatedFile
         if (!is_readable($directory)) {
             if ($create && !@mkdir($directory, $dirMode, true) && !is_dir($directory)) {
                 // failed to create the directory
-                throw new \Exception(sprintf('Failed to create file upload directory "%s".', $directory));
+                throw new Exception(sprintf('Failed to create file upload directory "%s".', $directory));
             }
 
             // chmod the directory since it doesn't seem to work on recursive paths
@@ -243,7 +241,7 @@ class sfValidatedFile
      */
     protected function getExtensionFromType($type, $default = '')
     {
-        static $extensions = array(
+        static $extensions = [
             'application/andrew-inset' => 'ez',
             'application/appledouble' => 'base64',
             'application/applefile' => 'base64',
@@ -655,7 +653,7 @@ class sfValidatedFile
             'x-world/x-svr' => 'svr',
             'x-world/x-vream' => 'vrw',
             'x-world/x-vrml' => 'wrl',
-        );
+        ];
 
         return !$type ? $default : (isset($extensions[$type]) ? '.'.$extensions[$type] : $default);
     }

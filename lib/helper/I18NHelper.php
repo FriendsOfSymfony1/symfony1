@@ -12,21 +12,15 @@
  * I18NHelper.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
- *
- * @param mixed $text
- * @param mixed $args
- * @param mixed $catalogue
  */
-function __($text, $args = array(), $catalogue = 'messages')
+function __($text, $args = [], $catalogue = 'messages')
 {
     if (sfConfig::get('sf_i18n')) {
         return sfContext::getInstance()->getI18N()->__($text, $args, $catalogue);
     }
 
     if (empty($args)) {
-        $args = array();
+        $args = [];
     }
 
     // replace object with strings
@@ -56,7 +50,7 @@ function __($text, $args = array(), $catalogue = 'messages')
  *
  * @return string Result of the translation
  */
-function format_number_choice($text, $args = array(), $number = null, $catalogue = 'messages')
+function format_number_choice($text, $args = [], $number = null, $catalogue = 'messages')
 {
     $translated = __($text, $args, $catalogue);
 

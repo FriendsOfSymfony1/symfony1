@@ -19,7 +19,7 @@ $t->diag('->dump()');
 $dumper = new sfServiceContainerDumperPhp($container = new sfServiceContainerBuilder());
 
 $t->is($dumper->dump(), file_get_contents($dir.'/services1.php'), '->dump() dumps an empty container as an empty PHP class');
-$t->is($dumper->dump(array('class' => 'Container', 'base_class' => 'AbstractContainer')), file_get_contents($dir.'/services1-1.php'), '->dump() takes a class and a base_class options');
+$t->is($dumper->dump(['class' => 'Container', 'base_class' => 'AbstractContainer']), file_get_contents($dir.'/services1-1.php'), '->dump() takes a class and a base_class options');
 
 $container = new sfServiceContainerBuilder();
 $dumper = new sfServiceContainerDumperPhp($container);

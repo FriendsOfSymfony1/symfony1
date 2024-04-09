@@ -16,8 +16,6 @@
  * method of SecurityUser.
  *
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfBasicSecurityFilter extends sfFilter
 {
@@ -39,11 +37,11 @@ class sfBasicSecurityFilter extends sfFilter
         }
 
         // NOTE: the nice thing about the Action class is that getCredential()
-    //       is vague enough to describe any level of security and can be
-    //       used to retrieve such data and should never have to be altered
+        //       is vague enough to describe any level of security and can be
+        //       used to retrieve such data and should never have to be altered
         if (!$this->context->getUser()->isAuthenticated()) {
             if (sfConfig::get('sf_logging_enabled')) {
-                $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array(sprintf('Action "%s/%s" requires authentication, forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action')))));
+                $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', [sprintf('Action "%s/%s" requires authentication, forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), sfConfig::get('sf_login_module'), sfConfig::get('sf_login_action'))]));
             }
 
             // the user is not authenticated
@@ -54,7 +52,7 @@ class sfBasicSecurityFilter extends sfFilter
         $credential = $this->getUserCredential();
         if (null !== $credential && !$this->context->getUser()->hasCredential($credential)) {
             if (sfConfig::get('sf_logging_enabled')) {
-                $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array(sprintf('Action "%s/%s" requires credentials "%s", forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), sfYaml::dump($credential, 0), sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action')))));
+                $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', [sprintf('Action "%s/%s" requires credentials "%s", forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(), sfYaml::dump($credential, 0), sfConfig::get('sf_secure_module'), sfConfig::get('sf_secure_action'))]));
             }
 
             // the user doesn't have access

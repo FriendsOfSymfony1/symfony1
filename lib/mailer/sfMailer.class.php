@@ -14,8 +14,6 @@
  * This class is instanciated by sfContext on demand.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfMailer extends Swift_Mailer
 {
@@ -53,15 +51,15 @@ class sfMailer extends Swift_Mailer
     public function __construct(sfEventDispatcher $dispatcher, $options)
     {
         // options
-        $options = array_merge(array(
+        $options = array_merge([
             'charset' => 'UTF-8',
             'logging' => false,
             'delivery_strategy' => self::REALTIME,
-            'transport' => array(
+            'transport' => [
                 'class' => 'Swift_MailTransport',
-                'param' => array(),
-            ),
-        ), $options);
+                'param' => [],
+            ],
+        ], $options);
 
         $constantName = 'sfMailer::'.strtoupper($options['delivery_strategy']);
         $this->strategy = defined($constantName) ? constant($constantName) : false;
@@ -96,7 +94,7 @@ class sfMailer extends Swift_Mailer
             if (!isset($options['spool_class'])) {
                 throw new InvalidArgumentException('For the spool mail delivery strategy, you must also define a spool_class option');
             }
-            $arguments = isset($options['spool_arguments']) ? $options['spool_arguments'] : array();
+            $arguments = isset($options['spool_arguments']) ? $options['spool_arguments'] : [];
 
             if ($arguments) {
                 $r = new ReflectionClass($options['spool_class']);

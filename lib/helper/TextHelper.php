@@ -15,12 +15,6 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
  *
- * @version    SVN: $Id$
- *
- * @param mixed      $text
- * @param mixed      $length
- * @param mixed      $truncate_string
- * @param mixed      $truncate_lastspace
  * @param mixed|null $truncate_pattern
  * @param mixed|null $length_max
  */
@@ -126,12 +120,6 @@ function highlight_text($text, $phrase, $highlighter = '<strong class="highlight
  * If +excerpt_space+ is true the text will only be truncated on whitespace, never inbetween words.
  * This might return a smaller radius than specified.
  *   excerpt("hello my world", "my", 3, "...", true) => "... my ...".
- *
- * @param mixed $text
- * @param mixed $phrase
- * @param mixed $radius
- * @param mixed $excerpt_string
- * @param mixed $excerpt_space
  */
 function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $excerpt_space = false)
 {
@@ -180,9 +168,6 @@ function excerpt_text($text, $phrase, $radius = 100, $excerpt_string = '...', $e
 
 /**
  * Word wrap long lines to line_width.
- *
- * @param mixed $text
- * @param mixed $line_width
  */
 function wrap_text($text, $line_width = 80)
 {
@@ -194,16 +179,13 @@ function wrap_text($text, $line_width = 80)
  * Surrounds paragraphs with <tt>&lt;p&gt;</tt> tags, and converts line breaks into <tt>&lt;br /&gt;</tt>
  * Two consecutive newlines(<tt>\n\n</tt>) are considered as a paragraph, one newline (<tt>\n</tt>) is
  * considered a linebreak, three or more consecutive newlines are turned into two newlines.
- *
- * @param mixed $text
- * @param mixed $options
  */
-function simple_format_text($text, $options = array())
+function simple_format_text($text, $options = [])
 {
     $css = (isset($options['class'])) ? ' class="'.$options['class'].'"' : '';
 
-    $text = sfToolkit::pregtr($text, array("/(\r\n|\r)/" => "\n",               // lets make them newlines crossplatform
-        "/\n{2,}/" => "</p><p{$css}>"));    // turn two and more newlines into paragraph
+    $text = sfToolkit::pregtr($text, ["/(\r\n|\r)/" => "\n",               // lets make them newlines crossplatform
+        "/\n{2,}/" => "</p><p{$css}>"]);    // turn two and more newlines into paragraph
 
     // turn single newline into <br/>
     $text = str_replace("\n", "\n<br />", $text);
@@ -219,15 +201,8 @@ function simple_format_text($text, $options = array())
  *   auto_link("Go to http://www.symfony-project.com and say hello to fabien.potencier@example.com") =>
  *     Go to <a href="http://www.symfony-project.com">http://www.symfony-project.com</a> and
  *     say hello to <a href="mailto:fabien.potencier@example.com">fabien.potencier@example.com</a>
- *
- * @param mixed $text
- * @param mixed $link
- * @param mixed $href_options
- * @param mixed $truncate
- * @param mixed $truncate_len
- * @param mixed $pad
  */
-function auto_link_text($text, $link = 'all', $href_options = array(), $truncate = false, $truncate_len = 35, $pad = '...')
+function auto_link_text($text, $link = 'all', $href_options = [], $truncate = false, $truncate_len = 35, $pad = '...')
 {
     if ('all' == $link) {
         return _auto_link_urls(_auto_link_email_addresses($text), $href_options, $truncate, $truncate_len, $pad);
@@ -242,8 +217,6 @@ function auto_link_text($text, $link = 'all', $href_options = array(), $truncate
 
 /**
  * Turns all links into words, like "<a href="something">else</a>" to "else".
- *
- * @param mixed $text
  */
 function strip_links_text($text)
 {
@@ -275,14 +248,8 @@ if (!defined('SF_AUTO_LINK_RE')) {
 
 /**
  * Turns all urls into clickable links.
- *
- * @param mixed $text
- * @param mixed $href_options
- * @param mixed $truncate
- * @param mixed $truncate_len
- * @param mixed $pad
  */
-function _auto_link_urls($text, $href_options = array(), $truncate = false, $truncate_len = 40, $pad = '...')
+function _auto_link_urls($text, $href_options = [], $truncate = false, $truncate_len = 40, $pad = '...')
 {
     $href_options = _tag_options($href_options);
 
@@ -310,8 +277,6 @@ function _auto_link_urls($text, $href_options = array(), $truncate = false, $tru
 
 /**
  * Turns all email addresses into clickable links.
- *
- * @param mixed $text
  */
 function _auto_link_email_addresses($text)
 {

@@ -12,8 +12,6 @@
  * sfWidgetFormInputPassword represents a password HTML input tag.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputPassword extends sfWidgetFormInput
 {
@@ -29,7 +27,7 @@ class sfWidgetFormInputPassword extends sfWidgetFormInput
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         return parent::render($name, $this->getOption('always_render_empty') ? null : $value, $attributes, $errors);
     }
@@ -46,7 +44,7 @@ class sfWidgetFormInputPassword extends sfWidgetFormInput
      *
      * @see sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

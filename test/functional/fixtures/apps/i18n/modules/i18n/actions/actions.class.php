@@ -15,8 +15,8 @@ class i18nActions extends sfActions
 
         $this->test = $i18n->__('an english sentence');
         $this->localTest = $i18n->__('a local english sentence');
-        $this->otherTest = $i18n->__('an english sentence', array(), 'other');
-        $this->otherLocalTest = $i18n->__('a local english sentence', array(), 'other');
+        $this->otherTest = $i18n->__('an english sentence', [], 'other');
+        $this->otherLocalTest = $i18n->__('a local english sentence', [], 'other');
     }
 
     public function executeIndexForFr()

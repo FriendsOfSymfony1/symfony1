@@ -15,8 +15,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 abstract class sfDatabase
 {
@@ -36,7 +34,7 @@ abstract class sfDatabase
      *
      * @param array $parameters An associative array of initialization parameters
      */
-    public function __construct($parameters = array())
+    public function __construct($parameters = [])
     {
         $this->initialize($parameters);
     }
@@ -46,9 +44,9 @@ abstract class sfDatabase
      *
      * @param array $parameters An associative array of initialization parameters
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabase object
+     * @throws sfInitializationException If an error occurs while initializing this sfDatabase object
      */
-    public function initialize($parameters = array())
+    public function initialize($parameters = [])
     {
         $this->parameterHolder = new sfParameterHolder();
         $this->parameterHolder->add($parameters);
@@ -57,7 +55,7 @@ abstract class sfDatabase
     /**
      * Connects to the database.
      *
-     * @throws <b>sfDatabaseException</b> If a connection could not be created
+     * @throws sfDatabaseException If a connection could not be created
      */
     abstract public function connect();
 
@@ -69,7 +67,7 @@ abstract class sfDatabase
      *
      * @return mixed A database connection
      *
-     * @throws <b>sfDatabaseException</b> If a connection could not be retrieved
+     * @throws sfDatabaseException If a connection could not be retrieved
      */
     public function getConnection()
     {
@@ -85,7 +83,7 @@ abstract class sfDatabase
      *
      * @return mixed A database resource
      *
-     * @throws <b>sfDatabaseException</b> If a resource could not be retrieved
+     * @throws sfDatabaseException If a resource could not be retrieved
      */
     public function getResource()
     {
@@ -163,7 +161,7 @@ abstract class sfDatabase
     /**
      * Executes the shutdown procedure.
      *
-     * @throws <b>sfDatabaseException</b> If an error occurs while shutting down this database
+     * @throws sfDatabaseException If an error occurs while shutting down this database
      */
     abstract public function shutdown();
 }

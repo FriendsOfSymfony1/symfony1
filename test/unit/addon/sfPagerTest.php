@@ -25,7 +25,7 @@ class myPager extends sfPager
     {
         $this->setNbResults(2);
 
-        return array('foo', 'bar');
+        return ['foo', 'bar'];
     }
 }
 

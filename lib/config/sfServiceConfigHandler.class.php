@@ -12,8 +12,6 @@
  * sfSecurityConfigHandler allows you to configure action security.
  *
  * @author     Jerome Tamarelle <jtamarelle@groupe-exp.com>
- *
- * @version    SVN: $Id$
  */
 class sfServiceConfigHandler extends sfYamlConfigHandler
 {
@@ -34,10 +32,10 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
         $loader->load(static::getConfiguration($configFiles));
 
         $dumper = new sfServiceContainerDumperPhp($serviceContainerBuilder);
-        $code = $dumper->dump(array(
+        $code = $dumper->dump([
             'class' => $class,
             'base_class' => $this->parameterHolder->get('base_class'),
-        ));
+        ]);
 
         // compile data
         $retval = sprintf(
@@ -59,7 +57,6 @@ class sfServiceConfigHandler extends sfYamlConfigHandler
 
     /**
      * @see sfConfigHandler
-     * {@inheritdoc}
      */
     public static function getConfiguration(array $configFiles)
     {

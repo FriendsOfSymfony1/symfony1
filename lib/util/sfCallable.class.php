@@ -12,8 +12,6 @@
  * sfCallable represents a PHP callable.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCallable
 {

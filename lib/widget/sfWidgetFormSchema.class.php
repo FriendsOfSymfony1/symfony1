@@ -14,8 +14,6 @@
  * A field is a named validator.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 {
@@ -26,10 +24,10 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
     protected static $defaultFormatterName = 'table';
 
-    protected $formFormatters = array();
-    protected $fields = array();
-    protected $positions = array();
-    protected $helps = array();
+    protected $formFormatters = [];
+    protected $fields = [];
+    protected $positions = [];
+    protected $helps = [];
 
     /**
      * Constructor.
@@ -54,7 +52,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      *
      * @see sfWidgetForm
      */
-    public function __construct($fields = null, $options = array(), $attributes = array(), $labels = array(), $helps = array())
+    public function __construct($fields = null, $options = [], $attributes = [], $labels = [], $helps = [])
     {
         $this->addOption('name_format', '%s');
         $this->addOption('form_formatter', null);
@@ -138,7 +136,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function getDefaults()
     {
-        $defaults = array();
+        $defaults = [];
 
         foreach ($this->fields as $name => $widget) {
             $defaults[$name] = $widget instanceof sfWidgetFormSchema ? $widget->getDefaults() : $widget->getDefault();
@@ -308,7 +306,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function getLabels()
     {
-        $labels = array();
+        $labels = [];
 
         foreach ($this->fields as $name => $widget) {
             $labels[$name] = $widget->getLabel();
@@ -424,7 +422,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function getStylesheets()
     {
-        $stylesheets = array();
+        $stylesheets = [];
 
         foreach ($this->fields as $field) {
             $stylesheets = array_merge($stylesheets, $field->getStylesheets());
@@ -440,7 +438,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function getJavaScripts()
     {
-        $javascripts = array();
+        $javascripts = [];
 
         foreach ($this->fields as $field) {
             $javascripts = array_merge($javascripts, $field->getJavaScripts());
@@ -477,7 +475,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      *
      * @throws InvalidArgumentException when the widget not exist
      */
-    public function renderField($name, $value = null, $attributes = array(), $errors = array())
+    public function renderField($name, $value = null, $attributes = [], $errors = [])
     {
         if (null === $widget = $this[$name]) {
             throw new InvalidArgumentException(sprintf('The field named "%s" does not exist.', $name));
@@ -508,10 +506,10 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      *
      * @throws InvalidArgumentException when values type is not array|ArrayAccess
      */
-    public function render($name, $values = array(), $attributes = array(), $errors = array())
+    public function render($name, $values = [], $attributes = [], $errors = [])
     {
         if (null === $values) {
-            $values = array();
+            $values = [];
         }
 
         if (!is_array($values) && !$values instanceof ArrayAccess) {
@@ -520,16 +518,16 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
         $formFormat = $this->getFormFormatter();
 
-        $rows = array();
-        $hiddenRows = array();
-        $errorRows = array();
+        $rows = [];
+        $hiddenRows = [];
+        $errorRows = [];
 
         // render each field
         foreach ($this->positions as $name) {
             $widget = $this[$name];
             $value = isset($values[$name]) ? $values[$name] : null;
-            $error = isset($errors[$name]) ? $errors[$name] : array();
-            $widgetAttributes = isset($attributes[$name]) ? $attributes[$name] : array();
+            $error = isset($errors[$name]) ? $errors[$name] : [];
+            $widgetAttributes = isset($attributes[$name]) ? $attributes[$name] : [];
 
             if ($widget instanceof sfWidgetForm && $widget->isHidden()) {
                 $hiddenRows[] = $this->renderField($name, $value, $widgetAttributes);
@@ -538,7 +536,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
                 // don't add a label tag and errors if we embed a form schema
                 $label = $widget instanceof sfWidgetFormSchema ? $formFormat->generateLabelName($name) : $formFormat->generateLabel($name);
-                $error = $widget instanceof sfWidgetFormSchema ? array() : $error;
+                $error = $widget instanceof sfWidgetFormSchema ? [] : $error;
 
                 $rows[] = $formFormat->formatRow($label, $field, $error, $this->getHelp($name));
             }
@@ -547,7 +545,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
         if ($rows) {
             // insert hidden fields in the last row
             for ($i = 0, $max = count($rows); $i < $max; ++$i) {
-                $rows[$i] = strtr($rows[$i], array('%hidden_fields%' => $i == $max - 1 ? implode("\n", $hiddenRows) : ''));
+                $rows[$i] = strtr($rows[$i], ['%hidden_fields%' => $i == $max - 1 ? implode("\n", $hiddenRows) : '']);
             }
         } else {
             // only hidden fields
@@ -566,7 +564,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function getGlobalErrors($errors)
     {
-        $globalErrors = array();
+        $globalErrors = [];
 
         // global errors and errors for non existent fields
         if (null !== $errors) {
@@ -790,7 +788,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
                 }
                 $this->positions = array_merge(
                     array_slice($this->positions, 0, $pivotPosition),
-                    array($field),
+                    [$field],
                     array_slice($this->positions, $pivotPosition)
                 );
 
@@ -802,7 +800,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
                 }
                 $this->positions = array_merge(
                     array_slice($this->positions, 0, $pivotPosition + 1),
-                    array($field),
+                    [$field],
                     array_slice($this->positions, $pivotPosition + 1)
                 );
 

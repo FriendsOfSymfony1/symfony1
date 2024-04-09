@@ -12,8 +12,6 @@
  * sfGeneratorManager helps generate classes, views and templates for scaffolding, admin interface, ...
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfGeneratorManager
 {
@@ -85,7 +83,7 @@ class sfGeneratorManager
         if (!is_dir($cacheDir)) {
             $current_umask = umask(0000);
             if (!@mkdir($cacheDir, 0777, true) && !is_dir($cacheDir)) {
-                throw new \sfCacheException(sprintf('Failed to make cache directory "%s".', $cacheDir));
+                throw new sfCacheException(sprintf('Failed to make cache directory "%s".', $cacheDir));
             }
             umask($current_umask);
         }

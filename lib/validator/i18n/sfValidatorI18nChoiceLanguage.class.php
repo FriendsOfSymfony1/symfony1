@@ -12,8 +12,6 @@
  * sfValidatorI18nChoiceLanguage validates than the value is a valid language.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorI18nChoiceLanguage extends sfValidatorChoice
 {
@@ -29,7 +27,7 @@ class sfValidatorI18nChoiceLanguage extends sfValidatorChoice
      *
      * @see sfValidatorChoice
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         parent::configure($options, $messages);
 

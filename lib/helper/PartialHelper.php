@@ -12,11 +12,6 @@
  * PartialHelper.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
- *
- * @param mixed $name
- * @param mixed $vars
  */
 
 /**
@@ -35,7 +30,7 @@
  *
  * @see    get_component_slot, include_partial, include_component
  */
-function include_component_slot($name, $vars = array())
+function include_component_slot($name, $vars = [])
 {
     echo get_component_slot($name, $vars);
 }
@@ -56,7 +51,7 @@ function include_component_slot($name, $vars = array())
  *
  * @see    get_component_slot, include_partial, include_component
  */
-function get_component_slot($name, $vars = array())
+function get_component_slot($name, $vars = [])
 {
     $viewInstance = sfContext::getInstance()->get('view_instance');
 
@@ -74,7 +69,6 @@ function get_component_slot($name, $vars = array())
  * Returns true if component slot exists.
  *
  * @param  string slot name
- * @param mixed $name
  *
  * @return bool true if component slot exists, false otherwise
  */
@@ -111,7 +105,7 @@ function has_component_slot($name)
  *
  * @see    get_component, include_partial, include_component_slot
  */
-function include_component($moduleName, $componentName, $vars = array())
+function include_component($moduleName, $componentName, $vars = [])
 {
     echo get_component($moduleName, $componentName, $vars);
 }
@@ -133,7 +127,7 @@ function include_component($moduleName, $componentName, $vars = array())
  *
  * @see    include_component
  */
-function get_component($moduleName, $componentName, $vars = array())
+function get_component($moduleName, $componentName, $vars = [])
 {
     $context = sfContext::getInstance();
     $actionName = '_'.$componentName;
@@ -177,7 +171,7 @@ function get_component($moduleName, $componentName, $vars = array())
  *
  * @see    get_partial, include_component
  */
-function include_partial($templateName, $vars = array())
+function include_partial($templateName, $vars = [])
 {
     echo get_partial($templateName, $vars);
 }
@@ -198,7 +192,7 @@ function include_partial($templateName, $vars = array())
  *
  * @see    include_partial
  */
-function get_partial($templateName, $vars = array())
+function get_partial($templateName, $vars = [])
 {
     $context = sfContext::getInstance();
 
@@ -231,13 +225,13 @@ function slot($name, $value = null)
     $context = sfContext::getInstance();
     $response = $context->getResponse();
 
-    $slot_names = sfConfig::get('symfony.view.slot_names', array());
+    $slot_names = sfConfig::get('symfony.view.slot_names', []);
     if (in_array($name, $slot_names)) {
         throw new sfCacheException(sprintf('A slot named "%s" is already started.', $name));
     }
 
     if (sfConfig::get('sf_logging_enabled')) {
-        $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', array(sprintf('Set slot "%s"', $name))));
+        $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', [sprintf('Set slot "%s"', $name)]));
     }
 
     if (null !== $value) {
@@ -265,7 +259,7 @@ function end_slot()
     $content = ob_get_clean();
 
     $response = sfContext::getInstance()->getResponse();
-    $slot_names = sfConfig::get('symfony.view.slot_names', array());
+    $slot_names = sfConfig::get('symfony.view.slot_names', []);
     if (!$slot_names) {
         throw new sfCacheException('No slot started.');
     }
@@ -329,7 +323,7 @@ function get_slot($name, $default = '')
     $slots = $context->getResponse()->getSlots();
 
     if (sfConfig::get('sf_logging_enabled')) {
-        $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', array(sprintf('Get slot "%s"', $name))));
+        $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', [sprintf('Get slot "%s"', $name)]));
     }
 
     return isset($slots[$name]) ? $slots[$name] : $default;
@@ -367,7 +361,7 @@ function _call_component($moduleName, $componentName, $vars)
     }
 
     if (sfConfig::get('sf_logging_enabled')) {
-        $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', array(sprintf('Call "%s->%s()"', $moduleName, $componentToRun))));
+        $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', [sprintf('Call "%s->%s()"', $moduleName, $componentToRun)]));
     }
 
     // run component

@@ -12,14 +12,13 @@
  * Cache class that does nothing.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfNoCache extends sfCache
 {
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $default
      */
     public function get($key, $default = null)
     {
@@ -28,7 +27,6 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function has($key)
     {
@@ -37,7 +35,8 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
+     *
+     * @param mixed|null $lifetime
      */
     public function set($key, $data, $lifetime = null)
     {
@@ -46,7 +45,6 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -55,7 +53,6 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function removePattern($pattern)
     {
@@ -64,7 +61,6 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function clean($mode = self::ALL)
     {
@@ -73,7 +69,6 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getLastModified($key)
     {
@@ -82,7 +77,6 @@ class sfNoCache extends sfCache
 
     /**
      * @see sfCache
-     * {@inheritdoc}
      */
     public function getTimeout($key)
     {

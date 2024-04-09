@@ -14,13 +14,11 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 abstract class sfFilter
 {
     /** @var bool[] */
-    public static $filterCalled = array();
+    public static $filterCalled = [];
 
     /** @var sfParameterHolder */
     protected $parameterHolder;
@@ -36,7 +34,7 @@ abstract class sfFilter
      * @param sfContext $context
      * @param array     $parameters
      */
-    public function __construct($context, $parameters = array())
+    public function __construct($context, $parameters = [])
     {
         $this->initialize($context, $parameters);
     }
@@ -49,7 +47,7 @@ abstract class sfFilter
      *
      * @return bool|void true
      */
-    public function initialize($context, $parameters = array())
+    public function initialize($context, $parameters = [])
     {
         $this->context = $context;
 

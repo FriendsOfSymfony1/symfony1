@@ -18,8 +18,8 @@ $t->diag('__construct()');
 $def = new sfServiceDefinition('stdClass');
 $t->is($def->getClass(), 'stdClass', '__construct() takes the class name as its first argument');
 
-$def = new sfServiceDefinition('stdClass', array('foo'));
-$t->is($def->getArguments(), array('foo'), '__construct() takes an optional array of arguments as its second argument');
+$def = new sfServiceDefinition('stdClass', ['foo']);
+$t->is($def->getArguments(), ['foo'], '__construct() takes an optional array of arguments as its second argument');
 
 // ->setConstructor() ->getConstructor()
 $t->diag('->setConstructor() ->getConstructor()');
@@ -36,18 +36,18 @@ $t->is($def->getClass(), 'foo', '->getClass() returns the class name');
 // ->setArguments() ->getArguments() ->addArgument()
 $t->diag('->setArguments() ->getArguments() ->addArgument()');
 $def = new sfServiceDefinition('stdClass');
-$t->is(spl_object_hash($def->setArguments(array('foo'))), spl_object_hash($def), '->setArguments() implements a fluent interface');
-$t->is($def->getArguments(), array('foo'), '->getArguments() returns the arguments');
+$t->is(spl_object_hash($def->setArguments(['foo'])), spl_object_hash($def), '->setArguments() implements a fluent interface');
+$t->is($def->getArguments(), ['foo'], '->getArguments() returns the arguments');
 $t->is(spl_object_hash($def->addArgument('bar')), spl_object_hash($def), '->addArgument() implements a fluent interface');
-$t->is($def->getArguments(), array('foo', 'bar'), '->addArgument() adds an argument');
+$t->is($def->getArguments(), ['foo', 'bar'], '->addArgument() adds an argument');
 
 // ->setMethodCalls() ->getMethodCalls() ->addMethodCall()
 $t->diag('->setMethodCalls() ->getMethodCalls() ->addMethodCall()');
 $def = new sfServiceDefinition('stdClass');
-$t->is(spl_object_hash($def->setMethodCalls(array(array('foo', array('foo'))))), spl_object_hash($def), '->setMethodCalls() implements a fluent interface');
-$t->is($def->getMethodCalls(), array(array('foo', array('foo'))), '->getMethodCalls() returns the methods to call');
-$t->is(spl_object_hash($def->addMethodCall('bar', array('bar'))), spl_object_hash($def), '->addMethodCall() implements a fluent interface');
-$t->is($def->getMethodCalls(), array(array('foo', array('foo')), array('bar', array('bar'))), '->addMethodCall() adds a method to call');
+$t->is(spl_object_hash($def->setMethodCalls([['foo', ['foo']]])), spl_object_hash($def), '->setMethodCalls() implements a fluent interface');
+$t->is($def->getMethodCalls(), [['foo', ['foo']]], '->getMethodCalls() returns the methods to call');
+$t->is(spl_object_hash($def->addMethodCall('bar', ['bar'])), spl_object_hash($def), '->addMethodCall() implements a fluent interface');
+$t->is($def->getMethodCalls(), [['foo', ['foo']], ['bar', ['bar']]], '->addMethodCall() adds a method to call');
 
 // ->setFile() ->getFile()
 $t->diag('->setFile() ->getFile()');

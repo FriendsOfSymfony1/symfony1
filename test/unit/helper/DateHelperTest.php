@@ -26,7 +26,7 @@ class sfUser
 
 sfConfig::set('sf_charset', 'utf-8');
 
-$context = sfContext::getInstance(array('user' => 'sfUser'));
+$context = sfContext::getInstance(['user' => 'sfUser']);
 
 require_once __DIR__.'/../../../lib/helper/UrlHelper.php';
 

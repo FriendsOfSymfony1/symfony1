@@ -12,22 +12,20 @@
  * Displays the current routes for an application.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfAppRoutesTask extends sfBaseTask
 {
-    protected $routes = array();
+    protected $routes = [];
 
     /**
      * @see sfTask
      */
     protected function configure()
     {
-        $this->addArguments(array(
+        $this->addArguments([
             new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
             new sfCommandArgument('name', sfCommandArgument::OPTIONAL, 'A route name'),
-        ));
+        ]);
 
         $this->namespace = 'app';
         $this->name = 'routes';
@@ -42,16 +40,15 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $this->routes = $this->getRouting()->getRoutes();
 
         // display
         $arguments['name'] ? $this->outputRoute($arguments['application'], $arguments['name']) : $this->outputRoutes($arguments['application']);
+
+        return 0;
     }
 
     protected function outputRoutes($application)

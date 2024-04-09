@@ -12,8 +12,6 @@
  * sfWidgetFormI18nChoiceLanguage represents a language choice widget.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
 {
@@ -32,7 +30,7 @@ class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
      *
      * @see sfWidgetFormChoice
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 
@@ -47,7 +45,7 @@ class sfWidgetFormI18nChoiceLanguage extends sfWidgetFormChoice
 
         $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
         if (false !== $addEmpty) {
-            $languages = array_merge(array('' => true === $addEmpty ? '' : $addEmpty), $languages);
+            $languages = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $languages);
         }
 
         $this->setOption('choices', $languages);

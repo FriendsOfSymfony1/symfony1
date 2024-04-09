@@ -12,8 +12,6 @@
  * Base class for forms that deal with a single object.
  *
  * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfFormObject extends BaseForm
 {
@@ -228,7 +226,7 @@ abstract class sfFormObject extends BaseForm
      *
      * @see sfForm
      */
-    public function renderFormTag($url, array $attributes = array())
+    public function renderFormTag($url, array $attributes = [])
     {
         if (!isset($attributes['method'])) {
             $attributes['method'] = $this->isNew() ? 'post' : 'put';
@@ -263,6 +261,6 @@ abstract class sfFormObject extends BaseForm
 
     protected function camelize($text)
     {
-        return strtr(ucwords(strtr($text, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
+        return strtr(ucwords(strtr($text, ['/' => ':: ', '_' => ' ', '-' => ' '])), [' ' => '']);
     }
 }

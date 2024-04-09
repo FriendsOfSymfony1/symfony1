@@ -12,13 +12,13 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(6);
 
-$v1 = new sfValidatorString(array('min_length' => 2, 'trim' => true));
+$v1 = new sfValidatorString(['min_length' => 2, 'trim' => true]);
 
 $v = new sfValidatorSchemaFilter('first_name', $v1);
 
 // ->clean()
 $t->diag('->clean()');
-$t->is($v->clean(array('first_name' => '  foo  ')), array('first_name' => 'foo'), '->clean() executes the embedded validator');
+$t->is($v->clean(['first_name' => '  foo  ']), ['first_name' => 'foo'], '->clean() executes the embedded validator');
 
 try {
     $v->clean('string');
@@ -37,7 +37,7 @@ try {
 }
 
 try {
-    $v->clean(array('first_name' => 'f'));
+    $v->clean(['first_name' => 'f']);
     $t->fail('->clean() throws a sfValidatorError if the embedded validator failed');
     $t->skip('', 1);
 } catch (sfValidatorError $e) {

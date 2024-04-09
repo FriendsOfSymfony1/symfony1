@@ -15,8 +15,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfCompileConfigHandler extends sfYamlConfigHandler
 {
@@ -53,13 +51,13 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
             }
 
             // strip php tags
-            $contents = sfToolkit::pregtr($contents, array('/^\s*<\?(php\s*)?/m' => '', '/^\s*\?>/m' => ''));
+            $contents = sfToolkit::pregtr($contents, ['/^\s*<\?(php\s*)?/m' => '', '/^\s*\?>/m' => '']);
 
             // replace windows and mac format with unix format
             $contents = str_replace("\r", "\n", $contents);
 
             // replace multiple new lines with a single newline
-            $contents = preg_replace(array('/\s+$/Sm', '/\n+/S'), "\n", $contents);
+            $contents = preg_replace(['/\s+$/Sm', '/\n+/S'], "\n", $contents);
 
             // append file data
             $data .= "\n".$contents;
@@ -78,11 +76,10 @@ class sfCompileConfigHandler extends sfYamlConfigHandler
 
     /**
      * @see sfConfigHandler
-     * {@inheritdoc}
      */
     public static function getConfiguration(array $configFiles)
     {
-        $config = array();
+        $config = [];
         foreach ($configFiles as $configFile) {
             $config = array_merge($config, static::parseYaml($configFile));
         }

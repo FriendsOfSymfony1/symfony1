@@ -12,20 +12,18 @@
  * Represent a set of command line options.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCommandOptionSet
 {
-    protected $options = array();
-    protected $shortcuts = array();
+    protected $options = [];
+    protected $shortcuts = [];
 
     /**
      * Constructor.
      *
      * @param array $options An array of sfCommandOption objects
      */
-    public function __construct($options = array())
+    public function __construct($options = [])
     {
         $this->setOptions($options);
     }
@@ -35,10 +33,10 @@ class sfCommandOptionSet
      *
      * @param array $options An array of sfCommandOption objects
      */
-    public function setOptions($options = array())
+    public function setOptions($options = [])
     {
-        $this->options = array();
-        $this->shortcuts = array();
+        $this->options = [];
+        $this->shortcuts = [];
         $this->addOptions($options);
     }
 
@@ -47,7 +45,7 @@ class sfCommandOptionSet
      *
      * @param array $options An array of sfCommandOption objects
      */
-    public function addOptions($options = array())
+    public function addOptions($options = [])
     {
         foreach ($options as $option) {
             $this->addOption($option);
@@ -147,7 +145,7 @@ class sfCommandOptionSet
      */
     public function getDefaults()
     {
-        $values = array();
+        $values = [];
         foreach ($this->options as $option) {
             $values[$option->getName()] = $option->getDefault();
         }

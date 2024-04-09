@@ -12,15 +12,11 @@
  * sfValidatorPass is an identity validator. It simply returns the value unmodified.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorPass extends sfValidatorBase
 {
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     public function clean($value)
     {
@@ -29,8 +25,6 @@ class sfValidatorPass extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {

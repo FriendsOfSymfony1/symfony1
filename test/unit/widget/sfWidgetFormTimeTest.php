@@ -12,7 +12,7 @@ require_once __DIR__.'/../../bootstrap/unit.php';
 
 $t = new lime_test(43);
 
-$w = new sfWidgetFormTime(array('with_seconds' => true));
+$w = new sfWidgetFormTime(['with_seconds' => true]);
 
 $dom = new DOMDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
@@ -20,10 +20,10 @@ $dom->validateOnParse = true;
 // ->render()
 $t->diag('->render()');
 
-foreach (array(
+foreach ([
     '12:30:35',
     mktime(12, 30, 35, 15, 10, 2005),
-) as $date) {
+] as $date) {
     $dom->loadHTML($w->render('foo', $date));
     $css = new sfDomCssSelector($dom);
 
@@ -35,7 +35,7 @@ foreach (array(
 
 // time as an array
 $t->diag('time as an array');
-$dom->loadHTML($w->render('foo', array('hour' => 12, 'minute' => '30', 'second' => 35)));
+$dom->loadHTML($w->render('foo', ['hour' => 12, 'minute' => '30', 'second' => 35]));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_hour option[value="12"][selected="selected"]')->getValue(), 12, '->render() renders a select tag for the hour');
 $t->is($css->matchSingle('#foo_minute option[value="30"][selected="selected"]')->getValue(), 30, '->render() renders a select tag for the minute');
@@ -51,7 +51,7 @@ $t->is($css->matchSingle('#foo_second option[selected="selected"]')->getValue(),
 
 // invalid time
 $t->diag('time as an array');
-$dom->loadHTML($w->render('foo', array('hour' => null, 'minute' => 30)));
+$dom->loadHTML($w->render('foo', ['hour' => null, 'minute' => 30]));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_hour option[selected="selected"]')->getValue(), '', '->render() renders a select tag for the hour');
 $t->is($css->matchSingle('#foo_minute option[selected="selected"]')->getValue(), 30, '->render() renders a select tag for the minute');
@@ -83,13 +83,13 @@ $w->setOption('can_be_empty', true);
 
 // empty_values
 $t->diag('empty_values option');
-$w->setOption('empty_values', array('hour' => 'HOUR', 'minute' => 'MINUTE', 'second' => 'SECOND'));
+$w->setOption('empty_values', ['hour' => 'HOUR', 'minute' => 'MINUTE', 'second' => 'SECOND']);
 $dom->loadHTML($w->render('foo', '2005-10-15'));
 $css = new sfDomCssSelector($dom);
 $t->is($css->matchSingle('#foo_hour option')->getNode()->nodeValue, 'HOUR', '->configure() can change the empty values');
 $t->is($css->matchSingle('#foo_minute option')->getNode()->nodeValue, 'MINUTE', '->configure() can change the empty values');
 $t->is($css->matchSingle('#foo_second option')->getNode()->nodeValue, 'SECOND', '->configure() can change the empty values');
-$w->setOption('empty_values', array('hour' => '', 'minute' => '', 'second' => ''));
+$w->setOption('empty_values', ['hour' => '', 'minute' => '', 'second' => '']);
 
 // format option
 $t->diag('format option');
@@ -109,9 +109,9 @@ $t->is($css->matchSingle('select')->getNode()->getAttribute('name'), 'foo[minute
 
 // hours / minutes / seconds options
 $t->diag('hours / minutes / seconds options');
-$w->setOption('hours', array(1 => 1, 2 => 2, 3 => 3, 4 => 4));
-$w->setOption('minutes', array(1 => 1, 2 => 2));
-$w->setOption('seconds', array(15 => 15, 30 => 30, 45 => 45));
+$w->setOption('hours', [1 => 1, 2 => 2, 3 => 3, 4 => 4]);
+$w->setOption('minutes', [1 => 1, 2 => 2]);
+$w->setOption('seconds', [15 => 15, 30 => 30, 45 => 45]);
 $dom->loadHTML($w->render('foo', '12:30:35'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('#foo_hour option')->getNodes()), 5, '__construct() can change the default array used for hours');
@@ -134,7 +134,7 @@ $t->ok(!count($css->matchSingle('#foo_second')->getNodes()), '__construct() can 
 // attributes
 $t->diag('attributes');
 $w->setOption('with_seconds', true);
-$dom->loadHTML($w->render('foo', '12:30:35', array('disabled' => 'disabled')));
+$dom->loadHTML($w->render('foo', '12:30:35', ['disabled' => 'disabled']));
 $t->is(count($css->matchAll('select[disabled="disabled"]')->getNodes()), 3, '->render() takes the attributes into account for all the three embedded widgets');
 
 $w->setAttribute('disabled', 'disabled');

@@ -12,8 +12,6 @@
  * Clears log files.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfLogClearTask extends sfBaseTask
 {
@@ -35,13 +33,12 @@ EOF;
 
     /**
      * @see sfTask
-     *
-     * @param mixed $arguments
-     * @param mixed $options
      */
-    protected function execute($arguments = array(), $options = array())
+    protected function execute($arguments = [], $options = [])
     {
         $logs = sfFinder::type('file')->in(sfConfig::get('sf_log_dir'));
         $this->getFilesystem()->remove($logs);
+
+        return 0;
     }
 }

@@ -14,8 +14,6 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- *
- * @version    SVN: $Id$
  */
 class sfValidatorDoctrineChoice extends sfValidatorBase
 {
@@ -33,11 +31,8 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
      *  * max:        The maximum number of values that need to be selected (this option is only active if multiple is true)
      *
      * @see sfValidatorBase
-     *
-     * @param mixed $options
-     * @param mixed $messages
      */
-    protected function configure($options = array(), $messages = array())
+    protected function configure($options = [], $messages = [])
     {
         $this->addRequiredOption('model');
         $this->addOption('query', null);
@@ -52,8 +47,6 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
 
     /**
      * @see sfValidatorBase
-     *
-     * @param mixed $value
      */
     protected function doClean($value)
     {
@@ -65,7 +58,7 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
 
         if ($this->getOption('multiple')) {
             if (!is_array($value)) {
-                $value = array($value);
+                $value = [$value];
             }
 
             if (isset($value[0]) && '' === $value[0]) {
@@ -75,23 +68,23 @@ class sfValidatorDoctrineChoice extends sfValidatorBase
             $count = count($value);
 
             if ($this->hasOption('min') && $count < $this->getOption('min')) {
-                throw new sfValidatorError($this, 'min', array('count' => $count, 'min' => $this->getOption('min')));
+                throw new sfValidatorError($this, 'min', ['count' => $count, 'min' => $this->getOption('min')]);
             }
 
             if ($this->hasOption('max') && $count > $this->getOption('max')) {
-                throw new sfValidatorError($this, 'max', array('count' => $count, 'max' => $this->getOption('max')));
+                throw new sfValidatorError($this, 'max', ['count' => $count, 'max' => $this->getOption('max')]);
             }
 
             $query->andWhereIn(sprintf('%s.%s', $query->getRootAlias(), $this->getColumn()), $value);
 
             if ($query->count() != count($value)) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         } else {
             $query->andWhere(sprintf('%s.%s = ?', $query->getRootAlias(), $this->getColumn()), $value);
 
             if (!$query->count()) {
-                throw new sfValidatorError($this, 'invalid', array('value' => $value));
+                throw new sfValidatorError($this, 'invalid', ['value' => $value]);
             }
         }
 

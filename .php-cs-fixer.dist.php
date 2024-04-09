@@ -5,24 +5,32 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/lib')
     ->in(__DIR__.'/data/bin')
     ->in(__DIR__.'/test')
-    ->append(array(__FILE__))
+    ->append([__FILE__])
     // Exclude PHP classes templates/generators, which are not valid PHP files
     ->exclude('task/generator/skeleton/')
     ->exclude('plugins/sfDoctrinePlugin/data/generator/')
+    ->exclude('plugins/sfDoctrinePlugin/test/functional/fixtures/')
+
+    // Exclude sub-modules folders
+    ->exclude('plugins/sfDoctrinePlugin/lib/vendor/doctrine')
+
+    // Exclude generated files (whole directories)
+    ->exclude('functional/fixtures/cache')
+    ->exclude('functional/fixtures/log')
+
     // Exclude generated files (single files)
     ->notPath('unit/config/fixtures/sfDefineEnvironmentConfigHandler/prefix_result.php')
     ->notPath('unit/config/fixtures/sfFilterConfigHandler/result.php')
 ;
 
 $config = new PhpCsFixer\Config();
-$config->setRules(array(
-    '@PhpCsFixer' => true,
-    '@Symfony' => true,
-    'array_syntax' => array(
-        'syntax' => 'long',
-    ),
-))
-    ->setCacheFile('.php-cs-fixer.cache')
+$config
+    ->setRules([
+        '@PhpCsFixer' => true,
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+    ])
+    ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)
 ;
 

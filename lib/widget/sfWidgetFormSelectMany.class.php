@@ -12,8 +12,6 @@
  * sfWidgetFormSelectMany represents a select HTML tag where you can select multiple values.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormSelectMany extends sfWidgetFormSelect
 {
@@ -25,7 +23,7 @@ class sfWidgetFormSelectMany extends sfWidgetFormSelect
      *
      * @see sfWidgetFormSelect
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

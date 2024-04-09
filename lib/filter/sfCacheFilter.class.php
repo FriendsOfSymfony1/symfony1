@@ -12,8 +12,6 @@
  * sfCacheFilter deals with page caching and action caching.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfCacheFilter extends sfFilter
 {
@@ -21,7 +19,7 @@ class sfCacheFilter extends sfFilter
     protected $request;
     protected $response;
     protected $routing;
-    protected $cache = array();
+    protected $cache = [];
 
     /**
      * Initializes this Filter.
@@ -29,9 +27,9 @@ class sfCacheFilter extends sfFilter
      * @param sfContext $context    The current application context
      * @param array     $parameters An associative array of initialization parameters
      *
-     * @throws <b>sfInitializationException</b> If an error occurs while initializing this Filter
+     * @throws sfInitializationException If an error occurs while initializing this Filter
      */
-    public function initialize($context, $parameters = array())
+    public function initialize($context, $parameters = [])
     {
         parent::initialize($context, $parameters);
 
@@ -180,7 +178,7 @@ class sfCacheFilter extends sfFilter
                 $this->response->setHeaderOnly(true);
 
                 if (sfConfig::get('sf_logging_enabled')) {
-                    $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array('ETag matches If-None-Match (send 304)')));
+                    $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', ['ETag matches If-None-Match (send 304)']));
                 }
             }
         }
@@ -194,7 +192,7 @@ class sfCacheFilter extends sfFilter
                 $this->response->setHeaderOnly(true);
 
                 if (sfConfig::get('sf_logging_enabled')) {
-                    $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array('Last-Modified matches If-Modified-Since (send 304)')));
+                    $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', ['Last-Modified matches If-Modified-Since (send 304)']));
                 }
             }
         }

@@ -14,13 +14,13 @@ $t = new lime_test(14);
 
 $v = new sfValidatorString();
 
-$e = new sfValidatorError($v, 'max_length', array('value' => 'foo<br />', 'max_length' => 1));
+$e = new sfValidatorError($v, 'max_length', ['value' => 'foo<br />', 'max_length' => 1]);
 
 // ->getValue()
 $t->diag('->getValue()');
 $t->is($e->getValue(), 'foo<br />', '->getValue() returns the value that has been validated with the validator');
 
-$e1 = new sfValidatorError($v, 'max_length', array('max_length' => 1));
+$e1 = new sfValidatorError($v, 'max_length', ['max_length' => 1]);
 $t->is($e1->getValue(), null, '->getValue() returns null if there is no value key in arguments');
 
 // ->getValidator()
@@ -29,8 +29,8 @@ $t->is($e->getValidator(), $v, '->getValidator() returns the validator that trig
 
 // ->getArguments()
 $t->diag('->getArguments()');
-$t->is($e->getArguments(), array('%value%' => 'foo&lt;br /&gt;', '%max_length%' => 1), '->getArguments() returns the arguments needed to format the error message, escaped according to the current charset');
-$t->is($e->getArguments(true), array('value' => 'foo<br />', 'max_length' => 1), '->getArguments() takes a Boolean as its first argument to return the raw arguments');
+$t->is($e->getArguments(), ['%value%' => 'foo&lt;br /&gt;', '%max_length%' => 1], '->getArguments() returns the arguments needed to format the error message, escaped according to the current charset');
+$t->is($e->getArguments(true), ['value' => 'foo<br />', 'max_length' => 1], '->getArguments() takes a Boolean as its first argument to return the raw arguments');
 
 // ->getMessageFormat()
 $t->diag('->getMessageFormat()');
@@ -79,7 +79,7 @@ class NotSerializable implements Serializable
 
 function will_crash($a)
 {
-    return serialize(new sfValidatorError(new sfValidatorString(), 'max_length', array('value' => 'foo<br />', 'max_length' => 1)));
+    return serialize(new sfValidatorError(new sfValidatorString(), 'max_length', ['value' => 'foo<br />', 'max_length' => 1]));
 }
 
 $a = new NotSerializable();

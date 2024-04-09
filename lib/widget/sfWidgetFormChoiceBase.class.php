@@ -12,8 +12,6 @@
  * sfWidgetFormChoiceBase is the base class for all choice/select widgets.
  *
  * @author     Bernhard Schussek <bernhard.schussek@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 abstract class sfWidgetFormChoiceBase extends sfWidgetForm
 {
@@ -48,7 +46,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
             return $choices;
         }
 
-        $results = array();
+        $results = [];
         foreach ($choices as $key => $choice) {
             if (is_array($choice)) {
                 $results[$this->translate($key)] = $this->translateAll($choice);
@@ -72,7 +70,7 @@ abstract class sfWidgetFormChoiceBase extends sfWidgetForm
      *
      * @see sfWidgetForm
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         $this->addRequiredOption('choices');
         $this->addOption('translate_choices', true);

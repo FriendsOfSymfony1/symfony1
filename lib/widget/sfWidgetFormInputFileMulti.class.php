@@ -4,8 +4,6 @@
  * sfWidgetFormInputFileMulti represents an upload HTML input tag with multiple option.
  *
  * @author     Vincent Chabot <vchabot@groupe-exp.com>
- *
- * @version    SVN: $Id$
  */
 class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
 {
@@ -21,7 +19,7 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
      *
      * @see sfWidgetForm
      */
-    public function render($name, $value = null, $attributes = array(), $errors = array())
+    public function render($name, $value = null, $attributes = [], $errors = [])
     {
         if ($this->getOption('multiple')) {
             $name .= '[]';
@@ -39,7 +37,7 @@ class sfWidgetFormInputFileMulti extends sfWidgetFormInputFile
      *
      * @see sfWidgetFormInput
      */
-    protected function configure($options = array(), $attributes = array())
+    protected function configure($options = [], $attributes = [])
     {
         parent::configure($options, $attributes);
 

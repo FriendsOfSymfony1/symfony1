@@ -1,7 +1,7 @@
 <?php
 
-echo json_encode(array(
-    'error' => array(
+echo json_encode([
+    'error' => [
         'code' => $code,
         'message' => $text,
-    )));
+    ]]);

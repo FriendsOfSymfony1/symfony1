@@ -14,12 +14,10 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- *
- * @version    SVN: $Id$
  */
 class sfFilterChain
 {
-    protected $chain = array();
+    protected $chain = [];
     protected $index = -1;
 
     /**
@@ -42,7 +40,7 @@ class sfFilterChain
 
         if ($this->index < count($this->chain)) {
             if (sfConfig::get('sf_logging_enabled')) {
-                sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array(sprintf('Executing filter "%s"', get_class($this->chain[$this->index])))));
+                sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($this, 'application.log', [sprintf('Executing filter "%s"', get_class($this->chain[$this->index]))]));
             }
 
             // execute the next filter

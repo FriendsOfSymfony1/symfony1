@@ -12,12 +12,10 @@
 /**
  * sfPDODatabase provides connectivity for the PDO database abstraction layer.
  *
- * @author     Daniel Swarbrick (daniel@pressure.net.nz)
+ * @author     Daniel Swarbrick <daniel@pressure.net.nz>
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
  * @author     Dustin Whittle <dustin.whittle@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPDODatabase extends sfDatabase
 {
@@ -26,18 +24,16 @@ class sfPDODatabase extends sfDatabase
      *
      * @param string $method
      * @param array  $arguments
-     *
-     * @return mixed
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array($this->getConnection(), $method), $arguments);
+        return call_user_func_array([$this->getConnection(), $method], $arguments);
     }
 
     /**
      * Connects to the database.
      *
-     * @throws <b>sfDatabaseException</b> If a connection could not be created
+     * @throws sfDatabaseException If a connection could not be created
      */
     public function connect()
     {
@@ -52,7 +48,7 @@ class sfPDODatabase extends sfDatabase
             $password = $this->getParameter('password');
             $persistent = $this->getParameter('persistent');
 
-            $options = $persistent ? array(PDO::ATTR_PERSISTENT => true) : array();
+            $options = $persistent ? [PDO::ATTR_PERSISTENT => true] : [];
 
             $this->connection = new $pdo_class($dsn, $username, $password, $options);
         } catch (PDOException $e) {

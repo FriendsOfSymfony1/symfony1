@@ -30,8 +30,6 @@ require_once 'PEAR/Installer.php';
  * sfPearEnvironment represents a PEAR environment.
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- *
- * @version    SVN: $Id$
  */
 class sfPearEnvironment
 {
@@ -40,7 +38,7 @@ class sfPearEnvironment
     protected $registry;
     protected $rest;
     protected $frontend;
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructs a new sfPluginManager.
@@ -68,7 +66,7 @@ class sfPearEnvironment
      * @param sfEventDispatcher $dispatcher An event dispatcher instance
      * @param array             $options    An array of options
      */
-    public function initialize(sfEventDispatcher $dispatcher, $options = array())
+    public function initialize(sfEventDispatcher $dispatcher, $options = [])
     {
         $this->dispatcher = $dispatcher;
 
@@ -82,7 +80,7 @@ class sfPearEnvironment
         }
 
         if (!is_dir($options['cache_dir']) && !@mkdir($options['cache_dir'], 0777, true) && !is_dir($options['cache_dir'])) {
-            throw new \RuntimeException(sprintf('Pear was not able to create a directory "%s"', $options['cache_dir']));
+            throw new RuntimeException(sprintf('Pear was not able to create a directory "%s"', $options['cache_dir']));
         }
 
         if (!isset($options['rest_base_class'])) {
@@ -101,7 +99,7 @@ class sfPearEnvironment
         $this->initializeFrontend();
 
         // initializes the REST object
-        $this->rest = new sfPearRestPlugin($this->config, array('base_class' => $options['rest_base_class']));
+        $this->rest = new sfPearRestPlugin($this->config, ['base_class' => $options['rest_base_class']]);
         $this->rest->setChannel($this->config->get('default_channel'));
     }
 
@@ -192,7 +190,7 @@ class sfPearEnvironment
 
         if (!$this->registry->channelExists($channel, true)) {
             $class = $this->options['downloader_base_class'];
-            $downloader = new $class($this->frontend, array(), $this->config);
+            $downloader = new $class($this->frontend, [], $this->config);
             if (!$downloader->discover($channel)) {
                 throw new sfPluginException(sprintf('Unable to register channel "%s"', $channel));
             }

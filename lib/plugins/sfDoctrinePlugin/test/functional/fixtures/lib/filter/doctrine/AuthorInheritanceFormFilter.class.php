@@ -2,8 +2,6 @@
 
 /**
  * AuthorInheritance filter form.
- *
- * @version    SVN: $Id$
  */
 class AuthorInheritanceFormFilter extends BaseAuthorInheritanceFormFilter
 {
