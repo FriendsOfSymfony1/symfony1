@@ -57,7 +57,6 @@ class sf_test_project
 
     protected function clearTmpDir()
     {
-        require_once __DIR__.'/../../lib/util/sfToolkit.class.php';
         sfToolkit::clearDirectory($this->tmp_dir);
     }
 }
