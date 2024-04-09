@@ -663,7 +663,7 @@ class sfWebRequest extends sfRequest
      */
     public function getMimeType($format)
     {
-        return isset($this->formats[$format]) ? $this->formats[$format][0] : null;
+        return $this->formats[$format][0] ?? null;
     }
 
     /**
@@ -862,7 +862,7 @@ class sfWebRequest extends sfRequest
             }
 
             if ($this->getOption('trust_proxy') && ($ip = $this->getForwardedFor())) {
-                return isset($ip[0]) ? trim($ip[0]) : '';
+                return trim($ip[0] ?? '');
             }
         }
 
