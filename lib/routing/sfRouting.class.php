@@ -68,7 +68,7 @@ abstract class sfRouting
     {
         $this->dispatcher = $dispatcher;
 
-        $options['debug'] = isset($options['debug']) ? (bool) $options['debug'] : false;
+        $options['debug'] = (bool) $options['debug'] ?? false;
 
         // disable caching when in debug mode
         $this->cache = $options['debug'] ? null : $cache;
