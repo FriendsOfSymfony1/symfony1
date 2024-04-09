@@ -232,7 +232,7 @@ abstract class sfLogger implements sfLoggerInterface
      */
     public function listenToLogEvent(sfEvent $event)
     {
-        $priority = isset($event['priority']) ? $event['priority'] : self::INFO;
+        $priority = $event['priority'] ?? self::INFO;
 
         $subject = $event->getSubject();
         $subject = is_object($subject) ? get_class($subject) : (is_string($subject) ? $subject : 'main');

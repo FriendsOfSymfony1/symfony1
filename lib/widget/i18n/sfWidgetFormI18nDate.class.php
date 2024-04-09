@@ -35,8 +35,8 @@ class sfWidgetFormI18nDate extends sfWidgetFormDate
         $this->addRequiredOption('culture');
         $this->addOption('month_format');
 
-        $culture = isset($options['culture']) ? $options['culture'] : 'en';
-        $monthFormat = isset($options['month_format']) ? $options['month_format'] : 'name';
+        $culture = $options['culture'] ?? 'en';
+        $monthFormat = $options['month_format'] ?? 'name';
 
         // format
         $this->setOption('format', $this->getDateFormat($culture));

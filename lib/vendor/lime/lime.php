@@ -608,7 +608,7 @@ class lime_output
   public function __construct($force_colors = false, $base_dir = null)
   {
     $this->colorizer = new lime_colorizer($force_colors);
-    $this->base_dir = $base_dir === null ? getcwd() : $base_dir;
+    $this->base_dir = $base_dir ?? getcwd();
   }
 
   public function diag()
@@ -1121,7 +1121,7 @@ EOF
 
   public function get_failed_files()
   {
-    return isset($this->stats['failed_files']) ? $this->stats['failed_files'] : array();
+    return $this->stats['failed_files'] ?? array();
   }
 }
 
@@ -1247,7 +1247,7 @@ EOF;
     {
       $file = realpath($file);
       $is_covered = isset($this->coverage[$file]);
-      $cov = isset($this->coverage[$file]) ? $this->coverage[$file] : array();
+      $cov = $this->coverage[$file] ?? array();
       $covered_lines = array();
       $missing_lines = array();
 

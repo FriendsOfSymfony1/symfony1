@@ -35,7 +35,7 @@ abstract class sfTestFunctionalBase
         $this->browser = $browser;
 
         if (null === self::$test) {
-            self::$test = null !== $lime ? $lime : new lime_test();
+            self::$test = $lime ?? new lime_test();
         }
 
         $this->setTesters(array_merge([
@@ -189,7 +189,7 @@ abstract class sfTestFunctionalBase
     public function getAndCheck($module, $action, $url = null, $code = 200)
     {
         return $this->
-          get(null !== $url ? $url : sprintf('/%s/%s', $module, $action))->
+          get($url ?? sprintf('/%s/%s', $module, $action))->
           with('request')->begin()->
             isParameter('module', $module)->
             isParameter('action', $action)->
@@ -465,13 +465,13 @@ abstract class sfTestFunctionalBase
         $traces = [];
         $lineFormat = '  at %s%s%s() in %s line %s';
         for ($i = 0, $count = count($traceData); $i < $count; ++$i) {
-            $line = isset($traceData[$i]['line']) ? $traceData[$i]['line'] : 'n/a';
-            $file = isset($traceData[$i]['file']) ? $traceData[$i]['file'] : 'n/a';
-            $args = isset($traceData[$i]['args']) ? $traceData[$i]['args'] : [];
+            $line = $traceData[$i]['line'] ?? 'n/a';
+            $file = $traceData[$i]['file'] ?? 'n/a';
+            $args = $traceData[$i]['args'] ?? [];
             $this->test()->error(sprintf(
                 $lineFormat,
-                isset($traceData[$i]['class']) ? $traceData[$i]['class'] : '',
-                isset($traceData[$i]['type']) ? $traceData[$i]['type'] : '',
+                $traceData[$i]['class'] ?? '',
+                $traceData[$i]['type'] ?? '',
                 $traceData[$i]['function'],
                 $file,
                 $line

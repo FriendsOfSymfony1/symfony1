@@ -166,7 +166,7 @@ abstract class sfCache
      */
     public function getLifetime($lifetime)
     {
-        return null === $lifetime ? $this->getOption('lifetime') : $lifetime;
+        return $lifetime ?? $this->getOption('lifetime');
     }
 
     /**
@@ -191,7 +191,7 @@ abstract class sfCache
      */
     public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->options[$name] ?? $default;
     }
 
     /**

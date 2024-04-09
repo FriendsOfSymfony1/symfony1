@@ -63,7 +63,7 @@ abstract class sfCommandApplication
     public function __construct(sfEventDispatcher $dispatcher, ?sfFormatter $formatter = null, $options = [])
     {
         $this->dispatcher = $dispatcher;
-        $this->formatter = null === $formatter ? $this->guessBestFormatter(STDOUT) : $formatter;
+        $this->formatter = $formatter ?? $this->guessBestFormatter(STDOUT);
         $this->options = $options;
 
         $this->fixCgi();
@@ -100,7 +100,7 @@ abstract class sfCommandApplication
      */
     public function getOption($name)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : null;
+        return $this->options[$name] ?? null;
     }
 
     /**
@@ -396,11 +396,11 @@ abstract class sfCommandApplication
             ]);
 
             for ($i = 0, $count = count($trace); $i < $count; ++$i) {
-                $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
-                $type = isset($trace[$i]['type']) ? $trace[$i]['type'] : '';
+                $class = $trace[$i]['class'] ?? '';
+                $type = $trace[$i]['type'] ?? '';
                 $function = $trace[$i]['function'];
-                $file = isset($trace[$i]['file']) ? $trace[$i]['file'] : 'n/a';
-                $line = isset($trace[$i]['line']) ? $trace[$i]['line'] : 'n/a';
+                $file = $trace[$i]['file'] ?? 'n/a';
+                $line = $trace[$i]['line'] ?? 'n/a';
 
                 fwrite(STDERR, sprintf(" %s%s%s at %s:%s\n", $class, $type, $function, $this->formatter->format($file, 'INFO', STDERR), $this->formatter->format($line, 'INFO', STDERR)));
             }
