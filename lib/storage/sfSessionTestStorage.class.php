@@ -74,13 +74,7 @@ class sfSessionTestStorage extends sfStorage
      */
     public function read($key)
     {
-        $retval = null;
-
-        if (isset($this->sessionData[$key])) {
-            $retval = $this->sessionData[$key];
-        }
-
-        return $retval;
+        return $this->sessionData[$key] ?? null;
     }
 
     /**

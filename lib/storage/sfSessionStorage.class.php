@@ -105,13 +105,7 @@ class sfSessionStorage extends sfStorage
      */
     public function read($key)
     {
-        $retval = null;
-
-        if (isset($_SESSION[$key])) {
-            $retval = $_SESSION[$key];
-        }
-
-        return $retval;
+        return $_SESSION[$key] ?? null;
     }
 
     /**

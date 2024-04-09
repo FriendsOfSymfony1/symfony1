@@ -176,13 +176,7 @@ class sfCacheSessionStorage extends sfStorage
      */
     public function read($key)
     {
-        $retval = null;
-
-        if (isset($this->data[$key])) {
-            $retval = &$this->data[$key];
-        }
-
-        return $retval;
+        return $this->data[$key] ?? null;
     }
 
     /**
