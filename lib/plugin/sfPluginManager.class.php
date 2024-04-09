@@ -352,7 +352,7 @@ class sfPluginManager
 
         if ($isPackage) {
             $this->checkPluginDependencies($plugin, $version, [
-                'install_deps' => isset($options['install_deps']) ? (bool) $options['install_deps'] : false,
+                'install_deps' => (bool) $options['install_deps'] ?? false,
                 'stability' => $stability,
             ]);
         }
