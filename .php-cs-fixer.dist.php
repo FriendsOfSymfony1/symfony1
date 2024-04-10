@@ -5,6 +5,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/lib')
     ->in(__DIR__.'/data/bin')
     ->in(__DIR__.'/test')
+    ->in(__DIR__.'/test/unit/vendor')
     ->append([__FILE__])
     // Exclude PHP classes templates/generators, which are not valid PHP files
     ->exclude('task/generator/skeleton/')
@@ -21,6 +22,9 @@ $finder = PhpCsFixer\Finder::create()
     // Exclude generated files (single files)
     ->notPath('unit/config/fixtures/sfDefineEnvironmentConfigHandler/prefix_result.php')
     ->notPath('unit/config/fixtures/sfFilterConfigHandler/result.php')
+
+    // Exclude files with expected parsing error
+    ->notPath('lime/fixtures/pass_with_one_parse_error.php')
 ;
 
 $config = new PhpCsFixer\Config();
@@ -29,6 +33,7 @@ $config
         '@PhpCsFixer' => true,
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'php_unit_method_casing' => false,
     ])
     ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)
