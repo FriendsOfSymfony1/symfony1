@@ -33,6 +33,7 @@ $config
         '@PhpCsFixer' => true,
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'php_unit_method_casing' => false,
     ])
     ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)

@@ -207,7 +207,7 @@ EOF
         ];
     }
 
-    public function testRegisterFilesWithGlobThenRunThemAll(): void
+    public function test_registerFilesWithGlob_thenRunThemAll(): void
     {
         $harness = $this->makeHarness();
 
