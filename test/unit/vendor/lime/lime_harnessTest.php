@@ -14,19 +14,6 @@ class lime_harnessTest extends TestCase
         return $harness;
     }
 
-    private function whenExecuteHarnessWithOneFileWillHaveStatusCodeAndOutput($name, $expectedOverallSucceed, $expectedOutput)
-    {
-        $this->info($name);
-
-        $harness = $this->makeHarness();
-
-        $harness->register([
-            __DIR__."/fixtures/$name.php",
-        ]);
-
-        $this->assertHarnessWithExitStatusAndOutput($harness, $expectedOverallSucceed, $expectedOutput);
-    }
-
     private function assertHarnessWithExitStatusAndOutput(lime_harness $harness, $expectedOverallSucceed, string $expectedOutput)
     {
         ob_start();
@@ -45,8 +32,16 @@ class lime_harnessTest extends TestCase
 
     public function testOnlyOneTestFile(): void
     {
-        foreach ($this->provideOnlyOneTestFile() as $parameters) {
-            $this->whenExecuteHarnessWithOneFileWillHaveStatusCodeAndOutput(...$parameters);
+        foreach ($this->provideOnlyOneTestFile() as [$name, $expectedOverallSucceed, $expectedOutput]) {
+            $this->info($name);
+
+            $harness = $this->makeHarness();
+
+            $harness->register([
+                __DIR__."/fixtures/$name.php",
+            ]);
+
+            $this->assertHarnessWithExitStatusAndOutput($harness, $expectedOverallSucceed, $expectedOutput);
         }
     }
 
