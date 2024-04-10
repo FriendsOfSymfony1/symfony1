@@ -14,7 +14,7 @@ class TestCase
         foreach ($this->findAllTests() as $methodName) {
             $this->test->diag($methodName);
 
-            $this->$methodName();
+            $this->{$methodName}();
         }
     }
 

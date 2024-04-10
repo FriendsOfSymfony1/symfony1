@@ -4,6 +4,11 @@ require_once __DIR__.'/../../../bootstrap/unit.php';
 require_once __DIR__.'/tools/TestCase.php';
 require_once __DIR__.'/tools/lime_no_colorizer.php';
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class lime_harnessTest extends TestCase
 {
     private function makeHarness(): lime_harness
@@ -38,7 +43,7 @@ class lime_harnessTest extends TestCase
             $harness = $this->makeHarness();
 
             $harness->register([
-                __DIR__."/fixtures/$name.php",
+                __DIR__."/fixtures/{$name}.php",
             ]);
 
             $this->assertHarnessWithOverallSucceedAndOutput($harness, $expectedOverallSucceed, $expectedOutput);
@@ -202,11 +207,11 @@ EOF
         ];
     }
 
-    public function test_registerFilesWithGlob_thenRunThemAll(): void
+    public function testRegisterFilesWithGlobThenRunThemAll(): void
     {
         $harness = $this->makeHarness();
 
-        $harness->register_glob(__DIR__."/fixtures/*.php");
+        $harness->register_glob(__DIR__.'/fixtures/*.php');
 
         $this->assertHarnessWithOverallSucceedAndOutput($harness, false, <<<'EOF'
 test/unit/vendor/lime/fixtures/failed................................not ok

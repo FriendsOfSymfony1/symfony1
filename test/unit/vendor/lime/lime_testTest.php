@@ -3,6 +3,11 @@
 require_once __DIR__.'/../../../bootstrap/unit.php';
 require_once __DIR__.'/tools/TestCase.php';
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 class lime_testTest extends TestCase
 {
     private function whenExecutePhpFileWillHaveStatusCodeAndOutput($name, $expectedStatusCode, $expectedOutput)
