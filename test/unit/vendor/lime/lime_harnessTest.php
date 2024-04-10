@@ -14,7 +14,7 @@ class lime_harnessTest extends TestCase
         return $harness;
     }
 
-    private function assertHarnessWithExitStatusAndOutput(lime_harness $harness, $expectedOverallSucceed, string $expectedOutput)
+    private function assertHarnessWithOverallSucceedAndOutput(lime_harness $harness, $expectedOverallSucceed, string $expectedOutput)
     {
         ob_start();
         $allTestsSucceed = $harness->run();
@@ -41,7 +41,7 @@ class lime_harnessTest extends TestCase
                 __DIR__."/fixtures/$name.php",
             ]);
 
-            $this->assertHarnessWithExitStatusAndOutput($harness, $expectedOverallSucceed, $expectedOutput);
+            $this->assertHarnessWithOverallSucceedAndOutput($harness, $expectedOverallSucceed, $expectedOutput);
         }
     }
 
@@ -208,7 +208,7 @@ EOF
 
         $harness->register_glob(__DIR__."/fixtures/*.php");
 
-        $this->assertHarnessWithExitStatusAndOutput($harness, false, <<<'EOF'
+        $this->assertHarnessWithOverallSucceedAndOutput($harness, false, <<<'EOF'
 test/unit/vendor/lime/fixtures/failed................................not ok
     Failed tests: 1
 test/unit/vendor/lime/fixtures/failed_with_plan_less_than_total......dubious
