@@ -36,6 +36,7 @@ class sfSessionStorage extends sfStorage
      *  * session_cookie_domain:   Cookie domain
      *  * session_cookie_secure:   Cookie secure
      *  * session_cookie_httponly: Cookie http only (only for PHP >= 5.2)
+     *  * session.cookie_samesite: Cookie same site (only for PHP >= 7.3)
      *
      * The default values for all 'session_cookie_*' options are those returned by the session_get_cookie_params() function
      *
@@ -56,6 +57,7 @@ class sfSessionStorage extends sfStorage
             'session_cookie_domain' => $cookieDefaults['domain'],
             'session_cookie_secure' => $cookieDefaults['secure'],
             'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
+            'session_cookie_samesite' => isset($cookieDefaults['samesite']) ? $cookieDefaults['samesite'] : '',
             'session_cache_limiter' => null,
             'gc_maxlifetime' => 1800,
         ], $options);
@@ -77,7 +79,15 @@ class sfSessionStorage extends sfStorage
         $domain = $this->options['session_cookie_domain'];
         $secure = $this->options['session_cookie_secure'];
         $httpOnly = $this->options['session_cookie_httponly'];
-        session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
+        $samesite = $this->options['session_cookie_samesite'];
+        session_set_cookie_params([
+            'lifetime' => $lifetime,
+            'path' => $path,
+            'domain' => $domain,
+            'secure' => $secure,
+            'httponly' => $httpOnly,
+            'samesite' => $samesite,
+        ]);
 
         if (null !== $this->options['session_cache_limiter']) {
             session_cache_limiter($this->options['session_cache_limiter']);
