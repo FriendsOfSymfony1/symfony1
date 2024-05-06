@@ -583,6 +583,7 @@ class sfValidatedFile
       'image/vnd.sealedmedia.softseal.gif' => 'sgif',
       'image/vnd.sealedmedia.softseal.jpg' => 'sjpg',
       'image/vnd.wap.wbmp' => 'wbmp',
+      'image/webp' => 'webp',
       'image/x-bmp' => 'bmp',
       'image/x-cmu-raster' => 'ras',
       'image/x-freehand' => 'fh4',
