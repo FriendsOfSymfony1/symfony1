@@ -71,6 +71,7 @@ class sfValidatorFile extends sfValidatorBase
         'image/png',
         'image/x-png',
         'image/gif',
+        'image/webp',
     )));
     $this->addOption('validated_file_class', 'sfValidatedFile');
     $this->addOption('path', null);
