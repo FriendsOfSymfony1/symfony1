@@ -45,13 +45,13 @@ class sfDoctrineBuildTask extends sfDoctrineBaseTask
         $options = [
             new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
             new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
+            new sfCommandOption('all-classes', null, sfCommandOption::PARAMETER_NONE, 'Build all classes'),
         ];
 
         if (!sfProjectConfiguration::getActive()->isProduction()) {
             $options = array_merge($options, [
                 new sfCommandOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Whether to force dropping of the database'),
                 new sfCommandOption('all', null, sfCommandOption::PARAMETER_NONE, 'Build everything and reset the database'),
-                new sfCommandOption('all-classes', null, sfCommandOption::PARAMETER_NONE, 'Build all classes'),
                 new sfCommandOption('model', null, sfCommandOption::PARAMETER_NONE, 'Build model classes'),
                 new sfCommandOption('forms', null, sfCommandOption::PARAMETER_NONE, 'Build form classes'),
                 new sfCommandOption('filters', null, sfCommandOption::PARAMETER_NONE, 'Build filter classes'),
@@ -130,7 +130,9 @@ EOF;
             throw new InvalidArgumentException(sprintf("You must include one or more of the following build options:\n--%s\n\nSee this task's help page for more information:\n\n  php symfony help doctrine:build", join(', --', array_keys($this->getBuildOptions()))));
         }
 
-        if (self::BUILD_DB == (self::BUILD_DB & $mode)) {
+        $is_production = sfProjectConfiguration::getActive()->isProduction();
+
+        if (!$is_production && (self::BUILD_DB == (self::BUILD_DB & $mode))) {
             $task = new sfDoctrineDropDbTask($this->dispatcher, $this->formatter);
             $task->setCommandApplication($this->commandApplication);
             $task->setConfiguration($this->configuration);
@@ -185,61 +187,63 @@ EOF;
             }
         }
 
-        if (self::BUILD_SQL == (self::BUILD_SQL & $mode)) {
-            $task = new sfDoctrineBuildSqlTask($this->dispatcher, $this->formatter);
-            $task->setCommandApplication($this->commandApplication);
-            $task->setConfiguration($this->configuration);
-            $ret = $task->run();
-
-            if ($ret) {
-                return $ret;
-            }
-        }
-
-        if ($options['and-migrate']) {
-            $task = new sfDoctrineMigrateTask($this->dispatcher, $this->formatter);
-            $task->setCommandApplication($this->commandApplication);
-            $task->setConfiguration($this->configuration);
-            $ret = $task->run();
-
-            if ($ret) {
-                return $ret;
-            }
-        } elseif (self::BUILD_DB == (self::BUILD_DB & $mode)) {
-            $task = new sfDoctrineInsertSqlTask($this->dispatcher, $this->formatter);
-            $task->setCommandApplication($this->commandApplication);
-            $task->setConfiguration($this->configuration);
-            $ret = $task->run();
-
-            if ($ret) {
-                return $ret;
-            }
-        }
-
-        if (count($options['and-load']) || count($options['and-append'])) {
-            $task = new sfDoctrineDataLoadTask($this->dispatcher, $this->formatter);
-            $task->setCommandApplication($this->commandApplication);
-            $task->setConfiguration($this->configuration);
-
-            if (count($options['and-load'])) {
-                $ret = $task->run([
-                    'dir_or_file' => in_array([], $options['and-load'], true) ? null : $options['and-load'],
-                ]);
+        if (!$is_production) {
+            if (self::BUILD_SQL == (self::BUILD_SQL & $mode)) {
+                $task = new sfDoctrineBuildSqlTask($this->dispatcher, $this->formatter);
+                $task->setCommandApplication($this->commandApplication);
+                $task->setConfiguration($this->configuration);
+                $ret = $task->run();
 
                 if ($ret) {
                     return $ret;
                 }
             }
 
-            if (count($options['and-append'])) {
-                $ret = $task->run([
-                    'dir_or_file' => in_array([], $options['and-append'], true) ? null : $options['and-append'],
-                ], [
-                    'append' => true,
-                ]);
+            if ($options['and-migrate'] ?? false) {
+                $task = new sfDoctrineMigrateTask($this->dispatcher, $this->formatter);
+                $task->setCommandApplication($this->commandApplication);
+                $task->setConfiguration($this->configuration);
+                $ret = $task->run();
 
                 if ($ret) {
                     return $ret;
+                }
+            } elseif (self::BUILD_DB == (self::BUILD_DB & $mode)) {
+                $task = new sfDoctrineInsertSqlTask($this->dispatcher, $this->formatter);
+                $task->setCommandApplication($this->commandApplication);
+                $task->setConfiguration($this->configuration);
+                $ret = $task->run();
+
+                if ($ret) {
+                    return $ret;
+                }
+            }
+
+            if (count($options['and-load'] ?? []) || count($options['and-append'] ?? [])) {
+                $task = new sfDoctrineDataLoadTask($this->dispatcher, $this->formatter);
+                $task->setCommandApplication($this->commandApplication);
+                $task->setConfiguration($this->configuration);
+
+                if (count($options['and-load'])) {
+                    $ret = $task->run([
+                        'dir_or_file' => in_array([], $options['and-load'], true) ? null : $options['and-load'],
+                    ]);
+
+                    if ($ret) {
+                        return $ret;
+                    }
+                }
+
+                if (count($options['and-append'] ?? [])) {
+                    $ret = $task->run([
+                        'dir_or_file' => in_array([], $options['and-append'], true) ? null : $options['and-append'],
+                    ], [
+                        'append' => true,
+                    ]);
+
+                    if ($ret) {
+                        return $ret;
+                    }
                 }
             }
         }
