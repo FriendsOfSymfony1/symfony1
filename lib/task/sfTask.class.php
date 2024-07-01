@@ -658,7 +658,7 @@ abstract class sfTask
 
     protected function convertIntToUnit($size)
     {
-        $unit = ['b', 'kb', 'mb', 'gb', 'tb', 'pb'];
+        $unit = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
         $i = floor(log($size, 1024));
 
         return @round($size / pow(1024, $i), 2)." {$unit[$i]}";

@@ -184,7 +184,7 @@ function simple_format_text($text, $options = [])
 {
     $css = (isset($options['class'])) ? ' class="'.$options['class'].'"' : '';
 
-    $text = preg_replace('/(\r\n|\r)/', "\n", $text);               // lets make them newlines crossplatform
+    $text = preg_replace('/(\r\n|\r)/', "\n", $text);         // lets make them newlines crossplatform
     $text = preg_replace('/\n{2,}/', "</p><p{$css}>", $text); // turn two and more newlines into paragraph
 
     // turn single newline into <br/>
