@@ -13,7 +13,7 @@
  *
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  */
-class sfRoute implements Serializable
+class sfRoute implements Serializable, JsonSerializable
 {
     protected $isBound = false;
     protected $context;
@@ -444,6 +444,41 @@ class sfRoute implements Serializable
         $array = unserialize($serialized);
 
         $this->__unserialize($array);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'class' => get_class($this),
+            'tokens' => $this->tokens,
+            'defaultOptions' => $this->defaultOptions,
+            'options' => $this->options,
+            'pattern' => $this->pattern,
+            'staticPrefix' => $this->staticPrefix,
+            'regex' => $this->regex,
+            'variables' => $this->variables,
+            'defaults' => $this->defaults,
+            'requirements' => $this->requirements,
+            'suffix' => $this->suffix,
+            'customToken' => $this->customToken,
+        ];
+    }
+
+    public static function jsonUnserialize(array $raw): self
+    {
+        $class = $raw['class'] ?? 'sfRoute';
+        $rebuilt = new $class(
+            $raw['pattern'],
+            $raw['defaults'],
+            $raw['requirements'],
+            $raw['options']
+        );
+
+        $rebuilt->compile();
+
+        $rebuilt->setDefaultOptions($raw['defaultOptions']);
+
+        return $rebuilt;
     }
 
     /**

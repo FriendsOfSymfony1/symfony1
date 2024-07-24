@@ -132,16 +132,21 @@ class sfCacheSessionStorage extends sfStorage
             if (null === $raw) {
                 $this->data = [];
             } else {
-                $data = @unserialize($raw);
-
-                // We test 'b:0' special case, because such a string would result
-                // in $data being === false, while raw is serialized
-                // see http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
-                if ('b:0;' === $raw || false !== $data) {
-                    $this->data = $data;
+                $data = json_decode($raw, true);
+                if (is_array($data)) {
+                    $this->data = $this->upgradeNestedRouteObjects($data);
                 } else {
-                    // Probably an old cached value (BC)
-                    $this->data = $raw;
+                    $data = @unserialize($raw);
+
+                    // We test 'b:0' special case, because such a string would result
+                    // in $data being === false, while raw is serialized
+                    // see http://stackoverflow.com/questions/1369936/check-to-see-if-a-string-is-serialized
+                    if ('b:0;' === $raw || false !== $data) {
+                        $this->data = $data;
+                    } else {
+                        // Probably an old cached value (BC)
+                        $this->data = $raw;
+                    }
                 }
             }
 
@@ -153,6 +158,38 @@ class sfCacheSessionStorage extends sfStorage
         $this->response->addCacheControlHttpHeader('private');
 
         return true;
+    }
+
+    /**
+     * Recursive method to search through a json_decode()'d cache payload for
+     * any values which _would have been_ sfRoute objects before serialisation.
+     * If any are found, then also rebuilds the sfRoute object from the cached
+     * values and injects it back into the array.
+     *
+     * @param array $raw A dictionary of key => value pairs
+     */
+    protected function upgradeNestedRouteObjects(array $raw): array
+    {
+        foreach ($raw as $key => $value) {
+            if (is_array($value)) {
+                if (
+                    'route' == $key
+                    && isset(
+                        $value['pattern'],
+                        $value['defaults'],
+                        $value['requirements'],
+                        $value['options']
+                    )
+                ) {
+                    $raw[$key] = sfRoute::jsonUnserialize($value);
+                    continue;
+                }
+
+                $raw[$key] = $this->upgradeNestedRouteObjects($value);
+            }
+        }
+
+        return $raw;
     }
 
     /**
@@ -235,7 +272,7 @@ class sfCacheSessionStorage extends sfStorage
         $this->id = md5(mt_rand(0, 999999).$_SERVER['REMOTE_ADDR'].$ua.$this->options['session_cookie_secret']);
 
         // save data to cache
-        $this->cache->set($this->id, serialize($this->data));
+        $this->cache->set($this->id, json_encode($this->data));
 
         // update session id in signed cookie
         $this->response->setCookie(
@@ -274,7 +311,7 @@ class sfCacheSessionStorage extends sfStorage
     {
         // only update cache if session has changed
         if (true === $this->dataChanged) {
-            $this->cache->set($this->id, serialize($this->data));
+            $this->cache->set($this->id, json_encode($this->data));
             if (sfConfig::get('sf_logging_enabled')) {
                 $this->dispatcher->notify(new sfEvent($this, 'application.log', ['Storing session to cache']));
             }

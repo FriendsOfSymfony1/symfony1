@@ -146,8 +146,14 @@ class sfPatternRouting extends sfRouting
         $route = $this->routes[$name];
 
         if (is_string($route)) {
-            $this->routes[$name] = $route = unserialize($route);
-            $route->setDefaultParameters($this->defaultParameters);
+            $decoded = json_decode($route, true);
+            $route = is_array($decoded) ? sfRoute::jsonUnserialize($decoded) : unserialize($route);
+
+            if (is_object($route) && method_exists($route, 'setDefaultParameters')) {
+                $route->setDefaultParameters($this->defaultParameters);
+            }
+
+            $this->routes[$name] = $route;
         }
 
         return $route;
