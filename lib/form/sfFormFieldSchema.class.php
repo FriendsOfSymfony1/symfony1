@@ -82,7 +82,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @return bool true if the widget exists, false otherwise
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetExists($name)
     {
         return isset($this->widget[$name]);
@@ -95,7 +95,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @return sfFormField A form field instance
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetGet($name)
     {
         if (!isset($this->fields[$name])) {
@@ -131,7 +131,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @throws LogicException
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new LogicException('Cannot update form fields (read-only).');
@@ -144,7 +144,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @throws LogicException
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new LogicException('Cannot remove form fields (read-only).');
@@ -153,7 +153,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
     /**
      * Resets the field names array to the beginning (implements the Iterator interface).
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->fieldNames);
@@ -165,7 +165,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @return string The key
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return current($this->fieldNames);
@@ -176,7 +176,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @return mixed The escaped value
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this[current($this->fieldNames)];
@@ -185,7 +185,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
     /**
      * Moves to the next form field (implements the Iterator interface).
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function next()
     {
         next($this->fieldNames);
@@ -197,7 +197,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @return bool The validity of the current element; true if it is valid
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->count > 0;
@@ -208,7 +208,7 @@ class sfFormFieldSchema extends sfFormField implements ArrayAccess, Iterator, Co
      *
      * @return int The number of embedded form fields
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->fieldNames);

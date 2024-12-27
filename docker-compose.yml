@@ -45,6 +45,21 @@ services:
         - db
         - memcached
 
+  php83:
+    <<: *services_php82
+    build:
+      args:
+        PHP_VERSION: '8.3'
+        MEMCACHE_VERSION: '8.2'
+        APCU_VERSION: '5.1.23'
+
+  php84:
+    <<: *services_php82
+    build:
+      args:
+        PHP_VERSION: '8.4'
+        MEMCACHE_VERSION: '8.2'
+        APCU_VERSION: '5.1.23'
 
   db:
     image: mysql:5.5.62

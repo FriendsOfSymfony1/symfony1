@@ -227,13 +227,7 @@ class sfRoute implements Serializable, JsonSerializable
 
         // all params must be given
         if ($diff = array_diff_key($this->variables, $tparams)) {
-            $message = sprintf(
-                'The "%s" route has some missing mandatory parameters (%s).',
-                $this->pattern,
-                implode(', ', $diff)
-            );
-
-            throw new InvalidArgumentException($message);
+            throw new InvalidArgumentException(sprintf('The "%s" route has some missing mandatory parameters (%s).', $this->pattern, implode(', ', $diff)));
         }
 
         if ($this->options['generate_shortest_url'] || $this->customToken) {
@@ -520,14 +514,7 @@ class sfRoute implements Serializable, JsonSerializable
 
                 default:
                     // handle custom tokens
-                    $segment = call_user_func_array(
-                        [
-                            $this,
-                            'generateFor'.ucfirst(array_shift($token)),
-                        ],
-                        array_merge([$optional, $parameters], $token)
-                    );
-                    if ($segment) {
+                    if ($segment = call_user_func_array([$this, 'generateFor'.ucfirst(array_shift($token))], array_merge([$optional, $parameters], $token))) {
                         $url[] = $segment;
                         $optional = false;
                     }
@@ -762,7 +749,7 @@ class sfRoute implements Serializable, JsonSerializable
             if (is_array($value)) {
                 foreach ($value as $v) {
                     $v = is_null($v) ? '' : $v;
-                    $tmp[] = "{$key}=".urlencode($v);
+                    $tmp[] = $key.'='.urlencode($v);
                 }
             } else {
                 $value = is_null($value) ? '' : $value;
@@ -771,16 +758,10 @@ class sfRoute implements Serializable, JsonSerializable
         }
         $tmp = implode('/', $tmp);
         if ($tmp) {
-            $tmp = "/{$tmp}";
+            $tmp = '/'.$tmp;
         }
 
-        $separator = $this->options['segment_separators_regex'];
-
-        return preg_replace(
-            '#'.$separator.'\*('.$separator.'|$)#',
-            "{$tmp}$1",
-            $url
-        );
+        return preg_replace('#'.$this->options['segment_separators_regex'].'\*('.$this->options['segment_separators_regex'].'|$)#', "{$tmp}$1", $url);
     }
 
     protected function mergeArrays($arr1, $arr2)

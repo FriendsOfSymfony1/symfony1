@@ -117,16 +117,12 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
     protected function prepareSchemaFile($yamlSchemaPath)
     {
         $models = [];
-        $finder = sfFinder::type('file')
-            ->name('*.yml')
-            ->sort_by_name()
-            ->follow_link()
-        ;
+        $finder = sfFinder::type('file')->name('*.yml')->sort_by_name()->follow_link();
 
         // plugin models
         foreach ($this->configuration->getPlugins() as $name) {
             $plugin = $this->configuration->getPluginConfiguration($name);
-            foreach ($finder->in("{$plugin->getRootDir()}/config/doctrine") as $schema) {
+            foreach ($finder->in($plugin->getRootDir().'/config/doctrine') as $schema) {
                 $pluginModels = (array) sfYaml::load($schema);
                 $globals = $this->filterSchemaGlobals($pluginModels);
 
@@ -142,11 +138,11 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
 
                     // the first plugin to define this model gets the package
                     if (!isset($models[$model]['package'])) {
-                        $models[$model]['package'] = "{$plugin->getName()}.lib.model.doctrine";
+                        $models[$model]['package'] = $plugin->getName().'.lib.model.doctrine';
                     }
 
                     if (!isset($models[$model]['package_custom_path']) && 0 === strpos($models[$model]['package'], $plugin->getName())) {
-                        $models[$model]['package_custom_path'] = "{$plugin->getRootDir()}/lib/model/doctrine";
+                        $models[$model]['package_custom_path'] = $plugin->getRootDir().'/lib/model/doctrine';
                     }
                 }
             }

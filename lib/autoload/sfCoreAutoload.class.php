@@ -9,7 +9,7 @@
  */
 
 // The current symfony version.
-define('SYMFONY_VERSION', '1.6.2');
+define('SYMFONY_VERSION', '1.6.3');
 
 /**
  * sfCoreAutoload class.

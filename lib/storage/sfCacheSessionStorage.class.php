@@ -116,7 +116,7 @@ class sfCacheSessionStorage extends sfStorage
             // only send cookie when id is issued
             $this->response->setCookie(
                 $this->options['session_name'],
-                "{$this->id}:".sha1("{$this->id}:{$this->options['session_cookie_secret']}"),
+                $this->id.':'.sha1($this->id.':'.$this->options['session_cookie_secret']),
                 $this->options['session_cookie_lifetime'],
                 $this->options['session_cookie_path'],
                 $this->options['session_cookie_domain'],

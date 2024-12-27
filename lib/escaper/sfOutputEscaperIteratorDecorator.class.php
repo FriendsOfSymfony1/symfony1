@@ -54,7 +54,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
     /**
      * Resets the iterator (as required by the Iterator interface).
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         return $this->iterator->rewind();
@@ -65,7 +65,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @return mixed The escaped value
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return sfOutputEscaper::escape($this->escapingMethod, $this->iterator->current());
@@ -76,7 +76,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @return string Iterator key
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->iterator->key();
@@ -85,7 +85,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
     /**
      * Moves to the next element in the iterator (as required by the Iterator interface).
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function next()
     {
         return $this->iterator->next();
@@ -97,7 +97,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @return bool true if the current element is valid; false otherwise
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->iterator->valid();
@@ -110,7 +110,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @return bool true if the offset isset; false otherwise
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->value[$offset]);
@@ -123,7 +123,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @return mixed The escaped value
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return sfOutputEscaper::escape($this->escapingMethod, $this->value[$offset]);
@@ -141,7 +141,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @throws sfException
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new sfException('Cannot set values.');
@@ -158,7 +158,7 @@ class sfOutputEscaperIteratorDecorator extends sfOutputEscaperObjectDecorator im
      *
      * @throws sfException
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new sfException('Cannot unset values.');

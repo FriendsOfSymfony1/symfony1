@@ -222,7 +222,8 @@ class TGettext_MO extends TGettext
 
         // read all
         for ($i = 0; $i < $count; ++$i) {
-            $this->strings[$this->_readStr($original[$i])] = $this->_readStr($translat[$i]);
+            $this->strings[$this->_readStr($original[$i])] =
+                $this->_readStr($translat[$i]);
         }
 
         // done

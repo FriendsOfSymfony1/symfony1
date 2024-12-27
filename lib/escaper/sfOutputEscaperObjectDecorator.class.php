@@ -106,7 +106,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
      *
      * @return int The size of the object
      */
-    #[ReturnTypeWillChange]
+    #[\ReturnTypeWillChange]
     public function count()
     {
         // See https://github.com/symfony/polyfill/commit/d330c0094a47d8edceeea1ed553d6e08215a9fc2

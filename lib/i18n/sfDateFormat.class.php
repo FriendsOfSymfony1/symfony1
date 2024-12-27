@@ -211,7 +211,7 @@ class sfDateFormat
                 $tokens[$i] = '\'';
             } else {
                 $function = $this->getFunctionName($pattern);
-                if (null != $function) {
+                if (null !== $function) {
                     $function = ucfirst($function);
                     $fName = 'get'.$function;
                     if (in_array($fName, $this->methods)) {
