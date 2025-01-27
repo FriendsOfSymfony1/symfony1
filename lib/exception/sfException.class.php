@@ -329,7 +329,10 @@ class sfException extends Exception
         }
 
         if (is_readable($file)) {
-            $content = preg_split('#<br />#', preg_replace('/^<code>(.*)<\/code>$/s', '$1', highlight_file($file, true)));
+            $replaceRegex = '/^(?:<pre><code(?: [^>]+)?>|<code><span(?: [^>]+)?>\s*)(.*?)(?:<\/code><\/pre>|\s*<\/span>\s*<\/code>)$/s';
+            $splitRegex = '/(\r\n|\n|\r|<br \/>)/';
+
+            $content = preg_split($splitRegex, preg_replace($replaceRegex, '$1', highlight_file($file, true)));
 
             $lines = [];
             for ($i = max($line - 3, 1), $max = min($line + 3, count($content)); $i <= $max; ++$i) {
