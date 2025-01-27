@@ -557,7 +557,7 @@ abstract class sfCommandApplication
         ini_set('html_errors', false);
         ini_set('magic_quotes_runtime', false);
 
-        if (false === strpos(PHP_SAPI, 'cgi')) {
+        if (!str_contains(PHP_SAPI, 'cgi')) {
             return;
         }
 

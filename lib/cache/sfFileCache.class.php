@@ -101,7 +101,7 @@ class sfFileCache extends sfCache
      */
     public function removePattern($pattern)
     {
-        if (false !== strpos($pattern, '**')) {
+        if (str_contains($pattern, '**')) {
             $pattern = str_replace(sfCache::SEPARATOR, DIRECTORY_SEPARATOR, $pattern).self::EXTENSION;
 
             $regexp = self::patternToRegexp($pattern);

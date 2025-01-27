@@ -136,7 +136,7 @@ EOF;
         $dir = $properties['dir'];
         $user = isset($properties['user']) ? $properties['user'].'@' : '';
 
-        if ('/' != substr($dir, -1)) {
+        if (!str_ends_with($dir, '/')) {
             $dir .= '/';
         }
 
