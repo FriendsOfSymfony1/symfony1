@@ -1,0 +1,4 @@
+#! /bin/sh -eu
+
+docker-compose up -d --build --remove-orphans php74 > /dev/null
+docker-compose exec php74 php-cs-fixer fix
