@@ -174,10 +174,10 @@ class sfSymfonyPluginManager extends sfPluginManager
         $symfony->setChannel('pear.symfony-project.com');
         $symfony->setConfig($this->environment->getConfig());
         $symfony->setPackageType('php');
-        $symfony->setAPIVersion(preg_replace('/\d+(\-\w+)?$/', '0', SYMFONY_VERSION));
-        $symfony->setAPIStability(false === strpos(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
-        $symfony->setReleaseVersion(preg_replace('/\-\w+$/', '', SYMFONY_VERSION));
-        $symfony->setReleaseStability(false === strpos(SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
+        $symfony->setAPIVersion(preg_replace('/\d+(\-\w+)?$/', '0', sfProjectConfiguration::SYMFONY_VERSION));
+        $symfony->setAPIStability(false === strpos(sfProjectConfiguration::SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
+        $symfony->setReleaseVersion(preg_replace('/\-\w+$/', '', sfProjectConfiguration::SYMFONY_VERSION));
+        $symfony->setReleaseStability(false === strpos(sfProjectConfiguration::SYMFONY_VERSION, 'DEV') ? 'stable' : 'beta');
         $symfony->setDate(date('Y-m-d'));
         $symfony->setDescription('symfony');
         $symfony->setSummary('symfony');

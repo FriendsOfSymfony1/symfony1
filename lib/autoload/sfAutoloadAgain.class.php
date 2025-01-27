@@ -9,9 +9,7 @@
  */
 
 /**
- * Autoload again for dev environments.
- *
- * @author     Kris Wallsmith <kris.wallsmith@symfony-project.com>
+ * @deprecated
  */
 class sfAutoloadAgain
 {
@@ -21,16 +19,14 @@ class sfAutoloadAgain
     protected $reloaded = false;
 
     /**
-     * Constructor.
+     * @deprecated
      */
     protected function __construct()
     {
     }
 
     /**
-     * Returns the singleton autoloader.
-     *
-     * @return sfAutoloadAgain
+     * @deprecated
      */
     public static function getInstance()
     {
@@ -42,11 +38,7 @@ class sfAutoloadAgain
     }
 
     /**
-     * Reloads the autoloader.
-     *
-     * @param string $class
-     *
-     * @return bool
+     * @deprecated
      */
     public function autoload($class)
     {
@@ -87,9 +79,7 @@ class sfAutoloadAgain
     }
 
     /**
-     * Returns true if the autoloader is registered.
-     *
-     * @return bool
+     * @deprecated
      */
     public function isRegistered()
     {
@@ -97,7 +87,7 @@ class sfAutoloadAgain
     }
 
     /**
-     * Registers the autoloader function.
+     * @deprecated
      */
     public function register()
     {
@@ -108,7 +98,7 @@ class sfAutoloadAgain
     }
 
     /**
-     * Unregisters the autoloader function.
+     * @deprecated
      */
     public function unregister()
     {
