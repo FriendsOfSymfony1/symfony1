@@ -42,4 +42,7 @@ $c->base_dir = realpath(__DIR__.'/../../lib');
 $finder = sfFinder::type('file')->name($name.'.class.php')->prune('vendor')->prune('test')->prune('data');
 
 $c->register($finder->in($c->base_dir));
-$c->run();
+
+$allTestsSucceed = $c->run();
+
+exit($allTestsSucceed ? 0 : 1);

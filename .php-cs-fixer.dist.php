@@ -3,6 +3,7 @@
 $finder = PhpCsFixer\Finder::create()
     ->ignoreVCSIgnored(true)
     ->in(__DIR__.'/lib')
+    ->in(__DIR__.'/lib/vendor/lime/src')
     ->in(__DIR__.'/data/bin')
     ->in(__DIR__.'/test')
     ->append([__FILE__])
