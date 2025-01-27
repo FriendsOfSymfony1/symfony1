@@ -11,7 +11,7 @@ All the enhancements and BC breaks are listed in the [WHATS_NEW](https://github.
 
 - [DIC](https://github.com/FriendsOfSymfony1/symfony1/wiki/ServiceContainer)
 - Composer support
-- PHP 8.3 support
+- PHP 8.4 support
 - performance boost
 - new widgets & validators
 - some tickets fixed from the symfony trac
@@ -34,7 +34,7 @@ It runs on *nix and Windows platforms*.
 Requirements
 ------------
 
-PHP 5.3.4 and up. See prerequisites on https://symfony.com/legacy/doc/getting-started/1_4/en/02-Prerequisites
+PHP 7.4 and up. See prerequisites on https://symfony.com/legacy/doc/getting-started/1_4/en/02-Prerequisites
 
 Installation
 ------------
