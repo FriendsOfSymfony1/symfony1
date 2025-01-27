@@ -33,7 +33,7 @@ class sfWidgetFormI18nTime extends sfWidgetFormTime
 
         $this->addRequiredOption('culture');
 
-        $culture = isset($options['culture']) ? $options['culture'] : 'en';
+        $culture = $options['culture'] ?? 'en';
 
         // format
         $this->setOption('format', $this->getTimeFormat($culture, true));

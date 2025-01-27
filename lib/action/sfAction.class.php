@@ -290,7 +290,7 @@ abstract class sfAction extends sfComponent
     {
         $this->getContext()->getConfiguration()->loadHelpers('Partial');
 
-        $vars = null !== $vars ? $vars : $this->varHolder->getAll();
+        $vars ??= $this->varHolder->getAll();
 
         return get_partial($templateName, $vars);
     }
@@ -333,7 +333,7 @@ abstract class sfAction extends sfComponent
     {
         $this->getContext()->getConfiguration()->loadHelpers('Partial');
 
-        $vars = null !== $vars ? $vars : $this->varHolder->getAll();
+        $vars ??= $this->varHolder->getAll();
 
         return get_component($moduleName, $componentName, $vars);
     }
@@ -388,15 +388,7 @@ abstract class sfAction extends sfComponent
     {
         $actionName = strtolower($this->getActionName());
 
-        if (isset($this->security[$actionName][$name])) {
-            return $this->security[$actionName][$name];
-        }
-
-        if (isset($this->security['all'][$name])) {
-            return $this->security['all'][$name];
-        }
-
-        return $default;
+        return $this->security[$actionName][$name] ?? $this->security['all'][$name] ?? $default;
     }
 
     /**
@@ -430,7 +422,7 @@ abstract class sfAction extends sfComponent
     public function setTemplate($name, $module = null)
     {
         if (sfConfig::get('sf_logging_enabled')) {
-            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Change template to "%s/%s"', null === $module ? 'CURRENT' : $module, $name)]));
+            $this->dispatcher->notify(new sfEvent($this, 'application.log', [sprintf('Change template to "%s/%s"', $module ?? 'CURRENT', $name)]));
         }
 
         if (null !== $module) {
@@ -516,6 +508,6 @@ abstract class sfAction extends sfComponent
      */
     protected function get404Message($message = null)
     {
-        return null === $message ? sprintf('This request has been forwarded to a 404 error page by the action "%s/%s".', $this->getModuleName(), $this->getActionName()) : $message;
+        return $message ?? sprintf('This request has been forwarded to a 404 error page by the action "%s/%s".', $this->getModuleName(), $this->getActionName());
     }
 }

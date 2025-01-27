@@ -70,7 +70,7 @@ class sfSQLiteCache extends sfCache
             $data = $this->dbh->singleQuery(sprintf("SELECT data FROM cache WHERE key = '%s' AND timeout > %d", sqlite_escape_string($key), time()));
         }
 
-        return null === $data ? $default : $data;
+        return $data ?? $default;
     }
 
     /**
@@ -153,7 +153,7 @@ class sfSQLiteCache extends sfCache
         if ($this->isSqLite3()) {
             $rs = $this->dbh->querySingle(sprintf("SELECT timeout FROM cache WHERE key = '%s' AND timeout > %d", $this->dbh->escapeString($key), time()));
 
-            return null === $rs ? 0 : $rs;
+            return $rs ?? 0;
         }
 
         $rs = $this->dbh->query(sprintf("SELECT timeout FROM cache WHERE key = '%s' AND timeout > %d", sqlite_escape_string($key), time()));
@@ -169,7 +169,7 @@ class sfSQLiteCache extends sfCache
         if ($this->isSqLite3()) {
             $rs = $this->dbh->querySingle(sprintf("SELECT last_modified FROM cache WHERE key = '%s' AND timeout > %d", $this->dbh->escapeString($key), time()));
 
-            return null === $rs ? 0 : $rs;
+            return $rs ?? 0;
         }
 
         $rs = $this->dbh->query(sprintf("SELECT last_modified FROM cache WHERE key = '%s' AND timeout > %d", sqlite_escape_string($key), time()));

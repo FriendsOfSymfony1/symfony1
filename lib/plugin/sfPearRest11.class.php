@@ -22,7 +22,7 @@ class sfPearRest11 extends PEAR_REST_11
      */
     public function __construct($config, $options = [])
     {
-        $class = isset($options['base_class']) ? $options['base_class'] : 'sfPearRest';
+        $class = $options['base_class'] ?? 'sfPearRest';
 
         $this->_rest = new $class($config, $options);
     }

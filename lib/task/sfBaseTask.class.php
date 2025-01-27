@@ -321,7 +321,7 @@ abstract class sfBaseTask extends sfCommandApplicationTask
             $dirs = [sfConfig::get('sf_config_dir'), sfConfig::get('sf_lib_dir')];
         }
 
-        $tokens = array_merge(isset($this->tokens) ? $this->tokens : [], $tokens);
+        $tokens = array_merge($this->tokens ?? [], $tokens);
 
         $this->getFilesystem()->replaceTokens(sfFinder::type('file')->prune('vendor')->in($dirs), '##', '##', $tokens);
     }
