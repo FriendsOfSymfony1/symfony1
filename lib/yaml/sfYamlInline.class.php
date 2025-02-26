@@ -101,7 +101,7 @@ class sfYamlInline
             case is_numeric($value) && false === strpbrk($value, "\f\n\r\t\v"):
                 return is_infinite($value) ? str_ireplace('INF', '.Inf', (string) $value) : (is_string($value) ? "'{$value}'" : $value);
 
-            case false !== strpos($value, "\n") || false !== strpos($value, "\r"):
+            case str_contains($value, "\n") || str_contains($value, "\r"):
                 return sprintf('"%s"', str_replace(['"', "\n", "\r"], ['\\"', '\n', '\r'], $value));
 
             case preg_match('/[ \s \' " \: \{ \} \[ \] , & \* \# \?] | \A[ - ? | < > = ! % @ ` ]/x', $value):
@@ -265,7 +265,7 @@ class sfYamlInline
                     $isQuoted = in_array($sequence[$i], ['"', "'"]);
                     $value = self::parseScalar($sequence, [',', ']'], ['"', "'"], $i);
 
-                    if (!$isQuoted && false !== strpos((string) $value, ': ')) {
+                    if (!$isQuoted && str_contains((string) $value, ': ')) {
                         // embedded mapping?
                         try {
                             $value = self::parseMapping('{'.$value.'}');
@@ -378,13 +378,13 @@ class sfYamlInline
             case '~' == $scalar:
                 return null;
 
-            case 0 === strpos($scalar, '!str'):
+            case str_starts_with($scalar, '!str'):
                 return (string) substr($scalar, 5);
 
-            case 0 === strpos($scalar, '! '):
+            case str_starts_with($scalar, '! '):
                 return (int) self::parseScalar(substr($scalar, 2));
 
-            case 0 === strpos($scalar, '!!php/object:'):
+            case str_starts_with($scalar, '!!php/object:'):
                 return unserialize(substr($scalar, 13));
 
             case ctype_digit($scalar):
@@ -399,7 +399,7 @@ class sfYamlInline
             case in_array(strtolower($scalar), $falseValues):
                 return false;
 
-            case 0 === strpos($scalar, '0x'):
+            case str_starts_with($scalar, '0x'):
                 return hexdec($scalar);
 
             case is_numeric($scalar):
