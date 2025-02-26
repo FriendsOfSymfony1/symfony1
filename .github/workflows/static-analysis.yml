@@ -1,0 +1,44 @@
+name: Static Analysis
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - .github/workflows/static-analysis.yml
+      - tests/StaticAnalysis/*
+      - composer.*
+      - lib/**
+      - phpstan*
+
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/static-analysis.yml
+      - tests/StaticAnalysis/*
+      - composer.*
+      - lib/**
+      - phpstan*
+
+jobs:
+  static-analysis-phpstan:
+    name: Static Analysis with PHPStan
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: 7.4
+          tools: cs2pr, phpstan:1.10.63
+
+      - name: Install dependencies with Composer
+        uses: ramsey/composer-install@v2
+
+      - name: Run static analysis
+        run: phpstan analyse --error-format=checkstyle | cs2pr
