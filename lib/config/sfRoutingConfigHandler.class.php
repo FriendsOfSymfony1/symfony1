@@ -91,17 +91,17 @@ class sfRoutingConfigHandler extends sfYamlConfigHandler
                 (isset($params['type']) && 'collection' == $params['type'])
                 || (isset($params['class']) && false !== strpos($params['class'], 'Collection'))
             ) {
-                $options = isset($params['options']) ? $params['options'] : [];
+                $options = $params['options'] ?? [];
                 $options['name'] = $name;
-                $options['requirements'] = isset($params['requirements']) ? $params['requirements'] : [];
+                $options['requirements'] = $params['requirements'] ?? [];
 
-                $routes[$name] = [isset($params['class']) ? $params['class'] : 'sfRouteCollection', [$options]];
+                $routes[$name] = [$params['class'] ?? 'sfRouteCollection', [$options]];
             } else {
-                $routes[$name] = [isset($params['class']) ? $params['class'] : 'sfRoute', [
+                $routes[$name] = [$params['class'] ?? 'sfRoute', [
                     $params['url'] ?: '/',
-                    isset($params['params']) ? $params['params'] : (isset($params['param']) ? $params['param'] : []),
-                    isset($params['requirements']) ? $params['requirements'] : [],
-                    isset($params['options']) ? $params['options'] : [],
+                    $params['params'] ?? $params['param'] ?? [],
+                    $params['requirements'] ?? [],
+                    $params['options'] ?? [],
                 ]];
             }
         }

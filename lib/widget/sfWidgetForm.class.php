@@ -265,7 +265,7 @@ abstract class sfWidgetForm extends sfWidget
     protected function fixFormId($attributes)
     {
         if (!isset($attributes['id']) && isset($attributes['name'])) {
-            $attributes['id'] = $this->generateId($attributes['name'], isset($attributes['value']) ? $attributes['value'] : null);
+            $attributes['id'] = $this->generateId($attributes['name'], $attributes['value'] ?? null);
         }
 
         return $attributes;

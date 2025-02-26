@@ -1,1 +1,1 @@
-<div class="contextualCacheableComponent_<?php echo isset($varParam) ? $varParam : ''; ?>_<?php echo isset($componentParam) ? $componentParam : ''; ?>_<?php echo isset($requestParam) ? $requestParam : ''; ?>"><?php echo $sf_response->getTitle(); ?></div>
+<div class="contextualCacheableComponent_<?php echo $varParam ?? ''; ?>_<?php echo $componentParam ?? ''; ?>_<?php echo $requestParam ?? ''; ?>"><?php echo $sf_response->getTitle(); ?></div>

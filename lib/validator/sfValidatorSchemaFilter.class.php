@@ -54,7 +54,7 @@ class sfValidatorSchemaFilter extends sfValidatorSchema
             throw new InvalidArgumentException(sprintf('You must pass an array parameter to the clean() method for filter field "%s"', $this->getOption('field')));
         }
 
-        $value = isset($values[$this->getOption('field')]) ? $values[$this->getOption('field')] : null;
+        $value = $values[$this->getOption('field')] ?? null;
 
         try {
             $values[$this->getOption('field')] = $this->getOption('validator')->clean($value);

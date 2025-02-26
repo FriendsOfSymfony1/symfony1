@@ -472,18 +472,18 @@ function mail_to($email, $name = '', $options = [], $default_value = [])
 function _convert_options_to_javascript($html_options, $url = 'this.href')
 {
     // confirm
-    $confirm = isset($html_options['confirm']) ? $html_options['confirm'] : '';
+    $confirm = $html_options['confirm'] ?? '';
     unset($html_options['confirm']);
 
     // popup
-    $popup = isset($html_options['popup']) ? $html_options['popup'] : '';
+    $popup = $html_options['popup'] ?? '';
     unset($html_options['popup']);
 
     // method
-    $method = isset($html_options['method']) ? $html_options['method'] : (isset($html_options['post']) && $html_options['post'] ? 'post' : false);
+    $method = $html_options['method'] ?? (isset($html_options['post']) && $html_options['post'] ? 'post' : false);
     unset($html_options['post'], $html_options['method']);
 
-    $onclick = isset($html_options['onclick']) ? $html_options['onclick'] : '';
+    $onclick = $html_options['onclick'] ?? '';
 
     if ($popup && $method) {
         throw new sfConfigurationException('You can\'t use "popup", "method" and "post" in the same link.');

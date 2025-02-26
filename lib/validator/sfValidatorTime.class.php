@@ -96,9 +96,9 @@ class sfValidatorTime extends sfValidatorBase
         }
 
         $clean = mktime(
-            isset($value['hour']) ? (int) $value['hour'] : 0,
-            isset($value['minute']) ? (int) $value['minute'] : 0,
-            isset($value['second']) ? (int) $value['second'] : 0
+            (int) $value['hour'] ?? 0,
+            (int) $value['minute'] ?? 0,
+            (int) $value['second'] ?? 0,
         );
 
         if (false === $clean) {

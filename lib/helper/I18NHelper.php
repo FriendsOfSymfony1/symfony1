@@ -67,16 +67,16 @@ function format_number_choice($text, $args = [], $number = null, $catalogue = 'm
 
 function format_country($country_iso, $culture = null)
 {
-    $c = sfCultureInfo::getInstance(null === $culture ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+    $c = sfCultureInfo::getInstance($culture ?? sfContext::getInstance()->getUser()->getCulture());
     $countries = $c->getCountries();
 
-    return isset($countries[$country_iso]) ? $countries[$country_iso] : '';
+    return $countries[$country_iso] ?? '';
 }
 
 function format_language($language_iso, $culture = null)
 {
-    $c = sfCultureInfo::getInstance(null === $culture ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+    $c = sfCultureInfo::getInstance($culture ?? sfContext::getInstance()->getUser()->getCulture());
     $languages = $c->getLanguages();
 
-    return isset($languages[$language_iso]) ? $languages[$language_iso] : '';
+    return $languages[$language_iso] ?? '';
 }

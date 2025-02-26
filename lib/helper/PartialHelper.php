@@ -326,7 +326,7 @@ function get_slot($name, $default = '')
         $context->getEventDispatcher()->notify(new sfEvent(null, 'application.log', [sprintf('Get slot "%s"', $name)]));
     }
 
-    return isset($slots[$name]) ? $slots[$name] : $default;
+    return $slots[$name] ?? $default;
 }
 
 function _call_component($moduleName, $componentName, $vars)
