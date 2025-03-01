@@ -202,7 +202,7 @@ class sfPearRestPlugin extends sfPearRest11
      */
     protected function getAllowedStates($stability = null)
     {
-        $stability = null === $stability ? $this->config->get('preferred_state', null, $this->channel) : $stability;
+        $stability ??= $this->config->get('preferred_state', null, $this->channel);
 
         return array_flip($this->betterStates($stability, true));
     }

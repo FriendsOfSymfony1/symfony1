@@ -35,18 +35,18 @@ class sfGeneratorConfigHandler extends sfYamlConfigHandler
         }
 
         if (!isset($config['generator'])) {
-            throw new sfParseException(sprintf('Configuration file "%s" must specify a generator section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0]));
+            throw new sfParseException(sprintf('Configuration file "%s" must specify a generator section.', $configFiles[1] ?? $configFiles[0]));
         }
 
         $config = $config['generator'];
 
         if (!isset($config['class'])) {
-            throw new sfParseException(sprintf('Configuration file "%s" must specify a generator class section under the generator section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0]));
+            throw new sfParseException(sprintf('Configuration file "%s" must specify a generator class section under the generator section.', $configFiles[1] ?? $configFiles[0]));
         }
 
         foreach (['fields', 'list', 'edit'] as $section) {
             if (isset($config[$section])) {
-                throw new sfParseException(sprintf('Configuration file "%s" can specify a "%s" section but only under the param section.', isset($configFiles[1]) ? $configFiles[1] : $configFiles[0], $section));
+                throw new sfParseException(sprintf('Configuration file "%s" can specify a "%s" section but only under the param section.', $configFiles[1] ?? $configFiles[0], $section));
             }
         }
 
@@ -54,7 +54,7 @@ class sfGeneratorConfigHandler extends sfYamlConfigHandler
         $generatorManager = new sfGeneratorManager(sfContext::getInstance()->getConfiguration());
 
         // generator parameters
-        $generatorParam = (isset($config['param']) ? $config['param'] : []);
+        $generatorParam = ($config['param'] ?? []);
 
         // hack to find the module name (look for the last /modules/ in path)
         preg_match('#.*/modules/([^/]+)/#', str_replace('\\', '/', $configFiles[0]), $match);
