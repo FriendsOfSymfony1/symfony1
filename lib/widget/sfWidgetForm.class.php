@@ -219,11 +219,11 @@ abstract class sfWidgetForm extends sfWidget
         }
 
         // check to see if we have an array variable for a field name
-        if (false !== strpos($name, '[')) {
+        if (str_contains($name, '[')) {
             $name = str_replace(['[]', '][', '[', ']'], [null !== $value && !is_array($value) ? '_'.$value : '', '_', '_', ''], $name);
         }
 
-        if (false !== strpos($this->getOption('id_format'), '%s')) {
+        if (str_contains($this->getOption('id_format'), '%s')) {
             $name = sprintf($this->getOption('id_format'), $name);
         }
 

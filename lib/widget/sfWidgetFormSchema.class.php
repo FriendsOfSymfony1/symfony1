@@ -262,7 +262,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
      */
     public function setNameFormat($format)
     {
-        if (false !== $format && false === strpos($format, '%s')) {
+        if (false !== $format && !str_contains($format, '%s')) {
             throw new InvalidArgumentException(sprintf('The name format must contain %%s ("%s" given)', $format));
         }
 
@@ -599,7 +599,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     {
         $format = $this->getNameFormat();
 
-        if ('[%s]' == substr($format, -4) && preg_match('/^(.+?)\[(.+)\]$/', $name, $match)) {
+        if (str_ends_with($format, '[%s]') && preg_match('/^(.+?)\[(.+)\]$/', $name, $match)) {
             $name = sprintf('%s[%s][%s]', substr($format, 0, -4), $match[1], $match[2]);
         } elseif (false !== $format) {
             $name = sprintf($format, $name);
