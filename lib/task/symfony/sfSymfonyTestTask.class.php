@@ -43,12 +43,9 @@ EOF;
      */
     protected function execute($arguments = [], $options = [])
     {
-        require_once __DIR__.'/../../vendor/lime/lime.php';
-
         require_once __DIR__.'/lime_symfony.php';
 
         // cleanup
-        require_once __DIR__.'/../../util/sfToolkit.class.php';
         if ($files = glob(sys_get_temp_dir().DIRECTORY_SEPARATOR.'/sf_autoload_unit_*')) {
             foreach ($files as $file) {
                 unlink($file);
@@ -57,7 +54,6 @@ EOF;
 
         // update sfCoreAutoload
         if ($options['update-autoloader']) {
-            require_once __DIR__.'/../../autoload/sfCoreAutoload.class.php';
             sfCoreAutoload::make();
         }
 
