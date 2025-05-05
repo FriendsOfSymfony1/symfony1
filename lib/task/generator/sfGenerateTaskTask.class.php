@@ -73,7 +73,7 @@ EOF;
         $taskName = $arguments['task_name'];
         $taskNameComponents = explode(':', $taskName);
         $namespace = isset($taskNameComponents[1]) ? $taskNameComponents[0] : '';
-        $name = isset($taskNameComponents[1]) ? $taskNameComponents[1] : $taskNameComponents[0];
+        $name = $taskNameComponents[1] ?? $taskNameComponents[0];
         $taskClassName = str_replace('-', '', $namespace ? $namespace.ucfirst($name) : $name).'Task';
 
         // Validate the class name

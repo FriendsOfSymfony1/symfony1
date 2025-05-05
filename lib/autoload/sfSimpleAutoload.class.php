@@ -279,7 +279,7 @@ class sfSimpleAutoload
     {
         $class = strtolower($class);
 
-        return isset($this->classes[$class]) ? $this->classes[$class] : null;
+        return $this->classes[$class] ?? null;
     }
 
     /**

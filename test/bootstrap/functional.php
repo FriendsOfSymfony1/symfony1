@@ -15,11 +15,11 @@ ini_set('arg_separator.output', '&amp;');
 ini_set('allow_url_fopen', 'on');
 
 if (!isset($root_dir)) {
-    $root_dir = realpath(__DIR__.sprintf('/../%s/fixtures', isset($type) ? $type : 'functional'));
+    $root_dir = realpath(__DIR__.sprintf('/../%s/fixtures', $type ?? 'functional'));
 }
 
 require_once $root_dir.'/config/ProjectConfiguration.class.php';
-$configuration = ProjectConfiguration::getApplicationConfiguration($app, 'test', isset($debug) ? $debug : true);
+$configuration = ProjectConfiguration::getApplicationConfiguration($app, 'test', $debug ?? true);
 
 // remove all cache
 sf_functional_test_shutdown();

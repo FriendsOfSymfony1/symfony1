@@ -97,7 +97,7 @@ class sfFactoryConfigHandler extends sfYamlConfigHandler
                     $defaultParameters = [];
                     $defaultParameters[] = sprintf("'auto_shutdown' => false, 'session_id' => \$this->getRequest()->getParameter('%s'),", $parameters['session_name']);
                     if (is_subclass_of($class, 'sfDatabaseSessionStorage')) {
-                        $defaultParameters[] = sprintf("'database' => \$this->getDatabaseManager()->getDatabase('%s'),", isset($parameters['database']) ? $parameters['database'] : 'default');
+                        $defaultParameters[] = sprintf("'database' => \$this->getDatabaseManager()->getDatabase('%s'),", $parameters['database'] ?? 'default');
                         unset($parameters['database']);
                     }
 

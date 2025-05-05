@@ -74,7 +74,7 @@ class sfValidatorError extends Exception implements Serializable
      */
     public function getValue()
     {
-        return isset($this->arguments['value']) ? $this->arguments['value'] : null;
+        return $this->arguments['value'] ?? null;
     }
 
     /**

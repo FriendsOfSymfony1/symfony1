@@ -41,7 +41,7 @@ class sfSessionTestStorage extends sfStorage
         // initialize parent
         parent::initialize($options);
 
-        $this->sessionId = null !== $this->options['session_id'] ? $this->options['session_id'] : (array_key_exists('session_id', $_SERVER) ? $_SERVER['session_id'] : null);
+        $this->sessionId = $this->options['session_id'] ?? (array_key_exists('session_id', $_SERVER) ? $_SERVER['session_id'] : null);
 
         if ($this->sessionId) {
             // we read session data from temp file
@@ -74,13 +74,7 @@ class sfSessionTestStorage extends sfStorage
      */
     public function read($key)
     {
-        $retval = null;
-
-        if (isset($this->sessionData[$key])) {
-            $retval = $this->sessionData[$key];
-        }
-
-        return $retval;
+        return $this->sessionData[$key] ?? null;
     }
 
     /**

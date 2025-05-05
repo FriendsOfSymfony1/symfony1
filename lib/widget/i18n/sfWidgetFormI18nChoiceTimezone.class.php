@@ -36,11 +36,11 @@ class sfWidgetFormI18nChoiceTimezone extends sfWidgetFormChoice
         $this->addOption('culture');
         $this->addOption('add_empty', false);
 
-        $culture = isset($options['culture']) ? $options['culture'] : 'en';
+        $culture = $options['culture'] ?? 'en';
         $timezones = array_keys(sfCultureInfo::getInstance($culture)->getTimeZones());
         $timezones = array_combine($timezones, $timezones);
 
-        $addEmpty = isset($options['add_empty']) ? $options['add_empty'] : false;
+        $addEmpty = $options['add_empty'] ?? false;
         if (false !== $addEmpty) {
             $timezones = array_merge(['' => true === $addEmpty ? '' : $addEmpty], $timezones);
         }

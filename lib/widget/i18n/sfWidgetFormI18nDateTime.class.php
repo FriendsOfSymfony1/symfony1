@@ -33,7 +33,7 @@ class sfWidgetFormI18nDateTime extends sfWidgetFormDateTime
 
         $this->addRequiredOption('culture');
 
-        $culture = isset($options['culture']) ? $options['culture'] : 'en';
+        $culture = $options['culture'] ?? 'en';
 
         // format
         $this->setOption('format', str_replace(['{0}', '{1}'], ['%time%', '%date%'], sfDateTimeFormatInfo::getInstance($culture)->getDateTimeOrderPattern()));

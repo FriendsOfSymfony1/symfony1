@@ -20,7 +20,7 @@ class sfSimpleCache extends sfCache
 
     public function get($key, $default = null)
     {
-        return isset($this->data[$key]) ? $this->data[$key] : $default;
+        return $this->data[$key] ?? $default;
     }
 
     public function set($key, $data, $lifetime = null)

@@ -68,7 +68,7 @@ class sfFilterConfigHandler extends sfYamlConfigHandler
                 unset($keys['param']['condition']);
             }
 
-            $type = isset($keys['param']['type']) ? $keys['param']['type'] : null;
+            $type = $keys['param']['type'] ?? null;
             unset($keys['param']['type']);
 
             if ($condition) {

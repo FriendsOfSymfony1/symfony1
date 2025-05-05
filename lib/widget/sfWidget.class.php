@@ -136,7 +136,7 @@ abstract class sfWidget
      */
     public function getOption($name, $default = null)
     {
-        return isset($this->options[$name]) ? $this->options[$name] : $default;
+        return $this->options[$name] ?? $default;
     }
 
     /**
@@ -209,7 +209,7 @@ abstract class sfWidget
      */
     public function getAttribute($name)
     {
-        return isset($this->attributes[$name]) ? $this->attributes[$name] : null;
+        return $this->attributes[$name] ?? null;
     }
 
     /**

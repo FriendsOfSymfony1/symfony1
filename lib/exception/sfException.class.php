@@ -216,7 +216,7 @@ class sfException extends Exception
             $format = 'txt';
         }
 
-        $message = null === $exception->getMessage() ? 'n/a' : $exception->getMessage();
+        $message = $exception->getMessage() ?? 'n/a';
         $name = get_class($exception);
         $traces = self::getTraces($exception, $format);
 
@@ -280,17 +280,17 @@ class sfException extends Exception
         }
 
         for ($i = 0, $count = count($traceData); $i < $count; ++$i) {
-            $line = isset($traceData[$i]['line']) ? $traceData[$i]['line'] : null;
-            $file = isset($traceData[$i]['file']) ? $traceData[$i]['file'] : null;
-            $args = isset($traceData[$i]['args']) ? $traceData[$i]['args'] : [];
+            $line = $traceData[$i]['line'] ?? null;
+            $file = $traceData[$i]['file'] ?? null;
+            $args = $traceData[$i]['args'] ?? [];
             $traces[] = sprintf(
                 $lineFormat,
-                isset($traceData[$i]['class']) ? $traceData[$i]['class'] : '',
-                isset($traceData[$i]['type']) ? $traceData[$i]['type'] : '',
+                $traceData[$i]['class'] ?? '',
+                $traceData[$i]['type'] ?? '',
                 $traceData[$i]['function'],
                 self::formatArgs($args, false, $format),
                 self::formatFile($file, $line, $format, null === $file ? 'n/a' : sfDebug::shortenFilePath($file)),
-                null === $line ? 'n/a' : $line,
+                $line ?? 'n/a',
                 'trace_'.$i,
                 'trace_'.$i,
                 0 == $i ? 'block' : 'none',

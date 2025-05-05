@@ -49,13 +49,7 @@ class sfActionStack
      */
     public function getEntry($index)
     {
-        $retval = null;
-
-        if ($index > -1 && $index < count($this->stack)) {
-            $retval = $this->stack[$index];
-        }
-
-        return $retval;
+        return $this->stack[$index] ?? null;
     }
 
     /**
@@ -75,13 +69,7 @@ class sfActionStack
      */
     public function getFirstEntry()
     {
-        $retval = null;
-
-        if (isset($this->stack[0])) {
-            $retval = $this->stack[0];
-        }
-
-        return $retval;
+        return $this->stack[0] ?? null;
     }
 
     /**
@@ -91,14 +79,7 @@ class sfActionStack
      */
     public function getLastEntry()
     {
-        $count = count($this->stack);
-        $retval = null;
-
-        if (isset($this->stack[0])) {
-            $retval = $this->stack[$count - 1];
-        }
-
-        return $retval;
+        return $this->stack[count($this->stack) - 1] ?? null;
     }
 
     /**

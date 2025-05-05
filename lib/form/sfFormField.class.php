@@ -144,7 +144,7 @@ class sfFormField
 
         $error = $this->error instanceof sfValidatorErrorSchema ? $this->error->getGlobalErrors() : $this->error;
 
-        $help = null === $help ? $this->parent->getWidget()->getHelp($this->name) : $help;
+        $help ??= $this->parent->getWidget()->getHelp($this->name);
 
         return strtr($this->parent->getWidget()->getFormFormatter()->formatRow($this->renderLabel($label), $field, $error, $help), ['%hidden_fields%' => '']);
     }

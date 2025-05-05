@@ -55,7 +55,7 @@ class sfSessionStorage extends sfStorage
             'session_cookie_path' => $cookieDefaults['path'],
             'session_cookie_domain' => $cookieDefaults['domain'],
             'session_cookie_secure' => $cookieDefaults['secure'],
-            'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,
+            'session_cookie_httponly' => $cookieDefaults['httponly'] ?? false,
             'session_cache_limiter' => null,
             'gc_maxlifetime' => 1800,
         ], $options);
@@ -105,13 +105,7 @@ class sfSessionStorage extends sfStorage
      */
     public function read($key)
     {
-        $retval = null;
-
-        if (isset($_SESSION[$key])) {
-            $retval = $_SESSION[$key];
-        }
-
-        return $retval;
+        return $_SESSION[$key] ?? null;
     }
 
     /**

@@ -32,7 +32,7 @@ function link_to_function($name, $function, $html_options = [])
 {
     $html_options = _parse_attributes($html_options);
 
-    $html_options['href'] = isset($html_options['href']) ? $html_options['href'] : '#';
+    $html_options['href'] ??= '#';
     if (isset($html_options['confirm'])) {
         $confirm = escape_javascript($html_options['confirm']);
         unset($html_options['confirm']);

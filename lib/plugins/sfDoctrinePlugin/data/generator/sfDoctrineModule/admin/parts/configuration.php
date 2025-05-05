@@ -20,7 +20,7 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
    */
   public function getFormClass()
   {
-    return '<?php echo isset($this->config['form']['class']) ? $this->config['form']['class'] : $this->getModelClass().'Form' ?>';
+    return '<?php echo $this->config['form']['class'] ?? $this->getModelClass().'Form' ?>';
 <?php unset($this->config['form']['class']) ?>
   }
 
@@ -46,13 +46,13 @@ abstract class Base<?php echo ucfirst($this->getModuleName()) ?>GeneratorConfigu
 
   public function getTableMethod()
   {
-    return '<?php echo isset($this->config['list']['table_method']) ? $this->config['list']['table_method'] : null ?>';
+    return '<?php echo $this->config['list']['table_method'] ?? null ?>';
 <?php unset($this->config['list']['table_method']) ?>
   }
 
   public function getTableCountMethod()
   {
-    return '<?php echo isset($this->config['list']['table_count_method']) ? $this->config['list']['table_count_method'] : null ?>';
+    return '<?php echo $this->config['list']['table_count_method'] ?? null ?>';
 <?php unset($this->config['list']['table_count_method']) ?>
   }
 }
