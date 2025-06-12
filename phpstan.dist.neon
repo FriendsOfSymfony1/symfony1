@@ -1,0 +1,28 @@
+parameters:
+    level: 0
+    phpVersion: 70400
+    bootstrapFiles:
+        - .phpstan/bootstrap.php
+
+    tmpDir: .cache/phpstan
+
+    paths:
+        - lib
+
+    excludePaths:
+        analyse:
+            - lib/vendor/swiftmailer/
+            - lib/task/symfony/lime_symfony.php
+            - lib/task/symfony/sfSymfonyTestTask.class.php
+            - lib/task/generator/skeleton/
+            # Templates for errors
+            - lib/exception/data/
+            # Templates for classes
+            - lib/plugins/sfDoctrinePlugin/data/generator/
+            - lib/plugins/sfDoctrinePlugin/lib/vendor/doctrine/
+            - lib/plugins/sfDoctrinePlugin/test/
+            # Templates for application
+            - lib/plugins/sfDoctrinePlugin/test/functional/fixtures/apps/
+
+includes:
+    - phpstan-baseline.php
