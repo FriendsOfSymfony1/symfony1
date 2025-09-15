@@ -53,6 +53,7 @@ class sfWebResponse extends sfResponse
         '305' => 'Use Proxy',
         '306' => '(Unused)',
         '307' => 'Temporary Redirect',
+        '308' => 'Permanent Redirect',
         '400' => 'Bad Request',
         '401' => 'Unauthorized',
         '402' => 'Payment Required',

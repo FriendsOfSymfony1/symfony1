@@ -10,6 +10,7 @@ xx/xx/xxxx: Version 1.5.xx
 * Remove sfEAcceleratorCache as the extension is not available on PHP v7.4 anymore.
 * Remove sfAPCCache as it uses the `apc` extension, which is not available on PHP v7.4 anymore.  
   **[BC-Break]** Use `sfAPCuCache` class instead, available from Symfony1 v1.5.16
+* Add support for HTTP Status Code 308 "Permanent Redirect" in `sfWebController::redirect()` method.
 
 28/02/2024: Version 1.5.18
 --------------------------
