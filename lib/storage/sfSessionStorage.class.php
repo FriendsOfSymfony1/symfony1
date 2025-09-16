@@ -35,8 +35,8 @@ class sfSessionStorage extends sfStorage
      *  * session_cookie_path:     Cookie path
      *  * session_cookie_domain:   Cookie domain
      *  * session_cookie_secure:   Cookie secure
-     *  * session_cookie_httponly: Cookie http only (only for PHP >= 5.2)
-     *  * session.cookie_samesite: Cookie same site (only for PHP >= 7.3)
+     *  * session_cookie_httponly: Cookie http only
+     *  * session.cookie_samesite: Cookie same site
      *
      * The default values for all 'session_cookie_*' options are those returned by the session_get_cookie_params() function
      *
