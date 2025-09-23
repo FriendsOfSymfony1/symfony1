@@ -510,7 +510,7 @@ class sfCoreAutoload
         $classes = '';
         foreach ($files as $file) {
             $file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
-            $class = basename($file, false === strpos($file, '.class.php') ? '.php' : '.class.php');
+            $class = basename($file, !str_contains($file, '.class.php') ? '.php' : '.class.php');
 
             $contents = file_get_contents($file);
             if (false !== stripos($contents, 'class '.$class)

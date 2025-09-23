@@ -123,7 +123,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
                     break;
                 }
 
-                if (false !== strpos($log['message'], $event->getQuery())) {
+                if (str_contains($log['message'], $event->getQuery())) {
                     // assume queries are being requested in order
                     unset($logs[$i]);
                     $backtrace = '&nbsp;'.$this->getToggleableDebugStack($log['debug_backtrace']);

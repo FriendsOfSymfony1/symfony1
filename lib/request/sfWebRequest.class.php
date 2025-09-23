@@ -199,7 +199,7 @@ class sfWebRequest extends sfRequest
     {
         $pathArray = $this->getPathInfoArray();
 
-        return isset($pathArray['REQUEST_URI']) ? 0 === strpos($pathArray['REQUEST_URI'], 'http') : false;
+        return isset($pathArray['REQUEST_URI']) ? str_starts_with($pathArray['REQUEST_URI'], 'http') : false;
     }
 
     /**
@@ -217,7 +217,7 @@ class sfWebRequest extends sfRequest
         $port = null;
 
         // extract port from host or environment variable
-        if (false !== strpos($host, ':')) {
+        if (str_contains($host, ':')) {
             list($host, $port) = explode(':', $host, 2);
         } elseif ($protocolPort = $this->getOption($protocol.'_port')) {
             $port = $protocolPort;
@@ -432,7 +432,7 @@ class sfWebRequest extends sfRequest
 
         $languages = $this->splitHttpAcceptHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']);
         foreach ($languages as $lang) {
-            if (false !== strpos($lang, '-')) {
+            if (str_contains($lang, '-')) {
                 $codes = explode('-', $lang);
                 if ('i' == $codes[0]) {
                     // Language not listed in ISO 639 that are not variants
