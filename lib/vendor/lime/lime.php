@@ -169,7 +169,7 @@ class lime_test
   {
     $this->update_stats();
 
-    if ($result = (boolean) $exp)
+    if ($result = (bool) $exp)
     {
       $this->results['stats']['passed'][] = $this->test_nb;
     }
