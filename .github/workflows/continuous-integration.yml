@@ -39,6 +39,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php-version }}"
+          ini-file: development
           extensions: apcu
           ini-values: apc.enable_cli=1
 
