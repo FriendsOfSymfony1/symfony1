@@ -10,8 +10,6 @@
 
 include __DIR__.'/../../bootstrap/unit.php';
 
-require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
-
 class TestTask extends sfBaseTask
 {
     public function reloadAutoload()

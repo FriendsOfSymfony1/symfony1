@@ -36,7 +36,7 @@ class sfSymfonyCommandApplication extends sfCommandApplication
 
         // application
         $this->setName('symfony');
-        $this->setVersion(SYMFONY_VERSION);
+        $this->setVersion(sfProjectConfiguration::SYMFONY_VERSION);
 
         $this->loadTasks($configuration);
     }

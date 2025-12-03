@@ -7,5 +7,5 @@
 
 <?php } ?>
 <?php } ?>
-[symfony]     v. <?php echo SYMFONY_VERSION; ?> (symfony-project.org)
+[symfony]     v. <?php echo sfProjectConfiguration::SYMFONY_VERSION; ?> (symfony-project.org)
 [PHP]         v. <?php echo PHP_VERSION; ?>

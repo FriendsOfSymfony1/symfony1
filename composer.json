@@ -11,7 +11,8 @@
         "psr/log": "*"
     },
     "autoload": {
-        "files": ["autoload.php"]
+        "classmap": ["lib/"],
+        "exclude-from-classmap": ["lib/task/generator/skeleton/", "lib/plugins/sfDoctrinePlugin/test/"]
     },
     "suggest": {
         "friendsofsymfony1/doctrine1": "Doctrine plugin",
