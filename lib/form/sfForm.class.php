@@ -400,7 +400,7 @@ class sfForm implements ArrayAccess, Iterator, Countable
      */
     public function getName()
     {
-        if ('[%s]' != substr($nameFormat = $this->widgetSchema->getNameFormat(), -4)) {
+        if (!str_ends_with($nameFormat = $this->widgetSchema->getNameFormat(), '[%s]')) {
             return false;
         }
 

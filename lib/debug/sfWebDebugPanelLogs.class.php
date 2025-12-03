@@ -108,7 +108,7 @@ class sfWebDebugPanelLogs extends sfWebDebugPanel
         $logLine = $this->formatSql($logLine);
 
         // remove username/password from DSN
-        if (false !== strpos($logLine, 'DSN')) {
+        if (str_contains($logLine, 'DSN')) {
             $logLine = preg_replace("/=&gt;\\s+'?[^'\\s,]+'?/", "=&gt; '****'", $logLine);
         }
 

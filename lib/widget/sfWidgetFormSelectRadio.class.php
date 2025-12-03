@@ -29,7 +29,7 @@ class sfWidgetFormSelectRadio extends sfWidgetFormChoiceBase
      */
     public function render($name, $value = null, $attributes = [], $errors = [])
     {
-        if ('[]' != substr($name, -2)) {
+        if (!str_ends_with($name, '[]')) {
             $name .= '[]';
         }
 

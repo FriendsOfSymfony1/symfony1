@@ -130,10 +130,10 @@ abstract class sfMessageSource_Database extends sfMessageSource
             $dsn = $match[3];
         // $dsn => protocol+hostspec/database (old format)
         } else {
-            if (false !== strpos($dsn, '+')) {
+            if (str_contains($dsn, '+')) {
                 list($proto, $dsn) = explode('+', $dsn, 2);
             }
-            if (false !== strpos($dsn, '/')) {
+            if (str_contains($dsn, '/')) {
                 list($proto_opts, $dsn) = explode('/', $dsn, 2);
             } else {
                 $proto_opts = $dsn;
@@ -145,7 +145,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
         $parsed['protocol'] = (!empty($proto)) ? $proto : 'tcp';
         $proto_opts = rawurldecode($proto_opts);
         if ('tcp' == $parsed['protocol']) {
-            if (false !== strpos($proto_opts, ':')) {
+            if (str_contains($proto_opts, ':')) {
                 list($parsed['hostspec'], $parsed['port']) = explode(':', $proto_opts);
             } else {
                 $parsed['hostspec'] = $proto_opts;
@@ -164,7 +164,7 @@ abstract class sfMessageSource_Database extends sfMessageSource
             } else {
                 $parsed['database'] = substr($dsn, 0, $pos);
                 $dsn = substr($dsn, $pos + 1);
-                if (false !== strpos($dsn, '&')) {
+                if (str_contains($dsn, '&')) {
                     $opts = explode('&', $dsn);
                 } else { // database?param1=value1
                     $opts = [$dsn];

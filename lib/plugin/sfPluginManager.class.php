@@ -114,7 +114,7 @@ class sfPluginManager
      */
     public function uninstallPlugin($plugin, $channel = null)
     {
-        if (false !== strpos($plugin, '/')) {
+        if (str_contains($plugin, '/')) {
             list($channel, $plugin) = explode('/', $plugin);
         }
 
@@ -293,14 +293,14 @@ class sfPluginManager
         $version = isset($options['version']) ? $options['version'] : null;
 
         $isPackage = true;
-        if (0 === strpos($plugin, 'http://') || file_exists($plugin)) {
-            if (0 === strpos($plugin, 'http://plugins.symfony-project.')) {
+        if (str_starts_with($plugin, 'http://') || file_exists($plugin)) {
+            if (str_starts_with($plugin, 'http://plugins.symfony-project.')) {
                 throw new sfPluginException("You try to install a symfony 1.0 plugin.\nPlease read the help message of this task to know how to install a plugin for the current version of symfony.");
             }
 
             $download = $plugin;
             $isPackage = false;
-        } elseif (false !== strpos($plugin, '/')) {
+        } elseif (str_contains($plugin, '/')) {
             list($channel, $plugin) = explode('/', $plugin);
         }
 

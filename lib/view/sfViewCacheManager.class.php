@@ -124,7 +124,7 @@ class sfViewCacheManager
             return call_user_func($callable, $internalUri, $hostName, $vary, $contextualPrefix, $this);
         }
 
-        if (0 === strpos($internalUri, '@') && false === strpos($internalUri, '@sf_cache_partial')) {
+        if (str_starts_with($internalUri, '@') && !str_contains($internalUri, '@sf_cache_partial')) {
             throw new sfException('A cache key cannot be generated for an internal URI using the @rule syntax');
         }
 
@@ -167,12 +167,12 @@ class sfViewCacheManager
         }
 
         // normalize to a leading slash
-        if (0 !== strpos($cacheKey, '/')) {
+        if (!str_starts_with($cacheKey, '/')) {
             $cacheKey = '/'.$cacheKey;
         }
 
         // distinguish multiple slashes
-        while (false !== strpos($cacheKey, '//')) {
+        while (str_contains($cacheKey, '//')) {
             $cacheKey = str_replace('//', '/'.substr(sha1($cacheKey), 0, 7).'/', $cacheKey);
         }
 
@@ -795,7 +795,7 @@ class sfViewCacheManager
         $cacheKey = $this->routing->getCurrentInternalUri();
 
         if ($getParameters = $this->request->getGetParameters()) {
-            $cacheKey .= false === strpos((string) $cacheKey, '?') ? '?' : '&';
+            $cacheKey .= !str_contains((string) $cacheKey, '?') ? '?' : '&';
             $cacheKey .= http_build_query($getParameters, '', '&');
         }
 
@@ -813,7 +813,7 @@ class sfViewCacheManager
     public function decorateContentWithDebug(sfEvent $event, $content)
     {
         // don't decorate if not html or if content is null
-        if (!$content || false === strpos($event['response']->getContentType(), 'html')) {
+        if (!$content || !str_contains($event['response']->getContentType(), 'html')) {
             return $content;
         }
 

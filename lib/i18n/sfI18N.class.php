@@ -329,7 +329,7 @@ class sfI18N
 
         // We parse time format to see where things are (h, m)
         $timePositions = [
-            'h' => false !== strpos($timeFormat, 'H') ? strpos($timeFormat, 'H') : strpos($timeFormat, 'h'),
+            'h' => str_contains($timeFormat, 'H') ? strpos($timeFormat, 'H') : strpos($timeFormat, 'h'),
             'm' => strpos($timeFormat, 'm'),
             'a' => strpos($timeFormat, 'a'),
         ];

@@ -122,7 +122,7 @@ class sfRoute implements Serializable
         }
 
         // check the static prefix uf the URL first. Only use the more expensive preg_match when it matches
-        if ('' !== $this->staticPrefix && 0 !== strpos($url, $this->staticPrefix)) {
+        if ('' !== $this->staticPrefix && !str_starts_with($url, $this->staticPrefix)) {
             return false;
         }
         if (!preg_match($this->regex, $url, $matches)) {
@@ -190,7 +190,7 @@ class sfRoute implements Serializable
 
         // all $params must be in $variables or $defaults if there is no * in route
         if (!$this->options['extra_parameters_as_query_string']) {
-            if (false === strpos($this->regex, '<_star>') && array_diff_key($params, $this->variables, $defaults)) {
+            if (!str_contains($this->regex, '<_star>') && array_diff_key($params, $this->variables, $defaults)) {
                 return false;
             }
         }
@@ -699,12 +699,12 @@ class sfRoute implements Serializable
 
     protected function hasStarParameter()
     {
-        return false !== strpos($this->regex, '<_star>');
+        return str_contains($this->regex, '<_star>');
     }
 
     protected function generateStarParameter($url, $defaults, $parameters)
     {
-        if (false === strpos($this->regex, '<_star>')) {
+        if (!str_contains($this->regex, '<_star>')) {
             return $url;
         }
 
@@ -756,7 +756,7 @@ class sfRoute implements Serializable
             if ('^' == $regex[0]) {
                 $regex = substr($regex, 1);
             }
-            if ('$' == substr($regex, -1)) {
+            if (str_ends_with($regex, '$')) {
                 $regex = substr($regex, 0, -1);
             }
 

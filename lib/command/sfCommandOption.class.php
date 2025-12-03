@@ -40,7 +40,7 @@ class sfCommandOption
      */
     public function __construct($name, $shortcut = null, $mode = null, $help = '', $default = null)
     {
-        if ('--' == substr($name, 0, 2)) {
+        if (str_starts_with($name, '--')) {
             $name = substr($name, 2);
         }
 
