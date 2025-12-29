@@ -47,7 +47,7 @@ class sfWidgetFormChoice extends sfWidgetFormChoiceBase
         if ($this->getOption('multiple')) {
             $attributes['multiple'] = 'multiple';
 
-            if ('[]' != substr($name, -2)) {
+            if (!str_ends_with($name, '[]')) {
                 $name .= '[]';
             }
         }

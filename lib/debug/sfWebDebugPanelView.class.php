@@ -303,7 +303,7 @@ class sfWebDebugPanelView extends sfWebDebugPanel
         $filtered = [];
 
         foreach ($parameters as $name => $value) {
-            if (0 !== strpos($name, 'sf_')) {
+            if (!str_starts_with($name, 'sf_')) {
                 $filtered[$name] = $value;
             }
         }

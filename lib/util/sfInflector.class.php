@@ -103,7 +103,7 @@ class sfInflector
      */
     public static function humanize($lower_case_and_underscored_word)
     {
-        if ('_id' === substr($lower_case_and_underscored_word, -3)) {
+        if (str_ends_with($lower_case_and_underscored_word, '_id')) {
             $lower_case_and_underscored_word = substr($lower_case_and_underscored_word, 0, -3);
         }
 

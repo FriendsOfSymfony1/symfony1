@@ -238,7 +238,7 @@ class sfDebug
         }
 
         foreach (['sf_root_dir', 'sf_symfony_lib_dir'] as $key) {
-            if (0 === strpos($file, $value = sfConfig::get($key))) {
+            if (str_starts_with($file, $value = sfConfig::get($key))) {
                 $file = str_replace($value, strtoupper($key), $file);
 
                 break;

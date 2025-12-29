@@ -29,7 +29,9 @@ $config
         '@PhpCsFixer' => true,
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'modernize_strpos' => true,
     ])
+    ->setRiskyAllowed(true)
     ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)
 ;

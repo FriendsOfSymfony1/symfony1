@@ -44,7 +44,7 @@ class sfOutputEscaperObjectDecorator extends sfOutputEscaperGetterDecorator impl
     {
         if (count($args) > 0) {
             $escapingMethod = $args[count($args) - 1];
-            if (is_string($escapingMethod) && 'esc_' === substr($escapingMethod, 0, 4)) {
+            if (is_string($escapingMethod) && str_starts_with($escapingMethod, 'esc_')) {
                 array_pop($args);
             } else {
                 $escapingMethod = $this->escapingMethod;

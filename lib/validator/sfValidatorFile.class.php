@@ -236,7 +236,7 @@ class sfValidatorFile extends sfValidatorBase
         ob_start();
         // need to use --mime instead of -i. see #6641
         $cmd = 'file -b --mime -- %s 2>/dev/null';
-        $file = (0 === strpos($file, '-') ? './' : '').$file;
+        $file = (str_starts_with($file, '-') ? './' : '').$file;
         passthru(sprintf($cmd, escapeshellarg($file)), $return);
         if ($return > 0) {
             ob_end_clean();
