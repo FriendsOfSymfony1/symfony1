@@ -5,6 +5,7 @@
     "license": "MIT",
     "require": {
         "php" : "^7.4 || ^8.1",
+        "ext-mbstring": "*",
         "friendsofsymfony1/swiftmailer": "^5.4.13 || ^6.2.5"
     },
     "require-dev": {
