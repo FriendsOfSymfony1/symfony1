@@ -9,12 +9,7 @@
  */
 
 /**
- * sfAutoload class.
- *
- * This class is a singleton as PHP seems to be unable to register 2 autoloaders that are instances
- * of the same class (why?).
- *
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @deprecated
  */
 class sfAutoload
 {
@@ -29,9 +24,7 @@ class sfAutoload
     }
 
     /**
-     * Retrieves the singleton instance of this class.
-     *
-     * @return sfAutoload a sfAutoload implementation instance
+     * @deprecated
      */
     public static function getInstance()
     {
@@ -43,9 +36,7 @@ class sfAutoload
     }
 
     /**
-     * Register sfAutoload in spl autoloader.
-     *
-     * @throws sfException
+     * @deprecated
      */
     public static function register()
     {
@@ -57,7 +48,7 @@ class sfAutoload
     }
 
     /**
-     * Unregister sfAutoload from spl autoloader.
+     * @deprecated
      */
     public static function unregister()
     {
@@ -65,10 +56,7 @@ class sfAutoload
     }
 
     /**
-     * Sets the path for a particular class.
-     *
-     * @param string $class A PHP class name
-     * @param string $path  An absolute path
+     * @deprecated
      */
     public function setClassPath($class, $path)
     {
@@ -80,11 +68,7 @@ class sfAutoload
     }
 
     /**
-     * Returns the path where a particular class can be found.
-     *
-     * @param string $class A PHP class name
-     *
-     * @return string|null An absolute path
+     * @deprecated
      */
     public function getClassPath($class)
     {
@@ -94,11 +78,7 @@ class sfAutoload
     }
 
     /**
-     * Reloads the autoloader.
-     *
-     * @param bool $force Whether to force a reload
-     *
-     * @return bool True if the reload was successful, otherwise false
+     * @deprecated
      */
     public function reloadClasses($force = false)
     {
@@ -139,11 +119,7 @@ class sfAutoload
     }
 
     /**
-     * Handles autoloading of classes that have been specified in autoload.yml.
-     *
-     * @param string $class a class name
-     *
-     * @return bool Returns true if the class has been loaded
+     * @deprecated
      */
     public function autoload($class)
     {
@@ -156,11 +132,7 @@ class sfAutoload
     }
 
     /**
-     * Tries to load a class that has been specified in autoload.yml.
-     *
-     * @param string $class a class name
-     *
-     * @return bool Returns true if the class has been loaded
+     * @deprecated
      */
     public function loadClass($class)
     {

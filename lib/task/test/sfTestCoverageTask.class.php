@@ -52,8 +52,6 @@ EOF;
      */
     protected function execute($arguments = [], $options = [])
     {
-        require_once sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php';
-
         $coverage = $this->getCoverage($this->getTestHarness(['force_colors' => isset($options['color']) && $options['color']]), $options['detailed']);
 
         $testFiles = $this->getFiles(sfConfig::get('sf_root_dir').'/'.$arguments['test_name']);

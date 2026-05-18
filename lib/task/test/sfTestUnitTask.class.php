@@ -80,8 +80,6 @@ EOF;
                 $this->logSection('test', 'no tests found', null, 'ERROR');
             }
         } else {
-            require_once __DIR__.'/sfLimeHarness.class.php';
-
             $h = new sfLimeHarness([
                 'force_colors' => isset($options['color']) && $options['color'],
                 'verbose' => isset($options['trace']) && $options['trace'],

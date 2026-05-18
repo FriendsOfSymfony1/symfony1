@@ -16,10 +16,6 @@ if (isset($argv[1])) {
     $verbose = true;
 }
 
-require_once __DIR__.'/../../lib/vendor/lime/lime.php';
-
-require_once __DIR__.'/../../lib/util/sfFinder.class.php';
-
 $h = new lime_harness();
 $h->base_dir = realpath(__DIR__.'/..');
 

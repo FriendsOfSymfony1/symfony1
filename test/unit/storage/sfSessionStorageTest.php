@@ -16,8 +16,6 @@ ob_start();
 
 $_test_dir = realpath(__DIR__.'/../../');
 
-require_once $_test_dir.'/../lib/vendor/lime/lime.php';
-
 sfConfig::set('sf_symfony_lib_dir', realpath($_test_dir.'/../lib'));
 
 $t = new lime_test(8);

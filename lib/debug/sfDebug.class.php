@@ -23,7 +23,7 @@ class sfDebug
     public static function symfonyInfoAsArray()
     {
         return [
-            'version' => SYMFONY_VERSION,
+            'version' => sfProjectConfiguration::SYMFONY_VERSION,
             'path' => sfConfig::get('sf_symfony_lib_dir'),
         ];
     }
