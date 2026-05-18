@@ -3,6 +3,7 @@ CHANGELOG
 
 xx/xx/xxxx: Version 1.5.xx
 --------------------------
+* ⚠️ [BC-Break] Require ext-mbstring; replace deprecated utf8_encode() in lime JUnit reporter by @JohannesTyra in #395
 
 26/12/2025: Version 1.5.24
 --------------------------
