@@ -197,9 +197,14 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
  * interface's read()/write() save-handler methods. The adapter delegates to the
  * storage's sessionOpen/sessionClose/sessionRead/sessionWrite/sessionDestroy/sessionGC.
  *
- * #[\ReturnTypeWillChange] is required: SessionHandlerInterface declares tentative
- * return types, and the legacy sessionXxx() methods return loosely-typed values
- * (e.g. sessionGC() returns bool, not int) we must preserve unchanged.
+ * Parameter and return types follow SessionHandlerInterface as closely as the
+ * library's minimum PHP (7.4) allows: scalar parameter types and covariant scalar
+ * return types (bool/string/int) are declared, which removes the need for
+ * #[\ReturnTypeWillChange]. The interface's read(): string|false and gc(): int|false
+ * union return types cannot be declared on 7.4 (union types are 8.0+), so the
+ * covariant string / int are used — both are subtypes of the tentative types, so no
+ * deprecation is emitted on 8.x. sessionGC() returns bool in every storage subclass,
+ * so gc() casts it to int to honour the interface's integer return.
  *
  * Defined in this file (not its own) so it is always available wherever the core
  * autoloader has loaded sfDatabaseSessionStorage; it is only referenced from above.
@@ -213,39 +218,33 @@ class sfDatabaseSessionHandler implements SessionHandlerInterface
         $this->storage = $storage;
     }
 
-    #[\ReturnTypeWillChange]
-    public function open($path, $name)
+    public function open(string $path, string $name): bool
     {
         return $this->storage->sessionOpen($path, $name);
     }
 
-    #[\ReturnTypeWillChange]
-    public function close()
+    public function close(): bool
     {
         return $this->storage->sessionClose();
     }
 
-    #[\ReturnTypeWillChange]
-    public function read($id)
+    public function read(string $id): string
     {
         return $this->storage->sessionRead($id);
     }
 
-    #[\ReturnTypeWillChange]
-    public function write($id, $data)
+    public function write(string $id, string $data): bool
     {
         return $this->storage->sessionWrite($id, $data);
     }
 
-    #[\ReturnTypeWillChange]
-    public function destroy($id)
+    public function destroy(string $id): bool
     {
         return $this->storage->sessionDestroy($id);
     }
 
-    #[\ReturnTypeWillChange]
-    public function gc($max_lifetime)
+    public function gc(int $max_lifetime): int
     {
-        return $this->storage->sessionGC($max_lifetime);
+        return (int) $this->storage->sessionGC($max_lifetime);
     }
 }
