@@ -189,6 +189,7 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
 /**
  * Adapts an sfDatabaseSessionStorage to the SessionHandlerInterface required by
  * PHP 8.4's session_set_save_handler().
+ *
  * See https://wiki.php.net/rfc/deprecate_functions_with_overloaded_signatures#session_set_save_handler
  *
  * This must be a separate object rather than having sfDatabaseSessionStorage
