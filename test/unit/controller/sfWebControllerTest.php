@@ -134,8 +134,7 @@ $tests = [
     ],
     '@test' => [
         'test',
-        [
-        ],
+        [],
     ],
     '@test?id=12&foo=bar' => [
         'test',
