@@ -122,7 +122,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
         foreach ($this->configuration->getPlugins() as $name) {
             $plugin = $this->configuration->getPluginConfiguration($name);
             foreach ($finder->in($plugin->getRootDir().'/config/doctrine') as $schema) {
-                $pluginModels = (array) sfYaml::parseFile($schema);
+                $pluginModels = (array) sfConfig::getYamlClass()::parseFile($schema);
                 $globals = $this->filterSchemaGlobals($pluginModels);
 
                 foreach ($pluginModels as $model => $definition) {
@@ -149,7 +149,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
 
         // project models
         foreach ($finder->in($yamlSchemaPath) as $schema) {
-            $projectModels = (array) sfYaml::parseFile($schema);
+            $projectModels = (array) sfConfig::getYamlClass()::parseFile($schema);
             $globals = $this->filterSchemaGlobals($projectModels);
 
             foreach ($projectModels as $model => $definition) {
@@ -167,7 +167,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
         // create one consolidated schema file
         $file = realpath(sys_get_temp_dir()).'/doctrine_schema_'.rand(11111, 99999).'.yml';
         $this->logSection('file+', $file);
-        file_put_contents($file, sfYaml::dump($models, 4));
+        file_put_contents($file, sfConfig::getYamlClass()::dump($models, 4));
 
         return $file;
     }

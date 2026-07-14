@@ -69,7 +69,7 @@ class sfWebDebugPanelConfig extends sfWebDebugPanel
 
         return '
     <h2>'.$id.' '.$this->getToggler('sfWebDebug'.$id).'</h2>
-    <div id="sfWebDebug'.$id.'" style="display: none"><pre>'.htmlspecialchars(sfYaml::dump(sfDebug::removeObjects($values)), ENT_QUOTES, sfConfig::get('sf_charset')).'</pre></div>
+    <div id="sfWebDebug'.$id.'" style="display: none"><pre>'.htmlspecialchars(sfConfig::getYamlClass()::dump(sfDebug::removeObjects($values)), ENT_QUOTES, sfConfig::get('sf_charset')).'</pre></div>
     ';
     }
 }

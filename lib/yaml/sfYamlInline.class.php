@@ -68,7 +68,7 @@ class sfYamlInline
      */
     public static function dump($value)
     {
-        if ('1.1' === sfYaml::getSpecVersion()) {
+        if ('1.1' === sfConfig::getYamlClass()::getSpecVersion()) {
             $trueValues = ['true', 'on', '+', 'yes', 'y'];
             $falseValues = ['false', 'off', '-', 'no', 'n'];
         } else {
@@ -364,7 +364,7 @@ class sfYamlInline
     {
         $scalar = trim($scalar);
 
-        if ('1.1' === sfYaml::getSpecVersion()) {
+        if ('1.1' === sfConfig::getYamlClass()::getSpecVersion()) {
             $trueValues = ['true', 'on', '+', 'yes', 'y'];
             $falseValues = ['false', 'off', '-', 'no', 'n'];
         } else {

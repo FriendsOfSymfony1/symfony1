@@ -68,7 +68,7 @@ EOF;
         $import->importSchema($schema, 'yml', $config['models_path']);
 
         // markup base classes with magic methods
-        foreach (sfYaml::parseFile($schema) as $model => $definition) {
+        foreach (sfConfig::getYamlClass()::parseFile($schema) as $model => $definition) {
             $file = sprintf('%s%s/%s/Base%s%s', $config['models_path'], isset($definition['package']) ? '/'.substr($definition['package'], 0, strpos($definition['package'], '.')) : '', $builderOptions['baseClassesDirectory'], $model, $builderOptions['suffix']);
             $code = file_get_contents($file);
 
