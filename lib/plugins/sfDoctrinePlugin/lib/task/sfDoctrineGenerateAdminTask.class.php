@@ -121,8 +121,7 @@ EOF;
     with_wildcard_routes: true
 
 
-EOF
-                , $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey).$content;
+EOF, $name, $model, $module, isset($options['plural']) ? $options['plural'] : $module, $primaryKey).$content;
 
             $this->logSection('file+', $routing);
 
