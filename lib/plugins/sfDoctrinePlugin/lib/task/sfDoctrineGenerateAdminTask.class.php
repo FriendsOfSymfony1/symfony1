@@ -104,7 +104,7 @@ EOF;
 
         $routing = sfConfig::get('sf_app_config_dir').'/routing.yml';
         $content = file_get_contents($routing);
-        $routesArray = sfYaml::parse($content);
+        $routesArray = sfConfig::getYamlClass()::parse($content);
 
         if (!isset($routesArray[$name])) {
             $databaseManager = new sfDatabaseManager($this->configuration);

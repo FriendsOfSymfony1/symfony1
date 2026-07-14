@@ -84,7 +84,7 @@ EOF;
 
                 $this->log([
                     sprintf('found %s results', number_format($count)),
-                    sfYaml::dump($results, 4),
+                    sfConfig::getYamlClass()::dump($results, 4),
                 ]);
             } else {
                 $results = $q->execute($arguments['parameter'], Doctrine_Core::HYDRATE_SCALAR);
