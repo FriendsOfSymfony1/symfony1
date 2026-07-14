@@ -55,7 +55,7 @@ class sfBasicSecurityFilter extends sfFilter
                 $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', [
                     sprintf(
                         'Action "%s/%s" requires credentials "%s", forwarding to "%s/%s"', $this->context->getModuleName(), $this->context->getActionName(),
-                        sfYaml::dump($credential, 0),
+                        sfConfig::getYamlClass()::dump($credential, 0),
                         sfConfig::get('sf_secure_module'),
                         sfConfig::get('sf_secure_action')
                     )]));
