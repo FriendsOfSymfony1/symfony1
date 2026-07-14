@@ -26,7 +26,7 @@ class sfI18nYamlGeneratorExtractor extends sfI18nYamlExtractor
     {
         $this->strings = [];
 
-        $config = sfYaml::load($content, sfConfig::get('sf_charset', 'UTF-8'));
+        $config = sfYaml::parse($content, sfConfig::get('sf_charset', 'UTF-8'));
 
         if (!isset($config['generator']['param']['config'])) {
             return [];
