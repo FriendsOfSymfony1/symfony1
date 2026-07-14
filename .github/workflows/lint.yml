@@ -33,11 +33,10 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: '.php-cs-fixer.cache'
-          key: ${{ github.repository }}-7.4-phpcsfixer-${{ github.ref_name }}
+          key: php-cs-fixer-74-${{ hashFiles('.php-cs-fixer.dist.php') }}
           restore-keys: |
-            ${{ github.repository }}-7.4-phpcsfixer-master
-            ${{ github.repository }}-7.4-phpcsfixer-
+            php-cs-fixer-74-
 
       - name: Run PHP-CS-Fixer
         # Using cs2pr settings, see: https://github.com/shivammathur/setup-php#tools-with-checkstyle-support
-        run: 'php-cs-fixer fix --dry-run --format=checkstyle | cs2pr'
+        run: 'php-cs-fixer check --format=checkstyle | cs2pr'
