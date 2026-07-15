@@ -1,68 +1,26 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}-cli
+FROM php:${PHP_VERSION}-fpm-alpine
 
-RUN docker-php-ext-install pdo
-RUN docker-php-ext-install pdo_mysql
+COPY --from=composer:latest --link /usr/bin/composer /usr/local/bin/composer
+COPY --from=phario/phive:0.15.2 --link /usr/local/bin/phive /usr/local/bin/phive
+ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# Install mbstring PHP extension
-#
-RUN set -eux; \
-  apt-get update; \
-  apt-get install -y --no-upgrade --no-install-recommends \
-    libonig-dev \
-  ; \
-  \
-  apt-get clean; \
-  rm -rf /var/lib/apt/lists/*; \
-  \
-  docker-php-ext-install mbstring
+# Install PHP extensions
+RUN RUN set -eux; \
+    install-php-extensions \
+      apcu \
+      memcache \
+      pdo \
+      pdo_mysql \
+      zip \
+    ;
 
-# Install APCu PHP extension
-#
-ARG APCU_VERSION
-RUN set -eux; \
-  \
-  test x"" = x"${APCU_VERSION}" || { \
-    pecl install apcu-${APCU_VERSION}; \
-    docker-php-ext-enable apcu; \
-    \
-    rm -r /tmp/pear; \
-  }
+COPY --link --chmod=0644 php-config/*.ini /usr/local/etc/php/conf.d/
 
-# Install memcache PHP extension
-#
-ARG MEMCACHE_VERSION
-RUN set -eux; \
-  buildDeps=' \
-    libzip-dev \
-  '; \
-  apt-get update; \
-  apt-get install -y --no-upgrade --no-install-recommends \
-    $buildDeps \
-  ; \
-  \
-  pecl install memcache-${MEMCACHE_VERSION}; \
-  docker-php-ext-enable memcache; \
-  \
-  apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=true \
-    $buildDeps \
-  ; \
-  apt-get clean; \
-  rm -rf /var/lib/apt/lists/*; \
-  rm -r /tmp/pear
+RUN RUN set -eux; \
+    apk add file --no-cache;
 
-# For consistent mime type file guesser
-RUN set -eux; \
-  distFilePath=`which file`; \
-  \
-  mv ${distFilePath} ${distFilePath}.dist; \
-  { \
-    echo '#! /bin/sh -eu'; \
-    echo ''; \
-    echo "${distFilePath}"'.dist "$@" | sed -e s,application/x-pie-executable,application/x-executable,g'; \
-  } | tee ${distFilePath}; \
-  \
-  chmod +x ${distFilePath}; \
-  \
-  file /bin/ls --mime | grep application/x-executable; \
-  :;
+# Configure Composer folders
+RUN RUN set -eux; \
+    mkdir /var/composer; \
+    chmod a+rwX /var/composer;
