@@ -93,7 +93,8 @@ abstract class sfData
     protected function doLoadDataFromFile($file)
     {
         // import new datas
-        $data = sfYaml::load($file, sfConfig::get('sf_charset', 'UTF-8'));
+
+        $data = sfConfig::getYamlClass()::parseFile($file, sfConfig::get('sf_charset', 'UTF-8'));
 
         $this->loadDataFromArray($data);
     }

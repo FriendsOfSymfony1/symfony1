@@ -85,4 +85,12 @@ class sfConfig
     {
         self::$config = [];
     }
+
+    /**
+     * @return class-string<\sfYaml>
+     */
+    public static function getYamlClass(): string
+    {
+        return self::$config['sf_yaml_class'] ?? \sfYaml::class;
+    }
 }

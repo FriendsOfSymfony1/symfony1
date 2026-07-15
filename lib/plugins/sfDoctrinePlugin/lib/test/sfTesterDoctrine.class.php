@@ -136,7 +136,7 @@ class sfTesterDoctrine extends sfTester
                 $conn = $event->getInvoker() instanceof Doctrine_Connection ? $event->getInvoker() : $event->getInvoker()->getConnection();
 
                 echo $event->getQuery()."\n";
-                echo '  Parameters: '.sfYaml::dump(sfDoctrineConnectionProfiler::fixParams($event->getParams()), 0)."\n";
+                echo '  Parameters: '.sfConfig::getYamlClass()::dump(sfDoctrineConnectionProfiler::fixParams($event->getParams()), 0)."\n";
                 echo '  Connection: '.$conn->getName()."\n";
                 echo '  Time:       '.number_format($event->getElapsedSecs(), 2)."s\n\n";
             }
