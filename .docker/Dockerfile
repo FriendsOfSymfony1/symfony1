@@ -1,4 +1,19 @@
 ARG PHP_VERSION
+
+FROM alpine:3.19.1 as php-cs-fixer
+
+RUN set -eux; \
+  version=3.52.1; \
+  \
+  apk add --no-cache curl; \
+  \
+  curl -sSLfo /usr/local/bin/php-cs-fixer \
+    https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v${version}/php-cs-fixer.phar; \
+  \
+  chmod +x /usr/local/bin/php-cs-fixer; \
+  :;
+
+
 FROM php:${PHP_VERSION}-cli
 
 RUN docker-php-ext-install pdo
@@ -66,3 +81,5 @@ RUN set -eux; \
   \
   file /bin/ls --mime | grep application/x-executable; \
   :;
+
+COPY --from=php-cs-fixer /usr/local/bin/php-cs-fixer /usr/local/bin/php-cs-fixer
