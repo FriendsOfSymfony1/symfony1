@@ -48,18 +48,10 @@ abstract class sfBaseTask extends sfCommandApplicationTask
     }
 
     /**
-     * Checks if the current directory is a symfony project directory.
-     *
-     * @return true if the current directory is a symfony project directory, false otherwise
-     *
-     * @throws sfException
+     * @deprecated
      */
     public function checkProjectExists()
     {
-        if (!file_exists('symfony')) {
-            throw new sfException('You must be in a symfony project directory.');
-        }
-
         return true;
     }
 
@@ -115,8 +107,6 @@ abstract class sfBaseTask extends sfCommandApplicationTask
         if ($event->isProcessed()) {
             return $event->getReturnValue();
         }
-
-        $this->checkProjectExists();
 
         $requiresApplication = $commandManager->getArgumentSet()->hasArgument('application') || $commandManager->getOptionSet()->hasOption('application');
         if (null === $this->configuration || ($requiresApplication && !$this->configuration instanceof sfApplicationConfiguration)) {
