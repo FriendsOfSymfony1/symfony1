@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-// Remove E_STRICT from error_reporting
-error_reporting(error_reporting() & ~E_STRICT);
 date_default_timezone_set('UTC');
 
 require_once 'PEAR.php';

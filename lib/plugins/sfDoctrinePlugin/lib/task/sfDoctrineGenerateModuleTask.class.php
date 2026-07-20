@@ -193,8 +193,7 @@ EOF;
     route_prefix:          %s
     with_doctrine_route:   %s
     actions_base_class:    %s
-EOF
-            ,
+EOF,
             $arguments['model'],
             $options['theme'],
             $options['non-verbose-templates'] ? 'true' : 'false',

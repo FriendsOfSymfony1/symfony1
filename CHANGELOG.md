@@ -1,15 +1,54 @@
 CHANGELOG
 =========
 
-=======
-
 xx/xx/xxxx: Version 1.5.xx
 --------------------------
+* ⚠️ [BC-Break] Require ext-mbstring; replace deprecated utf8_encode() in lime JUnit reporter by @JohannesTyra in #395
 
-* Remove sfXCacheCache as the extension is not available on PHP v7.4 anymore.
-* Remove sfEAcceleratorCache as the extension is not available on PHP v7.4 anymore.
-* Remove sfAPCCache as it uses the `apc` extension, which is not available on PHP v7.4 anymore.  
-  **[BC-Break]** Use `sfAPCuCache` class instead, available from Symfony1 v1.5.16
+26/12/2025: Version 1.5.24
+--------------------------
+* Drop use of E_STRICT by @mentalstring in #391
+* Use php.ini-development in CI pipelines by @mentalstring in #392
+* Add PHP 8.5 support by @mentalstring in #393
+
+18/09/2025: Version 1.5.23
+--------------------------
+* Add HTTP status code 308 "Permanent Redirect" by @wutsch0 in #388
+* Add support for SameSite cookie attribute by @mentalstring in #387
+
+05/05/2025: Version 1.5.22
+--------------------------
+* Add support for PHP 8.4 by @thirsch in #382
+* Fix stack trace code preview in debug screen by @sebasbit in #375
+* Fix deprecation: Optional parameter declared before required parameter is implicitly treated as a required parameter by @thirsch in #365
+
+19/12/2024: Version 1.5.21
+--------------------------
+* Fix inclusion of base test files in composer package (#379) by @vworldat in #380
+
+29/11/2024: Version 1.5.20
+--------------------------
+* Update php-cs-fixer to v3.52 by @thePanz in #340
+* Remove sfXCacheCache as the extension is not available on PHP v7.4 anymore by @thePanz in #344
+* Remove sfEAcceleratorCache as the extension is not available on PHP v7.4 anymore by @thePanz in #344
+* ⚠️ [BC-Break] Remove sfAPCCache as it uses the `apc` extension, which is not available on PHP v7.4 anymore by @thePanz in #344. Use `sfAPCuCache` class instead, available from Symfony1 v1.5.16
+* Fix phpstan errors by @thePanz in #345
+* Fix return statement missing stan error in widget by @connorhu in #349
+* Fix return statement missing stan error in validator by @connorhu in #352
+* Fix return statement missing stan error in view by @connorhu in #350
+* Fix return statement missing stan errors in task by @connorhu in #353
+* Fix return statement missing stan error in util by @connorhu in #351
+* Fix changelog typo by @connorhu in #361
+* Update the SYMFONY_VERSION constant to the latest release number by @verfriemelt-dot-org in #355
+* Add test folder to gitattribute by @connorhu in #368
+* Fix incorrect type-hint for parameter of type class-string by @thirsch in #370
+
+19/03/2024: Version 1.5.19
+--------------------------
+* Sync changelog with latest releases by @thePanz in #337
+* Remove unsupported/legacy code by @thePanz in #336
+* Update php cs fixer by @thePanz in #338
+* Add type checking for deserialized data by @darkpills @thePanz @thirsch
 
 28/02/2024: Version 1.5.18
 --------------------------

@@ -29,6 +29,8 @@ $config
         '@PhpCsFixer' => true,
         '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'single_line_throw' => false,
+        'string_implicit_backslashes' => false,
     ])
     ->setCacheFile('.cache/php-cs-fixer.cache')
     ->setFinder($finder)
