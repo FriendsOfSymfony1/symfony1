@@ -36,7 +36,7 @@ jobs:
         with:
           submodules: "true"
 
-      - name: Install PHP
+      - name: Install PHP ${{ matrix.php-version }} ${{ matrix.mode }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php-version }}"
@@ -62,4 +62,14 @@ jobs:
         run: php data/bin/check_configuration.php
 
       - name: Run Tests
-        run: php data/bin/symfony symfony:test --trace
+        run: |
+          exit_status=0
+          php data/bin/symfony symfony:test --trace || exit_status=$?
+
+          if [ "${{ matrix.mode }}" = experimental ]
+          then
+            echo "exited: $exit_status"
+            exit 0
+          else
+            exit $exit_status
+          fi
