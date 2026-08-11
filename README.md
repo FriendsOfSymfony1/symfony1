@@ -85,6 +85,12 @@ Tests
     docker-compose down
 
 
+Lint
+----
+
+    test/bin/lint
+
+
 Documentation
 -------------
 
