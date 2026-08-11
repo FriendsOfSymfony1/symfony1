@@ -3,10 +3,11 @@
 .env.dist              export-ignore
 .gitattributes         export-ignore
 .github/               export-ignore
+.phpstan/              export-ignore
 .gitignore             export-ignore
 .php-cs-fixer.dist.php export-ignore
 docker-compose.yml     export-ignore
-phpstan.neon           export-ignore
+phpstan.dist.neon      export-ignore
 phpunit.xml            export-ignore
 /test/                 export-ignore
 tests/                 export-ignore
