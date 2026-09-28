@@ -15,7 +15,7 @@ security:
 cache:
   class: sfCacheFilter
   param:
-    condition: %SF_CACHE%
+    condition: "%SF_CACHE%"
 
 # execution filter must be the last registered filter
 execution:

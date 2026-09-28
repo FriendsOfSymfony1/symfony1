@@ -41,6 +41,55 @@ class sfYaml
         return self::$spec;
     }
 
+    public static function parseFile($filename, $encoding = 'UTF-8')
+    {
+        ob_start();
+        $retval = include $filename;
+        $content = ob_get_clean();
+
+        // if an array is returned by the config file assume it's in plain php form else in YAML
+        $input = is_array($retval) ? $retval : $content;
+
+        // if an array is returned by the config file assume it's in plain php form else in YAML
+        if (is_array($input)) {
+            return $input;
+        }
+
+        try {
+            return self::doParse($input, $encoding);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException(sprintf('Unable to parse file "%s": %s', $filename, $e->getMessage()));
+        }
+    }
+
+    public static function parse($input, $encoding = 'UTF-8')
+    {
+        try {
+            return self::doParse($input, $encoding);
+        } catch (Exception $e) {
+            throw new InvalidArgumentException(sprintf('Unable to parse string: %s', $e->getMessage()));
+        }
+    }
+
+    protected static function doParse($input, $encoding = 'UTF-8')
+    {
+        $mbConvertEncoding = false;
+        $encoding = strtoupper($encoding);
+        if ('UTF-8' !== $encoding) {
+            $input = mb_convert_encoding($input, 'UTF-8', $encoding);
+            $mbConvertEncoding = true;
+        }
+
+        $yaml = new sfYamlParser();
+
+        $ret = $yaml->parse($input);
+        if ($ret && $mbConvertEncoding) {
+            $ret = self::arrayConvertEncoding($ret, $encoding);
+        }
+
+        return $ret;
+    }
+
     /**
      * Loads YAML into a PHP array.
      *
@@ -80,26 +129,15 @@ class sfYaml
             return $input;
         }
 
-        $mbConvertEncoding = false;
-        $encoding = strtoupper($encoding);
-        if ('UTF-8' != $encoding && function_exists('mb_convert_encoding')) {
-            $input = mb_convert_encoding($input, 'UTF-8', $encoding);
-            $mbConvertEncoding = true;
-        }
-
-        $yaml = new sfYamlParser();
-
         try {
-            $ret = $yaml->parse($input);
+            return self::doParse($input, $encoding);
         } catch (Exception $e) {
-            throw new InvalidArgumentException(sprintf('Unable to parse %s: %s', $file ? sprintf('file "%s"', $file) : 'string', $e->getMessage()));
+            throw new InvalidArgumentException(sprintf(
+                'Unable to parse %s: %s',
+                $file ? sprintf('file "%s"', $file) : 'string',
+                $e->getMessage()
+            ));
         }
-
-        if ($ret && $mbConvertEncoding) {
-            $ret = self::arrayConvertEncoding($ret, $encoding);
-        }
-
-        return $ret;
     }
 
     /**
