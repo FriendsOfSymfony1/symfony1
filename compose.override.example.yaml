@@ -1,0 +1,9 @@
+services:
+    php:
+        # Use the following user withing the image, this should help with file permissions
+        user: 1000:1000
+        volumes:
+            # Mount additional volumes from the host system to share Composer cache and authentication
+            - "${COMPOSER_CACHE_DIR:-${HOME}/.cache/composer}:/var/composer/cache:z"
+            - "${COMPOSER_HOME:-${HOME}/.composer}/auth.json:/var/composer/auth.json:ro,z"
+            - "${COMPOSER_HOME:-${HOME}/.composer}/config.json:/var/composer/config.json:ro,z"

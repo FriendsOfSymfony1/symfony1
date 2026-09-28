@@ -1,0 +1,22 @@
+services:
+
+    php:
+        environment:
+            COMPOSER_HOME: "/var/composer"
+            COMPOSER_CACHE_DIR: "/var/composer/cache"
+        build:
+            context: .docker/
+        volumes:
+            - ".:/var/www/html:rw,z"
+            - "mysql_socket:/var/run/mysqld/mysqld.sock:rw"
+
+#     memcached:
+#         image: memcached:1.6.13-alpine3.15
+    mysql:
+        image: mysql:8.3
+        profiles:
+            - full
+        volumes:
+            - "mysql_socket:/var/run/mysqld/mysqld.sock:rw"
+volumes:
+    mysql_socket:
