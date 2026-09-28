@@ -63,14 +63,9 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
         }
 
         // use this object as the session handler
-        session_set_save_handler(
-            [$this, 'sessionOpen'],
-            [$this, 'sessionClose'],
-            [$this, 'sessionRead'],
-            [$this, 'sessionWrite'],
-            [$this, 'sessionDestroy'],
-            [$this, 'sessionGC']
-        );
+        // PHP 8.4: the 6-callback form of session_set_save_handler() is deprecated.
+        // Register a SessionHandlerInterface object instead (see adapter below).
+        session_set_save_handler(new sfDatabaseSessionHandler($this), true);
 
         // start our session
         session_start();
@@ -188,5 +183,73 @@ abstract class sfDatabaseSessionStorage extends sfSessionStorage
         $this->sessionRead($newId);
 
         return $this->sessionWrite($newId, $this->sessionRead($currentId));
+    }
+}
+
+/**
+ * Adapts an sfDatabaseSessionStorage to the SessionHandlerInterface required by
+ * PHP 8.4's session_set_save_handler().
+ *
+ * See https://wiki.php.net/rfc/deprecate_functions_with_overloaded_signatures#session_set_save_handler
+ *
+ * This must be a separate object rather than having sfDatabaseSessionStorage
+ * implement the interface itself: sfSessionStorage already defines read()/write()
+ * for symfony's attribute storage ($_SESSION[$key]), which collide with the
+ * interface's read()/write() save-handler methods. The adapter delegates to the
+ * storage's sessionOpen/sessionClose/sessionRead/sessionWrite/sessionDestroy/sessionGC.
+ *
+ * The save-handler methods are intentionally left untyped with #[\ReturnTypeWillChange]:
+ * the library still supports PHP 7.4, where the internal SessionHandlerInterface has
+ * untyped parameters. Declaring parameter/return types here narrows that contract and
+ * raises an "incompatible declaration" warning that breaks the test suite on 7.4 (8.x,
+ * which added the types to the interface, is fine). #[\ReturnTypeWillChange] suppresses
+ * the 8.x tentative-return-type notice and parses as a harmless comment on 7.4.
+ *
+ * Defined in this file (not its own) so it is always available wherever the core
+ * autoloader has loaded sfDatabaseSessionStorage; it is only referenced from above.
+ */
+class sfDatabaseSessionHandler implements SessionHandlerInterface
+{
+    private sfDatabaseSessionStorage $storage;
+
+    public function __construct(sfDatabaseSessionStorage $storage)
+    {
+        $this->storage = $storage;
+    }
+
+    #[\ReturnTypeWillChange]
+    public function open($path, $name)
+    {
+        return $this->storage->sessionOpen($path, $name);
+    }
+
+    #[\ReturnTypeWillChange]
+    public function close()
+    {
+        return $this->storage->sessionClose();
+    }
+
+    #[\ReturnTypeWillChange]
+    public function read($id)
+    {
+        return $this->storage->sessionRead($id);
+    }
+
+    #[\ReturnTypeWillChange]
+    public function write($id, $data)
+    {
+        return $this->storage->sessionWrite($id, $data);
+    }
+
+    #[\ReturnTypeWillChange]
+    public function destroy($id)
+    {
+        return $this->storage->sessionDestroy($id);
+    }
+
+    #[\ReturnTypeWillChange]
+    public function gc($max_lifetime)
+    {
+        return $this->storage->sessionGC($max_lifetime);
     }
 }
