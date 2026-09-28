@@ -46,12 +46,19 @@ class sfDoctrineRecordI18nFilter extends Doctrine_Record_Filter
     public function filterGet(Doctrine_Record $record, $name)
     {
         $culture = sfDoctrineRecord::getDefaultCulture();
-        if (isset($record['Translation'][$culture]) && '' != $record['Translation'][$culture][$name]) {
-            return $record['Translation'][$culture][$name];
+
+        // Access Translation relation explicitly to trigger lazy loading.
+        // PHP's isset() with chained array access like isset($record['Translation'][$culture])
+        // does not trigger __get() on the intermediate $record['Translation'] access,
+        // causing the check to incorrectly return false on first access after clear().
+        $translation = $record['Translation'];
+
+        if (isset($translation[$culture]) && '' != $translation[$culture][$name]) {
+            return $translation[$culture][$name];
         }
 
         $defaultCulture = sfConfig::get('sf_default_culture');
 
-        return $record['Translation'][$defaultCulture][$name];
+        return $translation[$defaultCulture][$name];
     }
 }
