@@ -3,6 +3,12 @@ CHANGELOG
 
 xx/xx/xxxx: Version 1.5.xx
 --------------------------
+
+12/08/2026: Version 1.5.25
+--------------------------
+* Upgrade GIT submodule of Swiftmailer to latest 5.x release
+* Remove executable flag from autoload.php and composer.json files by @thePanz in #399
+* Update php-cs-fixer analysis to v3.95.1 by @thePanz in #400
 * ⚠️ [BC-Break] Require ext-mbstring; replace deprecated utf8_encode() in lime JUnit reporter by @JohannesTyra in #395
 
 26/12/2025: Version 1.5.24
