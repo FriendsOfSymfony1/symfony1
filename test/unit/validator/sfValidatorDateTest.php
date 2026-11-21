@@ -197,9 +197,9 @@ try {
 
 // timezones
 $defaultTimezone = new DateTimeZone(date_default_timezone_get());
-$otherTimezone = new DateTimeZone('US/Pacific');
+$otherTimezone = new DateTimeZone('America/Los_Angeles');
 if ($defaultTimezone->getOffset(new DateTime()) == $otherTimezone->getOffset(new DateTime())) {
-    $otherTimezone = new DateTimeZone('US/Eastern');
+    $otherTimezone = new DateTimeZone('America/New_York');
 }
 
 $date = new DateTime('2000-01-01T00:00:00-00:00');
