@@ -93,7 +93,7 @@ EOF;
      */
     protected function getYamlSchema($yamlSchemaPath)
     {
-        return (array) sfYaml::load($this->prepareSchemaFile($yamlSchemaPath));
+        return (array) sfConfig::getYamlClass()::parseFile($this->prepareSchemaFile($yamlSchemaPath));
     }
 
     /**
